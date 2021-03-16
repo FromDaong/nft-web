@@ -1,0 +1,38 @@
+{
+  "name": "notes-app",
+  "version": "1.19.1",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@binance-chain/bsc-use-wallet": "^0.8.1",
+    "axios": "^0.21.1",
+    "bcrypt": "^5.0.0",
+    "bootstrap": "^4.6.0",
+    "formik": "^2.2.5",
+    "isomorphic-unfetch": "^3.0.0",
+    "micro": "^9.3.4",
+    "mongoose": "^5.9.6",
+    "mongoose-beautiful-unique-validation": "^7.1.1",
+    "nanoid": "^3.1.18",
+    "next": "^10.0.0",
+    "next-absolute-url": "^1.2.2",
+    "next-iron-session": "^4.1.10",
+    "react": "16.13.1",
+    "react-bootstrap": "^1.5.2",
+    "react-bootstrap-icons": "^1.1.0",
+    "react-copy-to-clipboard": "^5.0.2",
+    "react-dom": "16.13.1",
+    "react-lazyload": "^3.1.0",
+    "sass": "^1.29.0",
+    "stripe": "^8.123.0",
+    "swr": "^0.3.8",
+    "use-wallet": "^0.8.1",
+    "uuid": "^8.3.1",
+    "validator": "^13.1.17",
+    "yup": "^0.29.3"
+  }
+}
