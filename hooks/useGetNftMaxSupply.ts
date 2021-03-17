@@ -5,7 +5,7 @@ import { getTreatNFTMinterContract, getNftMaxSupply } from '../treat/utils'
 import useBlock from './useBlock'
 import useTreat from './useTreat'
 
- const useGetNftMaxSupply = (nftId: number) => {
+ const useGetNftMaxSupply = (id: number) => {
   const [maxSupply, setMaxSupply] = useState(new BigNumber(0))
   //const { account }: { account: string } = useWallet()
   const treat = useTreat()
@@ -13,16 +13,17 @@ import useTreat from './useTreat'
   const block = useBlock()
 
   const fetchBalance = useCallback(async () => {
-    const maxSupply = await getNftMaxSupply(treatNFTMinterContract, nftId)
+    const maxSupply = await getNftMaxSupply(treatNFTMinterContract, id)
     setMaxSupply(new BigNumber(maxSupply))
-  }, [nftId, treat])
+  }, [id, treat])
 
   useEffect(() => {
     if (treat) {
       fetchBalance()
     }
-  }, [nftId])
+  }, [id])
 
   return maxSupply
  }
+
  export default useGetNftMaxSupply

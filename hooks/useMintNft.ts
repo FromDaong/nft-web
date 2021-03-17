@@ -4,8 +4,9 @@ import { Contract } from "web3-eth-contract";
 import { useCallback } from "react";
 import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";
+import bsc from "@binance-chain/bsc-use-wallet";
 
-const useMintNft = (nftId: number, useTreatMart: boolean = false) => {
+const useMintNft = (id: number, useTreatMart: boolean = false) => {
   const { account } = useWallet();
   const treat = useTreat();
   const treatMartContract = useTreatMart
@@ -13,10 +14,10 @@ const useMintNft = (nftId: number, useTreatMart: boolean = false) => {
     : getTreatMartContract(treat);
 
   const handleMintNft = useCallback(async () => {
-    const txHash = await mintNft(treatMartContract, account, nftId);
+    const txHash = await mintNft(treatMartContract, account, id);
     console.log(txHash);
     return txHash;
-  }, [account, nftId, treatMartContract]);
+  }, [account, id, treatMartContract]);
 
   return { onMintNft: handleMintNft };
 };
