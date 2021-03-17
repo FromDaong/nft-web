@@ -7,7 +7,7 @@ import WalletModal from "../WalletModal";
 import Link from "next/link";
 
 const HeaderNav = () => {
-  const { status, account, error, connect } = useWallet();
+  const { status, account, error, connect, reset } = useWallet();
   const [modalShow, setModalShow] = useState(false);
 
   console.log({ status, error, account });
@@ -47,7 +47,12 @@ const HeaderNav = () => {
               <b>CONNECT WALLET</b>
             </Button>
           ) : (
-            <div>{account}</div>
+            <div className="ml-md-4">
+              {account.substring(0, 10)}...
+              <Button variant="secondary px-4 ml-md-4" onClick={() => reset()}>
+                <b>DISCONNECT</b>
+              </Button>
+            </div>
           )}
         </Navbar.Collapse>
       </div>
