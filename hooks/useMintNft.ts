@@ -5,7 +5,7 @@ import { useCallback } from "react";
 import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";
 
-const useMintNft = (nftId, useTreatMart: boolean = false) => {
+const useMintNft = (nftId: number, useTreatMart: boolean = false) => {
   const { account } = useWallet();
   const treat = useTreat();
   const treatMartContract = useTreatMart
