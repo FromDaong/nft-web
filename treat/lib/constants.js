@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js/bignumber'
-//import smolEthLPFarmIcon from '../../assets/img/smol-ethereum-farm-icon.png'
-//import smolFarmIcon from '../../assets/img/smol-farm-icon.png'
+//import treaEthLPFarmIcon from '../../assets/img/treat-ethereum-farm-icon.png'
+//import treatFarmIcon from '../../assets/img/treat-farm-icon.png'
 
 export const SUBTRACT_GAS_LIMIT = 100000
 
@@ -40,6 +40,11 @@ export const contractAddresses = {
     56: '0xde39d0b9a93dcd541c24e80c8361f362aab0f213'
   },
   treatMart: {
-    56: '0x769C54A55FF7d3CeccD060710bb849eDbCc97351'
+    //56: '0x769C54A55FF7d3CeccD060710bb849eDbCc97351'
+    // ^ accept treat
+    //56: '0x89362Fd6ff407591D4bE8fda0580C115DD6BC5b6'
+    // ^ accept wbnb
+    56: '0x5A8e9c992D23A643011f5835A2D1DBE08Af4ff28'
+    // ^ accept bnb
   }
 }
