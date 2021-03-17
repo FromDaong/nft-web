@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 
 const NFTListItem = ({ data }) => {
   return (
-    <a href="/view">
+    <a href="/view/605182f3c7fccba1cf1d20d8">
       <div className="container">
         <div className="nft-list-item row">
           <div className="col-lg-3 img-container text-center text-lg-left">

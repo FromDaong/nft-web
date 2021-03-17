@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
-// import blur from "lur.png";
+import useSWR from "swr";
 
 const Home = () => {
-  const [showToast, setShowToast] = useState(true);
-  const toggleShowToast = () => setShowToast(!showToast);
+  const { data: res } = useSWR(`/api/nft/605182f3c7fccba1cf1d20d8`);
+  const [nftData, setNftData] = useState();
+
+  useEffect(() => {
+    console.log({ res });
+    if (res) setNftData(res);
+  }, [res]);
 
   const data = {
     id: 1,
@@ -47,6 +53,23 @@ const Home = () => {
     </div>
   ));
 
+  if (!nftData) {
+    <div
+      style={{
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Spinner animation="border" role="status">
+        <span className="sr-only">Loading...</span>
+      </Spinner>
+    </div>;
+  }
+
   return (
     <div className="container">
       <div className="view-nft row">
@@ -64,7 +87,7 @@ const Home = () => {
         </div>
         <div className="col-lg-8 text-container container mt-4 mt-lg-0">
           <div className="title-section">
-            <div className="title">{data.name}</div>
+            <div className="title">{nftData.name}</div>
             <div className="edition">EDITION {data.edition}</div>
           </div>
           <div className="stats">
