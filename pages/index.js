@@ -36,7 +36,7 @@ const Home = () => {
     },
   ];
 
-  const nftListRender = nftList.map((nft) => <NFTListItem data={nft} />);
+  const nftListRender = nftList.map((nft) => <NFTListItem key={nft.id} data={nft} />);
 
   return (
     <div className="home">

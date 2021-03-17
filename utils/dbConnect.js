@@ -8,8 +8,7 @@ async function dbConnect() {
   }
 
   const db = await mongoose.connect(
-    process.env.MONGO_URI ||
-      "mongodb+srv://luca:Chromebook1@cluster0.ihant.mongodb.net/projectx?retryWrites=true&w=majority",
+      "mongodb+srv://treat:hfqqjOWs0WS1mUGE@treatcluster.9uuso.mongodb.net/treat?retryWrites=true&w=majority",
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
