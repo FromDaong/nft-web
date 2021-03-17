@@ -2,19 +2,14 @@ import React, { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import useSWR from "swr";
-import useGetNftMaxSupply from '../../hooks/useGetNftMaxSupply'
-import useGetNftTotalSupply from '../../hooks/useGetNftTotalSupply'
-import useMintNft from '../../hooks/useMintNft'
+import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
+import useGetNftTotalSupply from "../../hooks/useGetNftTotalSupply";
+import useMintNft from "../../hooks/useMintNft";
 
-const ViewNFT = () => {
+const ViewNFTWrapper = () => {
   const { data: res } = useSWR(`/api/nft/605182f3c7fccba1cf1d20d8`);
   const [nftData, setNftData] = useState();
   const [image, setBase64Image] = useState();
-
-  const { onMintNft } = useMintNft(id)
-  const maxNftSupply = useGetNftMaxSupply(id)
-  const mintedNfts = useGetNftTotalSupply(id)
-  const remainingNfts = maxNftSupply.minus(mintedNfts)
 
   useEffect(() => {
     (async () => {
@@ -30,6 +25,37 @@ const ViewNFT = () => {
       }
     })();
   }, [res]);
+
+  if (!nftData) {
+    return (
+      <div
+        style={{
+          position: "fixed",
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          top: 0,
+          left: 0,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Spinner animation="border" role="status" size="xl">
+          <span className="sr-only">Loading...</span>
+        </Spinner>
+      </div>
+    );
+  } else {
+    console.log({ nftData });
+    return <ViewNFT nftData={nftData} image={image} />;
+  }
+};
+
+const ViewNFT = ({ nftData, image }) => {
+  const { onMintNft } = useMintNft(nftData.id);
+  const maxNftSupply = useGetNftMaxSupply(nftData.id);
+  const mintedNfts = useGetNftTotalSupply(nftData.id);
+  const remainingNfts = maxNftSupply.minus(mintedNfts);
 
   const data = {
     id: 1,
@@ -72,29 +98,6 @@ const ViewNFT = () => {
     </div>
   ));
 
-  
-
-  if (!nftData) {
-    return (
-      <div
-        style={{
-          position: "fixed",
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          top: 0,
-          left: 0,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Spinner animation="border" role="status" size="xl">
-          <span className="sr-only">Loading...</span>
-        </Spinner>
-      </div>
-    );
-  }
-
   return (
     <div className="container">
       <div className="view-nft row">
@@ -112,9 +115,14 @@ const ViewNFT = () => {
               variant="primary w-100 mt-3 py-3"
               style={{ borderRadius: 7 }}
               text={remainingNfts.toNumber() > 0 ? priceLabel : "SOLD OUT"}
-              onClick={onMintNft} disabled = {remainingNfts.toNumber() == 0}
+              onClick={onMintNft}
+              disabled={remainingNfts.toNumber() == 0}
             >
-              <b>{remainingNfts.toNumber() > 0 ? "BUY NOW " & priceLabel : "SOLD OUT"}</b>
+              <b>
+                {remainingNfts.toNumber() > 0
+                  ? "BUY NOW " & priceLabel
+                  : "SOLD OUT"}
+              </b>
             </Button>
           </div>
         </div>
@@ -159,4 +167,4 @@ const ViewNFT = () => {
   );
 };
 
-export default ViewNFT;
+export default ViewNFTWrapper;
