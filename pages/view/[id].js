@@ -3,7 +3,7 @@ import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import useSWR from "swr";
 
-const Home = () => {
+const ViewNFT = () => {
   const { data: res } = useSWR(`/api/nft/605182f3c7fccba1cf1d20d8`);
   const [nftData, setNftData] = useState();
   const [image, setBase64Image] = useState();
@@ -147,4 +147,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default ViewNFT;

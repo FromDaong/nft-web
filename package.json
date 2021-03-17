@@ -15,6 +15,7 @@
     "bootstrap": "^4.6.0",
     "ethers": "^5.0.19",
     "formik": "^2.2.5",
+    "generate-avatar": "^1.4.6",
     "isomorphic-unfetch": "^3.0.0",
     "micro": "^9.3.4",
     "mongoose": "^5.9.6",

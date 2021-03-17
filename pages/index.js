@@ -1,11 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
-// import HeroLogo from "/assets/hero-logo.png";
+import Spinner from "react-bootstrap/Spinner";
 import NFTListItem from "../components/NFTListItem";
+import useSWR from "swr";
 
 const Home = () => {
+  const { data: res } = useSWR(`/api/nft`);
+  const [nftData, setNftData] = useState();
+
   const [showToast, setShowToast] = useState(true);
   const toggleShowToast = () => setShowToast(!showToast);
+
+  useEffect(() => {
+    (async () => {
+      console.log({ res });
+      if (res) {
+        setNftData(res);
+      }
+    })();
+  }, [res]);
 
   const nftList = [
     {
@@ -36,7 +49,24 @@ const Home = () => {
     },
   ];
 
-  const nftListRender = nftList.map((nft) => <NFTListItem key={nft.id} data={nft} />);
+  let nftListRender;
+
+  if (nftData) {
+    nftListRender = nftData.map((nft) => (
+      <NFTListItem key={nft.id} data={nft} />
+    ));
+  } else {
+    nftListRender = (
+      <Spinner
+        animation="border"
+        role="status"
+        size="xl"
+        style={{ textAlign: "center" }}
+      >
+        <span className="sr-only">Loading...</span>
+      </Spinner>
+    );
+  }
 
   return (
     <div className="home">

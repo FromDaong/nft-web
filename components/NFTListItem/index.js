@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
+import { generateFromString } from "generate-avatar";
 
 // import blur from "/assets/blur.png";
 // import "./index.scss";
@@ -30,11 +31,16 @@ const NFTListItem = ({ data }) => {
             <div className="bottom-container">
               <div className="creator">
                 <div className="pic">
-                  <img src={data.creator.profile_pic} />
+                  <img
+                    src={`data:image/svg+xml;utf8,${generateFromString(
+                      data.attributes[0].value
+                    )}`}
+                    style={{ filter: "saturate(0)" }}
+                  />
                 </div>
                 <div className="details">
                   <div className="label">CREATOR</div>
-                  <div className="name">{data.creator.name}</div>
+                  <div className="name">{data.attributes[0].value}</div>
                 </div>
               </div>
               <div className="button pt-4 pt-md-0 ">
