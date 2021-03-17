@@ -2,11 +2,19 @@ import React, { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import useSWR from "swr";
+import useGetNftMaxSupply from '../../hooks/useGetNftMaxSupply'
+import useGetNftTotalSupply from '../../hooks/useGetNftTotalSupply'
+import useMintNft from '../../hooks/useMintNft'
 
 const ViewNFT = () => {
   const { data: res } = useSWR(`/api/nft/605182f3c7fccba1cf1d20d8`);
   const [nftData, setNftData] = useState();
   const [image, setBase64Image] = useState();
+
+  const { onMintNft } = useMintNft(id)
+  const maxNftSupply = useGetNftMaxSupply(id)
+  const mintedNfts = useGetNftTotalSupply(id)
+  const remainingNfts = maxNftSupply.minus(mintedNfts)
 
   useEffect(() => {
     (async () => {
@@ -64,6 +72,8 @@ const ViewNFT = () => {
     </div>
   ));
 
+  
+
   if (!nftData) {
     return (
       <div
@@ -101,8 +111,10 @@ const ViewNFT = () => {
             <Button
               variant="primary w-100 mt-3 py-3"
               style={{ borderRadius: 7 }}
+              text={remainingNfts.toNumber() > 0 ? priceLabel : "SOLD OUT"}
+              onClick={onMintNft} disabled = {remainingNfts.toNumber() == 0}
             >
-              <b>BUY NOW</b>
+              <b>{remainingNfts.toNumber() > 0 ? "BUY NOW " & priceLabel : "SOLD OUT"}</b>
             </Button>
           </div>
         </div>
