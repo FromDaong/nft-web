@@ -16,7 +16,7 @@ import useTreat from './useTreat'
   const fetchBalance = useCallback(async () => {
     const totalSupply = await getNftTotalSupply(treatNFTMinterContract, nftId)
     setTotalSupply(new BigNumber(totalSupply))
-  }, [nftId, smol])
+  }, [nftId, treat])
 
   useEffect(() => {
     if (treat) {

@@ -79,3 +79,9 @@ export const getNftTotalSupply  = async (treatNFTMinter, nftId) => {
     return new BigNumber(0)
   }
 }
+
+export const approve = async (treatMart, account) => {
+  return treatMart.methods
+    .approve(treatMart.options.address, ethers.constants.MaxUint256)
+    .send({ from: account })
+}

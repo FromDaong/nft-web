@@ -5,6 +5,7 @@ import "../styles/index.scss";
 import { SWRConfig } from "swr";
 import fetch from "../lib/fetchJson";
 import Head from "next/head";
+import TreatProvider from './contexts/TreatProvider'
 import Container from "react-bootstrap/Container";
 import { useWallet, UseWalletProvider } from "use-wallet";
 import bsc from "@binance-chain/bsc-use-wallet";
@@ -24,7 +25,12 @@ function MyApp({ Component, pageProps }) {
           },
         }}
       >
-        <UseWalletProvider connectors={{ bsc }}>
+        <UseWalletProvider
+        chainId={56}
+        connectors={{
+          walletconnect: { rpcUrl: 'https://bsc-dataseed.binance.org/' },
+        }}>
+          <TreatProvider>
           <div className="pink-bg">
             <Navbar />
 
@@ -32,6 +38,7 @@ function MyApp({ Component, pageProps }) {
               <Component {...pageProps} />
             </Container>
           </div>
+          </TreatProvider>
         </UseWalletProvider>
       </SWRConfig>
     </>
