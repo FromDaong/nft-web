@@ -29,6 +29,7 @@
     "react-lazyload": "^3.1.0",
     "sass": "^1.29.0",
     "stripe": "^8.123.0",
+    "styled-components": "^5.2.1",
     "swr": "^0.3.8",
     "use-wallet": "^0.8.1",
     "uuid": "^8.3.1",
