@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js/bignumber'
-import smolEthLPFarmIcon from '../../assets/img/smol-ethereum-farm-icon.png'
-import smolFarmIcon from '../../assets/img/smol-farm-icon.png'
+//import smolEthLPFarmIcon from '../../assets/img/smol-ethereum-farm-icon.png'
+//import smolFarmIcon from '../../assets/img/smol-farm-icon.png'
 
 export const SUBTRACT_GAS_LIMIT = 100000
 

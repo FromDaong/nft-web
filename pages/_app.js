@@ -5,7 +5,7 @@ import "../styles/index.scss";
 import { SWRConfig } from "swr";
 import fetch from "../lib/fetchJson";
 import Head from "next/head";
-import TreatProvider from './contexts/TreatProvider'
+import TreatProvider from '../contexts/TreatProvider'
 import Container from "react-bootstrap/Container";
 import { useWallet, UseWalletProvider } from "use-wallet";
 import bsc from "@binance-chain/bsc-use-wallet";
