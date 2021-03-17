@@ -36,17 +36,17 @@ const NFTListItem = ({ data }) => {
           </div>
           <div className="col-lg-9 text-container container p-3 pt-5 pl-xl-0 pl-lg-3 px-lg-0 pt-lg-2">
             <div className="title-section">
-              <div className="edition">EDITION {data.edition}</div>
+              <div className="edition">MAX SUPPLY {data.max_supply}</div>
               <div className="title">{data.name}</div>
             </div>
             <div className="stats">
               <div className="stat">
                 <div className="label">LIST PRICE</div>
-                <div className="number">{data.price} BNB</div>
+                <div className="number">{data.list_price} BNB</div>
               </div>
               <div className="stat">
                 <div className="label">CREATOR SHARE</div>
-                <div className="number">{data.creator_share}%</div>
+                <div className="number">80%</div>
               </div>
             </div>
             <div className="bottom-container">

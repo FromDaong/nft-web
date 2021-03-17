@@ -29,6 +29,7 @@
       display: flex;
       width: 100%;
       flex-wrap: wrap;
+      padding-bottom: 15px;
 
       justify-content: space-between;
     }
@@ -36,7 +37,6 @@
     .edition {
       color: #da7583;
       font-weight: bolder;
-      font-size: 0.9em;
     }
 
     .title {
@@ -52,7 +52,7 @@
         font-weight: 600;
         margin-right: 50px;
         .label {
-          color: #bbb59e;
+          color: #a5a18d;
         }
         .number {
           font-size: 1.75em;
@@ -77,18 +77,13 @@
         margin-left: 15px;
         margin-right: 50px;
         .label {
-          color: #bbb59e;
+          color: #a5a18d;
           font-size: 1em;
         }
         .name {
           font-size: 1.4em;
         }
       }
-    }
-    .bio {
-      color: #bbb59e;
-      margin-top: 15px;
-      font-size: 14px;
     }
   }
 
@@ -117,7 +112,7 @@
         justify-content: center;
 
         .label {
-          color: #bbb59e;
+          color: #a5a18d;
           font-size: 0.8em;
         }
         .event {
@@ -125,5 +120,12 @@
         }
       }
     }
+  }
+
+  .bio {
+    color: #a5a18d;
+    font-weight: 600;
+    margin-top: 5px;
+    font-size: 16px;
   }
 }

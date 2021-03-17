@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const NFTSchema = new mongoose.Schema(
   {
+    id: {
+      type: Number,
+      required: [true, "Please add a NFT ID"],
+    },
     name: {
       type: String,
       required: [true, "Please add a NFT name"],
@@ -9,6 +13,10 @@ const NFTSchema = new mongoose.Schema(
     description: {
       type: String,
       required: [true, "Please add a NFT description"],
+    },
+    list_price: {
+      type: Number,
+      required: [true, "Please add a NFT list price"],
     },
     external_url: {
       type: String,
@@ -18,17 +26,28 @@ const NFTSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please add a NFT image"],
     },
+    model_handle: {
+      type: String,
+      required: [true, "Please add Model's social handle"],
+    },
+    max_supply: {
+      type: String,
+      required: [true, "Please add max supply"],
+    },
+    model_profile_pic: {
+      type: String,
+    },
     attributes: [
       {
         trait_type: { type: String, required: true },
-        value: { type: String, required: true }
+        value: { type: String, required: true },
       },
     ],
     model_bnb_address: {
       type: String,
-      required: [true, "PLease add models bnb address"]
+      required: [true, "PLease add models bnb address"],
     },
-    mints: []
+    mints: [],
   },
   {
     timestamps: { createdAt: true, updatedAt: false },
@@ -47,5 +66,4 @@ const NFTSchema = new mongoose.Schema(
 
 NFTSchema.plugin(require("mongoose-beautiful-unique-validation"));
 
-module.exports =
-  mongoose.models.NFT || mongoose.model("NFT", NFTSchema);
+module.exports = mongoose.models.NFT || mongoose.model("NFT", NFTSchema);

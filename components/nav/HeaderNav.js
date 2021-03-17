@@ -22,15 +22,17 @@ const HeaderNav = () => {
     <Navbar expand="lg" className="mb-4" sticky="top" className="main-nav">
       <WalletModal show={modalShow} handleClose={() => setModalShow(false)} />
       <div className="container">
-        <Link href="/">
-          <Navbar.Brand>
-            <img src={"/assets/banner-logo.png"} alt="" className="logo" />
-          </Navbar.Brand>
-        </Link>
+        <Navbar.Brand>
+          <Link href="/" passHref>
+            <a>
+              <img src={"/assets/banner-logo.png"} alt="" className="logo" />
+            </a>
+          </Link>
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse className="justify-content-end">
           <Link href="/">
-            <Nav.Link>MARKETPLACE</Nav.Link>
+            <Nav.Link href="/">MARKETPLACE</Nav.Link>
           </Link>
           <Link href="/about">
             <Nav.Link>ABOUT</Nav.Link>
@@ -46,7 +48,7 @@ const HeaderNav = () => {
             <div className="ml-md-4">
               {account.substring(0, 10)}...
               <Button
-                variant="secondary px-4 ml-md-4"
+                variant="dark px-4 ml-md-4"
                 onClick={() => {
                   localStorage.removeItem("connectedBefore");
                   reset();

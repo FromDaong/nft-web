@@ -20,35 +20,6 @@ const Home = () => {
     })();
   }, [res]);
 
-  const nftList = [
-    {
-      id: 1,
-      edition: "1 OF 1",
-      name: "Morning Wood",
-      price: 1.05,
-      creator_share: 80,
-      creator: {
-        profile_pic:
-          "https://pbs.twimg.com/profile_images/1357419789040439302/lmUkL7j__400x400.jpg",
-        name: "alenaxbt",
-      },
-      placeholder_image: "",
-    },
-    {
-      id: 2,
-      edition: "1 OF 1",
-      name: "Toe-licious",
-      price: 0.55,
-      creator_share: 80,
-      creator: {
-        profile_pic:
-          "https://pbs.twimg.com/profile_images/1140051236420554752/7Y9fRcHc_400x400.jpg",
-        name: "feetlover",
-      },
-      placeholder_image: "https://i.imgur.com/8oNpRfA.png",
-    },
-  ];
-
   let nftListRender;
 
   if (nftData) {
@@ -90,9 +61,14 @@ const Home = () => {
                 </Button>
               </div>
               <div className="col-md-6 mt-2">
-                <Button variant="light w-100 py-2 text-primary">
-                  <b>INDULGE IN A $TREAT</b>
-                </Button>
+                <a
+                  href="https://pancakeswap.info/pair/0x7d3343bb04d897e928856eb287d2e8e1410ee333"
+                  target="_blank"
+                >
+                  <Button variant="light w-100 py-2 text-primary">
+                    <b>INDULGE IN A $TREAT</b>
+                  </Button>
+                </a>
               </div>
             </div>
           </div>

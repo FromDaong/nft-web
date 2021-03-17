@@ -15,12 +15,15 @@ const CreateNFT = () => {
     validateOnChange: false,
     validateOnBlur: false,
     validationSchema: Yup.object().shape({
+      id: Yup.number().required("Please add a nft id"),
       name: Yup.string().required("Please add a name"),
+      list_price: Yup.string().required("Please add the NFT list price"),
       description: Yup.string().required("Please add a description"),
       external_url: Yup.string().required("Please add a external_url"),
       image: Yup.string().required("Please add a image"),
       max_supply: Yup.string().required("Please add a max supply"),
       model_handle: Yup.string().required("Please add a model handle"),
+      model_profile_pic: Yup.string(),
       model_bnb_address: Yup.string().required(
         "Please add the model bnb address"
       ),
@@ -65,7 +68,7 @@ const CreateNFT = () => {
 
   return (
     <div
-      className="container mt-5 px-5 pb-5 pt-4"
+      className="container mt-5 px-5 pb-5 pt-4 mb-5"
       style={{ background: "#fffdf2", borderRadius: 10 }}
     >
       <h1 className="pb-3">
@@ -73,23 +76,41 @@ const CreateNFT = () => {
       </h1>
 
       <h6 className="pb-3">
-        Step 1: Add image to IPFS storage and grab URL from{" "}
+        Step 1: Add image to IPFS storage and grab URL{" "}
         <a
           href="https://ipfs.talaikis.com/"
           target="_blank"
           style={{ color: "blue" }}
         >
-          <b>here</b>
+          <b>using this tool</b>
         </a>
       </h6>
 
       <Form onSubmit={formik.handleSubmit}>
+        <div className="pb-4">
+          <label>NFT Identifier (ID)</label>
+          <FormControl
+            placeholder="Should be an increment of the last ID. (E.g. 3)"
+            name="id"
+            value={formik.values.id}
+            onChange={formik.handleChange}
+          />
+        </div>
         <div className="pb-4">
           <label>NFT Name</label>
           <FormControl
             placeholder="E.g. Morning Wood"
             name="name"
             value={formik.values.name}
+            onChange={formik.handleChange}
+          />
+        </div>
+        <div className="pb-4">
+          <label>NFT List Price (in BNB)</label>
+          <FormControl
+            placeholder="E.g. 120"
+            name="list_price"
+            value={formik.values.list_price}
             onChange={formik.handleChange}
           />
         </div>
@@ -135,6 +156,15 @@ const CreateNFT = () => {
             placeholder="E.g. @TreatDAO"
             name="model_handle"
             value={formik.values.model_handle}
+            onChange={formik.handleChange}
+          />
+        </div>
+        <div className="pb-4">
+          <label>Model Profile Pic URL</label>
+          <FormControl
+            placeholder="E.g. https://twitter.com/treatdao/photo"
+            name="model_profile_pic"
+            value={formik.values.model_profile_pic}
             onChange={formik.handleChange}
           />
         </div>

@@ -6,6 +6,7 @@ import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
 import useGetNftTotalSupply from "../../hooks/useGetNftTotalSupply";
 import useMintNft from "../../hooks/useMintNft";
 import useWallet from "use-wallet";
+import { generateFromString } from "generate-avatar";
 
 const ViewNFTWrapper = ({ id }) => {
   const { data: res } = useSWR(`/api/nft/${id}`);
@@ -39,10 +40,26 @@ const ViewNFTWrapper = ({ id }) => {
           top: 0,
           left: 0,
           justifyContent: "center",
+          flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Spinner animation="border" role="status" size="xl">
+        <h5
+          style={{
+            fontWeight: "bolder",
+            background: "white",
+            borderRadius: 5,
+            padding: 10,
+          }}
+        >
+          Please make sure your BNB wallet is connected.
+        </h5>
+        <Spinner
+          animation="border"
+          role="status"
+          size="xl"
+          style={{ marginTop: 5 }}
+        >
           <span className="sr-only">Loading...</span>
         </Spinner>
       </div>
@@ -58,7 +75,6 @@ const ViewNFT = ({ nftData, image }) => {
   const maxNftSupply = useGetNftMaxSupply(nftData.id);
   const mintedNfts = useGetNftTotalSupply(nftData.id);
   const remainingNfts = maxNftSupply.minus(mintedNfts);
-  
 
   const data = {
     id: 2,
@@ -74,7 +90,7 @@ const ViewNFT = ({ nftData, image }) => {
     placeholder_image: "",
   };
 
-  console.log(maxNftSupply)
+  console.log(maxNftSupply);
 
   const historyEvents = [
     {
@@ -94,7 +110,7 @@ const ViewNFT = ({ nftData, image }) => {
   const historyEventsRender = historyEvents.map((e) => (
     <div className="history-event">
       <div className="pic">
-        <img src={data.creator.profile_pic} />
+        <img src={nftData.model_profile_pic} />
       </div>
       <div className="details">
         <div className="label">{e.when}</div>
@@ -132,38 +148,45 @@ const ViewNFT = ({ nftData, image }) => {
         </div>
         <div className="col-lg-8 text-container container mt-4 mt-lg-0">
           <div className="title-section">
-            <div className="title">{nftData.name}</div>
-            <div className="edition">EDITION {data.edition}</div>
+            <div>
+              <div className="title">{nftData.name}</div>
+              <div className="bio">{nftData.description}</div>
+            </div>
+            <div className="edition">MAX SUPPLY {nftData.max_supply}</div>
           </div>
           <div className="stats">
             <div className="stat">
               <div className="label">LIST PRICE</div>
-              <div className="number">{data.price} BNB</div>
+              <div className="number">{nftData.list_price} BNB</div>
             </div>
             <div className="stat">
               <div className="label">CREATOR SHARE</div>
-              <div className="number">{data.creator_share}%</div>
+              <div className="number">80%</div>
             </div>
           </div>
           <div className="creator-wrapper">
             <div className="creator">
               <div className="pic">
-                <img src={data.creator.profile_pic} />
+                <img
+                  src={
+                    nftData.model_profile_pic ||
+                    `data:image/svg+xml;utf8,${generateFromString(
+                      nftData.model_handle
+                    )}`
+                  }
+                />
               </div>
               <div className="details">
                 <div className="label">CREATOR</div>
-                <div className="name">{data.creator.name}</div>
+                <div className="name">{nftData.model_handle}</div>
               </div>
-            </div>
-            <div className="bio">
-              Some bio can go here so people know a thing about the model even
-              if they have never heard anything about themn before.
             </div>
           </div>
           <hr style={{ marginTop: 25, marginBottom: 25 }} />
           <div className="history-container">
-            <div className="history-title">History</div>
-            <div className="history-events">{historyEventsRender}</div>
+            <div className="history-title">Purchase History</div>
+            <div className="bio">Coming soon...</div>
+            {/* <div className="history-events">{historyEventsRender}</div> */}
           </div>
         </div>
       </div>

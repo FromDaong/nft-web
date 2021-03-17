@@ -27,13 +27,6 @@ function MyApp({ Component, pageProps }) {
 
     const connectedBefore = localStorage.getItem("connectedBefore");
     if (connectedBefore && status === "disconnected") connect("injected");
-
-    if (
-      !connectedBefore &&
-      status === "disconnected" &&
-      allowedRoutes.indexOf(router.patname) === -1
-    )
-      router.push("/");
   }, [status]);
 
   return (
