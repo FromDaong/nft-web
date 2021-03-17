@@ -1,7 +1,7 @@
-import dbConnect from "utils/dbConnect";
+import dbConnect from "../../../utils/dbConnect";
 // import Product from "models/Product";
 // import User from "models/User";
-import withSession from "lib/session";
+import withSession from "../../../lib/session";
 
 dbConnect();
 
