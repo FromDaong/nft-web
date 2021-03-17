@@ -1,33 +1,41 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
-import Model from "react-bootstrap/Model";
+import Modal from "react-bootstrap/Modal";
+import { useWallet, UseWalletProvider } from "use-wallet";
 
 // import blur from "/assets/blur.png";
 // import "./index.scss";
 
-const NFTListItem = ({ data }) => {
+const WalletModal = ({ show, handleClose }) => {
+  const { connect } = useWallet();
+
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
-      </Button>
-
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Connect to Wallet</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-        <Modal.Footer>
+        <Modal.Body>
+          <Button className="mb-2 w-100" onClick={() => connect()}>
+            Connect via MetaMask
+          </Button>
+          <br />
+          <Button
+            variant="info"
+            className="w-100"
+            onClick={() => connect("walletconnect")}
+          >
+            Connect via WalletConnect
+          </Button>
+        </Modal.Body>
+        {/* <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Close
+            Cancel
           </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
+        </Modal.Footer> */}
       </Modal>
     </>
   );
 };
 
-export default NFTListItem;
+export default WalletModal;
