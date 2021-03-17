@@ -6,10 +6,21 @@ import useSWR from "swr";
 const Home = () => {
   const { data: res } = useSWR(`/api/nft/605182f3c7fccba1cf1d20d8`);
   const [nftData, setNftData] = useState();
+  const [image, setBase64Image] = useState();
 
   useEffect(() => {
-    console.log({ res });
-    if (res) setNftData(res);
+    (async () => {
+      console.log({ res });
+      if (res) {
+        setNftData(res);
+
+        fetch(res.image)
+          .then((r) => r.text())
+          .then((blob) => {
+            setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
+          });
+      }
+    })();
   }, [res]);
 
   const data = {
@@ -77,7 +88,7 @@ const Home = () => {
       <div className="view-nft row">
         <div className="image-wrapper col-lg-4 p-0 pr-lg-3">
           <div className="image-container text-center text-lg-left">
-            <img src={data.placeholder_image || "/assets/blur.png"} />
+            <img src={image || "/assets/blur.png"} />
 
             <Button
               variant="primary w-100 mt-3 py-3"
