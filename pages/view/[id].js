@@ -58,9 +58,10 @@ const ViewNFT = ({ nftData, image }) => {
   const maxNftSupply = useGetNftMaxSupply(nftData.id);
   const mintedNfts = useGetNftTotalSupply(nftData.id);
   const remainingNfts = maxNftSupply.minus(mintedNfts);
+  
 
   const data = {
-    id: 1,
+    id: 2,
     edition: "1 OF 1",
     name: "Morning Wood",
     price: 1.05,
@@ -72,6 +73,8 @@ const ViewNFT = ({ nftData, image }) => {
     },
     placeholder_image: "",
   };
+
+  console.log(maxNftSupply)
 
   const historyEvents = [
     {
