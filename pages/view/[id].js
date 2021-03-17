@@ -5,11 +5,13 @@ import useSWR from "swr";
 import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
 import useGetNftTotalSupply from "../../hooks/useGetNftTotalSupply";
 import useMintNft from "../../hooks/useMintNft";
+import useWallet from "use-wallet";
 
-const ViewNFTWrapper = () => {
-  const { data: res } = useSWR(`/api/nft/605182f3c7fccba1cf1d20d8`);
+const ViewNFTWrapper = ({ id }) => {
+  const { data: res } = useSWR(`/api/nft/${id}`);
   const [nftData, setNftData] = useState();
   const [image, setBase64Image] = useState();
+  const { status } = useWallet();
 
   useEffect(() => {
     (async () => {
@@ -26,7 +28,7 @@ const ViewNFTWrapper = () => {
     })();
   }, [res]);
 
-  if (!nftData) {
+  if (!nftData || !nftData.id || status !== "connected") {
     return (
       <div
         style={{
@@ -114,13 +116,12 @@ const ViewNFT = ({ nftData, image }) => {
             <Button
               variant="primary w-100 mt-3 py-3"
               style={{ borderRadius: 7 }}
-              text={remainingNfts.toNumber() > 0 ? priceLabel : "SOLD OUT"}
               onClick={onMintNft}
               disabled={remainingNfts.toNumber() == 0}
             >
               <b>
                 {remainingNfts.toNumber() > 0
-                  ? "BUY NOW " & priceLabel
+                  ? `BUY NOW ${remainingNfts.toNumber()}`
                   : "SOLD OUT"}
               </b>
             </Button>
@@ -165,6 +166,10 @@ const ViewNFT = ({ nftData, image }) => {
       </div>
     </div>
   );
+};
+
+ViewNFTWrapper.getInitialProps = async ({ query: { id } }) => {
+  return { id };
 };
 
 export default ViewNFTWrapper;

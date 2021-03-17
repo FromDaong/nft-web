@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import { generateFromString } from "generate-avatar";
 
@@ -6,12 +7,32 @@ import { generateFromString } from "generate-avatar";
 // import "./index.scss";
 
 const NFTListItem = ({ data }) => {
+  const [image, setBase64Image] = useState();
+
+  useEffect(() => {
+    (async () => {
+      if (data.image) {
+        fetch(data.image)
+          .then((r) => r.text())
+          .then((blob) => {
+            setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
+          });
+      }
+    })();
+  }, [data]);
+
   return (
-    <a href="/view/605182f3c7fccba1cf1d20d8">
+    <a href={`/view/${data.id}`}>
       <div className="container">
         <div className="nft-list-item row">
-          <div className="col-lg-3 img-container text-center text-lg-left">
-            <img src={data.placeholder_image || "/assets/blur.png"} />
+          <div className="col-lg-3 img-container text-center text-lg-left d-flex justify-content-center align-items-center">
+            {image ? (
+              <img src={image} />
+            ) : (
+              <Spinner animation="border" role="status" className="mt-5 mb-5">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            )}
           </div>
           <div className="col-lg-9 text-container container p-3 pt-5 pl-xl-0 pl-lg-3 px-lg-0 pt-lg-2">
             <div className="title-section">

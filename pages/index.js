@@ -57,14 +57,16 @@ const Home = () => {
     ));
   } else {
     nftListRender = (
-      <Spinner
-        animation="border"
-        role="status"
-        size="xl"
-        style={{ textAlign: "center" }}
-      >
-        <span className="sr-only">Loading...</span>
-      </Spinner>
+      <div className="w-100 d-flex justify-content-center align-items-center">
+        <Spinner
+          animation="border"
+          role="status"
+          size="xl"
+          style={{ textAlign: "center" }}
+        >
+          <span className="sr-only">Loading...</span>
+        </Spinner>
+      </div>
     );
   }
 

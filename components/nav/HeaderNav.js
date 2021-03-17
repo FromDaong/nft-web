@@ -7,17 +7,10 @@ import WalletModal from "../WalletModal";
 import Link from "next/link";
 
 const HeaderNav = () => {
-  const { status, account, error, connect, reset } = useWallet();
+  const { status, account, error, reset } = useWallet();
   const [modalShow, setModalShow] = useState(false);
 
   console.log({ status, error, account });
-
-  useEffect(() => {
-    if (status === "connected" && !account) connect("injected");
-
-    const connectedBefore = localStorage.getItem("connectedBefore");
-    if (connectedBefore && status === "disconnected") connect("injected");
-  }, [status]);
 
   useEffect(() => {
     if (status === "connected") {
