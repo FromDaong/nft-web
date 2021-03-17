@@ -9,6 +9,11 @@ import { useWallet } from "use-wallet";
 const WalletModal = ({ show, handleClose }) => {
   const { connect } = useWallet();
 
+  const connectToWallet = (provider) => {
+    localStorage.setItem("connectedBefore", true);
+    connect(provider);
+  };
+
   return (
     <>
       <Modal show={show} onHide={handleClose} centered>
@@ -16,14 +21,14 @@ const WalletModal = ({ show, handleClose }) => {
           <Modal.Title>Connect to Wallet</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Button className="mb-2 w-100" onClick={() => connect()}>
+          <Button className="mb-2 w-100" onClick={() => connectToWallet()}>
             Connect via MetaMask
           </Button>
           <br />
           <Button
             variant="info"
             className="w-100"
-            onClick={() => connect("walletconnect")}
+            onClick={() => connectToWallet("walletconnect")}
           >
             Connect via WalletConnect
           </Button>

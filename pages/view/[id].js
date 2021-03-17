@@ -68,15 +68,17 @@ const Home = () => {
     return (
       <div
         style={{
-          position: "absolute",
+          position: "fixed",
           width: "100%",
           height: "100%",
           display: "flex",
+          top: 0,
+          left: 0,
           justifyContent: "center",
           alignItems: "center",
         }}
       >
-        <Spinner animation="border" role="status">
+        <Spinner animation="border" role="status" size="xl">
           <span className="sr-only">Loading...</span>
         </Spinner>
       </div>
@@ -88,7 +90,13 @@ const Home = () => {
       <div className="view-nft row">
         <div className="image-wrapper col-lg-4 p-0 pr-lg-3">
           <div className="image-container text-center text-lg-left">
-            <img src={image || "/assets/blur.png"} />
+            {image ? (
+              <img src={image} />
+            ) : (
+              <Spinner animation="border" role="status" className="mt-5 mb-5">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            )}
 
             <Button
               variant="primary w-100 mt-3 py-3"

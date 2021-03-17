@@ -13,8 +13,11 @@ const HeaderNav = () => {
   console.log({ status, error, account });
 
   useEffect(() => {
-    connect("injected");
-  }, []);
+    if (status === "connected" && !account) connect("injected");
+
+    const connectedBefore = localStorage.getItem("connectedBefore");
+    if (connectedBefore && status === "disconnected") connect("injected");
+  }, [status]);
 
   useEffect(() => {
     if (status === "connected") {
@@ -49,7 +52,13 @@ const HeaderNav = () => {
           ) : (
             <div className="ml-md-4">
               {account.substring(0, 10)}...
-              <Button variant="secondary px-4 ml-md-4" onClick={() => reset()}>
+              <Button
+                variant="secondary px-4 ml-md-4"
+                onClick={() => {
+                  localStorage.removeItem("connectedBefore");
+                  reset();
+                }}
+              >
                 <b>DISCONNECT</b>
               </Button>
             </div>
