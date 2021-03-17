@@ -53,10 +53,12 @@ const NFTListItem = ({ data }) => {
               <div className="creator">
                 <div className="pic">
                   <img
-                    src={`data:image/svg+xml;utf8,${generateFromString(
-                      data.attributes[0].value
-                    )}`}
-                    style={{ filter: "saturate(0)" }}
+                    src={
+                      data.model_profile_pic ||
+                      `data:image/svg+xml;utf8,${generateFromString(
+                        data.attributes[0].value
+                      )}`
+                    }
                   />
                 </div>
                 <div className="details">

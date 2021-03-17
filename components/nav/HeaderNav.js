@@ -34,7 +34,7 @@ const HeaderNav = () => {
           <Link href="/">
             <Nav.Link href="/">MARKETPLACE</Nav.Link>
           </Link>
-          <Link href="/about">
+          <Link href="/about" passHref>
             <Nav.Link>ABOUT</Nav.Link>
           </Link>
           {!account ? (
