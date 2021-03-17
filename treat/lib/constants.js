@@ -25,7 +25,7 @@ export const INTEGERS = {
 }
 
 export const addressMap = {
-  SMOL: '0x2216e873ea4282ebef7a02ac5aea220be6391a7c',
+  TREAT: '0xac0c7d9b063ed2c0946982ddb378e03886c064e6',
 }
 
 // networkId -> contractId
@@ -40,6 +40,6 @@ export const contractAddresses = {
     56: '0xde39d0b9a93dcd541c24e80c8361f362aab0f213'
   },
   treatMart: {
-    56: ''
+    56: '0x769C54A55FF7d3CeccD060710bb849eDbCc97351'
   }
 }
