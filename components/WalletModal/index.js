@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { useWallet, UseWalletProvider } from "use-wallet";
+import { useWallet } from "use-wallet";
 
 // import blur from "/assets/blur.png";
 // import "./index.scss";

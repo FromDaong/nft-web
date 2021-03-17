@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { useEffect } from "react";
 // import App from "next/app";
 import Navbar from "../components/nav/HeaderNav";
 import "../styles/index.scss";
@@ -17,19 +17,19 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
-      <SWRConfig
-        value={{
-          fetcher: fetch,
-          onError: (err) => {
-            console.error(err);
-          },
+      <UseWalletProvider
+        chainId={56}
+        connectors={{
+          bsc,
+          walletconnect: { rpcUrl: "https://bsc-dataseed.binance.org/" },
         }}
       >
-        <UseWalletProvider
-          chainId={56}
-          connectors={{
-            bsc,
-            walletconnect: { rpcUrl: "https://bsc-dataseed.binance.org/" },
+        <SWRConfig
+          value={{
+            fetcher: fetch,
+            onError: (err) => {
+              console.error(err);
+            },
           }}
         >
           <TreatProvider>
@@ -41,8 +41,8 @@ function MyApp({ Component, pageProps }) {
               </Container>
             </div>
           </TreatProvider>
-        </UseWalletProvider>
-      </SWRConfig>
+        </SWRConfig>
+      </UseWalletProvider>
     </>
   );
 }
