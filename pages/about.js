@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 // import HeroLogo from "/assets/hero-logo.png";
 
-const Home = () => {
+const About = () => {
   return (
-    <div className="home">
+    <div className="about">
       <div className="hero">
         <div className="row">
           <div className="col-lg-6 hero-text">
@@ -39,4 +39,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default About;
