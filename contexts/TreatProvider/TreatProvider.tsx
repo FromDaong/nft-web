@@ -22,10 +22,11 @@ const TreatProvider: React.FC = ({ children }) => {
   const { ethereum }: { ethereum: any } = useWallet()
   const [treat, setTreat] = useState<any>()
 
-  // @ts-ignore
-  window.treat = treat
-  // @ts-ignore
-  window.eth = ethereum
+  if(typeof window !== 'undefined') {
+    // @ts-ignore
+    window.treat = treat
+    // @ts-ignore
+    window.eth = ethereum
 
   useEffect(() => {
     if (ethereum) {
@@ -46,6 +47,7 @@ const TreatProvider: React.FC = ({ children }) => {
   }, [ethereum])
 
   return <Context.Provider value={{ treat }}>{children}</Context.Provider>
+  }
 }
 
 export default TreatProvider
