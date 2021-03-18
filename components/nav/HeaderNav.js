@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
 import Button from "react-bootstrap/Button";
 import Nav from "react-bootstrap/Nav";
 import { useWallet } from "use-wallet";
@@ -46,16 +47,23 @@ const HeaderNav = () => {
             </Button>
           ) : (
             <div className="ml-md-4">
-              {account.substring(0, 10)}...
-              <Button
-                variant="dark px-4 ml-md-4"
-                onClick={() => {
-                  localStorage.removeItem("connectedBefore");
-                  reset();
-                }}
+              <NavDropdown
+                title={`WALLET ${account.substring(0, 7)}...`}
+                id="basic-nav-dropdown"
+                variant="primary"
               >
-                <b>DISCONNECT</b>
-              </Button>
+                <Link href="/my-nfts" passHref>
+                  <NavDropdown.Item>MY NFTs</NavDropdown.Item>
+                </Link>
+                <NavDropdown.Item
+                  onClick={() => {
+                    localStorage.removeItem("connectedBefore");
+                    reset();
+                  }}
+                >
+                  DISCONNECT
+                </NavDropdown.Item>
+              </NavDropdown>
             </div>
           )}
         </Navbar.Collapse>

@@ -1,0 +1,91 @@
+.my-nft-item {
+  background: #fffdf2;
+  border-radius: 8px;
+  padding: 10px 10px 10px 10px !important;
+  margin-bottom: 25px;
+  transition: 0.2s all;
+
+  &:hover {
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.15);
+  }
+
+  .img-container {
+    img {
+      border-radius: 8px;
+      width: 100%;
+    }
+  }
+
+  .text-container {
+    padding: 10px 0;
+    padding-top: 0 !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .edition {
+      color: #da7583;
+      font-weight: bolder;
+      font-size: 0.9em;
+    }
+
+    .title {
+      font-weight: bolder;
+      font-size: 1.5em;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .stats {
+      margin: 25px 0;
+      display: flex;
+      .stat {
+        font-weight: 600;
+        margin-right: 50px;
+        .label {
+          color: #bbb59e;
+        }
+        .number {
+          font-size: 1.75em;
+        }
+      }
+    }
+
+    .creator {
+      margin-top: 25px;
+      display: flex;
+      .pic {
+        img {
+          max-width: 50px;
+          border-radius: 8px;
+        }
+      }
+      .details {
+        font-weight: 600;
+        margin-left: 15px;
+        margin-right: 50px;
+        .label {
+          color: #bbb59e;
+          font-size: 0.9em;
+        }
+        .name {
+          font-size: 1.25em;
+        }
+      }
+    }
+  }
+
+  .bottom-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+
+    @media screen and (max-width: 600px) {
+      .button,
+      button {
+        width: 100%;
+      }
+    }
+  }
+}
