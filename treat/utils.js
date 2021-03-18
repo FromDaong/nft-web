@@ -41,10 +41,14 @@ export const getTreatSupply = async (treat) => {
   return new BigNumber(await treat.contracts.treat.methods.totalSupply().call())
 }
 
+export const getTreatNftCost = async (treatMartContract, nftId) => {
+  return new BigNumber(await treatMartContract.methods.cardCosts(nftId).call())
+}
+
 // user redeems nft
-export const mintNft = async (treatmartContract, account, nftId) => {
+export const mintNft = async (treatmartContract, account, nftId, nftCost) => {
   return await treatmartContract.methods.redeem(nftId)
-    .send({ from: account })
+    .send({ from: account, value: nftCost})
 }
 
 export const getNftBalance = async (treatNFTMinter, account, nftId) => {

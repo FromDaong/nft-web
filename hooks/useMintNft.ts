@@ -6,7 +6,7 @@ import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";
 import bsc from "@binance-chain/bsc-use-wallet";
 
-const useMintNft = (id: number, useTreatMart: boolean = false) => {
+const useMintNft = (id: number, treatCost: number, useTreatMart: boolean = false) => {
   const { account } = useWallet();
   const treat = useTreat();
   const treatMartContract = useTreatMart
@@ -14,10 +14,10 @@ const useMintNft = (id: number, useTreatMart: boolean = false) => {
     : getTreatMartContract(treat);
 
   const handleMintNft = useCallback(async () => {
-    const txHash = await mintNft(treatMartContract, account, id);
+    const txHash = await mintNft(treatMartContract, account, id, treatCost);
     console.log(txHash);
     return txHash;
-  }, [account, id, treatMartContract]);
+  }, [account, id, treatCost, treatMartContract]);
 
   return { onMintNft: handleMintNft };
 };

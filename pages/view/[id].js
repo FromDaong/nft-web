@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import useSWR from "swr";
 import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
 import useGetNftTotalSupply from "../../hooks/useGetNftTotalSupply";
+import useGetTreatNFTCost from "../../hooks/useGetTreatNftCost";
 import useMintNft from "../../hooks/useMintNft";
 import useWallet from "use-wallet";
 import { generateFromString } from "generate-avatar";
@@ -71,10 +72,11 @@ const ViewNFTWrapper = ({ id }) => {
 };
 
 const ViewNFT = ({ nftData, image }) => {
-  const { onMintNft } = useMintNft(nftData.id);
+  const nftCost = useGetTreatNFTCost(nftData.id);
   const maxNftSupply = useGetNftMaxSupply(nftData.id);
   const mintedNfts = useGetNftTotalSupply(nftData.id);
   const remainingNfts = maxNftSupply.minus(mintedNfts);
+  const { onMintNft } = useMintNft(nftData.id, nftCost);
 
   const data = {
     id: 2,
