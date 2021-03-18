@@ -8,7 +8,7 @@ import useTokenBalance from "../../hooks/useTokenBalance";
 // import "./index.scss";
 
 const BalanceModal = ({ show, handleClose, account }) => {
-  const myBalance = useTokenBalance(account);
+  const myBalance = useTokenBalance("0xac0C7d9B063eD2C0946982dDB378e03886C064E6");
 
   const { connect } = useWallet();
 
