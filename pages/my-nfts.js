@@ -3,6 +3,7 @@ import Spinner from "react-bootstrap/Spinner";
 import Nav from "react-bootstrap/Nav";
 import MyNFTItem from "../components/MyNFTItem";
 import useGetNftMaxSupply from "../hooks/useGetNftMaxSupply";
+import useGetNftBalance from "../hooks/useGetNftBalance";
 import useGetNftTotalSupply from "../hooks/useGetNftTotalSupply";
 import useWallet from "use-wallet";
 
