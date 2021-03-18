@@ -10,6 +10,69 @@ import useWallet from "use-wallet";
 import { getBalanceNumber,  getDisplayBalance, getFullDisplayBalance} from "../../utils/formatBalance";
 import { generateFromString } from "generate-avatar";
 
+const RedeemButton = ({ onMintNft, remainingNfts, nftData }) => {
+  const [success, setSuccess] = useState(false);
+  const { account } = useWallet();
+
+  const SubmitToServer = async (mint) => {
+    console.log('submit mint', mint)
+    if(mint) {
+        nftData.mints.push(mint);
+    }
+    try {
+      const res = await fetch(`/api/nft/${nftData.id}`, {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(nftData),
+      });
+      const resJSON = await res.json();
+
+      if (resJSON.error && resJSON.error.errors) {
+        console.log(resJSON.error);
+        const ogErrors = Object.assign({}, resJSON.error.errors);
+        Object.keys(ogErrors).map((e) => {
+          ogErrors[e] = resJSON.error.errors[e].message;
+        });
+      }
+
+      if (resJSON.success) {
+        setSuccess(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const [disabled, setDisabled] = useState(false)
+
+  return (
+    <Button
+      variant="primary w-100 mt-3 py-3"
+      style={{ borderRadius: 7 }}
+      onClick={async () => {
+        setDisabled(true)
+        // const txHash = await onMintNft();
+        const txHash = '0x1234'
+        const mint = {
+          transactionHash: txHash,
+          nftId: nftData.id,
+          buyer: account,
+          price: nftData.list_price,
+          timestamp: new Date(),
+        };
+        await SubmitToServer(mint);
+        setDisabled(false)
+      }}
+      disabled={remainingNfts.toNumber() == 0}
+    >
+      <b>{remainingNfts.toNumber() > 0 ? `BUY NOW` : "SOLD OUT"}</b>
+    </Button>
+  );
+};
+
 const ViewNFTWrapper = ({ id }) => {
   const { data: res } = useSWR(`/api/nft/${id}`);
   const [nftData, setNftData] = useState();
@@ -72,7 +135,7 @@ const ViewNFTWrapper = ({ id }) => {
   }
 };
 
-const ViewNFT = ({ nftData, image }) => {
+const ViewNFT = ({ nftData, image, account }) => {
   const nftCost = useGetTreatNFTCost(nftData.id);
   const maxNftSupply = useGetNftMaxSupply(nftData.id);
   const mintedNfts = useGetNftTotalSupply(nftData.id);
@@ -95,20 +158,26 @@ const ViewNFT = ({ nftData, image }) => {
 
   console.log(maxNftSupply);
 
-  const historyEvents = [
-    {
-      when: "5 HOURS AGO",
-      event: "@alenaxbt set the asking price to 1.05BNB",
-    },
-    {
-      when: "7 HOURS AGO",
-      event: "@alenaxbt set the asking price to 3.2BNB",
-    },
-    {
-      when: "7 HOURS AGO",
-      event: "@alenaxbt minted this NFT",
-    },
-  ];
+  const historyEvents = nftData.mints.map( (m) => {
+    return {
+      when: m.timestamp.toString(),
+      event: `${m.buyer} bought for ${m.price}`  // TODO: look up username from account
+    }
+  });
+  // const historyEvents = [
+  //   {
+  //     when: "5 HOURS AGO",
+  //     event: "@alenaxbt set the asking price to 1.05BNB",
+  //   },
+  //   {
+  //     when: "7 HOURS AGO",
+  //     event: "@alenaxbt set the asking price to 3.2BNB",
+  //   },
+  //   {
+  //     when: "7 HOURS AGO",
+  //     event: "@alenaxbt minted this NFT",
+  //   },
+  // ];
 
   const historyEventsRender = historyEvents.map((e) => (
     <div className="history-event">
@@ -134,15 +203,12 @@ const ViewNFT = ({ nftData, image }) => {
                 <span className="sr-only">Loading...</span>
               </Spinner>
             )}
-
-            <Button
-              variant="primary w-100 mt-3 py-3"
-              style={{ borderRadius: 7 }}
-              onClick={onMintNft}
-              disabled={remainingNfts.toNumber() == 0}
-            >
-              <b>{remainingNfts.toNumber() > 0 ? `BUY NOW` : "SOLD OUT"}</b>
-            </Button>
+            <RedeemButton
+              onMintNft={onMintNft}
+              remainingNfts={remainingNfts}
+              nftData={nftData}
+              account={account}
+            />
           </div>
         </div>
         <div className="col-lg-8 text-container container mt-4 mt-lg-0">
@@ -187,8 +253,8 @@ const ViewNFT = ({ nftData, image }) => {
           <hr style={{ marginTop: 25, marginBottom: 25 }} />
           <div className="history-container">
             <div className="history-title">Purchase History</div>
-            <div className="bio">Coming soon...</div>
-            {/* <div className="history-events">{historyEventsRender}</div> */}
+            {/* <div className="bio">Coming soon...</div> */}
+            <div className="history-events">{historyEventsRender}</div>
           </div>
         </div>
       </div>

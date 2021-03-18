@@ -47,7 +47,15 @@ const NFTSchema = new mongoose.Schema(
       type: String,
       required: [true, "PLease add models bnb address"],
     },
-    mints: [],
+    mints: [
+      {
+        transactionHash: String,
+        nftId: Number,
+        buyer: String,
+        price: String,
+        timestamp: String,
+      },
+    ],
   },
   {
     timestamps: { createdAt: true, updatedAt: false },
