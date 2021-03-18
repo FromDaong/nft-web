@@ -7,6 +7,7 @@ import useGetNftTotalSupply from "../../hooks/useGetNftTotalSupply";
 import useGetTreatNFTCost from "../../hooks/useGetTreatNftCost";
 import useMintNft from "../../hooks/useMintNft";
 import useWallet from "use-wallet";
+import { getBalanceNumber,  getDisplayBalance, getFullDisplayBalance} from "../../utils/formatBalance";
 import { generateFromString } from "generate-avatar";
 
 const ViewNFTWrapper = ({ id }) => {
@@ -151,14 +152,14 @@ const ViewNFT = ({ nftData, image }) => {
               <div className="bio">{nftData.description}</div>
             </div>
             <div className="edition">
-              <div>MAX SUPPLY: {nftData.max_supply}</div>
+              <div>MAX SUPPLY: {maxNftSupply.toNumber()}</div>
               <div>REMAINING: {remainingNfts.toNumber()}</div>
             </div>
           </div>
           <div className="stats">
             <div className="stat">
               <div className="label">LIST PRICE</div>
-              <div className="number">{nftData.list_price} BNB</div>
+              <div className="number">{getDisplayBalance(nftCost)} BNB</div>
             </div>
             <div className="stat">
               <div className="label">CREATOR SHARE</div>
