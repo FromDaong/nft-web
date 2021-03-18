@@ -107,7 +107,7 @@ const ViewNFT = ({ account, nftArray }) => {
           <div className="heading-text">My NFTs</div>
         </h2>
         {nftBalances ? (
-          <div className="row d-flex flex-wrap text-left">
+          <div className="row d-flex flex-wrap text-left justify-content-center">
             {nftBalances.map((nft) => {
               console.log({ nft });
               return (

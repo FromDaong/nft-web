@@ -30,7 +30,7 @@ export default withSession(async (req, res) => {
           model_handle: req.body.model_handle,
           max_supply: req.body.max_supply,
           model_bnb_address: req.body.model_bnb_address,
-          model_profile_pic_url: req.body.model_profile_pic_url,
+          model_profile_pic: req.body.model_profile_pic_url,
           attributes: [
             {
               trait_type: "Model",

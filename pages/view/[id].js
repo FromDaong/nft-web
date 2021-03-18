@@ -140,11 +140,7 @@ const ViewNFT = ({ nftData, image }) => {
               onClick={onMintNft}
               disabled={remainingNfts.toNumber() == 0}
             >
-              <b>
-                {remainingNfts.toNumber() > 0
-                  ? `BUY NOW ${remainingNfts.toNumber()}`
-                  : "SOLD OUT"}
-              </b>
+              <b>{remainingNfts.toNumber() > 0 ? `BUY NOW` : "SOLD OUT"}</b>
             </Button>
           </div>
         </div>
@@ -154,7 +150,10 @@ const ViewNFT = ({ nftData, image }) => {
               <div className="title">{nftData.name}</div>
               <div className="bio">{nftData.description}</div>
             </div>
-            <div className="edition">MAX SUPPLY {nftData.max_supply}</div>
+            <div className="edition">
+              <div>MAX SUPPLY: {nftData.max_supply}</div>
+              <div>REMAINING: {remainingNfts.toNumber()}</div>
+            </div>
           </div>
           <div className="stats">
             <div className="stat">

@@ -5,23 +5,32 @@ import Button from "react-bootstrap/Button";
 import Nav from "react-bootstrap/Nav";
 import { useWallet } from "use-wallet";
 import WalletModal from "../WalletModal";
+import BalanceModal from "../BalanceModal";
 import Link from "next/link";
 
 const HeaderNav = () => {
   const { status, account, error, reset } = useWallet();
-  const [modalShow, setModalShow] = useState(false);
+  const [walletModalShow, setWalletModalShow] = useState(false);
+  const [balanceModalShow, setBalanceModalShow] = useState(false);
 
   console.log({ status, error, account });
 
   useEffect(() => {
     if (status === "connected") {
-      setModalShow(false);
+      setWalletModalShow(false);
     }
   }, [status]);
 
   return (
     <Navbar expand="lg" className="mb-4" sticky="top" className="main-nav">
-      <WalletModal show={modalShow} handleClose={() => setModalShow(false)} />
+      <WalletModal
+        show={walletModalShow}
+        handleClose={() => setWalletModalShow(false)}
+      />
+      <BalanceModal
+        show={balanceModalShow}
+        handleClose={() => setBalanceModalShow(false)}
+      />
       <div className="container">
         <Navbar.Brand>
           <Link href="/" passHref>
@@ -41,7 +50,7 @@ const HeaderNav = () => {
           {!account ? (
             <Button
               variant="primary px-4 ml-md-4"
-              onClick={() => setModalShow(true)}
+              onClick={() => setWalletModalShow(true)}
             >
               <b>CONNECT WALLET</b>
             </Button>
@@ -55,6 +64,14 @@ const HeaderNav = () => {
                 <Link href="/my-nfts" passHref>
                   <NavDropdown.Item>MY NFTs</NavDropdown.Item>
                 </Link>
+                <NavDropdown.Item
+                  onClick={() => {
+                    console.log(123);
+                    setBalanceModalShow(true);
+                  }}
+                >
+                  $TREAT BALANCE
+                </NavDropdown.Item>
                 <NavDropdown.Item
                   onClick={() => {
                     localStorage.removeItem("connectedBefore");
