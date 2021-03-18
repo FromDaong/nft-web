@@ -101,13 +101,13 @@ const ViewNFT = ({ account }) => {
   console.log(maxNftSupply);
 
   return (
-    <div className="container">
-      <div className="white-container row mt-3">
-        <div className="col-lg-12 text-container container mt-4 mt-lg-0 pt-lg-2 pt-0">
-          <h5 className="history-title " style={{ wordBreak: "break-word" }}>
-            <b>Wallet:</b> <span style={{ color: "#999" }}>{account}</span>
-          </h5>
-        </div>
+    <div className="container text-center">
+      <div className="white-container mt-3 pt-4 px-4 d-inline-block">
+        <h5 className="" style={{ wordBreak: "break-word" }}>
+          <b>Connected wallet address:</b>
+          <br />
+          <div style={{ color: "#999", marginTop: 4 }}>{account}</div>
+        </h5>
       </div>
       <div className="mt-2">
         {/* <Nav variant="pills" defaultActiveKey="/home">
@@ -121,13 +121,16 @@ const ViewNFT = ({ account }) => {
         </h2>
         {nftData ? (
           <div className="row d-flex flex-wrap">
-            <div className="col-md-4 px-4">
+            <div className="col-xl-3 col-md-6 px-4">
               <MyNFTItem data={nftData} />
             </div>
-            <div className="col-md-4 px-4">
+            <div className="col-xl-3 col-md-6 px-4">
               <MyNFTItem data={nftData} />
             </div>
-            <div className="col-md-4 px-4">
+            <div className="col-xl-3 col-md-6 px-4">
+              <MyNFTItem data={nftData} />
+            </div>
+            <div className="col-xl-3 col-md-6 px-4">
               <MyNFTItem data={nftData} />
             </div>
           </div>
