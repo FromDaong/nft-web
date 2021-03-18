@@ -50,7 +50,13 @@ a:hover {
 
 .white-container {
   background: #fffdf2;
-  padding: 15px;
+  padding: 25px 15px;
+  border-radius: 8px;
+}
+
+.white-tp-container {
+  background: rgba(255, 255, 255, 0.75);
+  padding: 30px 40px;
   border-radius: 8px;
 }
 
