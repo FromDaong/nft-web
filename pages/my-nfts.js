@@ -8,37 +8,6 @@ import useGetNftTotalSupply from "../hooks/useGetNftTotalSupply";
 import useWallet from "use-wallet";
 import useSWR from "swr";
 
-const nftData = {
-  mints: [],
-  _id: "605182f3c7fccba1cf1d20d8",
-  name: "Let's $TREAT You",
-  description: "This is a test description",
-  external_url: "https://treatdao.com/",
-  image:
-    "https://ipfs.infura.io:5001/api/v0/cat/QmTbc3CtfY1QaWMuyXUmhqeTgQsCM6SjokeZwsyLgjyPpZ",
-  model_bnb_address: "0x9853434112De1B46B19d9D4495d47A21fA6c7B8e",
-  attributes: [
-    {
-      _id: "605182f3c7fccba1cf1d20d9",
-      trait_type: "Model",
-      value: "@TreatDAO",
-    },
-    {
-      _id: "605182f3c7fccba1cf1d20da",
-      trait_type: "Max Supply",
-      value: "1500",
-    },
-  ],
-  createdAt: "2021-03-17T04:17:55.618Z",
-  __v: 0,
-  id: 2,
-  list_price: 0.8,
-  model_profile_pic:
-    "https://pbs.twimg.com/profile_images/1368751929829056514/84hhopm4_400x400.jpg",
-  model_handle: "@TreatDAO",
-  max_supply: "150",
-};
-
 const MyNFTsWrapper = () => {
   const { account, status } = useWallet();
 
@@ -137,17 +106,16 @@ const ViewNFT = ({ account, nftArray }) => {
         <h2 className="pt-5 pb-4 w-100 text-center">
           <div className="heading-text">My NFTs</div>
         </h2>
-        {nftData ? (
+        {nftBalances ? (
           <div className="row d-flex flex-wrap text-left">
-            {nftBalances &&
-              nftBalances.map((nft) => {
-                console.log({ nft });
-                return (
-                  <div className="col-xl-3 col-md-6 px-4">
-                    <MyNFTItem data={nft} />
-                  </div>
-                );
-              })}
+            {nftBalances.map((nft) => {
+              console.log({ nft });
+              return (
+                <div className="col-xl-3 col-md-6 px-4">
+                  <MyNFTItem data={nft} />
+                </div>
+              );
+            })}
           </div>
         ) : (
           <div>You haven't got any NFTs yet.</div>
