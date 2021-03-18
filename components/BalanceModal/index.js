@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useWallet } from "use-wallet";
 import useTokenBalance from "../../hooks/useTokenBalance";
+import { getBalanceNumber,  getDisplayBalance, getFullDisplayBalance} from "../../utils/formatBalance";
 
 // import blur from "/assets/blur.png";
 // import "./index.scss";
@@ -22,7 +23,7 @@ const BalanceModal = ({ show, handleClose, account }) => {
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header>
           <Modal.Title className="text-center w-100 font-weight-bolder">
-            {myBalance.toNumber()} $TREAT
+            {getDisplayBalance(myBalance)} $TREAT
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
