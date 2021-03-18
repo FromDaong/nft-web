@@ -3,12 +3,13 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useWallet } from "use-wallet";
 import useTokenBalance from "../../hooks/useTokenBalance";
+import { getBalanceNumber,  getDisplayBalance, getFullDisplayBalance} from "../../utils/formatBalance";
 
 // import blur from "/assets/blur.png";
 // import "./index.scss";
 
 const BalanceModal = ({ show, handleClose, account }) => {
-  const myBalance = useTokenBalance(account);
+  const myBalance = useTokenBalance("0xac0C7d9B063eD2C0946982dDB378e03886C064E6");
 
   const { connect } = useWallet();
 
@@ -22,7 +23,7 @@ const BalanceModal = ({ show, handleClose, account }) => {
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header>
           <Modal.Title className="text-center w-100 font-weight-bolder">
-            {myBalance.toNumber()} $TREAT
+            {getDisplayBalance(myBalance)} $TREAT
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
