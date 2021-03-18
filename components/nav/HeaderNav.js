@@ -48,7 +48,7 @@ const HeaderNav = () => {
           ) : (
             <div className="ml-md-4">
               <NavDropdown
-                title={`WALLET ${account.substring(0, 7)}...`}
+                title={`WALLET ${account.substring(0, 10)}...`}
                 id="basic-nav-dropdown"
                 variant="primary"
               >

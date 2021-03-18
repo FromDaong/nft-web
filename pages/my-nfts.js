@@ -4,7 +4,9 @@ import Nav from "react-bootstrap/Nav";
 import MyNFTItem from "../components/MyNFTItem";
 import useGetNftMaxSupply from "../hooks/useGetNftMaxSupply";
 import useGetNftTotalSupply from "../hooks/useGetNftTotalSupply";
+import useGetNftBalance from "../hooks/useGetNftBalance";
 import useWallet from "use-wallet";
+import useSWR from "swr";
 
 const nftData = {
   mints: [],
@@ -39,7 +41,20 @@ const nftData = {
 
 const MyNFTsWrapper = () => {
   const { account, status } = useWallet();
-  if (status !== "connected") {
+
+  const { data: res } = useSWR(`/api/nft`);
+  const [nftArray, setNftData] = useState();
+
+  useEffect(() => {
+    (async () => {
+      console.log({ res });
+      if (res) {
+        setNftData(res);
+      }
+    })();
+  }, [res]);
+
+  if (status !== "connected" || !nftArray) {
     return (
       <div
         style={{
@@ -76,13 +91,16 @@ const MyNFTsWrapper = () => {
     );
   } else {
     console.log({ account });
-    return <ViewNFT account={account} />;
+    return <ViewNFT account={account} nftArray={nftArray} />;
   }
 };
 
-const ViewNFT = ({ account }) => {
+const ViewNFT = ({ account, nftArray }) => {
+  // const [nftArray, setNftData] = useState();
+
   const maxNftSupply = useGetNftMaxSupply(account);
   const mintedNfts = useGetNftTotalSupply(account);
+  const nftBalances = useGetNftBalance(nftArray);
 
   const data = {
     id: 2,
@@ -120,19 +138,16 @@ const ViewNFT = ({ account }) => {
           <div className="heading-text">My NFTs</div>
         </h2>
         {nftData ? (
-          <div className="row d-flex flex-wrap">
-            <div className="col-xl-3 col-md-6 px-4">
-              <MyNFTItem data={nftData} />
-            </div>
-            <div className="col-xl-3 col-md-6 px-4">
-              <MyNFTItem data={nftData} />
-            </div>
-            <div className="col-xl-3 col-md-6 px-4">
-              <MyNFTItem data={nftData} />
-            </div>
-            <div className="col-xl-3 col-md-6 px-4">
-              <MyNFTItem data={nftData} />
-            </div>
+          <div className="row d-flex flex-wrap text-left">
+            {nftBalances &&
+              nftBalances.map((nft) => {
+                console.log({ nft });
+                return (
+                  <div className="col-xl-3 col-md-6 px-4">
+                    <MyNFTItem data={nft} />
+                  </div>
+                );
+              })}
           </div>
         ) : (
           <div>You haven't got any NFTs yet.</div>

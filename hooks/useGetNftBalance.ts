@@ -1,29 +1,49 @@
-import BigNumber from 'bignumber.js'
-import { useCallback, useEffect, useState } from 'react'
-import { useWallet } from 'use-wallet'
+import BigNumber from "bignumber.js";
+import React, { useCallback, useEffect, useState } from "react";
+import { useWallet } from "use-wallet";
 import bsc from "@binance-chain/bsc-use-wallet";
-import { getTreatNFTMinterContract, getNftBalance } from '../treat/utils'
-import useBlock from './useBlock'
-import useTreat from './useTreat'
+import { getTreatNFTMinterContract, getNftBalance } from "../treat/utils";
+import useBlock from "./useBlock";
+import useTreat from "./useTreat";
 
- const useGetNftBalance = (id: number) => {
-  const [balance, setBalance] = useState(new BigNumber(0))
-  const { account }: { account: string } = useWallet()
-  const treat = useTreat()
-  const treatNFTMinterContract = getTreatNFTMinterContract(treat)
-  const block = useBlock()
+const useGetNftBalance = (nftArray) => {
+  const [totalNftBalances, setBalance] = useState([]);
+  const { account }: { account: string } = useWallet();
+  const treat = useTreat();
+  const treatNFTMinterContract = getTreatNFTMinterContract(treat);
+  const block = useBlock();
 
-  const fetchBalance = useCallback(async () => {
-    const balance = await getNftBalance(treatNFTMinterContract, account, id)
-    setBalance(new BigNumber(balance))
-  }, [account, id, treat])
+  const fetchBalance = useCallback(
+    async (id) => {
+      const balance = await getNftBalance(treatNFTMinterContract, account, id);
+      setBalance(new BigNumber(balance));
+    },
+    [account, treat]
+  );
 
   useEffect(() => {
-    if (account && treat) {
-      fetchBalance()
-    }
-  }, [id])
+    (async () => {
+      const newNFTBalances = await Promise.all(
+        nftArray.map(async (nft) => {
+          if (account && treat) {
+            const balance = await getNftBalance(
+              treatNFTMinterContract,
+              account,
+              nft.id
+            );
 
-  return balance
- }
- export default useGetNftBalance
+            const balanceNumber = await balance.toNumber();
+            console.log({ balance: balance.toNumber() });
+            return { ...nft, balance: balanceNumber };
+          }
+        })
+      );
+      setBalance(newNFTBalances);
+    })();
+  }, [nftArray]);
+
+  console.log({ totalNftBalances });
+  return totalNftBalances;
+};
+
+export default useGetNftBalance;

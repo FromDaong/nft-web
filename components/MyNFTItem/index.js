@@ -25,12 +25,17 @@ const NFTListItem = ({ data }) => {
       <div className="my-nft-item row text-align-center px-3 pt-3 pb-2">
         <div className="text-container container p-3 pt-5 pl-xl-0 pl-lg-3 px-lg-0 pt-lg-2">
           <div className="title-section">
-            {/* <div className="edition">MAX SUPPLY {data.max_supply}</div> */}
+            <div className="edition text-center">
+              YOU OWN {data.balance} OF {data.max_supply}
+            </div>
             <div className="title">{data.name}</div>
           </div>
           <div className="img-container text-center text-lg-left d-flex justify-content-center align-items-center">
             {image ? (
-              <img src={image} />
+              <div
+                style={{ background: `url(${image})` }}
+                className="dynamic-image"
+              />
             ) : (
               <Spinner animation="border" role="status" className="mt-5 mb-5">
                 <span className="sr-only">Loading...</span>
