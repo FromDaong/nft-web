@@ -62,6 +62,17 @@ export const getNftBalance = async (treatNFTMinter, account, nftId) => {
   }
 }
 
+export const getNftCreator  = async (treatNFTMinter, nftId) => {
+  try {
+    const modelAddress = await treatNFTMinter.methods
+      .tokenModels(nftId)
+      .call()
+    return new modelAddress
+  } catch {
+    return new treatMart.address
+  }
+}
+
 export const getNftMaxSupply  = async (treatNFTMinter, nftId) => {
   try {
     const amount = await treatNFTMinter.methods
