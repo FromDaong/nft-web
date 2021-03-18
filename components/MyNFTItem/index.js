@@ -22,7 +22,7 @@ const NFTListItem = ({ data }) => {
 
   return (
     <a href={`/view/${data.id}`}>
-      <div className="my-nft-item row text-align-center p-4">
+      <div className="my-nft-item row text-align-center px-3 pt-3 pb-2">
         <div className="text-container container p-3 pt-5 pl-xl-0 pl-lg-3 px-lg-0 pt-lg-2">
           <div className="title-section">
             {/* <div className="edition">MAX SUPPLY {data.max_supply}</div> */}

@@ -103,8 +103,8 @@ const ViewNFT = ({ account }) => {
   return (
     <div className="container">
       <div className="white-container row mt-3">
-        <div className="col-lg-12 text-container container mt-4 mt-lg-0 pt-2">
-          <h5 className="history-title ">
+        <div className="col-lg-12 text-container container mt-4 mt-lg-0 pt-lg-2 pt-0">
+          <h5 className="history-title " style={{ wordBreak: "break-word" }}>
             <b>Wallet:</b> <span style={{ color: "#999" }}>{account}</span>
           </h5>
         </div>
@@ -116,8 +116,8 @@ const ViewNFT = ({ account }) => {
             </Nav.Item>
             </Nav.Item>
           </Nav> */}
-        <h2 className="pt-4 pb-2">
-          <b>My NFTs:</b>
+        <h2 className="pt-5 pb-4 w-100 text-center">
+          <div className="heading-text">My NFTs</div>
         </h2>
         {nftData ? (
           <div className="row d-flex flex-wrap">
