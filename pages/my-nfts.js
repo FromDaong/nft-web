@@ -5,7 +5,6 @@ import MyNFTItem from "../components/MyNFTItem";
 import useGetNftMaxSupply from "../hooks/useGetNftMaxSupply";
 import useGetNftBalance from "../hooks/useGetNftBalance";
 import useGetNftTotalSupply from "../hooks/useGetNftTotalSupply";
-import useGetNftBalance from "../hooks/useGetNftBalance";
 import useWallet from "use-wallet";
 import useSWR from "swr";
 
