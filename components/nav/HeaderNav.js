@@ -6,6 +6,7 @@ import Nav from "react-bootstrap/Nav";
 import { useWallet } from "use-wallet";
 import WalletModal from "../WalletModal";
 import BalanceModal from "../BalanceModal";
+import useTokenBalance from "../../hooks/useTokenBalance"
 import Link from "next/link";
 
 const HeaderNav = () => {
@@ -70,6 +71,9 @@ const HeaderNav = () => {
                     setBalanceModalShow(true);
                   }}
                 >
+                <span >
+                  {useTokenBalance(????)}
+                </span>
                   $TREAT BALANCE
                 </NavDropdown.Item>
                 <NavDropdown.Item
