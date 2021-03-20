@@ -7,18 +7,14 @@ import useGetNftTotalSupply from "../../hooks/useGetNftTotalSupply";
 import useGetTreatNFTCost from "../../hooks/useGetTreatNftCost";
 import useMintNft from "../../hooks/useMintNft";
 import useWallet from "use-wallet";
-import { getBalanceNumber,  getDisplayBalance, getFullDisplayBalance} from "../../utils/formatBalance";
+import { getDisplayBalance } from "../../utils/formatBalance";
 import { generateFromString } from "generate-avatar";
+import { Blurhash } from "react-blurhash";
 
 const RedeemButton = ({ onMintNft, remainingNfts, nftData }) => {
-  const [success, setSuccess] = useState(false);
   const { account } = useWallet();
 
   const SubmitToServer = async (mint) => {
-    console.log('submit mint', mint)
-    if(mint) {
-        nftData.mints.push(mint);
-    }
     try {
       const res = await fetch(`/api/nft/${nftData.id}`, {
         method: "PUT",
@@ -26,36 +22,29 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData }) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(nftData),
+        body: JSON.stringify({ mint }),
       });
       const resJSON = await res.json();
 
-      if (resJSON.error && resJSON.error.errors) {
-        console.log(resJSON.error);
-        const ogErrors = Object.assign({}, resJSON.error.errors);
-        Object.keys(ogErrors).map((e) => {
-          ogErrors[e] = resJSON.error.errors[e].message;
-        });
-      }
-
       if (resJSON.success) {
-        setSuccess(true);
+        if (typeof window !== "undefined") window.reload();
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const [disabled, setDisabled] = useState(false)
+  const [disabled, setDisabled] = useState(false);
 
   return (
     <Button
       variant="primary w-100 mt-3 py-3"
       style={{ borderRadius: 7 }}
+      disabled={disabled}
       onClick={async () => {
-        setDisabled(true)
-        // const txHash = await onMintNft();
-        const txHash = '0x1234'
+        setDisabled(true);
+        const txHash = await onMintNft();
+        // const txHash = "0x1234";
         const mint = {
           transactionHash: txHash,
           nftId: nftData.id,
@@ -64,7 +53,7 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData }) => {
           timestamp: new Date(),
         };
         await SubmitToServer(mint);
-        setDisabled(false)
+        setDisabled(false);
       }}
       disabled={remainingNfts.toNumber() == 0}
     >
@@ -76,21 +65,12 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData }) => {
 const ViewNFTWrapper = ({ id }) => {
   const { data: res } = useSWR(`/api/nft/${id}`);
   const [nftData, setNftData] = useState();
-  const [image, setBase64Image] = useState();
   const { status } = useWallet();
 
   useEffect(() => {
     (async () => {
       console.log({ res });
-      if (res) {
-        setNftData(res);
-
-        fetch(res.image)
-          .then((r) => r.text())
-          .then((blob) => {
-            setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
-          });
-      }
+      if (res) setNftData(res);
     })();
   }, [res]);
 
@@ -130,8 +110,7 @@ const ViewNFTWrapper = ({ id }) => {
       </div>
     );
   } else {
-    console.log({ nftData });
-    return <ViewNFT nftData={nftData} image={image} />;
+    return <ViewNFT nftData={nftData} />;
   }
 };
 
@@ -142,42 +121,12 @@ const ViewNFT = ({ nftData, image, account }) => {
   const remainingNfts = maxNftSupply.minus(mintedNfts);
   const { onMintNft } = useMintNft(nftData.id, nftCost);
 
-  const data = {
-    id: 2,
-    edition: "1 OF 1",
-    name: "Morning Wood",
-    price: 1.05,
-    creator_share: 80,
-    creator: {
-      profile_pic:
-        "https://pbs.twimg.com/profile_images/1357419789040439302/lmUkL7j__400x400.jpg",
-      name: "alenaxbt",
-    },
-    placeholder_image: "",
-  };
-
-  console.log(maxNftSupply);
-
-  const historyEvents = nftData.mints.map( (m) => {
+  const historyEvents = nftData.mints.map((m) => {
     return {
       when: m.timestamp.toString(),
-      event: `${m.buyer} bought for ${m.price}`  // TODO: look up username from account
-    }
+      event: `${m.buyer} bought for ${m.price}`, // TODO: look up username from account
+    };
   });
-  // const historyEvents = [
-  //   {
-  //     when: "5 HOURS AGO",
-  //     event: "@alenaxbt set the asking price to 1.05BNB",
-  //   },
-  //   {
-  //     when: "7 HOURS AGO",
-  //     event: "@alenaxbt set the asking price to 3.2BNB",
-  //   },
-  //   {
-  //     when: "7 HOURS AGO",
-  //     event: "@alenaxbt minted this NFT",
-  //   },
-  // ];
 
   const historyEventsRender = historyEvents.map((e) => (
     <div className="history-event">
@@ -196,13 +145,15 @@ const ViewNFT = ({ nftData, image, account }) => {
       <div className="view-nft row">
         <div className="image-wrapper col-lg-4 p-0 pr-lg-3">
           <div className="image-container text-center text-lg-left">
-            {image ? (
-              <img src={image} />
-            ) : (
-              <Spinner animation="border" role="status" className="mt-5 mb-5">
-                <span className="sr-only">Loading...</span>
-              </Spinner>
-            )}
+            <Blurhash
+              style={{ borderRadius: 5, overflow: "hidden" }}
+              hash={nftData.blurhash}
+              width={"100%"}
+              height={500}
+              resolutionX={32}
+              resolutionY={32}
+              punch={1}
+            />
             <RedeemButton
               onMintNft={onMintNft}
               remainingNfts={remainingNfts}

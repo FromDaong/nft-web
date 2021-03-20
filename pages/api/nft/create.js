@@ -1,5 +1,5 @@
 import dbConnect from "../../../utils/dbConnect";
-import mapNftBody from './mappers'
+import { mapNftBody } from "./mappers";
 import NFT from "../../../models/NFT";
 import withSession from "../../../lib/session";
 
@@ -21,7 +21,7 @@ export default withSession(async (req, res) => {
         if (!req.body.master_password || req.body.master_password !== "lmao")
           res.status(400).json({ success: false, error: "invalid pass" });
 
-        const nftBody = mapNftBody(req.body)
+        const nftBody = mapNftBody(req.body);
         // const nftBody = {
         //   id: req.body.id,
         //   list_price: req.body.list_price,

@@ -76,6 +76,7 @@
         font-weight: 600;
         margin-left: 15px;
         margin-right: 50px;
+
         .label {
           color: #a5a18d;
           font-size: 1em;
@@ -113,9 +114,11 @@
 
         .label {
           color: #a5a18d;
+
           font-size: 0.8em;
         }
         .event {
+          overflow-wrap: anywhere;
           font-size: 1em;
         }
       }

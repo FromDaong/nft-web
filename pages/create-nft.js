@@ -20,6 +20,7 @@ const CreateNFT = () => {
       list_price: Yup.string().required("Please add the NFT list price"),
       description: Yup.string().required("Please add a description"),
       external_url: Yup.string().required("Please add a external_url"),
+      blurhash: Yup.string().required("Please add a blurhash"),
       image: Yup.string().required("Please add a image"),
       max_supply: Yup.string().required("Please add a max supply"),
       model_handle: Yup.string().required("Please add a model handle"),
@@ -85,6 +86,14 @@ const CreateNFT = () => {
           <b>using this tool</b>
         </a>
       </h6>
+      <h6 className="pb-3">
+        Step 2: Get BlurHash.{" "}
+        <a href="https://blurha.sh/" target="_blank" style={{ color: "blue" }}>
+          <b>
+            Scroll to "Upload" button, upload image and copy BlurHash string.
+          </b>
+        </a>
+      </h6>
 
       <Form onSubmit={formik.handleSubmit}>
         <div className="pb-4">
@@ -138,6 +147,15 @@ const CreateNFT = () => {
             placeholder="E.g. https://ipfs.infura.io:5001/api/v0/cat/QmeoFDJFqCxjpZB5123wVDuzKSCAd7C2bZCGDKKLQLRU7R4U"
             name="image"
             value={formik.values.image}
+            onChange={formik.handleChange}
+          />
+        </div>
+        <div className="pb-4">
+          <label>BlurHash String from Step 2</label>
+          <FormControl
+            placeholder="E.g. eKO2?U%2Tw=wR6]~RBVZRip0};RPxuwH%3tLOtxZ%gixI.ENa0NZIV"
+            name="blurhash"
+            value={formik.values.blurhash}
             onChange={formik.handleChange}
           />
         </div>

@@ -5,11 +5,10 @@ export const mapMintBody = (mint) => {
     price: mint?.price.toString(),
     buyer: mint?.buyer,
     timestamp: mint?.timestamp,
-  }
-}
+  };
+};
 
 export const mapNftBody = (nftBodyJson) => {
-
   return {
     id: req.body.id,
     list_price: req.body.list_price,
@@ -20,6 +19,7 @@ export const mapNftBody = (nftBodyJson) => {
     model_handle: req.body.model_handle,
     max_supply: req.body.max_supply,
     model_bnb_address: req.body.model_bnb_address,
+    blurhash: req.body.blurhash,
     model_profile_pic: req.body.model_profile_pic_url,
     attributes: [
       {
@@ -31,6 +31,6 @@ export const mapNftBody = (nftBodyJson) => {
         value: req.body.max_supply,
       },
     ],
-    mints: nftBodyJson.mints.map( (m) => mapMintBody(m)),
+    mints: nftBodyJson.mints.map((m) => mapMintBody(m)),
   };
 };

@@ -1,4 +1,5 @@
 import dbConnect from "../../../utils/dbConnect";
+import { mapNftBody } from "./mappers";
 import NFT from "../../../models/NFT";
 // import User from "../../../../models/User";
 import withSession from "../../../lib/session";
@@ -6,27 +7,24 @@ import withSession from "../../../lib/session";
 dbConnect();
 
 export default async (req, res) => {
-  const { method } = req;
+  const {
+    query: { id },
+    method,
+  } = req;
 
   switch (method) {
     case "GET":
       try {
-        const NFTs = await NFT.find();
+        console.log({ id }, req.body);
+        let NFTs = await NFT.findOne({ id: Number(id) });
 
-        const returnNFTs = await NFTs.map((n) => {
-          const returnObj = { ...n.toObject() };
+        if (!NFTs)
+          return res
+            .status(400)
+            .json({ success: false, error: "nft not found" });
 
-          delete returnObj.model_bnb_address;
-          delete returnObj.image;
-
-          console.log({ returnObj });
-
-          return returnObj;
-        });
-
-        res.status(200).json(returnNFTs);
+        res.status(200).json(NFTs);
       } catch (error) {
-        console.log({ error });
         res.status(400).json({ success: false, error: error });
       }
       break;

@@ -26,6 +26,10 @@ const NFTSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please add a NFT image"],
     },
+    blurhash: {
+      type: String,
+      required: [true, "Please add a NFT blurhash"],
+    },
     model_handle: {
       type: String,
       required: [true, "Please add Model's social handle"],

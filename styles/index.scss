@@ -54,6 +54,12 @@ a:hover {
   border-radius: 8px;
 }
 
+.white-tp-bg {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+  border-radius: 8px;
+}
+
 .white-tp-container {
   background: rgba(255, 255, 255, 0.75);
   padding: 30px 40px;
@@ -65,4 +71,18 @@ a:hover {
   color: white !important;
   padding: 8x 15px;
   border-radius: 8px;
+}
+
+.heading-text {
+  color: #fffdf2;
+  text-shadow: 3px 3px 1px #f19590;
+  font-weight: bolder;
+  font-size: 2em;
+}
+
+.heading-text-red {
+  color: #e6756f;
+  text-shadow: 3px 3px 1px #fffdf2;
+  font-weight: bolder;
+  font-size: 2em;
 }

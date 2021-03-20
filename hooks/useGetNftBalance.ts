@@ -23,7 +23,7 @@ const useGetNftBalance = (nftArray) => {
 
   useEffect(() => {
     (async () => {
-      const newNFTBalances = await Promise.all(
+      let newNFTBalances = await Promise.all(
         nftArray.map(async (nft) => {
           if (account && treat) {
             const balance = await getNftBalance(
@@ -33,11 +33,18 @@ const useGetNftBalance = (nftArray) => {
             );
 
             const balanceNumber = await balance.toNumber();
-            console.log({ balance: balance.toNumber() });
-            return { ...nft, balance: balanceNumber };
+            if (balanceNumber === 0) {
+              return undefined;
+            } else {
+              return { ...nft, balance: balanceNumber };
+            }
           }
         })
       );
+
+      // @ts-ignore
+      newNFTBalances = newNFTBalances.filter((e) => e);
+
       setBalance(newNFTBalances);
     })();
   }, [nftArray]);
