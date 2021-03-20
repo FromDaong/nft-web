@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import TreatProvider from "../contexts/TreatProvider";
 import { useWallet } from "use-wallet";
 import Container from "react-bootstrap/Container";
-import Head from "next/Head";
+import Head from "next/head";
 import { UseWalletProvider } from "use-wallet";
 import bsc from "@binance-chain/bsc-use-wallet";
 
