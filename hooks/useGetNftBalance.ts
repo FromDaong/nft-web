@@ -16,6 +16,7 @@ const useGetNftBalance = (nftArray) => {
   const fetchBalance = useCallback(
     async (id) => {
       const balance = await getNftBalance(treatNFTMinterContract, account, id);
+      // @ts-ignore
       setBalance(new BigNumber(balance));
     },
     [account, treat]
@@ -49,7 +50,6 @@ const useGetNftBalance = (nftArray) => {
     })();
   }, [nftArray]);
 
-  console.log({ totalNftBalances });
   return totalNftBalances;
 };
 

@@ -37,7 +37,7 @@ const useGetNftCreator = (nftArray) => {
           }
         })
       );
-      setBalance(newNFTCreator);
+      // setBalance(newNFTCreator);
     })();
   }, [nftArray]);
 
@@ -45,4 +45,4 @@ const useGetNftCreator = (nftArray) => {
   return nftCreatorAddress;
 };
 
-export default useGetNftBalance;
+export default useGetNftCreator;

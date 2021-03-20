@@ -19,8 +19,6 @@ export default async (req, res) => {
           delete returnObj.model_bnb_address;
           delete returnObj.image;
 
-          console.log({ returnObj });
-
           return returnObj;
         });
 
