@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import App from "next/app";
 import Navbar from "../components/nav/HeaderNav";
+import Footer from "../components/Footer";
 import "../styles/index.scss";
 import { SWRConfig } from "swr";
 import fetch from "../lib/fetchJson";
@@ -8,7 +9,7 @@ import { useRouter } from "next/router";
 import TreatProvider from "../contexts/TreatProvider";
 import { useWallet } from "use-wallet";
 import Container from "react-bootstrap/Container";
-import Spinner from "react-bootstrap/Spinner";
+import Head from "next/Head";
 import { UseWalletProvider } from "use-wallet";
 import bsc from "@binance-chain/bsc-use-wallet";
 
@@ -31,6 +32,17 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
+      <Head>
+        <title>Treat DAO</title>
+        <meta name="title" content="Treat DAO" />
+        <meta name="image" content="https://i.imgur.com/OEiuwp4.jpg" />
+        <meta property="og:image" content="https://i.imgur.com/OEiuwp4.jpg" />
+
+        <meta
+          name="description"
+          content="Treat is an exclusive platform for models to sell NFTs. Hold $TREAT to have a say on which models are chosen & new platform features."
+        />
+      </Head>
       <SWRConfig
         value={{
           fetcher: fetch,
@@ -43,9 +55,11 @@ function MyApp({ Component, pageProps }) {
           <div className="pink-bg">
             <Navbar />
 
-            <Container>
+            <Container style={{ minHeight: "75vh" }}>
               <Component {...pageProps} />
             </Container>
+
+            <Footer />
           </div>
         </TreatProvider>
       </SWRConfig>

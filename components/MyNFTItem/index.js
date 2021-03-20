@@ -24,13 +24,13 @@ const NFTListItem = ({ data }) => {
   return (
     <a href={`/view/${data.id}`}>
       <div className="my-nft-item row px-3 pt-3 pb-2">
-        <div className="text-container container p-3 pt-5 pl-xl-0 pl-lg-3 px-lg-0 pt-lg-2">
+        <div className="text-container container p-3 pt-5 pl-xl-0 pl-lg-3 px-lg-0 pt-lg-2 d-flex flex-direction-column align-items-center">
           <div className="title-section">
             <div className="edition">
               YOU OWN {data.balance} OF {data.max_supply}
             </div>
           </div>
-          <div className="img-container text-lg-left d-flex justify-content-center align-items-center">
+          <div className="img-container text-lg-left d-flex justify-content-center align-items-center w-100">
             {data.image ? (
               image ? (
                 <div

@@ -11,7 +11,7 @@
 }
 
 $theme-colors: (
-  "primary": #da7583,
+  "primary": #d4668e,
 );
 
 /* import bootstrap to set changes */
@@ -27,12 +27,13 @@ html {
 }
 
 .main-nav {
-  background-color: #fccdd3;
-  border-bottom: 3px solid #f29b97;
+  backdrop-filter: blur(8px);
+  background-color: rgba(252, 205, 211, 0.75);
+  border-bottom: 3px solid rgba(212, 102, 143, 0.25);
   padding: 12px !important;
 
   a {
-    color: #da7583 !important;
+    color: #d4668e !important;
     text-transform: uppercase;
     font-weight: bolder;
   }
@@ -67,7 +68,7 @@ a:hover {
 }
 
 #basic-nav-dropdown {
-  background: #da7583;
+  background: #d4668e;
   color: white !important;
   padding: 8x 15px;
   border-radius: 8px;
@@ -80,9 +81,44 @@ a:hover {
   font-size: 2em;
 }
 
+.heading-text-primary {
+  color: #d4668e;
+  font-weight: bolder;
+  font-size: 2em;
+}
+
 .heading-text-red {
   color: #e6756f;
   text-shadow: 3px 3px 1px #fffdf2;
   font-weight: bolder;
   font-size: 2em;
+}
+
+.footer {
+  position: static;
+  bottom: 0;
+  width: 100%;
+  margin-top: 25px;
+  backdrop-filter: blur(8px);
+  background-color: rgba(252, 205, 211, 0.75);
+  border-top: 3px solid rgba(212, 102, 143, 0.25) !important;
+  // border-top: 3px solid rgba(0, 0, 0, 0.5);
+  color: #d4668e !important;
+  // border-radius: 10px 10px 0 0;
+  // border: none !important;
+
+  h5 {
+    font-weight: bolder;
+    text-transform: uppercase;
+    font-size: 1.3em;
+  }
+
+  li {
+    margin-top: 5px;
+  }
+
+  a {
+    color: #d4668e !important;
+    color: white;
+  }
 }

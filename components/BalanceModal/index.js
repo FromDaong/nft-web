@@ -3,13 +3,19 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useWallet } from "use-wallet";
 import useTokenBalance from "../../hooks/useTokenBalance";
-import { getBalanceNumber,  getDisplayBalance, getFullDisplayBalance} from "../../utils/formatBalance";
+import {
+  getBalanceNumber,
+  getDisplayBalance,
+  getFullDisplayBalance,
+} from "../../utils/formatBalance";
 
 // import blur from "/assets/blur.png";
 // import "./index.scss";
 
 const BalanceModal = ({ show, handleClose, account }) => {
-  const myBalance = useTokenBalance("0xac0C7d9B063eD2C0946982dDB378e03886C064E6");
+  const myBalance = useTokenBalance(
+    "0xac0C7d9B063eD2C0946982dDB378e03886C064E6"
+  );
 
   const { connect } = useWallet();
 
@@ -30,7 +36,7 @@ const BalanceModal = ({ show, handleClose, account }) => {
           <div className="row">
             <div className="col-md-6">
               <a
-                href="https://pancakeswap.info/pair/0x7d3343bb04d897e928856eb287d2e8e1410ee333"
+                href="https://exchange.pancakeswap.finance/#/swap?outputCurrency=0xac0c7d9b063ed2c0946982ddb378e03886c064e6"
                 target="_blank"
               >
                 <Button className="mb-2 w-100">Exchange $TREAT</Button>

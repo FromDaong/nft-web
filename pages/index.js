@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import NFTListItem from "../components/NFTListItem";
 import useSWR from "swr";
+import * as Scroll from "react-scroll";
 
 const Home = () => {
   const { data: res } = useSWR(`/api/nft`);
@@ -56,13 +57,21 @@ const Home = () => {
             </div>
             <div className="buttons row pt-4">
               <div className="col-md-6  mt-2">
-                <Button variant="primary py-2 w-100">
-                  <b>BROWSE NFTs</b>
-                </Button>
+                <Scroll.Link
+                  to="nft-list"
+                  spy={true}
+                  smooth={true}
+                  offset={50}
+                  duration={1000}
+                >
+                  <Button variant="primary py-2 w-100">
+                    <b>BROWSE NFTs</b>
+                  </Button>
+                </Scroll.Link>
               </div>
               <div className="col-md-6 mt-2">
                 <a
-                  href="https://pancakeswap.info/pair/0x7d3343bb04d897e928856eb287d2e8e1410ee333"
+                  href="https://exchange.pancakeswap.finance/#/swap?outputCurrency=0xac0c7d9b063ed2c0946982ddb378e03886c064e6"
                   target="_blank"
                 >
                   <Button variant="light w-100 py-2 text-primary">
@@ -73,12 +82,14 @@ const Home = () => {
             </div>
           </div>
           <div className="col-lg-1"></div>
-          <div className="col-lg-5 hero-logo-container mt-5">
+          <div className="col-lg-5 hero-logo-container mt-5 d-lg-flex d-none">
             <img src={"/assets/hero-logo.png"} alt="" />
           </div>
         </div>
       </div>
-      <div className="nft-list">{nftListRender}</div>
+      <Scroll.Element name="nft-list">
+        <div className="nft-list">{nftListRender}</div>
+      </Scroll.Element>
     </div>
   );
 };

@@ -99,42 +99,71 @@ const ViewNFT = ({ account, nftArray }) => {
 
   return (
     <div className="container  my-nft-container">
-      <div className="white-tp-bg mt-4 p-3 pb -1">
+      <div className="white-tp-bg mt-4 p-3">
         <p className="w-100 mb-0" style={{ wordBreak: "break-word" }}>
           <b>Connected wallet address:</b>
           <div>{`${account}`}</div>
         </p>
       </div>
       <div className="mt-2">
-        <div className="white-tp-bg p-4">
-          <h2 className=" pb-4 w-100 text-center">
-            <div className="heading-text-red mb-2" style={{ fontSize: 36 }}>
-              My NFTs
+        <div className="white-tp-bg" style={{ minHeight: 400 }}>
+          <div
+            className="px-4 py-2 w-100 d-flex"
+            style={{
+              background: "#FFFDF2",
+              justifyContent: "space-between",
+              alignItems: "center",
+              borderRadius: 8,
+            }}
+          >
+            <div>
+              <h2
+                className="heading-text-primary pt-1"
+                style={{
+                  fontSize: 24,
+                }}
+              >
+                MY NFTs
+              </h2>
             </div>
-            <div className="button-container">
-              {serverNftBalances ? (
-                <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
-                  <b>{"HIDE CONTENTS 🙈"}</b>
-                </Button>
-              ) : (
-                <Button variant="primary  w-sm-100" onClick={revealNFTs}>
-                  <b>{"REVEAL CONTENTS 👀"}</b>
-                </Button>
-              )}
-            </div>
-          </h2>
-          {nftBalances ? (
-            <div className="row d-flex flex-wrap text-left justify-content-center">
-              {nftBalances.map((nft) => {
-                return (
-                  <div className="col-xl-3 col-md-6 px-4">
-                    <MyNFTItem data={nft} />
-                  </div>
-                );
-              })}
+            {nftBalances.length > 0 && (
+              <div className="button-container">
+                {serverNftBalances ? (
+                  <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
+                    <b>{"HIDE CONTENTS 🙈"}</b>
+                  </Button>
+                ) : (
+                  <Button variant="primary  w-sm-100" onClick={revealNFTs}>
+                    <b>{"REVEAL CONTENTS 👀"}</b>
+                  </Button>
+                )}
+              </div>
+            )}
+          </div>
+          {nftBalances.length > 0 ? (
+            <div className="container px-4 px-md-0">
+              <div className="row d-flex flex-wrap text-left justify-content-center mt-5">
+                {nftBalances.map((nft) => {
+                  return (
+                    <div className="col-xl-4 col-md-6 px-4">
+                      <MyNFTItem data={nft} />
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           ) : (
-            <div>You haven't got any NFTs yet.</div>
+            <div
+              className="w-100 text-center font-weight-bold d-flex align-items-center justify-content-center h-100"
+              style={{
+                color: "#333",
+                marginTop: -20,
+                height: "100%",
+                minHeight: 200,
+              }}
+            >
+              You haven't purchased any NFTs yet.
+            </div>
           )}
         </div>
       </div>

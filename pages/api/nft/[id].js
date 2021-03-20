@@ -15,7 +15,6 @@ export default async (req, res) => {
   switch (method) {
     case "GET":
       try {
-        console.log({ id }, req.body);
         let NFTres = await NFT.findOne({ id: Number(id) });
 
         if (!NFTres)

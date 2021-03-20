@@ -32,8 +32,8 @@ const About = () => {
         </div>
       </div>
       <div className="white-tp-container">
-        <div className="subtitle-text">Hey you 👋</div>
-        <div className="secondary-text">
+        <div className="subtitle-text pt-1">Hey you 👋</div>
+        <div className="secondary-text pb-3">
           Welcome to TreatDAO - a place where you can mint and sell your
           private, limited NFTs. Create SFW and NSFW content tailored to your
           community with our simplified tools. Get paid for your initial sales
@@ -44,9 +44,11 @@ const About = () => {
 
         <br />
         <div className="row">
-          <div className="col-md-4 p2">
+          <div className="col-lg-4 p2 mt-3 mt-lg-0">
             <div className="info-card">
-              <img />
+              <div className="img">
+                <img src={"/assets/clock.png"} alt="" className="logo" />
+              </div>
               <div className="name">Instant Withdrawals</div>
               <div className="desc">
                 Unlike other platforms, we don’t hold your money: forget about
@@ -54,9 +56,11 @@ const About = () => {
               </div>
             </div>
           </div>
-          <div className="col-md-4 p2">
+          <div className="col-lg-4 p2 mt-3 mt-lg-0">
             <div className="info-card">
-              <img />
+              <div className="img">
+                <img src={"/assets/pen.png"} alt="" className="logo" />
+              </div>
               <div className="name"> Help Build Your Platform</div>
               <div className="desc">
                 Hold $TREAT and make decisions about the direction of the
@@ -64,9 +68,11 @@ const About = () => {
               </div>
             </div>
           </div>
-          <div className="col-md-4 p2">
+          <div className="col-lg-4 p2 mt-3 mt-lg-0">
             <div className="info-card">
-              <img />
+              <div className="img">
+                <img src={"/assets/money.png"} alt="" className="logo" />
+              </div>
               <div className="name">Uncapped Earning Potential</div>
               <div className="desc">
                 No maximum limit on how much you can earn or charge. Take
@@ -76,10 +82,12 @@ const About = () => {
           </div>
         </div>
         <br />
-        <div className="subtitle-text">The DAO</div>
-        <div className="row">
-          <div className="col-md-4"></div>
+        <div className="row the-dao mt-5">
+          <div className="col-md-4">
+            <img src={"/assets/render.png"} alt="" className="logo" />
+          </div>
           <div className="col-md-8">
+            <div className="subtitle-text">The DAO</div>
             <div className="secondary-text">
               Now you know about the treats, but what about The DAO? DAO stands
               for Decentralized Autonomous Organization - we don’t have board
@@ -94,10 +102,10 @@ const About = () => {
         </div>
       </div>
       <div className="white-tp-container mt-4 mb-5">
-        <div className="subtitle-text">$TREAT Token</div>
-        <div className="row">
+        <div className="row pb-3">
           <div className="col-md-8 mt-2">
             <div className="secondary-text">
+              <div className="subtitle-text">$TREAT Token</div>
               <p>
                 TreatDAO is the first platform that allows creators and
                 consumers to have a voice when it comes to the platform
@@ -114,9 +122,19 @@ const About = () => {
                 To purchase $TREAT tokens, you can use one of the following
                 DEXes and exchanges:
               </p>
+              <a
+                href="https://exchange.pancakeswap.finance/#/swap?outputCurrency=0xac0c7d9b063ed2c0946982ddb378e03886c064e6"
+                target="_blank"
+              >
+                <Button variant="primary py-2 px-4 mt-3 w-sm-100">
+                  <b>PURCHASE ON PANCAKESWAP</b>
+                </Button>
+              </a>
             </div>
           </div>
-          <div className="col-md-4"></div>
+          <div className="col-md-4 mt-5 mt-lg-0">
+            <img src={"/assets/pie.png"} alt="" className="logo w-100 px-5" />
+          </div>
         </div>
       </div>
     </div>
