@@ -49,7 +49,7 @@ const NFTListItem = ({ data }) => {
               </div>
               <div className="stat">
                 <div className="label">CREATOR SHARE</div>
-                <div className="number">80%</div>
+                <div className="number">75%</div>
               </div>
             </div>
             <div className="bottom-container">

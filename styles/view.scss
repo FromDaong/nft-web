@@ -118,6 +118,8 @@
           font-size: 0.8em;
         }
         .event {
+          display: inline-block;
+          word-break: break-word;
           overflow-wrap: anywhere;
           font-size: 1em;
         }

@@ -14,26 +14,6 @@ import { Blurhash } from "react-blurhash";
 const RedeemButton = ({ onMintNft, remainingNfts, nftData }) => {
   const { account } = useWallet();
 
-  const SubmitToServer = async (mint) => {
-    try {
-      const res = await fetch(`/api/nft/${nftData.id}`, {
-        method: "PUT",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ mint }),
-      });
-      const resJSON = await res.json();
-
-      if (resJSON.success) {
-        if (typeof window !== "undefined") window.reload();
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const [disabled, setDisabled] = useState(false);
 
   return (
@@ -46,13 +26,14 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData }) => {
         const txHash = await onMintNft();
         // const txHash = "0x1234";
         const mint = {
-          transactionHash: txHash,
+          transactionHash: txHash.transactionHash,
           nftId: nftData.id,
           buyer: account,
           price: nftData.list_price,
           timestamp: new Date(),
         };
-        await SubmitToServer(mint);
+
+        localStorage.setItem("tx", JSON.stringify(mint));
         setDisabled(false);
       }}
       disabled={remainingNfts.toNumber() == 0}
@@ -97,7 +78,7 @@ const ViewNFTWrapper = ({ id }) => {
             padding: 10,
           }}
         >
-          Please make sure your BNB wallet is connected.
+          Please make sure your Binance Smart Chain wallet is connected.
         </h5>
         <Spinner
           animation="border"
@@ -180,7 +161,7 @@ const ViewNFT = ({ nftData, image, account }) => {
             </div>
             <div className="stat">
               <div className="label">CREATOR SHARE</div>
-              <div className="number">80%</div>
+              <div className="number">75%</div>
             </div>
           </div>
           <div className="creator-wrapper">

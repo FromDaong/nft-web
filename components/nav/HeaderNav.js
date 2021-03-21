@@ -48,6 +48,11 @@ const HeaderNav = () => {
           <Link href="/about" passHref>
             <Nav.Link>ABOUT</Nav.Link>
           </Link>
+          {account && (
+            <Link href="/my-nfts" passHref>
+              <Nav.Link>MY NFTs</Nav.Link>
+            </Link>
+          )}
           {!account ? (
             <Button
               variant="primary px-4 ml-md-4"
@@ -58,7 +63,7 @@ const HeaderNav = () => {
           ) : (
             <div className="ml-md-4">
               <NavDropdown
-                title={`WALLET ${account.substring(0, 10)}...`}
+                title={`WALLET ${account.substring(0, 6)}...`}
                 id="basic-nav-dropdown"
                 variant="primary"
               >

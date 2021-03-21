@@ -12,6 +12,10 @@ import Container from "react-bootstrap/Container";
 import Head from "next/head";
 import { UseWalletProvider } from "use-wallet";
 import bsc from "@binance-chain/bsc-use-wallet";
+import {
+  BscConnector,
+  UserRejectedRequestError,
+} from "@binance-chain/bsc-connector";
 
 const allowedRoutes = ["/"];
 
@@ -24,10 +28,36 @@ function MyApp({ Component, pageProps }) {
   }
 
   useEffect(() => {
-    if (status === "connected" && !account) connect("injected");
+    (async () => {
+      if (status === "connected" && !account) connect("injected");
 
-    const connectedBefore = localStorage.getItem("connectedBefore");
-    if (connectedBefore && status === "disconnected") connect("injected");
+      const connectedBefore = localStorage.getItem("connectedBefore");
+      if (connectedBefore && status === "disconnected") connect("injected");
+
+      let tx = localStorage.getItem("tx");
+      tx = JSON.parse(tx);
+      console.log({ tx });
+      if (tx && status === "connected" && account) {
+        try {
+          const res = await fetch(`/api/nft/${tx.nftId}`, {
+            method: "PUT",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ mint: tx }),
+          });
+
+          console.log({ res });
+
+          if (res.success) {
+            localStorage.removeItem("tx");
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    })();
   }, [status]);
 
   return (
@@ -73,6 +103,16 @@ function walletWrapper(props) {
       chainId={56}
       connectors={{
         bsc,
+        bsw: {
+          web3ReactConnector() {
+            return new BscConnector({ supportedChainIds: [56] });
+          },
+          handleActivationError(err) {
+            if (err instanceof UserRejectedRequestError) {
+              return new ConnectionRejectedError();
+            }
+          },
+        },
         walletconnect: { rpcUrl: "https://bsc-dataseed.binance.org/" },
       }}
     >
