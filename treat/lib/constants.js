@@ -44,7 +44,9 @@ export const contractAddresses = {
     // ^ accept treat
     //56: '0x89362Fd6ff407591D4bE8fda0580C115DD6BC5b6'
     // ^ accept wbnb
-    56: '0x5A8e9c992D23A643011f5835A2D1DBE08Af4ff28'
+    //56: '0x5A8e9c992D23A643011f5835A2D1DBE08Af4ff28'
     // ^ accept bnb
+    56: '0xD48E7709FAC65ad74E526D1fB3d9a3eDbCb15FE0'
+    // ^ accept bnb with setable performer percentage
   }
 }
