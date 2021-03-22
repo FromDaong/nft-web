@@ -10,11 +10,13 @@ import useWallet from "use-wallet";
 import { getDisplayBalance } from "../../utils/formatBalance";
 import { generateFromString } from "generate-avatar";
 import { Blurhash } from "react-blurhash";
+import NFTPurchaseModal from "../../components/NFTPurchaseModal";
 
-const RedeemButton = ({ onMintNft, remainingNfts, nftData }) => {
+const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   const { account } = useWallet();
 
   const [disabled, setDisabled] = useState(false);
+  const [confirmWallet, setConfrimWallet] = useState(false);
 
   return (
     <Button
@@ -23,7 +25,18 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData }) => {
       disabled={disabled}
       onClick={async () => {
         setDisabled(true);
+        setConfrimWallet(true);
+
         const txHash = await onMintNft();
+        console.log({ txHash });
+        if (!txHash) {
+          setDisabled(false);
+          return;
+        }
+
+        setConfrimWallet(false);
+        setShowModal(true);
+
         // const txHash = "0x1234";
         const mint = {
           transactionHash: txHash.transactionHash,
@@ -32,13 +45,30 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData }) => {
           price: nftData.list_price,
           timestamp: new Date(),
         };
-
         localStorage.setItem("tx", JSON.stringify(mint));
         setDisabled(false);
       }}
       disabled={remainingNfts.toNumber() == 0}
     >
-      <b>{remainingNfts.toNumber() > 0 ? `BUY NOW` : "SOLD OUT"}</b>
+      {disabled ? (
+        <div>
+          <Spinner
+            animation="border"
+            role="status"
+            style={{ marginRight: 4, marginBottom: 1 }}
+            size="sm"
+          >
+            <span className="sr-only">Loading...</span>
+          </Spinner>
+          <span>
+            {confirmWallet
+              ? " Please confirm in your wallet"
+              : "Please wait..."}
+          </span>
+        </div>
+      ) : (
+        <b>{remainingNfts.toNumber() > 0 ? `BUY NOW` : "SOLD OUT"}</b>
+      )}
     </Button>
   );
 };
@@ -101,6 +131,7 @@ const ViewNFT = ({ nftData, image, account }) => {
   const mintedNfts = useGetNftTotalSupply(nftData.id);
   const remainingNfts = maxNftSupply.minus(mintedNfts);
   const { onMintNft } = useMintNft(nftData.id, nftCost);
+  const [showModal, setShowModal] = useState(false);
 
   const historyEvents = nftData.mints.map((m) => {
     return {
@@ -123,6 +154,10 @@ const ViewNFT = ({ nftData, image, account }) => {
 
   return (
     <div className="container">
+      <NFTPurchaseModal
+        handleClose={() => setShowModal(false)}
+        show={showModal}
+      />
       <div className="view-nft row">
         <div className="image-wrapper col-lg-4 p-0 pr-lg-3">
           <div className="image-container text-center text-lg-left">
@@ -139,6 +174,7 @@ const ViewNFT = ({ nftData, image, account }) => {
               onMintNft={onMintNft}
               remainingNfts={remainingNfts}
               nftData={nftData}
+              setShowModal={setShowModal}
               account={account}
             />
           </div>
