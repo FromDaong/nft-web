@@ -87,7 +87,7 @@ const NFTListItem = ({ data, revealNFTs }) => {
         </div>
         <div className="container">
           <div className="edition">
-            YOU OWN {data.balance} OF {data.max_supply}
+            YOU OWN {data.balance}
           </div>
           <div className="title">{data.name}</div>
           <div className="creator">
