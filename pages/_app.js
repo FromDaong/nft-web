@@ -133,7 +133,7 @@ function walletWrapper(props) {
             }
           },
         },
-        walletconnect: { rpcUrl: "https://bsc-dataseed4.defibit.io" },
+        walletconnect: { rpcUrl: "https://bsc-dataseed2.defibit.io" },
       }}
     >
       <MyApp {...props} />
