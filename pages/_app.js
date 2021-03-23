@@ -83,6 +83,26 @@ function MyApp({ Component, pageProps }) {
       >
         <TreatProvider>
           <div className="pink-bg">
+            <div
+              className="alert-bar py-1"
+              style={{
+                color: "white",
+                textAlign: "center",
+                fontWeight: "bolder",
+                background: "#D4668F",
+              }}
+            >
+              {
+                "BSC is having network issues. If you're having issues try another "
+              }
+              <a
+                href="https://docs.binance.org/smart-chain/developer/rpc.html"
+                target="_blank"
+                style={{ color: "white", textDecoration: "underline" }}
+              >
+                {"RPC URL."}
+              </a>
+            </div>
             <Navbar />
 
             <Container style={{ minHeight: "75vh" }}>
