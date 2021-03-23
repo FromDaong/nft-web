@@ -19,11 +19,21 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   const [disabled, setDisabled] = useState(false);
   const [confirmWallet, setConfrimWallet] = useState(false);
 
+  console.log(remainingNfts.toNumber());
+
+  if (remainingNfts.toNumber() < 0 || isNaN(remainingNfts.toNumber())) {
+    return (
+      <Spinner animation="border" role="status" className="p3 mt-3 mb-2">
+        <span className="sr-only">Loading...</span>
+      </Spinner>
+    );
+  }
+
   return (
     <Button
       variant="primary w-100 mt-3 py-3"
       style={{ borderRadius: 7 }}
-      disabled={disabled}
+      disabled={disabled || remainingNfts.toNumber() === 0}
       onClick={async () => {
         setDisabled(true);
         setConfrimWallet(true);
@@ -49,7 +59,6 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
         localStorage.setItem("tx", JSON.stringify(mint));
         setDisabled(false);
       }}
-      disabled={remainingNfts.toNumber() == 0}
     >
       {disabled ? (
         <div>
@@ -68,7 +77,10 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
           </span>
         </div>
       ) : (
-        <b>{remainingNfts.toNumber() > 0 ? `BUY NOW` : "SOLD OUT"}</b>
+        <b>
+          {remainingNfts.toNumber() > 0 && `BUY NOW`}
+          {remainingNfts.toNumber() === 0 && `SOLD OUT`}
+        </b>
       )}
     </Button>
   );
@@ -133,6 +145,8 @@ const ViewNFT = ({ nftData, image, account }) => {
   const remainingNfts = maxNftSupply.minus(mintedNfts);
   const { onMintNft } = useMintNft(nftData.id, nftCost);
   const [showModal, setShowModal] = useState(false);
+
+  console.log({ maxNftSupply });
 
   const historyEvents = nftData.mints.map((m) => {
     return {

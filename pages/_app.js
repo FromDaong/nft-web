@@ -133,7 +133,10 @@ function walletWrapper(props) {
             }
           },
         },
-        walletconnect: { rpcUrl: "https://bsc-dataseed4.defibit.io" },
+        walletconnect: {
+          rpcUrl:
+            "https://apis.ankr.com/4b407c658115457589192cd8ccf6358f/d57de56e7a747674e5a38b220d565cf8/binance/full/main",
+        },
       }}
     >
       <MyApp {...props} />
