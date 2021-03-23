@@ -6,9 +6,7 @@ import TreatNFTMinterAbi from "../../../treat/lib/abi/treatnftminter.json";
 
 dbConnect();
 
-const web3 = new Web3(
-  "https://apis.ankr.com/4b407c658115457589192cd8ccf6358f/d57de56e7a747674e5a38b220d565cf8/binance/full/main"
-);
+const web3 = new Web3("https://bsc-dataseed2.defibit.io");
 
 const treatNFTMinter = new web3.eth.Contract(
   TreatNFTMinterAbi,
