@@ -21,30 +21,33 @@ export default withSession(async (req, res) => {
         if (!req.body.master_password || req.body.master_password !== "lmao")
           res.status(400).json({ success: false, error: "invalid pass" });
 
-        const nftBody = mapNftBody(req.body);
-        // const nftBody = {
-        //   id: req.body.id,
-        //   list_price: req.body.list_price,
-        //   name: req.body.name,
-        //   description: req.body.description,
-        //   external_url: req.body.external_url,
-        //   image: req.body.image,
-        //   model_handle: req.body.model_handle,
-        //   max_supply: req.body.max_supply,
-        //   model_bnb_address: req.body.model_bnb_address,
-        //   model_profile_pic: req.body.model_profile_pic_url,
-        //   attributes: [
-        //     {
-        //       trait_type: "Model",
-        //       value: req.body.model_handle,
-        //     },
-        //     {
-        //       trait_type: "Max Supply",
-        //       value: req.body.max_supply,
-        //     },
-        //   ],
-        // };
+        // const nftBody = mapNftBody(req.body);
 
+        const nftBody = {
+          id: req.body.id,
+          list_price: req.body.list_price,
+          name: req.body.name,
+          description: req.body.description,
+          external_url: req.body.external_url,
+          image: req.body.image,
+          model_handle: req.body.model_handle,
+          max_supply: req.body.max_supply,
+          model_bnb_address: req.body.model_bnb_address,
+          blurhash: req.body.blurhash,
+          model_profile_pic: req.body.model_profile_pic,
+          attributes: [
+            {
+              trait_type: "Model",
+              value: req.body.model_handle,
+            },
+            {
+              trait_type: "Max Supply",
+              value: req.body.max_supply,
+            },
+          ],
+        };
+
+        console.log({ nftBody });
         const newNFT = await NFT.create(nftBody);
 
         console.log("New NFT", newNFT);

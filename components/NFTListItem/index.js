@@ -44,7 +44,8 @@ const NFTListItem = ({ data }) => {
           </div>
           <div className="col-lg-9 text-container container p-3 pt-5 pl-xl-4 pl-lg-5 px-lg-0 pt-lg-2">
             <div className="title-section">
-              <div className="edition">MAX SUPPLY {data.max_supply}</div>
+              <div className="edition">AVAILABLE THIS WEEK ONLY</div>
+              {/* <div className="edition">MAX SUPPLY {data.max_supply}</div> */}
               <div className="title">{data.name}</div>
             </div>
             <div className="stats">

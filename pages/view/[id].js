@@ -188,13 +188,12 @@ const ViewNFT = ({ nftData, image, account }) => {
         </div>
         <div className="col-lg-8 text-container container mt-4 mt-lg-0">
           <div className="title-section">
+            {/* <div className="edition mb-1"> */}
+            <div className="edition">AVAILABLE THIS WEEK ONLY</div>
+            {/* <div>REMAINING: {remainingNfts.toNumber()}</div> */}
             <div>
               <div className="title">{nftData.name}</div>
               <div className="bio">{nftData.description}</div>
-            </div>
-            <div className="edition">
-              <div>MAX SUPPLY: {maxNftSupply.toNumber()}</div>
-              <div>REMAINING: {remainingNfts.toNumber()}</div>
             </div>
           </div>
           <div className="stats">

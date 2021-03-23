@@ -8,7 +8,7 @@ export const mapMintBody = (mint) => {
   };
 };
 
-export const mapNftBody = (nftBodyJson) => {
+export const mapNftBody = (nftBodyJson, req) => {
   return {
     id: req.body.id,
     list_price: req.body.list_price,
@@ -31,6 +31,6 @@ export const mapNftBody = (nftBodyJson) => {
         value: req.body.max_supply,
       },
     ],
-    mints: nftBodyJson.mints.map((m) => mapMintBody(m)),
+    mints: nftBodyJson && nftBodyJson.mints.map((m) => mapMintBody(m)),
   };
 };
