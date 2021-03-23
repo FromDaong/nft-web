@@ -4,7 +4,7 @@ import BigNumber from "bignumber.js";
 import Web3 from "web3";
 import TreatNFTMinterAbi from "../../../treat/lib/abi/treatnftminter.json";
 
-const web3 = new Web3("https://bsc-dataseed.binance.org/");
+const web3 = new Web3("https://bsc-dataseed4.defibit.io");
 
 const treatNFTMinter = new web3.eth.Contract(
   TreatNFTMinterAbi,
