@@ -44,7 +44,7 @@ export const getTreatSupply = async (treat) => {
 };
 
 export const getTreatNftCost = async (treatMartContract, nftId) => {
-  return new BigNumber(await treatMartContract.methods.cardCosts(nftId).call());
+  return new BigNumber(await treatMartContract.methods.nftCosts(nftId).call());
 };
 
 // user redeems nft
