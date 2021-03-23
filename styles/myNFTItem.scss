@@ -4,6 +4,7 @@
 }
 
 .my-nft-item {
+  text-align: center;
   background: #fffdf2;
   border-radius: 8px;
   padding: 10px 10px 10px 10px !important;
@@ -16,8 +17,10 @@
   }
 
   .img-container {
+    position: relative;
+    background: black;
     .dynamic-image {
-      border-radius: 8px;
+      // border-radius: 8px;
       height: 300px;
       background-size: contain !important;
       background-repeat: no-repeat !important;
@@ -36,16 +39,15 @@
     .edition {
       color: #d4668e;
       font-weight: bolder;
-      font-size: 0.9em;
-      margin-bottom: 10px;
+      font-size: 0.8em;
+      margin: 10px 0 5px 0;
     }
 
     .title {
       font-weight: bolder;
-      font-size: 1.2em;
+      font-size: 1.25em;
       // text-align: center;
-      margin-bottom: 5px;
-      margin-top: 15px;
+      margin: 5px 0 5px 0;
       line-height: 1.2em;
     }
 
@@ -65,8 +67,8 @@
     }
 
     .creator {
-      margin-top: 25px;
       display: flex;
+      justify-content: center;
       .pic {
         img {
           max-width: 45px;
@@ -75,10 +77,8 @@
       }
       .details {
         font-weight: 600;
-        margin-left: 15px;
-        margin-right: 50px;
         display: flex;
-        flex-direction: column;
+        // flex-direction: column;
         justify-content: center;
         .label {
           color: #bbb59e;
@@ -104,4 +104,12 @@
       }
     }
   }
+}
+
+.modal-image {
+  height: 80vh;
+  width: 100%;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
 }

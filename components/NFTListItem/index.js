@@ -3,6 +3,7 @@ import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import { generateFromString } from "generate-avatar";
 import { Blurhash } from "react-blurhash";
+import { EyeSlash } from "react-bootstrap-icons";
 
 // import blur from "/assets/blur.png";
 // import "./index.scss";
@@ -26,7 +27,11 @@ const NFTListItem = ({ data }) => {
     <a href={`/view/${data.id}`}>
       <div className="container">
         <div className="nft-list-item row">
-          <div className="col-lg-3 img-container text-center text-lg-left d-flex justify-content-center align-items-center pr-lg-4">
+          <div className="col-lg-3 img-container text-center text-lg-left d-flex justify-content-center align-items-center ">
+            <div className="info-overlay">
+              <EyeSlash size={32} />
+              <div>Purchase to View</div>
+            </div>
             <Blurhash
               style={{ borderRadius: 5, overflow: "hidden" }}
               hash={data.blurhash}
@@ -37,7 +42,7 @@ const NFTListItem = ({ data }) => {
               punch={1}
             />
           </div>
-          <div className="col-lg-9 text-container container p-3 pt-5 pl-xl-2 pl-lg-5 px-lg-0 pt-lg-2">
+          <div className="col-lg-9 text-container container p-3 pt-5 pl-xl-4 pl-lg-5 px-lg-0 pt-lg-2">
             <div className="title-section">
               <div className="edition">MAX SUPPLY {data.max_supply}</div>
               <div className="title">{data.name}</div>
@@ -47,10 +52,10 @@ const NFTListItem = ({ data }) => {
                 <div className="label">LIST PRICE</div>
                 <div className="number">{data.list_price} BNB</div>
               </div>
-              <div className="stat">
+              {/* <div className="stat">
                 <div className="label">CREATOR SHARE</div>
                 <div className="number">75%</div>
-              </div>
+              </div> */}
             </div>
             <div className="bottom-container">
               <div className="creator">

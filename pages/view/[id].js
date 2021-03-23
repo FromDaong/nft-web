@@ -11,6 +11,7 @@ import { getDisplayBalance } from "../../utils/formatBalance";
 import { generateFromString } from "generate-avatar";
 import { Blurhash } from "react-blurhash";
 import NFTPurchaseModal from "../../components/NFTPurchaseModal";
+import { EyeSlash } from "react-bootstrap-icons";
 
 const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   const { account } = useWallet();
@@ -161,15 +162,21 @@ const ViewNFT = ({ nftData, image, account }) => {
       <div className="view-nft row">
         <div className="image-wrapper col-lg-4 p-0 pr-lg-3">
           <div className="image-container text-center text-lg-left">
-            <Blurhash
-              style={{ borderRadius: 5, overflow: "hidden" }}
-              hash={nftData.blurhash}
-              width={"100%"}
-              height={500}
-              resolutionX={32}
-              resolutionY={32}
-              punch={1}
-            />
+            <div style={{ position: "relative", width: "100%" }}>
+              <div className="info-overlay">
+                <EyeSlash size={32} />
+                <div>Purchase to View</div>
+              </div>
+              <Blurhash
+                style={{ borderRadius: 5, overflow: "hidden" }}
+                hash={nftData.blurhash}
+                width={"100%"}
+                height={500}
+                resolutionX={32}
+                resolutionY={32}
+                punch={1}
+              />
+            </div>
             <RedeemButton
               onMintNft={onMintNft}
               remainingNfts={remainingNfts}
@@ -195,10 +202,10 @@ const ViewNFT = ({ nftData, image, account }) => {
               <div className="label">LIST PRICE</div>
               <div className="number">{getDisplayBalance(nftCost)} BNB</div>
             </div>
-            <div className="stat">
+            {/* <div className="stat">
               <div className="label">CREATOR SHARE</div>
               <div className="number">75%</div>
-            </div>
+            </div> */}
           </div>
           <div className="creator-wrapper">
             <div className="creator">

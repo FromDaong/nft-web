@@ -48,6 +48,13 @@ const HeaderNav = () => {
           <Link href="/about" passHref>
             <Nav.Link>ABOUT</Nav.Link>
           </Link>
+          <Nav.Link
+            href="https://treatdao.medium.com/c6aaa613725d"
+            target="_blank"
+          >
+            BLOG
+          </Nav.Link>
+
           {account && (
             <Link href="/my-nfts" passHref>
               <Nav.Link>MY NFTs</Nav.Link>

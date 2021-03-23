@@ -146,7 +146,7 @@ const ViewNFT = ({ account, nftArray }) => {
                 {nftBalances.map((nft) => {
                   return (
                     <div className="col-xl-4 col-md-6 px-4">
-                      <MyNFTItem data={nft} />
+                      <MyNFTItem data={nft} revealNFTs={revealNFTs} />
                     </div>
                   );
                 })}
