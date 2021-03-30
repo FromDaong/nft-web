@@ -24,9 +24,12 @@ const Home = () => {
   let nftListRender;
 
   if (nftData) {
-    nftListRender = nftData.map((nft) => (
-      <NFTListItem key={nft.id} data={nft} />
-    ));
+    nftListRender = nftData
+      .map((nft) => {
+        if (nft.totw) return <NFTListItem key={nft.id} data={nft} />;
+        else return undefined;
+      })
+      .filter((e) => e);
   } else {
     nftListRender = (
       <div className="w-100 d-flex justify-content-center align-items-center">
