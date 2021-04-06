@@ -40,6 +40,7 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
         setConfrimWallet(true);
 
         const txHash = await onMintNft();
+        //         const txHash = {nftData.id === 12 ? await onGetFreeTreat();: await onMintNft();}
         console.log({ txHash });
         if (!txHash) {
           setDisabled(false);
@@ -194,7 +195,7 @@ const ViewNFT = ({ nftData, image, account }) => {
               />
             </div>
             <RedeemButton
-              onMintNft={nftData.nftId === 12 ? onGetFreeTreat : onMintNft}
+              onMintNft={nftData.id === 12 ? onGetFreeTreat : onMintNft}
               remainingNfts={remainingNfts}
               nftData={nftData}
               setShowModal={setShowModal}

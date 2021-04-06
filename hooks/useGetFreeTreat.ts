@@ -19,7 +19,7 @@ const useGetFreeTreat = (id: number, treatCost: number, useFreeTreats: boolean =
     return txHash;
   }, [account, id, treatCost, freeTreatsContract]);
 
-  return { onMintNft: handleGetFreeTreat };
+  return { onGetFreeTreat: handleGetFreeTreat };
 };
 
 export default useGetFreeTreat;
