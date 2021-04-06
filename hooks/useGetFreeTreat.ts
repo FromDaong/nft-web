@@ -6,7 +6,7 @@ import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";
 import bsc from "@binance-chain/bsc-use-wallet";
 
-const useMintFreeTreat = (id: number, treatCost: number, useFreeTreats: boolean = false) => {
+const useGetFreeTreat = (id: number, treatCost: number, useFreeTreats: boolean = false) => {
   const { account } = useWallet();
   const treat = useTreat();
   const freeTreatsContract = useFreeTreats

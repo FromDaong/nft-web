@@ -6,7 +6,7 @@ import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
 import useGetNftTotalSupply from "../../hooks/useGetNftTotalSupply";
 import useGetTreatNFTCost from "../../hooks/useGetTreatNftCost";
 import useMintNft from "../../hooks/useMintNft";
-import useGetTreatNft from "../../hooks/useGetFreeTreat";
+import useGetFreeTreat from "../../hooks/useGetFreeTreat";
 import useWallet from "use-wallet";
 import { getDisplayBalance } from "../../utils/formatBalance";
 import { generateFromString } from "generate-avatar";
