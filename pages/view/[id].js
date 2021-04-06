@@ -6,6 +6,7 @@ import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
 import useGetNftTotalSupply from "../../hooks/useGetNftTotalSupply";
 import useGetTreatNFTCost from "../../hooks/useGetTreatNftCost";
 import useMintNft from "../../hooks/useMintNft";
+import useGetTreatNft from "../../hooks/useGetFreeTreat";
 import useWallet from "use-wallet";
 import { getDisplayBalance } from "../../utils/formatBalance";
 import { generateFromString } from "generate-avatar";
@@ -144,6 +145,7 @@ const ViewNFT = ({ nftData, image, account }) => {
   const mintedNfts = useGetNftTotalSupply(nftData.id);
   const remainingNfts = maxNftSupply.minus(mintedNfts);
   const { onMintNft } = useMintNft(nftData.id, nftCost);
+  const { onGetFreeTreat } = useGetFreeTreat(nftData.id, nftCost);
   const [showModal, setShowModal] = useState(false);
 
   console.log({ maxNftSupply });

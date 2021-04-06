@@ -48,5 +48,8 @@ export const contractAddresses = {
     // ^ accept bnb
     56: '0xD48E7709FAC65ad74E526D1fB3d9a3eDbCb15FE0'
     // ^ accept bnb with setable performer percentage
+  },
+  freeTreats: {
+    56: '0xd17EAf17F4120977ff61F5529B2dF5Af66252238'
   }
 }

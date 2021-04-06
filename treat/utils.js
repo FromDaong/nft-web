@@ -37,6 +37,10 @@ export const getTreatMartContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treatMart;
 };
 
+export const getFreeTreatsContract = (treat) => {
+  return treat && treat.contracts && treat.contracts.freeTreats;
+};
+
 export const getTreatSupply = async (treat) => {
   return new BigNumber(
     await treat.contracts.treat.methods.totalSupply().call()
@@ -53,6 +57,17 @@ export const mintNft = async (treatmartContract, account, nftId, nftCost) => {
     return await treatmartContract.methods
       .redeem(nftId)
       .send({ from: account, value: nftCost });
+  } catch (e) {
+    return undefined;
+  }
+};
+
+
+export const mintFreeTreat = async (freeTreatContract, account, nftId, nftCost) => {
+  try {
+    return await freeTreatContract.methods
+      .redeem(nftId)
+      .send({ from: account, value: 0 });
   } catch (e) {
     return undefined;
   }
