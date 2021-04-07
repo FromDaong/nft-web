@@ -1,17 +1,44 @@
-import React, { useState } from "react";
+import React from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useWallet } from "use-wallet";
 
-// import blur from "/assets/blur.png";
-// import "./index.scss";
-
 const WalletModal = ({ show, handleClose }) => {
-  const { connect } = useWallet();
+  const { connect, error } = useWallet();
 
   const connectToWallet = (provider) => {
     connect(provider);
     localStorage.setItem("connectedBefore", true);
+  };
+
+  const smartConnectToMetamask = async () => {
+    if (error && error.name === "ChainUnsupportedError") {
+      const provider = window.ethereum;
+      if (provider) {
+        try {
+          await provider.request({
+            method: "wallet_addEthereumChain",
+            params: [
+              {
+                chainId: `0x38`,
+                chainName: "Binance Smart Chain",
+                nativeCurrency: {
+                  name: "BNB",
+                  symbol: "BNB",
+                  decimals: 18,
+                },
+                rpcUrls: ["https://bsc-dataseed2.defibit.io"],
+                blockExplorerUrls: ["https://bscscan.com"],
+              },
+            ],
+          });
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+
+    connectToWallet();
   };
 
   return (
@@ -26,7 +53,7 @@ const WalletModal = ({ show, handleClose }) => {
           </div>
         </Modal.Header>
         <Modal.Body>
-          <Button className="mb-2 w-100" onClick={() => connectToWallet()}>
+          <Button className="mb-2 w-100" onClick={() => smartConnectToMetamask()}>
             Connect via MetaMask
           </Button>
           <br />
