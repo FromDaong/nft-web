@@ -118,3 +118,9 @@ export const approve = async (treatMart, account) => {
     .approve(treatMart.options.address, ethers.constants.MaxUint256)
     .send({ from: account });
 };
+
+export const transferNfts = async (treatMart, from, to, id, amount) => { 
+  return await treatMart.methods
+  .safeTransferFrom(from, to, id, amount, '0x0')
+  .send({ from: from})
+}

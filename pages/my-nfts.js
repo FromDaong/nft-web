@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
-import Nav from "react-bootstrap/Nav";
 import MyNFTItem from "../components/MyNFTItem";
 import Button from "react-bootstrap/Button";
 import useGetNftMaxSupply from "../hooks/useGetNftMaxSupply";
 import useGetNftBalance from "../hooks/useGetNftBalance";
-import useGetNftTotalSupply from "../hooks/useGetNftTotalSupply";
 import useWallet from "use-wallet";
 import useSWR from "swr";
 
