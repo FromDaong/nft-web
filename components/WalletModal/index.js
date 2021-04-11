@@ -1,10 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useWallet } from "use-wallet";
 
+const AlertModal = ({ show, handleClose }) => {
+  return (
+    <>
+      <Modal show={show} onHide={handleClose} centered>
+        <div>
+          <Modal.Body>
+          Note: BSC Wallet does not support signing, so you won't be able to reveal NFTs using it.<br />
+          You can transfer NFTs to a supported wallet (MetaMask or Trust Wallet) from the My NFTs page.
+          </Modal.Body>
+          <Button onClick={handleClose}>
+            Connect
+          </Button>
+        </div>
+      </Modal>
+    </>
+  );
+};
+
 const WalletModal = ({ show, handleClose }) => {
   const { connect, error } = useWallet();
+  const [bscModalShow, setBscModalShow] = useState(false);
 
   const connectToWallet = (provider) => {
     connect(provider);
@@ -67,7 +86,10 @@ const WalletModal = ({ show, handleClose }) => {
           <Button
             variant="warning"
             className="w-100"
-            onClick={() => connectToWallet("bsw")}
+            onClick={() => {
+              handleClose();
+              setBscModalShow(true);
+            }}
           >
             Connect via Binance Chain Wallet
           </Button>
@@ -78,6 +100,13 @@ const WalletModal = ({ show, handleClose }) => {
           </Button>
         </Modal.Footer> */}
       </Modal>
+      <AlertModal
+        show={bscModalShow}
+        handleClose={() => {
+          setBscModalShow(false);
+          connectToWallet("bsw");
+        }}
+      />
     </>
   );
 };
