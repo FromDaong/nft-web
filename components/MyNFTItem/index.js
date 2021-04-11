@@ -10,7 +10,7 @@ import useTransferNfts from "../../hooks/useTransferNfts";
 
 // import blur from "/assets/blur.png";
 
-const NFTListItem = ({ data, revealNFTs }) => {
+const NFTListItem = ({ data, revealNFTs, transferNFTClick }) => {
   const [image, setBase64Image] = useState();
   const [modalData, setModalData] = useState();
 
@@ -91,9 +91,7 @@ const NFTListItem = ({ data, revealNFTs }) => {
           )}
         </div>
         <div className="container">
-          <div className="edition">
-            YOU OWN {data.balance}
-          </div>
+          <div className="edition">YOU OWN {data.balance}</div>
           <div className="title">{data.name}</div>
           <div className="creator">
             <div className="details">
@@ -110,6 +108,7 @@ const NFTListItem = ({ data, revealNFTs }) => {
                     disabled
                     style={{ pointerEvents: "none" }}
                     className="w-100"
+                    variant="secondary"
                   >
                     <b>STAKE</b>
                   </Button>
@@ -117,42 +116,29 @@ const NFTListItem = ({ data, revealNFTs }) => {
               </OverlayTrigger>
             </div>
             <div className="col-lg-6 mt-3">
-              <OverlayTrigger overlay={<Tooltip id="">Coming Soon!</Tooltip>}>
-                <span className="d-inline-block w-100">
+              <span className="d-inline-block w-100">
                 <Button
-                  disabled
-                  style={{ pointerEvents: "none" }}
                   className="w-100"
                   variant="secondary"
+                  onClick={() => transferNFTClick(data)}
                 >
-                  <b>RESELL</b>
+                  <b>TRANSFER</b>
                 </Button>
-                </span>
-              </OverlayTrigger>
+              </span>
             </div>
-            <div className="col-lg-6 mt-3">
-              <OverlayTrigger overlay={<Tooltip id="">Transfer your NFTs!</Tooltip>}>
+          </div>
+          <div className="row">
+            <div className="col-lg-12 mt-3">
+              <OverlayTrigger overlay={<Tooltip id="">Coming Soon!</Tooltip>}>
                 <span className="d-inline-block w-100">
-                  <div>
-                    <label htmlFor="toAddress">to: </label>
-                    <input
-                      id="toAddress"
-                      onChange={(e) => setToAddress(e.currentTarget.value)}
-                    />
-                    <label htmlFor="transferAmount">amount: </label>
-                    <input
-                      amount="transferAmount"
-                      onChange={(e) => setTransferAmount(e.currentTarget.value)}
-                    />
-
-                    <button
-                      onClick={async () =>
-                        await onTransferNfts(toAddress, data.id, transferAmount)
-                      }
-                    >
-                      Transfer
-                    </button>
-                  </div>
+                  <Button
+                    disabled
+                    style={{ pointerEvents: "none" }}
+                    className="w-100"
+                    variant="primary"
+                  >
+                    <b>RESELL</b>
+                  </Button>
                 </span>
               </OverlayTrigger>
             </div>
