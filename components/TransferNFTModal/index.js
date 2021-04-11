@@ -45,7 +45,7 @@ const WalletModal = ({ show, handleClose, data }) => {
           <Form.Label>Amount</Form.Label>
           <Form.Control
             type="number"
-            defaultValue={1}
+            defaultValue={0}
             onChange={(e) => setTransferAmount(e.currentTarget.value)}
           />
           <Form.Text className="text-muted">
