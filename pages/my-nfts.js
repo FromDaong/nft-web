@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
-import Nav from "react-bootstrap/Nav";
 import MyNFTItem from "../components/MyNFTItem";
+import TransferNFTModal from "../components/TransferNFTModal";
 import Button from "react-bootstrap/Button";
 import useGetNftMaxSupply from "../hooks/useGetNftMaxSupply";
 import useGetNftBalance from "../hooks/useGetNftBalance";
-import useGetNftTotalSupply from "../hooks/useGetNftTotalSupply";
 import useWallet from "use-wallet";
 import useSWR from "swr";
 
@@ -70,6 +69,11 @@ const ViewNFT = ({ account, nftArray }) => {
   const nftBalancesInitial = useGetNftBalance(nftArray);
 
   const nftBalances = serverNftBalances || nftBalancesInitial;
+  const [transferNFTData, setTransferNFTData] = useState(null);
+
+  const transferNFTClick = (x) => {
+    setTransferNFTData(x);
+  };
 
   const hideNFTs = async () => {
     setServerNftBalances(null);
@@ -99,6 +103,11 @@ const ViewNFT = ({ account, nftArray }) => {
 
   return (
     <div className="container  my-nft-container">
+      <TransferNFTModal
+        show={!!transferNFTData}
+        data={transferNFTData}
+        handleClose={() => setTransferNFTData(false)}
+      />
       <div className="white-tp-bg mt-4 p-3">
         <p className="w-100 mb-0" style={{ wordBreak: "break-word" }}>
           <b>Connected wallet address:</b>
@@ -146,7 +155,11 @@ const ViewNFT = ({ account, nftArray }) => {
                 {nftBalances.map((nft) => {
                   return (
                     <div className="col-xl-4 col-md-6 px-4">
-                      <MyNFTItem data={nft} revealNFTs={revealNFTs} />
+                      <MyNFTItem
+                        data={nft}
+                        revealNFTs={revealNFTs}
+                        transferNFTClick={transferNFTClick}
+                      />
                     </div>
                   );
                 })}

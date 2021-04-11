@@ -18,13 +18,15 @@ const CreateNFT = () => {
       id: Yup.number().required("Please add a nft id"),
       name: Yup.string().required("Please add a name"),
       list_price: Yup.string().required("Please add the NFT list price"),
-      description: Yup.string().required("Please add a description"),
+      description: Yup.string(),
       external_url: Yup.string().required("Please add a external_url"),
       blurhash: Yup.string().required("Please add a blurhash"),
       image: Yup.string().required("Please add a image"),
       max_supply: Yup.string().required("Please add a max supply"),
       model_handle: Yup.string().required("Please add a model handle"),
-      model_profile_pic: Yup.string(),
+      model_profile_pic: Yup.string().required(
+        "Please add a model profile pic"
+      ),
       model_bnb_address: Yup.string().required(
         "Please add the model bnb address"
       ),

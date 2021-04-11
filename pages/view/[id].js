@@ -195,7 +195,7 @@ const ViewNFT = ({ nftData, image, account }) => {
               />
             </div>
             <RedeemButton
-              onMintNft={nftData.id === 12 ? onGetFreeTreat : onMintNft}
+              onMintNft={nftData.list_price === 0 ? onGetFreeTreat : onMintNft}
               remainingNfts={remainingNfts}
               nftData={nftData}
               setShowModal={setShowModal}

@@ -3,7 +3,9 @@
 @import "./about.scss";
 @import "./home.scss";
 @import "./nftListItem.scss";
+@import "./modelListItem.scss";
 @import "./view.scss";
+@import "./viewModel.scss";
 @import "./myNFTItem.scss";
 
 * {
@@ -22,7 +24,7 @@ html {
   // background: #fccdd3;
   background-color: #fccdd3;
   background-image: url("/assets/bg.png");
-  background-size: cover;
+  background-size: fit;
   min-height: 100vh;
 }
 

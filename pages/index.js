@@ -2,24 +2,30 @@ import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import NFTListItem from "../components/NFTListItem";
+import ModelListItem from "../components/ModelListItem";
 import useSWR from "swr";
 import * as Scroll from "react-scroll";
 
 const Home = () => {
-  const { data: res } = useSWR(`/api/nft`);
+  const { data: nftResult } = useSWR(`/api/nft`);
+  const { data: modelResult } = useSWR(`/api/model`);
   const [nftData, setNftData] = useState();
+  const [modelData, setModelData] = useState();
 
   const [showToast, setShowToast] = useState(true);
   const toggleShowToast = () => setShowToast(!showToast);
 
   useEffect(() => {
     (async () => {
-      console.log({ res });
-      if (res) {
-        setNftData(res);
+      console.log({ nftResult });
+      if (nftResult) {
+        setNftData(nftResult);
+      }
+      if (modelResult) {
+        setModelData(modelResult);
       }
     })();
-  }, [res]);
+  }, [nftResult, modelResult]);
 
   let nftListRender;
 
@@ -32,6 +38,39 @@ const Home = () => {
       .filter((e) => e);
   } else {
     nftListRender = (
+      <div className="w-100 d-flex justify-content-center align-items-center">
+        <Spinner
+          animation="border"
+          role="status"
+          size="xl"
+          style={{ textAlign: "center" }}
+        >
+          <span className="sr-only">Loading...</span>
+        </Spinner>
+      </div>
+    );
+  }
+
+  let modelListRender;
+
+  if (modelData) {
+    const mR = modelData
+      .map((model) => {
+        if (model)
+          return (
+            <div className="col-lg-4 col-md-6">
+              <ModelListItem key={model.username} data={model} />
+            </div>
+          );
+        else return undefined;
+      })
+      .filter((e) => e);
+
+    modelListRender = (
+      <div className="row flex justify-content-center">{mR}</div>
+    );
+  } else {
+    modelListRender = (
       <div className="w-100 d-flex justify-content-center align-items-center">
         <Spinner
           animation="border"
@@ -90,7 +129,22 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <Scroll.Element name="nft-list">
+      <Scroll.Element name="model-list">
+        <div
+          className="heading-text p-0 mb-4 text-center"
+          style={{ fontSize: "3em" }}
+        >
+          Treats of the Week
+        </div>
+        <div className="nft-list">{modelListRender}</div>
+      </Scroll.Element>
+      <Scroll.Element name="nft-list ">
+        <div
+          className="heading-text p-0 mt-5 mb-4 text-center"
+          style={{ fontSize: "3em" }}
+        >
+          All Available NFTs
+        </div>
         <div className="nft-list">{nftListRender}</div>
       </Scroll.Element>
     </div>
