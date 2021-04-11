@@ -31,6 +31,7 @@ const Home = () => {
 
   if (nftData) {
     nftListRender = nftData
+      .sort((a, b) => a.list_price - b.list_price)
       .map((nft) => {
         if (nft.totw) return <NFTListItem key={nft.id} data={nft} />;
         else return undefined;

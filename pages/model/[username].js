@@ -91,7 +91,10 @@ const ViewModel = ({ modelData, modelNFTs }) => {
           </div>
         </div>
         <div className="col-lg-9 text-container container mt-4 mt-lg-0">
-          {modelNFTs && modelNFTs.map((m) => <NFTListItem data={m} />)}
+          {modelNFTs &&
+            modelNFTs
+              .sort((a, b) => a.list_price - b.list_price)
+              .map((m) => <NFTListItem data={m} key={m.id} />)}
         </div>
       </div>
     </div>
