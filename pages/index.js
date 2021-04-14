@@ -57,7 +57,7 @@ const Home = () => {
   if (modelData) {
     const mR = modelData
       .map((model) => {
-        if (model)
+        if (model && model.totw)
           return (
             <div className="col-lg-4 col-md-6">
               <ModelListItem key={model.username} data={model} />
