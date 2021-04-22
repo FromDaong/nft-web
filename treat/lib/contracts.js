@@ -10,6 +10,7 @@ import {
 import BigNumber from "bignumber.js/bignumber";
 import ERC20Abi from "./abi/erc20.json";
 import TreatAbi from "./abi/treat.json";
+import TreatMarketplaceAbi from './abi/treatMarketplace.json';
 import TreatMartAbi from "./abi/treatmart.json";
 import FreeTreatsAbi from "./abi/freetreats.json";
 import TreatNFTMinterAbi from "./abi/treatnftminter.json";
@@ -28,6 +29,7 @@ export class Contracts {
     this.treat = new this.web3.eth.Contract(TreatAbi);
     this.treatNFTMinter = new this.web3.eth.Contract(TreatNFTMinterAbi);
     this.treatMart = new this.web3.eth.Contract(TreatMartAbi);
+    this.treatMarketplace = new this.web3.eth.Contract(TreatMarketplaceAbi);
     this.freeTreats = new this.web3.eth.Contract(FreeTreatsAbi);
     this.weth = new this.web3.eth.Contract(WETHAbi);
 
@@ -54,6 +56,7 @@ export class Contracts {
       contractAddresses.treatNFTMinter[networkId]
     );
     setProvider(this.treatMart, contractAddresses.treatMart[networkId]);
+    setProvider(this.treatMarketplace, contractAddresses.treatMarketplace[networkId]);
     setProvider(this.freeTreats, contractAddresses.freeTreats[networkId]);
     setProvider(this.weth, contractAddresses.weth[networkId]);
   }
@@ -62,6 +65,7 @@ export class Contracts {
     this.treat.options.from = account;
     this.treatNFTMinter.options.from = account;
     this.treatMart.options.from = account;
+    this.treatMarketplace.options.from = account;
     this.freeTreats.options.from = account;
   }
 
