@@ -71,6 +71,11 @@ const Footer = () => {
           <div class="col-md-3 mt-3 mt-md-0">
             <h5>Social Media</h5>
             <ul class="list-unstyled text-small">
+               <li>
+                <a href="https://t.me/TreatDAO" target="_blank">
+                  Telegram
+                </a>
+              </li>
               <li>
                 <a href="https://twitter.com/treatdao" target="_blank">
                   Twitter
