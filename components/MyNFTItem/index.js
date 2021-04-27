@@ -1,4 +1,3 @@
-import useListOrder from "../../hooks/useListOrder";
 import React, { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
@@ -6,9 +5,8 @@ import Tooltip from "react-bootstrap/Tooltip";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { Blurhash } from "react-blurhash";
-import useTransferNfts from "../../hooks/useTransferNfts";
 
-const NFTListItem = ({ data, revealNFTs, transferNFTClick }) => {
+const NFTListItem = ({ data, revealNFTs, transferNFTClick, listOrderClick }) => {
   const [image, setBase64Image] = useState();
   const [modalData, setModalData] = useState();
 

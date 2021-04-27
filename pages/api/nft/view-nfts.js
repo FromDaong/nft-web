@@ -3,12 +3,13 @@ import NFT from "../../../models/NFT";
 import BigNumber from "bignumber.js";
 import Web3 from "web3";
 import TreatNFTMinterAbi from "../../../treat/lib/abi/treatnftminter.json";
+import { contractAddresses } from '../../../treat/lib/constants'
 
 const web3 = new Web3("https://bsc-dataseed2.defibit.io");
 
 const treatNFTMinter = new web3.eth.Contract(
   TreatNFTMinterAbi,
-  "0xde39d0b9a93dcd541c24e80c8361f362aab0f213"
+  contractAddresses.treatNFTMinter[56]
 );
 
 dbConnect();
