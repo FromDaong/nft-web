@@ -1,22 +1,16 @@
+import useListOrder from "../../hooks/useListOrder";
 import React, { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import { generateFromString } from "generate-avatar";
 import { Blurhash } from "react-blurhash";
 import useTransferNfts from "../../hooks/useTransferNfts";
-
-// import blur from "/assets/blur.png";
 
 const NFTListItem = ({ data, revealNFTs, transferNFTClick }) => {
   const [image, setBase64Image] = useState();
   const [modalData, setModalData] = useState();
-
-  const { onTransferNfts } = useTransferNfts();
-  const [toAddress, setToAddress] = useState("");
-  const [transferAmount, setTransferAmount] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -126,21 +120,16 @@ const NFTListItem = ({ data, revealNFTs, transferNFTClick }) => {
                 </Button>
               </span>
             </div>
-          </div>
-          <div className="row">
-            <div className="col-lg-12 mt-3">
-              <OverlayTrigger overlay={<Tooltip id="">Coming Soon!</Tooltip>}>
-                <span className="d-inline-block w-100">
-                  <Button
-                    disabled
-                    style={{ pointerEvents: "none" }}
-                    className="w-100"
-                    variant="primary"
-                  >
-                    <b>RESELL</b>
-                  </Button>
-                </span>
-              </OverlayTrigger>
+            <div className="col-lg-6 mt-3">
+              <span className="d-inline-block w-100">
+                <Button
+                  className="w-100"
+                  variant="secondary"
+                  onClick={() => listOrderClick(data)}
+                >
+                  <b>RESELL</b>
+                </Button>
+              </span>
             </div>
           </div>
         </div>

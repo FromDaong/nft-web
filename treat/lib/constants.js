@@ -51,5 +51,8 @@ export const contractAddresses = {
   },
   freeTreats: {
     56: '0xd17EAf17F4120977ff61F5529B2dF5Af66252238'
+  },
+  treatMarketplace: {
+    56: '0xc2956dF1d1Ab919D2cbc0e993E932f1FB8cb78F6',
   }
 }
