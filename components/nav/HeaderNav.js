@@ -60,6 +60,11 @@ const HeaderNav = () => {
               <Nav.Link>MY NFTs</Nav.Link>
             </Link>
           )}
+          {account && (
+            <Link href="/resale" passHref>
+              <Nav.Link>Resales</Nav.Link>
+            </Link>
+          )}
           {!account ? (
             <Button
               variant="primary px-4 ml-md-4"

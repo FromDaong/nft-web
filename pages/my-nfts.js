@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import MyNFTItem from "../components/MyNFTItem";
 import TransferNFTModal from "../components/TransferNFTModal";
+import ListOrderModal from "../components/ListOrderModal";
 import Button from "react-bootstrap/Button";
 import useGetNftMaxSupply from "../hooks/useGetNftMaxSupply";
 import useGetNftBalance from "../hooks/useGetNftBalance";
@@ -70,10 +71,15 @@ const ViewNFT = ({ account, nftArray }) => {
 
   const nftBalances = serverNftBalances || nftBalancesInitial;
   const [transferNFTData, setTransferNFTData] = useState(null);
+  const [listOrderData, setListOrderData] = useState(null);
 
   const transferNFTClick = (x) => {
     setTransferNFTData(x);
   };
+
+  const listOrderClick = (x) => {
+    setListOrderData(x);
+  }
 
   const hideNFTs = async () => {
     setServerNftBalances(null);
@@ -107,6 +113,11 @@ const ViewNFT = ({ account, nftArray }) => {
         show={!!transferNFTData}
         data={transferNFTData}
         handleClose={() => setTransferNFTData(false)}
+      />
+      <ListOrderModal
+        show={!!listOrderData}
+        data={listOrderData}
+        handleClose={() => setListOrderData(false)}
       />
       <div className="white-tp-bg mt-4 p-3">
         <p className="w-100 mb-0" style={{ wordBreak: "break-word" }}>
@@ -159,6 +170,7 @@ const ViewNFT = ({ account, nftArray }) => {
                         data={nft}
                         revealNFTs={revealNFTs}
                         transferNFTClick={transferNFTClick}
+                        listOrderClick={listOrderClick}
                       />
                     </div>
                   );

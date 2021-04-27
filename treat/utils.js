@@ -1,4 +1,5 @@
 import BigNumber from "bignumber.js";
+import { decToBn } from '../utils/index'
 import { ethers } from "ethers";
 
 BigNumber.config({
@@ -18,7 +19,7 @@ export const getTreatAddress = (treat) => {
 };
 
 export const getTreatNFTMinterAddress = (treat) => {
-  return treat && treat.treatNFTMinterAddress;
+  return treat && treat.contract && treat.contracts.treatNftMinter && treat.contracts.treatNftMinter._address;
 };
 
 export const getWethContract = (treat) => {
@@ -41,6 +42,14 @@ export const getFreeTreatsContract = (treat) => {
   return treat && treat.contracts && treat.contracts.freeTreats;
 };
 
+export const getTreatMarketplaceContract = (treat) => {
+  return treat && treat.contracts && treat.contracts.treatMarketplace;
+}
+
+export const getTreatMarketplaceAddress = (treat) => {
+  return treat && treat.contracts && treat.contracts.treatMarketplace && treat.contracts.treatMarketplace._address;
+}
+
 export const getTreatSupply = async (treat) => {
   return new BigNumber(
     await treat.contracts.treat.methods.totalSupply().call()
@@ -62,8 +71,12 @@ export const mintNft = async (treatmartContract, account, nftId, nftCost) => {
   }
 };
 
-
-export const mintFreeTreat = async (freeTreatContract, account, nftId, nftCost) => {
+export const mintFreeTreat = async (
+  freeTreatContract,
+  account,
+  nftId,
+  nftCost
+) => {
   try {
     return await freeTreatContract.methods
       .redeem(nftId)
@@ -114,13 +127,82 @@ export const getNftTotalSupply = async (treatNFTMinter, nftId) => {
 };
 
 export const approve = async (treatMart, account) => {
-  return treatMart.methods
+  return await treatMart.methods
     .approve(treatMart.options.address, ethers.constants.MaxUint256)
     .send({ from: account });
 };
 
-export const transferNfts = async (treatMart, from, to, id, amount) => { 
+export const approveMarketplace = async (treatNftMinterContract, treatMarketplaceAddress, account) => {
+  return await treatNftMinterContract.methods
+                                     .setApprovalForAll(treatMarketplaceAddress, true)
+                                     .send({from: account})
+}
+
+export const transferNfts = async (treatMart, from, to, id, amount) => {
   return await treatMart.methods
-  .safeTransferFrom(from, to, id, amount, '0x0')
-  .send({ from: from})
+    .safeTransferFrom(from, to, id, amount, "0x0")
+    .send({ from: from });
+};
+
+export const listOrder = async (
+  treatMarketplaceContract,
+  account,
+  nftId,
+  quantity,
+  price,
+  expiresDate
+) => {
+  const priceBn = decToBn(price);
+  const unixTimestampSecs = Math.floor(new Date(expiresDate).getTime() /1000);
+  return await treatMarketplaceContract.methods
+    .listOrder(nftId, quantity, priceBn, unixTimestampSecs)
+    .send({
+      from: account,
+    });
+};
+
+export const purchaseOrder = async (
+  treatMarketplaceContract,
+  nftId,
+  quantity,
+  seller,
+  account,
+  totalPrice
+) => {
+  return await treatMarketplaceContract.methods.purchase(nftId, quantity, seller).send({
+    from: account,
+    value: totalPrice,
+  });
+};
+
+export const cancelOrder = async (treatMarketplaceContract, nftId, seller) => {
+  return await treatMarketplaceContract.methods.cancelOrder(nftId, seller).send({
+    from: seller,
+  });
+};
+
+export const getOpenOrdersForNft = async (treatMarketplaceContract, nftId) => {
+  return await treatMarketplaceContract.methods.getOpenOrdersForNft(nftId).call();
+};
+
+export const getOpenOrdersForSeller = async (treatMarketplaceContract, seller) => {
+  return await treatMarketplaceContract.methods.getOpenOrdersForNft(seller).call();
+};
+
+export const getResaleOrder = async (treatMarketplaceContract, nftId, seller) => {
+  if(!nftId || !seller) {
+    return null
+  }
+  
+  return await treatMarketplaceContract.methods.orderBook(nftId, seller).call();
+}
+
+export const getRemainingBalanceForOrder = async (treatMarketplaceContract, seller, nftId) => {
+  return await treatMarketplaceContract.methods
+                                       .orderBalances(seller, nftId)
+                                       .call()
+}
+
+export const getMaxIdForSale = async (treatMarketplaceContract) => {
+  return await treatMarketplaceContract.methods.maxTokenId().call()
 }
