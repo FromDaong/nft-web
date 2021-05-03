@@ -30,6 +30,7 @@ export class Contracts {
     this.treatNFTMinter = new this.web3.eth.Contract(TreatNFTMinterAbi);
     this.treatMart = new this.web3.eth.Contract(TreatMartAbi);
     this.treatMarketplace = new this.web3.eth.Contract(TreatMarketplaceAbi);
+    this.treatMartBundle = new this.web3.eth.Contract(TreatMartAbi);
     this.freeTreats = new this.web3.eth.Contract(FreeTreatsAbi);
     this.weth = new this.web3.eth.Contract(WETHAbi);
 
@@ -55,8 +56,10 @@ export class Contracts {
       this.treatNFTMinter,
       contractAddresses.treatNFTMinter[networkId]
     );
+
     setProvider(this.treatMart, contractAddresses.treatMart[networkId]);
     setProvider(this.treatMarketplace, contractAddresses.treatMarketplace[networkId]);
+    setProvider(this.treatMartBundle, contractAddresses.treatMartBundle[networkId]);
     setProvider(this.freeTreats, contractAddresses.freeTreats[networkId]);
     setProvider(this.weth, contractAddresses.weth[networkId]);
   }
@@ -66,6 +69,7 @@ export class Contracts {
     this.treatNFTMinter.options.from = account;
     this.treatMart.options.from = account;
     this.treatMarketplace.options.from = account;
+    this.treatMartBundle.options.from = account;
     this.freeTreats.options.from = account;
   }
 

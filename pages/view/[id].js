@@ -170,6 +170,8 @@ const ViewNFT = ({ nftData, image, account }) => {
     </div>
   ));
 
+  console.log({mintCheckNftPrice: nftData})
+
   return (
     <div className="container">
       <NFTPurchaseModal
