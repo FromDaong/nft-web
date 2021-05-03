@@ -13,6 +13,8 @@ const useMintNft = (id: number, treatCost: number, useTreatMart: boolean = false
     ? getTreatMartContract(treat)
     : getTreatMartContract(treat);
 
+    console.log({mintHookCost: treatCost})
+    console.log({mintHookCostString: treatCost.toString()})
   const handleMintNft = useCallback(async () => {
     const txHash = await mintNft(treatMartContract, account, id, treatCost);
     console.log(txHash);
