@@ -109,11 +109,6 @@ const ViewModel = ({ modelData, modelNFTs, nftSetPrice, onRedeemSet }) => {
             </div>
           </div>
         </div>
-        {/* {!!onRedeemSet && (
-          <div className="col-lg-9 text-container container mt-4 mt-lg-0">
-              <Button onClick={onRedeemSet}>Redeem full set for {getDisplayBalance(nftSetPrice)}</Button>
-          </div>
-        )} */}
         <div className="col-lg-9 text-container container mt-4 mt-lg-0">
         {
           !!onRedeemSet && (
