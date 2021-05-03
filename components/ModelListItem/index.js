@@ -58,10 +58,10 @@ const ModelListItem = ({ data }) => {
         </div>
         <div className="button pt-4 pt-md-0 ">
           <Button variant="primary py-2 px-5 mr-3 w-sm-100">
-            <b>VIEW MODEL</b>
+            <b>VIEW MODEL/BUY SET</b>
           </Button>
           
-          {!!onRedeemSet && (    <b>Set Bundle Price: {getDisplayBalance(nftSetPrice ?? '0')} BNB</b>)}
+          {/* {!!onRedeemSet && (    <b>Set Bundle Price: {getDisplayBalance(nftSetPrice ?? '0')} BNB</b>)} */}
           {/* {!!onRedeemSet && (    <Button onClick={onRedeemSet}>Redeem full set for {getDisplayBalance(nftSetPrice ?? '0')}</Button>)} */}
         </div>
       </div>
