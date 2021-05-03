@@ -40,6 +40,7 @@ const ViewModelWrapper = ({ username }) => {
 
   const setId = modelSetBundles[username];
   const nftSetPrice = useGetTreatSetCost(setId);
+  console.log({nftSetPrice: nftSetPrice?.toString()})
   const { onRedeemSet } = setId
     ? useRedeemSet(setId, nftSetPrice)
     : { onRedeemSet: null };
