@@ -37,6 +37,10 @@ export const getTreatMartContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treatMart;
 };
 
+export const getTreatMartBundleContract = (treat) => {
+  return treat && treat.contracts && treat.contracts.treatMartBundle;
+};
+
 export const getFreeTreatsContract = (treat) => {
   return treat && treat.contracts && treat.contracts.freeTreats;
 };
@@ -53,6 +57,8 @@ export const getTreatNftCost = async (treatMartContract, nftId) => {
 
 // user redeems nft
 export const mintNft = async (treatmartContract, account, nftId, nftCost) => {
+  console.log({mintCost: nftCost})
+  console.log({mintCostBn: new BigNumber(nftCost)})
   try {
     return await treatmartContract.methods
       .redeem(nftId)
@@ -72,6 +78,45 @@ export const mintFreeTreat = async (freeTreatContract, account, nftId, nftCost) 
     return undefined;
   }
 };
+
+export const getSetIds = async (treatMartBundleContract, setId) => {
+  try {
+    const txHash = await treatMartBundleContract.methods 
+                                          .getSetIds(setId)
+                                          .call();
+    console.log(txHash)
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+}
+
+export const getSetPrice = async (treatMartBundleContract, setId) => {
+   try {
+    return await treatMartBundleContract.methods 
+                                          .nftSetCosts(setId)
+                                          .call();
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  } 
+}
+
+export const redeemSet = async (treatMartBundleContract, account, nftSetId, setCost) => {
+  console.log({mintSetCost: setCost?.toString()})
+  try {
+    const txHash = await treatMartBundleContract.methods
+                         .redeemSet(nftSetId)
+                         .send({
+                           from: account,
+                           value: setCost
+                         });
+    console.log(txHash);
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+}
 
 export const getNftBalance = async (treatNFTMinter, account, nftId) => {
   try {

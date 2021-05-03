@@ -503,6 +503,36 @@
     "type": "function"
   },
   {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_treatTreasuryAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setTreasury",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "contract TreatNFTMinter",
+        "name": "_treatMinterAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setTreatMinter",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "constant": true,
     "inputs": [
       {
@@ -533,21 +563,6 @@
       }
     ],
     "name": "transferOwnership",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_treatTreasuryAddress",
-        "type": "address"
-      }
-    ],
-    "name": "treasury",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
