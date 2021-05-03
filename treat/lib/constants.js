@@ -37,7 +37,7 @@ export const contractAddresses = {
     56: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
   },
   treatNFTMinter: {
-    56: '0xde39d0b9a93dcd541c24e80c8361f362aab0f213'
+    56: '0x89689bb544820b6ad6b7d239e6afeaf856879d2a'
   },
   treatMart: {
     //56: '0x769C54A55FF7d3CeccD060710bb849eDbCc97351'
@@ -49,7 +49,15 @@ export const contractAddresses = {
     56: '0xD48E7709FAC65ad74E526D1fB3d9a3eDbCb15FE0'
     // ^ accept bnb with setable performer percentage
   },
+  treatMartBundle: {
+    56: '0x75724652746fa01857829Fce8806771b3F0871EE'
+  },
   freeTreats: {
     56: '0xd17EAf17F4120977ff61F5529B2dF5Af66252238'
   }
 }
+
+
+export const modelSetBundles = {
+  kodes_xo: 2
+};
