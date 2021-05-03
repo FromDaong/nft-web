@@ -59,5 +59,5 @@ export const contractAddresses = {
 
 
 export const modelSetBundles = {
-  kodes_xo: 2
+  kodes_xo: 1
 };
