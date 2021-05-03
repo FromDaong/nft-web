@@ -50,7 +50,7 @@ export const contractAddresses = {
     // ^ accept bnb with setable performer percentage
   },
   treatMartBundle: {
-    56: '0x75724652746fa01857829Fce8806771b3F0871EE'
+    56: '0xb0685346A231272BDa0F30Eb46183F016E5f3dcF'
   },
   freeTreats: {
     56: '0xd17EAf17F4120977ff61F5529B2dF5Af66252238'
@@ -59,5 +59,5 @@ export const contractAddresses = {
 
 
 export const modelSetBundles = {
-  kodes_xo: 1
+  minaxxbell: 1
 };
