@@ -25,20 +25,8 @@ const ModelListItem = ({ data }) => {
     })();
   }, [data]);
 
-
-  // const [setId, setSetId] = useState(null)
-  // const [nftSetPrice, setNftSetPrice] = useState(new BigNumber('0'))
-
-  // const 
-  // useEffect(() => {
-  //   setSetId(modelSetBundles[data.username])
-  //   setNftSetPrice(useGetTreatSetCost(setId))
-  // })
-
-
   const setId = modelSetBundles[data.username];
   const nftSetPrice = useGetTreatSetCost(setId);
-  // console.log({nftSetPrice: nftSetPrice?.toString()})
   const { onRedeemSet } = setId
     ? useRedeemSet(setId, nftSetPrice)
     : { onRedeemSet: null };
@@ -60,9 +48,6 @@ const ModelListItem = ({ data }) => {
           <Button variant="primary py-2 px-5 mr-3 w-sm-100">
             <b>VIEW MODEL/BUY SET</b>
           </Button>
-          
-          {/* {!!onRedeemSet && (    <b>Set Bundle Price: {getDisplayBalance(nftSetPrice ?? '0')} BNB</b>)} */}
-          {/* {!!onRedeemSet && (    <Button onClick={onRedeemSet}>Redeem full set for {getDisplayBalance(nftSetPrice ?? '0')}</Button>)} */}
         </div>
       </div>
     </a>

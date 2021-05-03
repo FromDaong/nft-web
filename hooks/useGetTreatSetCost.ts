@@ -12,10 +12,10 @@ const useGetTreatSetCost = (id: number) => {
   const [nftSetCost, setNftSetCost] = useState(new BigNumber(0))
   const { account } = useWallet();
   const treat = useTreat();
-  const treatMartBundelContract = getTreatMartBundleContract(treat)
+  const treatMartBundleContract = getTreatMartBundleContract(treat)
 
   const fetchNftCost = useCallback(async () => {
-    const nftSetCost = await getSetPrice(treatMartBundelContract, id)
+    const nftSetCost = await getSetPrice(treatMartBundleContract, id)
     setNftSetCost(new BigNumber(nftSetCost))
   }, [id, treat])
 
