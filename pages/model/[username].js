@@ -5,6 +5,10 @@ import useSWR from "swr";
 import useWallet from "use-wallet";
 import NFTListItem from "../../components/NFTListItem";
 import { useRouter } from "next/router";
+import { modelSetBundles } from "../../treat/lib/constants";
+import useGetTreatSetCost from "../../hooks/useGetTreatSetCost";
+import useRedeemSet from "../../hooks/useRedeemSet";
+import { getDisplayBalance } from "../../utils/formatBalance";
 
 const ViewModelWrapper = ({ username }) => {
   const { data: res } = useSWR(`/api/model/${username}`);
@@ -33,6 +37,13 @@ const ViewModelWrapper = ({ username }) => {
       }
     })();
   }, [res]);
+
+  const setId = modelSetBundles[username];
+  const nftSetPrice = useGetTreatSetCost(setId);
+  console.log({nftSetPrice: nftSetPrice?.toString()})
+  const { onRedeemSet } = setId
+    ? useRedeemSet(setId, nftSetPrice)
+    : { onRedeemSet: null };
 
   if (!modelData || !modelData.username || status !== "connected") {
     return (
@@ -70,11 +81,19 @@ const ViewModelWrapper = ({ username }) => {
       </div>
     );
   } else {
-    return <ViewModel modelData={modelData} modelNFTs={modelNFTs} />;
+    return (
+      <ViewModel
+        modelData={modelData}
+        modelNFTs={modelNFTs}
+        nftSetPrice={nftSetPrice}
+        onRedeemSet={onRedeemSet}
+      />
+    );
   }
 };
 
-const ViewModel = ({ modelData, modelNFTs }) => {
+const ViewModel = ({ modelData, modelNFTs, nftSetPrice, onRedeemSet }) => {
+  console.log({ modelNFTs });
   return (
     <div className="container">
       <div className="view-model row">
@@ -91,6 +110,24 @@ const ViewModel = ({ modelData, modelNFTs }) => {
           </div>
         </div>
         <div className="col-lg-9 text-container container mt-4 mt-lg-0">
+        {
+          !!onRedeemSet && (
+          <div
+            style={{
+              backgroundColor: "rgba(255,255,255,0.75)",
+              marginBottom: "25px",
+              display: "flex",
+              justifyContent: "center",
+              paddingTop: "2%",
+              paddingBottom: "2%",
+              borderRadius: '8px',
+            }}
+          >
+            <Button onClick={onRedeemSet} size="lg">
+              Redeem full set for {getDisplayBalance(nftSetPrice)} BNB
+            </Button>
+          </div>
+        )}
           {modelNFTs &&
             modelNFTs
               .sort((a, b) => a.list_price - b.list_price)

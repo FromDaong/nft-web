@@ -49,7 +49,15 @@ export const contractAddresses = {
     56: '0xD48E7709FAC65ad74E526D1fB3d9a3eDbCb15FE0'
     // ^ accept bnb with setable performer percentage
   },
+  treatMartBundle: {
+    56: '0xb0685346A231272BDa0F30Eb46183F016E5f3dcF'
+  },
   freeTreats: {
     56: '0xd17EAf17F4120977ff61F5529B2dF5Af66252238'
   }
 }
+
+
+export const modelSetBundles = {
+  minaxxbell: 1
+};
