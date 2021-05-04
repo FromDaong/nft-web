@@ -1,14 +1,8 @@
-import BigNumber from 'bignumber.js'
 import React, { useState, useEffect } from "react";
-import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
-import { generateFromString } from "generate-avatar";
-import { Blurhash } from "react-blurhash";
-import { EyeSlash } from "react-bootstrap-icons";
 import { modelSetBundles } from "../../treat/lib/constants";
 import useGetTreatSetCost from "../../hooks/useGetTreatSetCost";
 import useRedeemSet from "../../hooks/useRedeemSet";
-import { getDisplayBalance } from '../../utils/formatBalance'
 
 const ModelListItem = ({ data }) => {
   const [image, setBase64Image] = useState();
@@ -32,26 +26,46 @@ const ModelListItem = ({ data }) => {
     : { onRedeemSet: null };
 
   return (
-    <div>
-    <a href={`/model/${data.username}`}>
+    <>
+      <div>
+        <a href={`/model/${data.username}`}>
+          <div className="model-list-item">
+            <div className="creator">
+              <div className="pic">
+                <img src={data.profile_pic} className="profile-pic" />
+              </div>
+              <div className="details">
+                <div className="label">CREATOR</div>
+                <div className="name">{data.username}</div>
+              </div>
+            </div>
+            <div className="button pt-4 pt-md-0 ">
+              <Button variant="primary py-2 px-5 mr-3 w-sm-100">
+                <b>VIEW MODEL</b>
+              </Button>
+            </div>
+          </div>
+        </a>
       <div className="model-list-item">
-        <div className="creator">
-          <div className="pic">
-            <img src={data.profile_pic} className="profile-pic" />
-          </div>
-          <div className="details">
-            <div className="label">CREATOR</div>
-            <div className="name">{data.username}</div>
-          </div>
+      {/* <h4>Bundle Discount</h4> */}
+        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        <span style={{fontSize: '1.8em'}}><b>Bundle Discount</b></span>
+          <img src={'/assets/treat-tag-1080x500.png'} style={{height: '6em'}} />
         </div>
-        <div className="button pt-4 pt-md-0 ">
-          <Button variant="primary py-2 px-5 mr-3 w-sm-100">
-            <b>VIEW MODEL/BUY SET</b>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Button onClick={onRedeemSet} size="lg">
+            <b>BUY FULL SET</b>
           </Button>
         </div>
       </div>
-    </a>
-</div>
+      </div>
+    </>
   );
 };
 
