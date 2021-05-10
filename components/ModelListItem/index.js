@@ -50,7 +50,7 @@ const ModelListItem = ({ data }) => {
       {/* <h4>Bundle Discount</h4> */}
         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
         <span style={{fontSize: '1.8em'}}><b>Bundle Discount</b></span>
-          <img src={'/assets/treat-tag-1080x500.png'} style={{height: '6em'}} />
+          <img src={'/assets/treat-tag-25.png'} style={{height: '6em'}} />
         </div>
         <div
           style={{
