@@ -118,7 +118,7 @@ const Home = () => {
                   target="_blank"
                 >
                   <Button variant="light w-100 py-2 text-primary">
-                    <b>INDULGE IN A $TREAT</b>
+                    <b>BUY $TREAT</b>
                   </Button>
                 </a>
               </div>
