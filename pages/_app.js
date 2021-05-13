@@ -16,7 +16,6 @@ import {
   BscConnector,
   UserRejectedRequestError,
 } from "@binance-chain/bsc-connector";
-
 const allowedRoutes = ["/"];
 
 function MyApp({ Component, pageProps }) {
