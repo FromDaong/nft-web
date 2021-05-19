@@ -46,24 +46,34 @@ const ModelListItem = ({ data }) => {
             </div>
           </div>
         </a>
-      <div className="model-list-item">
-      {/* <h4>Bundle Discount</h4> */}
-        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-        <span style={{fontSize: '1.8em'}}><b>Bundle Discount</b></span>
-          <img src={'/assets/treat-tag-25.png'} style={{height: '6em'}} />
-        </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Button onClick={onRedeemSet} size="lg">
-            <b>BUY FULL SET</b>
-          </Button>
-        </div>
-      </div>
+        {!!onRedeemSet && (
+          <div className="model-list-item">
+            {/* <h4>Bundle Discount</h4> */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <span style={{ fontSize: "1.8em" }}>
+                <b>Bundle Discount</b>
+              </span>
+              <img src={"/assets/treat-tag-25.png"} style={{ height: "6em" }} />
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Button onClick={onRedeemSet} size="lg">
+                <b>BUY FULL SET</b>
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
