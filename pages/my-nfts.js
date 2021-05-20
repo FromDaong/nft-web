@@ -3,9 +3,11 @@ import Spinner from "react-bootstrap/Spinner";
 import MyNFTItem from "../components/MyNFTItem";
 import TransferNFTModal from "../components/TransferNFTModal";
 import ListOrderModal from "../components/ListOrderModal";
+import CancelOrderModal from "../components/CancelOrderModal";
 import Button from "react-bootstrap/Button";
 import useGetNftMaxSupply from "../hooks/useGetNftMaxSupply";
 import useGetNftBalance from "../hooks/useGetNftBalance";
+import useGetOpenOrdersForSeller from "../hooks/useGetOpenOrdersForSeller";
 import useWallet from "use-wallet";
 import useSWR from "swr";
 
@@ -63,6 +65,149 @@ const MyNFTsWrapper = () => {
   }
 };
 
+const OwnedNfts = ({hideNFTs, revealNFTs, nftBalances, transferNFTClick, listOrderClick, serverNftBalances}) => {
+  return (
+    <div className="white-tp-bg" style={{ minHeight: 400 }}>
+      <div
+        className="px-4 py-2 w-100 d-flex"
+        style={{
+          background: "#FFFDF2",
+          justifyContent: "space-between",
+          alignItems: "center",
+          borderRadius: 8,
+        }}
+      >
+        <div>
+          <h2
+            className="heading-text-primary pt-1"
+            style={{
+              fontSize: 24,
+            }}
+          >
+            MY NFTs
+          </h2>
+        </div>
+        {nftBalances.length > 0 && (
+          <div className="button-container">
+            {serverNftBalances ? (
+              <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
+                <b>{"HIDE CONTENTS 🙈"}</b>
+              </Button>
+            ) : (
+              <Button variant="primary  w-sm-100" onClick={revealNFTs}>
+                <b>{"REVEAL CONTENTS 👀"}</b>
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
+      {nftBalances.length > 0 ? (
+        <div className="container px-4 px-md-0">
+          <div className="row d-flex flex-wrap text-left justify-content-center mt-5">
+            {nftBalances.map((nft) => {
+              return (
+                nft.balance > 0 && (
+                  <div className="col-xl-4 col-md-6 px-4">
+                    <MyNFTItem
+                      data={nft}
+                      revealNFTs={revealNFTs}
+                      transferNFTClick={transferNFTClick}
+                      listOrderClick={listOrderClick}
+                    />
+                  </div>
+                )
+              );
+            })}
+          </div>
+        </div>
+      ) : (
+        <div
+          className="w-100 text-center font-weight-bold d-flex align-items-center justify-content-center h-100"
+          style={{
+            color: "#333",
+            marginTop: -20,
+            height: "100%",
+            minHeight: 200,
+          }}
+        >
+          You haven't purchased any NFTs yet.
+        </div>
+      )}
+    </div>
+  );
+};
+
+const OpenOrders = ({hideNFTs, revealNFTs, nftBalances, transferNFTClick, cancelOrderClick, serverNftBalances}) => {
+  return (
+    <div className="white-tp-bg" style={{ minHeight: 400 }}>
+      <div
+        className="px-4 py-2 w-100 d-flex"
+        style={{
+          background: "#FFFDF2",
+          justifyContent: "space-between",
+          alignItems: "center",
+          borderRadius: 8,
+        }}
+      >
+        <div>
+          <h2
+            className="heading-text-primary pt-1"
+            style={{
+              fontSize: 24,
+            }}
+          >
+            OPEN ORDERS
+          </h2>
+        </div>
+        {nftBalances.length > 0 && (
+          <div className="button-container">
+            {serverNftBalances ? (
+              <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
+                <b>{"HIDE CONTENTS 🙈"}</b>
+              </Button>
+            ) : (
+              <Button variant="primary  w-sm-100" onClick={revealNFTs}>
+                <b>{"REVEAL CONTENTS 👀"}</b>
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
+      {nftBalances.length > 0 ? (
+        <div className="container px-4 px-md-0">
+          <div className="row d-flex flex-wrap text-left justify-content-center mt-5">
+            {nftBalances.map((nft) => {
+              return (
+                nft.hasOpenOrder && (
+                  <div className="col-xl-4 col-md-6 px-4">
+                    <MyNFTItem
+                      data={nft}
+                      revealNFTs={revealNFTs}
+                      cancelOrderClick={cancelOrderClick}
+                    />
+                  </div>
+                )
+              );
+            })}
+          </div>
+        </div>
+      ) : (
+        <div
+          className="w-100 text-center font-weight-bold d-flex align-items-center justify-content-center h-100"
+          style={{
+            color: "#333",
+            marginTop: -20,
+            height: "100%",
+            minHeight: 200,
+          }}
+        >
+          You haven't purchased any NFTs yet.
+        </div>
+      )}
+    </div>
+  );
+};
+
 const ViewNFT = ({ account, nftArray }) => {
   const [serverNftBalances, setServerNftBalances] = useState(null);
 
@@ -72,6 +217,7 @@ const ViewNFT = ({ account, nftArray }) => {
   const nftBalances = serverNftBalances || nftBalancesInitial;
   const [transferNFTData, setTransferNFTData] = useState(null);
   const [listOrderData, setListOrderData] = useState(null);
+  const [cancelOrderData, setCancelOrderData] = useState(null);
 
   const transferNFTClick = (x) => {
     setTransferNFTData(x);
@@ -79,6 +225,10 @@ const ViewNFT = ({ account, nftArray }) => {
 
   const listOrderClick = (x) => {
     setListOrderData(x);
+  };
+
+  const cancelOrderClick = (x) => {
+    setCancelOrderData(x);
   }
 
   const hideNFTs = async () => {
@@ -119,6 +269,12 @@ const ViewNFT = ({ account, nftArray }) => {
         data={listOrderData}
         handleClose={() => setListOrderData(false)}
       />
+      <CancelOrderModal
+        show={!!cancelOrderData}
+        data={cancelOrderData}
+        handleClose={() => setCancelOrderData(false)}
+        account={account}
+      />
       <div className="white-tp-bg mt-4 p-3">
         <p className="w-100 mb-0" style={{ wordBreak: "break-word" }}>
           <b>Connected wallet address:</b>
@@ -126,71 +282,24 @@ const ViewNFT = ({ account, nftArray }) => {
         </p>
       </div>
       <div className="mt-2">
-        <div className="white-tp-bg" style={{ minHeight: 400 }}>
-          <div
-            className="px-4 py-2 w-100 d-flex"
-            style={{
-              background: "#FFFDF2",
-              justifyContent: "space-between",
-              alignItems: "center",
-              borderRadius: 8,
-            }}
-          >
-            <div>
-              <h2
-                className="heading-text-primary pt-1"
-                style={{
-                  fontSize: 24,
-                }}
-              >
-                MY NFTs
-              </h2>
-            </div>
-            {nftBalances.length > 0 && (
-              <div className="button-container">
-                {serverNftBalances ? (
-                  <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
-                    <b>{"HIDE CONTENTS 🙈"}</b>
-                  </Button>
-                ) : (
-                  <Button variant="primary  w-sm-100" onClick={revealNFTs}>
-                    <b>{"REVEAL CONTENTS 👀"}</b>
-                  </Button>
-                )}
-              </div>
-            )}
-          </div>
-          {nftBalances.length > 0 ? (
-            <div className="container px-4 px-md-0">
-              <div className="row d-flex flex-wrap text-left justify-content-center mt-5">
-                {nftBalances.map((nft) => {
-                  return (
-                    <div className="col-xl-4 col-md-6 px-4">
-                      <MyNFTItem
-                        data={nft}
-                        revealNFTs={revealNFTs}
-                        transferNFTClick={transferNFTClick}
-                        listOrderClick={listOrderClick}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          ) : (
-            <div
-              className="w-100 text-center font-weight-bold d-flex align-items-center justify-content-center h-100"
-              style={{
-                color: "#333",
-                marginTop: -20,
-                height: "100%",
-                minHeight: 200,
-              }}
-            >
-              You haven't purchased any NFTs yet.
-            </div>
-          )}
-        </div>
+        <OwnedNfts
+          hideNFTs={hideNFTs}
+          listOrderClick={listOrderClick}
+          transferNFTClick={transferNFTClick}
+          nftBalances={nftBalances}
+          revealNFTs={revealNFTs}
+          serverNftBalances={serverNftBalances}
+        />
+      </div>
+      <div className="mt-2">
+        <OpenOrders
+          hideNFTs={hideNFTs}
+          cancelOrderClick={cancelOrderClick}
+          transferNFTClick={transferNFTClick}
+          nftBalances={nftBalances}
+          revealNFTs={revealNFTs}
+          serverNftBalances={serverNftBalances}
+        />
       </div>
     </div>
   );

@@ -3,16 +3,12 @@ import * as Types from "./types.js";
 import {
   SUBTRACT_GAS_LIMIT,
   contractAddresses,
-  deactivatedPools,
-  supportedPools,
 } from "./constants.js";
 
 import BigNumber from "bignumber.js/bignumber";
-import ERC20Abi from "./abi/erc20.json";
 import TreatAbi from "./abi/treat.json";
 import TreatMarketplaceAbi from './abi/treatMarketplace.json';
 import TreatMartAbi from "./abi/treatmart.json";
-import FreeTreatsAbi from "./abi/freetreats.json";
 import TreatNFTMinterAbi from "./abi/treatnftminter.json";
 import WETHAbi from "./abi/weth.json";
 
@@ -30,8 +26,6 @@ export class Contracts {
     this.treatNFTMinter = new this.web3.eth.Contract(TreatNFTMinterAbi);
     this.treatMart = new this.web3.eth.Contract(TreatMartAbi);
     this.treatMarketplace = new this.web3.eth.Contract(TreatMarketplaceAbi);
-    this.treatMartBundle = new this.web3.eth.Contract(TreatMartAbi);
-    this.freeTreats = new this.web3.eth.Contract(FreeTreatsAbi);
     this.weth = new this.web3.eth.Contract(WETHAbi);
 
     this.setProvider(provider, networkId);
@@ -59,8 +53,6 @@ export class Contracts {
 
     setProvider(this.treatMart, contractAddresses.treatMart[networkId]);
     setProvider(this.treatMarketplace, contractAddresses.treatMarketplace[networkId]);
-    setProvider(this.treatMartBundle, contractAddresses.treatMartBundle[networkId]);
-    setProvider(this.freeTreats, contractAddresses.freeTreats[networkId]);
     setProvider(this.weth, contractAddresses.weth[networkId]);
   }
 
@@ -69,8 +61,6 @@ export class Contracts {
     this.treatNFTMinter.options.from = account;
     this.treatMart.options.from = account;
     this.treatMarketplace.options.from = account;
-    this.treatMartBundle.options.from = account;
-    this.freeTreats.options.from = account;
   }
 
   async callContractFunction(method, options) {

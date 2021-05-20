@@ -12,6 +12,11 @@
         "type": "address"
       },
       {
+        "internalType": "address",
+        "name": "_treatMartAddress",
+        "type": "address"
+      },
+      {
         "internalType": "uint256",
         "name": "_treasuryPercentage",
         "type": "uint256"
@@ -19,6 +24,11 @@
       {
         "internalType": "uint256",
         "name": "_creatorPercentage",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_referrerPercentage",
         "type": "uint256"
       }
     ],
@@ -30,13 +40,13 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
         "name": "oldAddress",
         "type": "address"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
         "name": "newAddress",
         "type": "address"
@@ -49,19 +59,19 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
         "name": "from",
         "type": "address"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
         "name": "to",
         "type": "address"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
         "name": "nftId",
         "type": "uint256"
@@ -80,13 +90,13 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
         "name": "seller",
         "type": "address"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
         "name": "nftId",
         "type": "uint256"
@@ -99,13 +109,13 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
         "name": "nftId",
         "type": "uint256"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
         "name": "seller",
         "type": "address"
@@ -421,11 +431,6 @@
         "type": "address"
       },
       {
-        "internalType": "address payable",
-        "name": "creator",
-        "type": "address"
-      },
-      {
         "internalType": "uint256",
         "name": "nftId",
         "type": "uint256"
@@ -501,6 +506,21 @@
     "type": "function"
   },
   {
+    "constant": true,
+    "inputs": [],
+    "name": "referrerPercentage",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "constant": false,
     "inputs": [],
     "name": "renounceOwnership",
@@ -553,7 +573,37 @@
         "type": "address"
       }
     ],
-    "name": "setMinterAddress",
+    "name": "setMart",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_minterAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setMinter",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_referrerPercentage",
+        "type": "uint256"
+      }
+    ],
+    "name": "setReferrerPercentage",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -658,10 +708,25 @@
   {
     "constant": true,
     "inputs": [],
+    "name": "treatMart",
+    "outputs": [
+      {
+        "internalType": "contract TreatMart",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
     "name": "treatMinter",
     "outputs": [
       {
-        "internalType": "contract TreatNftMinter",
+        "internalType": "contract TreatNFTMinter",
         "name": "",
         "type": "address"
       }

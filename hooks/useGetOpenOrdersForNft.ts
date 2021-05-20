@@ -7,7 +7,7 @@ import {
 import useTreat from "./useTreat";
 
 const useGetOpenOrdersForNft = (nftId: number) => {
-  const [orders,] = useState([]);
+  const [orders,setOrders] = useState([]);
 
   const treat = useTreat();
 
@@ -20,18 +20,21 @@ const useGetOpenOrdersForNft = (nftId: number) => {
         nftId
       );
 
-      for (let i = 0; i < sellers; i++) {
+      const results = []
+      for (let i = 0; i < sellers.length; i++) {
         const seller = sellers[i];
-        const order = getResaleOrder(treatMarketplaceContract, nftId, seller);
+        const order = await getResaleOrder(treatMarketplaceContract, nftId, seller);
 
-        orders.push(order);
+        results.push(order);
       }
+
+      setOrders(results)
     }
 
     if (treat) {
       fetchOrders();
     }
-  });
+  }, [treat, treatMarketplaceContract]);
 
   return orders;
 };

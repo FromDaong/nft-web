@@ -4,7 +4,7 @@ import { modelSetBundles } from "../../treat/lib/constants";
 import useGetTreatSetCost from "../../hooks/useGetTreatSetCost";
 import useRedeemSet from "../../hooks/useRedeemSet";
 
-const ModelListItem = ({ data }) => {
+const ModelListItem = ({ data, totwOnly=false }) => {
   const [image, setBase64Image] = useState();
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const ModelListItem = ({ data }) => {
   return (
     <>
       <div>
-        <a href={`/model/${data.username}`}>
+        <a href={`/creator/${data.username}`}>
           <div className="model-list-item">
             <div className="creator">
               <div className="pic">
@@ -41,29 +41,38 @@ const ModelListItem = ({ data }) => {
             </div>
             <div className="button pt-4 pt-md-0 ">
               <Button variant="primary py-2 px-5 mr-3 w-sm-100">
-                <b>VIEW MODEL</b>
+                <b>VIEW CREATOR</b>
               </Button>
             </div>
           </div>
         </a>
-      <div className="model-list-item">
-      {/* <h4>Bundle Discount</h4> */}
-        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-        <span style={{fontSize: '1.8em'}}><b>Bundle Discount</b></span>
-          <img src={'/assets/treat-tag-1080x500.png'} style={{height: '6em'}} />
-        </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Button onClick={onRedeemSet} size="lg">
-            <b>BUY FULL SET</b>
-          </Button>
-        </div>
-      </div>
+        { (!!onRedeemSet && totwOnly) && (
+          <div className="model-list-item">
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <span style={{ fontSize: "1.8em" }}>
+                <b>Bundle Discount</b>
+              </span>
+              <img src={"/assets/treat-tag-25.png"} style={{ height: "6em" }} />
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Button onClick={onRedeemSet} size="lg">
+                <b>BUY FULL SET</b>
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

@@ -10,6 +10,11 @@
         "internalType": "address",
         "name": "_TreatTreasuryAddress",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_referrerPercentage",
+        "type": "uint256"
       }
     ],
     "payable": false,
@@ -34,11 +39,36 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "treatModel",
+        "name": "treatCreator",
         "type": "address"
       }
     ],
     "name": "NFTAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "creator",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "referrer",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "refPercent",
+        "type": "uint256"
+      }
+    ],
+    "name": "OnFeesPaid",
     "type": "event"
   },
   {
@@ -103,7 +133,7 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "treatModel",
+        "name": "treatCreator",
         "type": "address"
       }
     ],
@@ -124,8 +154,8 @@
         "type": "uint256"
       },
       {
-        "internalType": "address",
-        "name": "_treatmodel",
+        "internalType": "address payable",
+        "name": "_treatcreator",
         "type": "address"
       },
       {
@@ -155,7 +185,7 @@
       },
       {
         "internalType": "address",
-        "name": "_treatModel",
+        "name": "_treatCreator",
         "type": "address"
       },
       {
@@ -215,6 +245,21 @@
         "internalType": "bool",
         "name": "",
         "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "maxNftId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "payable": false,
@@ -494,9 +539,110 @@
     "type": "function"
   },
   {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "referralsByPerformer",
+    "outputs": [
+      {
+        "internalType": "address payable",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "referrerPercentage",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "constant": false,
     "inputs": [],
     "name": "renounceOwnership",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "performer",
+        "type": "address"
+      },
+      {
+        "internalType": "address payable",
+        "name": "referrer",
+        "type": "address"
+      }
+    ],
+    "name": "setReferrer",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_referrerPercentage",
+        "type": "uint256"
+      }
+    ],
+    "name": "setReferrerPercentage",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_treatTreasuryAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setTreasury",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_treatMinterAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setTreatMinter",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -539,21 +685,6 @@
     "type": "function"
   },
   {
-    "constant": false,
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_treatTreasuryAddress",
-        "type": "address"
-      }
-    ],
-    "name": "treasury",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "constant": true,
     "inputs": [
       {
@@ -562,10 +693,10 @@
         "type": "uint256"
       }
     ],
-    "name": "treatModels",
+    "name": "treatCreators",
     "outputs": [
       {
-        "internalType": "address",
+        "internalType": "address payable",
         "name": "",
         "type": "address"
       }
@@ -598,7 +729,7 @@
         "type": "uint256"
       }
     ],
-    "name": "treatSetModels",
+    "name": "treatSetCreators",
     "outputs": [
       {
         "internalType": "address",
