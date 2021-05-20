@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import useSWR from "swr";
 import useWallet from "use-wallet";
 import NFTListItem from "../../components/NFTListItem";
+import NFTResaleListItem from "../../components/NFTResaleListItem";
 import { useRouter } from "next/router";
 import { modelSetBundles } from "../../treat/lib/constants";
 import useGetTreatSetCost from "../../hooks/useGetTreatSetCost";
@@ -14,12 +15,13 @@ const ViewModelWrapper = ({ username }) => {
   const { data: res } = useSWR(`/api/model/${username}`);
   const [modelData, setModelData] = useState();
   const [modelNFTs, setModelNFTs] = useState();
+  const [newNFTs, setNewNFTs] = useState([]);
+  const [outOfPrintNFTs, setOutOfPrintNFTs] = useState([]);
   const { status } = useWallet();
   const router = useRouter();
 
   useEffect(() => {
     (async () => {
-      console.log({ res });
       if (res) {
         setModelData(res);
 
@@ -33,14 +35,20 @@ const ViewModelWrapper = ({ username }) => {
           })
         );
 
+        let newNFTs = mNfts.filter((nft) => nft.maxSupply > nft.totalSupply);
+        let outOfPrint = mNfts.filter(
+          (nft) => nft.maxSupply === nft.totalSupply
+        );
+
         setModelNFTs(mNfts);
+        setNewNFTs(newNFTs);
+        setOutOfPrintNFTs(outOfPrint);
       }
     })();
   }, [res]);
 
   const setId = modelSetBundles[username];
   const nftSetPrice = useGetTreatSetCost(setId);
-  console.log({nftSetPrice: nftSetPrice?.toString()})
   const { onRedeemSet } = setId
     ? useRedeemSet(setId, nftSetPrice)
     : { onRedeemSet: null };
@@ -85,6 +93,8 @@ const ViewModelWrapper = ({ username }) => {
       <ViewModel
         modelData={modelData}
         modelNFTs={modelNFTs}
+        newNFTs={newNFTs}
+        outOfPrintNFTs={outOfPrintNFTs}
         nftSetPrice={nftSetPrice}
         onRedeemSet={onRedeemSet}
       />
@@ -92,8 +102,24 @@ const ViewModelWrapper = ({ username }) => {
   }
 };
 
-const ViewModel = ({ modelData, modelNFTs, nftSetPrice, onRedeemSet }) => {
-  console.log({ modelNFTs });
+const ViewModel = ({
+  modelData,
+  modelNFTs,
+  newNFTs,
+  outOfPrintNFTs,
+  nftSetPrice,
+  onRedeemSet,
+}) => {
+  const [selectedTab, setSelectedTab] = useState("NEW NFTs");
+  const [otherTab, setOtherTab] = useState("OUT OF PRINT");
+
+  const switchTab = () => {
+    const current = selectedTab;
+    const other = otherTab;
+    setSelectedTab(other);
+    setOtherTab(current);
+  };
+
   return (
     <div className="container">
       <div className="view-model row">
@@ -110,28 +136,54 @@ const ViewModel = ({ modelData, modelNFTs, nftSetPrice, onRedeemSet }) => {
           </div>
         </div>
         <div className="col-lg-9 text-container container mt-4 mt-lg-0">
-        {
-          !!onRedeemSet && (
-          <div
-            style={{
-              backgroundColor: "rgba(255,255,255,0.75)",
-              marginBottom: "25px",
-              display: "flex",
-              justifyContent: "center",
-              paddingTop: "2%",
-              paddingBottom: "2%",
-              borderRadius: '8px',
-            }}
-          >
-            <Button onClick={onRedeemSet} size="lg">
-              Redeem full set for {getDisplayBalance(nftSetPrice)} BNB
+          {!!onRedeemSet && (
+            <div
+              style={{
+                backgroundColor: "rgba(255,255,255,0.75)",
+                marginBottom: "25px",
+                display: "flex",
+                justifyContent: "center",
+                paddingTop: "2%",
+                paddingBottom: "2%",
+                borderRadius: "8px",
+              }}
+            >
+              <Button onClick={onRedeemSet} size="lg">
+                Redeem full set for {getDisplayBalance(nftSetPrice)} BNB
+              </Button>
+            </div>
+          )}
+
+          <div row>
+            <Button
+              onClick={() => {
+                switchTab();
+              }}
+              disabled={selectedTab === "NEW NFTs"}
+            >
+              NEW LISTINGS
+            </Button>
+            <Button
+              onClick={() => {
+                switchTab();
+              }}
+              disabled={selectedTab === "OUT OF PRINT"}
+            >
+              OUT OF PRINT
             </Button>
           </div>
-        )}
-          {modelNFTs &&
-            modelNFTs
-              .sort((a, b) => a.list_price - b.list_price)
-              .map((m) => <NFTListItem data={m} key={m.id} />)}
+          {selectedTab === "NEW NFTs"
+            ? newNFTs &&
+              newNFTs.length > 0 &&
+              newNFTs
+                .sort((a, b) => a.list_price - b.list_price)
+                .map((m) => <NFTListItem data={m} key={m.id} />)
+            : outOfPrintNFTs &&
+              outOfPrintNFTs.length > 0 &&
+              outOfPrintNFTs
+                .sort((a, b) => a.list_price - b.list_price)
+                .map((m) => <NFTResaleListItem data={m} key={m.id} />)}
+          <div>ALL</div>
         </div>
       </div>
     </div>

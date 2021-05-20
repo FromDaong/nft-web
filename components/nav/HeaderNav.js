@@ -42,9 +42,19 @@ const HeaderNav = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse className="justify-content-end">
-          <Link href="/">
-            <Nav.Link href="/">MARKETPLACE</Nav.Link>
+          <Link href="/creators" passhref>
+            <Nav.Link href="/creators">CREATORS</Nav.Link>
           </Link>
+          {account && (
+            <>
+            <Link href="/marketplace" passHref>
+              <Nav.Link>MARKETPLACE</Nav.Link>
+            </Link>
+            <Link href="/my-nfts" passHref>
+              <Nav.Link>MY NFTs</Nav.Link>
+            </Link>
+            </>
+          )}
           <Link href="/about" passHref>
             <Nav.Link>ABOUT</Nav.Link>
           </Link>
@@ -55,16 +65,6 @@ const HeaderNav = () => {
             BLOG
           </Nav.Link>
 
-          {account && (
-            <Link href="/my-nfts" passHref>
-              <Nav.Link>MY NFTs</Nav.Link>
-            </Link>
-          )}
-          {account && (
-            <Link href="/resale" passHref>
-              <Nav.Link>Resales</Nav.Link>
-            </Link>
-          )}
           {!account ? (
             <Button
               variant="primary px-4 ml-md-4"

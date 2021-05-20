@@ -69,7 +69,7 @@ function MyApp({ Component, pageProps }) {
 
         <meta
           name="description"
-          content="Treat is an exclusive platform for models to sell NFTs. Hold $TREAT to have a say on which models are chosen & new platform features."
+          content="Treat is an exclusive platform for creators to sell NFTs. Hold $TREAT to have a say on which creators are chosen & new platform features."
         />
       </Head>
       <SWRConfig

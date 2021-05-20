@@ -6,7 +6,13 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { Blurhash } from "react-blurhash";
 
-const NFTListItem = ({ data, revealNFTs, transferNFTClick, listOrderClick }) => {
+const NFTListItem = ({
+  data,
+  revealNFTs,
+  transferNFTClick,
+  listOrderClick,
+  cancelOrderClick,
+}) => {
   const [image, setBase64Image] = useState();
   const [modalData, setModalData] = useState();
 
@@ -87,47 +93,64 @@ const NFTListItem = ({ data, revealNFTs, transferNFTClick, listOrderClick }) => 
           <div className="title">{data.name}</div>
           <div className="creator">
             <div className="details">
-              {/* <div className="label">CREATOR</div> */}
               <div className="label">{data.attributes[0].value}</div>
             </div>
           </div>
-          {/* <p>Coming soon...</p> */}
-          <div className="row">
-            <div className="col-lg-6 mt-3">
-              <OverlayTrigger overlay={<Tooltip id="">Coming Soon!</Tooltip>}>
+
+          {!!transferNFTClick && (
+            <div className="row">
+              <div className="col-lg-6 mt-3">
+                <OverlayTrigger overlay={<Tooltip id="">Coming Soon!</Tooltip>}>
+                  <span className="d-inline-block w-100">
+                    <Button
+                      disabled
+                      style={{ pointerEvents: "none" }}
+                      className="w-100"
+                      variant="secondary"
+                    >
+                      <b>STAKE</b>
+                    </Button>
+                  </span>
+                </OverlayTrigger>
+              </div>
+              <div className="col-lg-6 mt-3">
                 <span className="d-inline-block w-100">
                   <Button
-                    disabled
-                    style={{ pointerEvents: "none" }}
                     className="w-100"
                     variant="secondary"
+                    onClick={() => transferNFTClick(data)}
                   >
-                    <b>STAKE</b>
+                    <b>TRANSFER</b>
                   </Button>
                 </span>
-              </OverlayTrigger>
+              </div>
             </div>
+          )}
+          <div className="row">
             <div className="col-lg-6 mt-3">
-              <span className="d-inline-block w-100">
-                <Button
-                  className="w-100"
-                  variant="secondary"
-                  onClick={() => transferNFTClick(data)}
-                >
-                  <b>TRANSFER</b>
-                </Button>
-              </span>
-            </div>
-            <div className="col-lg-6 mt-3">
-              <span className="d-inline-block w-100">
-                <Button
-                  className="w-100"
-                  variant="secondary"
-                  onClick={() => listOrderClick(data)}
-                >
-                  <b>RESELL</b>
-                </Button>
-              </span>
+              {!!listOrderClick ? (
+                <span className="d-inline-block w-100">
+                  <Button
+                    className="w-100"
+                    variant="secondary"
+                    onClick={() => listOrderClick(data)}
+                  >
+                    <b>RESELL</b>
+                  </Button>
+                </span>
+              ) : cancelOrderClick ? (
+                <span className="d-inline-block w-100">
+                  <Button
+                    className="w-100"
+                    variant="secondary"
+                    onClick={() => cancelOrderClick(data)}
+                  >
+                    <b>CANCEL ORDER</b>
+                  </Button>
+                </span>
+              ) : (
+                <span></span>
+              )}
             </div>
           </div>
         </div>

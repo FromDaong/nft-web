@@ -43,7 +43,7 @@ export const ListOrderModalBody = ({ data }) => {
   const { onListOrder } = useListOrder();
   const [listPrice, setListPrice] = useState(0);
   const [listQuantity, setListQuantity] = useState(0);
-  const maxUnixTimestamp = 2147483647000
+  const maxUnixTimestamp = 2147483647
   const [listExpires, setListExpires] = useState(maxUnixTimestamp);
 
   return (

@@ -38,14 +38,6 @@ export const getTreatMartContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treatMart;
 };
 
-export const getTreatMartBundleContract = (treat) => {
-  return treat && treat.contracts && treat.contracts.treatMartBundle;
-};
-
-export const getFreeTreatsContract = (treat) => {
-  return treat && treat.contracts && treat.contracts.freeTreats;
-};
-
 export const getTreatMarketplaceContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treatMarketplace;
 }
@@ -77,24 +69,9 @@ export const mintNft = async (treatmartContract, account, nftId, nftCost) => {
   }
 };
 
-export const mintFreeTreat = async (
-  freeTreatContract,
-  account,
-  nftId,
-  nftCost
-) => {
+export const getSetIds = async (treatMartContract, setId) => {
   try {
-    return await freeTreatContract.methods
-      .redeem(nftId)
-      .send({ from: account, value: 0 });
-  } catch (e) {
-    return undefined;
-  }
-};
-
-export const getSetIds = async (treatMartBundleContract, setId) => {
-  try {
-    const txHash = await treatMartBundleContract.methods 
+    const txHash = await treatMartContract.methods 
                                           .getSetIds(setId)
                                           .call();
     console.log(txHash)
@@ -104,9 +81,9 @@ export const getSetIds = async (treatMartBundleContract, setId) => {
   }
 }
 
-export const getSetPrice = async (treatMartBundleContract, setId) => {
+export const getSetPrice = async (treatMartContract, setId) => {
    try {
-    return await treatMartBundleContract.methods 
+    return await treatMartContract.methods 
                                           .nftSetCosts(setId)
                                           .call();
   } catch (e) {
@@ -115,10 +92,10 @@ export const getSetPrice = async (treatMartBundleContract, setId) => {
   } 
 }
 
-export const redeemSet = async (treatMartBundleContract, account, nftSetId, setCost) => {
+export const redeemSet = async (treatMartContract, account, nftSetId, setCost) => {
   console.log({mintSetCost: setCost?.toString()})
   try {
-    const txHash = await treatMartBundleContract.methods
+    const txHash = await treatMartContract.methods
                          .redeemSet(nftSetId)
                          .send({
                            from: account,
@@ -227,11 +204,23 @@ export const cancelOrder = async (treatMarketplaceContract, nftId, seller) => {
 };
 
 export const getOpenOrdersForNft = async (treatMarketplaceContract, nftId) => {
-  return await treatMarketplaceContract.methods.getOpenOrdersForNft(nftId).call();
+  try {
+  const orders = await treatMarketplaceContract.methods.getOpenOrdersForNft(nftId).call();
+  return orders;
+  } catch (err) {
+    console.error(`get orders for nft failed: ${err}`)
+  }
 };
 
 export const getOpenOrdersForSeller = async (treatMarketplaceContract, seller) => {
-  return await treatMarketplaceContract.methods.getOpenOrdersForNft(seller).call();
+  try {
+      const orders = await treatMarketplaceContract.methods.getOpenOrdersForSeller(seller).call();
+      console.log({rawOrders: orders})
+      return orders.map(o => parseInt(o));
+  } catch (err) {
+    console.error(`get orders for seller failed: ${err}`)
+    return []
+  }
 };
 
 export const getResaleOrder = async (treatMarketplaceContract, nftId, seller) => {
