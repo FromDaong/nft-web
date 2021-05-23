@@ -31,7 +31,8 @@ export const addressMap = {
 // networkId -> contractId
 export const contractAddresses = {
   treat: {
-    56: '0xac0c7d9b063ed2c0946982ddb378e03886c064e6'
+    56: '0xac0c7d9b063ed2c0946982ddb378e03886c064e6',
+    97: '0x306403fEFcA4675f8928B4999d374dBACFeABaA9',
   },
   weth: {
     56: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
@@ -41,29 +42,18 @@ export const contractAddresses = {
     // ^ original Minter, `isApprovedForAll` is broken
 
     56: '0x4Ab5d39EEe7294c1b644639389BF751ef6442902',
+    97: '0x14EC429a83684959BADfBF1C27169632285635C3',
     // ^ test minter from granola
     // 56: '0x89689bb544820b6ad6b7d239e6afeaf856879d2a',
     // ^ test minter for testing the marketplace contract
   },
   treatMart: {
-    //56: '0x769C54A55FF7d3CeccD060710bb849eDbCc97351'
-    // ^ accept treat
-    //56: '0x89362Fd6ff407591D4bE8fda0580C115DD6BC5b6'
-    // ^ accept wbnb
-    //56: '0x5A8e9c992D23A643011f5835A2D1DBE08Af4ff28'
-    // ^ accept bnb
-    56: '0xD48E7709FAC65ad74E526D1fB3d9a3eDbCb15FE0'
-    // ^ accept bnb with setable performer percentage
-  },
-  treatMartBundle: {
-    56: '0xb0685346A231272BDa0F30Eb46183F016E5f3dcF'
-  },
-  freeTreats: {
-    56: '0xd17EAf17F4120977ff61F5529B2dF5Af66252238'
+    56: '0xD48E7709FAC65ad74E526D1fB3d9a3eDbCb15FE0',
+    97: '0x6a1f5f66B47f750626761477Fc042661294Bbfb5',
   },
   treatMarketplace: {
     56: '0x6991a8e77a1a4ea5819da2c5a65a3524259ca66e',
-    // ^ test marketplace contract
+    97: '0xB70EC99ECBF67453F315635000d20bA28aC35132',
   }
 }
 

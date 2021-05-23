@@ -10,12 +10,12 @@ import { contractAddresses } from '../../../treat/lib/constants'
 
 dbConnect();
 
-const web3 = new Web3("https://bsc-dataseed2.defibit.io");
+const web3 = new Web3("https://data-seed-prebsc-1-s1.binance.org:8545/");
 
 
 const treatNFTMinter = new web3.eth.Contract(
   TreatNFTMinterAbi,
-  contractAddresses.treatNFTMinter[56]
+  contractAddresses.treatNFTMinter[97]
 );
 
 export default async (req, res) => {
@@ -34,9 +34,13 @@ export default async (req, res) => {
             .status(400)
             .json({ success: false, error: "nft not found" });
 
+        console.log('call api')
         // it's safe to use .toNumber on these BigNumbers here because supply should always be in a valid int32 range
-        const maxSupply = (await getNftMaxSupply(treatNFTMinter, id)).toNumber();
-        const totalSupply = (await getNftTotalSupply(treatNFTMinter, id)).toNumber();
+        const maxSupply = (await getNftMaxSupply(treatNFTMinter, id))?.toNumber();
+        const totalSupply = (await getNftTotalSupply(treatNFTMinter, id))?.toNumber();
+
+        console.log({nftReturn_apiMax: maxSupply})
+        console.log({nftReturn_apiTotal: totalSupply})
 
         const returnData = { ...NFTres.toObject(), maxSupply, totalSupply, };
         delete returnData.model_bnb_address;

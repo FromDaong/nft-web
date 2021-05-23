@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import useSWR from "swr";
@@ -52,6 +52,10 @@ const ViewModelWrapper = ({ username }) => {
   const { onRedeemSet } = setId
     ? useRedeemSet(setId, nftSetPrice)
     : { onRedeemSet: null };
+
+        console.log({nftReturn_mNfts: modelNFTs});
+        console.log({nftReturn_newNFTs: newNFTs});
+        console.log({nftReturn_outOfPrint: outOfPrintNFTs});
 
   if (!modelData || !modelData.username || status !== "connected") {
     return (
