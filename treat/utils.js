@@ -129,6 +129,8 @@ export const getNftCreator = async (treatNFTMinter, nftId) => {
 };
 
 export const getNftMaxSupply = async (treatNFTMinter, nftId) => {
+  console.log('call max supply')
+  console.log({maxSupply: nftId})
   try {
     const amount = await treatNFTMinter.methods.tokenMaxSupply(nftId).call();
     console.log({ amount });

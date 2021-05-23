@@ -3,7 +3,7 @@
   "version": "1.19.1",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_OPTIONS=\"--max_old_space_size=4096\" next dev",
+    "dev": "PORT=3001 cross-env NODE_OPTIONS=\"--max_old_space_size=4096\" next dev",
     "build": "next build",
     "start": "next start"
   },
