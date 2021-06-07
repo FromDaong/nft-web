@@ -1,25 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import useSWR from "swr";
 import useWallet from "use-wallet";
 import NFTListItem from "../../components/NFTListItem";
-import { useRouter } from "next/router";
-import { modelSetBundles } from "../../treat/lib/constants";
+import {useRouter} from "next/router";
+import {modelSetBundles} from "../../treat/lib/constants";
 import useGetTreatSetCost from "../../hooks/useGetTreatSetCost";
 import useRedeemSet from "../../hooks/useRedeemSet";
-import { getDisplayBalance } from "../../utils/formatBalance";
+import {getDisplayBalance} from "../../utils/formatBalance";
+import {Col, Container, Image, Row} from "react-bootstrap";
+// import pic from "assets/wide.jpeg"
 
-const ViewModelWrapper = ({ username }) => {
-  const { data: res } = useSWR(`/api/model/${username}`);
+const ViewModelWrapper = ({username}) => {
+  const {data: res} = useSWR(`/api/model/${username}`);
   const [modelData, setModelData] = useState();
   const [modelNFTs, setModelNFTs] = useState();
-  const { status } = useWallet();
+  const {status} = useWallet();
   const router = useRouter();
 
   useEffect(() => {
     (async () => {
-      console.log({ res });
+      console.log({res});
       if (res) {
         setModelData(res);
 
@@ -41,9 +43,9 @@ const ViewModelWrapper = ({ username }) => {
   const setId = modelSetBundles[username];
   const nftSetPrice = useGetTreatSetCost(setId);
   console.log({nftSetPrice: nftSetPrice?.toString()})
-  const { onRedeemSet } = setId
+  const {onRedeemSet} = setId
     ? useRedeemSet(setId, nftSetPrice)
-    : { onRedeemSet: null };
+    : {onRedeemSet: null};
 
   if (!modelData || !modelData.username || status !== "connected") {
     return (
@@ -74,7 +76,7 @@ const ViewModelWrapper = ({ username }) => {
           animation="border"
           role="status"
           size="xl"
-          style={{ marginTop: 5 }}
+          style={{marginTop: 5}}
         >
           <span className="sr-only">Loading...</span>
         </Spinner>
@@ -92,54 +94,31 @@ const ViewModelWrapper = ({ username }) => {
   }
 };
 
-const ViewModel = ({ modelData, modelNFTs, nftSetPrice, onRedeemSet }) => {
-  console.log({ modelNFTs });
+const ViewModel = ({modelData, modelNFTs, nftSetPrice, onRedeemSet}) => {
+  console.log({modelNFTs});
   return (
     <div className="container">
-      <div className="view-model row">
-        <div className="image-wrapper col-lg-3 p-0 pr-lg-3">
-          <div className="image-container text-center text-lg-left">
-            <img src={modelData.profile_pic} className="profile-pic" />
-            <div className="title mt-3">{modelData.username}</div>
-            <div
-              className="bio text-center mt-2"
-              style={{ fontSize: ".9em", color: "#777" }}
-            >
-              {modelData.bio}
-            </div>
+      <div className="row justify-content-center">
+        <div className="col-md-12 center text-center">
+          <Image src={"/assets/wide.jpeg"}/>
+          <div className="text-left">
+            Some Text
           </div>
         </div>
-        <div className="col-lg-9 text-container container mt-4 mt-lg-0">
-        {
-          !!onRedeemSet && (
-          <div
-            style={{
-              backgroundColor: "rgba(255,255,255,0.75)",
-              marginBottom: "25px",
-              display: "flex",
-              justifyContent: "center",
-              paddingTop: "2%",
-              paddingBottom: "2%",
-              borderRadius: '8px',
-            }}
-          >
-            <Button onClick={onRedeemSet} size="lg">
-              Redeem full set for {getDisplayBalance(nftSetPrice)} BNB
-            </Button>
+        <div className="col-md-12">
+          <Image src={"/assets/wide.jpeg"}/>
+          <div>
+            Some Text
           </div>
-        )}
-          {modelNFTs &&
-            modelNFTs
-              .sort((a, b) => a.list_price - b.list_price)
-              .map((m) => <NFTListItem data={m} key={m.id} />)}
         </div>
       </div>
     </div>
+
   );
 };
 
-ViewModelWrapper.getInitialProps = async ({ query: { username } }) => {
-  return { username };
+ViewModelWrapper.getInitialProps = async ({query: {username}}) => {
+  return {username};
 };
 
 export default ViewModelWrapper;
