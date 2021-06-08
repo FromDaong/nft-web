@@ -11,16 +11,14 @@ import useRedeemSet from "../../hooks/useRedeemSet";
 import {getDisplayBalance} from "../../utils/formatBalance";
 import {Col, Container, Image, Row} from "react-bootstrap";
 import {ArrowRight, Instagram, Twitter} from "react-bootstrap-icons";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import 'font-awesome/css/font-awesome.min.css';
 
 
-
-
 // Font Awesome Imports
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { fab } from "@fortawesome/free-brands-svg-icons";
-import { fas } from "@fortawesome/free-solid-svg-icons";
+import {library} from "@fortawesome/fontawesome-svg-core";
+import {fab} from "@fortawesome/free-brands-svg-icons";
+import {fas} from "@fortawesome/free-solid-svg-icons";
 
 
 // Library Creation
@@ -117,7 +115,7 @@ const ViewModel = ({modelData, modelNFTs, nftSetPrice, onRedeemSet}) => {
         <div className="col-md-12 text-center image-caption">
           <Image className="model-image" src={"/assets/wide.jpeg"}/>
           <div className="text-left caption">
-              @Sophox
+            @Sophox
           </div>
         </div>
         <div className="col-md-6">
@@ -128,13 +126,54 @@ const ViewModel = ({modelData, modelNFTs, nftSetPrice, onRedeemSet}) => {
           </p>
         </div>
         <div className="col-md-6 text-right">
-          <a><FontAwesomeIcon  className="fa" icon={['fab', 'twitter']} /></a>
-          <a><FontAwesomeIcon  className="fa" icon={['fab', 'instagram']} /></a>
+          <a><FontAwesomeIcon className="fa" icon={['fab', 'twitter']}/></a>
+          <a><FontAwesomeIcon className="fa" icon={['fab', 'instagram']}/></a>
         </div>
       </div>
 
-
+      <div className="m-2 row justify-content-center treat-border">
+        <div className="col-md-4">
+          <Image className="model-photo-sale" src={"/assets/belle.jpeg"}/>
+        </div>
+        <div className="col-md-5">
+          <div className="row text-left">
+            <div className="col-md-12">
+              <div className="nft-header">
+                Some Small Caption above title
+              </div>
+              <div className="nft-title">
+                Some Generic Picture Title
+              </div>
+            </div>
+            <div className="col-md-12 d-inline-flex">
+              <div className="nft-pricing">
+                <div className="nft-unit">
+                  Unit Price
+                </div>
+                <div>
+                  0.05 BNB
+                </div>
+              </div>
+              <div className="nft-pricing">
+                <div className="nft-unit">
+                  Time Left
+                </div>
+                <div>
+                  N Days
+                </div>
+              </div>
+            </div>
+            <div className="col-md-12 nft-creator">
+              Creator
+            </div>
+          </div>
+        </div>
+        <div className="col-md-3 text-right align-self-end">
+          <Button className="nft-click">View Nft</Button>
+        </div>
+      </div>
     </div>
+
 
   );
 };
