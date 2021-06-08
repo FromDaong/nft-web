@@ -10,6 +10,21 @@ import useGetTreatSetCost from "../../hooks/useGetTreatSetCost";
 import useRedeemSet from "../../hooks/useRedeemSet";
 import {getDisplayBalance} from "../../utils/formatBalance";
 import {Col, Container, Image, Row} from "react-bootstrap";
+import {ArrowRight, Instagram, Twitter} from "react-bootstrap-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import 'font-awesome/css/font-awesome.min.css';
+
+
+
+
+// Font Awesome Imports
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fab } from "@fortawesome/free-brands-svg-icons";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+
+
+// Library Creation
+library.add(fab, fas);
 // import pic from "assets/wide.jpeg"
 
 const ViewModelWrapper = ({username}) => {
@@ -98,20 +113,27 @@ const ViewModel = ({modelData, modelNFTs, nftSetPrice, onRedeemSet}) => {
   console.log({modelNFTs});
   return (
     <div className="container">
-      <div className="row justify-content-center">
-        <div className="col-md-12 center text-center">
-          <Image src={"/assets/wide.jpeg"}/>
-          <div className="text-left">
-            Some Text
+      <div className="m-2 row justify-content-center treat-border">
+        <div className="col-md-12 text-center image-caption">
+          <Image className="model-image" src={"/assets/wide.jpeg"}/>
+          <div className="text-left caption">
+              @Sophox
           </div>
         </div>
-        <div className="col-md-12">
-          <Image src={"/assets/wide.jpeg"}/>
-          <div>
-            Some Text
-          </div>
+        <div className="col-md-6">
+          <p>
+            Available in <span className="n-days">X days</span>
+            <br></br>
+            Available in <span className="n-days">Y days</span>
+          </p>
+        </div>
+        <div className="col-md-6 text-right">
+          <a><FontAwesomeIcon  className="fa" icon={['fab', 'twitter']} /></a>
+          <a><FontAwesomeIcon  className="fa" icon={['fab', 'instagram']} /></a>
         </div>
       </div>
+
+
     </div>
 
   );
