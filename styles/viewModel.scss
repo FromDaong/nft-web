@@ -43,15 +43,12 @@
   .stats {
     margin: 25px 0;
     display: flex;
-
     .stat {
       font-weight: 600;
       margin-right: 50px;
-
       .label {
         color: #a5a18d;
       }
-
       .number {
         font-size: 1.75em;
       }
@@ -59,95 +56,17 @@
   }
 }
 
-.caption {
-  margin-left: 10px;
-  margin-top: -40px;
-  color: #d4668e;
-  font-size: 35px;
-  font-weight: bold;
-}
-
-.image-caption {
-  margin-top: 10px;
-  margin-bottom: 25px;
-}
-
-.model-image {
-  width: 100%;
-  border-radius: 1%;
-}
-
-.model-photo-sale {
-  width: 190px;
-  height: 100%;
-  border-radius: 5%;
-}
-
-.nft-header {
-  font-size: 10px;
-}
-.nft-title {
-  font-weight: bold;
-  color: #d4668d;
-}
-.nft-pricing {
-  margin-right: 10px;
-}
-.nft-unit {
-  font-size: 10px;
-}
-
-.nft-pricing-spacing {
-  padding-top: 20px;
-}
-
-.nft-creator {
-  margin-top: 112px;
-  height: 35px;
-}
-
-.nft-creator-subtext {
-  font-size: 10px;
-}
-.nft-creator-text {
-  color: #d4668e;
-}
-
-.nft-click {
-  width: 100%;
-  border-radius: 10px !important;
-}
-
-.fa {
-  border-radius: 50%;
-  margin-left: 5px;
-  background-color: #d4668e !important;
-  font-size: 50px !important;
-  padding: 10px;
-}
-
-.fa-twitter {
-  color: white;
-}
-
-.fa-instagram {
-  color: white;
-}
-
 .creator-wrapper {
   padding-top: 10px;
-
   .creator {
     margin-top: 10px;
     display: flex;
-
     .pic {
       img {
         max-width: 60px;
         border-radius: 8px;
       }
     }
-
     .details {
       font-weight: 600;
       margin-left: 15px;
@@ -157,7 +76,6 @@
         color: #a5a18d;
         font-size: 1em;
       }
-
       .name {
         font-size: 1.4em;
       }
@@ -175,14 +93,12 @@
     width: 100%;
     display: flex;
     margin-top: 20px;
-
     .pic {
       img {
         max-width: 50px;
         border-radius: 8px;
       }
     }
-
     .details {
       font-weight: 600;
       margin-left: 15px;
@@ -196,7 +112,6 @@
 
         font-size: 0.8em;
       }
-
       .event {
         display: inline-block;
         word-break: break-word;
@@ -211,42 +126,5 @@
     font-weight: 600;
     margin-top: 5px;
     font-size: 16px;
-  }
-}
-
-.n-days {
-  color: #d4668e;
-}
-
-.fa {
-
-}
-.fa:hover {
-  opacity: 0.7;
-}
-
-.treat-border {
-  border: #fffdf2;
-  background-color: #fffdf2;
-  border-radius: 8px;
-  padding: 15px;
-
-}
-
-.treat-icons {
-  margin: 5px;
-}
-
-
-.bio {
-  .bio-buttons {
-    background-color: #d4668d;
-    border-color: #fffdf2;
-    border-radius: 100%;
-    padding: 20px;
-  }
-
-  .bio-buttons:hover {
-    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.15);
   }
 }
