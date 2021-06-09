@@ -115,7 +115,7 @@ const ViewModel = ({modelData, modelNFTs, nftSetPrice, onRedeemSet}) => {
         <div className="col-md-12 text-center image-caption">
           <Image className="model-image" src={"/assets/wide.jpeg"}/>
           <div className="text-left caption">
-            @Sophox
+            @sophox
           </div>
         </div>
         <div className="col-md-6">
@@ -132,10 +132,10 @@ const ViewModel = ({modelData, modelNFTs, nftSetPrice, onRedeemSet}) => {
       </div>
 
       <div className="m-2 row justify-content-center treat-border">
-        <div className="col-md-4">
+        <div className="col-sm-6 col-md-4 col-lg-3">
           <Image className="model-photo-sale" src={"/assets/belle.jpeg"}/>
         </div>
-        <div className="col-md-5">
+        <div className="col-sm-6 col-md-5 col-lg-6">
           <div className="row text-left">
             <div className="col-md-12">
               <div className="nft-header">
@@ -145,12 +145,12 @@ const ViewModel = ({modelData, modelNFTs, nftSetPrice, onRedeemSet}) => {
                 Some Generic Picture Title
               </div>
             </div>
-            <div className="col-md-12 d-inline-flex">
+            <div className="col-md-12 d-inline-flex nft-pricing-spacing">
               <div className="nft-pricing">
                 <div className="nft-unit">
                   Unit Price
                 </div>
-                <div>
+                <div className="n-days">
                   0.05 BNB
                 </div>
               </div>
@@ -158,20 +158,29 @@ const ViewModel = ({modelData, modelNFTs, nftSetPrice, onRedeemSet}) => {
                 <div className="nft-unit">
                   Time Left
                 </div>
-                <div>
+                <div className="n-days">
                   N Days
                 </div>
               </div>
             </div>
-            <div className="col-md-12 nft-creator">
-              Creator
+            <div className="col-md-12 nft-creator d-inline-flex">
+              <Image  src={"/assets/turtle.png"}/>
+              <div>
+                <div className="nft-creator-subtext">
+                  Creator
+                </div>
+                <div className="nft-creator-text">
+                  Soph
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div className="col-md-3 text-right align-self-end">
+        <div className="col-sm-12 col-md-3 col-lg-3 text-right align-self-end">
           <Button className="nft-click">View Nft</Button>
         </div>
       </div>
+
     </div>
 
 
