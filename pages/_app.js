@@ -99,12 +99,12 @@ function MyApp({ Component, pageProps }) {
 function walletWrapper(props) {
   return (
     <UseWalletProvider
-      chainId={97}
+      chainId={56}
       connectors={{
         bsc,
         bsw: {
           web3ReactConnector() {
-            return new BscConnector({ supportedChainIds: [97] });
+            return new BscConnector({ supportedChainIds: [56] });
           },
           handleActivationError(err) {
             if (err instanceof UserRejectedRequestError) {
