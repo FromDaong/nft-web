@@ -58,11 +58,7 @@ const Home = () => {
     const mR = modelData
       .map((model) => {
         if (model && model.totw)
-          return (
-            <div className="col-lg-4 col-md-6">
-              <ModelListItem key={model.username} data={model} />
-            </div>
-          );
+          return <ModelListItem key={model.username} data={model} />;
         else return undefined;
       })
       .filter((e) => e);
@@ -87,57 +83,107 @@ const Home = () => {
 
   return (
     <div className="home">
-      <div className="hero">
-        <div className="row">
-          <div className="col-lg-6 hero-text">
-            <div className="heading-text">
-              Maybe it's time to treat yourself...
-            </div>
-            <div className="secondary-text">
-              Treat is an exclusive platform for models to sell NFTs. Hold
-              $TREAT to have a say on which models are chosen & new platform
-              features.
-            </div>
-            <div className="buttons row pt-4">
-              <div className="col-md-6  mt-2">
-                <Scroll.Link
-                  to="nft-list"
-                  spy={true}
-                  smooth={true}
-                  offset={50}
-                  duration={1000}
-                >
-                  <Button variant="primary py-2 w-100">
-                    <b>BROWSE NFTs</b>
-                  </Button>
-                </Scroll.Link>
+      <div className="min-height-wrapper">
+        <div className="hero">
+          <div className="row">
+            <div className="col-lg-6 hero-text">
+              <div className="heading-text">
+                Maybe it's time to treat yourself...
               </div>
-              <div className="col-md-6 mt-2">
-                <a
-                  href="https://exchange.pancakeswap.finance/#/swap?outputCurrency=0xac0c7d9b063ed2c0946982ddb378e03886c064e6"
-                  target="_blank"
-                >
-                  <Button variant="light w-100 py-2 text-primary">
-                    <b>BUY $TREAT</b>
-                  </Button>
-                </a>
+              <div className="secondary-text">
+                Treat is an exclusive platform for models to sell NFTs. Hold
+                $TREAT to have a say on which models are chosen & new platform
+                features.
               </div>
+              <div className="buttons row pt-4">
+                <div className="col-md-6  mt-2">
+                  <Scroll.Link
+                    to="nft-list"
+                    spy={true}
+                    smooth={true}
+                    offset={50}
+                    duration={1000}
+                  >
+                    <Button variant="primary py-2 w-100">
+                      <b>BROWSE NFTs</b>
+                    </Button>
+                  </Scroll.Link>
+                </div>
+                <div className="col-md-6 mt-2">
+                  <a
+                    href="https://exchange.pancakeswap.finance/#/swap?outputCurrency=0xac0c7d9b063ed2c0946982ddb378e03886c064e6"
+                    target="_blank"
+                  >
+                    <Button variant="light w-100 py-2">
+                      <b>BUY $TREAT</b>
+                    </Button>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-1"></div>
+            <div className="col-lg-5 hero-logo-container mt-5 d-lg-flex d-none">
+              <img src={"/assets/hero-logo.png"} alt="" />
             </div>
           </div>
-          <div className="col-lg-1"></div>
-          <div className="col-lg-5 hero-logo-container mt-5 d-lg-flex d-none">
-            <img src={"/assets/hero-logo.png"} alt="" />
+        </div>
+        <div className="stats-components-wrapper row">
+          <div className="col-lg-4 stats-wrapper">
+            <div className="stats-container" style={{ background: "#D3678E" }}>
+              <div className="big-text">10+</div>
+              <div className="small-text">Creators on TreatDAO</div>
+            </div>
+          </div>
+          <div className="col-lg-4 stats-wrapper">
+            <div className="stats-container">
+              <div className="big-text">65+ NFTs</div>
+              <div className="small-text">Released on TreatDAO</div>
+            </div>
+          </div>
+          <div className="col-lg-4 stats-wrapper">
+            <div className="stats-container" style={{ background: "#F19592" }}>
+              <div className="big-text">90+ BNB</div>
+              <div className="small-text">Earned by Creators</div>
+            </div>
           </div>
         </div>
       </div>
       <Scroll.Element name="model-list">
-        <div
-          className="heading-text p-0 mb-4 text-center"
-          style={{ fontSize: "3em" }}
-        >
-          Treats of the Week
+        <div className="row totw-section my-4">
+          <div className="col-lg-8 d-flex flex-column justify-content-center">
+            <div
+              className="heavy-shadow p-0 mb-4 center-mobile"
+              style={{ fontSize: "6.5em", lineHeight: 1.15 }}
+            >
+              Treat of
+              <br />
+              the Week
+            </div>
+            <p className="totw-secondary-text">
+              "Treat of the Week" is the name we give to a featured creator from
+              TreatDAO once a week. We choose a creator and work with them on a
+              series of NFTs, which we feature on the homepage as well as all of
+              our socials.
+              <br />
+              <br />
+              To apply to become a model on TreatDAO or the “Treat of the Week”,
+              fill in our short form.
+            </p>
+            <div className="totw-buttons">
+              <a href="/apply">
+                <Button variant="primary py-2 px-5 mt-4">
+                  <b>Apply to Become a Creator</b>
+                </Button>
+              </a>
+              <a href="/creators">
+                <Button variant="light ml-md-4 py-2 px-5 mt-4">
+                  <b>View All Creators</b>
+                </Button>
+              </a>
+            </div>
+          </div>
+          <div className="col-lg-4">{modelListRender}</div>
         </div>
-        <div className="nft-list">{modelListRender}</div>
       </Scroll.Element>
       <Scroll.Element name="nft-list ">
         <div

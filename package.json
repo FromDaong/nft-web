@@ -10,6 +10,7 @@
   "dependencies": {
     "@binance-chain/bsc-connector": "^1.0.0",
     "@binance-chain/bsc-use-wallet": "^0.8.1",
+    "@typeform/embed-react": "^1.0.5",
     "axios": "^0.21.1",
     "bcrypt": "^5.0.0",
     "bignumber.js": "^9.0.0",

@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import Nav from "react-bootstrap/Nav";
 import { useWallet } from "use-wallet";
 import WalletModal from "../WalletModal";
+import AgeModal from "../AgeModal";
 import BalanceModal from "../BalanceModal";
 import Link from "next/link";
 
@@ -12,8 +13,17 @@ const HeaderNav = () => {
   const { status, account, error, reset } = useWallet();
   const [walletModalShow, setWalletModalShow] = useState(false);
   const [balanceModalShow, setBalanceModalShow] = useState(false);
+  const [ageModalShow, setAgeModalShow] = useState(false);
 
   console.log({ status, error, account });
+
+  useEffect(() => {
+    (async () => {
+      const verified = await localStorage.getItem("ageVerified");
+      console.log({ verified });
+      if (!verified) setAgeModalShow(true);
+    })();
+  });
 
   useEffect(() => {
     if (status === "connected") {
@@ -32,6 +42,11 @@ const HeaderNav = () => {
         handleClose={() => setBalanceModalShow(false)}
         account={account}
       />
+      <AgeModal
+        show={ageModalShow}
+        handleClose={() => setAgeModalShow(false)}
+        account={account}
+      />
       <div className="container">
         <Navbar.Brand>
           <Link href="/" passHref>
@@ -42,9 +57,12 @@ const HeaderNav = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse className="justify-content-end">
-          <Link href="/">
-            <Nav.Link href="/">MARKETPLACE</Nav.Link>
-          </Link>
+          <Nav.Link href="/creators" passHref>
+            CREATORS
+          </Nav.Link>
+          <Nav.Link href="/apply" passHref>
+            APPLY
+          </Nav.Link>
           <Link href="/about" passHref>
             <Nav.Link>ABOUT</Nav.Link>
           </Link>
