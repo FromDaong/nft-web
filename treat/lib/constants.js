@@ -64,4 +64,5 @@ export const modelSetBundles = {
   davinaastewart: 3,
   _thepr0duct: 4,
   polyannie01: 5,
+  MissJennyff: 6,
 };
