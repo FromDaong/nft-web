@@ -182,12 +182,16 @@ const ViewModel = ({
               OUT OF PRINT
             </Button>
           </div> */}
-          <div>
+          <div className="row">
             {modelNFTs &&
               modelNFTs.length > 0 &&
               modelNFTs
                 .sort((a, b) => a.list_price - b.list_price)
-                .map((m) => <NFTListItem data={m} key={m.id} />)}
+                .map((m) => (
+                  <div className="col-md-6">
+                    <NFTListItem data={m} key={m.id} />
+                  </div>
+                ))}
           </div>
           <div>ALL</div>
         </div>
