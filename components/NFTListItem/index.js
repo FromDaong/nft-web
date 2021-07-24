@@ -26,63 +26,64 @@ const NFTListItem = ({ data }) => {
 
   return (
     <a href={`/view/${data.id}`}>
-      <div className="container">
-        <div className="nft-list-item row">
-          <div className="col-lg-3 img-container text-center text-lg-left d-flex justify-content-center align-items-center ">
-            <div className="info-overlay">
-              <EyeSlash size={32} />
-              <div>Purchase to View</div>
-            </div>
-            <Blurhash
-              style={{ borderRadius: 5, overflow: "hidden" }}
-              hash={data.blurhash}
-              width={"100%"}
-              height={300}
-              resolutionX={32}
-              resolutionY={32}
-              punch={1}
-            />
+      <div className="nft-card">
+        <div className="totw-tag-wrapper">
+          {data.totw && <div className="totw-tag">TOTW</div>}
+        </div>
+        <div className="profile-pic">
+          <img
+            src={
+              data.model_profile_pic ||
+              `data:image/svg+xml;utf8,${generateFromString(
+                data.attributes[0].value
+              )}`
+            }
+          />
+        </div>
+        <div className="img-container text-center text-lg-left d-flex justify-content-center align-items-center">
+          <div className="info-overlay">
+            <EyeSlash size={32} />
+            <div>Purchase to View</div>
           </div>
-          <div className="col-lg-9 text-container container p-3 pt-5 pl-xl-4 pl-lg-5 px-lg-0 pt-lg-2">
-            <div className="title-section">
-              <div className="edition">AVAILABLE THIS WEEK ONLY</div>
-              {/* <div className="edition">MAX SUPPLY {data.max_supply}</div> */}
-              <div className="title">{data.name}</div>
+          <Blurhash
+            style={{
+              borderRadius: 8,
+              overflow: "hidden",
+              border: "3px solid #E795B6",
+            }}
+            hash={data.blurhash}
+            width={"100%"}
+            height={400}
+            resolutionX={32}
+            resolutionY={32}
+            punch={1}
+          />
+        </div>
+        <div className="text-container container">
+          <div className="title-section">
+            {/* <div className="edition">AVAILABLE THIS WEEK ONLY</div> */}
+            {/* <div className="edition">MAX SUPPLY {data.max_supply}</div> */}
+            <div className="title">{data.name}</div>
+            <div className="name">{data.attributes[0].value}</div>
+          </div>
+          <div className="stats">
+            <div className="stat">
+              <div className="number">{data.list_price}</div>
+              <div className="label">BNB</div>
             </div>
-            <div className="stats">
-              <div className="stat">
-                <div className="label">LIST PRICE</div>
-                <div className="number">{data.list_price} BNB</div>
-              </div>
-              {/* <div className="stat">
+            {/* <div className="stat">
                 <div className="label">CREATOR SHARE</div>
                 <div className="number">75%</div>
               </div> */}
-            </div>
-            <div className="bottom-container">
-              <div className="creator">
-                <div className="pic">
-                  <img
-                    src={
-                      data.model_profile_pic ||
-                      `data:image/svg+xml;utf8,${generateFromString(
-                        data.attributes[0].value
-                      )}`
-                    }
-                  />
-                </div>
-                <div className="details">
-                  <div className="label">CREATOR</div>
-                  <div className="name">{data.attributes[0].value}</div>
-                </div>
-              </div>
-              <div className="button pt-4 pt-md-0 ">
-                <Button variant="primary py-2 px-5 mr-3 w-sm-100">
-                  <b>VIEW NFT</b>
-                </Button>
-              </div>
-            </div>
           </div>
+          {/* <div className="bottom-container">
+            <div className="creator">
+              <div className="details">
+                <div className="label">CREATOR</div>
+                <div className="name">{data.attributes[0].value}</div>
+              </div>
+            </div>
+          </div> */}
         </div>
       </div>
     </a>

@@ -33,7 +33,12 @@ const Home = () => {
     nftListRender = nftData
       .sort((a, b) => a.list_price - b.list_price)
       .map((nft) => {
-        if (nft.totw) return <NFTListItem key={nft.id} data={nft} />;
+        if (nft.totw)
+          return (
+            <div className="col-md-4">
+              <NFTListItem key={nft.id} data={nft} />
+            </div>
+          );
         else return undefined;
       })
       .filter((e) => e);
@@ -185,14 +190,17 @@ const Home = () => {
           <div className="col-lg-4">{modelListRender}</div>
         </div>
       </Scroll.Element>
-      <Scroll.Element name="nft-list ">
+      <Scroll.Element name="nft-list">
         <div
-          className="heading-text p-0 mt-5 mb-4 text-center"
+          className="heading-text p-0 mt-10 text-center"
           style={{ fontSize: "3em" }}
         >
           All Available NFTs
         </div>
-        <div className="nft-list">{nftListRender}</div>
+        <p className="totw-secondary-text text-center m-auto pb-10 pt-1">
+          These are all our currently available NFTs for purchase.
+        </p>
+        <div className="nft-list row mt-5">{nftListRender}</div>
       </Scroll.Element>
     </div>
   );
