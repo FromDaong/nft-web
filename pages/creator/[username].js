@@ -53,9 +53,9 @@ const ViewModelWrapper = ({ username }) => {
     ? useRedeemSet(setId, nftSetPrice)
     : { onRedeemSet: null };
 
-        console.log({nftReturn_mNfts: modelNFTs});
-        console.log({nftReturn_newNFTs: newNFTs});
-        console.log({nftReturn_outOfPrint: outOfPrintNFTs});
+  console.log({ nftReturn_mNfts: modelNFTs });
+  console.log({ nftReturn_newNFTs: newNFTs });
+  console.log({ nftReturn_outOfPrint: outOfPrintNFTs });
 
   if (!modelData || !modelData.username || status !== "connected") {
     return (
@@ -138,6 +138,12 @@ const ViewModel = ({
               {modelData.bio}
             </div>
           </div>
+
+          <a href="/creators">
+            <Button style={{ marginTop: 15, width: "100%" }}>
+              View all Models
+            </Button>
+          </a>
         </div>
         <div className="col-lg-9 text-container container mt-4 mt-lg-0">
           {!!onRedeemSet && (
@@ -158,7 +164,7 @@ const ViewModel = ({
             </div>
           )}
 
-          <div row>
+          {/* <div row>
             <Button
               onClick={() => {
                 switchTab();
@@ -175,19 +181,18 @@ const ViewModel = ({
             >
               OUT OF PRINT
             </Button>
+          </div> */}
+          <div className="row">
+            {modelNFTs &&
+              modelNFTs.length > 0 &&
+              modelNFTs
+                .sort((a, b) => a.list_price - b.list_price)
+                .map((m) => (
+                  <div className="col-md-6">
+                    <NFTListItem data={m} key={m.id} />
+                  </div>
+                ))}
           </div>
-          {selectedTab === "NEW NFTs"
-            ? newNFTs &&
-              newNFTs.length > 0 &&
-              newNFTs
-                .sort((a, b) => a.list_price - b.list_price)
-                .map((m) => <NFTListItem data={m} key={m.id} />)
-            : outOfPrintNFTs &&
-              outOfPrintNFTs.length > 0 &&
-              outOfPrintNFTs
-                .sort((a, b) => a.list_price - b.list_price)
-                .map((m) => <NFTResaleListItem data={m} key={m.id} />)}
-          <div>ALL</div>
         </div>
       </div>
     </div>

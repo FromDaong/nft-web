@@ -15,8 +15,9 @@ const Hero = () => {
             Maybe it's time to treat yourself...
           </div>
           <div className="secondary-text">
-            Treat is an exclusive platform for creators to sell NFTs. Hold $TREAT
-            to have a say on which creators are chosen & new platform features.
+            Treat is an exclusive platform for creators to sell NFTs. Hold
+            $TREAT to have a say on which creators are chosen & new platform
+            features.
           </div>
           <div className="buttons row pt-4">
             <div className="col-md-6  mt-2">
@@ -123,12 +124,9 @@ const CreatorsNftList = () => {
   let nftListRender;
 
   if (nftData) {
-
     nftListRender = nftData
       .sort((a, b) => a.list_price - b.list_price)
-      .map((nft) =>
-            <NFTListItem key={nft.id} data={nft} />
-      )
+      .map((nft) => <NFTListItem key={nft.id} data={nft} />)
       .filter((e) => e);
   } else {
     nftListRender = (

@@ -8,6 +8,7 @@
 @import "./viewModel.scss";
 @import "./myNFTItem.scss";
 @import "./resale.css";
+@import "./nftCard.scss";
 
 * {
   font-family: "Quicksand", sans-serif;
@@ -83,6 +84,12 @@ a:hover {
   text-shadow: 3px 3px 1px #f19590;
   font-weight: bolder;
   font-size: 2em;
+}
+
+.heavy-shadow {
+  color: #fffdf2;
+  text-shadow: 5px 5px 1px #f19590;
+  font-weight: bolder;
 }
 
 .heading-text-primary {

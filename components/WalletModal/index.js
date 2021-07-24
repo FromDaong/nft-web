@@ -9,12 +9,13 @@ const AlertModal = ({ show, handleClose }) => {
       <Modal show={show} onHide={handleClose} centered>
         <div>
           <Modal.Body>
-          Note: BSC Wallet does not support signing, so you won't be able to reveal NFTs using it.<br />
-          You can transfer NFTs to a supported wallet (MetaMask or Trust Wallet) from the My NFTs page.
+            Note: BSC Wallet does not support signing, so you won't be able to
+            reveal NFTs using it.
+            <br />
+            You can transfer NFTs to a supported wallet (MetaMask or Trust
+            Wallet) from the My NFTs page.
           </Modal.Body>
-          <Button onClick={handleClose}>
-            Connect
-          </Button>
+          <Button onClick={handleClose}>Connect</Button>
         </div>
       </Modal>
     </>
@@ -74,7 +75,10 @@ const WalletModal = ({ show, handleClose }) => {
           </div>
         </Modal.Header>
         <Modal.Body>
-          <Button className="mb-2 w-100" onClick={() => smartConnectToMetamask()}>
+          <Button
+            className="mb-2 w-100"
+            onClick={() => smartConnectToMetamask()}
+          >
             Connect via MetaMask
           </Button>
           <br />
