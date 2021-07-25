@@ -103,12 +103,11 @@ const NFTListItem = ({
                 <OverlayTrigger overlay={<Tooltip id="">Coming Soon!</Tooltip>}>
                   <span className="d-inline-block w-100">
                     <Button
-                      disabled
-                      style={{ pointerEvents: "none" }}
                       className="w-100"
                       variant="secondary"
+                      onClick={() => listOrderClick(data)}
                     >
-                      <b>STAKE</b>
+                      <b>RESELL</b>
                     </Button>
                   </span>
                 </OverlayTrigger>
@@ -126,7 +125,7 @@ const NFTListItem = ({
               </div>
             </div>
           )}
-          <div className="row">
+          {/* <div className="row">
             <div className="col-lg-6 mt-3">
               {!!listOrderClick ? (
                 <span className="d-inline-block w-100">
@@ -152,7 +151,7 @@ const NFTListItem = ({
                 <span></span>
               )}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

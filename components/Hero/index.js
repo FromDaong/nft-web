@@ -9,10 +9,15 @@ const Hero = ({ title, subtitle }) => {
       transition={{ delay: 0.25 }}
       className="pink-bg mb-5"
     >
-      <div className="heading-text p-0 mt-5" style={{ fontSize: "3em" }}>
+      <div className="heading-text p-0 mt-5" style={{ fontSize: "3.5em" }}>
         {title}
       </div>
-      <p className="totw-secondary-text m-0">{subtitle}</p>
+      <p
+        className="totw-secondary-text m-0 mt-1 pb-3"
+        style={{ maxWidth: "none" }}
+      >
+        {subtitle}
+      </p>
     </motion.div>
   );
 };

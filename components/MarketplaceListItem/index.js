@@ -115,16 +115,7 @@ export const Order = ({ order, account, nftResult }) => {
         </tr>
       ) : (
         // TODO: this should probably just be a loading spinner
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
+        <div>Loading...</div>
       )}
     </>
   );

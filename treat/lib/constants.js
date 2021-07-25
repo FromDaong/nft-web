@@ -38,7 +38,10 @@ export const contractAddresses = {
     56: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
   },
   treatNFTMinter: {
-    56: "0xde39d0b9a93dcd541c24e80c8361f362aab0f213",
+    56: "0x36f8f51f65fe200311f709b797baf4e193dd0b0d",
+    // NEW CONTRACT
+
+    // 56: "0xde39d0b9a93dcd541c24e80c8361f362aab0f213",
     // ^ original Minter, `isApprovedForAll` is broken
 
     // 56: "0x4Ab5d39EEe7294c1b644639389BF751ef6442902",
@@ -52,7 +55,9 @@ export const contractAddresses = {
     97: "0x6a1f5f66B47f750626761477Fc042661294Bbfb5",
   },
   treatMarketplace: {
-    56: "0x6991a8e77a1a4ea5819da2c5a65a3524259ca66e",
+    56: "0xD9A26e62ACd50f78e6C528F13666ccDE5c280142",
+    // NEW CONTRACT ^
+    // 56: "0x6991a8e77a1a4ea5819da2c5a65a3524259ca66e",
     97: "0xB70EC99ECBF67453F315635000d20bA28aC35132",
   },
 };

@@ -4,10 +4,10 @@ import BigNumber from "bignumber.js";
 import Web3 from "web3";
 import TreatNFTMinterAbi from "../../../treat/lib/abi/treatnftminter.json";
 import TreatMarketplaceAbi from "../../../treat/lib/abi/treatMarketplace.json";
-import { contractAddresses } from '../../../treat/lib/constants'
+import { contractAddresses } from "../../../treat/lib/constants";
 import { getOpenOrdersForSeller } from "../../../treat/utils";
 
-const web3 = new Web3("https://data-seed-prebsc-1-s1.binance.org:8545/");
+const web3 = new Web3("https://bsc-dataseed2.defibit.io");
 
 const treatNFTMinter = new web3.eth.Contract(
   TreatNFTMinterAbi,
@@ -17,7 +17,7 @@ const treatNFTMinter = new web3.eth.Contract(
 const treatMarketplace = new web3.eth.Contract(
   TreatMarketplaceAbi,
   contractAddresses.treatMarketplace[56]
-)
+);
 
 dbConnect();
 
@@ -31,7 +31,10 @@ export default async (req, res) => {
 
         const signer = web3.eth.accounts.recover("Reveal Contents", signature);
 
-        const openOrders = await getOpenOrdersForSeller(treatMarketplace, signer)
+        const openOrders = await getOpenOrdersForSeller(
+          treatMarketplace,
+          signer
+        );
 
         let results = await Promise.all(
           nft_ids.map(async (id) => {
@@ -44,13 +47,14 @@ export default async (req, res) => {
 
             const nftData = await NFT.findOne({ id: Number(id) });
 
-            const hasOpenOrder = !!openOrders && !!openOrders.find((o) => o === id);
+            const hasOpenOrder =
+              !!openOrders && !!openOrders.find((o) => o === id);
 
-            if (numberBalance > 0 || (hasOpenOrder)) {
+            if (numberBalance > 0 || hasOpenOrder) {
               return {
                 ...nftData.toObject(),
                 balance: numberBalance,
-                hasOpenOrder: hasOpenOrder
+                hasOpenOrder: hasOpenOrder,
               };
             } else {
               return undefined;
