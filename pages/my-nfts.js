@@ -10,6 +10,7 @@ import useGetNftBalance from "../hooks/useGetNftBalance";
 import useGetOpenOrdersForSeller from "../hooks/useGetOpenOrdersForSeller";
 import useWallet from "use-wallet";
 import useSWR from "swr";
+import Layout from "../components/Layout";
 
 const MyNFTsWrapper = () => {
   const { account, status } = useWallet();
@@ -65,7 +66,14 @@ const MyNFTsWrapper = () => {
   }
 };
 
-const OwnedNfts = ({hideNFTs, revealNFTs, nftBalances, transferNFTClick, listOrderClick, serverNftBalances}) => {
+const OwnedNfts = ({
+  hideNFTs,
+  revealNFTs,
+  nftBalances,
+  transferNFTClick,
+  listOrderClick,
+  serverNftBalances,
+}) => {
   return (
     <div className="white-tp-bg" style={{ minHeight: 400 }}>
       <div
@@ -137,7 +145,14 @@ const OwnedNfts = ({hideNFTs, revealNFTs, nftBalances, transferNFTClick, listOrd
   );
 };
 
-const OpenOrders = ({hideNFTs, revealNFTs, nftBalances, transferNFTClick, cancelOrderClick, serverNftBalances}) => {
+const OpenOrders = ({
+  hideNFTs,
+  revealNFTs,
+  nftBalances,
+  transferNFTClick,
+  cancelOrderClick,
+  serverNftBalances,
+}) => {
   return (
     <div className="white-tp-bg" style={{ minHeight: 400 }}>
       <div
@@ -229,7 +244,7 @@ const ViewNFT = ({ account, nftArray }) => {
 
   const cancelOrderClick = (x) => {
     setCancelOrderData(x);
-  }
+  };
 
   const hideNFTs = async () => {
     setServerNftBalances(null);
@@ -258,50 +273,52 @@ const ViewNFT = ({ account, nftArray }) => {
   };
 
   return (
-    <div className="container  my-nft-container">
-      <TransferNFTModal
-        show={!!transferNFTData}
-        data={transferNFTData}
-        handleClose={() => setTransferNFTData(false)}
-      />
-      <ListOrderModal
-        show={!!listOrderData}
-        data={listOrderData}
-        handleClose={() => setListOrderData(false)}
-      />
-      <CancelOrderModal
-        show={!!cancelOrderData}
-        data={cancelOrderData}
-        handleClose={() => setCancelOrderData(false)}
-        account={account}
-      />
-      <div className="white-tp-bg mt-4 p-3">
-        <p className="w-100 mb-0" style={{ wordBreak: "break-word" }}>
-          <b>Connected wallet address:</b>
-          <div>{`${account}`}</div>
-        </p>
-      </div>
-      <div className="mt-2">
-        <OwnedNfts
-          hideNFTs={hideNFTs}
-          listOrderClick={listOrderClick}
-          transferNFTClick={transferNFTClick}
-          nftBalances={nftBalances}
-          revealNFTs={revealNFTs}
-          serverNftBalances={serverNftBalances}
+    <Layout>
+      <div className="container  my-nft-container">
+        <TransferNFTModal
+          show={!!transferNFTData}
+          data={transferNFTData}
+          handleClose={() => setTransferNFTData(false)}
         />
-      </div>
-      <div className="mt-2">
-        <OpenOrders
-          hideNFTs={hideNFTs}
-          cancelOrderClick={cancelOrderClick}
-          transferNFTClick={transferNFTClick}
-          nftBalances={nftBalances}
-          revealNFTs={revealNFTs}
-          serverNftBalances={serverNftBalances}
+        <ListOrderModal
+          show={!!listOrderData}
+          data={listOrderData}
+          handleClose={() => setListOrderData(false)}
         />
+        <CancelOrderModal
+          show={!!cancelOrderData}
+          data={cancelOrderData}
+          handleClose={() => setCancelOrderData(false)}
+          account={account}
+        />
+        <div className="white-tp-bg mt-4 p-3">
+          <p className="w-100 mb-0" style={{ wordBreak: "break-word" }}>
+            <b>Connected wallet address:</b>
+            <div>{`${account}`}</div>
+          </p>
+        </div>
+        <div className="mt-2">
+          <OwnedNfts
+            hideNFTs={hideNFTs}
+            listOrderClick={listOrderClick}
+            transferNFTClick={transferNFTClick}
+            nftBalances={nftBalances}
+            revealNFTs={revealNFTs}
+            serverNftBalances={serverNftBalances}
+          />
+        </div>
+        <div className="mt-2">
+          <OpenOrders
+            hideNFTs={hideNFTs}
+            cancelOrderClick={cancelOrderClick}
+            transferNFTClick={transferNFTClick}
+            nftBalances={nftBalances}
+            revealNFTs={revealNFTs}
+            serverNftBalances={serverNftBalances}
+          />
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

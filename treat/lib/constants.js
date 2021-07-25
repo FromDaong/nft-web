@@ -38,10 +38,10 @@ export const contractAddresses = {
     56: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
   },
   treatNFTMinter: {
-    // 56: '0xde39d0b9a93dcd541c24e80c8361f362aab0f213',
+    56: "0xde39d0b9a93dcd541c24e80c8361f362aab0f213",
     // ^ original Minter, `isApprovedForAll` is broken
 
-    56: "0x4Ab5d39EEe7294c1b644639389BF751ef6442902",
+    // 56: "0x4Ab5d39EEe7294c1b644639389BF751ef6442902",
     97: "0x14EC429a83684959BADfBF1C27169632285635C3",
     // ^ test minter from granola
     // 56: '0x89689bb544820b6ad6b7d239e6afeaf856879d2a',

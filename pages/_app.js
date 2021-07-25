@@ -16,6 +16,8 @@ import {
   BscConnector,
   UserRejectedRequestError,
 } from "@binance-chain/bsc-connector";
+import { motion, AnimatePresence } from "framer-motion";
+
 const allowedRoutes = ["/"];
 
 function MyApp({ Component, pageProps }) {
@@ -81,13 +83,16 @@ function MyApp({ Component, pageProps }) {
         }}
       >
         <TreatProvider>
-          <div className="pink-bg">
+          <div>
             <Navbar />
-
             <Container style={{ minHeight: "75vh" }}>
-              <Component {...pageProps} />
+              <AnimatePresence
+                exitBeforeEnter
+                onExitComplete={() => window.scrollTo(0, 0)}
+              >
+                <Component {...pageProps} key={router.route} />
+              </AnimatePresence>
             </Container>
-
             <Footer />
           </div>
         </TreatProvider>

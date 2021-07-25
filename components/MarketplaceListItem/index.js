@@ -2,7 +2,6 @@ import useSWR from "swr";
 import BigNumber from "bignumber.js";
 import Button from "react-bootstrap/Button";
 import { getDisplayBalance } from "../../utils/formatBalance";
-import formatAddress from "../../utils/formatAddress";
 import React, { useState, useEffect } from "react";
 import useCancelOrder from "../../hooks/useCancelOrder";
 import usePurchaseOrder from "../../hooks/usePurchaseOrder";
