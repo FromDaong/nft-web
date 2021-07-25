@@ -1,191 +1,82 @@
-import React, { useState, useEffect, useCallback } from "react";
-import Spinner from "react-bootstrap/Spinner";
+import { useWallet } from "use-wallet";
 import Button from "react-bootstrap/Button";
-import useSWR from "swr";
-import useWallet from "use-wallet";
-import NFTListItem from "../components/NFTListItem";
-// import NFTResaleListItem from "../components/NFTResaleListItem";
-import { useRouter } from "next/router";
-import { modelSetBundles } from "../treat/lib/constants";
-import useGetTreatSetCost from "../hooks/useGetTreatSetCost";
-import useRedeemSet from "../hooks/useRedeemSet";
-import { getDisplayBalance } from "../utils/formatBalance";
+import React from "react";
+import useGetAllOpenOrders from "../hooks/useGetAllOpenOrders";
+import useGetMaxIdForSale from "../hooks/useGetMaxIdForSale";
+import Tab from "react-bootstrap/Tab";
+import Tabs from "react-bootstrap/Tabs";
+import { Order } from "../components/MarketplaceListItem";
+import { motion, AnimatePresence } from "framer-motion";
 
-const ViewModelWrapper = () => {
-  const username = "";
+const Marketplace = () => {
+  const maxId = useGetMaxIdForSale();
 
-  const { data: res } = useSWR(`/api/marketplace`);
-  const [modelData, setModelData] = useState();
-  const [modelNFTs, setModelNFTs] = useState();
-  const [newNFTs, setNewNFTs] = useState([]);
-  const [outOfPrintNFTs, setOutOfPrintNFTs] = useState([]);
-  const { status } = useWallet();
-  const router = useRouter();
+  const [orderBook] = useGetAllOpenOrders(maxId);
+  const { account } = useWallet();
 
-  useEffect(() => {
-    (async () => {
-      if (res) {
-        setModelData(res);
-
-        if (!res.nfts || res.nfts.length === 0) return setModelNFTs([]);
-
-        const mNfts = await Promise.all(
-          res.nfts.map(async (nft) => {
-            const x = await fetch(`/api/nft/${nft.id}`);
-            const j = await x.json();
-            return j;
-          })
-        );
-
-        let newNFTs = mNfts.filter((nft) => nft.maxSupply > nft.totalSupply);
-        let outOfPrint = mNfts.filter(
-          (nft) => nft.maxSupply === nft.totalSupply
-        );
-
-        setModelNFTs(mNfts);
-        setNewNFTs(newNFTs);
-        setOutOfPrintNFTs(outOfPrint);
-      }
-    })();
-  }, [res]);
-
-  const setId = modelSetBundles[username];
-  const nftSetPrice = useGetTreatSetCost(setId);
-  const { onRedeemSet } = setId
-    ? useRedeemSet(setId, nftSetPrice)
-    : { onRedeemSet: null };
-
-  console.log({ nftReturn_mNfts: modelNFTs });
-  console.log({ nftReturn_newNFTs: newNFTs });
-  console.log({ nftReturn_outOfPrint: outOfPrintNFTs });
-
-  if (!modelData || !modelData.username || status !== "connected") {
-    return (
-      <div
-        style={{
-          position: "fixed",
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          top: 0,
-          left: 0,
-          justifyContent: "center",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <h5
-          style={{
-            fontWeight: "bolder",
-            background: "white",
-            borderRadius: 5,
-            padding: 10,
-          }}
-        >
-          Please make sure your Binance Smart Chain wallet is connected.
-        </h5>
-        <Spinner
-          animation="border"
-          role="status"
-          size="xl"
-          style={{ marginTop: 5 }}
-        >
-          <span className="sr-only">Loading...</span>
-        </Spinner>
-      </div>
-    );
-  } else {
-    return (
-      <ViewModel
-        modelData={modelData}
-        modelNFTs={modelNFTs}
-        newNFTs={newNFTs}
-        outOfPrintNFTs={outOfPrintNFTs}
-        nftSetPrice={nftSetPrice}
-        onRedeemSet={onRedeemSet}
-      />
-    );
-  }
+  // note, flatten the orderBook because useGetAllOpenOrders
+  // returns a nested array
+  return <MarketplaceList orderBook={orderBook.flat()} account={account} />;
 };
 
-const ViewModel = ({
-  modelData,
-  modelNFTs,
-  newNFTs,
-  outOfPrintNFTs,
-  nftSetPrice,
-  onRedeemSet,
-}) => {
-  const [selectedTab, setSelectedTab] = useState("NEW NFTs");
-  const [otherTab, setOtherTab] = useState("OUT OF PRINT");
-
-  const switchTab = () => {
-    const current = selectedTab;
-    const other = otherTab;
-    setSelectedTab(other);
-    setOtherTab(current);
-  };
-
+const MarketplaceList = ({ orderBook, account }) => {
   return (
-    <div className="container">
-      <div className="view-model row">
-        <div className="image-wrapper col-lg-3 p-0 pr-lg-3">
-          <div className="image-container text-center text-lg-left">
-            <img src={modelData.profile_pic} className="profile-pic" />
-            <div className="title mt-3">{modelData.username}</div>
-            <div
-              className="bio text-center mt-2"
-              style={{ fontSize: ".9em", color: "#777" }}
-            >
-              {modelData.bio}
-            </div>
+    <motion.main
+      variants={{
+        hidden: { opacity: 0, x: -200, y: 0 },
+        enter: { opacity: 1, x: 0, y: 0 },
+        exit: { opacity: 0, x: 0, y: -100 },
+      }}
+      initial="hidden" // Set the initial state to variants.hidden
+      animate="enter" // Animated state to variants.enter
+      exit="exit" // Exit state (used later) to variants.exit
+      transition={{ type: "linear" }} // Set the transition to linear
+      className=""
+    >
+      <div className="container fluid">
+        <div className="row">
+          <div className="nftForSale col-md-4">
+            <Button>Buy Now</Button>
           </div>
-
-          <a href="/creators">
-            <Button style={{ marginTop: 15, width: "100%" }}>
-              View all Models
-            </Button>
-          </a>
-        </div>
-        <div className="col-lg-9 text-container container mt-4 mt-lg-0">
-          {!!onRedeemSet && (
-            <div
-              style={{
-                backgroundColor: "rgba(255,255,255,0.75)",
-                marginBottom: "25px",
-                display: "flex",
-                justifyContent: "center",
-                paddingTop: "2%",
-                paddingBottom: "2%",
-                borderRadius: "8px",
-              }}
-            >
-              <Button onClick={onRedeemSet} size="lg">
-                Redeem full set for {getDisplayBalance(nftSetPrice)} BNB
-              </Button>
-            </div>
-          )}
-
-          <div className="row">
-            {modelNFTs &&
-              modelNFTs.length > 0 &&
-              modelNFTs
-                .sort((a, b) => a.list_price - b.list_price)
-                .map((m) => (
-                  <div className="col-md-6">
-                    <NFTListItem data={m} key={m.id} />
+          <div className="orderbook col-md-7">
+            <h1>All Orders</h1>
+            <div className="row">
+              <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
+                <Tab eventKey="home" title="Details">
+                  <p className="orderbook">
+                    {" "}
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Doloremque repudiandae labore quisquam totam fugit,
+                    accusantium nostrum sequi ut illo nobis?{" "}
+                  </p>
+                </Tab>
+                <Tab eventKey="profile" title="Orders">
+                  <div className="row">
+                    <div className="orderbook nftResales col">
+                      {orderBook.map((o) => (
+                        <Order
+                          order={o}
+                          account={account}
+                          key={`${o.nftId}_${o.seller}`}
+                        />
+                      ))}
+                    </div>
                   </div>
-                ))}
+                </Tab>
+                <Tab eventKey="contact" title="History">
+                  <p className="orderbook">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Autem, ipsum assumenda aliquid et quod libero accusantium
+                    quia earum officiis consequuntur.
+                  </p>
+                </Tab>
+              </Tabs>
+            </div>
           </div>
-          <div>ALL</div>
         </div>
       </div>
-    </div>
+    </motion.main>
   );
 };
 
-// ViewModelWrapper.getInitialProps = async ({ query: { username } }) => {
-//   return { username };
-// };
-
-export default ViewModelWrapper;
+export default Marketplace;
