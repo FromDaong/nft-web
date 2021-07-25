@@ -202,7 +202,7 @@ const ModelList = ({ totwOnly = false }) => {
         initial="hidden"
         variants={{
           show: {
-            transition: { staggerChildren: 0.05 },
+            transition: { staggerChildren: 0.25 },
             opacity: 1,
           },
           hidden: {

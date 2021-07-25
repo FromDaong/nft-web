@@ -4,6 +4,7 @@ import MyNFTItem from "../components/MyNFTItem";
 import TransferNFTModal from "../components/TransferNFTModal";
 import ListOrderModal from "../components/ListOrderModal";
 import CancelOrderModal from "../components/CancelOrderModal";
+import Hero from "../components/Hero";
 import Button from "react-bootstrap/Button";
 import useGetNftMaxSupply from "../hooks/useGetNftMaxSupply";
 import useGetNftBalance from "../hooks/useGetNftBalance";
@@ -228,6 +229,7 @@ const ViewNFT = ({ account, nftArray }) => {
 
   const maxNftSupply = useGetNftMaxSupply(account);
   const nftBalancesInitial = useGetNftBalance(nftArray);
+  console.log({ nftBalancesInitial });
 
   const nftBalances = serverNftBalances || nftBalancesInitial;
   const [transferNFTData, setTransferNFTData] = useState(null);
@@ -291,12 +293,16 @@ const ViewNFT = ({ account, nftArray }) => {
           handleClose={() => setCancelOrderData(false)}
           account={account}
         />
-        <div className="white-tp-bg mt-4 p-3">
+        <Hero
+          title={"My NFTs"}
+          subtitle={`Connected wallet address: ${account}`}
+        />
+        {/* <div className="white-tp-bg mt-4 p-3">
           <p className="w-100 mb-0" style={{ wordBreak: "break-word" }}>
             <b>Connected wallet address:</b>
             <div>{`${account}`}</div>
           </p>
-        </div>
+        </div> */}
         <div className="mt-2">
           <OwnedNfts
             hideNFTs={hideNFTs}

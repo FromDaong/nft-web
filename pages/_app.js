@@ -118,7 +118,7 @@ function walletWrapper(props) {
           },
         },
         walletconnect: {
-          rpcUrl: "https://data-seed-prebsc-1-s1.binance.org:8545/",
+          rpcUrl: "https://bsc-dataseed2.defibit.io",
         },
       }}
     >

@@ -1,7 +1,12 @@
 import BigNumber from "bignumber.js";
 import { useCallback, useEffect, useState } from "react";
 import { useWallet } from "use-wallet";
-import { getTreatNFTMinterContract, getTreatMarketplaceContract, getNftBalance, getOpenOrdersForSeller } from "../treat/utils";
+import {
+  getTreatNFTMinterContract,
+  getTreatMarketplaceContract,
+  getNftBalance,
+  getOpenOrdersForSeller,
+} from "../treat/utils";
 import useBlock from "./useBlock";
 import useTreat from "./useTreat";
 
@@ -24,7 +29,10 @@ const useGetNftBalance = (nftArray) => {
 
   useEffect(() => {
     (async () => {
-      const listedOrders = await getOpenOrdersForSeller(treatMarketplaceContract, account)
+      const listedOrders = await getOpenOrdersForSeller(
+        treatMarketplaceContract,
+        account
+      );
       let newNFTBalances = await Promise.all(
         nftArray.map(async (nft) => {
           if (account && treat) {
@@ -35,7 +43,10 @@ const useGetNftBalance = (nftArray) => {
             );
 
             const balanceNumber = balance.toNumber();
-            const hasOpenOrder = !!listedOrders.find(o => o === nft.id)
+            const hasOpenOrder = !!listedOrders.find((o) => o === nft.id);
+
+            console.log(nft.id, balanceNumber);
+
             if (balanceNumber === 0 && !hasOpenOrder) {
               return undefined;
             } else {
