@@ -39,16 +39,9 @@ export const contractAddresses = {
   },
   treatNFTMinter: {
     56: "0x36f8f51f65fe200311f709b797baf4e193dd0b0d",
-    // NEW CONTRACT
-
-    // 56: "0xde39d0b9a93dcd541c24e80c8361f362aab0f213",
-    // ^ original Minter, `isApprovedForAll` is broken
-
-    // 56: "0x4Ab5d39EEe7294c1b644639389BF751ef6442902",
-    97: "0x14EC429a83684959BADfBF1C27169632285635C3",
-    // ^ test minter from granola
-    // 56: '0x89689bb544820b6ad6b7d239e6afeaf856879d2a',
-    // ^ test minter for testing the marketplace contract
+  },
+  treatNFTMinterV1: {
+    56: "0xde39d0b9a93dcd541c24e80c8361f362aab0f213",
   },
   treatMart: {
     56: "0xD48E7709FAC65ad74E526D1fB3d9a3eDbCb15FE0",
@@ -59,6 +52,12 @@ export const contractAddresses = {
     // NEW CONTRACT ^
     // 56: "0x6991a8e77a1a4ea5819da2c5a65a3524259ca66e",
     97: "0xB70EC99ECBF67453F315635000d20bA28aC35132",
+  },
+  treatMartBundle: {
+    56: "0xb0685346A231272BDa0F30Eb46183F016E5f3dcF",
+  },
+  freeTreats: {
+    56: "0xd17EAf17F4120977ff61F5529B2dF5Af66252238",
   },
 };
 

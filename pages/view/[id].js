@@ -3,6 +3,7 @@ import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import useSWR from "swr";
 import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
+import useGetFreeTreat from "../../hooks/useGetFreeTreat";
 import useGetNftTotalSupply from "../../hooks/useGetNftTotalSupply";
 import useGetTreatNFTCost from "../../hooks/useGetTreatNftCost";
 import useMintNft from "../../hooks/useMintNft";
@@ -145,6 +146,7 @@ const ViewNFT = ({ nftData, image, account }) => {
   const remainingNfts = maxNftSupply.minus(mintedNfts);
   const { onMintNft } = useMintNft(nftData.id, nftCost);
   const [showModal, setShowModal] = useState(false);
+  const { onGetFreeTreat } = useGetFreeTreat(nftData.id, nftCost);
 
   console.log({ maxNftSupply });
 
@@ -167,7 +169,7 @@ const ViewNFT = ({ nftData, image, account }) => {
     </div>
   ));
 
-  console.log({mintCheckNftPrice: nftData})
+  console.log({ mintCheckNftPrice: nftData });
 
   return (
     <div className="container">
@@ -194,7 +196,7 @@ const ViewNFT = ({ nftData, image, account }) => {
               />
             </div>
             <RedeemButton
-              onMintNft={onMintNft}
+              onMintNft={nftData.list_price === 0 ? onGetFreeTreat : onMintNft}
               remainingNfts={remainingNfts}
               nftData={nftData}
               setShowModal={setShowModal}
