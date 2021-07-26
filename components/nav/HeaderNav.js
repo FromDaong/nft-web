@@ -20,7 +20,6 @@ const HeaderNav = () => {
   useEffect(() => {
     (async () => {
       const verified = await localStorage.getItem("ageVerified");
-      console.log({ verified });
       if (!verified) setAgeModalShow(true);
     })();
   });
@@ -62,12 +61,12 @@ const HeaderNav = () => {
           </Link>
           {account && (
             <>
-            <Link href="/marketplace" passHref>
-              <Nav.Link>MARKETPLACE</Nav.Link>
-            </Link>
-            <Link href="/my-nfts" passHref>
-              <Nav.Link>MY NFTs</Nav.Link>
-            </Link>
+              <Link href="/marketplace" passHref>
+                <Nav.Link>MARKETPLACE</Nav.Link>
+              </Link>
+              <Link href="/my-nfts" passHref>
+                <Nav.Link>MY NFTs</Nav.Link>
+              </Link>
             </>
           )}
           <Link href="/about" passHref>

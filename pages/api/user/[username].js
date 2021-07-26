@@ -38,43 +38,6 @@ export default async (req, res) => {
         res.status(400).json({ success: false, error: error });
       }
       break;
-
-    case "PUT":
-      try {
-        let modelRes = await Model.findOne({ username });
-
-        if (!modelRes) {
-          res.status(404);
-          return;
-        }
-
-        // const prev = modelRes.mints.find((e) => e.buyer === mint.account);
-        const mint = req.body.mint;
-        console.log({ mint });
-
-        const balance = await treatNFTMinter.methods
-          .balanceOf(mint.buyer, mint.nftId)
-          .call();
-
-        if (balance > 1) {
-          await Model.updateOne(
-            { username },
-            {
-              $push: { mints: mint },
-            }
-          );
-
-          res.status(200).json({ success: true });
-        } else {
-          res
-            .status(400)
-            .json({ success: false, error: "you don't own this model" });
-        }
-      } catch (error) {
-        console.log({ error });
-        res.status(400).json({ success: false, error: error });
-      }
-      break;
     default:
       res.status(400).json({ success: false });
       break;

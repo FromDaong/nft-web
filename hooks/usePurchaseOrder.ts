@@ -1,10 +1,19 @@
 import BigNumber from "bignumber.js";
 import { useCallback } from "react";
 import { useWallet } from "use-wallet";
-import { getTreatMarketplaceContract, listOrder, purchaseOrder } from "../treat/utils";
+import {
+  getTreatMarketplaceContract,
+  listOrder,
+  purchaseOrder,
+} from "../treat/utils";
 import useTreat from "./useTreat";
 
-const usePurchaseOrder = (nftId: number, quantity: number, price: number, seller: string) => {
+const usePurchaseOrder = (
+  nftId: number,
+  quantity: number,
+  price: number,
+  seller: string
+) => {
   const { account } = useWallet();
   const treat = useTreat();
 
@@ -12,14 +21,23 @@ const usePurchaseOrder = (nftId: number, quantity: number, price: number, seller
 
   const totalPrice = new BigNumber(quantity).multipliedBy(new BigNumber(price));
 
+  console.log({ price, totalPrice });
+
   const handlePurchaseOrder = useCallback(async () => {
-    const txHash = await purchaseOrder(treatMarketplaceContract, nftId, quantity, seller, account, totalPrice);
+    const txHash = await purchaseOrder(
+      treatMarketplaceContract,
+      nftId,
+      quantity,
+      seller,
+      account,
+      totalPrice
+    );
     console.log(txHash);
 
     return txHash;
-  }, [account, nftId, quantity, price, seller])
+  }, [account, nftId, quantity, price, seller]);
 
-  return { onPurchaseOrder : handlePurchaseOrder };
+  return { onPurchaseOrder: handlePurchaseOrder };
 };
 
 export default usePurchaseOrder;

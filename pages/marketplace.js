@@ -3,11 +3,9 @@ import Button from "react-bootstrap/Button";
 import React from "react";
 import useGetAllOpenOrders from "../hooks/useGetAllOpenOrders";
 import useGetMaxIdForSale from "../hooks/useGetMaxIdForSale";
-import Tab from "react-bootstrap/Tab";
-import Tabs from "react-bootstrap/Tabs";
 import Hero from "../components/Hero";
 import { Order } from "../components/MarketplaceListItem";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const Marketplace = () => {
   const maxId = useGetMaxIdForSale();
