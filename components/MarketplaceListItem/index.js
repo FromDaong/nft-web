@@ -10,6 +10,8 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 
 export const Order = ({ order, account, nftResult }) => {
+  console.log({ order });
+
   if (!nftResult) {
     const res = useSWR(`/api/nft/${order.nftId}`);
     nftResult = res.data;
@@ -70,6 +72,8 @@ export const Order = ({ order, account, nftResult }) => {
       date.getDay()
     )} at ${zeroPad(date.getHours())}:${zeroPad(date.getMinutes())}`;
   }
+
+  console.log({ order });
 
   return (
     <>

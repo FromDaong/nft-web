@@ -37,7 +37,7 @@ function MyApp({ Component, pageProps }) {
 
       let tx = localStorage.getItem("tx");
       tx = JSON.parse(tx);
-      console.log({ tx });
+
       if (tx && status === "connected" && account) {
         try {
           const res = await fetch(`/api/nft/${tx.nftId}`, {
