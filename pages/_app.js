@@ -30,6 +30,7 @@ function MyApp({ Component, pageProps }) {
 
   useEffect(() => {
     (async () => {
+      window.scrollTo(0, 0);
       if (status === "connected" && !account) connect("injected");
 
       const connectedBefore = localStorage.getItem("connectedBefore");
