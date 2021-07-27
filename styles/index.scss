@@ -17,6 +17,7 @@
 
 $theme-colors: (
   "primary": #d4668e,
+  "secondary": rgb(162, 141, 192),
 );
 
 /* import bootstrap to set changes */
@@ -133,4 +134,12 @@ a:hover {
     color: #d4668e !important;
     color: white;
   }
+}
+
+.modal-content {
+  padding: 5px;
+  padding-top: 2px;
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
 }

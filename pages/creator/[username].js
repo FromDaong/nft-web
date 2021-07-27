@@ -4,12 +4,13 @@ import Button from "react-bootstrap/Button";
 import useSWR from "swr";
 import useWallet from "use-wallet";
 import NFTListItem from "../../components/NFTListItem";
-import NFTResaleListItem from "../../components/NFTResaleListItem";
+import Layout from "../../components/Layout";
 import { useRouter } from "next/router";
 import { modelSetBundles } from "../../treat/lib/constants";
 import useGetTreatSetCost from "../../hooks/useGetTreatSetCost";
 import useRedeemSet from "../../hooks/useRedeemSet";
 import { getDisplayBalance } from "../../utils/formatBalance";
+import { motion } from "framer-motion";
 
 const ViewModelWrapper = ({ username }) => {
   const { data: res } = useSWR(`/api/model/${username}`);
@@ -94,14 +95,16 @@ const ViewModelWrapper = ({ username }) => {
     );
   } else {
     return (
-      <ViewModel
-        modelData={modelData}
-        modelNFTs={modelNFTs}
-        newNFTs={newNFTs}
-        outOfPrintNFTs={outOfPrintNFTs}
-        nftSetPrice={nftSetPrice}
-        onRedeemSet={onRedeemSet}
-      />
+      <Layout>
+        <ViewModel
+          modelData={modelData}
+          modelNFTs={modelNFTs}
+          newNFTs={newNFTs}
+          outOfPrintNFTs={outOfPrintNFTs}
+          nftSetPrice={nftSetPrice}
+          onRedeemSet={onRedeemSet}
+        />
+      </Layout>
     );
   }
 };
@@ -182,7 +185,23 @@ const ViewModel = ({
               OUT OF PRINT
             </Button>
           </div> */}
-          <div className="row">
+
+          <motion.div
+            className="nft-list row mt-5"
+            animate={modelNFTs && modelNFTs.length > 0 && "show"}
+            exit="hidden"
+            initial="hidden"
+            variants={{
+              show: { transition: { staggerChildren: 0.15 }, opacity: 1 },
+              hidden: {
+                transition: {
+                  staggerChildren: 0.02,
+                  staggerDirection: -1,
+                  when: "afterChildren",
+                },
+              },
+            }}
+          >
             {modelNFTs &&
               modelNFTs.length > 0 &&
               modelNFTs
@@ -192,7 +211,7 @@ const ViewModel = ({
                     <NFTListItem data={m} key={m.id} />
                   </div>
                 ))}
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

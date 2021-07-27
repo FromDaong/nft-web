@@ -9,14 +9,40 @@ const useListOrder = () => {
 
   const treatMarketplaceContract = getTreatMarketplaceContract(treat);
 
-  const handleListOrder = useCallback(async (nftId: number, quantity: number, price: number, expiresDate: number) => {
-    const txHash = await listOrder(treatMarketplaceContract, account, nftId, quantity, price, expiresDate);
-    console.log(txHash);
+  const handleListOrder = useCallback(
+    async (
+      nftId: number,
+      quantity: number,
+      price: number,
+      expiresDate: number
+    ) => {
+      console.log({ nftId, quantity, price });
+      const txHash = await listOrder(
+        treatMarketplaceContract,
+        account,
+        nftId,
+        quantity,
+        price,
+        expiresDate
+      );
+      console.log(txHash);
 
-    return txHash;
-  }, [account])
+      const mint = {
+        transactionHash: txHash.transactionHash,
+        nftId: nftId,
+        seller: account,
+        price: price,
+        expiresDate,
+        listedAt: new Date(),
+      };
+      localStorage.setItem("resale", JSON.stringify(mint));
 
-  return { onListOrder : handleListOrder };
+      return txHash;
+    },
+    [account]
+  );
+
+  return { onListOrder: handleListOrder };
 };
 
 export default useListOrder;

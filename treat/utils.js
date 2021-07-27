@@ -163,7 +163,6 @@ export const getNftCreator = async (treatNFTMinter, nftId) => {
 
 export const getNftMaxSupply = async (treatNFTMinter, nftId) => {
   console.log("call max supply");
-  console.log({ maxSupply: nftId });
   try {
     const amount = await treatNFTMinter.methods.tokenMaxSupply(nftId).call();
     console.log({ amount });
@@ -230,6 +229,7 @@ export const purchaseOrder = async (
   account,
   totalPrice
 ) => {
+  console.log({ totalPrice, nftId });
   return await treatMarketplaceContract.methods
     .purchase(nftId, quantity, seller)
     .send({
@@ -282,7 +282,11 @@ export const getResaleOrder = async (
     return null;
   }
 
-  return await treatMarketplaceContract.methods.orderBook(nftId, seller).call();
+  const rO = await treatMarketplaceContract.methods
+    .orderBook(nftId, seller)
+    .call();
+  console.log({ rO });
+  return rO;
 };
 
 export const getRemainingBalanceForOrder = async (

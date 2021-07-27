@@ -2,64 +2,21 @@ const mongoose = require("mongoose");
 
 const NFTSchema = new mongoose.Schema(
   {
-    id: {
+    nft_id: {
       type: Number,
       required: [true, "Please add a NFT ID"],
     },
-    name: {
+    seller: {
       type: String,
-      required: [true, "Please add a NFT name"],
+      required: [true, "Please add a NFT seller"],
     },
-    description: {
-      type: String,
-      required: [true, "Please add a NFT description"],
-    },
-    list_price: {
-      type: Number,
-      required: [true, "Please add a NFT list price"],
-    },
-    external_url: {
-      type: String,
-      required: [true, "Please add a NFT external url"],
-    },
-    image: {
-      type: String,
-      required: [true, "Please add a NFT image"],
-    },
-    blurhash: {
-      type: String,
-      required: [true, "Please add a NFT blurhash"],
-    },
-    model_handle: {
-      type: String,
-      required: [true, "Please add Model's social handle"],
-    },
-    max_supply: {
-      type: String,
-      required: [true, "Please add max supply"],
-    },
-    model_profile_pic: {
+    expires_date: {
       type: String,
     },
-    attributes: [
-      {
-        trait_type: { type: String, required: true },
-        value: { type: String, required: true },
-      },
-    ],
-    model_bnb_address: {
+    mint_id: {
       type: String,
-      required: [true, "PLease add models bnb address"],
+      required: [true, "Please add a Mint ID"],
     },
-    mints: [
-      {
-        transactionHash: String,
-        nftId: Number,
-        buyer: String,
-        price: String,
-        timestamp: String,
-      },
-    ],
   },
   {
     timestamps: { createdAt: true, updatedAt: false },
