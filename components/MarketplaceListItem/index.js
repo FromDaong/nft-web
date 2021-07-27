@@ -1,8 +1,6 @@
 import useSWR from "swr";
 import BigNumber from "bignumber.js";
 import Spinner from "react-bootstrap/Spinner";
-import Button from "react-bootstrap/Button";
-import Reacr from "react";
 import useCancelOrder from "../../hooks/useCancelOrder";
 import usePurchaseOrder from "../../hooks/usePurchaseOrder";
 import { getDisplayBalance } from "../../utils/formatBalance";
@@ -10,32 +8,26 @@ import useGetRemainingOrderBalance from "../../hooks/useGetRemainingOrderBalance
 import NFTListItem from "../../components/NFTListItem";
 import { Trash, CartFill } from "react-bootstrap-icons";
 
-export const Order = ({ order, account, index, searchFilter }) => {
+export const Order = ({
+  order,
+  account,
+  searchFilter,
+  setCancelOrderData,
+  setPurchaseOrderData,
+}) => {
   const { data: nftResult } = useSWR(`/api/nft/${order.nftId}`);
 
-  const [remainingBalance] = useGetRemainingOrderBalance(
-    order?.seller,
-    order?.nftId
-  );
+  // const [remainingBalance] = useGetRemainingOrderBalance(
+  //   order?.seller,
+  //   order?.nftId
+  // );
 
-  const { onCancelOrder } = useCancelOrder(order?.nftId);
-  const { onPurchaseOrder } = usePurchaseOrder(
-    order?.nftId,
-    order?.quantity,
-    order?.price,
-    order?.seller
-  );
-
-  function zeroPad(num) {
-    return num < 10 ? `0${num}` : num;
-  }
-  const maxUnixTimestamp = 2147483647000;
-  function formatDate(unixSeconds) {
-    const date = new Date(parseInt(unixSeconds * 1000));
-    return `${date.getFullYear()}-${zeroPad(date.getMonth())}-${zeroPad(
-      date.getDay()
-    )} at ${zeroPad(date.getHours())}:${zeroPad(date.getMinutes())}`;
-  }
+  // const { onPurchaseOrder } = usePurchaseOrder(
+  //   order?.nftId,
+  //   order?.quantity,
+  //   order?.price,
+  //   order?.seller
+  // );
 
   const isOwner =
     !!account && account.toUpperCase() === order.seller.toUpperCase();
@@ -72,7 +64,8 @@ export const Order = ({ order, account, index, searchFilter }) => {
           }
           buttonFunction={(e) => {
             e.preventDefault();
-            !isOwner ? onPurchaseOrder() : onCancelOrder();
+            if (!isOwner) setPurchaseOrderData({ nftData: nftResult, order });
+            else setCancelOrderData(nftResult);
           }}
         />
       ) : (
