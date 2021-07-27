@@ -1,37 +1,5 @@
 [
 	{
-		"inputs": [
-			{
-				"internalType": "address payable",
-				"name": "_treasuryAddress",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "_treatMinterAddress",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_treasuryPercentage",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_creatorPercentage",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address payable",
-				"name": "_tittyFundAddress",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -178,6 +146,287 @@
 		"type": "function"
 	},
 	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "nftId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "quantity",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "expiresDate",
+				"type": "uint256"
+			}
+		],
+		"name": "listOrder",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "nftId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "quantity",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "seller",
+				"type": "address"
+			}
+		],
+		"name": "purchase",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "renounceOwnership",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "nftIds",
+				"type": "uint256[]"
+			},
+			{
+				"internalType": "address payable[]",
+				"name": "overrideAddresses",
+				"type": "address[]"
+			}
+		],
+		"name": "setCreatorOverrides",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_creatorPercentage",
+				"type": "uint256"
+			}
+		],
+		"name": "setCreatorPercentage",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address payable[]",
+				"name": "treatModels",
+				"type": "address[]"
+			},
+			{
+				"internalType": "address payable[]",
+				"name": "overrideAddresses",
+				"type": "address[]"
+			}
+		],
+		"name": "setCreatorRefOverrides",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_treatModel",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_creatorRefPercentage",
+				"type": "uint256"
+			}
+		],
+		"name": "setCreatorRefPercentage",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_melonNumber",
+				"type": "uint256"
+			}
+		],
+		"name": "setMelonNumber",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_minterAddress",
+				"type": "address"
+			}
+		],
+		"name": "setMinterAddress",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address payable",
+				"name": "_tittyFundAddress",
+				"type": "address"
+			}
+		],
+		"name": "setTittyFundAddress",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address payable",
+				"name": "_treasuryAddress",
+				"type": "address"
+			}
+		],
+		"name": "setTreasuryAddress",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_treasuryPercentage",
+				"type": "uint256"
+			}
+		],
+		"name": "setTreasuryPercentage",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_treatDaoAddress",
+				"type": "address"
+			}
+		],
+		"name": "setTreatDaoAddress",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address payable",
+				"name": "_treasuryAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_treatMinterAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_treasuryPercentage",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_creatorPercentage",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address payable",
+				"name": "_tittyFundAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "address payable",
+				"name": "_treatDaoAddress",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
 		"constant": true,
 		"inputs": [],
 		"name": "creatorPercentage",
@@ -313,39 +562,24 @@
 		"type": "function"
 	},
 	{
-		"constant": false,
-		"inputs": [
+		"constant": true,
+		"inputs": [],
+		"name": "maxTokenId",
+		"outputs": [
 			{
 				"internalType": "uint256",
-				"name": "nftId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "quantity",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "price",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "expiresDate",
+				"name": "",
 				"type": "uint256"
 			}
 		],
-		"name": "listOrder",
-		"outputs": [],
 		"payable": false,
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
 		"constant": true,
 		"inputs": [],
-		"name": "maxTokenId",
+		"name": "melonNumber",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -542,175 +776,6 @@
 		"type": "function"
 	},
 	{
-		"constant": false,
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "nftId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "quantity",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "seller",
-				"type": "address"
-			}
-		],
-		"name": "purchase",
-		"outputs": [],
-		"payable": true,
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [],
-		"name": "renounceOwnership",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"internalType": "uint256[]",
-				"name": "nftIds",
-				"type": "uint256[]"
-			},
-			{
-				"internalType": "address payable[]",
-				"name": "overrideAddresses",
-				"type": "address[]"
-			}
-		],
-		"name": "setCreatorOverrides",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_creatorPercentage",
-				"type": "uint256"
-			}
-		],
-		"name": "setCreatorPercentage",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"internalType": "address payable[]",
-				"name": "treatModels",
-				"type": "address[]"
-			},
-			{
-				"internalType": "address payable[]",
-				"name": "overrideAddresses",
-				"type": "address[]"
-			}
-		],
-		"name": "setCreatorRefOverrides",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_treatModel",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_creatorRefPercentage",
-				"type": "uint256"
-			}
-		],
-		"name": "setCreatorRefPercentage",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_minterAddress",
-				"type": "address"
-			}
-		],
-		"name": "setMinterAddress",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"internalType": "address payable",
-				"name": "_tittyFundAddress",
-				"type": "address"
-			}
-		],
-		"name": "setTittyFundAddress",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"internalType": "address payable",
-				"name": "_treasuryAddress",
-				"type": "address"
-			}
-		],
-		"name": "setTreasuryAddress",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_treasuryPercentage",
-				"type": "uint256"
-			}
-		],
-		"name": "setTreasuryPercentage",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"constant": true,
 		"inputs": [
 			{
@@ -747,21 +812,6 @@
 		"type": "function"
 	},
 	{
-		"constant": false,
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "transferOwnership",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"constant": true,
 		"inputs": [],
 		"name": "treasuryAddress",
@@ -785,6 +835,21 @@
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "treatDaoToken",
+		"outputs": [
+			{
+				"internalType": "contract TREATcontract",
+				"name": "",
+				"type": "address"
 			}
 		],
 		"payable": false,

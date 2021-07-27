@@ -5,7 +5,14 @@ import useCancelOrder from "../../hooks/useCancelOrder";
 import useGetResaleOrder from "../../hooks/useGetResaleOrder";
 import useGetRemainingOrderBalance from "../../hooks/useGetRemainingOrderBalance";
 
-const WalletModal = ({ account, show, handleClose, data }) => {
+const CancelOrderModal = ({
+  account,
+  show,
+  handleClose,
+  data,
+  setPendingModal,
+  openCompleteModal,
+}) => {
   if (!data) return <div></div>;
 
   console.log({ listData: data });
@@ -26,14 +33,35 @@ const WalletModal = ({ account, show, handleClose, data }) => {
           </p>
         </div>
       </Modal.Header>
-      <CancelOrderModalBody data={data} orderData={orderData} />
+      <CancelOrderModalBody
+        data={data}
+        orderData={orderData}
+        handleClose={handleClose}
+        setPendingModal={setPendingModal}
+        openCompleteModal={openCompleteModal}
+      />
     </Modal>
   );
 };
 
-export const CancelOrderModalBody = ({ data, orderData }) => {
-  console.log({ cancelData: data });
+export const CancelOrderModalBody = ({
+  data,
+  handleClose,
+  setPendingModal,
+  openCompleteModal,
+}) => {
   const { onCancelOrder } = useCancelOrder(data?.id ?? 0);
+
+  const cancelOrderFunc = async () => {
+    onCancelOrder().then(() => {
+      handleClose();
+      setPendingModal(false);
+      openCompleteModal();
+    });
+
+    handleClose();
+    setPendingModal(true);
+  };
 
   return (
     <Modal.Body>
@@ -43,7 +71,7 @@ export const CancelOrderModalBody = ({ data, orderData }) => {
             variant="info"
             type="submit"
             className="w-100"
-            onClick={async () => await onCancelOrder()}
+            onClick={async () => cancelOrderFunc()}
           >
             Submit
           </Button>
@@ -58,4 +86,4 @@ export const CancelOrderModalBody = ({ data, orderData }) => {
   );
 };
 
-export default WalletModal;
+export default CancelOrderModal;

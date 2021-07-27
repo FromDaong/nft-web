@@ -4,6 +4,7 @@ import Spinner from "react-bootstrap/Spinner";
 import MyNFTItem from "../components/MyNFTItem";
 import TransferNFTModal from "../components/TransferNFTModal";
 import ListOrderModal from "../components/ListOrderModal";
+import BlankModal from "../components/BlankModal";
 import CancelOrderModal from "../components/CancelOrderModal";
 import Hero from "../components/Hero";
 import Button from "react-bootstrap/Button";
@@ -264,12 +265,13 @@ const ViewNFT = ({ account, nftArray }) => {
 
   const maxNftSupply = useGetNftMaxSupply(account);
   const nftBalancesInitial = useGetNftBalance(nftArray);
-  console.log({ nftBalancesInitial });
 
   const nftBalances = serverNftBalances || nftBalancesInitial;
   const [transferNFTData, setTransferNFTData] = useState(null);
   const [listOrderData, setListOrderData] = useState(null);
   const [cancelOrderData, setCancelOrderData] = useState(null);
+  const [showPendingModal, setShowPendingModal] = useState(null);
+  const [showCompleteModal, setShowCompleteModal] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const transferNFTClick = (x) => {
@@ -324,11 +326,32 @@ const ViewNFT = ({ account, nftArray }) => {
           show={!!listOrderData}
           data={listOrderData}
           handleClose={() => setListOrderData(false)}
+          setPendingModal={setShowPendingModal}
+          openCompleteModal={() => setShowCompleteModal(true)}
         />
         <CancelOrderModal
           show={!!cancelOrderData}
           data={cancelOrderData}
+          setPendingModal={setShowPendingModal}
+          openCompleteModal={() => setShowCompleteModal(true)}
           handleClose={() => setCancelOrderData(false)}
+          account={account}
+        />
+        <BlankModal
+          show={!!showPendingModal}
+          data={cancelOrderData}
+          handleClose={() => setShowPendingModal(false)}
+          title={"Waiting for Transaction Confirmation ⌛"}
+          subtitle={
+            "Please confirm this transaction in your wallet and wait here for upto a few minutes for the transaction to confirm..."
+          }
+          noButton={true}
+          account={account}
+        />
+        <BlankModal
+          show={!!showCompleteModal}
+          data={cancelOrderData}
+          handleClose={() => setShowCompleteModal(false)}
           account={account}
         />
         <Hero
