@@ -26,17 +26,6 @@ const useListOrder = () => {
         expiresDate
       );
       console.log(txHash);
-
-      const mint = {
-        transactionHash: txHash.transactionHash,
-        nftId: nftId,
-        seller: account,
-        price: price,
-        expiresDate,
-        listedAt: new Date(),
-      };
-      localStorage.setItem("resale", JSON.stringify(mint));
-
       return txHash;
     },
     [account]
