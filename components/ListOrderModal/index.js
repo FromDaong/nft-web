@@ -58,16 +58,18 @@ export const ListOrderModalBody = ({ data }) => {
           This is the price for someone to buy your NFT
         </Form.Text>
       </Form.Group>
-      {/* <Form.Group controlId="formQuantity">
+      <Form.Group controlId="formQuantity">
         <Form.Label>Quantity</Form.Label>
         <Form.Control
           type="number"
           onChange={(e) => setListQuantity(e.currentTarget.value)}
           placeholder="0"
         />
-        <Form.Text className="text-muted">Quantity</Form.Text>
-      </Form.Group> */}
-      <Form.Group controlId="formExpires">
+        <Form.Text className="text-muted">
+          You can sell multiple of a particular NFT, in a single listing
+        </Form.Text>
+      </Form.Group>
+      {/* <Form.Group controlId="formExpires">
         <Form.Label>Expiration Date</Form.Label>
         <Form.Control
           type="date"
@@ -76,7 +78,7 @@ export const ListOrderModalBody = ({ data }) => {
         <Form.Text className="text-muted">
           Leave blank for unexpiring order
         </Form.Text>
-      </Form.Group>
+      </Form.Group> */}
       <div className="row">
         <div className="col-md-6">
           <Button

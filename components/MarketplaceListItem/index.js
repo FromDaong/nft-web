@@ -10,7 +10,7 @@ import useGetRemainingOrderBalance from "../../hooks/useGetRemainingOrderBalance
 import NFTListItem from "../../components/NFTListItem";
 import { Trash, CartFill } from "react-bootstrap-icons";
 
-export const Order = ({ order, account }) => {
+export const Order = ({ order, account, index, searchFilter }) => {
   const { data: nftResult } = useSWR(`/api/nft/${order.nftId}`);
 
   const [remainingBalance] = useGetRemainingOrderBalance(
@@ -40,34 +40,41 @@ export const Order = ({ order, account }) => {
   const isOwner =
     !!account && account.toUpperCase() === order.seller.toUpperCase();
 
+  if (
+    !nftResult ||
+    (!nftResult.attributes[0].value
+      .toLowerCase()
+      .includes(searchFilter.toLowerCase()) &&
+      !nftResult.name.toLowerCase().includes(searchFilter.toLowerCase()))
+  )
+    return <></>;
+
   return (
-    <>
+    <div className="col-md-4">
       {!!order && nftResult ? (
-        <>
-          <NFTListItem
-            data={nftResult}
-            isOwner={isOwner}
-            price={getDisplayBalance(new BigNumber(order.price))}
-            owner={order.seller}
-            buttonLabel={
-              isOwner ? (
-                <>
-                  <Trash className="mr-2" />
-                  Remove Your Listing
-                </>
-              ) : (
-                <>
-                  <CartFill className="mr-2" />
-                  Purchase
-                </>
-              )
-            }
-            buttonFunction={(e) => {
-              e.preventDefault();
-              !isOwner ? onPurchaseOrder() : onCancelOrder();
-            }}
-          />
-        </>
+        <NFTListItem
+          data={nftResult}
+          isOwner={isOwner}
+          price={getDisplayBalance(new BigNumber(order.price))}
+          owner={order.seller}
+          buttonLabel={
+            isOwner ? (
+              <>
+                <Trash className="mr-2" />
+                Remove Your Listing
+              </>
+            ) : (
+              <>
+                <CartFill className="mr-2" />
+                Purchase
+              </>
+            )
+          }
+          buttonFunction={(e) => {
+            e.preventDefault();
+            !isOwner ? onPurchaseOrder() : onCancelOrder();
+          }}
+        />
       ) : (
         <div
           style={{ minHeight: 500 }}
@@ -78,55 +85,15 @@ export const Order = ({ order, account }) => {
           </Spinner>
         </div>
       )}
-    </>
+    </div>
   );
 
-  return (
-    <>
-      {!!order ? (
-        <tr style={{ border: "0px solid black" }}>
-          <td style={{ border: "0px solid black" }}>
-            <a href={`/marketplace/${order.nftId}`}>
-              {modelData && (
-                <img
-                  src={modelData.profile_pic}
-                  height="50px"
-                  width="50px"
-                  title={modelData.username}
-                  alt={`${modelData.username} profile pic`}
-                />
-              )}
-            </a>
-          </td>
-          <td style={{ border: "0px solid black" }}>
-            {/* {formatAddress(order.seller)} */}
-            {nftData?.name}
-          </td>
-          <td style={{ border: "0px solid black" }}>{remainingBalance}</td>
-          <td style={{ border: "0px solid black" }}>
-            {getDisplayBalance(new BigNumber(order.price))} BNB
-          </td>
-          <td style={{ border: "0px solid black" }}>
-            {formatDate(order.listDate)}
-          </td>
-          <td style={{ border: "0px solid black" }}>
-            {parseInt(order.expiresDate) < maxUnixTimestamp / 1000
-              ? formatDate(order.expiresDate)
-              : "---"}
-          </td>
-          <td styld={{ border: "0px solid black" }}>
-            <Button onClick={() => onPurchaseOrder()}>Buy</Button>
-          </td>
-          {!!account && account.toUpperCase() === order.seller.toUpperCase() && (
-            <td style={{ border: "0px solid black" }}>
-              <Button onClick={() => onCancelOrder()}>[X]</Button>
-            </td>
-          )}
-        </tr>
-      ) : (
-        // TODO: this should probably just be a loading spinner
-        <div>Loading...</div>
-      )}
-    </>
-  );
+  // <td style={{ border: "0px solid black" }}>
+  //   {formatDate(order.listDate)}
+  // </td>
+  // <td style={{ border: "0px solid black" }}>
+  //   {parseInt(order.expiresDate) < maxUnixTimestamp / 1000
+  //     ? formatDate(order.expiresDate)
+  //     : "---"}
+  // </td>
 };

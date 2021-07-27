@@ -57,7 +57,7 @@ const NFTListItem = ({
   if (!data.attributes) return <div></div>;
 
   return (
-    <motion.div variants={variants}>
+    <motion.div variants={variants} layout>
       <Link href={`/view/${data.id}`}>
         <div className="nft-card">
           <div className="totw-tag-wrapper">
