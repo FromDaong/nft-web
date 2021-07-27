@@ -4,7 +4,7 @@ import { Blurhash } from "react-blurhash";
 import { EyeSlash } from "react-bootstrap-icons";
 import { motion } from "framer-motion";
 import Button from "react-bootstrap/Button";
-import Link from "next/Link";
+import Link from "next/link";
 
 let easing = [0.175, 0.85, 0.42, 0.96];
 
