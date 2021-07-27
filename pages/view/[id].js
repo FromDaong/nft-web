@@ -12,6 +12,7 @@ import { getDisplayBalance } from "../../utils/formatBalance";
 import { generateFromString } from "generate-avatar";
 import { Blurhash } from "react-blurhash";
 import NFTPurchaseModal from "../../components/NFTPurchaseModal";
+import Layout from "../../components/Layout";
 import { EyeSlash } from "react-bootstrap-icons";
 
 const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
@@ -169,88 +170,90 @@ const ViewNFT = ({ nftData, image, account }) => {
     </div>
   ));
 
-  console.log({ mintCheckNftPrice: nftData });
-
   return (
-    <div className="container">
-      <NFTPurchaseModal
-        handleClose={() => setShowModal(false)}
-        show={showModal}
-      />
-      <div className="view-nft row">
-        <div className="image-wrapper col-lg-4 p-0 pr-lg-3">
-          <div className="image-container text-center text-lg-left">
-            <div style={{ position: "relative", width: "100%" }}>
-              <div className="info-overlay">
-                <EyeSlash size={32} />
-                <div>Purchase to View</div>
+    <Layout>
+      <div className="container">
+        <NFTPurchaseModal
+          handleClose={() => setShowModal(false)}
+          show={showModal}
+        />
+        <div className="view-nft row">
+          <div className="image-wrapper col-lg-4 p-0 pr-lg-3">
+            <div className="image-container text-center text-lg-left">
+              <div style={{ position: "relative", width: "100%" }}>
+                <div className="info-overlay">
+                  <EyeSlash size={32} />
+                  <div>Purchase to View</div>
+                </div>
+                <Blurhash
+                  style={{ borderRadius: 5, overflow: "hidden" }}
+                  hash={nftData.blurhash}
+                  width={"100%"}
+                  height={500}
+                  resolutionX={32}
+                  resolutionY={32}
+                  punch={1}
+                />
               </div>
-              <Blurhash
-                style={{ borderRadius: 5, overflow: "hidden" }}
-                hash={nftData.blurhash}
-                width={"100%"}
-                height={500}
-                resolutionX={32}
-                resolutionY={32}
-                punch={1}
+              <RedeemButton
+                onMintNft={
+                  nftData.list_price === 0 ? onGetFreeTreat : onMintNft
+                }
+                remainingNfts={remainingNfts}
+                nftData={nftData}
+                setShowModal={setShowModal}
+                account={account}
               />
             </div>
-            <RedeemButton
-              onMintNft={nftData.list_price === 0 ? onGetFreeTreat : onMintNft}
-              remainingNfts={remainingNfts}
-              nftData={nftData}
-              setShowModal={setShowModal}
-              account={account}
-            />
           </div>
-        </div>
-        <div className="col-lg-8 text-container container mt-4 mt-lg-0">
-          <div className="title-section">
-            {/* <div className="edition mb-1"> */}
-            {/* <div>REMAINING: {remainingNfts.toNumber()}</div> */}
-            <div>
-              <div className="edition mb-2">AVAILABLE THIS WEEK ONLY</div>
-              <div className="title">{nftData.name}</div>
-              <div className="bio">{nftData.description}</div>
+          <div className="col-lg-8 text-container container mt-4 mt-lg-0">
+            <div className="title-section">
+              {/* <div className="edition mb-1"> */}
+              {/* <div>REMAINING: {remainingNfts.toNumber()}</div> */}
+              <div>
+                <div className="edition mb-2">AVAILABLE THIS WEEK ONLY</div>
+                <div className="title">{nftData.name}</div>
+                <div className="bio">{nftData.description}</div>
+              </div>
             </div>
-          </div>
-          <div className="stats">
-            <div className="stat">
-              <div className="label">LIST PRICE</div>
-              <div className="number">{getDisplayBalance(nftCost)} BNB</div>
-            </div>
-            {/* <div className="stat">
+            <div className="stats">
+              <div className="stat">
+                <div className="label">LIST PRICE</div>
+                <div className="number">{getDisplayBalance(nftCost)} BNB</div>
+              </div>
+              {/* <div className="stat">
               <div className="label">CREATOR SHARE</div>
               <div className="number">75%</div>
             </div> */}
-          </div>
-          <div className="creator-wrapper">
-            <div className="creator">
-              <div className="pic">
-                <img
-                  src={
-                    nftData.model_profile_pic ||
-                    `data:image/svg+xml;utf8,${generateFromString(
-                      nftData.model_handle
-                    )}`
-                  }
-                />
-              </div>
-              <div className="details">
-                <div className="label">CREATOR</div>
-                <div className="name">{nftData.model_handle}</div>
+            </div>
+            <div className="creator-wrapper">
+              <div className="creator">
+                <div className="pic">
+                  <img
+                    src={
+                      nftData.model_profile_pic ||
+                      `data:image/svg+xml;utf8,${generateFromString(
+                        nftData.model_handle
+                      )}`
+                    }
+                  />
+                </div>
+                <div className="details">
+                  <div className="label">CREATOR</div>
+                  <div className="name">{nftData.model_handle}</div>
+                </div>
               </div>
             </div>
-          </div>
-          <hr style={{ marginTop: 25, marginBottom: 25 }} />
-          <div className="history-container">
-            <div className="history-title">Purchase History</div>
-            {/* <div className="bio">Coming soon...</div> */}
-            <div className="history-events">{historyEventsRender}</div>
+            <hr style={{ marginTop: 25, marginBottom: 25 }} />
+            <div className="history-container">
+              <div className="history-title">Purchase History</div>
+              {/* <div className="bio">Coming soon...</div> */}
+              <div className="history-events">{historyEventsRender}</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 
