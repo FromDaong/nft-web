@@ -2,10 +2,10 @@ import useSWR from "swr";
 import BigNumber from "bignumber.js";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
-import { getDisplayBalance } from "../../utils/formatBalance";
-import React, { useState, useEffect } from "react";
+import Reacr from "react";
 import useCancelOrder from "../../hooks/useCancelOrder";
 import usePurchaseOrder from "../../hooks/usePurchaseOrder";
+import { getDisplayBalance } from "../../utils/formatBalance";
 import useGetRemainingOrderBalance from "../../hooks/useGetRemainingOrderBalance";
 import NFTListItem from "../../components/NFTListItem";
 import { Trash, CartFill } from "react-bootstrap-icons";
@@ -47,7 +47,7 @@ export const Order = ({ order, account }) => {
           <NFTListItem
             data={nftResult}
             isOwner={isOwner}
-            price={order.price}
+            price={getDisplayBalance(new BigNumber(order.price))}
             owner={order.seller}
             buttonLabel={
               isOwner ? (
