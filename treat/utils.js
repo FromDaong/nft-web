@@ -212,7 +212,7 @@ export const listOrder = async (
   price,
   expiresDate
 ) => {
-  const priceBn = decToBn(price);
+  const priceBn = decToBn(new BigNumber(price));
   const unixTimestampSecs = Math.floor(new Date(expiresDate).getTime() / 1000);
   return await treatMarketplaceContract.methods
     .listOrder(nftId, quantity, priceBn, unixTimestampSecs)

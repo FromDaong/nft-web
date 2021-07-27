@@ -19,9 +19,10 @@ const WalletModal = ({ account, show, handleClose, data }) => {
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
         <div>
-          <Modal.Title>Cancel</Modal.Title>
+          <Modal.Title>Remove NFT Listing</Modal.Title>
           <p className="mb-0 mt-2">
-            <b>NFT Name:</b> "{data.name}"
+            Your <b>"{data.name}"</b> NFT will no longer be available on the
+            resale marketplace.
           </p>
         </div>
       </Modal.Header>
@@ -36,9 +37,6 @@ export const CancelOrderModalBody = ({ data, orderData }) => {
 
   return (
     <Modal.Body>
-      <div>
-        Sales: {orderData.remainingBalance} / {orderData.quantity} Available
-      </div>
       <div className="row">
         <div className="col-md-6">
           <Button

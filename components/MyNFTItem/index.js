@@ -159,10 +159,11 @@ const NFTListItem = ({
               <div className="name">{data.attributes[0].value}</div>
             </div>
             <div className="stats">
-              <div className="stat">
+              {/* TODO: SHOW ON MARKETPLACE LISTINGS */}
+              {/* <div className="stat">
                 <div className="number">{data.list_price}</div>
                 <div className="label">BNB</div>
-              </div>
+              </div> */}
             </div>
           </div>
 
