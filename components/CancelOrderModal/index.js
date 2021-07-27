@@ -6,15 +6,14 @@ import useGetResaleOrder from "../../hooks/useGetResaleOrder";
 import useGetRemainingOrderBalance from "../../hooks/useGetRemainingOrderBalance";
 
 const WalletModal = ({ account, show, handleClose, data }) => {
-
   if (!data) return <div></div>;
 
-  console.log({listData: data})
+  console.log({ listData: data });
 
-  const order = useGetResaleOrder(data.id, account)
+  const order = useGetResaleOrder(data.id, account);
   const remainingBalance = useGetRemainingOrderBalance(account, data.id);
-  const orderData = {...order, remainingBalance}
-  console.log({listCancelOrder: order})
+  const orderData = { ...order, remainingBalance };
+  console.log({ listCancelOrder: order });
 
   return (
     <Modal show={show} onHide={handleClose} centered>
@@ -26,32 +25,27 @@ const WalletModal = ({ account, show, handleClose, data }) => {
           </p>
         </div>
       </Modal.Header>
-        <CancelOrderModalBody data={data} orderData={orderData} />
+      <CancelOrderModalBody data={data} orderData={orderData} />
     </Modal>
   );
 };
 
 export const CancelOrderModalBody = ({ data, orderData }) => {
-  console.log({cancelData: data})
+  console.log({ cancelData: data });
   const { onCancelOrder } = useCancelOrder(data?.id ?? 0);
 
   return (
     <Modal.Body>
-    <div>Sales: {orderData.remainingBalance} / {orderData.quantity} Available</div>
+      <div>
+        Sales: {orderData.remainingBalance} / {orderData.quantity} Available
+      </div>
       <div className="row">
         <div className="col-md-6">
           <Button
             variant="info"
             type="submit"
             className="w-100"
-            onClick={async () =>
-              await onCancelOrder(
-                data.id,
-                listQuantity,
-                listPrice,
-                listExpires ?? maxUnixTimestamp
-              )
-            }
+            onClick={async () => await onCancelOrder()}
           >
             Submit
           </Button>

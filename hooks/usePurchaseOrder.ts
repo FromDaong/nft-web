@@ -21,8 +21,6 @@ const usePurchaseOrder = (
 
   const totalPrice = new BigNumber(quantity).multipliedBy(new BigNumber(price));
 
-  console.log({ price, totalPrice });
-
   const handlePurchaseOrder = useCallback(async () => {
     const txHash = await purchaseOrder(
       treatMarketplaceContract,
@@ -30,7 +28,7 @@ const usePurchaseOrder = (
       quantity,
       seller,
       account,
-      totalPrice
+      Number(price)
     );
     console.log(txHash);
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import Spinner from "react-bootstrap/Spinner";
 import MyNFTItem from "../components/MyNFTItem";
 import TransferNFTModal from "../components/TransferNFTModal";
@@ -12,6 +13,21 @@ import useGetOpenOrdersForSeller from "../hooks/useGetOpenOrdersForSeller";
 import useWallet from "use-wallet";
 import useSWR from "swr";
 import Layout from "../components/Layout";
+
+const variants = {
+  show: {
+    transition: { staggerChildren: 0.25 },
+    when: "afterChildren",
+    opacity: 1,
+  },
+  hidden: {
+    transition: {
+      staggerChildren: 0.02,
+      staggerDirection: -1,
+      when: "afterChildren",
+    },
+  },
+};
 
 const MyNFTsWrapper = () => {
   const { account, status } = useWallet();
@@ -74,6 +90,7 @@ const OwnedNfts = ({
   transferNFTClick,
   listOrderClick,
   serverNftBalances,
+  isLoading,
 }) => {
   return (
     <div className="white-tp-bg" style={{ minHeight: 400 }}>
@@ -111,22 +128,32 @@ const OwnedNfts = ({
         )}
       </div>
       {nftBalances.length > 0 ? (
-        <div className="container px-4 px-md-0">
-          <div className="row d-flex flex-wrap text-left justify-content-center mt-5">
-            {nftBalances.map((nft) => {
-              return (
-                nft.balance > 0 && (
-                  <div className="col-xl-4 col-md-6 px-4">
-                    <MyNFTItem
-                      data={nft}
-                      revealNFTs={revealNFTs}
-                      transferNFTClick={transferNFTClick}
-                      listOrderClick={listOrderClick}
-                    />
-                  </div>
-                )
-              );
-            })}
+        <div className="container px-4">
+          <div className="d-flex text-left justify-content-center mt-5">
+            <motion.div
+              className="card-columns w-100 w-100"
+              animate="show"
+              exit="hidden"
+              initial="hidden"
+              variants={variants}
+            >
+              {nftBalances.map((nft) => {
+                return (
+                  nft.balance > 0 && (
+                    <div className="card bg-transparent border-0">
+                      <MyNFTItem
+                        balance={nft.balance}
+                        isLoading={isLoading}
+                        data={nft}
+                        revealNFTs={revealNFTs}
+                        transferNFTClick={transferNFTClick}
+                        listOrderClick={listOrderClick}
+                      />
+                    </div>
+                  )
+                );
+              })}
+            </motion.div>
           </div>
         </div>
       ) : (
@@ -172,7 +199,7 @@ const OpenOrders = ({
               fontSize: 24,
             }}
           >
-            OPEN ORDERS
+            MY MARKETPLACE LISTINGS
           </h2>
         </div>
         {nftBalances.length > 0 && (
@@ -190,21 +217,29 @@ const OpenOrders = ({
         )}
       </div>
       {nftBalances.length > 0 ? (
-        <div className="container px-4 px-md-0">
-          <div className="row d-flex flex-wrap text-left justify-content-center mt-5">
-            {nftBalances.map((nft) => {
-              return (
-                nft.hasOpenOrder && (
-                  <div className="col-xl-4 col-md-6 px-4">
-                    <MyNFTItem
-                      data={nft}
-                      revealNFTs={revealNFTs}
-                      cancelOrderClick={cancelOrderClick}
-                    />
-                  </div>
-                )
-              );
-            })}
+        <div className="container px-4 ">
+          <div className="d-flex text-left justify-content-center mt-5">
+            <motion.div
+              className="card-columns w-100"
+              animate="show"
+              exit="hidden"
+              initial="hidden"
+              variants={variants}
+            >
+              {nftBalances.map((nft) => {
+                return (
+                  nft.hasOpenOrder && (
+                    <div className="card bg-transparent border-0">
+                      <MyNFTItem
+                        data={nft}
+                        revealNFTs={revealNFTs}
+                        cancelOrderClick={cancelOrderClick}
+                      />
+                    </div>
+                  )
+                );
+              })}
+            </motion.div>
           </div>
         </div>
       ) : (
@@ -235,6 +270,7 @@ const ViewNFT = ({ account, nftArray }) => {
   const [transferNFTData, setTransferNFTData] = useState(null);
   const [listOrderData, setListOrderData] = useState(null);
   const [cancelOrderData, setCancelOrderData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const transferNFTClick = (x) => {
     setTransferNFTData(x);
@@ -258,6 +294,7 @@ const ViewNFT = ({ account, nftArray }) => {
 
       const nftIds = nftArray.map((n) => n.id);
 
+      setIsLoading(true);
       const res = await fetch(`/api/nft/view-nfts`, {
         method: "POST",
         headers: {
@@ -268,6 +305,7 @@ const ViewNFT = ({ account, nftArray }) => {
       });
       const resJSON = await res.json();
 
+      setIsLoading(false);
       if (resJSON.success) {
         setServerNftBalances(resJSON.results);
       }
@@ -310,6 +348,7 @@ const ViewNFT = ({ account, nftArray }) => {
             transferNFTClick={transferNFTClick}
             nftBalances={nftBalances}
             revealNFTs={revealNFTs}
+            isLoading={isLoading}
             serverNftBalances={serverNftBalances}
           />
         </div>
@@ -320,6 +359,7 @@ const ViewNFT = ({ account, nftArray }) => {
             transferNFTClick={transferNFTClick}
             nftBalances={nftBalances}
             revealNFTs={revealNFTs}
+            isLoading={isLoading}
             serverNftBalances={serverNftBalances}
           />
         </div>

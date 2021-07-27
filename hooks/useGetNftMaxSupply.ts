@@ -14,7 +14,6 @@ const useGetNftMaxSupply = (id: number) => {
 
   const fetchBalance = useCallback(async () => {
     const maxSupply = await getNftMaxSupply(treatNFTMinterContract, id);
-    console.log({ maxSupply });
     setMaxSupply(new BigNumber(maxSupply));
   }, [id, treat]);
 

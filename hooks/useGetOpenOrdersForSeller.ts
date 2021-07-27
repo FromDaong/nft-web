@@ -8,7 +8,7 @@ import {
 import useTreat from "./useTreat";
 
 const useGetOpenOrdersForSeller = (seller: string = null) => {
-  const [orders,] = useState([]);
+  const [orders] = useState([]);
 
   if(seller === null) {
     const { account } = useWallet();

@@ -1,53 +1,17 @@
 import useSWR from "swr";
 import BigNumber from "bignumber.js";
+import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import { getDisplayBalance } from "../../utils/formatBalance";
 import React, { useState, useEffect } from "react";
 import useCancelOrder from "../../hooks/useCancelOrder";
 import usePurchaseOrder from "../../hooks/usePurchaseOrder";
 import useGetRemainingOrderBalance from "../../hooks/useGetRemainingOrderBalance";
-import Tab from "react-bootstrap/Tab";
-import Tabs from "react-bootstrap/Tabs";
+import NFTListItem from "../../components/NFTListItem";
+import { Trash, CartFill } from "react-bootstrap-icons";
 
-export const Order = ({ order, account, nftResult }) => {
-  console.log({ order });
-
-  if (!nftResult) {
-    const res = useSWR(`/api/nft/${order.nftId}`);
-    nftResult = res.data;
-  }
-
-  const [modelData, setModelData] = useState();
-  const [nftData, setNftData] = useState();
-
-  // const { status } = useWallet();   // need this for spinners?
-
-  function getModelUsername(modelHandle) {
-    // TODO: going forward, we should have all of the model handles use @{name}
-    // but to be safe, let's trim any leading '@' signs here first
-    //
-    // also need to figure out how this would work when we're hands off
-    // and not creating NFTs for them
-
-    if (modelHandle && modelHandle[0] === "@") {
-      return modelHandle.slice(1);
-    }
-
-    return modelHandle;
-  }
-
-  useEffect(() => {
-    (async () => {
-      if (nftResult) {
-        setNftData(nftResult);
-
-        const username = getModelUsername(nftResult.model_handle);
-        const model = await fetch(`/api/model/${username}`);
-        const json = await model.json();
-        setModelData(json);
-      }
-    })();
-  }, [nftResult]);
+export const Order = ({ order, account }) => {
+  const { data: nftResult } = useSWR(`/api/nft/${order.nftId}`);
 
   const [remainingBalance] = useGetRemainingOrderBalance(
     order?.seller,
@@ -73,7 +37,49 @@ export const Order = ({ order, account, nftResult }) => {
     )} at ${zeroPad(date.getHours())}:${zeroPad(date.getMinutes())}`;
   }
 
-  console.log({ order });
+  const isOwner =
+    !!account && account.toUpperCase() === order.seller.toUpperCase();
+
+  return (
+    <>
+      {!!order && nftResult ? (
+        <>
+          <NFTListItem
+            data={nftResult}
+            isOwner={isOwner}
+            price={order.price}
+            owner={order.seller}
+            buttonLabel={
+              isOwner ? (
+                <>
+                  <Trash className="mr-2" />
+                  Remove Your Listing
+                </>
+              ) : (
+                <>
+                  <CartFill className="mr-2" />
+                  Purchase
+                </>
+              )
+            }
+            buttonFunction={(e) => {
+              e.preventDefault();
+              !isOwner ? onPurchaseOrder() : onCancelOrder();
+            }}
+          />
+        </>
+      ) : (
+        <div
+          style={{ minHeight: 500 }}
+          className="d-flex justify-content-center align-items-center"
+        >
+          <Spinner animation="border" role="status" size="xl" variant="primary">
+            <span className="sr-only">Loading...</span>
+          </Spinner>
+        </div>
+      )}
+    </>
+  );
 
   return (
     <>
@@ -122,75 +128,5 @@ export const Order = ({ order, account, nftResult }) => {
         <div>Loading...</div>
       )}
     </>
-  );
-};
-
-export const MarketplaceList = ({ orderBook, displayId, account }) => {
-  return (
-    <div className="container fluid">
-      <div className="row">
-        <div className="nftForSale col-md-4">
-          <Button>Buy Now</Button>
-        </div>
-
-        <div className="orderbook col-md-7">
-          <h1>Morning Wood</h1>
-          <div className="row">
-            <div className="col">1.05 BNB</div>
-            <div className="col">80%</div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <img src="#" width="10px" height="20px"></img>
-            </div>
-            <div className="col">Model Name</div>
-            <div className="row">
-              <div className="nftBio col">
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure,
-                  asperiores.
-                </p>
-              </div>
-            </div>
-            <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
-              <Tab eventKey="home" title="Details">
-                <p className="orderbook">
-                  {" "}
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Doloremque repudiandae labore quisquam totam fugit,
-                  accusantium nostrum sequi ut illo nobis?{" "}
-                </p>
-              </Tab>
-              <Tab eventKey="profile" title="Orders">
-                <div className="row">
-                  <div className="orderbook nftResales col">
-                    {orderBook.length > 0 ? (
-                      orderBook.map((o) => (
-                        <Order
-                          order={o}
-                          account={account}
-                          //   nftId={o.nftId}
-                          //   seller={o.seller}
-                          key={`${o.nftId}_${o.seller}`}
-                        />
-                      ))
-                    ) : (
-                      <div>None for sale.</div>
-                    )}
-                  </div>
-                </div>
-              </Tab>
-              <Tab eventKey="contact" title="History">
-                <p className="orderbook">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Autem, ipsum assumenda aliquid et quod libero accusantium quia
-                  earum officiis consequuntur.
-                </p>
-              </Tab>
-            </Tabs>
-          </div>
-        </div>
-      </div>
-    </div>
   );
 };

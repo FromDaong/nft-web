@@ -4,23 +4,22 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import useListOrder from "../../hooks/useListOrder";
 import useGetMinterIsApprovedForAll from "../../hooks/useGetMinterIsApprovedForAll";
-import useApproveMarketplace from '../../hooks/useApproveMarketplace'
+import useApproveMarketplace from "../../hooks/useApproveMarketplace";
 
 const WalletModal = ({ show, handleClose, data }) => {
-
   const isApprovedForAll = useGetMinterIsApprovedForAll();
   const { onApprove } = useApproveMarketplace();
 
   if (!data) return <div></div>;
 
   console.log({ listApproval: isApprovedForAll });
-  console.log({listData: data})
+  console.log({ listData: data });
 
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
         <div>
-          <Modal.Title>List Order</Modal.Title>
+          <Modal.Title>List NFT on Marketplace</Modal.Title>
           <p className="mb-0 mt-2">
             <b>NFT Name:</b> "{data.name}"
           </p>
@@ -36,28 +35,30 @@ const WalletModal = ({ show, handleClose, data }) => {
 };
 
 export const ApproveMarketplace = ({ onApprove }) => {
-  return <Button onClick={onApprove}>Approve</Button>
+  return <Button onClick={onApprove}>Approve</Button>;
 };
 
 export const ListOrderModalBody = ({ data }) => {
   const { onListOrder } = useListOrder();
   const [listPrice, setListPrice] = useState(0);
-  const [listQuantity, setListQuantity] = useState(0);
-  const maxUnixTimestamp = 2147483647
+  const [listQuantity, setListQuantity] = useState(1);
+  const maxUnixTimestamp = 2147483647;
   const [listExpires, setListExpires] = useState(maxUnixTimestamp);
 
   return (
     <Modal.Body>
       <Form.Group controlId="formPrice">
-        <Form.Label>Price</Form.Label>
+        <Form.Label>List Price in BNB</Form.Label>
         <Form.Control
           type="number"
           onChange={(e) => setListPrice(e.currentTarget.value)}
           placeholder="0"
         />
-        <Form.Text className="text-muted">Price</Form.Text>
+        <Form.Text className="text-muted">
+          This is the price for someone to buy your NFT
+        </Form.Text>
       </Form.Group>
-      <Form.Group controlId="formQuantity">
+      {/* <Form.Group controlId="formQuantity">
         <Form.Label>Quantity</Form.Label>
         <Form.Control
           type="number"
@@ -65,14 +66,16 @@ export const ListOrderModalBody = ({ data }) => {
           placeholder="0"
         />
         <Form.Text className="text-muted">Quantity</Form.Text>
-      </Form.Group>
+      </Form.Group> */}
       <Form.Group controlId="formExpires">
-        <Form.Label>Expiration Date (leave blank for unexpiring order)</Form.Label>
+        <Form.Label>Expiration Date</Form.Label>
         <Form.Control
           type="date"
           onChange={(e) => setListExpires(e.currentTarget.value)}
         />
-        <Form.Text className="text-muted">Expiration Date</Form.Text>
+        <Form.Text className="text-muted">
+          Leave blank for unexpiring order
+        </Form.Text>
       </Form.Group>
       <div className="row">
         <div className="col-md-6">

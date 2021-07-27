@@ -1,4 +1,5 @@
 import { useWallet } from "use-wallet";
+import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import React from "react";
 import useGetAllOpenOrders from "../hooks/useGetAllOpenOrders";
@@ -13,12 +14,9 @@ const Marketplace = () => {
   const [orderBook] = useGetAllOpenOrders(maxId);
   const { account } = useWallet();
 
-  // note, flatten the orderBook because useGetAllOpenOrders
-  // returns a nested array
-  return <MarketplaceList orderBook={orderBook.flat()} account={account} />;
-};
+  const orderBookArray = orderBook && orderBook.flat();
+  console.log({ orderBookArray });
 
-const MarketplaceList = ({ orderBook, account }) => {
   return (
     <motion.main
       variants={{
@@ -42,20 +40,52 @@ const MarketplaceList = ({ orderBook, account }) => {
           Search
         </Button>
       </div>
+      <br />
       <div className="container fluid">
-        <div className="row">
-          <div className="orderbook col-md-12">
-            <div className="row">
-              {orderBook.map((o) => (
-                <Order
-                  order={o}
-                  account={account}
-                  key={`${o.nftId}_${o.seller}`}
-                />
-              ))}
+        <motion.div
+          className="nft-list row mt-5"
+          animate="show"
+          exit="hidden"
+          initial="hidden"
+          variants={{
+            show: { transition: { staggerChildren: 0.15 }, opacity: 1 },
+            hidden: {
+              transition: {
+                staggerChildren: 0.02,
+                staggerDirection: -1,
+                when: "afterChildren",
+              },
+            },
+          }}
+        >
+          {!orderBookArray || orderBookArray.length === 0 ? (
+            <div
+              style={{ minHeight: 500 }}
+              className="d-flex justify-content-center align-items-center w-100"
+            >
+              <Spinner
+                animation="border"
+                role="status"
+                size="xl"
+                variant="primary"
+              >
+                <span className="sr-only">Loading...</span>
+              </Spinner>
             </div>
-          </div>
-        </div>
+          ) : (
+            <>
+              {orderBookArray.map((o) => (
+                <div className="col-md-4">
+                  <Order
+                    order={o}
+                    account={account}
+                    key={`${o.nftId}_${o.seller}`}
+                  />
+                </div>
+              ))}
+            </>
+          )}
+        </motion.div>
       </div>
     </motion.main>
   );
