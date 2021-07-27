@@ -339,7 +339,6 @@ const ViewNFT = ({ account, nftArray }) => {
         />
         <BlankModal
           show={!!showPendingModal}
-          data={cancelOrderData}
           handleClose={() => setShowPendingModal(false)}
           title={"Waiting for Transaction Confirmation ⌛"}
           subtitle={
@@ -350,7 +349,6 @@ const ViewNFT = ({ account, nftArray }) => {
         />
         <BlankModal
           show={!!showCompleteModal}
-          data={cancelOrderData}
           handleClose={() => setShowCompleteModal(false)}
           account={account}
         />

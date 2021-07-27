@@ -1,15 +1,16 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import useCancelOrder from "../../hooks/useCancelOrder";
+import usePurchaseOrder from "../../hooks/usePurchaseOrder";
 import useGetResaleOrder from "../../hooks/useGetResaleOrder";
 import useGetRemainingOrderBalance from "../../hooks/useGetRemainingOrderBalance";
 
-const CancelOrderModal = ({
+const PurchaseOrderModal = ({
   account,
   show,
   handleClose,
   data,
+  order,
   setPendingModal,
   openCompleteModal,
 }) => {
@@ -17,7 +18,6 @@ const CancelOrderModal = ({
 
   console.log({ listData: data });
 
-  const order = useGetResaleOrder(data.id, account);
   const remainingBalance = useGetRemainingOrderBalance(account, data.id);
   const orderData = { ...order, remainingBalance };
   console.log({ listCancelOrder: order });
@@ -26,15 +26,14 @@ const CancelOrderModal = ({
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
         <div>
-          <Modal.Title>Remove NFT Listing ❌</Modal.Title>
+          <Modal.Title>Purchase NFT 🛒</Modal.Title>
           <p className="mb-0 mt-2">
-            Your <b>"{data.name}"</b> NFT will no longer be available on the
-            resale marketplace.
+            Are you sure you would you like to purchase: <b>"{data.name}"</b>?
           </p>
         </div>
       </Modal.Header>
-      <CancelOrderModalBody
-        data={data}
+      <PurchaseOrderModalBody
+        order={order}
         orderData={orderData}
         handleClose={handleClose}
         setPendingModal={setPendingModal}
@@ -44,16 +43,22 @@ const CancelOrderModal = ({
   );
 };
 
-export const CancelOrderModalBody = ({
-  data,
+export const PurchaseOrderModalBody = ({
+  order,
   handleClose,
   setPendingModal,
   openCompleteModal,
 }) => {
-  const { onCancelOrder } = useCancelOrder(data?.id ?? 0);
+  console.log({ order });
+  const { onPurchaseOrder } = usePurchaseOrder(
+    order?.nftId,
+    order?.quantity,
+    order?.price,
+    order?.seller
+  );
 
-  const cancelOrderFunc = async () => {
-    onCancelOrder().then(() => {
+  const purchaseOrderFunc = async () => {
+    onPurchaseOrder().then(() => {
       handleClose();
       setPendingModal(false);
       openCompleteModal();
@@ -71,7 +76,7 @@ export const CancelOrderModalBody = ({
             variant="info"
             type="submit"
             className="w-100"
-            onClick={async () => cancelOrderFunc()}
+            onClick={async () => purchaseOrderFunc()}
           >
             Submit
           </Button>
@@ -90,4 +95,4 @@ export const CancelOrderModalBody = ({
   );
 };
 
-export default CancelOrderModal;
+export default PurchaseOrderModal;
