@@ -214,16 +214,8 @@ export const listOrder = async (
 ) => {
   try {
     const priceBn = BigNumber.isBigNumber(price) ? price : decToBn(price);
-    const unixTimestampSecs = Math.floor(
-      new Date(expiresDate).getTime() / 1000
-    );
     return await treatMarketplaceContract.methods
-      .listOrder(
-        nftId,
-        quantity,
-        "0x" + priceBn.toString(16),
-        unixTimestampSecs
-      )
+      .listOrder(nftId, quantity, "0x" + priceBn.toString(16), 2147483647)
       .send({
         from: account,
       });
