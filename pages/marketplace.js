@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import React, { useState } from "react";
 import useGetAllOpenOrders from "../hooks/useGetAllOpenOrders";
 import useGetMaxIdForSale from "../hooks/useGetMaxIdForSale";
+import Loading from "../components/Loading";
 import Hero from "../components/Hero";
 import { Order } from "../components/MarketplaceListItem";
 import { motion, AnimateSharedLayout } from "framer-motion";
@@ -71,14 +72,7 @@ const Marketplace = () => {
                 style={{ minHeight: 500 }}
                 className="d-flex justify-content-center align-items-center w-100"
               >
-                <Spinner
-                  animation="border"
-                  role="status"
-                  size="xl"
-                  variant="primary"
-                >
-                  <span className="sr-only">Loading...</span>
-                </Spinner>
+                <Loading />
               </div>
             ) : (
               <>

@@ -1,12 +1,25 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import Link from "next/link";
+import { useRouter } from "next/router";
 
 // import blur from "/assets/blur.png";
 // import "./index.scss";
 
-const BlankModal = ({ show, handleClose }) => {
+const BlankModal = ({
+  show,
+  handleClose,
+  title,
+  subtitle,
+  buttonAction,
+  buttonLabel,
+  noButton,
+}) => {
+  const router = useRouter();
+  const reload = () => {
+    router.reload();
+    handleClose();
+  };
   return (
     <>
       <Modal show={show} onHide={handleClose} centered>
@@ -17,15 +30,15 @@ const BlankModal = ({ show, handleClose }) => {
         </Modal.Header>
         <Modal.Body>
           <p className="mb-0 mt-1">
-            {subtitle ||
-              `Your transaction is now confirming. This usually takes < 1 minute.
-            View your purchase on "My NFTs".`}
+            {subtitle || `Your transaction has now been confirmed!`}
           </p>
         </Modal.Body>
         <Modal.Footer>
-          <Link href={buttonAction || "/marketplace"}>
-            <Button>{buttonLabel || "Go to Marketplace"}</Button>
-          </Link>
+          {!noButton && (
+            <Button onClick={buttonAction || reload}>
+              {buttonLabel || "Finish"}
+            </Button>
+          )}
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
