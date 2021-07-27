@@ -46,75 +46,75 @@ export default async (req, res) => {
       break;
 
     // For updating database if user adds NFT listing to marketplace.
-    case "POST":
-      try {
-        const { seller } = req.body;
+    // case "POST":
+    //   try {
+    //     const { seller } = req.body;
 
-        const openOrders = await getOpenOrdersForSeller(
-          treatMarketplace,
-          seller
-        );
+    //     const openOrders = await getOpenOrdersForSeller(
+    //       treatMarketplace,
+    //       seller
+    //     );
 
-        console.log({ openOrders, seller });
+    //     console.log({ openOrders, seller });
 
-        // const NFTs = await NFT.find();
+    //     // const NFTs = await NFT.find();
 
-        const listedResalesByUser = await ResaleNFT.find({
-          seller,
-        });
+    //     const listedResalesByUser = await ResaleNFT.find({
+    //       seller,
+    //     });
 
-        let newOpenOrders = [...openOrders];
+    //     let newOpenOrders = [...openOrders];
 
-        // Compare existing resales in database to all resales on blockchain
-        let results = listedResalesByUser.map((i) => {
-          const index = newOpenOrders.findIndex((o) => o.nft_id === i);
-          newOpenOrders.splice(index, 1);
-        });
+    //     // Compare existing resales in database to all resales on blockchain
+    //     let results = listedResalesByUser.map((i) => {
+    //       const index = newOpenOrders.findIndex((o) => o.nft_id === i);
+    //       newOpenOrders.splice(index, 1);
+    //     });
 
-        // If there's extra in blockchain that aren't in the database, add them
-        newOpenOrders.map(() => {
-          const newNFT = await NFT.create(nftBody);
-        });
+    //     // If there's extra in blockchain that aren't in the database, add them
+    //     newOpenOrders.map(() => {
+    //       const newNFT = await NFT.create(nftBody);
+    //     });
 
-        // let results = await Promise.all(
-        //   NFTs.map(async (n) => {
-        //     console.log(n.id);
-        //     const balance = await treatNFTMinter.methods
-        //       .balanceOf(seller, n.id)
-        //       .call();
+    //     // let results = await Promise.all(
+    //     //   NFTs.map(async (n) => {
+    //     //     console.log(n.id);
+    //     //     const balance = await treatNFTMinter.methods
+    //     //       .balanceOf(seller, n.id)
+    //     //       .call();
 
-        //     const bigNumberBalance = new BigNumber(balance);
-        //     const numberBalance = bigNumberBalance.toNumber();
+    //     //     const bigNumberBalance = new BigNumber(balance);
+    //     //     const numberBalance = bigNumberBalance.toNumber();
 
-        //     console.log({ numberBalance });
+    //     //     console.log({ numberBalance });
 
-        //     const nftData = await NFT.findOne({ id: Number(id) });
+    //     //     const nftData = await NFT.findOne({ id: Number(id) });
 
-        //     const hasOpenOrder =
-        //       !!openOrders && !!openOrders.find((o) => o === id);
+    //     //     const hasOpenOrder =
+    //     //       !!openOrders && !!openOrders.find((o) => o === id);
 
-        //     if (numberBalance > 0 || hasOpenOrder) {
-        //       return {
-        //         ...nftData.toObject(),
-        //         balance: numberBalance,
-        //         hasOpenOrder: hasOpenOrder,
-        //       };
-        //     } else {
-        //       return undefined;
-        //     }
-        //   })
-        // );
+    //     //     if (numberBalance > 0 || hasOpenOrder) {
+    //     //       return {
+    //     //         ...nftData.toObject(),
+    //     //         balance: numberBalance,
+    //     //         hasOpenOrder: hasOpenOrder,
+    //     //       };
+    //     //     } else {
+    //     //       return undefined;
+    //     //     }
+    //     //   })
+    //     // );
 
-        results = results.filter((e) => e);
+    //     results = results.filter((e) => e);
 
-        console.log({ results });
+    //     console.log({ results });
 
-        // res.status(200).json({ success: true, results });
-      } catch (error) {
-        console.log({ error });
-        res.status(400).json({ success: false, error: error });
-      }
-      break;
+    //     // res.status(200).json({ success: true, results });
+    //   } catch (error) {
+    //     console.log({ error });
+    //     res.status(400).json({ success: false, error: error });
+    //   }
+    //   break;
     default:
       res.status(400).json({ success: false });
       break;
