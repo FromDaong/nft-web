@@ -41,6 +41,8 @@ const NFTListItem = ({
   cancelOrderClick,
   isLoading,
   balance,
+  price,
+  hasOpenOrder,
 }) => {
   const [image, setBase64Image] = useState();
   const [modalData, setModalData] = useState();
@@ -81,7 +83,11 @@ const NFTListItem = ({
       <motion.div variants={variants}>
         <div className="nft-card" style={{ boxShadow: "none" }}>
           <div className="totw-tag-wrapper">
-            {balance > 1 && <div className="totw-tag">{balance} x</div>}
+            {balance > 1 && (
+              <div className="quantity-wrapper totw-tag">
+                Contains {balance}x
+              </div>
+            )}
           </div>
           <div className="profile-pic">
             <Link href={`/creator/${data.name}`}>
@@ -98,6 +104,7 @@ const NFTListItem = ({
           <div
             className="img-container text-center text-lg-left d-flex justify-content-center align-items-center"
             style={{
+              background: "black",
               border: "3px solid #E795B6",
               borderRadius: 10,
               minHeight: 300,
@@ -159,11 +166,12 @@ const NFTListItem = ({
               <div className="name">{data.attributes[0].value}</div>
             </div>
             <div className="stats">
-              {/* TODO: SHOW ON MARKETPLACE LISTINGS */}
-              {/* <div className="stat">
-                <div className="number">{data.list_price}</div>
-                <div className="label">BNB</div>
-              </div> */}
+              {price && (
+                <div className="stat">
+                  <div className="number">{price}</div>
+                  <div className="label">BNB</div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -171,13 +179,26 @@ const NFTListItem = ({
             <div className="row">
               <div className="col-lg-6 mt-3">
                 <span className="d-inline-block w-100">
-                  <Button
-                    className="w-100"
-                    variant="secondary"
-                    onClick={() => listOrderClick(data)}
+                  <OverlayTrigger
+                    placement="top"
+                    overlay={
+                      <Tooltip id="tooltip-disabled">
+                        You must list the same NFTs together.
+                      </Tooltip>
+                    }
                   >
-                    <b>RESELL</b>
-                  </Button>
+                    <span>
+                      <Button
+                        className="w-100"
+                        variant="secondary"
+                        disabled={hasOpenOrder}
+                        style={hasOpenOrder && { pointerEvents: "none" }}
+                        onClick={() => listOrderClick({ ...data, balance })}
+                      >
+                        <b>Re-Sell</b>
+                      </Button>
+                    </span>
+                  </OverlayTrigger>
                 </span>
               </div>
               <div className="col-lg-6 mt-3">
@@ -187,7 +208,7 @@ const NFTListItem = ({
                     variant="secondary"
                     onClick={() => transferNFTClick(data)}
                   >
-                    <b>TRANSFER</b>
+                    <b>Transfer</b>
                   </Button>
                 </span>
               </div>
@@ -201,7 +222,7 @@ const NFTListItem = ({
                     variant="secondary"
                     onClick={() => cancelOrderClick(data)}
                   >
-                    <b>REMOVE LISTING</b>
+                    <b>Remove Your Listing</b>
                   </Button>
                 </span>
               </div>

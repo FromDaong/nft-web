@@ -10,9 +10,11 @@ import Hero from "../components/Hero";
 import Button from "react-bootstrap/Button";
 import useGetNftMaxSupply from "../hooks/useGetNftMaxSupply";
 import useGetNftBalance from "../hooks/useGetNftBalance";
+import { getDisplayBalance } from "../utils/formatBalance";
 import useGetOpenOrdersForSeller from "../hooks/useGetOpenOrdersForSeller";
 import useWallet from "use-wallet";
 import useSWR from "swr";
+import BigNumber from "bignumber.js";
 import Layout from "../components/Layout";
 
 const variants = {
@@ -111,18 +113,18 @@ const OwnedNfts = ({
               fontSize: 24,
             }}
           >
-            MY NFTs
+            My NFTs
           </h2>
         </div>
         {nftBalances.length > 0 && (
           <div className="button-container">
             {serverNftBalances ? (
               <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
-                <b>{"HIDE CONTENTS 🙈"}</b>
+                <b>{"Hide Contents 🙈"}</b>
               </Button>
             ) : (
               <Button variant="primary  w-sm-100" onClick={revealNFTs}>
-                <b>{"REVEAL CONTENTS 👀"}</b>
+                <b>{"Reveal Contents 👀"}</b>
               </Button>
             )}
           </div>
@@ -149,6 +151,7 @@ const OwnedNfts = ({
                         revealNFTs={revealNFTs}
                         transferNFTClick={transferNFTClick}
                         listOrderClick={listOrderClick}
+                        hasOpenOrder={nft.hasOpenOrder}
                       />
                     </div>
                   )
@@ -181,7 +184,11 @@ const OpenOrders = ({
   transferNFTClick,
   cancelOrderClick,
   serverNftBalances,
+  isLoading,
 }) => {
+  const openOrders = useGetOpenOrdersForSeller();
+  console.log({ openOrders });
+
   return (
     <div className="white-tp-bg" style={{ minHeight: 400 }}>
       <div
@@ -200,18 +207,18 @@ const OpenOrders = ({
               fontSize: 24,
             }}
           >
-            MY MARKETPLACE LISTINGS
+            Listed on Re-Sale Marketplace
           </h2>
         </div>
         {nftBalances.length > 0 && (
           <div className="button-container">
             {serverNftBalances ? (
               <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
-                <b>{"HIDE CONTENTS 🙈"}</b>
+                <b>{"Hide Contents 🙈"}</b>
               </Button>
             ) : (
               <Button variant="primary  w-sm-100" onClick={revealNFTs}>
-                <b>{"REVEAL CONTENTS 👀"}</b>
+                <b>{"Reveal Contents 👀"}</b>
               </Button>
             )}
           </div>
@@ -228,17 +235,28 @@ const OpenOrders = ({
               variants={variants}
             >
               {nftBalances.map((nft) => {
-                return (
-                  nft.hasOpenOrder && (
+                if (nft.hasOpenOrder) {
+                  const order = openOrders.find(
+                    (i) => Number(i.nftId) === nft.id
+                  );
+
+                  return (
                     <div className="card bg-transparent border-0">
                       <MyNFTItem
+                        price={
+                          order &&
+                          order.price &&
+                          getDisplayBalance(new BigNumber(order.price))
+                        }
+                        quantity={order?.quantity}
                         data={nft}
+                        isLoading={isLoading}
                         revealNFTs={revealNFTs}
                         cancelOrderClick={cancelOrderClick}
                       />
                     </div>
-                  )
-                );
+                  );
+                }
               })}
             </motion.div>
           </div>
@@ -353,7 +371,7 @@ const ViewNFT = ({ account, nftArray }) => {
           account={account}
         />
         <Hero
-          title={"My NFTs"}
+          title={"My NFTs & Listings"}
           subtitle={`Connected wallet address: ${account}`}
         />
         {/* <div className="white-tp-bg mt-4 p-3">
