@@ -56,6 +56,9 @@ export const contractAddresses = {
   treatMartBundle: {
     56: "0xb0685346A231272BDa0F30Eb46183F016E5f3dcF",
   },
+  treatTradeIn: {
+    56: "0xE0f5df4915242E4C4C06D2964Eda53C448fec442",
+  },
   freeTreats: {
     56: "0xd17EAf17F4120977ff61F5529B2dF5Af66252238",
   },
