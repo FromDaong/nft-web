@@ -1,7 +1,7 @@
 import { useWallet } from "use-wallet";
-import Spinner from "react-bootstrap/Spinner";
+import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useGetAllOpenOrders from "../hooks/useGetAllOpenOrders";
 import useGetMaxIdForSale from "../hooks/useGetMaxIdForSale";
 import Loading from "../components/Loading";
@@ -12,18 +12,50 @@ import Hero from "../components/Hero";
 import { Order } from "../components/MarketplaceListItem";
 import { motion, AnimateSharedLayout } from "framer-motion";
 
-const Marketplace = () => {
+const Marketplace = ({ search }) => {
   const maxId = useGetMaxIdForSale();
 
   const [cancelOrderData, setCancelOrderData] = useState(null);
   const [purchaseOrderData, setPurchaseOrderData] = useState(null);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
-  const [searchFilter, setSearchFilter] = useState("");
+  const [orderBookArray, setOrderBookArray] = useState(undefined);
+  const [searchFilter, setSearchFilter] = useState(search || "");
+  const [sortBy, setSortBy] = useState("Recent");
   const [orderBook] = useGetAllOpenOrders(maxId);
   const { account } = useWallet();
 
-  const orderBookArray = orderBook && orderBook.flat();
+  const initOrderBookArray = orderBook && orderBook.flat();
+
+  const updateObArr = () => {
+    console.log("fire");
+    const obArr = initOrderBookArray?.sort((a, b) => {
+      switch (sortBy) {
+        case "Price Low to High":
+          return Number(a.price) - Number(b.price);
+        case "Price High to Low":
+          return Number(b.price) - Number(a.price);
+        default:
+          return a.listDate - b.listDate;
+      }
+    });
+
+    console.log({ obArr });
+    if (obArr) setOrderBookArray(obArr);
+  };
+
+  useEffect(() => {
+    if (
+      initOrderBookArray &&
+      (!orderBookArray || orderBookArray.length !== initOrderBookArray.length)
+    ) {
+      updateObArr();
+    }
+  }, [initOrderBookArray]);
+
+  useEffect(() => {
+    updateObArr();
+  }, [sortBy]);
 
   return (
     <AnimateSharedLayout>
@@ -77,15 +109,34 @@ const Marketplace = () => {
         />
         <div className="full-width-search white-tp-bg p-3 d-flex">
           <input
-            placeholder="Search for model or a specific NFT..."
+            placeholder="Type to search for a model or NFT..."
             type="text"
             className="flex-grow-1 pl-2"
+            value={searchFilter}
             onChange={(e) => setSearchFilter(e.target.value)}
             style={{ fontSize: "1.1em" }}
           />
-          <Button size="lg" variant="primary">
-            Search
-          </Button>
+          <Dropdown>
+            <Dropdown.Toggle
+              variant="transparent"
+              id="dropdown-basic"
+              size="lg"
+            >
+              {sortBy}
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={() => setSortBy("Recent")}>
+                Most Recent
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => setSortBy("Price Low to High")}>
+                Price Low to High
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => setSortBy("Price High to Low")}>
+                Price High to Low
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </div>
         <br />
         <div className="container fluid">
@@ -96,12 +147,13 @@ const Marketplace = () => {
             exit="hidden"
             initial="hidden"
             variants={{
-              show: { transition: { staggerChildren: 0.15 }, opacity: 1 },
+              show: { transition: { staggerChildren: 0.2 }, opacity: 1 },
               hidden: {
                 transition: {
                   staggerChildren: 0.02,
                   staggerDirection: -1,
                   when: "afterChildren",
+                  opacity: 0,
                 },
               },
             }}
@@ -135,6 +187,11 @@ const Marketplace = () => {
       </motion.main>
     </AnimateSharedLayout>
   );
+};
+
+Marketplace.getInitialProps = async ({ query: { search } }) => {
+  console.log({ search });
+  return { search };
 };
 
 export default Marketplace;

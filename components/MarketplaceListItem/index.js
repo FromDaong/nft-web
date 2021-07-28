@@ -49,6 +49,7 @@ export const Order = ({
           isOwner={isOwner}
           price={getDisplayBalance(new BigNumber(order.price))}
           owner={order.seller}
+          quantity={order.quantity}
           buttonLabel={
             isOwner ? (
               <>

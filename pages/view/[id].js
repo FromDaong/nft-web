@@ -6,6 +6,7 @@ import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
 import useGetFreeTreat from "../../hooks/useGetFreeTreat";
 import useGetNftTotalSupply from "../../hooks/useGetNftTotalSupply";
 import useGetTreatNFTCost from "../../hooks/useGetTreatNftCost";
+import useGetOpenOrdersForNFT from "../../hooks/useGetOpenOrdersForNFT";
 import useMintNft from "../../hooks/useMintNft";
 import useWallet from "use-wallet";
 import { getDisplayBalance } from "../../utils/formatBalance";
@@ -14,6 +15,8 @@ import { Blurhash } from "react-blurhash";
 import NFTPurchaseModal from "../../components/NFTPurchaseModal";
 import Layout from "../../components/Layout";
 import { EyeSlash } from "react-bootstrap-icons";
+import BigNumber from "bignumber.js";
+import Link from "next/link";
 
 const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   const { account } = useWallet();
@@ -148,8 +151,9 @@ const ViewNFT = ({ nftData, image, account }) => {
   const { onMintNft } = useMintNft(nftData.id, nftCost);
   const [showModal, setShowModal] = useState(false);
   const { onGetFreeTreat } = useGetFreeTreat(nftData.id, nftCost);
+  const openOrders = useGetOpenOrdersForNFT(nftData.id);
 
-  console.log({ maxNftSupply });
+  console.log({ openOrders });
 
   const historyEvents = nftData.mints.map((m) => {
     return {
@@ -168,6 +172,25 @@ const ViewNFT = ({ nftData, image, account }) => {
         <div className="event">{e.event}</div>
       </div>
     </div>
+  ));
+
+  const openOrdersRender = openOrders.map((e) => (
+    <Link href={`/marketplace?search=${nftData.name}`} passHref={true}>
+      <a>
+        <div className="history-event">
+          <div className="pic">
+            <img src={nftData.model_profile_pic} />
+          </div>
+          <div className="details">
+            <div className="label">{e.seller}</div>
+            <div className="event">
+              is selling theirs for {getDisplayBalance(new BigNumber(e.price))}
+              BNB
+            </div>
+          </div>
+        </div>
+      </a>
+    </Link>
   ));
 
   return (
@@ -243,6 +266,12 @@ const ViewNFT = ({ nftData, image, account }) => {
                   <div className="name">{nftData.model_handle}</div>
                 </div>
               </div>
+            </div>
+            <hr style={{ marginTop: 25, marginBottom: 25 }} />
+            <div className="history-container">
+              <div className="history-title">Marketplace Listings</div>
+              {/* <div className="bio">Coming soon...</div> */}
+              <div className="history-events">{openOrdersRender}</div>
             </div>
             <hr style={{ marginTop: 25, marginBottom: 25 }} />
             <div className="history-container">

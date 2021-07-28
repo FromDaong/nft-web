@@ -38,6 +38,7 @@ const NFTListItem = ({
   isOwner,
   price,
   owner,
+  quantity,
 }) => {
   const [image, setBase64Image] = useState();
   console.log({ data });
@@ -65,6 +66,11 @@ const NFTListItem = ({
               <div className="totw-tag">MY NFT</div>
             ) : (
               data.totw && <div className="totw-tag">TOTW</div>
+            )}
+            {quantity > 1 && (
+              <div className="quantity-wrapper totw-tag">
+                Contains {quantity}x
+              </div>
             )}
           </div>
           <Link href={`/model/${data.name}`}>

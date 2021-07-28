@@ -6,6 +6,7 @@ import ModelListItem from "../components/ModelListItem";
 import Layout from "../components/Layout";
 import { motion, useAnimation } from "framer-motion";
 import useSWR from "swr";
+import CountUp from "react-countup";
 import * as Scroll from "react-scroll";
 import { useInView } from "react-intersection-observer";
 
@@ -181,13 +182,17 @@ const Home = () => {
                 className="stats-container"
                 style={{ background: "#D3678E" }}
               >
-                <div className="big-text">10+</div>
+                <div className="big-text">
+                  <CountUp delay={1} duration={2} end={15} />+
+                </div>
                 <div className="small-text">Creators on TreatDAO</div>
               </div>
             </div>
             <div className="col-lg-4 stats-wrapper">
               <div className="stats-container">
-                <div className="big-text">65+ NFTs</div>
+                <div className="big-text">
+                  <CountUp delay={1} duration={3} end={88} />+ NFTs
+                </div>
                 <div className="small-text">Released on TreatDAO</div>
               </div>
             </div>
@@ -196,7 +201,9 @@ const Home = () => {
                 className="stats-container"
                 style={{ background: "#F19592" }}
               >
-                <div className="big-text">90+ BNB</div>
+                <div className="big-text">
+                  <CountUp delay={1} duration={3} end={100} />+ BNB
+                </div>
                 <div className="small-text">Earned by Creators</div>
               </div>
             </div>

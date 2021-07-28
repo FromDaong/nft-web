@@ -3202,6 +3202,11 @@ cors@^2.8.1:
     object-assign "^4"
     vary "^1"
 
+countup.js@^2.0.7:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/countup.js/-/countup.js-2.0.8.tgz#eca0c31c9db3f7769cba494d9315cd52dbaaf1b9"
+  integrity sha512-pW3xwwD+hB+xmtI16xFcuLS0D5hSQqPQWkZOdgpKQyzxCquDNo2VCFPkRw12vmvdpnicXVTcjmYiakG6biwINg==
+
 crc-32@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/crc-32/-/crc-32-1.2.0.tgz#cb2db6e29b88508e32d9dd0ec1693e7b41a18208"
@@ -6935,6 +6940,14 @@ react-copy-to-clipboard@^5.0.3:
   dependencies:
     copy-to-clipboard "^3"
     prop-types "^15.5.8"
+
+react-countup@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/react-countup/-/react-countup-5.1.0.tgz#23454c397b723f6c9c5bfbe959610ba0d34334ae"
+  integrity sha512-aDVXrnef5ByOqJfUOS0Gm0R8BQSfZagFoqczSbuPXdidTZh52OYZ8JN+cX58oouxvBOYwRvkhwPr0qUVrIpryw==
+  dependencies:
+    countup.js "^2.0.7"
+    warning "^4.0.3"
 
 react-dom@16.13.1:
   version "16.13.1"
