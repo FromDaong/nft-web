@@ -192,7 +192,7 @@ const NFTListItem = ({
                         className="w-100"
                         variant="secondary"
                         disabled={hasOpenOrder}
-                        style={hasOpenOrder && { pointerEvents: "none" }}
+                        style={hasOpenOrder ? { pointerEvents: "none" } : {}}
                         onClick={() => listOrderClick({ ...data, balance })}
                       >
                         <b>Re-Sell</b>
