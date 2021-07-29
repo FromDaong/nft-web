@@ -253,6 +253,35 @@ const Home = () => {
           </motion.div>
         </Scroll.Element>
         <br />
+        <Scroll.Element name="marketplace-list">
+          <div className="pink-bg mb-5 mt-2 row d-flex align-items-center">
+            <div className="col-md-7">
+              <div className="heading-text p-0" style={{ fontSize: "3.5em" }}>
+                Resale Marketplace
+              </div>
+              <p
+                className="totw-secondary-text m-0 mt-3 pb-3"
+                style={{ lineHeight: 1.75 }}
+              >
+                Buy and sell your Treat NFTs on the brand new offical Treat
+                resale marketplace. The only place to find exclusive Treat of
+                the Weeks that are no longer available for minting.
+              </p>
+
+              <Button
+                variant="primary mt-3 py-2 w-100"
+                style={{ maxWidth: 250 }}
+              >
+                <b>GO TO MARKETPLACE</b>
+              </Button>
+            </div>
+            <div className="col-md-1"></div>
+            <div className="col-md-4">
+              <img src={"/assets/transfer.png"} className="w-100 pt-3" alt="" />
+            </div>
+          </div>
+        </Scroll.Element>
+        <br />
         <Scroll.Element name="nft-list">
           <motion.div
             animate={{ x: 0, opacity: 1 }}
