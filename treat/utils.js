@@ -39,6 +39,14 @@ export const getTreatNFTMinterContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treatNFTMinter;
 };
 
+export const getTreatNFTMinterV1Contract = (treat) => {
+  return treat && treat.contracts && treat.contracts.treatNFTMinterV1;
+};
+
+export const getTreatTradeInContract = (treat) => {
+  return treat && treat.contracts && treat.contracts.treatTradeIn;
+};
+
 export const getTreatMartContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treatMart;
 };
@@ -134,6 +142,23 @@ export const redeemSet = async (
         from: account,
         value: setCost,
       });
+    console.log(txHash);
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+};
+
+export const redeemV1forV2 = async (
+  treatTradeInContract,
+  account,
+  nftIds,
+  amounts
+) => {
+  console.log({ v1Amounts: amounts?.toString() });
+  try {
+    const txHash = await treatTradeInContract.methods
+      .redeemV1forV2(nftIds, amounts);
     console.log(txHash);
   } catch (e) {
     console.error(e);
