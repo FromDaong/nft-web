@@ -1,4 +1,4 @@
-import { getTreatMartContract, mintFreeTreat } from "../treat/utils";
+import { getFreeTreatsContract, mintFreeTreat } from "../treat/utils";
 
 import { Contract } from "web3-eth-contract";
 import { useCallback } from "react";
@@ -6,29 +6,29 @@ import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";
 import bsc from "@binance-chain/bsc-use-wallet";
 
-const useGetFreeTreat = (
+const useGetFreeTreatV1 = (
   id: number,
   treatCost: number,
   useFreeTreats: boolean = false
 ) => {
   const { account } = useWallet();
   const treat = useTreat();
-  const treatMartContract = useFreeTreats
-    ? getTreatMartContract(treat)
-    : getTreatMartContract(treat);
+  const freeTreatsContract = useFreeTreats
+    ? getFreeTreatsContract(treat)
+    : getFreeTreatsContract(treat);
 
   const handleGetFreeTreat = useCallback(async () => {
     const txHash = await mintFreeTreat(
-      treatMartContract,
+      freeTreatsContract,
       account,
       id,
       treatCost
     );
     console.log(txHash);
     return txHash;
-  }, [account, id, treatCost, treatMartContract]);
+  }, [account, id, treatCost, freeTreatsContract]);
 
   return { onGetFreeTreat: handleGetFreeTreat };
 };
 
-export default useGetFreeTreat;
+export default useGetFreeTreatV1;
