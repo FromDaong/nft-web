@@ -177,6 +177,17 @@ export const getNftBalance = async (treatNFTMinter, account, nftId) => {
   }
 };
 
+export const getNftV1Balance = async (treatNFTMinterV1, account, nftId) => {
+  try {
+    const amount = await treatNFTMinterV1.methods
+      .balanceOf(account, nftId)
+      .call();
+    return new BigNumber(amount);
+  } catch {
+    return new BigNumber(0);
+  }
+};
+
 export const getNftCreator = async (treatNFTMinter, nftId) => {
   try {
     const modelAddress = await treatNFTMinter.methods.tokenModels(nftId).call();
