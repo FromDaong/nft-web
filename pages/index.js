@@ -5,6 +5,7 @@ import NFTListItem from "../components/NFTListItem";
 import ModelListItem from "../components/ModelListItem";
 import Layout from "../components/Layout";
 import { motion, useAnimation } from "framer-motion";
+import Link from "next/link";
 import useSWR from "swr";
 import CountUp from "react-countup";
 import * as Scroll from "react-scroll";
@@ -268,12 +269,14 @@ const Home = () => {
                 the Weeks that are no longer available for minting.
               </p>
 
-              <Button
-                variant="primary mt-3 py-2 w-100"
-                style={{ maxWidth: 250 }}
-              >
-                <b>GO TO MARKETPLACE</b>
-              </Button>
+              <Link href="/marketplace">
+                <Button
+                  variant="primary mt-3 py-2 w-100"
+                  style={{ maxWidth: 250 }}
+                >
+                  <b>GO TO MARKETPLACE</b>
+                </Button>
+              </Link>
             </div>
             <div className="col-md-1"></div>
             <div className="col-md-4">

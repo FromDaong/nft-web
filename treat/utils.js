@@ -109,9 +109,7 @@ export const mintFreeTreat = async (
 
 export const getSetIds = async (treatMartContract, setId) => {
   try {
-    const txHash = await treatMartContract.methods
-      .getSetIds(setId)
-      .call();
+    const txHash = await treatMartContract.methods.getSetIds(setId).call();
     console.log(txHash);
   } catch (e) {
     console.error(e);
@@ -136,12 +134,10 @@ export const redeemSet = async (
 ) => {
   console.log({ mintSetCost: setCost?.toString() });
   try {
-    const txHash = await treatMartContract.methods
-      .redeemSet(nftSetId)
-      .send({
-        from: account,
-        value: setCost,
-      });
+    const txHash = await treatMartContract.methods.redeemSet(nftSetId).send({
+      from: account,
+      value: setCost,
+    });
     console.log(txHash);
   } catch (e) {
     console.error(e);
@@ -157,8 +153,10 @@ export const redeemV1forV2 = async (
 ) => {
   console.log({ v1Amounts: amounts?.toString() });
   try {
+    console.log({ amounts, nftIds });
     const txHash = await treatTradeInContract.methods
-      .redeemV1forV2(nftIds, amounts);
+      .tradeInMultiple(nftIds, amounts)
+      .call();
     console.log(txHash);
   } catch (e) {
     console.error(e);
