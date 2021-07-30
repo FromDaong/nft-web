@@ -5,7 +5,7 @@ import MyNFTItem from "../components/MyNFTItem";
 import TransferNFTModal from "../components/TransferNFTModal";
 import ListOrderModal from "../components/ListOrderModal";
 import BlankModal from "../components/BlankModal";
-import TradeInNFTS from "../components/TradeInNFTS";
+import TradeInNFTs from "../components/TradeInNFTs";
 import CancelOrderModal from "../components/CancelOrderModal";
 import Hero from "../components/Hero";
 import Button from "react-bootstrap/Button";
@@ -335,7 +335,7 @@ const ViewNFT = ({ account, nftArray }) => {
   const v1NFTs = nftBalancesInitial.filter((a) => a.balanceV1Number > 0);
 
   if (v1NFTs.length > 0) {
-    return <TradeInNFTS v1NFTs={v1NFTs} account={account} />;
+    return <TradeInNFTs v1NFTs={v1NFTs} account={account} />;
   }
 
   return (
