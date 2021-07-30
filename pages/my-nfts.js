@@ -335,7 +335,7 @@ const ViewNFT = ({ account, nftArray }) => {
   const v1NFTs = nftBalancesInitial.filter((a) => a.balanceV1Number > 0);
 
   if (v1NFTs.length > 0) {
-    return <TradeInNFTS v1NFTs={v1NFTs} />;
+    return <TradeInNFTS v1NFTs={v1NFTs} account={account} />;
   }
 
   return (
