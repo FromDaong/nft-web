@@ -6,7 +6,7 @@ import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
 import useGetFreeTreat from "../../hooks/useGetFreeTreat";
 import useGetNftTotalSupply from "../../hooks/useGetNftTotalSupply";
 import useGetTreatNFTCost from "../../hooks/useGetTreatNftCost";
-import useGetOpenOrdersForNFT from "../../hooks/useGetOpenOrdersForNFT";
+import useGetOpenOrdersForNft from "../../hooks/useGetOpenOrdersForNft";
 import useMintNft from "../../hooks/useMintNft";
 import useWallet from "use-wallet";
 import { getDisplayBalance } from "../../utils/formatBalance";
@@ -151,7 +151,7 @@ const ViewNFT = ({ nftData, image, account }) => {
   const { onMintNft } = useMintNft(nftData.id, nftCost);
   const [showModal, setShowModal] = useState(false);
   const { onGetFreeTreat } = useGetFreeTreat(nftData.id, nftCost);
-  const openOrders = useGetOpenOrdersForNFT(nftData.id);
+  const openOrders = useGetOpenOrdersForNft(nftData.id);
 
   console.log({ openOrders });
 
