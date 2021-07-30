@@ -7,7 +7,10 @@ const TradeInNFTS = ({ v1NFTs }) => {
   const ids = v1NFTs?.map((n) => n.id);
   const amounts = v1NFTs?.map((n) => n.balanceV1Number);
 
+  console.log({ ids, amounts });
+
   const { onRedeemV1forV2 } = useRedeemV1forV2(ids, amounts);
+
   return (
     <motion.div
       animate={{ y: 0, opacity: 1 }}
