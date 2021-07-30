@@ -9,7 +9,6 @@ const useRedeemV1forV2 = (ids: Array<string>, amounts: Array<string>) => {
   const treatTradeInContract = getTreatTradeInContract(treat);
 
   const handleRedeemV1forV2 = useCallback(async () => {
-    console.log(123, ids, amounts);
     const txHash = await redeemV1forV2(
       treatTradeInContract,
       account,
