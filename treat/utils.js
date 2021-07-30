@@ -155,9 +155,7 @@ export const redeemV1forV2 = async (
   try {
     const txHash = await treatTradeInContract.methods
       .tradeInMultiple(nftIds, amounts)
-      .call();
-
-    console.log({ txHash });
+      .send({ from: account });
   } catch (e) {
     console.log({ e });
     console.error(e);

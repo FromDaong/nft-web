@@ -188,7 +188,6 @@ const OpenOrders = ({
   isLoading,
 }) => {
   const openOrders = useGetOpenOrdersForSeller();
-  console.log({ openOrders });
 
   return (
     <div className="white-tp-bg" style={{ minHeight: 400 }}>
