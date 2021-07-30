@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import useRedeemV1forV2 from "../../hooks/useRedeemV1forV2";
 import BlankModal from "../../components/BlankModal";
 
-const TradeInNFTS = ({ v1NFTs, account }) => {
+const TradeInNFTs = ({ v1NFTs, account }) => {
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
   const ids = v1NFTs?.map((n) => n.id);
@@ -64,4 +64,4 @@ const TradeInNFTS = ({ v1NFTs, account }) => {
   );
 };
 
-export default TradeInNFTS;
+export default TradeInNFTs;
