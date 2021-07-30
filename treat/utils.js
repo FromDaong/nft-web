@@ -153,12 +153,13 @@ export const redeemV1forV2 = async (
 ) => {
   console.log({ v1Amounts: amounts?.toString() });
   try {
-    console.log({ amounts, nftIds });
     const txHash = await treatTradeInContract.methods
       .tradeInMultiple(nftIds, amounts)
       .call();
-    console.log(txHash);
+
+    console.log({ txHash });
   } catch (e) {
+    console.log({ e });
     console.error(e);
     return undefined;
   }
