@@ -6,9 +6,6 @@ import BigNumber from "bignumber.js/bignumber";
 import TreatAbi from "./abi/treat.json";
 import TreatMarketplaceAbi from "./abi/treatMarketplace.json";
 import TreatMartAbi from "./abi/treatmart.json";
-import TreatMartV1Abi from "./abi/treatmartv1.json";
-import TreatBundleMartAbi from "./abi/treatBundleMarket.json";
-import FreeTreatsAbi from "./abi/freetreats.json";
 import TreatNFTMinterAbi from "./abi/treatnftminter.json";
 import TreatNFTMinterV1Abi from "./abi/treatnftminterv1.json";
 import TreatTradeInAbi from "./abi/treattradein.json";
@@ -28,11 +25,8 @@ export class Contracts {
     this.treatNFTMinter = new this.web3.eth.Contract(TreatNFTMinterAbi);
     this.treatNFTMinterV1 = new this.web3.eth.Contract(TreatNFTMinterV1Abi);
     this.treatMart = new this.web3.eth.Contract(TreatMartAbi);
-    this.treatMartV1 = new this.web3.eth.Contract(TreatMartV1Abi);
     this.treatMarketplace = new this.web3.eth.Contract(TreatMarketplaceAbi);
     this.weth = new this.web3.eth.Contract(WETHAbi);
-    this.treatMartBundle = new this.web3.eth.Contract(TreatBundleMartAbi);
-    this.freeTreats = new this.web3.eth.Contract(FreeTreatsAbi);
     this.treatTradeIn = new this.web3.eth.Contract(TreatTradeInAbi);
 
     this.setProvider(provider, networkId);
@@ -63,17 +57,11 @@ export class Contracts {
     );
 
     setProvider(this.treatMart, contractAddresses.treatMart[networkId]);
-    setProvider(this.treatMartV1, contractAddresses.treatMartV1[networkId]);
     setProvider(
       this.treatMarketplace,
       contractAddresses.treatMarketplace[networkId]
     );
-    setProvider(
-      this.treatMartBundle,
-      contractAddresses.treatMartBundle[networkId]
-    );
     setProvider(this.treatTradeIn, contractAddresses.treatTradeIn[networkId]);
-    setProvider(this.freeTreats, contractAddresses.freeTreats[networkId]);
     setProvider(this.weth, contractAddresses.weth[networkId]);
   }
 
@@ -82,11 +70,8 @@ export class Contracts {
     this.treatNFTMinter.options.from = account;
     this.treatNFTMinterV1.options.from = account;
     this.treatMart.options.from = account;
-    this.treatMartV1.options.from = account;
     this.treatMarketplace.options.from = account;
-    this.treatMartBundle.options.from = account;
     this.treatTradeIn.options.from = account;
-    this.freeTreats.options.from = account;
   }
 
   async callContractFunction(method, options) {
