@@ -14,9 +14,11 @@ const TradeInNFTs = ({ v1NFTs, account }) => {
 
   const tradeInClick = () => {
     setShowPendingModal(true);
-    onRedeemV1forV2().then(() => {
+    onRedeemV1forV2().then((s) => {
       setShowPendingModal(false);
-      setShowCompleteModal(true);
+      if (s) {
+        setShowCompleteModal(true);
+      }
     });
   };
 

@@ -53,10 +53,10 @@ export const CancelOrderModalBody = ({
   const { onCancelOrder } = useCancelOrder(data?.id ?? 0);
 
   const cancelOrderFunc = async () => {
-    onCancelOrder().then(() => {
+    onCancelOrder().then((x) => {
       handleClose();
       setPendingModal(false);
-      openCompleteModal();
+      if (x) openCompleteModal();
     });
 
     handleClose();
