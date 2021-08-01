@@ -81,10 +81,10 @@ export const ListOrderModalBody = ({
       listQuantity,
       listPrice,
       listExpires ?? maxUnixTimestamp
-    ).then(() => {
+    ).then((x) => {
       handleClose();
       setPendingModal(false);
-      openCompleteModal();
+      if (x) openCompleteModal();
     });
 
     handleClose();
@@ -109,8 +109,10 @@ export const ListOrderModalBody = ({
           <Form.Label>Quantity</Form.Label>
           <Form.Control
             type="number"
+            value={listQuantity}
+            min={1}
             onChange={(e) => setListQuantity(e.currentTarget.value)}
-            placeholder="0"
+            placeholder="1"
           />
           <Form.Text className="text-muted">
             You can sell multiple of a particular NFT, in a single listing

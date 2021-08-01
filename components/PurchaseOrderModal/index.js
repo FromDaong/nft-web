@@ -58,10 +58,10 @@ export const PurchaseOrderModalBody = ({
   );
 
   const purchaseOrderFunc = async () => {
-    onPurchaseOrder().then(() => {
+    onPurchaseOrder().then((x) => {
       handleClose();
       setPendingModal(false);
-      openCompleteModal();
+      if (x) openCompleteModal();
     });
 
     handleClose();
