@@ -1,7 +1,5 @@
 import dbConnect from "../../../utils/dbConnect";
 import Model from "../../../models/Model";
-// import User from "../../../../models/User";
-import withSession from "../../../lib/session";
 
 dbConnect();
 

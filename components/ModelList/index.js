@@ -5,6 +5,7 @@ import NFTListItem from "../NFTListItem";
 import ModelListItem from "../ModelListItem";
 import useSWR from "swr";
 import * as Scroll from "react-scroll";
+import { motion } from "framer-motion";
 
 const Hero = () => {
   return (
@@ -177,7 +178,7 @@ const ModelList = ({ totwOnly = false }) => {
       .map((model) =>
         totwOnly ? (
           model && model.totw ? (
-            <div className="model-list-item-container">
+            <div className="card">
               <ModelListItem
                 key={model.username}
                 data={model}
@@ -186,7 +187,7 @@ const ModelList = ({ totwOnly = false }) => {
             </div>
           ) : undefined
         ) : (
-          <div className="model-list-item-container">
+          <div className="card bg-transparent border-0">
             <ModelListItem key={model.username} data={model} />
           </div>
         )
@@ -194,9 +195,27 @@ const ModelList = ({ totwOnly = false }) => {
       .filter((e) => e);
 
     modelListRender = (
-      <div className="row flex justify-content-center model-list-container">
+      <motion.div
+        className="card-columns"
+        animate="show"
+        exit="hidden"
+        initial="hidden"
+        variants={{
+          show: {
+            transition: { staggerChildren: 0.25 },
+            opacity: 1,
+          },
+          hidden: {
+            transition: {
+              staggerChildren: 0.02,
+              staggerDirection: -1,
+              when: "afterChildren",
+            },
+          },
+        }}
+      >
         {mR}
-      </div>
+      </motion.div>
     );
   } else {
     modelListRender = (
@@ -215,12 +234,6 @@ const ModelList = ({ totwOnly = false }) => {
 
   return (
     <Scroll.Element name="model-list">
-      <div
-        className="heading-text p-0 mb-4 text-center"
-        style={{ fontSize: "3em" }}
-      >
-        {totwOnly ? "Treats of the Week" : "Creators"}
-      </div>
       <div className="nft-list">{modelListRender}</div>
     </Scroll.Element>
   );
