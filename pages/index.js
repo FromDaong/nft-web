@@ -191,16 +191,20 @@ const Home = () => {
         </div>
       </Scroll.Element>
       <Scroll.Element name="nft-list">
-        <div
-          className="heading-text p-0 mt-10 text-center"
+        <motion.div
+          animate={{ x: 0, opacity: 1 }}
+          style={{ x: 100, opacity: 0 }}
+          transition={{ delay: 1 }}
+          className="heading-text p-0 mt-4 pink-bg"
           style={{ fontSize: "3em" }}
         >
-          All Available NFTs
-        </div>
-        <p className="totw-secondary-text text-center m-auto pb-10 pt-1">
-          These are all our currently available NFTs for purchase.
+          Current Treat of the Week NFTs
+        </motion.div>
+        <p className="totw-secondary-text m-0">
+          These are the NFTs from the TOTW drops which are live now. To see
+          previous creations, visit our Marketplace
         </p>
-        <div className="nft-list row mt-5">{nftListRender}</div>
+        <div className="nft-list row">{nftListRender}</div>
       </Scroll.Element>
     </div>
   );
