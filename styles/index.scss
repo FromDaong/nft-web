@@ -3,10 +3,12 @@
 @import "./about.scss";
 @import "./home.scss";
 @import "./nftListItem.scss";
+@import "./marketplace.scss";
 @import "./modelListItem.scss";
 @import "./view.scss";
 @import "./viewModel.scss";
 @import "./myNFTItem.scss";
+@import "./resale.css";
 @import "./nftCard.scss";
 
 * {
@@ -15,6 +17,8 @@
 
 $theme-colors: (
   "primary": #d4668e,
+  "info": #9e7fb1,
+  // "secondary": rgb(162, 141, 192),
 );
 
 /* import bootstrap to set changes */
@@ -131,4 +135,25 @@ a:hover {
     color: #d4668e !important;
     color: white;
   }
+}
+
+.modal-content {
+  padding: 5px;
+  padding-top: 2px;
+  background: rgba(255, 255, 255, 0.8) !important;
+  border: 3px solid #d4668e;
+  backdrop-filter: blur(10px);
+  box-shadow: 0px -6px 23px -2px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.modal-backdrop {
+  transition: 1s all;
+  backdrop-filter: blur(7px);
+  background: rgba(252, 206, 211, 0.5);
+  opacity: 1 !important;
+}
+
+.modal-dialog {
+  max-width: 550px !important;
 }

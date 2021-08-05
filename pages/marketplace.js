@@ -1,191 +1,197 @@
-import React, { useState, useEffect, useCallback } from "react";
-import Spinner from "react-bootstrap/Spinner";
+import { useWallet } from "use-wallet";
+import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
-import useSWR from "swr";
-import useWallet from "use-wallet";
-import NFTListItem from "../components/NFTListItem";
-// import NFTResaleListItem from "../components/NFTResaleListItem";
-import { useRouter } from "next/router";
-import { modelSetBundles } from "../treat/lib/constants";
-import useGetTreatSetCost from "../hooks/useGetTreatSetCost";
-import useRedeemSet from "../hooks/useRedeemSet";
-import { getDisplayBalance } from "../utils/formatBalance";
+import React, { useState, useEffect } from "react";
+import useGetAllOpenOrders from "../hooks/useGetAllOpenOrders";
+import useGetMaxIdForSale from "../hooks/useGetMaxIdForSale";
+import Loading from "../components/Loading";
+import BlankModal from "../components/BlankModal";
+import CancelOrderModal from "../components/CancelOrderModal";
+import PurchaseOrderModal from "../components/PurchaseOrderModal";
+import Hero from "../components/Hero";
+import { Order } from "../components/MarketplaceListItem";
+import { motion, AnimateSharedLayout } from "framer-motion";
 
-const ViewModelWrapper = () => {
-  const username = "";
-  
-  const { data: res } = useSWR(`/api/marketplace`);
-  const [modelData, setModelData] = useState();
-  const [modelNFTs, setModelNFTs] = useState();
-  const [newNFTs, setNewNFTs] = useState([]);
-  const [outOfPrintNFTs, setOutOfPrintNFTs] = useState([]);
-  const { status } = useWallet();
-  const router = useRouter();
+const Marketplace = ({ search }) => {
+  const maxId = useGetMaxIdForSale();
 
-  useEffect(() => {
-    (async () => {
-      if (res) {
-        setModelData(res);
+  const [cancelOrderData, setCancelOrderData] = useState(null);
+  const [purchaseOrderData, setPurchaseOrderData] = useState(null);
+  const [showPendingModal, setShowPendingModal] = useState(null);
+  const [showCompleteModal, setShowCompleteModal] = useState(null);
+  const [orderBookArray, setOrderBookArray] = useState(undefined);
+  const [searchFilter, setSearchFilter] = useState(search || "");
+  const [sortBy, setSortBy] = useState("Recent");
+  const [orderBook] = useGetAllOpenOrders(maxId);
+  const { account } = useWallet();
 
-        if (!res.nfts || res.nfts.length === 0) return setModelNFTs([]);
+  const initOrderBookArray = orderBook && orderBook.flat();
 
-        const mNfts = await Promise.all(
-          res.nfts.map(async (nft) => {
-            const x = await fetch(`/api/nft/${nft.id}`);
-            const j = await x.json();
-            return j;
-          })
-        );
-
-        let newNFTs = mNfts.filter((nft) => nft.maxSupply > nft.totalSupply);
-        let outOfPrint = mNfts.filter(
-          (nft) => nft.maxSupply === nft.totalSupply
-        );
-
-        setModelNFTs(mNfts);
-        setNewNFTs(newNFTs);
-        setOutOfPrintNFTs(outOfPrint);
+  const updateObArr = () => {
+    console.log("fire");
+    const obArr = initOrderBookArray?.sort((a, b) => {
+      switch (sortBy) {
+        case "Price Low to High":
+          return Number(a.price) - Number(b.price);
+        case "Price High to Low":
+          return Number(b.price) - Number(a.price);
+        default:
+          return a.listDate - b.listDate;
       }
-    })();
-  }, [res]);
+    });
 
-  const setId = modelSetBundles[username];
-  const nftSetPrice = useGetTreatSetCost(setId);
-  const { onRedeemSet } = setId
-    ? useRedeemSet(setId, nftSetPrice)
-    : { onRedeemSet: null };
-
-  console.log({ nftReturn_mNfts: modelNFTs });
-  console.log({ nftReturn_newNFTs: newNFTs });
-  console.log({ nftReturn_outOfPrint: outOfPrintNFTs });
-
-  if (!modelData || !modelData.username || status !== "connected") {
-    return (
-      <div
-        style={{
-          position: "fixed",
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          top: 0,
-          left: 0,
-          justifyContent: "center",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <h5
-          style={{
-            fontWeight: "bolder",
-            background: "white",
-            borderRadius: 5,
-            padding: 10,
-          }}
-        >
-          Please make sure your Binance Smart Chain wallet is connected.
-        </h5>
-        <Spinner
-          animation="border"
-          role="status"
-          size="xl"
-          style={{ marginTop: 5 }}
-        >
-          <span className="sr-only">Loading...</span>
-        </Spinner>
-      </div>
-    );
-  } else {
-    return (
-      <ViewModel
-        modelData={modelData}
-        modelNFTs={modelNFTs}
-        newNFTs={newNFTs}
-        outOfPrintNFTs={outOfPrintNFTs}
-        nftSetPrice={nftSetPrice}
-        onRedeemSet={onRedeemSet}
-      />
-    );
-  }
-};
-
-const ViewModel = ({
-  modelData,
-  modelNFTs,
-  newNFTs,
-  outOfPrintNFTs,
-  nftSetPrice,
-  onRedeemSet,
-}) => {
-  const [selectedTab, setSelectedTab] = useState("NEW NFTs");
-  const [otherTab, setOtherTab] = useState("OUT OF PRINT");
-
-  const switchTab = () => {
-    const current = selectedTab;
-    const other = otherTab;
-    setSelectedTab(other);
-    setOtherTab(current);
+    console.log({ obArr });
+    if (obArr) setOrderBookArray(obArr);
   };
 
+  useEffect(() => {
+    if (
+      initOrderBookArray &&
+      (!orderBookArray || orderBookArray.length !== initOrderBookArray.length)
+    ) {
+      updateObArr();
+    }
+  }, [initOrderBookArray]);
+
+  useEffect(() => {
+    updateObArr();
+  }, [sortBy]);
+
   return (
-    <div className="container">
-      <div className="view-model row">
-        <div className="image-wrapper col-lg-3 p-0 pr-lg-3">
-          <div className="image-container text-center text-lg-left">
-            <img src={modelData.profile_pic} className="profile-pic" />
-            <div className="title mt-3">{modelData.username}</div>
-            <div
-              className="bio text-center mt-2"
-              style={{ fontSize: ".9em", color: "#777" }}
+    <AnimateSharedLayout>
+      <BlankModal
+        show={!!showPendingModal}
+        handleClose={() => setShowPendingModal(false)}
+        title={"Waiting for Transaction Confirmation ⌛"}
+        subtitle={
+          "Please confirm this transaction in your wallet and wait here for upto a few minutes for the transaction to confirm..."
+        }
+        noButton={true}
+        account={account}
+      />
+      <BlankModal
+        show={!!showCompleteModal}
+        handleClose={() => setShowCompleteModal(false)}
+        account={account}
+      />
+      <CancelOrderModal
+        show={!!cancelOrderData}
+        data={cancelOrderData}
+        setPendingModal={setShowPendingModal}
+        openCompleteModal={() => setShowCompleteModal(true)}
+        handleClose={() => setCancelOrderData(null)}
+        account={account}
+      />
+      <PurchaseOrderModal
+        show={!!purchaseOrderData}
+        data={purchaseOrderData?.nftData}
+        order={purchaseOrderData?.order}
+        setPendingModal={setShowPendingModal}
+        openCompleteModal={() => setShowCompleteModal(true)}
+        handleClose={() => setPurchaseOrderData(null)}
+        account={account}
+      />
+      <motion.main
+        variants={{
+          hidden: { opacity: 0, x: -200, y: 0 },
+          enter: { opacity: 1, x: 0, y: 0 },
+          exit: { opacity: 0, x: 0, y: -100 },
+        }}
+        initial="hidden" // Set the initial state to variants.hidden
+        animate="enter" // Animated state to variants.enter
+        exit="exit" // Exit state (used later) to variants.exit
+        transition={{ type: "linear" }} // Set the transition to linear
+        className=""
+      >
+        <Hero
+          title={"Marketplace"}
+          subtitle="The brand new official Treat resale marketplace!"
+        />
+        <div className="full-width-search white-tp-bg p-3 d-flex">
+          <input
+            placeholder="Type to search for a model or NFT..."
+            type="text"
+            className="flex-grow-1 pl-2"
+            value={searchFilter}
+            onChange={(e) => setSearchFilter(e.target.value)}
+            style={{ fontSize: "1.1em" }}
+          />
+          <Dropdown>
+            <Dropdown.Toggle
+              variant="transparent"
+              id="dropdown-basic"
+              size="lg"
             >
-              {modelData.bio}
-            </div>
-          </div>
+              {sortBy}
+            </Dropdown.Toggle>
 
-          <a href="/creators">
-            <Button style={{ marginTop: 15, width: "100%" }}>
-              View all Models
-            </Button>
-          </a>
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={() => setSortBy("Recent")}>
+                Most Recent
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => setSortBy("Price Low to High")}>
+                Price Low to High
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => setSortBy("Price High to Low")}>
+                Price High to Low
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </div>
-        <div className="col-lg-9 text-container container mt-4 mt-lg-0">
-          {!!onRedeemSet && (
-            <div
-              style={{
-                backgroundColor: "rgba(255,255,255,0.75)",
-                marginBottom: "25px",
-                display: "flex",
-                justifyContent: "center",
-                paddingTop: "2%",
-                paddingBottom: "2%",
-                borderRadius: "8px",
-              }}
-            >
-              <Button onClick={onRedeemSet} size="lg">
-                Redeem full set for {getDisplayBalance(nftSetPrice)} BNB
-              </Button>
-            </div>
-          )}
-
-          <div className="row">
-            {modelNFTs &&
-              modelNFTs.length > 0 &&
-              modelNFTs
-                .sort((a, b) => a.list_price - b.list_price)
-                .map((m) => (
-                  <div className="col-md-6">
-                    <NFTListItem data={m} key={m.id} />
-                  </div>
+        <br />
+        <div className="container fluid">
+          <motion.div
+            layout
+            className="nft-list row mt-5"
+            animate="show"
+            exit="hidden"
+            initial="hidden"
+            variants={{
+              show: { transition: { staggerChildren: 0.2 }, opacity: 1 },
+              hidden: {
+                transition: {
+                  staggerChildren: 0.02,
+                  staggerDirection: -1,
+                  when: "afterChildren",
+                  opacity: 0,
+                },
+              },
+            }}
+          >
+            {!orderBookArray || orderBookArray.length === 0 ? (
+              <div
+                style={{ minHeight: 500 }}
+                className="d-flex justify-content-center align-items-center w-100"
+              >
+                <Loading />
+              </div>
+            ) : (
+              <>
+                {orderBookArray.map((o, i) => (
+                  <Order
+                    searchFilter={searchFilter}
+                    index={i}
+                    order={o}
+                    account={account}
+                    key={`${o.nftId}_${o.seller}`}
+                    setPendingModal={setShowPendingModal}
+                    openCompleteModal={() => setShowCompleteModal(true)}
+                    setCancelOrderData={setCancelOrderData}
+                    setPurchaseOrderData={setPurchaseOrderData}
+                  />
                 ))}
-          </div>
-          <div>ALL</div>
+              </>
+            )}
+          </motion.div>
         </div>
-      </div>
-    </div>
+      </motion.main>
+    </AnimateSharedLayout>
   );
 };
 
-// ViewModelWrapper.getInitialProps = async ({ query: { username } }) => {
-//   return { username };
-// };
+Marketplace.getInitialProps = async ({ query: { search } }) => {
+  console.log({ search });
+  return { search };
+};
 
-export default ViewModelWrapper;
+export default Marketplace;

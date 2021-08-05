@@ -24,7 +24,7 @@ const Loading = () => {
           padding: 10,
         }}
       >
-        Please make sure your Binance Smart Chain wallet is connected.
+        Loading... Please ensure your Binance Smart Chain wallet is connected.
       </h5>
       <Spinner
         animation="border"

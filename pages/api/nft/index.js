@@ -16,6 +16,7 @@ export default async (req, res) => {
         const returnNFTs = await NFTs.map((n) => {
           const returnObj = { ...n.toObject() };
 
+          returnObj.mints = returnObj.mints.length;
           delete returnObj.model_bnb_address;
           delete returnObj.image;
 
