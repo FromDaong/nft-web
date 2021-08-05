@@ -54,9 +54,7 @@ const ViewModelWrapper = ({ username }) => {
     ? useRedeemSet(setId, nftSetPrice)
     : { onRedeemSet: null };
 
-  console.log({ nftReturn_mNfts: modelNFTs });
-  console.log({ nftReturn_newNFTs: newNFTs });
-  console.log({ nftReturn_outOfPrint: outOfPrintNFTs });
+  console.log({ setId, nftSetPrice });
 
   if (!modelData || !modelData.username || status !== "connected") {
     return (
