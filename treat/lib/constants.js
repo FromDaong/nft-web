@@ -58,12 +58,5 @@ export const contractAddresses = {
 };
 
 export const modelSetBundles = {
-  minaxxbell: 1,
-  carlaasister: 2,
-  davinaastewart: 3,
-  _thepr0duct: 4,
-  polyannie01: 5,
-  MissJennyff: 6,
-  therealsatania: 7,
-  CryptoEmpress: 8,
+  MaddSprings: 2,
 };
