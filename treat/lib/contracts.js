@@ -1,18 +1,14 @@
 import * as Types from "./types.js";
 
-import {
-  SUBTRACT_GAS_LIMIT,
-  contractAddresses,
-  deactivatedPools,
-  supportedPools,
-} from "./constants.js";
+import { SUBTRACT_GAS_LIMIT, contractAddresses } from "./constants.js";
 
 import BigNumber from "bignumber.js/bignumber";
-import ERC20Abi from "./abi/erc20.json";
 import TreatAbi from "./abi/treat.json";
+import TreatMarketplaceAbi from "./abi/treatMarketplace.json";
 import TreatMartAbi from "./abi/treatmart.json";
-import FreeTreatsAbi from "./abi/freetreats.json";
 import TreatNFTMinterAbi from "./abi/treatnftminter.json";
+import TreatNFTMinterV1Abi from "./abi/treatnftminterv1.json";
+import TreatTradeInAbi from "./abi/treattradein.json";
 import WETHAbi from "./abi/weth.json";
 
 export class Contracts {
@@ -27,10 +23,11 @@ export class Contracts {
 
     this.treat = new this.web3.eth.Contract(TreatAbi);
     this.treatNFTMinter = new this.web3.eth.Contract(TreatNFTMinterAbi);
+    this.treatNFTMinterV1 = new this.web3.eth.Contract(TreatNFTMinterV1Abi);
     this.treatMart = new this.web3.eth.Contract(TreatMartAbi);
-    this.treatMartBundle = new this.web3.eth.Contract(TreatMartAbi);
-    this.freeTreats = new this.web3.eth.Contract(FreeTreatsAbi);
+    this.treatMarketplace = new this.web3.eth.Contract(TreatMarketplaceAbi);
     this.weth = new this.web3.eth.Contract(WETHAbi);
+    this.treatTradeIn = new this.web3.eth.Contract(TreatTradeInAbi);
 
     this.setProvider(provider, networkId);
     this.setDefaultAccount(this.web3.eth.defaultAccount);
@@ -54,28 +51,32 @@ export class Contracts {
       this.treatNFTMinter,
       contractAddresses.treatNFTMinter[networkId]
     );
+    setProvider(
+      this.treatNFTMinterV1,
+      contractAddresses.treatNFTMinterV1[networkId]
+    );
 
     setProvider(this.treatMart, contractAddresses.treatMart[networkId]);
-    setProvider(this.treatMartBundle, contractAddresses.treatMartBundle[networkId]);
-    setProvider(this.freeTreats, contractAddresses.freeTreats[networkId]);
+    setProvider(
+      this.treatMarketplace,
+      contractAddresses.treatMarketplace[networkId]
+    );
+    setProvider(this.treatTradeIn, contractAddresses.treatTradeIn[networkId]);
     setProvider(this.weth, contractAddresses.weth[networkId]);
   }
 
   setDefaultAccount(account) {
     this.treat.options.from = account;
     this.treatNFTMinter.options.from = account;
+    this.treatNFTMinterV1.options.from = account;
     this.treatMart.options.from = account;
-    this.treatMartBundle.options.from = account;
-    this.freeTreats.options.from = account;
+    this.treatMarketplace.options.from = account;
+    this.treatTradeIn.options.from = account;
   }
 
   async callContractFunction(method, options) {
-    const {
-      confirmations,
-      confirmationType,
-      autoGasMultiplier,
-      ...txOptions
-    } = options;
+    const { confirmations, confirmationType, autoGasMultiplier, ...txOptions } =
+      options;
 
     if (!this.blockGasLimit) {
       await this.setGasLimit();

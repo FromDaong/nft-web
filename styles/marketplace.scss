@@ -1,0 +1,10 @@
+.full-width-search {
+  input {
+    background: none;
+    border: none;
+    outline: none;
+    padding: 4px;
+  }
+  position: relative;
+  z-index: 1010;
+}

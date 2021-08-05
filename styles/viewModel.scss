@@ -19,41 +19,6 @@
       width: 100%;
     }
   }
-
-  .title-section {
-    display: flex;
-    width: 100%;
-    flex-wrap: wrap;
-    padding-bottom: 15px;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  .edition {
-    color: #d4668e;
-    font-weight: bolder;
-  }
-
-  .title {
-    font-weight: bolder;
-    font-size: 1.75em;
-    margin-top: 5px;
-  }
-
-  .stats {
-    margin: 25px 0;
-    display: flex;
-    .stat {
-      font-weight: 600;
-      margin-right: 50px;
-      .label {
-        color: #a5a18d;
-      }
-      .number {
-        font-size: 1.75em;
-      }
-    }
-  }
 }
 
 .creator-wrapper {

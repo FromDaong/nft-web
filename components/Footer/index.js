@@ -13,8 +13,6 @@ const Footer = () => {
   const [walletModalShow, setWalletModalShow] = useState(false);
   const [balanceModalShow, setBalanceModalShow] = useState(false);
 
-  console.log({ status, error, account });
-
   useEffect(() => {
     if (status === "connected") {
       setWalletModalShow(false);
@@ -71,7 +69,7 @@ const Footer = () => {
           <div class="col-md-3 mt-3 mt-md-0">
             <h5>Social Media</h5>
             <ul class="list-unstyled text-small">
-               <li>
+              <li>
                 <a href="https://t.me/TreatDAO" target="_blank">
                   Telegram
                 </a>

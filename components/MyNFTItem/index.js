@@ -4,19 +4,48 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import { generateFromString } from "generate-avatar";
 import { Blurhash } from "react-blurhash";
-import useTransferNfts from "../../hooks/useTransferNfts";
+import { motion } from "framer-motion";
+import { EyeSlash } from "react-bootstrap-icons";
+import Link from "next/link";
 
-// import blur from "/assets/blur.png";
+let easing = [0.175, 0.85, 0.42, 0.96];
 
-const NFTListItem = ({ data, revealNFTs, transferNFTClick }) => {
+const variants = {
+  initial: {
+    y: 150,
+    opacity: 0,
+  },
+  hidden: {
+    opacity: 0,
+    transition: {
+      duration: 0.1,
+      ease: easing,
+    },
+  },
+  show: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.2,
+      ease: easing,
+    },
+  },
+};
+
+const NFTListItem = ({
+  data,
+  revealNFTs,
+  transferNFTClick,
+  listOrderClick,
+  cancelOrderClick,
+  isLoading,
+  balance,
+  price,
+  hasOpenOrder,
+}) => {
   const [image, setBase64Image] = useState();
   const [modalData, setModalData] = useState();
-
-  const { onTransferNfts } = useTransferNfts();
-  const [toAddress, setToAddress] = useState("");
-  const [transferAmount, setTransferAmount] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -31,7 +60,7 @@ const NFTListItem = ({ data, revealNFTs, transferNFTClick }) => {
   }, [data]);
 
   return (
-    <div className="my-nft-item row px-3 pt-3 pb-2">
+    <>
       <Modal
         size="lg"
         show={modalData ? true : false}
@@ -51,24 +80,60 @@ const NFTListItem = ({ data, revealNFTs, transferNFTClick }) => {
         </Modal.Footer>
       </Modal>
 
-      <div className="text-container container p-3 pt-5 pl-xl-0 pl-lg-3 px-lg-0 pt-lg-2 d-flex flex-direction-column align-items-center">
-        <div
-          className="img-container text-lg-left d-flex justify-content-center align-items-center w-100"
-          onClick={() => {
-            if (image) {
-              setModalData(true);
-            } else {
-              revealNFTs();
-            }
-          }}
-        >
-          {data.image ? (
-            image ? (
-              <div
-                style={{ background: `url(${image})` }}
-                className="dynamic-image"
+      <motion.div variants={variants}>
+        <div className="nft-card" style={{ boxShadow: "none" }}>
+          <div className="totw-tag-wrapper">
+            {balance > 1 && (
+              <div className="quantity-wrapper totw-tag">
+                Contains {balance}x
+              </div>
+            )}
+          </div>
+          <div className="profile-pic">
+            <Link href={`/creator/${data.name}`}>
+              <img
+                src={
+                  data.model_profile_pic ||
+                  `data:image/svg+xml;utf8,${generateFromString(
+                    data.attributes[0].value
+                  )}`
+                }
               />
-            ) : (
+            </Link>
+          </div>
+          <div
+            className="img-container text-center text-lg-left d-flex justify-content-center align-items-center"
+            style={{
+              background: "black",
+              border: "3px solid #E795B6",
+              borderRadius: 10,
+              minHeight: 300,
+            }}
+            onClick={() => {
+              if (image) {
+                setModalData(true);
+              } else {
+                revealNFTs();
+              }
+            }}
+          >
+            {data.image ? (
+              image ? (
+                <div
+                  style={{ background: `url(${image})` }}
+                  className="dynamic-image"
+                />
+              ) : (
+                <Spinner
+                  animation="border"
+                  role="status"
+                  className="mt-5 mb-5"
+                  variant="light"
+                >
+                  <span className="sr-only">Loading...</span>
+                </Spinner>
+              )
+            ) : isLoading ? (
               <Spinner
                 animation="border"
                 role="status"
@@ -77,75 +142,95 @@ const NFTListItem = ({ data, revealNFTs, transferNFTClick }) => {
               >
                 <span className="sr-only">Loading...</span>
               </Spinner>
-            )
-          ) : (
-            <Blurhash
-              style={{ borderRadius: 5, overflow: "hidden" }}
-              hash={data.blurhash}
-              width={"100%"}
-              height={300}
-              resolutionX={32}
-              resolutionY={32}
-              punch={1}
-            />
-          )}
-        </div>
-        <div className="container">
-          <div className="edition">YOU OWN {data.balance}</div>
-          <div className="title">{data.name}</div>
-          <div className="creator">
-            <div className="details">
-              {/* <div className="label">CREATOR</div> */}
-              <div className="label">{data.attributes[0].value}</div>
+            ) : (
+              <>
+                <div className="info-overlay">
+                  <EyeSlash size={32} />
+                  <div className="pt-1">Click to Reveal</div>
+                </div>
+                <Blurhash
+                  style={{ borderRadius: 5, overflow: "hidden" }}
+                  hash={data.blurhash}
+                  width={"100%"}
+                  height={300}
+                  resolutionX={32}
+                  resolutionY={32}
+                  punch={1}
+                />
+              </>
+            )}
+          </div>
+          <div className="text-container container">
+            <div className="title-section">
+              <div className="title">{data.name}</div>
+              <div className="name">{data.attributes[0].value}</div>
+            </div>
+            <div className="stats">
+              {price && (
+                <div className="stat">
+                  <div className="number">{price}</div>
+                  <div className="label">BNB</div>
+                </div>
+              )}
             </div>
           </div>
-          {/* <p>Coming soon...</p> */}
-          <div className="row">
-            <div className="col-lg-6 mt-3">
-              <OverlayTrigger overlay={<Tooltip id="">Coming Soon!</Tooltip>}>
+
+          {!!transferNFTClick ? (
+            <div className="row">
+              <div className="col-lg-6 mt-3">
+                <span className="d-inline-block w-100">
+                  <OverlayTrigger
+                    placement="top"
+                    overlay={
+                      <Tooltip id="tooltip-disabled">
+                        You must list the same NFTs together.
+                      </Tooltip>
+                    }
+                  >
+                    <span>
+                      <Button
+                        className="w-100"
+                        variant="secondary"
+                        disabled={hasOpenOrder}
+                        style={hasOpenOrder ? { pointerEvents: "none" } : {}}
+                        onClick={() => listOrderClick({ ...data, balance })}
+                      >
+                        <b>Re-Sell</b>
+                      </Button>
+                    </span>
+                  </OverlayTrigger>
+                </span>
+              </div>
+              <div className="col-lg-6 mt-3">
                 <span className="d-inline-block w-100">
                   <Button
-                    disabled
-                    style={{ pointerEvents: "none" }}
                     className="w-100"
                     variant="secondary"
+                    onClick={() => transferNFTClick(data)}
                   >
-                    <b>STAKE</b>
+                    <b>Transfer</b>
                   </Button>
                 </span>
-              </OverlayTrigger>
+              </div>
             </div>
-            <div className="col-lg-6 mt-3">
-              <span className="d-inline-block w-100">
-                <Button
-                  className="w-100"
-                  variant="secondary"
-                  onClick={() => transferNFTClick(data)}
-                >
-                  <b>TRANSFER</b>
-                </Button>
-              </span>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-lg-12 mt-3">
-              <OverlayTrigger overlay={<Tooltip id="">Coming Soon!</Tooltip>}>
+          ) : (
+            <div className="row">
+              <div className="col-lg-12 mt-3">
                 <span className="d-inline-block w-100">
                   <Button
-                    disabled
-                    style={{ pointerEvents: "none" }}
                     className="w-100"
-                    variant="primary"
+                    variant="secondary"
+                    onClick={() => cancelOrderClick(data)}
                   >
-                    <b>RESELL</b>
+                    <b>Remove Your Listing</b>
                   </Button>
                 </span>
-              </OverlayTrigger>
+              </div>
             </div>
-          </div>
+          )}
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </>
   );
 };
 
