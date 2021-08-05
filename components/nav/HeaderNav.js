@@ -20,7 +20,6 @@ const HeaderNav = () => {
   useEffect(() => {
     (async () => {
       const verified = await localStorage.getItem("ageVerified");
-      console.log({ verified });
       if (!verified) setAgeModalShow(true);
     })();
   });
@@ -57,12 +56,19 @@ const HeaderNav = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse className="justify-content-end">
-          <Nav.Link href="/creators" passHref>
-            CREATORS
-          </Nav.Link>
-          <Nav.Link href="/apply" passHref>
-            APPLY
-          </Nav.Link>
+          <Link href="/creators" passhref>
+            <Nav.Link href="/creators">CREATORS</Nav.Link>
+          </Link>
+          {account && (
+            <>
+              <Link href="/marketplace" passHref>
+                <Nav.Link>MARKETPLACE</Nav.Link>
+              </Link>
+              <Link href="/my-nfts" passHref>
+                <Nav.Link>MY NFTs</Nav.Link>
+              </Link>
+            </>
+          )}
           <Link href="/about" passHref>
             <Nav.Link>ABOUT</Nav.Link>
           </Link>
@@ -73,11 +79,6 @@ const HeaderNav = () => {
             BLOG
           </Nav.Link>
 
-          {account && (
-            <Link href="/my-nfts" passHref>
-              <Nav.Link>MY NFTs</Nav.Link>
-            </Link>
-          )}
           {!account ? (
             <Button
               variant="primary px-4 ml-md-4"

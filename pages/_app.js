@@ -16,6 +16,7 @@ import {
   BscConnector,
   UserRejectedRequestError,
 } from "@binance-chain/bsc-connector";
+import { motion, AnimatePresence } from "framer-motion";
 
 const allowedRoutes = ["/"];
 
@@ -29,6 +30,7 @@ function MyApp({ Component, pageProps }) {
 
   useEffect(() => {
     (async () => {
+      window.scrollTo(0, 0);
       if (status === "connected" && !account) connect("injected");
 
       const connectedBefore = localStorage.getItem("connectedBefore");
@@ -36,7 +38,7 @@ function MyApp({ Component, pageProps }) {
 
       let tx = localStorage.getItem("tx");
       tx = JSON.parse(tx);
-      console.log({ tx });
+
       if (tx && status === "connected" && account) {
         try {
           const res = await fetch(`/api/nft/${tx.nftId}`, {
@@ -49,6 +51,26 @@ function MyApp({ Component, pageProps }) {
           });
 
           console.log({ res });
+
+          //     if (res.success) {
+          //       localStorage.removeItem("tx");
+          //     }
+          //   } catch (error) {
+          //     console.log(error);
+          //   }
+          // }
+
+          // let resaleData = localStorage.getItem("resale");
+          // if (resaleData && status === "connected" && account) {
+          //   try {
+          //     const res = await fetch(`/api/resale-nft`, {
+          //       method: "POST",
+          //       headers: {
+          //         Accept: "application/json",
+          //         "Content-Type": "application/json",
+          //       },
+          //       body: JSON.stringify({ seller: account }),
+          //     });
 
           if (res.success) {
             localStorage.removeItem("tx");
@@ -70,7 +92,7 @@ function MyApp({ Component, pageProps }) {
 
         <meta
           name="description"
-          content="Treat is an exclusive platform for models to sell NFTs. Hold $TREAT to have a say on which models are chosen & new platform features."
+          content="Treat is an exclusive platform for creators to sell NFTs. Hold $TREAT to have a say on which creators are chosen & new platform features."
         />
       </Head>
       <SWRConfig
@@ -82,13 +104,16 @@ function MyApp({ Component, pageProps }) {
         }}
       >
         <TreatProvider>
-          <div className="pink-bg">
+          <div>
             <Navbar />
-
             <Container style={{ minHeight: "75vh" }}>
-              <Component {...pageProps} />
+              <AnimatePresence
+                exitBeforeEnter
+                onExitComplete={() => window.scrollTo(0, 0)}
+              >
+                <Component {...pageProps} key={router.route} />
+              </AnimatePresence>
             </Container>
-
             <Footer />
           </div>
         </TreatProvider>

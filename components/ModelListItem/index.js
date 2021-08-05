@@ -3,8 +3,33 @@ import Button from "react-bootstrap/Button";
 import { modelSetBundles } from "../../treat/lib/constants";
 import useGetTreatSetCost from "../../hooks/useGetTreatSetCost";
 import useRedeemSet from "../../hooks/useRedeemSet";
+import { motion } from "framer-motion";
 
-const ModelListItem = ({ data, totwOnly = false }) => {
+let easing = [0.175, 0.85, 0.42, 0.96];
+
+const variants = {
+  initial: {
+    y: 150,
+    opacity: 0,
+  },
+  hidden: {
+    opacity: 0,
+    transition: {
+      duration: 0.1,
+      ease: easing,
+    },
+  },
+  show: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.2,
+      ease: easing,
+    },
+  },
+};
+
+const ModelListItem = ({ data, totwOnly = false, disableAnim }) => {
   const [image, setBase64Image] = useState();
 
   useEffect(() => {
@@ -26,7 +51,7 @@ const ModelListItem = ({ data, totwOnly = false }) => {
     : { onRedeemSet: null };
 
   return (
-    <>
+    <motion.div variants={variants} initial={disableAnim}>
       <a href={`/creator/${data.username}`}>
         <div className="model-list-item">
           <div className="creator">
@@ -72,7 +97,7 @@ const ModelListItem = ({ data, totwOnly = false }) => {
           </div>
         </div>
       )}
-    </>
+    </motion.div>
   );
 };
 
