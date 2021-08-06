@@ -297,7 +297,7 @@ const Home = () => {
           </motion.div>
           <p className="totw-secondary-text m-0">
             These are the NFTs from the TOTW drops which are live now. To see
-            previous creations, visit our Marketplace
+            previous creations, visit our Marketplace.
           </p>
           <div className="nft-list row">{nftListRender}</div>
         </Scroll.Element>
