@@ -27,9 +27,11 @@ const Marketplace = ({ search }) => {
 
   const initOrderBookArray = orderBook && orderBook.flat();
 
-  const updateObArr = () => {
-    console.log("fire");
-    const obArr = initOrderBookArray?.sort((a, b) => {
+  const updateObArr = (storedArray) => {
+    const ob = initOrderBookArray || (storedArray && JSON.parse(storedArray));
+    if (!ob || ob.length === 0) return;
+
+    const obArr = ob?.sort((a, b) => {
       switch (sortBy) {
         case "Price Low to High":
           return Number(a.price) - Number(b.price);
@@ -40,16 +42,29 @@ const Marketplace = ({ search }) => {
       }
     });
 
-    console.log({ obArr });
     if (obArr) setOrderBookArray(obArr);
   };
 
   useEffect(() => {
+    if (!orderBookArray) {
+      const storedArray = localStorage.getItem("orderBookArray");
+      updateObArr(storedArray);
+    }
+  }, []);
+
+  useEffect(() => {
     if (
       initOrderBookArray &&
-      (!orderBookArray || orderBookArray.length !== initOrderBookArray.length)
+      orderBookArray.length !== initOrderBookArray.length
     ) {
       updateObArr();
+      if (initOrderBookArray.length > 1) {
+        console.log("updated local storage");
+        localStorage.setItem(
+          "orderBookArray",
+          JSON.stringify(initOrderBookArray)
+        );
+      }
     }
   }, [initOrderBookArray]);
 
@@ -147,7 +162,7 @@ const Marketplace = ({ search }) => {
             exit="hidden"
             initial="hidden"
             variants={{
-              show: { transition: { staggerChildren: 0.2 }, opacity: 1 },
+              show: { opacity: 1 },
               hidden: {
                 transition: {
                   staggerChildren: 0.02,
@@ -163,7 +178,7 @@ const Marketplace = ({ search }) => {
                 style={{ minHeight: 500 }}
                 className="d-flex justify-content-center align-items-center w-100"
               >
-                <Loading />
+                <Loading custom="Loading... This may take upto a few minutes, please ensure your wallet is connected." />
               </div>
             ) : (
               <>

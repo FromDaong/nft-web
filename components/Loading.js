@@ -1,7 +1,7 @@
 import React from "react";
 import Spinner from "react-bootstrap/Spinner";
 
-const Loading = () => {
+const Loading = ({ custom }) => {
   return (
     <div
       style={{
@@ -24,7 +24,8 @@ const Loading = () => {
           padding: 10,
         }}
       >
-        Loading... Please ensure your Binance Smart Chain wallet is connected.
+        {custom ||
+          "Loading... Please ensure your Binance Smart Chain wallet is connected."}
       </h5>
       <Spinner
         animation="border"
