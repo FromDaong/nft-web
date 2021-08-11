@@ -49,7 +49,6 @@ export const PurchaseOrderModalBody = ({
   setPendingModal,
   openCompleteModal,
 }) => {
-  console.log({ order });
   const { onPurchaseOrder } = usePurchaseOrder(
     order?.nftId,
     order?.quantity,
