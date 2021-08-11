@@ -19,7 +19,7 @@ const Marketplace = ({ search }) => {
   const [purchaseOrderData, setPurchaseOrderData] = useState(null);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
-  const [orderBookArray, setOrderBookArray] = useState(undefined);
+  const [orderBookArray, setOrderBookArray] = useState([]);
   const [searchFilter, setSearchFilter] = useState(search || "");
   const [sortBy, setSortBy] = useState("Recent");
   const [orderBook] = useGetAllOpenOrders(maxId);
