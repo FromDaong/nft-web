@@ -7,6 +7,7 @@ import { getDisplayBalance } from "../../utils/formatBalance";
 import useGetRemainingOrderBalance from "../../hooks/useGetRemainingOrderBalance";
 import NFTListItem from "../../components/NFTListItem";
 import { Trash, CartFill } from "react-bootstrap-icons";
+import LazyLoad from "react-lazyload";
 
 export const Order = ({
   order,
@@ -43,42 +44,50 @@ export const Order = ({
 
   return (
     <div className="col-md-4">
-      {!!order && nftResult ? (
-        <NFTListItem
-          data={nftResult}
-          isOwner={isOwner}
-          price={getDisplayBalance(new BigNumber(order.price))}
-          owner={order.seller}
-          quantity={order.quantity}
-          buttonLabel={
-            isOwner ? (
-              <>
-                <Trash className="mr-2" />
-                Remove Your Listing
-              </>
-            ) : (
-              <>
-                <CartFill className="mr-2" />
-                Purchase
-              </>
-            )
-          }
-          buttonFunction={(e) => {
-            e.preventDefault();
-            if (!isOwner) setPurchaseOrderData({ nftData: nftResult, order });
-            else setCancelOrderData(nftResult);
-          }}
-        />
-      ) : (
-        <div
-          style={{ minHeight: 500 }}
-          className="d-flex justify-content-center align-items-center"
-        >
-          <Spinner animation="border" role="status" size="xl" variant="primary">
-            <span className="sr-only">Loading...</span>
-          </Spinner>
-        </div>
-      )}
+      <LazyLoad height={400} offset={100}>
+        {!!order && nftResult ? (
+          <NFTListItem
+            data={nftResult}
+            isOwner={isOwner}
+            price={getDisplayBalance(new BigNumber(order.price))}
+            owner={order.seller}
+            quantity={order.quantity}
+            disableAnimations={true}
+            buttonLabel={
+              isOwner ? (
+                <>
+                  <Trash className="mr-2" />
+                  Remove Your Listing
+                </>
+              ) : (
+                <>
+                  <CartFill className="mr-2" />
+                  Purchase
+                </>
+              )
+            }
+            buttonFunction={(e) => {
+              e.preventDefault();
+              if (!isOwner) setPurchaseOrderData({ nftData: nftResult, order });
+              else setCancelOrderData(nftResult);
+            }}
+          />
+        ) : (
+          <div
+            style={{ minHeight: 500 }}
+            className="d-flex justify-content-center align-items-center"
+          >
+            <Spinner
+              animation="border"
+              role="status"
+              size="xl"
+              variant="primary"
+            >
+              <span className="sr-only">Loading...</span>
+            </Spinner>
+          </div>
+        )}
+      </LazyLoad>
     </div>
   );
 

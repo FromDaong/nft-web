@@ -39,6 +39,7 @@ const NFTListItem = ({
   price,
   owner,
   quantity,
+  disableAnimations,
 }) => {
   const [image, setBase64Image] = useState();
   console.log({ data });
@@ -58,7 +59,7 @@ const NFTListItem = ({
   if (!data.attributes) return <div></div>;
 
   return (
-    <motion.div variants={variants} layout>
+    <motion.div variants={disableAnimations ? {} : variants} layout>
       <Link href={`/view/${data.id}`}>
         <div className="nft-card">
           <div className="totw-tag-wrapper">

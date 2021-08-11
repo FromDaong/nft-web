@@ -42,9 +42,6 @@ export default async (req, res) => {
           await getNftTotalSupply(treatNFTMinter, id)
         )?.toNumber();
 
-        console.log({ nftReturn_apiMax: maxSupply });
-        console.log({ nftReturn_apiTotal: totalSupply });
-
         const returnData = { ...NFTres.toObject(), maxSupply, totalSupply };
         delete returnData.model_bnb_address;
         delete returnData.image;
