@@ -46,7 +46,7 @@ const Marketplace = ({ search }) => {
   };
 
   useEffect(() => {
-    if (!orderBookArray) {
+    if (orderBookArray.length === 0) {
       const storedArray = localStorage.getItem("orderBookArray");
       updateObArr(storedArray);
     }
