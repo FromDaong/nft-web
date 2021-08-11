@@ -1,7 +1,7 @@
 import { useWallet } from "use-wallet";
 import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import useGetAllOpenOrders from "../hooks/useGetAllOpenOrders";
 import useGetMaxIdForSale from "../hooks/useGetMaxIdForSale";
 import Loading from "../components/Loading";
@@ -11,11 +11,13 @@ import PurchaseOrderModal from "../components/PurchaseOrderModal";
 import Hero from "../components/Hero";
 import { Order } from "../components/MarketplaceListItem";
 import { motion, AnimateSharedLayout } from "framer-motion";
+import { forceCheck } from "react-lazyload";
 
 const Marketplace = ({ search }) => {
   const maxId = useGetMaxIdForSale();
 
   const [cancelOrderData, setCancelOrderData] = useState(null);
+  const [storedArray, setStoredArray] = useState(null);
   const [purchaseOrderData, setPurchaseOrderData] = useState(null);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
@@ -24,12 +26,17 @@ const Marketplace = ({ search }) => {
   const [sortBy, setSortBy] = useState("Recent");
   const [orderBook] = useGetAllOpenOrders(maxId);
   const { account } = useWallet();
+  const [_, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const initOrderBookArray = orderBook && orderBook.flat();
 
-  const updateObArr = (storedArray) => {
-    const ob = initOrderBookArray || (storedArray && JSON.parse(storedArray));
-    if (!ob || ob.length === 0) return;
+  const updateObArr = () => {
+    const ob =
+      initOrderBookArray && initOrderBookArray.length > 0
+        ? initOrderBookArray
+        : storedArray;
+
+    if (ob) setOrderBookArray([]);
 
     const obArr = ob?.sort((a, b) => {
       switch (sortBy) {
@@ -43,13 +50,16 @@ const Marketplace = ({ search }) => {
     });
 
     if (obArr) setOrderBookArray(obArr);
+    forceCheck();
   };
 
   useEffect(() => {
-    if (orderBookArray.length === 0) {
-      const storedArray = localStorage.getItem("orderBookArray");
-      updateObArr(storedArray);
-    }
+    (async () => {
+      if (orderBookArray.length === 0) {
+        const storedArrayGrab = await localStorage.getItem("orderBookArray");
+        await setStoredArray(JSON.parse(storedArrayGrab));
+      }
+    })();
   }, []);
 
   useEffect(() => {
@@ -70,7 +80,8 @@ const Marketplace = ({ search }) => {
 
   useEffect(() => {
     updateObArr();
-  }, [sortBy]);
+    forceUpdate();
+  }, [sortBy, storedArray]);
 
   return (
     <AnimateSharedLayout>

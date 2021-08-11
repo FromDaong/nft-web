@@ -28,7 +28,6 @@ const useGetAllOpenOrders = (maxId: number) => {
             sales[i] = [];
           }
           if (order) {
-            console.log({ order });
             sales[i].push({ ...order, mintId: order.nftId, nftId: i });
           }
         }
