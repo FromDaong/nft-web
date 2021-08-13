@@ -15,7 +15,7 @@ const useGetIsPerformer = (modelAddress: string) => {
     );
     console.log(txHash);
     return txHash;
-  }, [account, treatNftMinterContract]);
+  }, [modelAddress, treatNftMinterContract]);
 
   return { onGetIsPerformerForMinter: handleGetIsPerformerForMinter };
 };
