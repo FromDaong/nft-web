@@ -74,7 +74,7 @@ const NFTListItem = ({
               </div>
             )}
           </div>
-          <Link href={`/model/${data.name}`}>
+          <Link href={`/model/${data.attributes[0].value}`}>
             <div className="profile-pic">
               <img
                 src={

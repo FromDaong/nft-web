@@ -67,17 +67,25 @@ const HeaderNav = () => {
               <Link href="/my-nfts" passHref>
                 <Nav.Link>MY NFTs</Nav.Link>
               </Link>
+              <Link href="/creator-dashboard" passHref>
+                <Nav.Link style={{ color: "#555" }}>DASHBOARD</Nav.Link>
+              </Link>
             </>
           )}
-          <Link href="/about" passHref>
-            <Nav.Link>ABOUT</Nav.Link>
-          </Link>
-          <Nav.Link
-            href="https://treatdao.medium.com/c6aaa613725d"
-            target="_blank"
-          >
-            BLOG
-          </Nav.Link>
+
+          {!account && (
+            <>
+              <Link href="/about" passHref>
+                <Nav.Link>ABOUT</Nav.Link>
+              </Link>
+              <Nav.Link
+                href="https://treatdao.medium.com/c6aaa613725d"
+                target="_blank"
+              >
+                BLOG
+              </Nav.Link>
+            </>
+          )}
 
           {!account ? (
             <Button
@@ -98,12 +106,14 @@ const HeaderNav = () => {
                 </Link>
                 <NavDropdown.Item
                   onClick={() => {
-                    console.log(123);
                     setBalanceModalShow(true);
                   }}
                 >
                   $TREAT BALANCE
                 </NavDropdown.Item>
+                <Link href="/become-creator" passHref>
+                  <NavDropdown.Item>BECOME A CREATOR</NavDropdown.Item>
+                </Link>
                 <NavDropdown.Item
                   onClick={() => {
                     localStorage.removeItem("connectedBefore");

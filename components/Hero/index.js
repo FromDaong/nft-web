@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const Hero = ({ title, subtitle }) => {
+const Hero = ({ title, subtitle, additionalContent }) => {
   return (
     <motion.div
       animate={{ y: 0, opacity: 1 }}
@@ -9,7 +9,10 @@ const Hero = ({ title, subtitle }) => {
       transition={{ delay: 0.25 }}
       className="pink-bg mb-5"
     >
-      <div className="heading-text p-0 mt-5" style={{ fontSize: "3.5em" }}>
+      <div
+        className="heading-text p-0 mt-5"
+        style={{ fontSize: "3.5em", lineHeight: 1.2 }}
+      >
         {title}
       </div>
       <p
@@ -18,6 +21,7 @@ const Hero = ({ title, subtitle }) => {
       >
         {subtitle}
       </p>
+      {additionalContent}
     </motion.div>
   );
 };
