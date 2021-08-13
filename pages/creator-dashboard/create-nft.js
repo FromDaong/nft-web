@@ -57,7 +57,7 @@ const CreateNFT = () => {
         description: "",
         blurhash: false,
         image: file,
-        max_supply: 1000000000,
+        max_supply: 10000,
         external_url: "https://treatdao.com/",
         model_handle: "@model",
         model_profile_pic: "pic",
@@ -175,7 +175,10 @@ const CreateNFT = () => {
               </Button>
             </div>
             <div className="col-md-6  mt-2 text-center">
-              <Button variant="primary py-2 w-100">
+              <Button
+                variant="primary py-2 w-100"
+                disabled={ipfsFiles.length === 0}
+              >
                 <b>CREATE NFTs</b>
               </Button>
             </div>
