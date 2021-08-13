@@ -28,7 +28,7 @@ const variants = {
   },
 };
 
-const CreatingNFTItem = ({
+const CreatingNFTItemPreview = ({
   data,
   imageUrl,
   buttonLabel,
@@ -148,4 +148,4 @@ const CreatingNFTItem = ({
   );
 };
 
-export default CreatingNFTItem;
+export default CreatingNFTItemPreview;

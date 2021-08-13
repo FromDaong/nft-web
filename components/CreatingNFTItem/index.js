@@ -87,7 +87,7 @@ const CreatingNFTItem = ({ imageUrl, formik, handleChange, index }) => {
           name={formik.values.nfts[index].name}
           isOwner={true}
           // price={getDisplayBalance(new BigNumber(order.price))}
-          price={0}
+          price={formik.values.nfts[index].list_price}
           // owner={order.seller}
           quantity={1}
           disableAnimations={true}
