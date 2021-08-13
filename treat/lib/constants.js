@@ -43,6 +43,9 @@ export const contractAddresses = {
   treatNFTMinterV1: {
     56: "0xde39d0b9a93dcd541c24e80c8361f362aab0f213",
   },
+  creatorMart: {
+    56: "0x8372D8Da6dc7267713C7367D34F5881e9a618b43",
+  },
   treatMart: {
     56: "0xC2Df967c8687c99c1f0cE394616e66A89F9F7363",
   },
