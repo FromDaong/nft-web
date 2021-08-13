@@ -352,6 +352,16 @@ export const isPerformerForMinter = async (treatNFTMinter, performerAddress) => 
   }
 };
 
+export const isAdminForMinter = async (treatNFTMinter, account) => {
+  try {
+    return await treatNFTMinter.methods.isWhitelistAdmin(account)
+    .call();
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+};
+
 export const approve = async (treatMart, account) => {
   return await treatMart.methods
     .approve(treatMart.options.address, ethers.constants.MaxUint256)
