@@ -342,6 +342,16 @@ export const addPerformerToMinter = async (treatNFTMinter, account, performerAdd
   }
 };
 
+export const isPerformerForMinter = async (treatNFTMinter, performerAddress) => {
+  try {
+    return await treatNFTMinter.methods.isPerformer(performerAddress)
+    .call();
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+};
+
 export const approve = async (treatMart, account) => {
   return await treatMart.methods
     .approve(treatMart.options.address, ethers.constants.MaxUint256)
