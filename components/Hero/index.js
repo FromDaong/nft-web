@@ -16,7 +16,7 @@ const Hero = ({ title, subtitle, additionalContent }) => {
         {title}
       </div>
       <p
-        className="totw-secondary-text m-0 mt-1 pb-3"
+        className="totw-secondary-text m-0 mt-2 pb-3"
         style={{ maxWidth: "none" }}
       >
         {subtitle}
