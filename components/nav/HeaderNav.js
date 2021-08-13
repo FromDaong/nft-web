@@ -68,7 +68,9 @@ const HeaderNav = () => {
                 <Nav.Link>MY NFTs</Nav.Link>
               </Link>
               <Link href="/creator-dashboard" passHref>
-                <Nav.Link style={{ color: "#555" }}>DASHBOARD</Nav.Link>
+                <Nav.Link style={{ color: "#935fb6" }}>
+                  CREATOR DASHBOARD
+                </Nav.Link>
               </Link>
             </>
           )}
