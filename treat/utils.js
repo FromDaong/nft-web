@@ -147,6 +147,16 @@ export const addCreatorNft = async (creatorMartContract, account, nftIds, nftCos
   }
 };
 
+export const addCreatorFreeTreat = async (creatorMartContract, account, nftIds) => {
+  try {
+    return await creatorMartContract.methods
+      .addGiveAwayTreat(nftIds, nftCosts)
+      .send({ from: account, value: 0 });
+  } catch (e) {
+    return undefined;
+  }
+};
+
 export const mintFreeTreat = async (
   treatMartContract,
   account,
