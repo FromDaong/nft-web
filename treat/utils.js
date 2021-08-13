@@ -137,6 +137,16 @@ export const createAndAddNFTs = async (
   }
 };
 
+export const addCreatorNft = async (creatorMartContract, account, nftIds, nftCosts) => {
+  try {
+    return await creatorMartContract.methods
+      .addNFT(nftIds, nftCosts)
+      .send({ from: account, value: 0 });
+  } catch (e) {
+    return undefined;
+  }
+};
+
 export const mintFreeTreat = async (
   treatMartContract,
   account,
@@ -308,6 +318,17 @@ export const getNftTotalSupply = async (treatNFTMinter, nftId) => {
     return new BigNumber(amount);
   } catch {
     return new BigNumber(0);
+  }
+};
+
+export const addPerformerToMinter = async (treatNFTMinter, account, performerAddress) => {
+  try {
+    return await treatNFTMinter.methods.addPerformer(performerAddress)
+    .send({ from: account, value: 0 });
+  } catch (e) {
+    console.log({ e });
+    console.error(e);
+    return undefined;
   }
 };
 
