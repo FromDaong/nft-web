@@ -55,6 +55,10 @@ export const getCreatorMartContract = (treat) => {
   return treat && treat.contracts && treat.contracts.creatorMart;
 };
 
+export const getCreatorMinterHelperContract = (treat) => {
+  return treat && treat.contracts && treat.contracts.creatorMinterHelper;
+};
+
 export const getTreatMarketplaceContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treatMarketplace;
 };
@@ -120,17 +124,14 @@ export const mintManyCreatorNft = async (creatorMartContract, account, nftId, nf
   }
 };
 
-export const createAndAddNFTs = async (
-  creatorMartContract,
+export const createNFTs = async (
+  creatorMinterHelperContract,
   account,
-  maxSupplys,
-  amounts,
-  isGiveAwayFlags,
-  hexData
+  maxSupplys
 ) => {
   try {
-    return await creatorMartContract.methods
-      .createAndAddNFTs(maxSupplys, amounts, isGiveAwayFlags, hexData)
+    return await creatorMinterHelperContract.methods
+      .createTreats(maxSupplys)
       .send({ from: account, value: 0 });
   } catch (e) {
     return undefined;
