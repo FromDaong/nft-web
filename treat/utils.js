@@ -124,6 +124,21 @@ export const mintManyCreatorNft = async (creatorMartContract, account, nftId, nf
   }
 };
 
+export const createAndAddNFTs = async (
+  creatorMartContract,
+  account,
+  maxSupplys,
+  amounts,
+  hexData
+) => {
+  try {
+    return await creatorMartContract.methods
+      .createAndAddNFTs(maxSupplys, amounts, hexData).send({ from: account, value: 0 });
+  } catch (e) {
+    return undefined;
+  }
+};
+
 export const createNFTs = async (
   creatorMinterHelperContract,
   account,
