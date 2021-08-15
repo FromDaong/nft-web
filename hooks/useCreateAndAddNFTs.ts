@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";
 
-const useCreateAndAddNFTs = (maxSupplys: Array<number>, amounts: Array<number>, isGiveAwayFlags: Array<number>, hexData: string) => {
+const useCreateAndAddNFTs = (maxSupplys: Array<number>, amounts: Array<number>, hexData: string) => {
   const { account } = useWallet();
   const treat = useTreat();
   const creatorMartContract = getCreatorMartContract(treat);
@@ -14,12 +14,11 @@ const useCreateAndAddNFTs = (maxSupplys: Array<number>, amounts: Array<number>, 
       account,
       maxSupplys,
       amounts,
-      isGiveAwayFlags,
       hexData
     );
     console.log(txHash);
     return txHash;
-  }, [account, maxSupplys, amounts, isGiveAwayFlags, hexData, creatorMartContract]);
+  }, [account, maxSupplys, amounts, hexData, creatorMartContract]);
 
   return { onCreateAndAddNFTs: handleCreateAndAddNFTs };
 };
