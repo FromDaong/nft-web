@@ -52,7 +52,7 @@ const ModelListItem = ({ data, totwOnly = false, disableAnim }) => {
 
   return (
     <motion.div variants={variants} initial={disableAnim}>
-      <a href={`/creator/${data.username}`}>
+      <a href={`/creator/${data.username.replace("@", "")}`}>
         <div className="model-list-item">
           <div className="creator">
             <div className="pic">
