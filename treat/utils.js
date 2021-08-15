@@ -55,6 +55,10 @@ export const getCreatorMartContract = (treat) => {
   return treat && treat.contracts && treat.contracts.creatorMart;
 };
 
+export const getCreatorMinterHelperContract = (treat) => {
+  return treat && treat.contracts && treat.contracts.creatorMinterHelper;
+};
+
 export const getTreatMarketplaceContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treatMarketplace;
 };
@@ -125,12 +129,24 @@ export const createAndAddNFTs = async (
   account,
   maxSupplys,
   amounts,
-  isGiveAwayFlags,
   hexData
 ) => {
   try {
     return await creatorMartContract.methods
-      .createAndAddNFTs(maxSupplys, amounts, isGiveAwayFlags, hexData)
+      .createAndAddNFTs(maxSupplys, amounts, hexData).send({ from: account, value: 0 });
+  } catch (e) {
+    return undefined;
+  }
+};
+
+export const createNFTs = async (
+  creatorMinterHelperContract,
+  account,
+  maxSupplys
+) => {
+  try {
+    return await creatorMinterHelperContract.methods
+      .createTreats(maxSupplys)
       .send({ from: account, value: 0 });
   } catch (e) {
     return undefined;
@@ -141,6 +157,16 @@ export const addCreatorNft = async (creatorMartContract, account, nftIds, nftCos
   try {
     return await creatorMartContract.methods
       .addNFT(nftIds, nftCosts)
+      .send({ from: account, value: 0 });
+  } catch (e) {
+    return undefined;
+  }
+};
+
+export const addCreatorFreeTreat = async (creatorMartContract, account, nftIds) => {
+  try {
+    return await creatorMartContract.methods
+      .addGiveAwayTreat(nftIds, nftCosts)
       .send({ from: account, value: 0 });
   } catch (e) {
     return undefined;
@@ -327,6 +353,26 @@ export const addPerformerToMinter = async (treatNFTMinter, account, performerAdd
     .send({ from: account, value: 0 });
   } catch (e) {
     console.log({ e });
+    console.error(e);
+    return undefined;
+  }
+};
+
+export const isPerformerForMinter = async (treatNFTMinter, performerAddress) => {
+  try {
+    return await treatNFTMinter.methods.isPerformer(performerAddress)
+    .call();
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+};
+
+export const isAdminForMinter = async (treatNFTMinter, account) => {
+  try {
+    return await treatNFTMinter.methods.isWhitelistAdmin(account)
+    .call();
+  } catch (e) {
     console.error(e);
     return undefined;
   }
