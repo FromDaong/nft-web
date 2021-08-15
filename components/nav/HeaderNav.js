@@ -9,7 +9,7 @@ import AgeModal from "../AgeModal";
 import BalanceModal from "../BalanceModal";
 import Link from "next/link";
 
-const HeaderNav = () => {
+const HeaderNav = ({ modelData }) => {
   const { status, account, error, reset } = useWallet();
   const [walletModalShow, setWalletModalShow] = useState(false);
   const [balanceModalShow, setBalanceModalShow] = useState(false);
@@ -29,6 +29,8 @@ const HeaderNav = () => {
       setWalletModalShow(false);
     }
   }, [status]);
+
+  console.log({ modelData });
 
   return (
     <Navbar expand="lg" className="mb-4" sticky="top" className="main-nav">
@@ -59,7 +61,7 @@ const HeaderNav = () => {
           <Link href="/creators" passhref>
             <Nav.Link href="/creators">CREATORS</Nav.Link>
           </Link>
-          {account && (
+          {account && !account.pending && !account.rejected && (
             <>
               <Link href="/marketplace" passHref>
                 <Nav.Link>MARKETPLACE</Nav.Link>
@@ -67,11 +69,13 @@ const HeaderNav = () => {
               <Link href="/my-nfts" passHref>
                 <Nav.Link>MY NFTs</Nav.Link>
               </Link>
-              <Link href="/creator-dashboard" passHref>
-                <Nav.Link style={{ color: "#935fb6" }}>
-                  CREATOR DASHBOARD
-                </Nav.Link>
-              </Link>
+              {modelData && (
+                <Link href="/creator-dashboard" passHref>
+                  <Nav.Link style={{ color: "#e07a88" }}>
+                    CREATOR DASHBOARD
+                  </Nav.Link>
+                </Link>
+              )}
             </>
           )}
 
@@ -113,9 +117,15 @@ const HeaderNav = () => {
                 >
                   $TREAT BALANCE
                 </NavDropdown.Item>
-                <Link href="/become-creator" passHref>
-                  <NavDropdown.Item>BECOME A CREATOR</NavDropdown.Item>
-                </Link>
+                {!modelData || modelData.pending || modelData.rejected ? (
+                  <Link href="/become-creator" passHref>
+                    <NavDropdown.Item>BECOME A CREATOR</NavDropdown.Item>
+                  </Link>
+                ) : (
+                  <Link href="/creator-dashboard" passHref>
+                    <NavDropdown.Item>CREATOR DASHBOARD</NavDropdown.Item>
+                  </Link>
+                )}
                 <NavDropdown.Item
                   onClick={() => {
                     localStorage.removeItem("connectedBefore");

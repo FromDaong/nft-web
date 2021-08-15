@@ -90,7 +90,9 @@ const NFTListItem = ({
             )}
           </div>
           <div className="profile-pic">
-            <Link href={`/creator/${data.name}`}>
+            <Link
+              href={`/creator/${data.attributes[0].value.replace("@", "")}`}
+            >
               <img
                 src={
                   data.model_profile_pic ||

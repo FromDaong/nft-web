@@ -1,26 +1,19 @@
 import React, { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import Table from "react-bootstrap/Table";
+import Button from "react-bootstrap/Button";
 import useWallet from "use-wallet";
 import useSWR from "swr";
+import Link from "next/link";
 import Layout from "../../components/Layout";
 import Hero from "../../components/Hero";
 
 const AdminDashboardWrapper = () => {
   const { account, status } = useWallet();
 
-  const { data: res } = useSWR(`/api/nft`);
-  const [nftArray, setNftData] = useState();
+  const { data } = useSWR(`/api/admin/is-authed`);
 
-  useEffect(() => {
-    (async () => {
-      if (res) {
-        setNftData(res);
-      }
-    })();
-  }, [res]);
-
-  if (status !== "connected" || !nftArray) {
+  if (status !== "connected" || !data) {
     return (
       <div
         style={{
@@ -56,44 +49,104 @@ const AdminDashboardWrapper = () => {
       </div>
     );
   } else {
-    return (
-      <Layout>
-        <div className="container  my-nft-container">
-          <Hero
-            title={"Admin Dashboard"}
-            subtitle={`Approve and reject creator application requests here`}
-          />
-          {/* <div className="white-tp-bg mt-4 p-3">
+    if (data.failed)
+      return (
+        <Hero
+          title={"You are not authenticated."}
+          subtitle={"You are not permitted to use this dashboard"}
+          additionalContent={
+            <Link href="/admin-dashboard/login">
+              <Button variant="primary  w-sm-100">
+                <b>{"Login to Panel"}</b>
+              </Button>
+            </Link>
+          }
+        />
+      );
+    return <AdminDashboard />;
+  }
+};
+
+const AdminDashboard = () => {
+  const { data } = useSWR(`/api/admin/get-pending`);
+
+  return (
+    <Layout>
+      <div className="container my-nft-container">
+        <Hero
+          title={"Admin Dashboard"}
+          subtitle={`Approve and reject creator application requests here. Click an application for more info`}
+          additionalContent={
+            <Link href="/api/admin/logout">
+              <Button variant="primary  w-sm-100">
+                <b>{"Logout"}</b>
+              </Button>
+            </Link>
+          }
+        />
+        {/* <div className="white-tp-bg mt-4 p-3">
           <p className="w-100 mb-0" style={{ wordBreak: "break-word" }}>
             <b>Connected wallet address:</b>
             <div>{`${account}`}</div>
           </p>
         </div> */}
-          <div className="mt-2 bg-white">
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Username</th>
-                  <th>Address</th>
-                </tr>
-              </thead>
-              <tbody>
-                {}
-                <tr>
-                  <td>
-                    <img src="" />
-                  </td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                </tr>
-              </tbody>
-            </Table>
-          </div>
+
+        <div className="mt-2 white-tp-container">
+          <h4 className="mb-3">Pending ⌛</h4>
+          <Table striped bordered hover className="bg-white">
+            <thead>
+              <tr>
+                <th></th>
+                <th className="text-center">Username</th>
+                <th className="text-center">Address</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data &&
+                data.pendingModels.map((m) => (
+                  <Link href={`/admin-dashboard/${m.username}`}>
+                    <tr>
+                      <td className="d-flex align-center justify-content-center">
+                        <img src={m.profile_pic} style={{ maxHeight: 75 }} />
+                      </td>
+                      <td className="text-center">{m.username}</td>
+                      <td className="text-center">{m.address}</td>
+                    </tr>
+                  </Link>
+                ))}
+            </tbody>
+          </Table>
         </div>
-      </Layout>
-    );
-  }
+
+        <div className="mt-4 white-tp-container">
+          <h4 className="mb-3">Rejected ❌</h4>
+          <Table striped bordered hover className="bg-white">
+            <thead>
+              <tr>
+                <th></th>
+                <th className="text-center">Username</th>
+                <th className="text-center">Address</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data &&
+                data.rejectedModels.map((m) => (
+                  <Link href={`/admin-dashboard/${m.username}`}>
+                    <tr>
+                      <td className="d-flex align-center justify-content-center">
+                        <img src={m.profile_pic} style={{ maxHeight: 75 }} />
+                      </td>
+                      <td className="text-center">{m.username}</td>
+                      <td className="text-center">{m.address}</td>
+                    </tr>
+                  </Link>
+                ))}
+            </tbody>
+          </Table>
+        </div>
+      </div>
+    </Layout>
+  );
 };
 
 export default AdminDashboardWrapper;

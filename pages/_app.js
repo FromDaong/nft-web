@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../components/nav/HeaderNav";
 import Footer from "../components/Footer";
 import "../styles/index.scss";
-import { SWRConfig } from "swr";
+import useSWR, { SWRConfig } from "swr";
 import fetch from "../lib/fetchJson";
 import { useRouter } from "next/router";
 import TreatProvider from "../contexts/TreatProvider";
@@ -23,6 +23,10 @@ const allowedRoutes = ["/"];
 function MyApp({ Component, pageProps }) {
   const { status, account, connect } = useWallet();
   const router = useRouter();
+
+  const { data: modelData } = useSWR(
+    account && `/api/model/find-by-address/${account}`
+  );
 
   if (process.env.NEXT_PUBLIC_STOP) {
     return <PublicStop />;
@@ -105,13 +109,17 @@ function MyApp({ Component, pageProps }) {
       >
         <TreatProvider>
           <div>
-            <Navbar />
+            <Navbar modelData={modelData} />
             <Container style={{ minHeight: "75vh" }}>
               <AnimatePresence
                 exitBeforeEnter
                 onExitComplete={() => window.scrollTo(0, 0)}
               >
-                <Component {...pageProps} key={router.route} />
+                <Component
+                  {...pageProps}
+                  modelData={modelData}
+                  key={router.route}
+                />
               </AnimatePresence>
             </Container>
             <Footer />
