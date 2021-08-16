@@ -90,7 +90,9 @@ export const getTreatNftCost = async (treatMartContract, nftId) => {
 };
 
 export const getCreatorNftCost = async (creatorMartContract, nftId) => {
-  return new BigNumber(await creatorMartContract.methods.nftCosts(nftId).call());
+  return new BigNumber(
+    await creatorMartContract.methods.nftCosts(nftId).call()
+  );
 };
 
 // user redeems nft
@@ -104,7 +106,12 @@ export const mintNft = async (treatmartContract, account, nftId, nftCost) => {
   }
 };
 
-export const mintCreatorNft = async (creatorMartContract, account, nftId, nftCost) => {
+export const mintCreatorNft = async (
+  creatorMartContract,
+  account,
+  nftId,
+  nftCost
+) => {
   try {
     return await creatorMartContract.methods
       .redeem(nftId)
@@ -114,11 +121,17 @@ export const mintCreatorNft = async (creatorMartContract, account, nftId, nftCos
   }
 };
 
-export const mintManyCreatorNft = async (creatorMartContract, account, nftId, nftCost, amount) => {
+export const mintManyCreatorNft = async (
+  creatorMartContract,
+  account,
+  nftId,
+  nftCost,
+  amount
+) => {
   try {
     return await creatorMartContract.methods
-      .redeemMultiple(nftId,amount)
-      .send({ from: account, value: nftCost*amount });
+      .redeemMultiple(nftId, amount)
+      .send({ from: account, value: nftCost * amount });
   } catch (e) {
     return undefined;
   }
@@ -133,9 +146,13 @@ export const createAndAddNFTs = async (
 ) => {
   try {
     const result = await creatorMartContract.methods
-      .createAndAddNFTs(maxSupplys, amounts, hexData).send({ from: account, value: 0 });
+      .createAndAddNFTs(maxSupplys, amounts, hexData)
+      .send({ from: account, value: 0 });
+
+    console.log({ result });
     return result.events.NFTCreatedAndAdded.returnValues;
   } catch (e) {
+    console.log({ e });
     return undefined;
   }
 };
@@ -154,7 +171,12 @@ export const createNFTs = async (
   }
 };
 
-export const addCreatorNft = async (creatorMartContract, account, nftIds, nftCosts) => {
+export const addCreatorNft = async (
+  creatorMartContract,
+  account,
+  nftIds,
+  nftCosts
+) => {
   try {
     return await creatorMartContract.methods
       .addNFT(nftIds, nftCosts)
@@ -164,7 +186,11 @@ export const addCreatorNft = async (creatorMartContract, account, nftIds, nftCos
   }
 };
 
-export const addCreatorFreeTreat = async (creatorMartContract, account, nftIds) => {
+export const addCreatorFreeTreat = async (
+  creatorMartContract,
+  account,
+  nftIds
+) => {
   try {
     return await creatorMartContract.methods
       .addGiveAwayTreat(nftIds, nftCosts)
@@ -348,10 +374,15 @@ export const getNftTotalSupply = async (treatNFTMinter, nftId) => {
   }
 };
 
-export const addPerformerToMinter = async (treatNFTMinter, account, performerAddress) => {
+export const addPerformerToMinter = async (
+  treatNFTMinter,
+  account,
+  performerAddress
+) => {
   try {
-    return await treatNFTMinter.methods.addPerformer(performerAddress)
-    .send({ from: account, value: 0 });
+    return await treatNFTMinter.methods
+      .addPerformer(performerAddress)
+      .send({ from: account, value: 0 });
   } catch (e) {
     console.log({ e });
     console.error(e);
@@ -359,10 +390,12 @@ export const addPerformerToMinter = async (treatNFTMinter, account, performerAdd
   }
 };
 
-export const isPerformerForMinter = async (treatNFTMinter, performerAddress) => {
+export const isPerformerForMinter = async (
+  treatNFTMinter,
+  performerAddress
+) => {
   try {
-    return await treatNFTMinter.methods.isPerformer(performerAddress)
-    .call();
+    return await treatNFTMinter.methods.isPerformer(performerAddress).call();
   } catch (e) {
     console.error(e);
     return undefined;
@@ -371,8 +404,7 @@ export const isPerformerForMinter = async (treatNFTMinter, performerAddress) => 
 
 export const isAdminForMinter = async (treatNFTMinter, account) => {
   try {
-    return await treatNFTMinter.methods.isWhitelistAdmin(account)
-    .call();
+    return await treatNFTMinter.methods.isWhitelistAdmin(account).call();
   } catch (e) {
     console.error(e);
     return undefined;

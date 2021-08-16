@@ -10,6 +10,7 @@ import { useDropzone } from "react-dropzone";
 import { create } from "ipfs-http-client";
 import async from "async";
 import BlankModal from "../../components/BlankModal";
+import { useEffect } from "react";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -17,8 +18,6 @@ const CreateNFT = () => {
   const [ipfsFiles, setIpfsFiles] = useState([]);
   const router = useRouter();
   const [success, setSuccess] = useState(false);
-
-  const { onCreateAndAddNFTs } = useCreateAndAddNFTs();
 
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
@@ -99,18 +98,31 @@ const CreateNFT = () => {
     },
   });
 
+  const [maxSupplyArray, setMaxSupplyArray] = useState(null);
+  const [amountsArray, setAmountsArray] = useState(null);
+
+  const { onCreateAndAddNFTs } = useCreateAndAddNFTs(
+    maxSupplyArray,
+    amountsArray,
+    "0x"
+  );
+
+  useEffect(() => {
+    const maxSupplies = formik.values.nfts.map((n) => n.max_supply);
+    const amounts = formik.values.nfts.map((n) => n.list_price);
+
+    setMaxSupplyArray(maxSupplies);
+    setAmountsArray(amounts);
+  }, [formik.values.nfts]);
+
   const SubmitToServer = async () => {
     try {
       setShowPendingModal(true);
-      const maxSupplies = formik.values.nfts.map((n) => n.max_supply);
-      const amounts = formik.values.nfts.map((n) => n.list_price);
+      const createNFTResult = await onCreateAndAddNFTs();
 
-      const createNFTResult = await onCreateAndAddNFTs(
-        maxSupplies,
-        amounts,
-        "0x"
-      );
+      console.log({ createNFTResult });
 
+      return;
       const res = await fetch(`/api/nft/create`, {
         method: "POST",
         headers: {
@@ -206,6 +218,7 @@ const CreateNFT = () => {
             </div>
             <div className="col-md-6  mt-2 text-center">
               <Button
+                type="submit"
                 variant="primary py-2 w-100"
                 disabled={ipfsFiles.length === 0}
               >
