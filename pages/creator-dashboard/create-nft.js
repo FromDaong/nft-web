@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import toBuffer from "blob-to-buffer";
 import { Form, Button } from "react-bootstrap";
 import { useFormik, FieldArray, FormikProvider } from "formik";
-import * as Yup from "yup";
+import useCreateAndAddNFTs from "../../hooks/useCreateAndAddNFTs";
 import { useRouter } from "next/router";
 import Hero from "../../components/Hero";
 import CreatingNFTItem from "../../components/CreatingNFTItem";
 import { useDropzone } from "react-dropzone";
 import { create } from "ipfs-http-client";
 import async from "async";
+import BlankModal from "../../components/BlankModal";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -16,6 +17,11 @@ const CreateNFT = () => {
   const [ipfsFiles, setIpfsFiles] = useState([]);
   const router = useRouter();
   const [success, setSuccess] = useState(false);
+
+  const { onCreateAndAddNFTs } = useCreateAndAddNFTs();
+
+  const [showPendingModal, setShowPendingModal] = useState(null);
+  const [showCompleteModal, setShowCompleteModal] = useState(null);
 
   const onDrop = (files) => {
     if (files && files.length > 0) {
@@ -67,24 +73,24 @@ const CreateNFT = () => {
     enableReinitialize: true,
     validateOnChange: false,
     validateOnBlur: false,
-    validationSchema: Yup.object().shape({
-      id: Yup.number().required("Please add a nft id"),
-      name: Yup.string().required("Please add a name"),
-      list_price: Yup.string().required("Please add the NFT list price"),
-      description: Yup.string(),
-      external_url: Yup.string().required("Please add a external_url"),
-      blurhash: Yup.string().required("Please add a blurhash"),
-      image: Yup.string().required("Please add a image"),
-      max_supply: Yup.string().required("Please add a max supply"),
-      model_handle: Yup.string().required("Please add a model handle"),
-      model_profile_pic: Yup.string().required(
-        "Please add a model profile pic"
-      ),
-      model_bnb_address: Yup.string().required(
-        "Please add the model bnb address"
-      ),
-      master_password: Yup.string().required("Please add the master password"),
-    }),
+    // validationSchema: Yup.object().shape({
+    //   id: Yup.number().required("Please add a nft id"),
+    //   name: Yup.string().required("Please add a name"),
+    //   list_price: Yup.string().required("Please add the NFT list price"),
+    //   description: Yup.string(),
+    //   external_url: Yup.string().required("Please add a external_url"),
+    //   blurhash: Yup.string().required("Please add a blurhash"),
+    //   image: Yup.string().required("Please add a image"),
+    //   max_supply: Yup.string().required("Please add a max supply"),
+    //   model_handle: Yup.string().required("Please add a model handle"),
+    //   model_profile_pic: Yup.string().required(
+    //     "Please add a model profile pic"
+    //   ),
+    //   model_bnb_address: Yup.string().required(
+    //     "Please add the model bnb address"
+    //   ),
+    //   master_password: Yup.string().required("Please add the master password"),
+    // }),
     handleChange: (c) => {
       console.log({ c });
     },
@@ -95,6 +101,16 @@ const CreateNFT = () => {
 
   const SubmitToServer = async () => {
     try {
+      setShowPendingModal(true);
+      const maxSupplies = formik.values.nfts.map((n) => n.max_supply);
+      const amounts = formik.values.nfts.map((n) => n.list_price);
+
+      const createNFTResult = await onCreateAndAddNFTs(
+        maxSupplies,
+        amounts,
+        "0x"
+      );
+
       const res = await fetch(`/api/nft/create`, {
         method: "POST",
         headers: {
@@ -127,6 +143,20 @@ const CreateNFT = () => {
 
   return (
     <FormikProvider value={formik}>
+      <BlankModal
+        show={!!showPendingModal}
+        handleClose={() => setShowPendingModal(false)}
+        title={"Waiting for Transaction Confirmation ⌛"}
+        subtitle={
+          "Please confirm this transaction in your wallet and wait here for upto a few minutes for the transaction to confirm. Do not close this browser window!"
+        }
+        noButton={true}
+      />
+      <BlankModal
+        show={!!showCompleteModal}
+        handleClose={() => setShowCompleteModal(false)}
+      />
+
       <div className="container">
         <Hero
           title="Create New NFTs"

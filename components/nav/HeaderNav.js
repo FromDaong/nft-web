@@ -69,7 +69,7 @@ const HeaderNav = ({ modelData }) => {
               <Link href="/my-nfts" passHref>
                 <Nav.Link>MY NFTs</Nav.Link>
               </Link>
-              {modelData && (
+              {modelData && !modelData.pending && !modelData.rejected && (
                 <Link href="/creator-dashboard" passHref>
                   <Nav.Link style={{ color: "#e07a88" }}>
                     CREATOR DASHBOARD
