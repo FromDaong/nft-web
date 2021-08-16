@@ -41,6 +41,7 @@ const CreateModel = () => {
 
   const SubmitToServer = async () => {
     try {
+      console.log({ 1: 1 });
       const res = await fetch(`/api/model/become`, {
         method: "POST",
         headers: {
@@ -93,13 +94,8 @@ const CreateModel = () => {
       />
     );
 
-  if (success || (res && res.pending))
-    return (
-      <Hero
-        title="Your application has been submitted!"
-        subtitle="Check back here in a few days to see if the creator 'dashboard', has appeared at the top in the navigation bar!"
-      />
-    );
+  if (res && res.rejected)
+    return <Hero title="Your application has been rejected" />;
 
   return (
     <>
@@ -186,11 +182,10 @@ const CreateModel = () => {
             >
               Submit Application
             </Button>
-            <Form.Control.Feedback
-              type="invalid"
-              className="d-block"
-              style={{ marginTop: -10 }}
-            >
+            <Form.Control.Feedback type="invalid" className="d-block">
+              {Object.keys(formik.errors).map((e) => (
+                <div>{formik.errors[e]}</div>
+              ))}
               {formik.errors.code}
             </Form.Control.Feedback>
           </div>

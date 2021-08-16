@@ -44,7 +44,9 @@ const CreatorDashboardWrapper = ({ modelData }) => {
     })();
   }, [res]);
 
-  if (status !== "connected" || !nftArray) {
+  console.log({ modelData });
+
+  if (status !== "connected" || !modelData) {
     return (
       <div
         style={{
@@ -107,7 +109,7 @@ const ViewNFT = ({ modelData, account, nftArray }) => {
     if (account && treat) {
       const signature = await treat.signMessage(account, "Reveal Contents");
 
-      const nftIds = nftArray.map((n) => n.id);
+      const nftIds = modelData.nfts.map((n) => n.id);
 
       setIsLoading(true);
       const res = await fetch(`/api/nft/view-nfts`, {
@@ -126,12 +128,6 @@ const ViewNFT = ({ modelData, account, nftArray }) => {
       }
     }
   };
-
-  const v1NFTs = nftBalancesInitial.filter((a) => a.balanceV1Number > 0);
-
-  if (v1NFTs.length > 0) {
-    return <TradeInNFTs v1NFTs={v1NFTs} account={account} />;
-  }
 
   return (
     <Layout>
@@ -179,7 +175,7 @@ const ViewNFT = ({ modelData, account, nftArray }) => {
                 "
                 >
                   <Button variant="primary  w-100" style={{ maxWidth: 250 }}>
-                    <b>{"Create new NFTs"}</b>
+                    <b>{"CREATE NEW NFTs"}</b>
                   </Button>
                 </Link>
               </div>
@@ -194,6 +190,7 @@ const ViewNFT = ({ modelData, account, nftArray }) => {
             revealNFTs={revealNFTs}
             isLoading={isLoading}
             serverNftBalances={serverNftBalances}
+            modelData={modelData}
           />
         </div>
       </div>
@@ -209,6 +206,7 @@ const CreatedNFTs = ({
   listOrderClick,
   serverNftBalances,
   isLoading,
+  modelData,
 }) => {
   return (
     <div className="white-tp-bg" style={{ minHeight: 400 }}>
@@ -245,7 +243,7 @@ const CreatedNFTs = ({
           </div>
         )}
       </div>
-      {nftBalances.length > 0 ? (
+      {modelData.nfts.length > 0 ? (
         <div className="container px-4">
           <div className="d-flex text-left justify-content-center mt-5">
             <motion.div
@@ -285,7 +283,7 @@ const CreatedNFTs = ({
             minHeight: 200,
           }}
         >
-          You haven't purchased any NFTs yet.
+          You haven't created any NFTs yet
         </div>
       )}
     </div>
