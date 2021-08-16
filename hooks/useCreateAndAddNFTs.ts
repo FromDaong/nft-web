@@ -13,15 +13,15 @@ const useCreateAndAddNFTs = (
   const creatorMartContract = getCreatorMartContract(treat);
 
   const handleCreateAndAddNFTs = useCallback(async () => {
-    const txHash = await createAndAddNFTs(
+    const res = await createAndAddNFTs(
       creatorMartContract,
       account,
       maxSupplys,
       amounts,
       hexData
     );
-    console.log(txHash);
-    return txHash;
+    console.log(res);
+    return res;
   }, [account, maxSupplys, amounts, hexData, creatorMartContract]);
 
   return { onCreateAndAddNFTs: handleCreateAndAddNFTs };
