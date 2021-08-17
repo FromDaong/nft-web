@@ -63,15 +63,29 @@ const HeaderNav = ({ modelData }) => {
           </Link>
           {account && !account.pending && !account.rejected && (
             <>
-              <Link href="/marketplace" passHref>
-                <Nav.Link>MARKETPLACE</Nav.Link>
-              </Link>
+              <NavDropdown title="MARKETPLACES">
+                <NavDropdown.Item href="#action/3.1" className="p-0">
+                  <Link href="/marketplace" passHref>
+                    <Nav.Link>TREAT MARKETPLACES</Nav.Link>
+                  </Link>
+                </NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.1" className="p-0">
+                  <Link href="/marketplace/creator" passHref>
+                    <Nav.Link>CREATOR MARKETPLACE</Nav.Link>
+                  </Link>
+                </NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.1" className="p-0">
+                  <Link href="/marketplace/resale" passHref>
+                    <Nav.Link>RESALE MARKETPLACE</Nav.Link>
+                  </Link>
+                </NavDropdown.Item>
+              </NavDropdown>
               <Link href="/my-nfts" passHref>
                 <Nav.Link>MY NFTs</Nav.Link>
               </Link>
               {modelData && !modelData.pending && !modelData.rejected && (
                 <Link href="/creator-dashboard" passHref>
-                  <Nav.Link style={{ color: "#e07a88" }}>
+                  <Nav.Link style={{ color: "#c34573" }}>
                     CREATOR DASHBOARD
                   </Nav.Link>
                 </Link>

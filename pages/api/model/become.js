@@ -12,6 +12,7 @@ export default withSession(async (req, res) => {
       try {
         const nftBody = {
           username: req.body.username,
+          model_bnb_address: req.body.address,
           address: req.body.address,
           bio: req.body.bio,
           social_account: req.body.social_account,

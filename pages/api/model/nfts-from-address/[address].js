@@ -1,16 +1,8 @@
 import dbConnect from "../../../../utils/dbConnect";
 import Model from "../../../../models/Model";
-import Web3 from "web3";
-import TreatNFTMinterAbi from "../../../../treat/lib/abi/treatnftminter.json";
+import NFT from "../../../../models/NFT";
 
 dbConnect();
-
-const web3 = new Web3("https://bsc-dataseed2.defibit.io");
-
-const treatNFTMinter = new web3.eth.Contract(
-  TreatNFTMinterAbi,
-  "0xde39d0b9a93dcd541c24e80c8361f362aab0f213"
-);
 
 export default async (req, res) => {
   const {
@@ -25,8 +17,13 @@ export default async (req, res) => {
 
         if (!modelRes) return res.status(200);
 
-        const returnData = { ...modelRes.toObject() };
-        delete returnData.model_bnb_address;
+        const modelNFTs = await Promise.all(
+          modelRes.nfts.map(async (n) => {
+            return await NFT.findOne({ id: n.id });
+          })
+        );
+
+        const returnData = { nfts: modelNFTs };
 
         res.status(200).json(returnData);
       } catch (error) {

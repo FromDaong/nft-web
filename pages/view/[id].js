@@ -204,19 +204,28 @@ const ViewNFT = ({ nftData, image, account }) => {
           <div className="image-wrapper col-lg-4 p-0 pr-lg-3">
             <div className="image-container text-center text-lg-left">
               <div style={{ position: "relative", width: "100%" }}>
-                <div className="info-overlay">
-                  <EyeSlash size={32} />
-                  <div>Purchase to View</div>
-                </div>
-                <Blurhash
-                  style={{ borderRadius: 5, overflow: "hidden" }}
-                  hash={nftData.blurhash}
-                  width={"100%"}
-                  height={500}
-                  resolutionX={32}
-                  resolutionY={32}
-                  punch={1}
-                />
+                {nftData.image ? (
+                  <img src={nftData.image} className="dynamic-image" />
+                ) : (
+                  <>
+                    <div className="info-overlay">
+                      <EyeSlash size={32} />
+                      <div>Purchase to View</div>
+                    </div>
+                    <Blurhash
+                      style={{
+                        borderRadius: 8,
+                        overflow: "hidden",
+                      }}
+                      hash={nftData.blurhash}
+                      width={"100%"}
+                      height={375}
+                      resolutionX={32}
+                      resolutionY={32}
+                      punch={1}
+                    />
+                  </>
+                )}
               </div>
               <RedeemButton
                 onMintNft={
@@ -234,7 +243,9 @@ const ViewNFT = ({ nftData, image, account }) => {
               {/* <div className="edition mb-1"> */}
               {/* <div>REMAINING: {remainingNfts.toNumber()}</div> */}
               <div>
-                <div className="edition mb-2">AVAILABLE THIS WEEK ONLY</div>
+                {nftData.totw && (
+                  <div className="edition mb-2">AVAILABLE THIS WEEK ONLY</div>
+                )}
                 <div className="title">{nftData.name}</div>
                 <div className="bio">{nftData.description}</div>
               </div>

@@ -258,15 +258,15 @@ const Home = () => {
           <div className="pink-bg mb-5 mt-2 row d-flex align-items-center">
             <div className="col-md-7">
               <div className="heading-text p-0" style={{ fontSize: "3.5em" }}>
-                Resale Marketplace
+                Treat Marketplaces
               </div>
               <p
                 className="totw-secondary-text m-0 mt-3 pb-3"
                 style={{ lineHeight: 1.75 }}
               >
-                Buy and sell your Treat NFTs on the brand new offical Treat
-                resale marketplace. The only place to find exclusive Treat of
-                the Weeks that are no longer available for minting.
+                Buy and sell Treat NFTs on the brand new offical Treat creator
+                marketplace. Find exclusive Treat of the Weeks that are no
+                longer available for minting on the resale marketplace.
               </p>
 
               <Link href="/marketplace">
@@ -274,7 +274,7 @@ const Home = () => {
                   variant="primary mt-3 py-2 w-100"
                   style={{ maxWidth: 250 }}
                 >
-                  <b>GO TO MARKETPLACE</b>
+                  <b>GO TO MARKETPLACES</b>
                 </Button>
               </Link>
             </div>

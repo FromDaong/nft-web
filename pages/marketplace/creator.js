@@ -2,14 +2,14 @@ import { useWallet } from "use-wallet";
 import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
 import React, { useState, useEffect, useReducer } from "react";
-import useGetAllOpenOrders from "../hooks/useGetAllOpenOrders";
-import useGetMaxIdForSale from "../hooks/useGetMaxIdForSale";
-import Loading from "../components/Loading";
-import BlankModal from "../components/BlankModal";
-import CancelOrderModal from "../components/CancelOrderModal";
-import PurchaseOrderModal from "../components/PurchaseOrderModal";
-import Hero from "../components/Hero";
-import { Order } from "../components/MarketplaceListItem";
+import useGetAllOpenOrders from "../../hooks/useGetAllOpenOrders";
+import useGetMaxIdForSale from "../../hooks/useGetMaxIdForSale";
+import Loading from "../../components/Loading";
+import BlankModal from "../../components/BlankModal";
+import CancelOrderModal from "../../components/CancelOrderModal";
+import PurchaseOrderModal from "../../components/PurchaseOrderModal";
+import Hero from "../../components/Hero";
+import { Order } from "../../components/MarketplaceListItem";
 import { motion, AnimateSharedLayout } from "framer-motion";
 import { forceCheck } from "react-lazyload";
 
@@ -117,6 +117,7 @@ const Marketplace = ({ search }) => {
         handleClose={() => setPurchaseOrderData(null)}
         account={account}
       />
+
       <motion.main
         variants={{
           hidden: { opacity: 0, x: -200, y: 0 },
@@ -130,8 +131,8 @@ const Marketplace = ({ search }) => {
         className=""
       >
         <Hero
-          title={"Marketplace"}
-          subtitle="The brand new official Treat resale marketplace!"
+          title={"Creator Marketplace"}
+          subtitle="The brand new official Treat creator marketplaces!"
         />
         <div className="full-width-search white-tp-bg p-3 d-flex">
           <input

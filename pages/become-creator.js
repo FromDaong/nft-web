@@ -27,7 +27,7 @@ const CreateModel = () => {
     validationSchema: Yup.object().shape({
       username: Yup.string().required("Please add a username"),
       bio: Yup.string().required("Please add the Creator bio"),
-      address: Yup.string(),
+      model_bnb_address: Yup.string(),
       social_account: Yup.string(),
       profile_pic: Yup.string().required("Please add a Profile Photo"),
       verification_photo: Yup.string().required(
