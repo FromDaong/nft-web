@@ -18,7 +18,7 @@ const useCreateNFTs = (maxSupplys: Array<number>) => {
     return txHash;
   }, [account, maxSupplys, creatorMinterHelperContract]);
 
-  return { onCreateNFTs: handleCreateNFTs };
+  return { onCreateNFTs: handleCreateAndAddNFTs };
 };
 
 export default useCreateNFTs;
