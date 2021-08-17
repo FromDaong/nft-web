@@ -87,6 +87,7 @@ const CreateNFT = () => {
           <div className="pb-4">
             <label>Master Password</label>
             <FormControl
+              type="password"
               placeholder="Ask a friend"
               name="master_password"
               value={formik.values.master_password}

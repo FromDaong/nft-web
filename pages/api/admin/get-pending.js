@@ -16,8 +16,12 @@ export default withSession(async (req, res) => {
 
         const pendingModels = await Model.find({ pending: true });
         const rejectedModels = await Model.find({ rejected: true });
+        const acceptedModels = await Model.find({
+          pending: false,
+          rejected: false,
+        });
 
-        res.status(200).json({ pendingModels, rejectedModels });
+        res.status(200).json({ pendingModels, rejectedModels, acceptedModels });
       } catch (error) {
         console.log({ error });
         res.status(400).json({ success: false, error: error });

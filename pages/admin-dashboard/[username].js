@@ -6,6 +6,8 @@ import useWallet from "use-wallet";
 import useSWR from "swr";
 import Link from "next/link";
 import Layout from "../../components/Layout";
+import BlankModal from "../../components/BlankModal";
+import useAddPerformerToMinter from "../../hooks/useAddPerformerToMinter";
 import Hero from "../../components/Hero";
 
 const AdminDashboardWrapper = ({ username }) => {
@@ -69,6 +71,11 @@ const AdminDashboardWrapper = ({ username }) => {
 
 const AdminDashboard = ({ username }) => {
   const { data } = useSWR(`/api/admin/get-info/${username}`);
+  const [showPendingModal, setShowPendingModal] = useState(null);
+  const [showCompleteModal, setShowCompleteModal] = useState(null);
+  const { onAddPerformerToMinter } = useAddPerformerToMinter(
+    data && data.address
+  );
 
   if (!data)
     return (
@@ -84,8 +91,38 @@ const AdminDashboard = ({ username }) => {
       />
     );
 
+  const addPerformerToMinter = async () => {
+    setShowPendingModal(true);
+    const performer = await onAddPerformerToMinter();
+    if (performer) {
+      const res = await fetch(`/api/admin/${username}/approve`);
+      setShowCompleteModal(true);
+    }
+    setShowPendingModal(false);
+  };
+
+  const reject = async () => {
+    const res = await fetch(`/api/admin/${username}/reject`);
+    if (res) setShowCompleteModal(true);
+  };
+
   return (
     <Layout>
+      <BlankModal
+        show={!!showPendingModal}
+        handleClose={() => setShowPendingModal(false)}
+        title={"Confirming Transaction ⌛ - Don't close this browser window"}
+        centered
+        subtitle={
+          "Please confirm this transaction in your wallet and wait here for upto a few minutes for the transaction to confirm. Do not close this browser window!"
+        }
+        noButton={true}
+      />
+      <BlankModal
+        show={!!showCompleteModal}
+        handleClose={() => setShowCompleteModal(false)}
+      />
+
       <div className="container my-nft-container">
         <Hero
           title={`Reviewing: ${username}'s application`}
@@ -108,23 +145,32 @@ const AdminDashboard = ({ username }) => {
         <div className="mt-2 white-tp-container pb-3">
           <div className="row">
             <h5 className="col-md-6 pb-3">
-              <b>Username:</b> {data.username}
+              <b>Username:</b>
+              <br />
+              {data.username}
             </h5>
             <h5 className="col-md-6 pb-3">
-              <b>Bio:</b> {data.bio}
+              <b>Bio:</b>
+              <br />
+              {data.bio}
             </h5>
           </div>
           <div className="row">
             <h5 className="col-md-6 pb-3">
-              <b>Address:</b> {data.address}
+              <b>Address:</b>
+              <br />
+              {data.address}
             </h5>
             <h5 className="col-md-6 pb-3">
-              <b>Submitted at:</b> {new Date(data.createdAt).toLocaleString()}
+              <b>Submitted at:</b>
+              <br />
+              {new Date(data.createdAt).toLocaleString()}
             </h5>
           </div>
           <div className="row">
             <h5 className="col-md-12 pb-3">
-              <b>Social Profile:</b>{" "}
+              <b>Social Profile:</b>
+              <br />
               <a href={data.social_account}>{data.social_account}</a>
             </h5>
           </div>
@@ -147,19 +193,29 @@ const AdminDashboard = ({ username }) => {
                 className="rounded"
               />
             </h5>
+            <h5 className="col-md-6 pb-3">
+              <b>Pending review:</b>
+              <br />
+              {data.pending.toString()}
+            </h5>
+            <h5 className="col-md-6 pb-3">
+              <b>Rejected:</b>
+              <br />
+              {data.rejected.toString()}
+            </h5>
           </div>
 
           <div className="buttons row py-2">
             <div className="col-md-6 mt-2 text-center">
               <Button
                 variant="success w-100 py-2"
-                onClick={() => router.back()}
+                onClick={() => addPerformerToMinter()}
               >
                 <b>APPROVE</b>
               </Button>
             </div>
             <div className="col-md-6  mt-2 text-center">
-              <Button variant="danger py-2 w-100">
+              <Button variant="danger py-2 w-100" onClick={() => reject()}>
                 <b>REJECT</b>
               </Button>
             </div>
