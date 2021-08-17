@@ -4,9 +4,7 @@ import Button from "react-bootstrap/Button";
 import useSWR from "swr";
 import React, { useState, useEffect, useReducer } from "react";
 import Loading from "../../components/Loading";
-import BlankModal from "../../components/BlankModal";
-import CancelOrderModal from "../../components/CancelOrderModal";
-import PurchaseOrderModal from "../../components/PurchaseOrderModal";
+import Link from "next/link";
 import Hero from "../../components/Hero";
 import { Order } from "../../components/CreatorMarketplaceListItem";
 import { motion, AnimateSharedLayout } from "framer-motion";
@@ -23,39 +21,6 @@ const Marketplace = ({ search }) => {
 
   return (
     <AnimateSharedLayout>
-      <BlankModal
-        show={!!showPendingModal}
-        handleClose={() => setShowPendingModal(false)}
-        title={"Waiting for Transaction Confirmation ⌛"}
-        subtitle={
-          "Please confirm this transaction in your wallet and wait here for upto a few minutes for the transaction to confirm..."
-        }
-        noButton={true}
-        account={account}
-      />
-      <BlankModal
-        show={!!showCompleteModal}
-        handleClose={() => setShowCompleteModal(false)}
-        account={account}
-      />
-      <CancelOrderModal
-        show={!!cancelOrderData}
-        data={cancelOrderData}
-        setPendingModal={setShowPendingModal}
-        openCompleteModal={() => setShowCompleteModal(true)}
-        handleClose={() => setCancelOrderData(null)}
-        account={account}
-      />
-      <PurchaseOrderModal
-        show={!!purchaseOrderData}
-        data={purchaseOrderData?.nftData}
-        order={purchaseOrderData?.order}
-        setPendingModal={setShowPendingModal}
-        openCompleteModal={() => setShowCompleteModal(true)}
-        handleClose={() => setPurchaseOrderData(null)}
-        account={account}
-      />
-
       <motion.main
         variants={{
           hidden: { opacity: 0, x: -200, y: 0 },
@@ -71,6 +36,13 @@ const Marketplace = ({ search }) => {
         <Hero
           title={"Creator Marketplace"}
           subtitle="The brand new official Treat creator marketplaces!"
+          additionalContent={
+            <Link href="/marketplace/resale">
+              <Button variant="primary  w-sm-100">
+                <b>{"Go to Resale Marketplace"}</b>
+              </Button>
+            </Link>
+          }
         />
         <div className="full-width-search white-tp-bg p-3 d-flex">
           <input

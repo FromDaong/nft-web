@@ -32,19 +32,6 @@ export const Order = ({
             owner={order.seller}
             quantity={order.quantity}
             disableAnimations={true}
-            buttonLabel={
-              isOwner ? (
-                <>
-                  <Trash className="mr-2" />
-                  Remove Your Listing
-                </>
-              ) : (
-                <>
-                  <CartFill className="mr-2" />
-                  Purchase
-                </>
-              )
-            }
             buttonFunction={(e) => {
               e.preventDefault();
               if (!isOwner) setPurchaseOrderData({ nftData: nftResult, order });

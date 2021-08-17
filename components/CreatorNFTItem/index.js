@@ -80,7 +80,7 @@ const CreatorNFTItem = ({
       </Modal>
 
       <motion.div variants={variants}>
-        <Link href={`/nft/${data.id}`}>
+        <Link href={`/view/${data.id}`}>
           <div className="nft-card" style={{ boxShadow: "none" }}>
             <div className="totw-tag-wrapper">
               {balance > 1 && (
@@ -165,20 +165,15 @@ const CreatorNFTItem = ({
                 </div>
               </div>
             </div>
-            {/* <div className="row">
-            <div className="col-lg-12 mt-3">
-              <span className="d-inline-block w-100">
-                <Button
-                  className="w-100"
-                  variant="secondary"
-                  disabled
-                  onClick={() => cancelOrderClick(data)}
-                >
-                  <b>Edit NFT</b>
-                </Button>
-              </span>
+            <div className="row">
+              <div className="col-lg-12 mt-3">
+                <span className="d-inline-block w-100">
+                  <Button className="w-100" variant="secondary" disabled>
+                    <b>Edit NFT</b>
+                  </Button>
+                </span>
+              </div>
             </div>
-          </div> */}
           </div>
         </Link>
       </motion.div>
