@@ -2,7 +2,7 @@ import useSWR from "swr";
 import BigNumber from "bignumber.js";
 import Spinner from "react-bootstrap/Spinner";
 import { getDisplayBalance } from "../../utils/formatBalance";
-import NFTListItem from "../../components/NFTListItem";
+import NFTListItem from "../NFTListItem";
 import { Trash, CartFill } from "react-bootstrap-icons";
 import LazyLoad from "react-lazyload";
 
@@ -13,28 +13,22 @@ export const Order = ({
   setCancelOrderData,
   setPurchaseOrderData,
 }) => {
-  const { data: nftResult } = useSWR(`/api/nft/${order.nftId}`);
+  const data = order;
 
-  const isOwner =
-    !!account && account.toUpperCase() === order.seller.toUpperCase();
-
-  if (
-    !nftResult ||
-    (!nftResult.attributes[0].value
-      .toLowerCase()
-      .includes(searchFilter.toLowerCase()) &&
-      !nftResult.name.toLowerCase().includes(searchFilter.toLowerCase()))
-  )
-    return <></>;
+  const isOwner = !!account && account.toUpperCase() === data.model_bnb_address;
 
   return (
     <div className="col-md-4">
       <LazyLoad height={400} offset={400} once>
-        {!!order && nftResult ? (
+        {!!order ? (
           <NFTListItem
-            data={nftResult}
+            data={data}
             isOwner={isOwner}
-            price={getDisplayBalance(new BigNumber(order.price))}
+            price={
+              isNaN(order.list_price)
+                ? getDisplayBalance(new BigNumber(order.price))
+                : order.list_price
+            }
             owner={order.seller}
             quantity={order.quantity}
             disableAnimations={true}

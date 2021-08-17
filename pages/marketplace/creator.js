@@ -1,87 +1,25 @@
 import { useWallet } from "use-wallet";
 import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
+import useSWR from "swr";
 import React, { useState, useEffect, useReducer } from "react";
-import useGetAllOpenOrders from "../../hooks/useGetAllOpenOrders";
-import useGetMaxIdForSale from "../../hooks/useGetMaxIdForSale";
 import Loading from "../../components/Loading";
 import BlankModal from "../../components/BlankModal";
 import CancelOrderModal from "../../components/CancelOrderModal";
 import PurchaseOrderModal from "../../components/PurchaseOrderModal";
 import Hero from "../../components/Hero";
-import { Order } from "../../components/MarketplaceListItem";
+import { Order } from "../../components/CreatorMarketplaceListItem";
 import { motion, AnimateSharedLayout } from "framer-motion";
-import { forceCheck } from "react-lazyload";
 
 const Marketplace = ({ search }) => {
-  const maxId = useGetMaxIdForSale();
-
+  const { data: orderBookArray } = useSWR(`/api/nft/get-marketplace-nfts`);
   const [cancelOrderData, setCancelOrderData] = useState(null);
-  const [storedArray, setStoredArray] = useState(null);
   const [purchaseOrderData, setPurchaseOrderData] = useState(null);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
-  const [orderBookArray, setOrderBookArray] = useState([]);
   const [searchFilter, setSearchFilter] = useState(search || "");
   const [sortBy, setSortBy] = useState("Recent");
-  const [orderBook] = useGetAllOpenOrders(maxId);
   const { account } = useWallet();
-  const [_, forceUpdate] = useReducer((x) => x + 1, 0);
-
-  const initOrderBookArray = orderBook && orderBook.flat();
-
-  const updateObArr = () => {
-    const ob =
-      initOrderBookArray && initOrderBookArray.length > 0
-        ? initOrderBookArray
-        : storedArray;
-
-    if (ob) setOrderBookArray([]);
-
-    const obArr = ob?.sort((a, b) => {
-      switch (sortBy) {
-        case "Price Low to High":
-          return Number(a.price) - Number(b.price);
-        case "Price High to Low":
-          return Number(b.price) - Number(a.price);
-        default:
-          return a.listDate - b.listDate;
-      }
-    });
-
-    if (obArr) setOrderBookArray(obArr);
-    forceCheck();
-  };
-
-  useEffect(() => {
-    (async () => {
-      if (orderBookArray.length === 0) {
-        const storedArrayGrab = await localStorage.getItem("orderBookArray");
-        await setStoredArray(JSON.parse(storedArrayGrab));
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
-    if (
-      initOrderBookArray &&
-      orderBookArray.length !== initOrderBookArray.length
-    ) {
-      updateObArr();
-      if (initOrderBookArray.length > 1) {
-        console.log("updated local storage");
-        localStorage.setItem(
-          "orderBookArray",
-          JSON.stringify(initOrderBookArray)
-        );
-      }
-    }
-  }, [initOrderBookArray]);
-
-  useEffect(() => {
-    updateObArr();
-    forceUpdate();
-  }, [sortBy, storedArray]);
 
   return (
     <AnimateSharedLayout>
