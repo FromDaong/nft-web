@@ -12,6 +12,7 @@ import { useDropzone } from "react-dropzone";
 import { create } from "ipfs-http-client";
 import async from "async";
 import BlankModal from "../../components/BlankModal";
+import { decToBn } from "../../utils/index";
 import { useEffect } from "react";
 import * as Yup from "yup";
 
@@ -61,7 +62,7 @@ const CreateNFT = ({ modelData }) => {
     initialValues: {
       nfts: ipfsFiles.map((file) => ({
         name: "NFT name here",
-        list_price: 0,
+        list_price: 1,
         description: "",
         blurhash: false,
         image: file,
@@ -115,7 +116,7 @@ const CreateNFT = ({ modelData }) => {
 
   useEffect(() => {
     const maxSupplies = formik.values.nfts.map((n) => n.max_supply);
-    const amounts = formik.values.nfts.map((n) => n.list_price);
+    const amounts = formik.values.nfts.map((n) => decToBn(n.list_price));
 
     setMaxSupplyArray(maxSupplies);
     setAmountsArray(amounts);
