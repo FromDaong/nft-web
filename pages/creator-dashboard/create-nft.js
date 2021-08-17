@@ -83,7 +83,7 @@ const CreateNFT = ({ modelData }) => {
           list_price: Yup.string().required("Please add the NFT list price"),
           description: Yup.string().required("Please add a NFT description"),
           external_url: Yup.string().required("Please add a external_url"),
-          blurhash: Yup.required("Please add a blurhash"),
+          blurhash: Yup.string(),
           image: Yup.string().required("Please add a image"),
           max_supply: Yup.string().required("Please add a max supply"),
           model_handle: Yup.string().required("Please add a model handle"),
