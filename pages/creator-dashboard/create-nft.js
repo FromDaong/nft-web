@@ -4,6 +4,8 @@ import { Form, Button } from "react-bootstrap";
 import { useFormik, FieldArray, FormikProvider } from "formik";
 import useCreateAndAddNFTs from "../../hooks/useCreateAndAddNFTs";
 import { useRouter } from "next/router";
+import { useWallet } from "use-wallet";
+import Loading from "../../components/Loading";
 import Hero from "../../components/Hero";
 import CreatingNFTItem from "../../components/CreatingNFTItem";
 import { useDropzone } from "react-dropzone";
@@ -11,10 +13,11 @@ import { create } from "ipfs-http-client";
 import async from "async";
 import BlankModal from "../../components/BlankModal";
 import { useEffect } from "react";
+import * as Yup from "yup";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
-const CreateNFT = () => {
+const CreateNFT = ({ modelData }) => {
   const [ipfsFiles, setIpfsFiles] = useState([]);
   const router = useRouter();
   const [success, setSuccess] = useState(false);
@@ -64,32 +67,35 @@ const CreateNFT = () => {
         image: file,
         max_supply: 10000,
         external_url: "https://treatdao.com/",
-        model_handle: "@model",
-        model_profile_pic: "pic",
-        model_bnb_address: "0x123",
+        model_handle: modelData.username,
+        model_profile_pic: modelData.profile_pic,
+        model_bnb_address: modelData.address,
       })),
     },
     enableReinitialize: true,
     validateOnChange: false,
     validateOnBlur: false,
-    // validationSchema: Yup.object().shape({
-    //   id: Yup.number().required("Please add a nft id"),
-    //   name: Yup.string().required("Please add a name"),
-    //   list_price: Yup.string().required("Please add the NFT list price"),
-    //   description: Yup.string(),
-    //   external_url: Yup.string().required("Please add a external_url"),
-    //   blurhash: Yup.string().required("Please add a blurhash"),
-    //   image: Yup.string().required("Please add a image"),
-    //   max_supply: Yup.string().required("Please add a max supply"),
-    //   model_handle: Yup.string().required("Please add a model handle"),
-    //   model_profile_pic: Yup.string().required(
-    //     "Please add a model profile pic"
-    //   ),
-    //   model_bnb_address: Yup.string().required(
-    //     "Please add the model bnb address"
-    //   ),
-    //   master_password: Yup.string().required("Please add the master password"),
-    // }),
+    validationSchema: Yup.object().shape({
+      nfts: Yup.array().of(
+        Yup.object().shape({
+          id: Yup.number(),
+          name: Yup.string().required("Please add a name"),
+          list_price: Yup.string().required("Please add the NFT list price"),
+          description: Yup.string().required("Please add a NFT description"),
+          external_url: Yup.string().required("Please add a external_url"),
+          blurhash: Yup.required("Please add a blurhash"),
+          image: Yup.string().required("Please add a image"),
+          max_supply: Yup.string().required("Please add a max supply"),
+          model_handle: Yup.string().required("Please add a model handle"),
+          model_profile_pic: Yup.string().required(
+            "Please add a model profile pic"
+          ),
+          model_bnb_address: Yup.string().required(
+            "Please add the model bnb address"
+          ),
+        })
+      ),
+    }),
     handleChange: (c) => {
       console.log({ c });
     },
@@ -120,17 +126,26 @@ const CreateNFT = () => {
       setShowPendingModal(true);
       const createNFTResult = await onCreateAndAddNFTs();
 
-      console.log({ createNFTResult });
+      if (!createNFTResult) return setShowPendingModal(false);
 
-      return;
-      const res = await fetch(`/api/nft/create`, {
+      const submitValues = formik.values.nfts.map((nftData, i) => ({
+        ...nftData,
+        id: createNFTResult.nftIds[i],
+        blurhash: nftData.blurhash ? nftData.blurhash : null,
+      }));
+
+      const res = await fetch(`/api/model/create-nfts`, {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formik.values),
+        body: JSON.stringify({
+          nfts: submitValues,
+          address: modelData.address,
+        }),
       });
+
       const resJSON = await res.json();
 
       if (resJSON.error && resJSON.error.errors) {
@@ -145,20 +160,21 @@ const CreateNFT = () => {
 
       if (resJSON.success) {
         setSuccess(true);
+        setShowPendingModal(false);
+        setShowCompleteModal(true);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  if (success) return <div>Success.</div>;
-
   return (
     <FormikProvider value={formik}>
       <BlankModal
         show={!!showPendingModal}
         handleClose={() => setShowPendingModal(false)}
-        title={"Waiting for Transaction Confirmation ⌛"}
+        title={"Confirming Transaction ⌛ - Don't close this browser window"}
+        centered
         subtitle={
           "Please confirm this transaction in your wallet and wait here for upto a few minutes for the transaction to confirm. Do not close this browser window!"
         }
@@ -167,6 +183,7 @@ const CreateNFT = () => {
       <BlankModal
         show={!!showCompleteModal}
         handleClose={() => setShowCompleteModal(false)}
+        buttonAction={() => router.push("/creator-dashboard")}
       />
 
       <div className="container">
@@ -201,6 +218,7 @@ const CreateNFT = () => {
               formik.values.nfts.map((nft, i) => (
                 <CreatingNFTItem
                   formik={formik}
+                  modelData={modelData}
                   index={i}
                   key={nft.image}
                   imageUrl={nft.image}
@@ -232,4 +250,14 @@ const CreateNFT = () => {
   );
 };
 
-export default CreateNFT;
+const CreateNFTWrapper = (props) => {
+  const { account, status } = useWallet();
+
+  if (status !== "connected" || !props.modelData) {
+    return <Loading />;
+  } else {
+    return <CreateNFT {...props} />;
+  }
+};
+
+export default CreateNFTWrapper;

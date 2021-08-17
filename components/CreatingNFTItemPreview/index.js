@@ -39,6 +39,7 @@ const CreatingNFTItemPreview = ({
   owner,
   quantity,
   disableAnimations,
+  modelData,
 }) => {
   const [image, setBase64Image] = useState();
   console.log({ data });
@@ -70,18 +71,11 @@ const CreatingNFTItemPreview = ({
             </div>
           )}
         </div>
-        {/* <Link href={`/model/${data.name}`}>
+        <Link href={`/creator/${modelData.username}`}>
           <div className="profile-pic">
-            <img
-              src={
-                data.model_profile_pic ||
-                `data:image/svg+xml;utf8,${generateFromString(
-                  data.attributes[0].value
-                )}`
-              }
-            />
+            <img src={modelData.profile_pic} />
           </div>
-        </Link> */}
+        </Link>
         <div className="img-container text-center text-lg-left d-flex justify-content-center align-items-center">
           <div
             style={{ background: `url(${imageUrl})`, backgroundColor: "#333" }}
@@ -109,8 +103,8 @@ const CreatingNFTItemPreview = ({
           <div className="title-section">
             <div className="title">{name}</div>
             <div className="name">
-              {owner && <b>Creator: </b>}
-              {/* {data.attributes[0].value} */}
+              {modelData.username && <b>Creator: </b>}
+              {modelData.username}
             </div>
             {owner && (
               <div className="name">

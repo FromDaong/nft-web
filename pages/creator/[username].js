@@ -32,6 +32,7 @@ const ViewModelWrapper = ({ username }) => {
           res.nfts.map(async (nft) => {
             const x = await fetch(`/api/nft/${nft.id}`);
             const j = await x.json();
+            console.log({ j });
             return j;
           })
         );
@@ -206,7 +207,7 @@ const ViewModel = ({
                 .sort((a, b) => a.list_price - b.list_price)
                 .map((m) => (
                   <div className="col-md-6">
-                    <NFTListItem data={m} key={m.id} />
+                    <NFTListItem modelData={modelData} data={m} key={m.id} />
                   </div>
                 ))}
           </motion.div>

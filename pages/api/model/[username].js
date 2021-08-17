@@ -30,7 +30,9 @@ export default async (req, res) => {
 
         const returnData = { ...modelRes.toObject() };
         delete returnData.model_bnb_address;
-        delete returnData.image;
+
+        console.log({ returnDataBlur: returnData.blurhash });
+        if (returnData.blurhash) delete returnData.image;
 
         res.status(200).json(returnData);
       } catch (error) {

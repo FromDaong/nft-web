@@ -56,26 +56,6 @@ function MyApp({ Component, pageProps }) {
 
           console.log({ res });
 
-          //     if (res.success) {
-          //       localStorage.removeItem("tx");
-          //     }
-          //   } catch (error) {
-          //     console.log(error);
-          //   }
-          // }
-
-          // let resaleData = localStorage.getItem("resale");
-          // if (resaleData && status === "connected" && account) {
-          //   try {
-          //     const res = await fetch(`/api/resale-nft`, {
-          //       method: "POST",
-          //       headers: {
-          //         Accept: "application/json",
-          //         "Content-Type": "application/json",
-          //       },
-          //       body: JSON.stringify({ seller: account }),
-          //     });
-
           if (res.success) {
             localStorage.removeItem("tx");
           }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Spinner from "react-bootstrap/Spinner";
-import MyNFTItem from "../../components/MyNFTItem";
+import CreatorNFTItem from "../../components/CreatorNFTItem";
 import TradeInNFTs from "../../components/TradeInNFTs";
 import Hero from "../../components/Hero";
 import Button from "react-bootstrap/Button";
@@ -32,19 +32,6 @@ const variants = {
 
 const CreatorDashboardWrapper = ({ modelData }) => {
   const { account, status } = useWallet();
-
-  const { data: res } = useSWR(`/api/nft`);
-  const [nftArray, setNftData] = useState();
-
-  useEffect(() => {
-    (async () => {
-      if (res) {
-        setNftData(res);
-      }
-    })();
-  }, [res]);
-
-  console.log({ modelData });
 
   if (status !== "connected" || !modelData) {
     return (
@@ -83,19 +70,22 @@ const CreatorDashboardWrapper = ({ modelData }) => {
     );
   } else {
     return (
-      <ViewNFT account={account} nftArray={nftArray} modelData={modelData} />
+      <ViewNFT
+        account={account}
+        nftArray={modelData.nfts}
+        modelData={modelData}
+      />
     );
   }
 };
 
-const ViewNFT = ({ modelData, account, nftArray }) => {
+const ViewNFT = ({ modelData, account }) => {
   const [serverNftBalances, setServerNftBalances] = useState(null);
 
   const maxNftSupply = useGetNftMaxSupply(account);
-  const nftBalancesInitial = useGetNftBalance(nftArray);
-
-  const nftBalances = serverNftBalances || nftBalancesInitial;
   const [isLoading, setIsLoading] = useState(false);
+
+  const { data: nftData } = useSWR(`/api/model/nfts-from-address/${account}`);
 
   const transferNFTClick = (x) => {
     setTransferNFTData(x);
@@ -103,30 +93,6 @@ const ViewNFT = ({ modelData, account, nftArray }) => {
 
   const hideNFTs = async () => {
     setServerNftBalances(null);
-  };
-
-  const revealNFTs = async () => {
-    if (account && treat) {
-      const signature = await treat.signMessage(account, "Reveal Contents");
-
-      const nftIds = modelData.nfts.map((n) => n.id);
-
-      setIsLoading(true);
-      const res = await fetch(`/api/nft/view-nfts`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ nft_ids: nftIds, signature }),
-      });
-      const resJSON = await res.json();
-
-      setIsLoading(false);
-      if (resJSON.success) {
-        setServerNftBalances(resJSON.results);
-      }
-    }
   };
 
   return (
@@ -186,10 +152,8 @@ const ViewNFT = ({ modelData, account, nftArray }) => {
           <CreatedNFTs
             hideNFTs={hideNFTs}
             transferNFTClick={transferNFTClick}
-            nftBalances={nftBalances}
-            revealNFTs={revealNFTs}
             isLoading={isLoading}
-            serverNftBalances={serverNftBalances}
+            nftData={nftData}
             modelData={modelData}
           />
         </div>
@@ -199,13 +163,10 @@ const ViewNFT = ({ modelData, account, nftArray }) => {
 };
 
 const CreatedNFTs = ({
-  hideNFTs,
-  revealNFTs,
-  nftBalances,
   transferNFTClick,
   listOrderClick,
-  serverNftBalances,
   isLoading,
+  nftData,
   modelData,
 }) => {
   return (
@@ -226,24 +187,11 @@ const CreatedNFTs = ({
               fontSize: 24,
             }}
           >
-            NFTs
+            Created NFTs
           </h2>
         </div>
-        {nftBalances.length > 0 && (
-          <div className="button-container">
-            {serverNftBalances ? (
-              <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
-                <b>{"Hide Contents 🙈"}</b>
-              </Button>
-            ) : (
-              <Button variant="primary  w-sm-100" onClick={revealNFTs}>
-                <b>{"Reveal Contents 👀"}</b>
-              </Button>
-            )}
-          </div>
-        )}
       </div>
-      {modelData.nfts.length > 0 ? (
+      {nftData && nftData.nfts.length > 0 ? (
         <div className="container px-4">
           <div className="d-flex text-left justify-content-center mt-5">
             <motion.div
@@ -253,17 +201,19 @@ const CreatedNFTs = ({
               initial="hidden"
               variants={variants}
             >
-              {nftBalances.map((nft) => {
+              {nftData.nfts.map((nft) => {
+                console.log({ nft });
                 return (
-                  nft.balance > 0 && (
+                  nft && (
                     <div className="card bg-transparent border-0">
-                      <MyNFTItem
+                      <CreatorNFTItem
                         balance={nft.balance}
                         isLoading={isLoading}
                         data={nft}
-                        revealNFTs={revealNFTs}
+                        price={nft.list_price}
                         transferNFTClick={transferNFTClick}
                         listOrderClick={listOrderClick}
+                        modelData={modelData}
                         hasOpenOrder={nft.hasOpenOrder}
                       />
                     </div>

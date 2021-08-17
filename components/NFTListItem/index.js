@@ -40,6 +40,7 @@ const NFTListItem = ({
   owner,
   quantity,
   disableAnimations,
+  modelData,
 }) => {
   const [image, setBase64Image] = useState();
   console.log({ data });
@@ -74,10 +75,11 @@ const NFTListItem = ({
               </div>
             )}
           </div>
-          <Link href={`/model/${data.attributes[0].value}`}>
+          <Link href={`/creator/${data.attributes[0].value}`}>
             <div className="profile-pic">
               <img
                 src={
+                  (modelData && modelData.profile_pic) ||
                   data.model_profile_pic ||
                   `data:image/svg+xml;utf8,${generateFromString(
                     data.attributes[0].value
@@ -86,24 +88,40 @@ const NFTListItem = ({
               />
             </div>
           </Link>
-          <div className="img-container text-center text-lg-left d-flex justify-content-center align-items-center">
-            <div className="info-overlay">
-              <EyeSlash size={32} />
-              <div>Purchase to View</div>
-            </div>
-            <Blurhash
-              style={{
-                borderRadius: 8,
-                overflow: "hidden",
-                border: "3px solid #E795B6",
-              }}
-              hash={data.blurhash}
-              width={"100%"}
-              height={375}
-              resolutionX={32}
-              resolutionY={32}
-              punch={1}
-            />
+          <div
+            className="img-container text-center text-lg-left d-flex justify-content-center align-items-center"
+            style={{
+              background: "black",
+              border: "3px solid #E795B6",
+              borderRadius: 10,
+              minHeight: 300,
+            }}
+          >
+            {data.image ? (
+              <div
+                style={{ background: `url(${data.image})` }}
+                className="dynamic-image"
+              />
+            ) : (
+              <>
+                <div className="info-overlay">
+                  <EyeSlash size={32} />
+                  <div>Purchase to View</div>
+                </div>
+                <Blurhash
+                  style={{
+                    borderRadius: 8,
+                    overflow: "hidden",
+                  }}
+                  hash={data.blurhash}
+                  width={"100%"}
+                  height={375}
+                  resolutionX={32}
+                  resolutionY={32}
+                  punch={1}
+                />
+              </>
+            )}
           </div>
           <div className="text-container container">
             <div className="title-section">

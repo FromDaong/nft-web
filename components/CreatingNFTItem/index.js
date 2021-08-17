@@ -29,7 +29,13 @@ const variants = {
   },
 };
 
-const CreatingNFTItem = ({ imageUrl, formik, handleChange, index }) => {
+const CreatingNFTItem = ({
+  imageUrl,
+  formik,
+  handleChange,
+  index,
+  modelData,
+}) => {
   const [blurhash, setBlurHash] = useState("");
 
   const loadImage = async (src) =>
@@ -86,6 +92,7 @@ const CreatingNFTItem = ({ imageUrl, formik, handleChange, index }) => {
           imageUrl={imageUrl}
           name={formik.values.nfts[index].name}
           isOwner={true}
+          modelData={modelData}
           // price={getDisplayBalance(new BigNumber(order.price))}
           price={formik.values.nfts[index].list_price}
           // owner={order.seller}
@@ -167,11 +174,15 @@ const CreatingNFTItem = ({ imageUrl, formik, handleChange, index }) => {
             onChange={formik.handleChange}
           />
         </div>
-        <Form.Control.Feedback
-          type="invalid"
-          className="d-block"
-          style={{ marginTop: -10 }}
-        >
+        <Form.Control.Feedback type="invalid" className="d-block">
+          {Object.keys(
+            (formik.errors &&
+              formik.errors.nfts &&
+              formik.errors.nfts[index]) ||
+              []
+          ).map((e) => (
+            <div>{formik.errors.nfts[index][e]}</div>
+          ))}
           {formik.errors.code}
         </Form.Control.Feedback>
       </div>
