@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";
 
-const useGetIsNftAdmin = (modelAddress: string) => {
+const useGetIsNftAdmin = () => {
   const { account } = useWallet();
   const treat = useTreat();
   const treatNftMinterContract = getTreatNFTMinterContract(treat);
