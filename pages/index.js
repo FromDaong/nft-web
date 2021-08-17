@@ -238,7 +238,7 @@ const Home = () => {
                 Week”, fill in our short form.
               </p>
               <div className="totw-buttons">
-                <a href="/apply">
+                <a href="/become-creator">
                   <Button variant="primary py-2 px-5 mt-4">
                     <b>Apply to Become a Creator</b>
                   </Button>
