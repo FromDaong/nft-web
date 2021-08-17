@@ -119,6 +119,32 @@ const AdminDashboard = () => {
         </div>
 
         <div className="mt-4 white-tp-container">
+          <h4 className="mb-3">Approved ✅</h4>
+          <Table striped bordered hover className="bg-white">
+            <thead>
+              <tr>
+                <th></th>
+                <th className="text-center">Username</th>
+                <th className="text-center">Address</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data &&
+                data.acceptedModels.map((m) => (
+                  <Link href={`/admin-dashboard/${m.username}`}>
+                    <tr>
+                      <td className="d-flex align-center justify-content-center">
+                        <img src={m.profile_pic} style={{ maxHeight: 75 }} />
+                      </td>
+                      <td className="text-center">{m.username}</td>
+                      <td className="text-center">{m.address}</td>
+                    </tr>
+                  </Link>
+                ))}
+            </tbody>
+          </Table>
+        </div>
+        <div className="mt-4 white-tp-container">
           <h4 className="mb-3">Rejected ❌</h4>
           <Table striped bordered hover className="bg-white">
             <thead>
