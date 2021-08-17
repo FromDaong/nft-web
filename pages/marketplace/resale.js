@@ -12,6 +12,7 @@ import Hero from "../../components/Hero";
 import { Order } from "../../components/MarketplaceListItem";
 import { motion, AnimateSharedLayout } from "framer-motion";
 import { forceCheck } from "react-lazyload";
+import Link from "next/link";
 
 const Marketplace = ({ search }) => {
   const maxId = useGetMaxIdForSale();
@@ -133,6 +134,13 @@ const Marketplace = ({ search }) => {
         <Hero
           title={"Resale Marketplace"}
           subtitle="The brand new official Treat resale marketplaces!"
+          additionalContent={
+            <Link href="/marketplace/creator">
+              <Button variant="primary w-sm-100">
+                <b>{"Go to Creator Marketplace"}</b>
+              </Button>
+            </Link>
+          }
         />
         <div className="full-width-search white-tp-bg p-3 d-flex">
           <input
