@@ -130,6 +130,7 @@ const CreatingNFTItem = ({
           <label>NFT Description</label>
           <FormControl
             placeholder="E.g. Let's make you rise."
+            as="textarea"
             name={`nfts[${index}].description`}
             value={formik.values.nfts[index].description}
             onChange={formik.handleChange}
