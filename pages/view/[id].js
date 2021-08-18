@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import useSWR from "swr";
 import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
 import useGetFreeTreat from "../../hooks/useGetFreeTreat";
+import useGetFreeCreatorTreat from "../../hooks/useGetFreeCreatorTreat";
 import useGetNftTotalSupply from "../../hooks/useGetNftTotalSupply";
 import useGetTreatNFTCost from "../../hooks/useGetTreatNftCost";
 import getCreatorNftCost from "../../hooks/useGetCreatorNftCost";
