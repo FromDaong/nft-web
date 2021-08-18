@@ -41,7 +41,7 @@ const Home = () => {
               from models and performers.
               <br />
               <b>2. "Resale Marketplace"</b> where you can buy and sell minted
-              Treat NFTs on a second-hand market.
+              Treat NFTs on the official aftermarket.
             </p>
 
             <div className="buttons">

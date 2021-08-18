@@ -8,16 +8,43 @@ import Link from "next/link";
 import Hero from "../../components/Hero";
 import { Order } from "../../components/CreatorMarketplaceListItem";
 import { motion, AnimateSharedLayout } from "framer-motion";
+import { forceCheck } from "react-lazyload";
 
 const Marketplace = ({ search }) => {
+  const [_, forceUpdate] = useReducer((x) => x + 1, 0);
   const { data: orderBookArray } = useSWR(`/api/nft/get-marketplace-nfts`);
   const [cancelOrderData, setCancelOrderData] = useState(null);
   const [purchaseOrderData, setPurchaseOrderData] = useState(null);
   const [showPendingModal, setShowPendingModal] = useState(null);
-  const [showCompleteModal, setShowCompleteModal] = useState(null);
+  const [renderArray, setRenderArray] = useState(null);
   const [searchFilter, setSearchFilter] = useState(search || "");
   const [sortBy, setSortBy] = useState("Recent");
   const { account } = useWallet();
+
+  const updateObArr = () => {
+    const ob = orderBookArray;
+
+    if (ob) setRenderArray([]);
+
+    const obArr = ob?.sort((a, b) => {
+      switch (sortBy) {
+        case "Price Low to High":
+          return Number(a.list_price) - Number(b.list_price);
+        case "Price High to Low":
+          return Number(b.list_price) - Number(a.list_price);
+        default:
+          return a.createdAt - b.createdAt;
+      }
+    });
+
+    if (obArr) setRenderArray(obArr);
+    forceCheck();
+  };
+
+  useEffect(() => {
+    updateObArr();
+    forceUpdate();
+  }, [sortBy, showPendingModal]);
 
   return (
     <AnimateSharedLayout>

@@ -99,7 +99,7 @@ const NFTListItem = ({
           >
             {data.image ? (
               <div
-                style={{ background: `url(${data.image})` }}
+                style={{ background: `url(${data.image})`, minHeight: 375 }}
                 className="dynamic-image"
               />
             ) : (

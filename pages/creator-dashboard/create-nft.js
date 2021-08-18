@@ -117,8 +117,8 @@ const CreateNFT = ({ modelData }) => {
 
   useEffect(() => {
     const maxSupplies = formik.values.nfts.map((n) => n.max_supply);
-    const amounts = formik.values.nfts.map(
-      (n) => n.list_price && Web3.utils.toWei(n.list_price.toString())
+    const amounts = formik.values.nfts.map((n) =>
+      Web3.utils.toWei(n.list_price.toString())
     );
 
     console.log({ amounts });

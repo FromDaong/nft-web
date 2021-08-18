@@ -6,7 +6,9 @@ import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
 import useGetFreeTreat from "../../hooks/useGetFreeTreat";
 import useGetNftTotalSupply from "../../hooks/useGetNftTotalSupply";
 import useGetTreatNFTCost from "../../hooks/useGetTreatNftCost";
+import getCreatorNftCost from "../../hooks/useGetCreatorNftCost";
 import useGetOpenOrdersForNft from "../../hooks/useGetOpenOrdersForNft";
+import useMintCreatorNft from "../../hooks/useMintCreatorNft";
 import useMintNft from "../../hooks/useMintNft";
 import useWallet from "use-wallet";
 import { getDisplayBalance } from "../../utils/formatBalance";
@@ -17,6 +19,7 @@ import Layout from "../../components/Layout";
 import { EyeSlash } from "react-bootstrap-icons";
 import BigNumber from "bignumber.js";
 import Link from "next/link";
+import Web3 from "web3";
 
 const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   const { account } = useWallet();
@@ -144,11 +147,24 @@ const ViewNFTWrapper = ({ id }) => {
 };
 
 const ViewNFT = ({ nftData, image, account }) => {
-  const nftCost = useGetTreatNFTCost(nftData.id);
+  const totwNftCost = useGetTreatNFTCost(nftData.id);
+  const creatorNftCost = getCreatorNftCost(nftData.id);
+
+  const nftCost = nftData.old_totw ? totwNftCost : creatorNftCost;
+  console.log({ nftCost: nftCost.toString() });
+
   const maxNftSupply = useGetNftMaxSupply(nftData.id);
   const mintedNfts = useGetNftTotalSupply(nftData.id);
   const remainingNfts = maxNftSupply.minus(mintedNfts);
-  const { onMintNft } = useMintNft(nftData.id, nftCost);
+  const { onMintNft: onMintTotwNft } = useMintNft(nftData.id, nftCost);
+  const { onMintCreatorNft } = useMintCreatorNft(nftData.id, nftCost);
+  const onMintNft = async () => {
+    if (nftData.old_totw) {
+      return await onMintTotwNft();
+    } else {
+      return await onMintCreatorNft();
+    }
+  };
   const [showModal, setShowModal] = useState(false);
   const { onGetFreeTreat } = useGetFreeTreat(nftData.id, nftCost);
   const openOrders = useGetOpenOrdersForNft(nftData.id);

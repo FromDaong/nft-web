@@ -53,7 +53,9 @@ const NFTListItem = ({
         fetch(data.image)
           .then((r) => r.text())
           .then((blob) => {
-            setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
+            if (data.old_totw)
+              setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
+            else setBase64Image(data.image);
           });
       }
     })();
@@ -122,7 +124,10 @@ const NFTListItem = ({
             {data.image ? (
               image ? (
                 <div
-                  style={{ background: `url(${image})` }}
+                  style={{
+                    background: `url(${image || data.image})`,
+                    minHeight: 375,
+                  }}
                   className="dynamic-image"
                 />
               ) : (

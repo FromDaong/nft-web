@@ -110,42 +110,25 @@ const CreatorNFTItem = ({
                 minHeight: 300,
               }}
             >
-              {data.image ? (
-                image ? (
-                  <div
-                    style={{ background: `url(${data.image})` }}
-                    className="dynamic-image"
-                  />
-                ) : (
-                  <Spinner
-                    animation="border"
-                    role="status"
-                    className="mt-5 mb-5"
-                    variant="light"
-                  >
-                    <span className="sr-only">Loading...</span>
-                  </Spinner>
-                )
-              ) : isLoading ? (
-                <Spinner
-                  animation="border"
-                  role="status"
-                  className="mt-5 mb-5"
-                  variant="light"
-                >
-                  <span className="sr-only">Loading...</span>
-                </Spinner>
+              {!data.blurhash ? (
+                <div
+                  style={{ background: `url(${data.image})`, minHeight: 375 }}
+                  className="dynamic-image"
+                />
               ) : (
                 <>
                   <div className="info-overlay">
                     <EyeSlash size={32} />
-                    <div className="pt-1">Click to Reveal</div>
+                    <div>Purchase to View</div>
                   </div>
                   <Blurhash
-                    style={{ borderRadius: 5, overflow: "hidden" }}
+                    style={{
+                      borderRadius: 8,
+                      overflow: "hidden",
+                    }}
                     hash={data.blurhash}
                     width={"100%"}
-                    height={300}
+                    height={375}
                     resolutionX={32}
                     resolutionY={32}
                     punch={1}
