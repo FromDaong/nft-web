@@ -142,12 +142,13 @@ export const createAndAddNFTs = async (
   account,
   maxSupplys,
   amounts,
+  isNotListedFlags,
   hexData
 ) => {
   try {
     console.log({ maxSupplys, amounts, hexData });
     const result = await creatorMartContract.methods
-      .createAndAddNFTs(maxSupplys, amounts, hexData)
+      .createAndAddNFTs(maxSupplys, amounts, isNotListedFlags, hexData)
       .send({ from: account, value: 0 });
 
     return result.events.NFTCreatedAndAdded.returnValues;
