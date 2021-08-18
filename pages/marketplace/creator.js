@@ -95,7 +95,7 @@ const Marketplace = ({ search }) => {
               },
             }}
           >
-            {!orderBookArray || orderBookArray.length === 0 ? (
+            {!orderBookArray ? (
               <div
                 style={{ minHeight: 500 }}
                 className="d-flex justify-content-center align-items-center w-100"

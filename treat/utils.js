@@ -390,6 +390,22 @@ export const addPerformerToMinter = async (
   }
 };
 
+export const removePerformerFromMinter = async (
+  treatNFTMinter,
+  account,
+  performerAddress
+) => {
+  try {
+    return await treatNFTMinter.methods
+      .removePerformer(performerAddress)
+      .send({ from: account, value: 0 });
+  } catch (e) {
+    console.log({ e });
+    console.error(e);
+    return undefined;
+  }
+};
+
 export const isPerformerForMinter = async (
   treatNFTMinter,
   performerAddress
