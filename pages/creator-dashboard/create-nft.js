@@ -12,10 +12,10 @@ import { useDropzone } from "react-dropzone";
 import { create } from "ipfs-http-client";
 import async from "async";
 import BlankModal from "../../components/BlankModal";
-import { decToBn } from "../../utils/index";
+import BigNumber from "bignumber.js";
 import { useEffect } from "react";
 import * as Yup from "yup";
-import BigNumber from "bignumber.js";
+import Web3 from "web3";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -117,7 +117,11 @@ const CreateNFT = ({ modelData }) => {
 
   useEffect(() => {
     const maxSupplies = formik.values.nfts.map((n) => n.max_supply);
-    const amounts = formik.values.nfts.map((n) => BigNumber(n.list_price));
+    const amounts = formik.values.nfts.map((n) =>
+      Web3.utils.toWei(n.list_price.toString())
+    );
+
+    console.log({ amounts });
 
     setMaxSupplyArray(maxSupplies);
     setAmountsArray(amounts);
