@@ -8,6 +8,7 @@ import Link from "next/link";
 import Layout from "../../components/Layout";
 import BlankModal from "../../components/BlankModal";
 import useAddPerformerToMinter from "../../hooks/useAddPerformerToMinter";
+import useRemovePerformerFromMinter from "../../hooks/useRemovePerformerFromMinter";
 import Hero from "../../components/Hero";
 
 const AdminDashboardWrapper = ({ username }) => {
@@ -76,6 +77,9 @@ const AdminDashboard = ({ username }) => {
   const { onAddPerformerToMinter } = useAddPerformerToMinter(
     data && data.address
   );
+  const { onRemovePerformerFromMinter } = useRemovePerformerFromMinter(
+    data && data.address
+  );
 
   if (!data)
     return (
@@ -102,8 +106,13 @@ const AdminDashboard = ({ username }) => {
   };
 
   const reject = async () => {
-    const res = await fetch(`/api/admin/${username}/reject`);
-    if (res) setShowCompleteModal(true);
+    setShowPendingModal(true);
+    const performer = await onRemovePerformerFromMinter();
+    if (performer) {
+      const res = await fetch(`/api/admin/${username}/reject`);
+      setShowCompleteModal(true);
+    }
+    setShowPendingModal(false);
   };
 
   return (
