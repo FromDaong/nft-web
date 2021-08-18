@@ -346,6 +346,15 @@ export const getNftV1Balance = async (treatNFTMinterV1, account, nftId) => {
   }
 };
 
+export const getIsGiveAwayNft = async (creatorMart, nftId) => {
+  try {
+    return await creatorMart.methods.isGiveAwayCard(nftId).call();
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+};
+
 export const getNftCreator = async (treatNFTMinter, nftId) => {
   try {
     const modelAddress = await treatNFTMinter.methods.tokenModels(nftId).call();
