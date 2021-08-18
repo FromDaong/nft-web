@@ -15,6 +15,7 @@ import BlankModal from "../../components/BlankModal";
 import { decToBn } from "../../utils/index";
 import { useEffect } from "react";
 import * as Yup from "yup";
+import BigNumber from "bignumber.js";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -116,9 +117,7 @@ const CreateNFT = ({ modelData }) => {
 
   useEffect(() => {
     const maxSupplies = formik.values.nfts.map((n) => n.max_supply);
-    const amounts = formik.values.nfts.map((n) =>
-      decToBn(n.list_price).toString()
-    );
+    const amounts = formik.values.nfts.map((n) => BigNumber(n.list_price));
 
     setMaxSupplyArray(maxSupplies);
     setAmountsArray(amounts);
