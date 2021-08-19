@@ -40,13 +40,14 @@ const Marketplace = ({ search }) => {
     if (ob) setOrderBookArray([]);
 
     const obArr = ob?.sort((a, b) => {
+      console.log({ a });
       switch (sortBy) {
         case "Price Low to High":
           return Number(a.price) - Number(b.price);
         case "Price High to Low":
           return Number(b.price) - Number(a.price);
         default:
-          return a.listDate - b.listDate;
+          return new Date(+b.listDate * 1000) - new Date(+a.listDate * 1000);
       }
     });
 
@@ -135,9 +136,9 @@ const Marketplace = ({ search }) => {
           title={"Resale Marketplace"}
           subtitle="The brand new official Treat resale marketplaces!"
           additionalContent={
-            <Link href="/marketplace/creator">
+            <Link href="/marketplace/resale">
               <Button variant="primary w-sm-100">
-                <b>{"Go to Creator Marketplace"}</b>
+                <b>{"Go to The Sweet Shop"}</b>
               </Button>
             </Link>
           }

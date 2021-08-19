@@ -262,6 +262,13 @@ const ViewNFT = ({ nftData, image, account }) => {
                 {nftData.totw && (
                   <div className="edition mb-2">AVAILABLE THIS WEEK ONLY</div>
                 )}
+                {!nftData.old_totw &&
+                  nftData.max_supply &&
+                  nftData.max_supply < 100000 && (
+                    <div className="edition mb-2">
+                      Max Supply: {nftData.maxSupply}
+                    </div>
+                  )}
                 <div className="title">{nftData.name}</div>
                 <div className="bio">{nftData.description}</div>
               </div>

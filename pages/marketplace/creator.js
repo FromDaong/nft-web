@@ -27,13 +27,14 @@ const Marketplace = ({ search }) => {
     if (ob) setRenderArray([]);
 
     const obArr = ob?.sort((a, b) => {
+      console.log({ a });
       switch (sortBy) {
         case "Price Low to High":
           return Number(a.list_price) - Number(b.list_price);
         case "Price High to Low":
           return Number(b.list_price) - Number(a.list_price);
         default:
-          return a.createdAt - b.createdAt;
+          return new Date(b.createdAt) - new Date(a.createdAt);
       }
     });
 
@@ -45,6 +46,11 @@ const Marketplace = ({ search }) => {
     updateObArr();
     forceUpdate();
   }, [sortBy, showPendingModal]);
+
+  useEffect(() => {
+    updateObArr();
+    forceUpdate();
+  }, [orderBookArray]);
 
   return (
     <AnimateSharedLayout>
@@ -61,7 +67,7 @@ const Marketplace = ({ search }) => {
         className=""
       >
         <Hero
-          title={"Creator Marketplace"}
+          title={"The Sweet Shop"}
           subtitle="The brand new official Treat creator marketplaces!"
           additionalContent={
             <Link href="/marketplace/resale">
@@ -122,7 +128,7 @@ const Marketplace = ({ search }) => {
               },
             }}
           >
-            {!orderBookArray ? (
+            {!renderArray ? (
               <div
                 style={{ minHeight: 500 }}
                 className="d-flex justify-content-center align-items-center w-100"
@@ -131,7 +137,7 @@ const Marketplace = ({ search }) => {
               </div>
             ) : (
               <>
-                {orderBookArray.map((o, i) => (
+                {renderArray.map((o, i) => (
                   <Order
                     searchFilter={searchFilter}
                     index={i}

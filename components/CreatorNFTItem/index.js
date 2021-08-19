@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Spinner from "react-bootstrap/Spinner";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
+import { generateFromString } from "generate-avatar";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { Blurhash } from "react-blurhash";
@@ -46,12 +44,14 @@ const CreatorNFTItem = ({
 
   useEffect(() => {
     (async () => {
-      if (data.image) {
+      if (data.image && data.old_totw) {
         fetch(data.image)
           .then((r) => r.text())
           .then((blob) => {
             setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
           });
+      } else if (data.image) {
+        setBase64Image(data.image);
       }
     })();
   }, [data]);
@@ -110,17 +110,13 @@ const CreatorNFTItem = ({
                 minHeight: 300,
               }}
             >
-              {!data.blurhash ? (
+              {data.image ? (
                 <div
-                  style={{ background: `url(${data.image})`, minHeight: 375 }}
+                  style={{ background: `url(${image})`, minHeight: 375 }}
                   className="dynamic-image"
                 />
               ) : (
                 <>
-                  <div className="info-overlay">
-                    <EyeSlash size={32} />
-                    <div>Purchase to View</div>
-                  </div>
                   <Blurhash
                     style={{
                       borderRadius: 8,
@@ -148,7 +144,7 @@ const CreatorNFTItem = ({
                 </div>
               </div>
             </div>
-            <div className="row">
+            {/* <div className="row">
               <div className="col-lg-12 mt-3">
                 <span className="d-inline-block w-100">
                   <Button className="w-100" variant="secondary" disabled>
@@ -156,7 +152,7 @@ const CreatorNFTItem = ({
                   </Button>
                 </span>
               </div>
-            </div>
+            </div> */}
           </div>
         </Link>
       </motion.div>
