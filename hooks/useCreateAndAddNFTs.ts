@@ -19,6 +19,7 @@ const useCreateAndAddNFTs = (
       account,
       maxSupplys,
       amounts,
+      amounts.map(() => false),
       hexData
     );
 
