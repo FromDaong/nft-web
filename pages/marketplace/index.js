@@ -37,8 +37,8 @@ const Home = () => {
               className="totw-secondary-text m-0 pt-2 pb-3"
               style={{ lineHeight: 1.75, margin: "auto !important" }}
             >
-              <b>1. "Creator Marketplace"</b> where you can buy NFTs directly
-              from models and performers.
+              <b>1. The "Sweet Shop"</b> where you can buy NFTs directly from
+              models and performers.
               <br />
               <b>2. "Resale Marketplace"</b> where you can buy and sell minted
               Treat NFTs on the official aftermarket.
@@ -50,7 +50,7 @@ const Home = () => {
                   variant="primary mt-3 py-2 w-100"
                   style={{ maxWidth: 250 }}
                 >
-                  <b>CREATOR MARKETPLACE</b>
+                  <b>THE SWEET SHOP</b>
                 </Button>
               </Link>
               <Link href="/marketplace/resale">

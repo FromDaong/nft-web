@@ -47,7 +47,7 @@ const BlankModal = ({
             </Button>
           )}
           <Button variant="secondary" onClick={handleClose}>
-            Cancel
+            Close
           </Button>
         </Modal.Footer>
       </Modal>
