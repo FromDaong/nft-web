@@ -248,7 +248,7 @@ const OpenOrders = ({
                           order.price &&
                           getDisplayBalance(new BigNumber(order.price))
                         }
-                        quantity={order?.quantity}
+                        balance={order?.quantity}
                         data={nft}
                         isLoading={isLoading}
                         revealNFTs={revealNFTs}

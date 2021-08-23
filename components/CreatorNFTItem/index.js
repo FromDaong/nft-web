@@ -85,7 +85,7 @@ const CreatorNFTItem = ({
             <div className="totw-tag-wrapper">
               {balance > 1 && (
                 <div className="quantity-wrapper totw-tag">
-                  Contains {balance}x
+                  {balance}x Available
                 </div>
               )}
             </div>
