@@ -81,7 +81,7 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
           </Spinner>
           <span>
             {confirmWallet
-              ? " Please confirm in your wallet"
+              ? " Please confirm in your wallet and wait"
               : "Please wait..."}
           </span>
         </div>
@@ -159,6 +159,12 @@ const ViewNFT = ({ nftData, image, account }) => {
   const remainingNfts = maxNftSupply.minus(mintedNfts);
   const { onMintNft: onMintTotwNft } = useMintNft(nftData.id, nftCost);
   const { onMintCreatorNft } = useMintCreatorNft(nftData.id, nftCost);
+
+  const [showModal, setShowModal] = useState(false);
+  const { onGetFreeTreat } = useGetFreeTreat(nftData.id, nftCost);
+  const { onGetFreeCreatorTreat } = useGetFreeCreatorTreat(nftData.id, nftCost);
+  const openOrders = useGetOpenOrdersForNft(nftData.id);
+
   const onMintNft = async () => {
     if (nftData.old_totw) {
       return await onMintTotwNft();
@@ -166,11 +172,14 @@ const ViewNFT = ({ nftData, image, account }) => {
       return await onMintCreatorNft();
     }
   };
-  const [showModal, setShowModal] = useState(false);
-  const { onGetFreeTreat } = useGetFreeTreat(nftData.id, nftCost);
-  const openOrders = useGetOpenOrdersForNft(nftData.id);
 
-  console.log({ openOrders });
+  const onMintFreeNft = async () => {
+    if (nftData.old_totw) {
+      return await onGetFreeTreat();
+    } else {
+      return await onGetFreeCreatorTreat();
+    }
+  };
 
   const historyEvents = nftData.mints.map((m) => {
     return {
@@ -245,9 +254,7 @@ const ViewNFT = ({ nftData, image, account }) => {
                 )}
               </div>
               <RedeemButton
-                onMintNft={
-                  nftData.list_price === 0 ? onGetFreeTreat : onMintNft
-                }
+                onMintNft={nftData.list_price === 0 ? onMintFreeNft : onMintNft}
                 remainingNfts={remainingNfts}
                 nftData={nftData}
                 setShowModal={setShowModal}
@@ -263,6 +270,13 @@ const ViewNFT = ({ nftData, image, account }) => {
                 {nftData.totw && (
                   <div className="edition mb-2">AVAILABLE THIS WEEK ONLY</div>
                 )}
+                {!nftData.old_totw &&
+                  nftData.max_supply &&
+                  nftData.max_supply < 100000 && (
+                    <div className="edition mb-2">
+                      Max Supply: {nftData.maxSupply}
+                    </div>
+                  )}
                 <div className="title">{nftData.name}</div>
                 <div className="bio">{nftData.description}</div>
               </div>
