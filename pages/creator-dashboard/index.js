@@ -192,10 +192,10 @@ const CreatedNFTs = ({
         </div>
       </div>
       {nftData && nftData.nfts.length > 0 ? (
-        <div className="container px-4">
+        <div className="container">
           <div className="d-flex text-left justify-content-center mt-5">
             <motion.div
-              className="card-columns w-100 w-100"
+              className="row w-100"
               animate="show"
               exit="hidden"
               initial="hidden"
@@ -205,7 +205,7 @@ const CreatedNFTs = ({
                 console.log({ nft });
                 return (
                   nft && (
-                    <div className="card bg-transparent border-0">
+                    <div className="col-md-4 bg-transparent border-0">
                       <CreatorNFTItem
                         balance={nft.balance}
                         isLoading={isLoading}

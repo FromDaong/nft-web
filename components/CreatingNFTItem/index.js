@@ -66,7 +66,7 @@ const CreatingNFTItem = ({
     if (e.target.checked) {
       await formik.setFieldValue(
         `nfts[${index}].blurhash`,
-        blurhash || "Loading Blurhash..."
+        blurhash || "Loading Blurhash, Please wait a minute..."
       );
       if (blurhash) return;
 
@@ -119,6 +119,7 @@ const CreatingNFTItem = ({
           <div className="pb-4 col-md-6">
             <label>NFT List Price (in BNB)</label>
             <FormControl
+              type="number"
               placeholder="E.g. 120"
               name={`nfts[${index}].list_price`}
               value={formik.values.nfts[index].list_price}
@@ -160,7 +161,7 @@ const CreatingNFTItem = ({
                     value={formik.values.nfts[index].blurhash}
                     onChange={formik.handleChange}
                   />
-                  <small>(Generated Blurhash for this image)</small>
+                  <small>(Auto-generated Blurhash for this image)</small>
                 </>
               )}
             </div>
@@ -169,6 +170,7 @@ const CreatingNFTItem = ({
         <div className="pb-4">
           <label>Maximum Supply</label>
           <FormControl
+            type="number"
             placeholder="E.g. 1500"
             name={`nfts[${index}].max_supply`}
             value={formik.values.nfts[index].max_supply}

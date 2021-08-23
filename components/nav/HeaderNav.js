@@ -71,7 +71,7 @@ const HeaderNav = ({ modelData }) => {
                 </NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.1" className="p-0">
                   <Link href="/marketplace/creator" passHref>
-                    <Nav.Link>CREATOR MARKETPLACE</Nav.Link>
+                    <Nav.Link>THE SWEET SHOP</Nav.Link>
                   </Link>
                 </NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.1" className="p-0">
