@@ -149,9 +149,11 @@ const Home = () => {
                       offset={50}
                       duration={1000}
                     >
-                      <Link href="/marketplace">
-                        <b>VIEW MARKETPLACES</b>
-                      </Link>
+                      <Button variant="primary w-100 py-2">
+                        <Link href="/marketplace">
+                          <b>VIEW MARKETPLACES</b>
+                        </Link>
+                      </Button>
                     </Scroll.Link>
                   </div>
                   <div className="col-md-6 mt-2">
