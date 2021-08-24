@@ -50,7 +50,7 @@ export const contractAddresses = {
     56: "0x66685ccCfD3c1C65220973CDb5E33f706e1F0537",
   },
   treatMart: {
-    56: "0xC2Df967c8687c99c1f0cE394616e66A89F9F7363",
+    56: "0x741864585bf7e9C533d52fe02427cE4bf75678D4",
   },
   treatMarketplace: {
     56: "0xA38978E839c08046FA80B0fee55736253Ab3B8a3",
