@@ -202,7 +202,7 @@ const ViewNFT = ({ nftData, image, account }) => {
   ));
 
   const openOrdersRender = openOrders.map((e) => (
-    <Link href={`/marketplace?search=${nftData.name}`} passHref={true}>
+    <Link href={`/marketplace/resale?search=${nftData.name}`} passHref={true}>
       <a>
         <div className="history-event">
           <div className="pic">
