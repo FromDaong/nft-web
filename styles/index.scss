@@ -75,6 +75,12 @@ a:hover {
   border-radius: 8px;
 }
 
+.white-tp-container-no-filter {
+  background: rgba(255, 255, 255, 0.75);
+  padding: 30px 40px;
+  border-radius: 8px;
+}
+
 #basic-nav-dropdown {
   background: #d4668e;
   color: white !important;
@@ -172,4 +178,13 @@ a:hover {
   color: #888;
   outline: none;
   transition: border 0.24s ease-in-out;
+}
+
+iframe * {
+  position: absolute;
+  overflow: hidden;
+}
+
+.no-position > * {
+  position: unset;
 }
