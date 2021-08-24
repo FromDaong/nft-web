@@ -125,11 +125,11 @@ const About = () => {
                   DEXes and exchanges:
                 </p>
                 <a
-                  href="https://exchange.pancakeswap.finance/#/swap?outputCurrency=0xac0c7d9b063ed2c0946982ddb378e03886c064e6"
+                  href="https://app.1inch.io/#/56/swap/BNB/TREAT"
                   target="_blank"
                 >
                   <Button variant="primary py-2 px-4 mt-3 w-sm-100">
-                    <b>PURCHASE ON PANCAKESWAP</b>
+                    <b>SWAP WITH 1INCH</b>
                   </Button>
                 </a>
               </div>
