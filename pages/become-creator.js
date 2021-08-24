@@ -30,9 +30,7 @@ const CreateModel = () => {
       model_bnb_address: Yup.string(),
       social_account: Yup.string(),
       profile_pic: Yup.string().required("Please add a Profile Photo"),
-      verification_photo: Yup.string().required(
-        "Please add a Verificaation Photo"
-      ),
+      email: Yup.string().required("Please add a Email"),
     }),
     onSubmit: (values) => {
       SubmitToServer();
@@ -154,16 +152,14 @@ const CreateModel = () => {
               />
             </div>
             <div className="pb-5 pt-2">
-              <label>
-                <small>
-                  Verification picture - Follow these instructions carefully:
-                </small>
-                <br />
-                Upload a photo of yourself with "I want to become a Treat
-                Creator" handwritten on a piece of a paper
-              </label>
+              <label>Email:</label>
 
               <FormControl
+                name="email"
+                value={formik.values.email}
+                onChange={formik.handleChange}
+              />
+              {/* <FormControl
                 type="file"
                 size="lg"
                 placeholder="E.g. https://img.ur/123"
@@ -173,7 +169,7 @@ const CreateModel = () => {
                 onChange={(file) =>
                   ipfsUpload(file.target.files[0], "verification_photo")
                 }
-              />
+              /> */}
             </div>
             <Button
               variant="primary w-100"
