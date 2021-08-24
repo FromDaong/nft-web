@@ -44,7 +44,7 @@ export const contractAddresses = {
     56: "0xde39d0b9a93dcd541c24e80c8361f362aab0f213",
   },
   creatorMart: {
-    56: "0xA4E06Ac424ae94B464641F65463f63Ba28C7502C",
+    56: "0x9F52D25473CE2DEc1b9D5F44Ad133Ab80BBa1f86",
   },
   creatorMinterHelper: {
     56: "0x66685ccCfD3c1C65220973CDb5E33f706e1F0537",
