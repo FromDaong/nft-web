@@ -65,4 +65,5 @@ export const contractAddresses = {
 
 export const modelSetBundles = {
   iya_themodel: 1,
+  MaddSprings: 2,
 };
