@@ -210,6 +210,37 @@ const Home = () => {
             </div>
           </motion.div>
         </div>
+        <Scroll.Element name="marketplace-list">
+          <div className="pink-bg mb-5 mt-2 row d-flex align-items-center">
+            <div className="col-md-7">
+              <div className="heading-text p-0" style={{ fontSize: "3.5em" }}>
+                Treat Marketplaces
+              </div>
+              <p
+                className="totw-secondary-text m-0 mt-3 pb-3"
+                style={{ lineHeight: 1.75 }}
+              >
+                Buy and sell Treat NFTs on the brand new offical Treat creator
+                marketplace. Find exclusive Treat of the Weeks that are no
+                longer available for minting on the resale marketplace.
+              </p>
+
+              <Link href="/marketplace">
+                <Button
+                  variant="primary mt-3 py-2 w-100"
+                  style={{ maxWidth: 250 }}
+                >
+                  <b>GO TO MARKETPLACES</b>
+                </Button>
+              </Link>
+            </div>
+            <div className="col-md-1"></div>
+            <div className="col-md-4">
+              <img src={"/assets/transfer.png"} className="w-100 pt-3" alt="" />
+            </div>
+          </div>
+        </Scroll.Element>
+        <br />
         <Scroll.Element name="model-list">
           <motion.div
             transition={{ delay: 1.5 }}
@@ -252,37 +283,6 @@ const Home = () => {
             </div>
             <div className="col-lg-4">{modelListRender}</div>
           </motion.div>
-        </Scroll.Element>
-        <br />
-        <Scroll.Element name="marketplace-list">
-          <div className="pink-bg mb-5 mt-2 row d-flex align-items-center">
-            <div className="col-md-7">
-              <div className="heading-text p-0" style={{ fontSize: "3.5em" }}>
-                Treat Marketplaces
-              </div>
-              <p
-                className="totw-secondary-text m-0 mt-3 pb-3"
-                style={{ lineHeight: 1.75 }}
-              >
-                Buy and sell Treat NFTs on the brand new offical Treat creator
-                marketplace. Find exclusive Treat of the Weeks that are no
-                longer available for minting on the resale marketplace.
-              </p>
-
-              <Link href="/marketplace">
-                <Button
-                  variant="primary mt-3 py-2 w-100"
-                  style={{ maxWidth: 250 }}
-                >
-                  <b>GO TO MARKETPLACES</b>
-                </Button>
-              </Link>
-            </div>
-            <div className="col-md-1"></div>
-            <div className="col-md-4">
-              <img src={"/assets/transfer.png"} className="w-100 pt-3" alt="" />
-            </div>
-          </div>
         </Scroll.Element>
         <br />
         <Scroll.Element name="nft-list">
