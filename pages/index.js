@@ -184,7 +184,7 @@ const Home = () => {
                 style={{ background: "#D3678E" }}
               >
                 <div className="big-text">
-                  <CountUp delay={1} duration={2} end={15} />+
+                  <CountUp delay={1} duration={2} end={17} />+
                 </div>
                 <div className="small-text">Creators on TreatDAO</div>
               </div>
@@ -192,7 +192,7 @@ const Home = () => {
             <div className="col-lg-4 stats-wrapper">
               <div className="stats-container">
                 <div className="big-text">
-                  <CountUp delay={1} duration={3} end={88} />+ NFTs
+                  <CountUp delay={1} duration={3} end={123} />+ NFTs
                 </div>
                 <div className="small-text">Released on TreatDAO</div>
               </div>
@@ -203,7 +203,7 @@ const Home = () => {
                 style={{ background: "#F19592" }}
               >
                 <div className="big-text">
-                  <CountUp delay={1} duration={3} end={100} />+ BNB
+                  <CountUp delay={1} duration={3} end={189} />+ BNB
                 </div>
                 <div className="small-text">Earned by Creators</div>
               </div>
