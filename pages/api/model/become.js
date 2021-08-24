@@ -17,7 +17,7 @@ export default withSession(async (req, res) => {
           bio: req.body.bio,
           social_account: req.body.social_account,
           profile_pic: req.body.profile_pic,
-          verification_photo: req.body.verification_photo,
+          email: req.body.email,
           nfts: [],
           pending: true,
           rejected: false,
