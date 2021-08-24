@@ -37,7 +37,7 @@ const Footer = () => {
               <li>
                 <a
                   class=""
-                  href="https://exchange.pancakeswap.finance/#/swap?outputCurrency=0xac0c7d9b063ed2c0946982ddb378e03886c064e6"
+                  href="https://app.1inch.io/#/56/swap/BNB/TREAT"
                   target="_blank"
                 >
                   Swap Tokens
