@@ -4,9 +4,12 @@ import Button from "react-bootstrap/Button";
 import useSWR from "swr";
 import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
 import useGetFreeTreat from "../../hooks/useGetFreeTreat";
+import useGetFreeCreatorTreat from "../../hooks/useGetFreeCreatorTreat";
 import useGetNftTotalSupply from "../../hooks/useGetNftTotalSupply";
 import useGetTreatNFTCost from "../../hooks/useGetTreatNftCost";
+import getCreatorNftCost from "../../hooks/useGetCreatorNftCost";
 import useGetOpenOrdersForNft from "../../hooks/useGetOpenOrdersForNft";
+import useMintCreatorNft from "../../hooks/useMintCreatorNft";
 import useMintNft from "../../hooks/useMintNft";
 import useWallet from "use-wallet";
 import { getDisplayBalance } from "../../utils/formatBalance";
@@ -17,12 +20,15 @@ import Layout from "../../components/Layout";
 import { EyeSlash } from "react-bootstrap-icons";
 import BigNumber from "bignumber.js";
 import Link from "next/link";
+import Web3 from "web3";
 
 const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   const { account } = useWallet();
 
   const [disabled, setDisabled] = useState(false);
   const [confirmWallet, setConfrimWallet] = useState(false);
+
+  const isOldTotw = nftData.old_totw && !nftData.totw;
 
   console.log(remainingNfts.toNumber());
 
@@ -38,7 +44,7 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
     <Button
       variant="primary w-100 mt-3 py-3"
       style={{ borderRadius: 7 }}
-      disabled={disabled || remainingNfts.toNumber() === 0}
+      disabled={disabled || remainingNfts.toNumber() === 0 || isOldTotw}
       onClick={async () => {
         setDisabled(true);
         setConfrimWallet(true);
@@ -77,14 +83,14 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
           </Spinner>
           <span>
             {confirmWallet
-              ? " Please confirm in your wallet"
+              ? " Please confirm in your wallet and wait"
               : "Please wait..."}
           </span>
         </div>
       ) : (
         <b>
-          {remainingNfts.toNumber() > 0 && `BUY NOW`}
-          {remainingNfts.toNumber() === 0 && `SOLD OUT`}
+          {remainingNfts.toNumber() > 0 && !isOldTotw && `BUY NOW`}
+          {(remainingNfts.toNumber() === 0 || isOldTotw) && `SOLD OUT`}
         </b>
       )}
     </Button>
@@ -144,16 +150,37 @@ const ViewNFTWrapper = ({ id }) => {
 };
 
 const ViewNFT = ({ nftData, image, account }) => {
-  const nftCost = useGetTreatNFTCost(nftData.id);
+  const totwNftCost = useGetTreatNFTCost(nftData.id);
+  const creatorNftCost = getCreatorNftCost(nftData.id);
+
+  const nftCost = nftData.old_totw ? totwNftCost : creatorNftCost;
+
   const maxNftSupply = useGetNftMaxSupply(nftData.id);
   const mintedNfts = useGetNftTotalSupply(nftData.id);
   const remainingNfts = maxNftSupply.minus(mintedNfts);
-  const { onMintNft } = useMintNft(nftData.id, nftCost);
+  const { onMintNft: onMintTotwNft } = useMintNft(nftData.id, nftCost);
+  const { onMintCreatorNft } = useMintCreatorNft(nftData.id, nftCost);
+
   const [showModal, setShowModal] = useState(false);
   const { onGetFreeTreat } = useGetFreeTreat(nftData.id, nftCost);
+  const { onGetFreeCreatorTreat } = useGetFreeCreatorTreat(nftData.id, nftCost);
   const openOrders = useGetOpenOrdersForNft(nftData.id);
 
-  console.log({ openOrders });
+  const onMintNft = async () => {
+    if (nftData.old_totw) {
+      return await onMintTotwNft();
+    } else {
+      return await onMintCreatorNft();
+    }
+  };
+
+  const onMintFreeNft = async () => {
+    if (nftData.old_totw) {
+      return await onGetFreeTreat();
+    } else {
+      return await onGetFreeCreatorTreat();
+    }
+  };
 
   const historyEvents = nftData.mints.map((m) => {
     return {
@@ -204,24 +231,31 @@ const ViewNFT = ({ nftData, image, account }) => {
           <div className="image-wrapper col-lg-4 p-0 pr-lg-3">
             <div className="image-container text-center text-lg-left">
               <div style={{ position: "relative", width: "100%" }}>
-                <div className="info-overlay">
-                  <EyeSlash size={32} />
-                  <div>Purchase to View</div>
-                </div>
-                <Blurhash
-                  style={{ borderRadius: 5, overflow: "hidden" }}
-                  hash={nftData.blurhash}
-                  width={"100%"}
-                  height={500}
-                  resolutionX={32}
-                  resolutionY={32}
-                  punch={1}
-                />
+                {nftData.image ? (
+                  <img src={nftData.image} className="dynamic-image" />
+                ) : (
+                  <>
+                    <div className="info-overlay">
+                      <EyeSlash size={32} />
+                      <div>Purchase to View</div>
+                    </div>
+                    <Blurhash
+                      style={{
+                        borderRadius: 8,
+                        overflow: "hidden",
+                      }}
+                      hash={nftData.blurhash}
+                      width={"100%"}
+                      height={375}
+                      resolutionX={32}
+                      resolutionY={32}
+                      punch={1}
+                    />
+                  </>
+                )}
               </div>
               <RedeemButton
-                onMintNft={
-                  nftData.list_price === 0 ? onGetFreeTreat : onMintNft
-                }
+                onMintNft={nftData.list_price === 0 ? onMintFreeNft : onMintNft}
                 remainingNfts={remainingNfts}
                 nftData={nftData}
                 setShowModal={setShowModal}
@@ -234,7 +268,16 @@ const ViewNFT = ({ nftData, image, account }) => {
               {/* <div className="edition mb-1"> */}
               {/* <div>REMAINING: {remainingNfts.toNumber()}</div> */}
               <div>
-                <div className="edition mb-2">AVAILABLE THIS WEEK ONLY</div>
+                {nftData.totw && (
+                  <div className="edition mb-2">AVAILABLE THIS WEEK ONLY</div>
+                )}
+                {!nftData.old_totw &&
+                  nftData.max_supply &&
+                  nftData.max_supply < 100000 && (
+                    <div className="edition mb-2">
+                      Max Supply: {nftData.maxSupply}
+                    </div>
+                  )}
                 <div className="title">{nftData.name}</div>
                 <div className="bio">{nftData.description}</div>
               </div>

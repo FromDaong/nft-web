@@ -1,122 +1,59 @@
 import { useWallet } from "use-wallet";
 import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
+import useSWR from "swr";
 import React, { useState, useEffect, useReducer } from "react";
-import useGetAllOpenOrders from "../hooks/useGetAllOpenOrders";
-import useGetMaxIdForSale from "../hooks/useGetMaxIdForSale";
-import Loading from "../components/Loading";
-import BlankModal from "../components/BlankModal";
-import CancelOrderModal from "../components/CancelOrderModal";
-import PurchaseOrderModal from "../components/PurchaseOrderModal";
-import Hero from "../components/Hero";
-import { Order } from "../components/MarketplaceListItem";
+import Loading from "../../components/Loading";
+import Link from "next/link";
+import Hero from "../../components/Hero";
+import { Order } from "../../components/CreatorMarketplaceListItem";
 import { motion, AnimateSharedLayout } from "framer-motion";
 import { forceCheck } from "react-lazyload";
 
 const Marketplace = ({ search }) => {
-  const maxId = useGetMaxIdForSale();
-
+  const [_, forceUpdate] = useReducer((x) => x + 1, 0);
+  const { data: orderBookArray } = useSWR(`/api/nft/get-marketplace-nfts`);
   const [cancelOrderData, setCancelOrderData] = useState(null);
-  const [storedArray, setStoredArray] = useState(null);
   const [purchaseOrderData, setPurchaseOrderData] = useState(null);
   const [showPendingModal, setShowPendingModal] = useState(null);
-  const [showCompleteModal, setShowCompleteModal] = useState(null);
-  const [orderBookArray, setOrderBookArray] = useState([]);
+  const [renderArray, setRenderArray] = useState(null);
   const [searchFilter, setSearchFilter] = useState(search || "");
   const [sortBy, setSortBy] = useState("Recent");
-  const [orderBook] = useGetAllOpenOrders(maxId);
   const { account } = useWallet();
-  const [_, forceUpdate] = useReducer((x) => x + 1, 0);
-
-  const initOrderBookArray = orderBook && orderBook.flat();
 
   const updateObArr = () => {
-    const ob =
-      initOrderBookArray && initOrderBookArray.length > 0
-        ? initOrderBookArray
-        : storedArray;
+    const ob = orderBookArray;
 
-    if (ob) setOrderBookArray([]);
+    if (ob) setRenderArray([]);
 
     const obArr = ob?.sort((a, b) => {
+      console.log({ a });
       switch (sortBy) {
         case "Price Low to High":
-          return Number(a.price) - Number(b.price);
+          return Number(a.list_price) - Number(b.list_price);
         case "Price High to Low":
-          return Number(b.price) - Number(a.price);
+          return Number(b.list_price) - Number(a.list_price);
         default:
-          return a.listDate - b.listDate;
+          return new Date(b.createdAt) - new Date(a.createdAt);
       }
     });
 
-    if (obArr) setOrderBookArray(obArr);
+    if (obArr) setRenderArray(obArr);
     forceCheck();
   };
 
   useEffect(() => {
-    (async () => {
-      if (orderBookArray.length === 0) {
-        const storedArrayGrab = await localStorage.getItem("orderBookArray");
-        await setStoredArray(JSON.parse(storedArrayGrab));
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
-    if (
-      initOrderBookArray &&
-      orderBookArray.length !== initOrderBookArray.length
-    ) {
-      updateObArr();
-      if (initOrderBookArray.length > 1) {
-        console.log("updated local storage");
-        localStorage.setItem(
-          "orderBookArray",
-          JSON.stringify(initOrderBookArray)
-        );
-      }
-    }
-  }, [initOrderBookArray]);
+    updateObArr();
+    forceUpdate();
+  }, [sortBy, showPendingModal]);
 
   useEffect(() => {
     updateObArr();
     forceUpdate();
-  }, [sortBy, storedArray]);
+  }, [orderBookArray]);
 
   return (
     <AnimateSharedLayout>
-      <BlankModal
-        show={!!showPendingModal}
-        handleClose={() => setShowPendingModal(false)}
-        title={"Waiting for Transaction Confirmation ⌛"}
-        subtitle={
-          "Please confirm this transaction in your wallet and wait here for upto a few minutes for the transaction to confirm..."
-        }
-        noButton={true}
-        account={account}
-      />
-      <BlankModal
-        show={!!showCompleteModal}
-        handleClose={() => setShowCompleteModal(false)}
-        account={account}
-      />
-      <CancelOrderModal
-        show={!!cancelOrderData}
-        data={cancelOrderData}
-        setPendingModal={setShowPendingModal}
-        openCompleteModal={() => setShowCompleteModal(true)}
-        handleClose={() => setCancelOrderData(null)}
-        account={account}
-      />
-      <PurchaseOrderModal
-        show={!!purchaseOrderData}
-        data={purchaseOrderData?.nftData}
-        order={purchaseOrderData?.order}
-        setPendingModal={setShowPendingModal}
-        openCompleteModal={() => setShowCompleteModal(true)}
-        handleClose={() => setPurchaseOrderData(null)}
-        account={account}
-      />
       <motion.main
         variants={{
           hidden: { opacity: 0, x: -200, y: 0 },
@@ -130,8 +67,15 @@ const Marketplace = ({ search }) => {
         className=""
       >
         <Hero
-          title={"Marketplace"}
-          subtitle="The brand new official Treat resale marketplace!"
+          title={"The Sweet Shop"}
+          subtitle="The brand new official Treat creator marketplaces!"
+          additionalContent={
+            <Link href="/marketplace/resale">
+              <Button variant="primary  w-sm-100">
+                <b>{"Go to Resale Marketplace"}</b>
+              </Button>
+            </Link>
+          }
         />
         <div className="full-width-search white-tp-bg p-3 d-flex">
           <input
@@ -184,7 +128,7 @@ const Marketplace = ({ search }) => {
               },
             }}
           >
-            {!orderBookArray || orderBookArray.length === 0 ? (
+            {!renderArray ? (
               <div
                 style={{ minHeight: 500 }}
                 className="d-flex justify-content-center align-items-center w-100"
@@ -193,7 +137,7 @@ const Marketplace = ({ search }) => {
               </div>
             ) : (
               <>
-                {orderBookArray.map((o, i) => (
+                {renderArray.map((o, i) => (
                   <Order
                     searchFilter={searchFilter}
                     index={i}

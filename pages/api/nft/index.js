@@ -18,7 +18,8 @@ export default async (req, res) => {
 
           returnObj.mints = returnObj.mints.length;
           delete returnObj.model_bnb_address;
-          delete returnObj.image;
+
+          if (returnObj.blurhash) delete returnObj.image;
 
           return returnObj;
         });

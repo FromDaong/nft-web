@@ -53,7 +53,9 @@ const NFTListItem = ({
         fetch(data.image)
           .then((r) => r.text())
           .then((blob) => {
-            setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
+            if (data.old_totw)
+              setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
+            else setBase64Image(data.image);
           });
       }
     })();
@@ -85,12 +87,14 @@ const NFTListItem = ({
           <div className="totw-tag-wrapper">
             {balance > 1 && (
               <div className="quantity-wrapper totw-tag">
-                Contains {balance}x
+                {balance}x Available
               </div>
             )}
           </div>
           <div className="profile-pic">
-            <Link href={`/creator/${data.name}`}>
+            <Link
+              href={`/creator/${data.attributes[0].value.replace("@", "")}`}
+            >
               <img
                 src={
                   data.model_profile_pic ||
@@ -120,7 +124,10 @@ const NFTListItem = ({
             {data.image ? (
               image ? (
                 <div
-                  style={{ background: `url(${image})` }}
+                  style={{
+                    background: `url(${image || data.image})`,
+                    minHeight: 375,
+                  }}
                   className="dynamic-image"
                 />
               ) : (

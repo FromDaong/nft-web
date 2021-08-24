@@ -1,6 +1,7 @@
 import dbConnect from "../../../utils/dbConnect";
 import { mapNftBody } from "./mappers";
 import NFT from "../../../models/NFT";
+import Model from "../../../models/Model";
 import Web3 from "web3";
 import { getBalanceNumber } from "../../../utils/formatBalance";
 import TreatNFTMinterAbi from "../../../treat/lib/abi/treatnftminter.json";
@@ -33,7 +34,7 @@ export default async (req, res) => {
             .status(400)
             .json({ success: false, error: "nft not found" });
 
-        console.log("call api");
+        console.log("call api", id);
         // it's safe to use .toNumber on these BigNumbers here because supply should always be in a valid int32 range
         const maxSupply = (
           await getNftMaxSupply(treatNFTMinter, id)
@@ -42,9 +43,13 @@ export default async (req, res) => {
           await getNftTotalSupply(treatNFTMinter, id)
         )?.toNumber();
 
-        const returnData = { ...NFTres.toObject(), maxSupply, totalSupply };
-        delete returnData.model_bnb_address;
-        delete returnData.image;
+        const returnData = {
+          ...NFTres.toObject(),
+          maxSupply,
+          totalSupply,
+        };
+
+        if (returnData.blurhash) delete returnData.image;
 
         res.status(200).json(returnData);
       } catch (error) {

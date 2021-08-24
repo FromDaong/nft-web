@@ -14,6 +14,7 @@ const BlankModal = ({
   buttonAction,
   buttonLabel,
   noButton,
+  centered,
 }) => {
   const router = useRouter();
   const reload = () => {
@@ -22,7 +23,13 @@ const BlankModal = ({
   };
   return (
     <>
-      <Modal show={show} onHide={handleClose} centered>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        centered
+        backdrop="static"
+        className={centered && "text-center"}
+      >
         <Modal.Header closeButton>
           <div>
             <Modal.Title>{title || "Action Complete ✅ 💝"}</Modal.Title>
@@ -40,7 +47,7 @@ const BlankModal = ({
             </Button>
           )}
           <Button variant="secondary" onClick={handleClose}>
-            Cancel
+            Close
           </Button>
         </Modal.Footer>
       </Modal>

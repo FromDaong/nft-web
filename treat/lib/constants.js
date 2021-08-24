@@ -43,8 +43,14 @@ export const contractAddresses = {
   treatNFTMinterV1: {
     56: "0xde39d0b9a93dcd541c24e80c8361f362aab0f213",
   },
+  creatorMart: {
+    56: "0x9F52D25473CE2DEc1b9D5F44Ad133Ab80BBa1f86",
+  },
+  creatorMinterHelper: {
+    56: "0x66685ccCfD3c1C65220973CDb5E33f706e1F0537",
+  },
   treatMart: {
-    56: "0xC2Df967c8687c99c1f0cE394616e66A89F9F7363",
+    56: "0x741864585bf7e9C533d52fe02427cE4bf75678D4",
   },
   treatMarketplace: {
     56: "0xA38978E839c08046FA80B0fee55736253Ab3B8a3",
@@ -58,6 +64,6 @@ export const contractAddresses = {
 };
 
 export const modelSetBundles = {
+  iya_themodel: 1,
   MaddSprings: 2,
-  iya_themodel: 3,
 };

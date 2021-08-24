@@ -20,6 +20,21 @@ const ModelSchema = new mongoose.Schema(
     profile_pic: {
       type: String,
     },
+    social_account: {
+      type: String,
+    },
+    address: {
+      type: String,
+    },
+    email: {
+      type: String,
+    },
+    pending: {
+      type: Boolean,
+    },
+    rejected: {
+      type: Boolean,
+    },
     nfts: [
       {
         id: String,

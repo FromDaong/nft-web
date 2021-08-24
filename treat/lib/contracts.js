@@ -6,6 +6,7 @@ import BigNumber from "bignumber.js/bignumber";
 import TreatAbi from "./abi/treat.json";
 import TreatMarketplaceAbi from "./abi/treatMarketplace.json";
 import TreatMartAbi from "./abi/treatmart.json";
+import CreatorMartAbi from "./abi/creatormart.json";
 import TreatNFTMinterAbi from "./abi/treatnftminter.json";
 import TreatNFTMinterV1Abi from "./abi/treatnftminterv1.json";
 import TreatTradeInAbi from "./abi/treattradein.json";
@@ -25,6 +26,7 @@ export class Contracts {
     this.treatNFTMinter = new this.web3.eth.Contract(TreatNFTMinterAbi);
     this.treatNFTMinterV1 = new this.web3.eth.Contract(TreatNFTMinterV1Abi);
     this.treatMart = new this.web3.eth.Contract(TreatMartAbi);
+    this.creatorMart = new this.web3.eth.Contract(CreatorMartAbi);
     this.treatMarketplace = new this.web3.eth.Contract(TreatMarketplaceAbi);
     this.weth = new this.web3.eth.Contract(WETHAbi);
     this.treatTradeIn = new this.web3.eth.Contract(TreatTradeInAbi);
@@ -62,6 +64,7 @@ export class Contracts {
       contractAddresses.treatMarketplace[networkId]
     );
     setProvider(this.treatTradeIn, contractAddresses.treatTradeIn[networkId]);
+    setProvider(this.creatorMart, contractAddresses.creatorMart[networkId]);
     setProvider(this.weth, contractAddresses.weth[networkId]);
   }
 
@@ -70,6 +73,7 @@ export class Contracts {
     this.treatNFTMinter.options.from = account;
     this.treatNFTMinterV1.options.from = account;
     this.treatMart.options.from = account;
+    this.creatorMart.options.from = account;
     this.treatMarketplace.options.from = account;
     this.treatTradeIn.options.from = account;
   }

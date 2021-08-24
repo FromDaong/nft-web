@@ -9,7 +9,7 @@ import AgeModal from "../AgeModal";
 import BalanceModal from "../BalanceModal";
 import Link from "next/link";
 
-const HeaderNav = () => {
+const HeaderNav = ({ modelData }) => {
   const { status, account, error, reset } = useWallet();
   const [walletModalShow, setWalletModalShow] = useState(false);
   const [balanceModalShow, setBalanceModalShow] = useState(false);
@@ -29,6 +29,8 @@ const HeaderNav = () => {
       setWalletModalShow(false);
     }
   }, [status]);
+
+  console.log({ modelData });
 
   return (
     <Navbar expand="lg" className="mb-4" sticky="top" className="main-nav">
@@ -59,25 +61,55 @@ const HeaderNav = () => {
           <Link href="/creators" passhref>
             <Nav.Link href="/creators">CREATORS</Nav.Link>
           </Link>
-          {account && (
+          {account && !account.pending && !account.rejected && (
             <>
-              <Link href="/marketplace" passHref>
-                <Nav.Link>MARKETPLACE</Nav.Link>
-              </Link>
+              <NavDropdown title="MARKETPLACES">
+                <NavDropdown.Item href="#action/3.1" className="p-0">
+                  <Link href="/marketplace" passHref>
+                    <Nav.Link>TREAT MARKETPLACES</Nav.Link>
+                  </Link>
+                </NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.1" className="p-0">
+                  <Link href="/marketplace/creator" passHref>
+                    <Nav.Link>THE SWEET SHOP</Nav.Link>
+                  </Link>
+                </NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.1" className="p-0">
+                  <Link href="/marketplace/resale" passHref>
+                    <Nav.Link>RESALE MARKETPLACE</Nav.Link>
+                  </Link>
+                </NavDropdown.Item>
+              </NavDropdown>
               <Link href="/my-nfts" passHref>
                 <Nav.Link>MY NFTs</Nav.Link>
               </Link>
+              {modelData && !modelData.pending && !modelData.rejected ? (
+                <Link href="/creator-dashboard" passHref>
+                  <Nav.Link style={{ color: "#c34573" }}>
+                    CREATOR DASHBOARD
+                  </Nav.Link>
+                </Link>
+              ) : (
+                <Link href="/become-creator" passHref>
+                  <Nav.Link>APPLY</Nav.Link>
+                </Link>
+              )}
             </>
           )}
-          <Link href="/about" passHref>
-            <Nav.Link>ABOUT</Nav.Link>
-          </Link>
-          <Nav.Link
-            href="https://treatdao.medium.com/c6aaa613725d"
-            target="_blank"
-          >
-            BLOG
-          </Nav.Link>
+
+          {!account && (
+            <>
+              <Link href="/about" passHref>
+                <Nav.Link>ABOUT</Nav.Link>
+              </Link>
+              <Nav.Link
+                href="https://treatdao.medium.com/c6aaa613725d"
+                target="_blank"
+              >
+                BLOG
+              </Nav.Link>
+            </>
+          )}
 
           {!account ? (
             <Button
@@ -98,12 +130,20 @@ const HeaderNav = () => {
                 </Link>
                 <NavDropdown.Item
                   onClick={() => {
-                    console.log(123);
                     setBalanceModalShow(true);
                   }}
                 >
                   $TREAT BALANCE
                 </NavDropdown.Item>
+                {!modelData || modelData.pending || modelData.rejected ? (
+                  <Link href="/become-creator" passHref>
+                    <NavDropdown.Item>BECOME A CREATOR</NavDropdown.Item>
+                  </Link>
+                ) : (
+                  <Link href="/creator-dashboard" passHref>
+                    <NavDropdown.Item>CREATOR DASHBOARD</NavDropdown.Item>
+                  </Link>
+                )}
                 <NavDropdown.Item
                   onClick={() => {
                     localStorage.removeItem("connectedBefore");
