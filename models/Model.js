@@ -26,7 +26,7 @@ const ModelSchema = new mongoose.Schema(
     address: {
       type: String,
     },
-    verification_photo: {
+    email: {
       type: String,
     },
     pending: {
