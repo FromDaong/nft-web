@@ -1,10 +1,7 @@
 import useSWR from "swr";
 import BigNumber from "bignumber.js";
 import Spinner from "react-bootstrap/Spinner";
-import useCancelOrder from "../../hooks/useCancelOrder";
-import usePurchaseOrder from "../../hooks/usePurchaseOrder";
 import { getDisplayBalance } from "../../utils/formatBalance";
-import useGetRemainingOrderBalance from "../../hooks/useGetRemainingOrderBalance";
 import NFTListItem from "../../components/NFTListItem";
 import { Trash, CartFill } from "react-bootstrap-icons";
 import LazyLoad from "react-lazyload";
@@ -17,18 +14,6 @@ export const Order = ({
   setPurchaseOrderData,
 }) => {
   const { data: nftResult } = useSWR(`/api/nft/${order.nftId}`);
-
-  // const [remainingBalance] = useGetRemainingOrderBalance(
-  //   order?.seller,
-  //   order?.nftId
-  // );
-
-  // const { onPurchaseOrder } = usePurchaseOrder(
-  //   order?.nftId,
-  //   order?.quantity,
-  //   order?.price,
-  //   order?.seller
-  // );
 
   const isOwner =
     !!account && account.toUpperCase() === order.seller.toUpperCase();

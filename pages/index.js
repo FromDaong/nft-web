@@ -184,7 +184,7 @@ const Home = () => {
                 style={{ background: "#D3678E" }}
               >
                 <div className="big-text">
-                  <CountUp delay={1} duration={2} end={15} />+
+                  <CountUp delay={1} duration={2} end={17} />+
                 </div>
                 <div className="small-text">Creators on TreatDAO</div>
               </div>
@@ -192,7 +192,7 @@ const Home = () => {
             <div className="col-lg-4 stats-wrapper">
               <div className="stats-container">
                 <div className="big-text">
-                  <CountUp delay={1} duration={3} end={88} />+ NFTs
+                  <CountUp delay={1} duration={3} end={123} />+ NFTs
                 </div>
                 <div className="small-text">Released on TreatDAO</div>
               </div>
@@ -203,7 +203,7 @@ const Home = () => {
                 style={{ background: "#F19592" }}
               >
                 <div className="big-text">
-                  <CountUp delay={1} duration={3} end={100} />+ BNB
+                  <CountUp delay={1} duration={3} end={189} />+ BNB
                 </div>
                 <div className="small-text">Earned by Creators</div>
               </div>
@@ -238,7 +238,7 @@ const Home = () => {
                 Week”, fill in our short form.
               </p>
               <div className="totw-buttons">
-                <a href="/apply">
+                <a href="/become-creator">
                   <Button variant="primary py-2 px-5 mt-4">
                     <b>Apply to Become a Creator</b>
                   </Button>
@@ -258,15 +258,15 @@ const Home = () => {
           <div className="pink-bg mb-5 mt-2 row d-flex align-items-center">
             <div className="col-md-7">
               <div className="heading-text p-0" style={{ fontSize: "3.5em" }}>
-                Resale Marketplace
+                Treat Marketplaces
               </div>
               <p
                 className="totw-secondary-text m-0 mt-3 pb-3"
                 style={{ lineHeight: 1.75 }}
               >
-                Buy and sell your Treat NFTs on the brand new offical Treat
-                resale marketplace. The only place to find exclusive Treat of
-                the Weeks that are no longer available for minting.
+                Buy and sell Treat NFTs on the brand new offical Treat creator
+                marketplace. Find exclusive Treat of the Weeks that are no
+                longer available for minting on the resale marketplace.
               </p>
 
               <Link href="/marketplace">
@@ -274,7 +274,7 @@ const Home = () => {
                   variant="primary mt-3 py-2 w-100"
                   style={{ maxWidth: 250 }}
                 >
-                  <b>GO TO MARKETPLACE</b>
+                  <b>GO TO MARKETPLACES</b>
                 </Button>
               </Link>
             </div>
