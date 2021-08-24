@@ -163,8 +163,6 @@ const AdminDashboard = ({ username }) => {
               <br />
               {data.bio}
             </h5>
-          </div>
-          <div className="row">
             <h5 className="col-md-6 pb-3">
               <b>Address:</b>
               <br />
@@ -175,15 +173,42 @@ const AdminDashboard = ({ username }) => {
               <br />
               {new Date(data.createdAt).toLocaleString()}
             </h5>
-          </div>
-          <div className="row">
-            <h5 className="col-md-12 pb-3">
+            <h5 className="col-md-6 pb-3">
               <b>Social Profile:</b>
               <br />
               <a href={data.social_account}>{data.social_account}</a>
             </h5>
-          </div>
-          <div className="row">
+            <h5 className="col-md-6 pb-3">
+              <b>Email:</b>
+              <br />
+              {data.email.toString()}
+            </h5>
+            <h5 className="col-md-6 pb-3">
+              <b>Passbase status:</b>
+              <br />
+              {!data.identity && "NOT PASSBASE VERIFIED"}
+              {data.identity && (
+                <>
+                  {data.identity.status && `Status: ${data.identity.status}`}
+                  <br />
+                  {data.identity.score &&
+                    `Passbase Score: ${data.identity.score}`}
+                  <br />
+                  {data.identity.owner.firstName &&
+                    `Name: ${data.identity.owner.firstName} ${data.identity.owner.lastName}`}
+                </>
+              )}
+            </h5>
+            <h5 className="col-md-6 pb-3">
+              <b>Pending Treat Admin review:</b>
+              <br />
+              {data.pending.toString()}
+            </h5>
+            <h5 className="col-md-6 pb-3">
+              <b>Rejected:</b>
+              <br />
+              {data.rejected.toString()}
+            </h5>
             <h5 className="col-md-6 pb-3">
               <b>Profile Pic:</b>
               <br />
@@ -192,25 +217,6 @@ const AdminDashboard = ({ username }) => {
                 style={{ width: 350, marginTop: 5 }}
                 className="rounded"
               />
-            </h5>
-            <h5 className="col-md-6 pb-3">
-              <b>Verification Photo:</b>
-              <br />
-              <img
-                src={data.verification_photo}
-                style={{ width: 350, marginTop: 5 }}
-                className="rounded"
-              />
-            </h5>
-            <h5 className="col-md-6 pb-3">
-              <b>Pending review:</b>
-              <br />
-              {data.pending.toString()}
-            </h5>
-            <h5 className="col-md-6 pb-3">
-              <b>Rejected:</b>
-              <br />
-              {data.rejected.toString()}
             </h5>
           </div>
 
