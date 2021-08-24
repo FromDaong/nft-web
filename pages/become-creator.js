@@ -95,7 +95,7 @@ const CreateModel = () => {
     return (
       <Hero
         title="Your application has been submitted!"
-        subtitle="Check back here in a few days to see if the creator 'dashboard', has appeared at the top in the navigation bar!"
+        subtitle="When approved you will see a creator dashboard at the top of the navigation bar.  You can check back in a few hours."
       />
     );
 
