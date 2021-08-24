@@ -149,9 +149,9 @@ const Home = () => {
                       offset={50}
                       duration={1000}
                     >
-                      <Button variant="primary py-2 w-100">
-                        <b>BROWSE NFTs</b>
-                      </Button>
+                      <Link href="/marketplace">
+                        <b>VIEW MARKETPLACES</b>
+                      </Link>
                     </Scroll.Link>
                   </div>
                   <div className="col-md-6 mt-2">
