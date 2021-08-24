@@ -28,6 +28,8 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   const [disabled, setDisabled] = useState(false);
   const [confirmWallet, setConfrimWallet] = useState(false);
 
+  const isOldTotw = nftData.old_totw && !nftData.totw;
+
   console.log(remainingNfts.toNumber());
 
   if (remainingNfts.toNumber() < 0 || isNaN(remainingNfts.toNumber())) {
@@ -42,7 +44,7 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
     <Button
       variant="primary w-100 mt-3 py-3"
       style={{ borderRadius: 7 }}
-      disabled={disabled || remainingNfts.toNumber() === 0}
+      disabled={disabled || remainingNfts.toNumber() === 0 || isOldTotw}
       onClick={async () => {
         setDisabled(true);
         setConfrimWallet(true);
@@ -87,8 +89,8 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
         </div>
       ) : (
         <b>
-          {remainingNfts.toNumber() > 0 && `BUY NOW`}
-          {remainingNfts.toNumber() === 0 && `SOLD OUT`}
+          {remainingNfts.toNumber() > 0 && !isOldTotw && `BUY NOW`}
+          {(remainingNfts.toNumber() === 0 || isOldTotw) && `SOLD OUT`}
         </b>
       )}
     </Button>
@@ -152,7 +154,6 @@ const ViewNFT = ({ nftData, image, account }) => {
   const creatorNftCost = getCreatorNftCost(nftData.id);
 
   const nftCost = nftData.old_totw ? totwNftCost : creatorNftCost;
-  console.log({ nftCost: nftCost.toString() });
 
   const maxNftSupply = useGetNftMaxSupply(nftData.id);
   const mintedNfts = useGetNftTotalSupply(nftData.id);

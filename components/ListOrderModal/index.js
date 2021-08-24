@@ -115,7 +115,8 @@ export const ListOrderModalBody = ({
             placeholder="1"
           />
           <Form.Text className="text-muted">
-            You can sell multiple of a particular NFT, in a single listing
+            NFTs are sold out individually, at the list price. Choose the amount
+            you wish to list.
           </Form.Text>
         </Form.Group>
       )}

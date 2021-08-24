@@ -25,7 +25,7 @@ const usePurchaseOrder = (
     const txHash = await purchaseOrder(
       treatMarketplaceContract,
       nftId,
-      quantity,
+      1,
       seller,
       account,
       Number(price)

@@ -67,7 +67,7 @@ const CreatingNFTItemPreview = ({
           )}
           {quantity > 1 && (
             <div className="quantity-wrapper totw-tag">
-              Contains {quantity}x
+              {quantity}x Available
             </div>
           )}
         </div>
