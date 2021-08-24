@@ -4,6 +4,8 @@ import Modal from "react-bootstrap/Modal";
 import usePurchaseOrder from "../../hooks/usePurchaseOrder";
 import useGetResaleOrder from "../../hooks/useGetResaleOrder";
 import useGetRemainingOrderBalance from "../../hooks/useGetRemainingOrderBalance";
+import { getDisplayBalance } from "../../utils/formatBalance";
+import BigNumber from "bignumber.js";
 
 const PurchaseOrderModal = ({
   account,
@@ -20,7 +22,8 @@ const PurchaseOrderModal = ({
 
   const remainingBalance = useGetRemainingOrderBalance(account, data.id);
   const orderData = { ...order, remainingBalance };
-  console.log({ listCancelOrder: order });
+
+  const formattedCost = getDisplayBalance(new BigNumber(order.price));
 
   return (
     <Modal show={show} onHide={handleClose} centered>
@@ -28,7 +31,8 @@ const PurchaseOrderModal = ({
         <div>
           <Modal.Title>Purchase NFT 🛒</Modal.Title>
           <p className="mb-0 mt-2">
-            Are you sure you would you like to purchase: <b>"{data.name}"</b>?
+            Are you sure you would you like to purchase: <br />
+            1x <b>"{data.name}"</b> for {formattedCost} BNB?
           </p>
         </div>
       </Modal.Header>

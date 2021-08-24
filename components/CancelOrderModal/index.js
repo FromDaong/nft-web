@@ -15,12 +15,9 @@ const CancelOrderModal = ({
 }) => {
   if (!data) return <div></div>;
 
-  console.log({ listData: data });
-
   const order = useGetResaleOrder(data.id, account);
   const remainingBalance = useGetRemainingOrderBalance(account, data.id);
   const orderData = { ...order, remainingBalance };
-  console.log({ listCancelOrder: order });
 
   return (
     <Modal show={show} onHide={handleClose} centered>
