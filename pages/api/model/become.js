@@ -1,7 +1,6 @@
 import dbConnect from "../../../utils/dbConnect";
 import Model from "../../../models/Model";
 import withSession from "../../../lib/session";
-
 dbConnect();
 
 export default withSession(async (req, res) => {
@@ -18,11 +17,13 @@ export default withSession(async (req, res) => {
           social_account: req.body.social_account,
           profile_pic: req.body.profile_pic,
           email: req.body.email,
+          identity_access_key: req.body.identity_access_key,
           nfts: [],
           pending: true,
           rejected: false,
         };
 
+        // const identity = await client.getIdentityById("identity_access_key");
         console.log({ nftBody });
         const newNFT = await Model.create(nftBody);
 

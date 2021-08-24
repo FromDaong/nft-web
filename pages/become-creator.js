@@ -9,6 +9,12 @@ import Hero from "../components/Hero";
 import Loading from "../components/Loading";
 import { create } from "ipfs-http-client";
 import { useWallet } from "use-wallet";
+// import VerifyButton from "@passbase/button/react";
+import dynamic from "next/dynamic";
+
+const VerifyButton = dynamic(() => import("@passbase/button/react"), {
+  ssr: false,
+});
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -31,6 +37,7 @@ const CreateModel = () => {
       social_account: Yup.string(),
       profile_pic: Yup.string().required("Please add a Profile Photo"),
       email: Yup.string().required("Please add a Email"),
+      identity_access_key: Yup.string().required("Please verify your identity"),
     }),
     onSubmit: (values) => {
       SubmitToServer();
@@ -96,13 +103,13 @@ const CreateModel = () => {
     return <Hero title="Your application has been rejected" />;
 
   return (
-    <>
+    <div className="no-position">
       <Hero
         title="Become a Creator"
         subtitle="Complete the form below to apply to become a creator. Creators are able to mint NFTs on TreatDAO!"
       />
       <div
-        className="container mt-5 px-5 py-4 mb-5 white-tp-container"
+        className="container mt-5 px-5 py-4 mb-5 white-tp-container-no-filter"
         style={{ borderRadius: 10 }}
       >
         <Form onSubmit={formik.handleSubmit}>
@@ -171,6 +178,33 @@ const CreateModel = () => {
                 }
               /> */}
             </div>
+            <div className="pb-5 pt-2 verify-container">
+              <label>Verify your identity</label>
+
+              <VerifyButton
+                id="asd"
+                apiKey="zYe9VHCjf5z2MoiuQGlvRK3KRPmQ0B7Kaghp6qyFZ8PfTnQa0zFRuZZWgoVGeAVX"
+                onStart={() => {}}
+                onError={(errorCode) => {}}
+                onFinish={(identityAccessKey) => {
+                  formik.setFieldValue(
+                    "identity_access_key",
+                    identityAccessKey
+                  );
+                }}
+              />
+              {/* <FormControl
+                type="file"
+                size="lg"
+                placeholder="E.g. https://img.ur/123"
+                name="verification_photo"
+                className="bg-white p-3 rounded"
+                // value={formik.values.verification_photo}
+                onChange={(file) =>
+                  ipfsUpload(file.target.files[0], "verification_photo")
+                }
+              /> */}
+            </div>
             <Button
               variant="primary w-100"
               onClick={formik.handleSubmit}
@@ -187,7 +221,7 @@ const CreateModel = () => {
           </div>
         </Form>
       </div>
-    </>
+    </div>
   );
 };
 
