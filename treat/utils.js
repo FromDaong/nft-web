@@ -358,10 +358,36 @@ export const getIsGiveAwayNft = async (creatorMart, nftId) => {
 
 export const getNftCreator = async (treatNFTMinter, nftId) => {
   try {
-    const modelAddress = await treatNFTMinter.methods.tokenModels(nftId).call();
+    const modelAddress = await treatNFTMinter.methods.creators(nftId).call();
     return new modelAddress();
   } catch {
     return new treatMart.address();
+  }
+};
+
+export const getCreatorReferrer = async (treatNFTMinter, creatorAddress) => {
+  try {
+    const refAddress = await treatNFTMinter.methods.referrers(creatorAddress).call();
+    return new refAddress();
+  } catch {
+    return new treatMart.address();
+  }
+};
+
+export const addReferrerToMinter = async (
+  treatNFTMinter,
+  account,
+  performerAddress,
+  referrerAddress
+) => {
+  try {
+    return await treatNFTMinter.methods
+      .addTreatReferrer(performerAddress, referrerAddress)
+      .send({ from: account, value: 0 });
+  } catch (e) {
+    console.log({ e });
+    console.error(e);
+    return undefined;
   }
 };
 
