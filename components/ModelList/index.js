@@ -24,7 +24,7 @@ const ModelList = ({ totwOnly = false }) => {
   if (modelData) {
     const mR = modelData
       .map((model) => {
-        if (model.pending || model.rejected) return undefined;
+        if (model.pending || model.rejected || model.hidden) return undefined;
         if (totwOnly) {
           if (model && model.totw) {
             return (
