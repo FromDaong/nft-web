@@ -1,5 +1,7 @@
+import useSWR from "swr";
 import { useWallet } from "use-wallet";
 import Dropdown from "react-bootstrap/Dropdown";
+import Pagination from "react-bootstrap/Pagination";
 import Button from "react-bootstrap/Button";
 import React, { useState, useEffect, useReducer } from "react";
 import useGetAllOpenOrders from "../../hooks/useGetAllOpenOrders";
@@ -13,6 +15,7 @@ import { Order } from "../../components/MarketplaceListItem";
 import { motion, AnimateSharedLayout } from "framer-motion";
 import { forceCheck } from "react-lazyload";
 import Link from "next/link";
+import { usePagination } from "react-use-pagination";
 
 const Marketplace = ({ search }) => {
   const maxId = useGetMaxIdForSale();
@@ -40,7 +43,6 @@ const Marketplace = ({ search }) => {
     if (ob) setOrderBookArray([]);
 
     const obArr = ob?.sort((a, b) => {
-      console.log({ a });
       switch (sortBy) {
         case "Price Low to High":
           return Number(a.price) - Number(b.price);
@@ -71,7 +73,6 @@ const Marketplace = ({ search }) => {
     ) {
       updateObArr();
       if (initOrderBookArray.length > 1) {
-        console.log("updated local storage");
         localStorage.setItem(
           "orderBookArray",
           JSON.stringify(initOrderBookArray)
@@ -80,10 +81,97 @@ const Marketplace = ({ search }) => {
     }
   }, [initOrderBookArray]);
 
+  const jsonBody = { nfts: orderBookArray.map((o) => o.nftId) };
+
+  const fetcher = (url) =>
+    fetch(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(jsonBody),
+    }).then((a) => a.json());
+
+  const { data: populatedNftData } = useSWR(
+    orderBookArray && orderBookArray.length > 0 && jsonBody
+      ? `/api/nft/get-many-nfts`
+      : null,
+    fetcher
+  );
+
+  const renderArray =
+    orderBookArray &&
+    populatedNftData &&
+    orderBookArray
+      .map((orderBookNft) => {
+        const nftResult = populatedNftData.find(
+          (x) => x.id === orderBookNft.nftId
+        );
+
+        if (!nftResult) return undefined;
+
+        if (
+          !nftResult.attributes[0].value
+            .toLowerCase()
+            .includes(searchFilter.toLowerCase()) &&
+          !nftResult.name.toLowerCase().includes(searchFilter.toLowerCase())
+        ) {
+          return undefined;
+        } else return { ...orderBookNft, ...nftResult };
+      })
+      .filter((e) => e);
+
+  console.log({ renderArray });
+
+  const {
+    currentPage,
+    totalPages,
+    setPage,
+    setPageSize,
+    setNextPage,
+    setPreviousPage,
+    startIndex,
+    endIndex,
+  } = usePagination({
+    totalItems: renderArray ? renderArray.length : 0,
+    initialPageSize: 24,
+    initialPage: 1,
+  });
+
+  const startNumber = currentPage - 5 > 1 ? currentPage - 5 : 1;
+  const endNumber = currentPage + 5 < totalPages ? currentPage + 5 : totalPages;
+
+  let items = [];
+  if (currentPage !== 1)
+    items.push(<Pagination.First onClick={() => setPage(1)} />);
+  if (currentPage !== 1)
+    items.push(<Pagination.Prev onClick={setPreviousPage} />);
+
+  for (let number = startNumber; number < endNumber; number++) {
+    items.push(
+      <Pagination.Item
+        key={number}
+        active={number === currentPage}
+        onClick={() => {
+          setPageSize(25);
+          setPage(number);
+        }}
+      >
+        {number}
+      </Pagination.Item>
+    );
+  }
+  if (currentPage !== totalPages - 1)
+    items.push(<Pagination.Next onClick={setNextPage} />);
+  if (currentPage !== totalPages - 1)
+    items.push(<Pagination.Last onClick={() => setPage(totalPages)} />);
+
   useEffect(() => {
+    setPage(1);
     updateObArr();
     forceUpdate();
-  }, [sortBy, storedArray]);
+  }, [sortBy, storedArray, searchFilter]);
 
   return (
     <AnimateSharedLayout>
@@ -176,36 +264,20 @@ const Marketplace = ({ search }) => {
         </div>
         <br />
         <div className="container fluid">
-          <motion.div
-            layout
-            className="nft-list row mt-5"
-            animate="show"
-            exit="hidden"
-            initial="hidden"
-            variants={{
-              show: { opacity: 1 },
-              hidden: {
-                transition: {
-                  staggerChildren: 0.02,
-                  staggerDirection: -1,
-                  when: "afterChildren",
-                  opacity: 0,
-                },
-              },
-            }}
-          >
-            {!orderBookArray || orderBookArray.length === 0 ? (
+          <div className="nft-list row mt-5">
+            {!renderArray || renderArray.length === 0 ? (
               <div
                 style={{ minHeight: 500 }}
                 className="d-flex justify-content-center align-items-center w-100"
               >
-                <Loading custom="Loading... This may take upto a few minutes, please ensure your wallet is connected." />
+                <Loading custom="Loading... First load may take upto a few minutes, please ensure your wallet is connected." />
               </div>
             ) : (
               <>
-                {orderBookArray.map((o, i) => (
+                {renderArray.slice(startIndex, endIndex).map((o, i) => (
                   <Order
                     searchFilter={searchFilter}
+                    nftResult={o}
                     index={i}
                     order={o}
                     account={account}
@@ -218,7 +290,11 @@ const Marketplace = ({ search }) => {
                 ))}
               </>
             )}
-          </motion.div>
+          </div>
+
+          <div className="d-flex justify-content-center">
+            <Pagination>{items}</Pagination>
+          </div>
         </div>
       </motion.main>
     </AnimateSharedLayout>

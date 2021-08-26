@@ -10,19 +10,16 @@ let easing = [0.175, 0.85, 0.42, 0.96];
 
 const variants = {
   initial: {
-    y: 150,
     opacity: 0,
   },
   hidden: {
     opacity: 0,
-    y: 150,
     transition: {
       duration: 0.1,
       ease: easing,
     },
   },
   show: {
-    y: 0,
     opacity: 1,
     transition: {
       duration: 0.5,
@@ -76,17 +73,10 @@ const NFTListItem = ({
             )}
           </div>
           <Link href={`/creator/${data.attributes[0].value}`}>
-            <div className="profile-pic">
-              <img
-                src={
-                  (modelData && modelData.profile_pic) ||
-                  data.model_profile_pic ||
-                  `data:image/svg+xml;utf8,${generateFromString(
-                    data.attributes[0].value
-                  )}`
-                }
-              />
-            </div>
+            <div
+              className="profile-pic"
+              style={{ backgroundImage: `url(${data.model_profile_pic})` }}
+            />
           </Link>
           <div
             className="img-container text-center text-lg-left d-flex justify-content-center align-items-center"
@@ -112,6 +102,7 @@ const NFTListItem = ({
                   style={{
                     borderRadius: 8,
                     overflow: "hidden",
+                    zIndex: 0,
                   }}
                   hash={data.blurhash}
                   width={"100%"}

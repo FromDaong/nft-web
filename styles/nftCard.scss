@@ -36,9 +36,10 @@
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
     left: 0;
     right: 0;
-    z-index: 100;
+    z-index: 100000;
     overflow: hidden;
     border-radius: 100px;
+    background-size: cover !important;
     img {
       width: 100%;
     }

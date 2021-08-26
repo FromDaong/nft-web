@@ -43,6 +43,7 @@ const ModelSchema = new mongoose.Schema(
         id: String,
       },
     ],
+    referred: [],
   },
   {
     timestamps: { createdAt: true, updatedAt: false },

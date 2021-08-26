@@ -12,20 +12,15 @@ export const Order = ({
   searchFilter,
   setCancelOrderData,
   setPurchaseOrderData,
+  nftResult,
 }) => {
-  const { data: nftResult } = useSWR(`/api/nft/${order.nftId}`);
+  // const { data: nftResult } = useSWR(`/api/nft/${order.nftId}`);
 
   const isOwner =
-    !!account && account.toUpperCase() === order.seller.toUpperCase();
+    !!account &&
+    account.toUpperCase() === order.model_bnb_address.toUpperCase();
 
-  if (
-    !nftResult ||
-    (!nftResult.attributes[0].value
-      .toLowerCase()
-      .includes(searchFilter.toLowerCase()) &&
-      !nftResult.name.toLowerCase().includes(searchFilter.toLowerCase()))
-  )
-    return <></>;
+  if (!nftResult) return <></>;
 
   return (
     <div className="col-md-4">

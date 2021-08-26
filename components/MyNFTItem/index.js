@@ -74,6 +74,7 @@ const NFTListItem = ({
             className="modal-image"
             style={{ background: `url(${image})` }}
           ></div>
+          <h4 className="text-center pt-3">{data.description}</h4>
         </Modal.Body>
         <Modal.Footer>
           <div className="container text-center">
@@ -91,20 +92,12 @@ const NFTListItem = ({
               </div>
             )}
           </div>
-          <div className="profile-pic">
-            <Link
-              href={`/creator/${data.attributes[0].value.replace("@", "")}`}
-            >
-              <img
-                src={
-                  data.model_profile_pic ||
-                  `data:image/svg+xml;utf8,${generateFromString(
-                    data.attributes[0].value
-                  )}`
-                }
-              />
-            </Link>
-          </div>
+          <Link href={`/creator/${data.attributes[0].value.replace("@", "")}`}>
+            <div
+              className="profile-pic"
+              style={{ backgroundImage: `url(${data.model_profile_pic})` }}
+            />
+          </Link>
           <div
             className="img-container text-center text-lg-left d-flex justify-content-center align-items-center"
             style={{
