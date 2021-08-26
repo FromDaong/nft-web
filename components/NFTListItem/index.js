@@ -102,6 +102,7 @@ const NFTListItem = ({
                   style={{
                     borderRadius: 8,
                     overflow: "hidden",
+                    zIndex: 0,
                   }}
                   hash={data.blurhash}
                   width={"100%"}
