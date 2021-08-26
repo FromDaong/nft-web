@@ -8,8 +8,8 @@ async function dbConnect() {
   }
 
   const db = await mongoose.connect(
-    //hidestream
-    "mongodb+srv://treat:hfqqjOWs0WS1mUGE@treatcluster.9uuso.mongodb.net/treat_test?retryWrites=true&w=majority",
+    // hidestream
+    "mongodb+srv://treat:hfqqjOWs0WS1mUGE@treatcluster.9uuso.mongodb.net/treat?retryWrites=true&w=majority",
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
