@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Spinner from "react-bootstrap/Spinner";
-import CreatorNFTItem from "../../components/CreatorNFTItem";
-import TradeInNFTs from "../../components/TradeInNFTs";
-import Hero from "../../components/Hero";
-import Button from "react-bootstrap/Button";
+import CreatedNFTs from "../../components/CreatorDashboard/CreatedNFTs";
+import Referrals from "../../components/CreatorDashboard/Referrals";
+import { Nav, Tab } from "react-bootstrap";
 import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
-import useGetNftBalance from "../../hooks/useGetNftBalance";
-import { getDisplayBalance } from "../../utils/formatBalance";
-import useGetOpenOrdersForSeller from "../../hooks/useGetOpenOrdersForSeller";
 import useWallet from "use-wallet";
 import useSWR from "swr";
-import Link from "next/link";
 import Layout from "../../components/Layout";
-import { PlusLg } from "react-bootstrap-icons";
+import {
+  CameraFill,
+  PatchCheckFill,
+  GearFill,
+  PiggyBankFill,
+} from "react-bootstrap-icons";
 
 const variants = {
   show: {
@@ -102,141 +102,102 @@ const ViewNFT = ({ modelData, account }) => {
           animate={{ y: 0, opacity: 1 }}
           style={{ y: -100, opacity: 0 }}
           transition={{ delay: 0.25 }}
-          className="pink-bg mb-5 row mt-5"
+          className="pink-bg d-flex my-5 row justify-content-between"
         >
-          <div className="col-md-3">
-            <div className="d-flex justify-content-center h-100">
-              <div
-                style={{
-                  height: 150,
-                  width: 150,
-                  backgroundImage: `url(${
-                    modelData ? modelData.profile_pic : null
-                  })`,
-                  backgroundSize: "cover",
-                  borderRadius: 8,
-                }}
-              ></div>
+          <div>
+            <div
+              className="heading-text p-0"
+              style={{ fontSize: "3.5em", lineHeight: 1.2 }}
+            >
+              {modelData && modelData.username}'s Dashboard
             </div>
-            {/* <img src={modelData && modelData.profile_pic} /> */}
+            <p
+              className="totw-secondary-text m-0 mt-2 pb-3"
+              style={{ maxWidth: "none" }}
+            >
+              Connected wallet address: {account}
+            </p>
           </div>
-          <div className="col-md-9">
-            <div className="d-flex flex-column justify-content-center h-100 text-md-left text-center">
-              <div
-                className="heading-text p-0"
-                style={{ fontSize: "3.5em", lineHeight: 1.2 }}
-              >
-                {modelData && modelData.username}'s Dashboard
-              </div>
-              <p
-                className="totw-secondary-text m-0 mt-2 pb-3"
-                style={{ maxWidth: "none" }}
-              >
-                Connected wallet address: {account}
-              </p>
 
-              <div>
-                <Link
-                  href="/creator-dashboard/create-nft
-                "
-                >
-                  <Button variant="primary  w-100" style={{ maxWidth: 250 }}>
-                    <b>{"CREATE NEW NFTs"}</b>
-                  </Button>
-                </Link>
-              </div>
+          <div
+            style={{
+              height: 150,
+              width: 150,
+              backgroundImage: `url(${
+                modelData ? modelData.profile_pic : null
+              })`,
+              backgroundSize: "cover",
+              borderRadius: 8,
+            }}
+            className="mt-4 mt-md-0"
+          ></div>
+        </motion.div>
+        <Tab.Container id="left-tabs-example" defaultActiveKey="created-nfts">
+          <div className="mt-2 row">
+            <div className="col-md-3 p-0">
+              <Nav variant="pills" className="flex-column">
+                <Nav.Item className="white-tp-bg">
+                  <Nav.Link eventKey="created-nfts">
+                    <CameraFill className="mr-2 mb-1" />
+                    Public NFTs
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item className="white-tp-bg mt-2">
+                  <Nav.Link eventKey="subscription-nfts">
+                    <PatchCheckFill className="mr-2 mb-1" />
+                    Subscription NFTs
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item className="white-tp-bg mt-2">
+                  <Nav.Link eventKey="subscription-settings">
+                    <GearFill className="mr-2 mb-1" />
+                    Subscription Settings
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item className="white-tp-bg mt-2">
+                  <Nav.Link eventKey="referrals">
+                    <PiggyBankFill className="mr-2 mb-1" />
+                    Referrals
+                  </Nav.Link>
+                </Nav.Item>
+              </Nav>
+            </div>
+            <div className="col-md-9 pr-0 mt-4 mt-md-0 pl-0 pl-md-3">
+              <Tab.Content>
+                <Tab.Pane eventKey="created-nfts">
+                  <CreatedNFTs
+                    hideNFTs={hideNFTs}
+                    transferNFTClick={transferNFTClick}
+                    isLoading={isLoading}
+                    nftData={nftData}
+                    modelData={modelData}
+                  />
+                </Tab.Pane>
+                <Tab.Pane eventKey="subscription-nfts">
+                  <h4 className="text-center w-100 text-primary bold">
+                    Coming very soon...
+                  </h4>
+                </Tab.Pane>
+                <Tab.Pane eventKey="subscription-settings">
+                  <h4 className="text-center w-100 text-primary bold">
+                    Coming very soon...
+                  </h4>
+                </Tab.Pane>
+                <Tab.Pane eventKey="referrals">
+                  <Referrals
+                    hideNFTs={hideNFTs}
+                    transferNFTClick={transferNFTClick}
+                    isLoading={isLoading}
+                    nftData={nftData}
+                    modelData={modelData}
+                  />
+                </Tab.Pane>
+              </Tab.Content>
             </div>
           </div>
-        </motion.div>
-        <div className="mt-2">
-          <CreatedNFTs
-            hideNFTs={hideNFTs}
-            transferNFTClick={transferNFTClick}
-            isLoading={isLoading}
-            nftData={nftData}
-            modelData={modelData}
-          />
-        </div>
+        </Tab.Container>
       </div>
     </Layout>
-  );
-};
-
-const CreatedNFTs = ({
-  transferNFTClick,
-  listOrderClick,
-  isLoading,
-  nftData,
-  modelData,
-}) => {
-  return (
-    <div className="white-tp-bg" style={{ minHeight: 400 }}>
-      <div
-        className="px-4 py-2 w-100 d-flex"
-        style={{
-          background: "#FFFDF2",
-          justifyContent: "space-between",
-          alignItems: "center",
-          borderRadius: 8,
-        }}
-      >
-        <div>
-          <h2
-            className="heading-text-primary pt-1"
-            style={{
-              fontSize: 24,
-            }}
-          >
-            Created NFTs
-          </h2>
-        </div>
-      </div>
-      {nftData && nftData.nfts.length > 0 ? (
-        <div className="container">
-          <div className="d-flex text-left justify-content-center mt-5">
-            <motion.div
-              className="row w-100"
-              animate="show"
-              exit="hidden"
-              initial="hidden"
-              variants={variants}
-            >
-              {nftData.nfts.map((nft) => {
-                console.log({ nft });
-                return (
-                  nft && (
-                    <div className="col-md-4 bg-transparent border-0">
-                      <CreatorNFTItem
-                        balance={nft.balance}
-                        isLoading={isLoading}
-                        data={nft}
-                        price={nft.list_price}
-                        transferNFTClick={transferNFTClick}
-                        listOrderClick={listOrderClick}
-                        modelData={modelData}
-                        hasOpenOrder={nft.hasOpenOrder}
-                      />
-                    </div>
-                  )
-                );
-              })}
-            </motion.div>
-          </div>
-        </div>
-      ) : (
-        <div
-          className="w-100 text-center font-weight-bold d-flex align-items-center justify-content-center h-100"
-          style={{
-            color: "#333",
-            marginTop: -20,
-            height: "100%",
-            minHeight: 200,
-          }}
-        >
-          You haven't created any NFTs yet
-        </div>
-      )}
-    </div>
   );
 };
 export default CreatorDashboardWrapper;

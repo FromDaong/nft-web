@@ -8,6 +8,8 @@ import Link from "next/link";
 import Layout from "../../components/Layout";
 import BlankModal from "../../components/BlankModal";
 import useAddPerformerToMinter from "../../hooks/useAddPerformerToMinter";
+import useGetReferrer from "../../hooks/useGetReferrer";
+import useAddReferrerToMinter from "../../hooks/useAddReferrerToMinter";
 import useRemovePerformerFromMinter from "../../hooks/useRemovePerformerFromMinter";
 import Hero from "../../components/Hero";
 
@@ -80,6 +82,12 @@ const AdminDashboard = ({ username }) => {
   const { onRemovePerformerFromMinter } = useRemovePerformerFromMinter(
     data && data.address
   );
+  const { onAddReferrerToMinter } = useAddReferrerToMinter(
+    data && data.address,
+    data && data.referrer_address
+  );
+  const referrerFromContract = useGetReferrer(data && data.address);
+  console.log({ referrerFromContract });
 
   if (!data)
     return (
@@ -95,6 +103,15 @@ const AdminDashboard = ({ username }) => {
       />
     );
 
+  const addReferrerToMinter = async () => {
+    setShowPendingModal(true);
+    const referrer = await onAddReferrerToMinter();
+    if (referrer) {
+      setShowCompleteModal(true);
+    }
+    setShowPendingModal(false);
+  };
+
   const addPerformerToMinter = async () => {
     setShowPendingModal(true);
     const performer = await onAddPerformerToMinter();
@@ -105,14 +122,16 @@ const AdminDashboard = ({ username }) => {
     setShowPendingModal(false);
   };
 
-  const reject = async () => {
+  const removePerformerRole = async () => {
     setShowPendingModal(true);
     const performer = await onRemovePerformerFromMinter();
-    if (performer) {
-      const res = await fetch(`/api/admin/${username}/reject`);
-      setShowCompleteModal(true);
-    }
     setShowPendingModal(false);
+    if (performer) setShowCompleteModal(true);
+  };
+
+  const reject = async () => {
+    const res = await fetch(`/api/admin/${username}/reject`);
+    if (res) setShowCompleteModal(true);
   };
 
   return (
@@ -210,6 +229,19 @@ const AdminDashboard = ({ username }) => {
               {data.rejected.toString()}
             </h5>
             <h5 className="col-md-6 pb-3">
+              <b>Referrer:</b>
+              <br />
+              {data.referrer_address}
+              <br />
+              <Button
+                variant="primary mt-1 py-2 w-100"
+                onClick={() => addReferrerToMinter()}
+                disabled={!!referrerFromContract}
+              >
+                <b>APPROVE REFERRER</b>
+              </Button>
+            </h5>
+            <h5 className="col-md-6 pb-3">
               <b>Profile Pic:</b>
               <br />
               <img
@@ -221,7 +253,7 @@ const AdminDashboard = ({ username }) => {
           </div>
 
           <div className="buttons row py-2">
-            <div className="col-md-6 mt-2 text-center">
+            <div className="col-md-4 mt-2 text-center">
               <Button
                 variant="success w-100 py-2"
                 onClick={() => addPerformerToMinter()}
@@ -229,7 +261,15 @@ const AdminDashboard = ({ username }) => {
                 <b>APPROVE</b>
               </Button>
             </div>
-            <div className="col-md-6  mt-2 text-center">
+            <div className="col-md-4  mt-2 text-center">
+              <Button
+                variant="warning py-2 w-100"
+                onClick={() => removePerformerRole()}
+              >
+                <b>REMOVE PERFORMER ROLE</b>
+              </Button>
+            </div>
+            <div className="col-md-4  mt-2 text-center">
               <Button variant="danger py-2 w-100" onClick={() => reject()}>
                 <b>REJECT</b>
               </Button>

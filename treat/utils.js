@@ -361,16 +361,18 @@ export const getNftCreator = async (treatNFTMinter, nftId) => {
     const modelAddress = await treatNFTMinter.methods.creators(nftId).call();
     return new modelAddress();
   } catch {
-    return new treatMart.address();
+    return treatNFTMinter.address;
   }
 };
 
 export const getCreatorReferrer = async (treatNFTMinter, creatorAddress) => {
   try {
-    const refAddress = await treatNFTMinter.methods.referrers(creatorAddress).call();
+    const refAddress = await treatNFTMinter.methods
+      .referrers(creatorAddress)
+      .call();
     return new refAddress();
   } catch {
-    return new treatMart.address();
+    return treatNFTMinter.address;
   }
 };
 

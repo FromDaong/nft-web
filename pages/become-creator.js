@@ -27,6 +27,8 @@ const CreateModel = () => {
   const formik = useFormik({
     initialValues: {
       address: account,
+      referrer_address: router.query.r,
+      // identity_access_key: "asd",
     },
     validateOnChange: false,
     validateOnBlur: false,
@@ -37,6 +39,7 @@ const CreateModel = () => {
       social_account: Yup.string(),
       profile_pic: Yup.string().required("Please add a Profile Photo"),
       email: Yup.string().required("Please add a Email"),
+      referrer_address: Yup.string(),
       identity_access_key: Yup.string().required("Please verify your identity"),
     }),
     onSubmit: (values) => {
@@ -78,7 +81,7 @@ const CreateModel = () => {
   const ipfsUpload = (file, field) => {
     toBuffer(file, (err, buff) => {
       console.log({ err, file });
-      if (err) return;
+      if (err || !file) return;
       client.add(buff).then((results) => {
         console.log("=> IPFS Dropzone added: ", results);
         formik.setFieldValue(
@@ -103,13 +106,13 @@ const CreateModel = () => {
     return <Hero title="Your application has been rejected" />;
 
   return (
-    <div className="no-position">
+    <div className="no-position" style={{ maxWidth: 800, margin: "auto" }}>
       <Hero
         title="Become a Creator"
         subtitle="Complete the form below to apply to become a creator. Creators are able to mint NFTs on TreatDAO!"
       />
       <div
-        className="container mt-5 px-5 py-4 mb-5 white-tp-container-no-filter"
+        className="container p-4 pb-0 white-tp-container-no-filter"
         style={{ borderRadius: 10 }}
       >
         <Form onSubmit={formik.handleSubmit}>
@@ -122,17 +125,55 @@ const CreateModel = () => {
                 value={formik.values.username}
                 onChange={formik.handleChange}
               />
+              <small>treatdao.com/creator/{formik.values.username}</small>
             </div>
-            <div className="pb-4">
+
+            <div className="pb-3">
               <label>Profile bio / about you</label>
               <FormControl
+                as="textarea"
                 name="bio"
                 value={formik.values.bio}
                 onChange={formik.handleChange}
               />
+              <small>
+                {formik.values.bio ? formik.values.bio.length : 0} / 1000
+              </small>
+            </div>
+            <div className="pb-4 pt-1">
+              <label>Email:</label>
+
+              <FormControl
+                name="email"
+                value={formik.values.email}
+                onChange={formik.handleChange}
+              />
+            </div>
+            <div className="pb-4 pt-1">
+              <label>Referrer address (optional):</label>
+              <FormControl
+                name="referrer_address"
+                value={formik.values.referrer_address}
+                onChange={formik.handleChange}
+              />
+              <small>
+                If someone referred you to Treat, put their wallet address here
+                so they are rewarded.
+              </small>
+              {/* <FormControl
+                type="file"
+                size="lg"
+                placeholder="E.g. https://img.ur/123"
+                name="verification_photo"
+                className="bg-white p-3 rounded"
+                // value={formik.values.verification_photo}
+                onChange={(file) =>
+                  ipfsUpload(file.target.files[0], "verification_photo")
+                }
+              /> */}
             </div>
             <div className="pb-4">
-              <label>URL / Link to an existing social account (optional)</label>
+              <label>URL / Link to an existing social account</label>
               <FormControl
                 placeholder="https://twitter.com/alexanbt"
                 name="social_account"
@@ -158,31 +199,12 @@ const CreateModel = () => {
                 }
               />
             </div>
-            <div className="pb-5 pt-2">
-              <label>Email:</label>
-
-              <FormControl
-                name="email"
-                value={formik.values.email}
-                onChange={formik.handleChange}
-              />
-              {/* <FormControl
-                type="file"
-                size="lg"
-                placeholder="E.g. https://img.ur/123"
-                name="verification_photo"
-                className="bg-white p-3 rounded"
-                // value={formik.values.verification_photo}
-                onChange={(file) =>
-                  ipfsUpload(file.target.files[0], "verification_photo")
-                }
-              /> */}
-            </div>
             <div className="pb-5 pt-2 verify-container">
               <label>Verify your identity</label>
 
               <VerifyButton
                 id="asd"
+                // hidestream
                 apiKey="zYe9VHCjf5z2MoiuQGlvRK3KRPmQ0B7Kaghp6qyFZ8PfTnQa0zFRuZZWgoVGeAVX"
                 onStart={() => {}}
                 onError={(errorCode) => {}}
@@ -193,6 +215,11 @@ const CreateModel = () => {
                   );
                 }}
               />
+
+              <small>
+                Please ensure you return to submit this form after you have
+                completed ID verification with passbase.
+              </small>
               {/* <FormControl
                 type="file"
                 size="lg"
@@ -212,12 +239,14 @@ const CreateModel = () => {
             >
               Submit Application
             </Button>
-            <Form.Control.Feedback type="invalid" className="d-block">
-              {Object.keys(formik.errors).map((e) => (
-                <div>{formik.errors[e]}</div>
-              ))}
-              {formik.errors.code}
-            </Form.Control.Feedback>
+            {Object.keys(formik.errors).length > 0 && (
+              <Form.Control.Feedback type="invalid" className="d-block">
+                {Object.keys(formik.errors).map((e) => (
+                  <div>{formik.errors[e]}</div>
+                ))}
+                {formik.errors.code}
+              </Form.Control.Feedback>
+            )}
           </div>
         </Form>
       </div>

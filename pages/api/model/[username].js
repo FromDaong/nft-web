@@ -30,6 +30,7 @@ export default async (req, res) => {
 
         const returnData = { ...modelRes.toObject() };
         delete returnData.model_bnb_address;
+        delete returnData.identity_access_key;
 
         console.log({ returnDataBlur: returnData.blurhash });
         if (returnData.blurhash) delete returnData.image;

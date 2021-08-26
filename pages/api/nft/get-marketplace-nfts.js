@@ -17,6 +17,7 @@ export default async (req, res) => {
           const returnObj = { ...n.toObject() };
 
           returnObj.mints = returnObj.mints.length;
+          delete returnObj.identity_access_key;
           delete returnObj.model_bnb_address;
 
           if (returnObj.blurhash) delete returnObj.image;
