@@ -217,8 +217,10 @@ const CreateModel = () => {
               />
 
               <small>
-                Please ensure you return to submit this form after you have
-                completed ID verification with passbase.
+                <b className="text-danger">
+                  Please ensure you return to submit this form after you have
+                  completed ID verification with passbase.
+                </b>
               </small>
               {/* <FormControl
                 type="file"
