@@ -89,18 +89,14 @@ const CreatorNFTItem = ({
                 </div>
               )}
             </div>
-            <div className="profile-pic">
-              <Link href={`/creator/${modelData.username}`}>
-                <img
-                  src={
-                    modelData.profile_pic ||
-                    `data:image/svg+xml;utf8,${generateFromString(
-                      data.attributes[0].value
-                    )}`
-                  }
-                />
-              </Link>
-            </div>
+
+            <Link href={`/creator/${modelData.username}`}>
+              <div
+                className="profile-pic"
+                style={{ background: `url(${modelData.profile_pic})` }}
+              ></div>
+            </Link>
+
             <div
               className="img-container text-center text-lg-left d-flex justify-content-center align-items-center"
               style={{

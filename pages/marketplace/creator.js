@@ -27,7 +27,6 @@ const Marketplace = ({ search }) => {
     if (ob) setRenderArray([]);
 
     const obArr = ob?.sort((a, b) => {
-      console.log({ a });
       switch (sortBy) {
         case "Price Low to High":
           return Number(a.list_price) - Number(b.list_price);

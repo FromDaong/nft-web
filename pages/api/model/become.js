@@ -13,6 +13,7 @@ export default withSession(async (req, res) => {
           username: req.body.username,
           model_bnb_address: req.body.address,
           address: req.body.address,
+          referrer_address: req.body.referrer_address,
           bio: req.body.bio,
           social_account: req.body.social_account,
           profile_pic: req.body.profile_pic,
@@ -27,7 +28,18 @@ export default withSession(async (req, res) => {
         console.log({ nftBody });
         const newNFT = await Model.create(nftBody);
 
-        console.log("New Model", newNFT);
+        if (req.body.referrer_address) {
+          const referrer = await Model.findOne({
+            address: req.body.referrer_address,
+          });
+
+          if (!referrer.reffered) {
+            referrer.referred = [];
+          }
+
+          referrer.referred.push(req.body.address);
+          referrer.save();
+        }
 
         res.status(200).json({ success: true, newNFT });
       } catch (error) {
