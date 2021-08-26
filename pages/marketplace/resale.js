@@ -81,11 +81,6 @@ const Marketplace = ({ search }) => {
     }
   }, [initOrderBookArray]);
 
-  useEffect(() => {
-    updateObArr();
-    forceUpdate();
-  }, [sortBy, storedArray, searchFilter]);
-
   const jsonBody = { nfts: orderBookArray.map((o) => o.nftId) };
 
   const fetcher = (url) =>
@@ -171,6 +166,12 @@ const Marketplace = ({ search }) => {
     items.push(<Pagination.Next onClick={setNextPage} />);
   if (currentPage !== totalPages - 1)
     items.push(<Pagination.Last onClick={() => setPage(totalPages)} />);
+
+  useEffect(() => {
+    setPage(1);
+    updateObArr();
+    forceUpdate();
+  }, [sortBy, storedArray, searchFilter]);
 
   return (
     <AnimateSharedLayout>
@@ -269,7 +270,7 @@ const Marketplace = ({ search }) => {
                 style={{ minHeight: 500 }}
                 className="d-flex justify-content-center align-items-center w-100"
               >
-                <Loading custom="Loading... This may take upto a few minutes, please ensure your wallet is connected." />
+                <Loading custom="Loading... First load may take upto a few minutes, please ensure your wallet is connected." />
               </div>
             ) : (
               <>
