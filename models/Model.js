@@ -35,6 +35,9 @@ const ModelSchema = new mongoose.Schema(
     rejected: {
       type: Boolean,
     },
+    hidden: {
+      type: Boolean,
+    },
     identity_access_key: {
       type: String,
     },
