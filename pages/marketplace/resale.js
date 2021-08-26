@@ -1,3 +1,4 @@
+import useSWR from "swr";
 import { useWallet } from "use-wallet";
 import Dropdown from "react-bootstrap/Dropdown";
 import Pagination from "react-bootstrap/Pagination";
@@ -42,7 +43,6 @@ const Marketplace = ({ search }) => {
     if (ob) setOrderBookArray([]);
 
     const obArr = ob?.sort((a, b) => {
-      console.log({ a });
       switch (sortBy) {
         case "Price Low to High":
           return Number(a.price) - Number(b.price);
@@ -73,7 +73,6 @@ const Marketplace = ({ search }) => {
     ) {
       updateObArr();
       if (initOrderBookArray.length > 1) {
-        console.log("updated local storage");
         localStorage.setItem(
           "orderBookArray",
           JSON.stringify(initOrderBookArray)
@@ -87,6 +86,49 @@ const Marketplace = ({ search }) => {
     forceUpdate();
   }, [sortBy, storedArray, searchFilter]);
 
+  const jsonBody = { nfts: orderBookArray.map((o) => o.nftId) };
+
+  const fetcher = (url) =>
+    fetch(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(jsonBody),
+    }).then((a) => a.json());
+
+  const { data: populatedNftData } = useSWR(
+    orderBookArray && orderBookArray.length > 0 && jsonBody
+      ? `/api/nft/get-many-nfts`
+      : null,
+    fetcher
+  );
+
+  const renderArray =
+    orderBookArray &&
+    populatedNftData &&
+    orderBookArray
+      .map((orderBookNft) => {
+        const nftResult = populatedNftData.find(
+          (x) => x.id === orderBookNft.nftId
+        );
+
+        if (!nftResult) return undefined;
+
+        if (
+          !nftResult.attributes[0].value
+            .toLowerCase()
+            .includes(searchFilter.toLowerCase()) &&
+          !nftResult.name.toLowerCase().includes(searchFilter.toLowerCase())
+        ) {
+          return undefined;
+        } else return { ...orderBookNft, ...nftResult };
+      })
+      .filter((e) => e);
+
+  console.log({ renderArray });
+
   const {
     currentPage,
     totalPages,
@@ -97,7 +139,7 @@ const Marketplace = ({ search }) => {
     startIndex,
     endIndex,
   } = usePagination({
-    totalItems: orderBookArray.length,
+    totalItems: renderArray ? renderArray.length : 0,
     initialPageSize: 24,
     initialPage: 1,
   });
@@ -222,7 +264,7 @@ const Marketplace = ({ search }) => {
         <br />
         <div className="container fluid">
           <div className="nft-list row mt-5">
-            {!orderBookArray || orderBookArray.length === 0 ? (
+            {!renderArray || renderArray.length === 0 ? (
               <div
                 style={{ minHeight: 500 }}
                 className="d-flex justify-content-center align-items-center w-100"
@@ -231,9 +273,10 @@ const Marketplace = ({ search }) => {
               </div>
             ) : (
               <>
-                {orderBookArray.slice(startIndex, endIndex).map((o, i) => (
+                {renderArray.slice(startIndex, endIndex).map((o, i) => (
                   <Order
                     searchFilter={searchFilter}
+                    nftResult={o}
                     index={i}
                     order={o}
                     account={account}
