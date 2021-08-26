@@ -34,7 +34,7 @@ export default async (req, res) => {
             .status(400)
             .json({ success: false, error: "nft not found" });
 
-        console.log("call api", id);
+        // console.log("call api", id);
         // it's safe to use .toNumber on these BigNumbers here because supply should always be in a valid int32 range
         const maxSupply = (
           await getNftMaxSupply(treatNFTMinter, id)

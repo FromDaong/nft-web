@@ -571,7 +571,6 @@ export const getResaleOrder = async (
   const rO = await treatMarketplaceContract.methods
     .orderBook(nftId, seller)
     .call();
-  console.log({ rO });
   return rO;
 };
 
