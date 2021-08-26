@@ -1,5 +1,6 @@
 import { useWallet } from "use-wallet";
 import Dropdown from "react-bootstrap/Dropdown";
+import Pagination from "react-bootstrap/Pagination";
 import Button from "react-bootstrap/Button";
 import React, { useState, useEffect, useReducer } from "react";
 import useGetAllOpenOrders from "../../hooks/useGetAllOpenOrders";
@@ -13,6 +14,7 @@ import { Order } from "../../components/MarketplaceListItem";
 import { motion, AnimateSharedLayout } from "framer-motion";
 import { forceCheck } from "react-lazyload";
 import Link from "next/link";
+import { usePagination } from "react-use-pagination";
 
 const Marketplace = ({ search }) => {
   const maxId = useGetMaxIdForSale();
@@ -83,7 +85,50 @@ const Marketplace = ({ search }) => {
   useEffect(() => {
     updateObArr();
     forceUpdate();
-  }, [sortBy, storedArray]);
+  }, [sortBy, storedArray, searchFilter]);
+
+  const {
+    currentPage,
+    totalPages,
+    setPage,
+    setPageSize,
+    setNextPage,
+    setPreviousPage,
+    startIndex,
+    endIndex,
+  } = usePagination({
+    totalItems: orderBookArray.length,
+    initialPageSize: 24,
+    initialPage: 1,
+  });
+
+  const startNumber = currentPage - 5 > 1 ? currentPage - 5 : 1;
+  const endNumber = currentPage + 5 < totalPages ? currentPage + 5 : totalPages;
+
+  let items = [];
+  if (currentPage !== 1)
+    items.push(<Pagination.First onClick={() => setPage(1)} />);
+  if (currentPage !== 1)
+    items.push(<Pagination.Prev onClick={setPreviousPage} />);
+
+  for (let number = startNumber; number < endNumber; number++) {
+    items.push(
+      <Pagination.Item
+        key={number}
+        active={number === currentPage}
+        onClick={() => {
+          setPageSize(25);
+          setPage(number);
+        }}
+      >
+        {number}
+      </Pagination.Item>
+    );
+  }
+  if (currentPage !== totalPages - 1)
+    items.push(<Pagination.Next onClick={setNextPage} />);
+  if (currentPage !== totalPages - 1)
+    items.push(<Pagination.Last onClick={() => setPage(totalPages)} />);
 
   return (
     <AnimateSharedLayout>
@@ -176,24 +221,7 @@ const Marketplace = ({ search }) => {
         </div>
         <br />
         <div className="container fluid">
-          <motion.div
-            layout
-            className="nft-list row mt-5"
-            animate="show"
-            exit="hidden"
-            initial="hidden"
-            variants={{
-              show: { opacity: 1 },
-              hidden: {
-                transition: {
-                  staggerChildren: 0.02,
-                  staggerDirection: -1,
-                  when: "afterChildren",
-                  opacity: 0,
-                },
-              },
-            }}
-          >
+          <div className="nft-list row mt-5">
             {!orderBookArray || orderBookArray.length === 0 ? (
               <div
                 style={{ minHeight: 500 }}
@@ -203,7 +231,7 @@ const Marketplace = ({ search }) => {
               </div>
             ) : (
               <>
-                {orderBookArray.map((o, i) => (
+                {orderBookArray.slice(startIndex, endIndex).map((o, i) => (
                   <Order
                     searchFilter={searchFilter}
                     index={i}
@@ -218,7 +246,11 @@ const Marketplace = ({ search }) => {
                 ))}
               </>
             )}
-          </motion.div>
+          </div>
+
+          <div className="d-flex justify-content-center">
+            <Pagination>{items}</Pagination>
+          </div>
         </div>
       </motion.main>
     </AnimateSharedLayout>
