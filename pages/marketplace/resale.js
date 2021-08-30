@@ -16,6 +16,7 @@ import { motion, AnimateSharedLayout } from "framer-motion";
 import { forceCheck } from "react-lazyload";
 import Link from "next/link";
 import { usePagination } from "react-use-pagination";
+import BigNumber from "bignumber.js";
 
 const Marketplace = ({ search }) => {
   const maxId = useGetMaxIdForSale();
@@ -45,9 +46,13 @@ const Marketplace = ({ search }) => {
     const obArr = ob?.sort((a, b) => {
       switch (sortBy) {
         case "Price Low to High":
-          return Number(a.price) - Number(b.price);
+          return (
+            Number(new BigNumber(a.price)) - Number(new BigNumber(b.price))
+          );
         case "Price High to Low":
-          return Number(b.price) - Number(a.price);
+          return (
+            Number(new BigNumber(b.price)) - Number(new BigNumber(a.price))
+          );
         default:
           return new Date(+b.listDate * 1000) - new Date(+a.listDate * 1000);
       }
@@ -135,17 +140,16 @@ const Marketplace = ({ search }) => {
     endIndex,
   } = usePagination({
     totalItems: renderArray ? renderArray.length : 0,
-    initialPageSize: 24,
-    initialPage: 1,
+    initialPageSize: 10,
   });
 
-  const startNumber = currentPage - 5 > 1 ? currentPage - 5 : 1;
+  const startNumber = currentPage - 5 > 0 ? currentPage - 5 : 0;
   const endNumber = currentPage + 5 < totalPages ? currentPage + 5 : totalPages;
 
   let items = [];
-  if (currentPage !== 1)
-    items.push(<Pagination.First onClick={() => setPage(1)} />);
-  if (currentPage !== 1)
+  if (currentPage !== 0)
+    items.push(<Pagination.First onClick={() => setPage(0)} />);
+  if (currentPage !== 0)
     items.push(<Pagination.Prev onClick={setPreviousPage} />);
 
   for (let number = startNumber; number < endNumber; number++) {
@@ -158,7 +162,7 @@ const Marketplace = ({ search }) => {
           setPage(number);
         }}
       >
-        {number}
+        {number + 1}
       </Pagination.Item>
     );
   }
@@ -168,9 +172,9 @@ const Marketplace = ({ search }) => {
     items.push(<Pagination.Last onClick={() => setPage(totalPages)} />);
 
   useEffect(() => {
-    setPage(1);
     updateObArr();
     forceUpdate();
+    setPage(0);
   }, [sortBy, storedArray, searchFilter]);
 
   return (
