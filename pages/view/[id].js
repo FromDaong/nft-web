@@ -275,7 +275,8 @@ const ViewNFT = ({ nftData, image, account }) => {
                   nftData.max_supply &&
                   nftData.max_supply < 100000 && (
                     <div className="edition mb-2">
-                      Remaining Supply: {remainingNfts.toNumber()} / Max Supply:{" "}
+                      Remaining Supply:{" "}
+                      {remainingNfts && remainingNfts.toNumber()} / Max Supply:{" "}
                       {nftData.maxSupply}
                     </div>
                   )}
