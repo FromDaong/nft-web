@@ -63,6 +63,10 @@ export const getTreatMarketplaceContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treatMarketplace;
 };
 
+export const getTreatMarketReaderContract = (treat) => {
+  return treat && treat.contracts && treat.contracts.treatMarketReader;
+};
+
 export const getTreatMarketplaceAddress = (treat) => {
   return (
     treat &&
@@ -586,4 +590,75 @@ export const getRemainingBalanceForOrder = async (
 
 export const getMaxIdForSale = async (treatMarketplaceContract) => {
   return await treatMarketplaceContract.methods.maxTokenId().call();
+};
+
+export const getNftRangeBalance = async (
+  treatMarketReaderContract,
+  account,
+  startNftId,
+  endNftId
+) => {
+  try {
+    const amount = await treatMarketReaderContract.methods
+      .readNftRangeBalance(account, startNftId, endNftId)
+      .call();
+    return new BigNumber(amount);
+  } catch {
+    return new BigNumber(0);
+  }
+};
+
+export const getAllOrdersForSeller = async (
+  treatMarketReaderContract,
+  seller
+) => {
+  try {
+    const orders = await treatMarketReaderContract.methods
+      .readAllOrdersForSeller(seller)
+      .call();
+    console.log({ rawOrders: orders });
+    return orders.map((o) => parseInt(o));
+  } catch (err) {
+    console.error(`get orders for seller failed: ${err}`);
+    return [];
+  }
+};
+
+export const getAllOrdersForNft = async (treatMarketReaderContract, nftId) => {
+  try {
+    const orders = await treatMarketReaderContract.methods
+      .readAllOrdersForNft(nftId)
+      .call();
+    console.log({ rawOrders: orders });
+    return orders.map((o) => parseInt(o));
+  } catch (err) {
+    console.error(`get orders for seller failed: ${err}`);
+    return [];
+  }
+};
+
+export const getOrdersInfoForNftRange = async (
+  treatMarketReaderContract,
+  startNftId,
+  endNftId
+) => {
+  try {
+    const orders = await treatMarketReaderContract.methods
+      .readOrderPricesForNftRange(startNftId, endNftId)
+      .call();
+    // console.log({ rawOrders: orders });
+
+    const x = orders.sellers.map((o, i) => {
+      return {
+        seller: o,
+        price: orders.prices[i],
+        nftId: Number(orders.nftIds[i]),
+      };
+    });
+    return x;
+    // return orders.map((o) => parseInt(o));
+  } catch (err) {
+    console.error(`get orders for seller failed: ${err}`);
+    return [];
+  }
 };
