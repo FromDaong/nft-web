@@ -646,17 +646,16 @@ export const getOrdersInfoForNftRange = async (
     const orders = await treatMarketReaderContract.methods
       .readOrderPricesForNftRange(startNftId, endNftId)
       .call();
-    // console.log({ rawOrders: orders });
 
     const x = orders.sellers.map((o, i) => {
       return {
         seller: o,
         price: orders.prices[i],
         nftId: Number(orders.nftIds[i]),
+        listDate: orders.listDates[i],
       };
     });
     return x;
-    // return orders.map((o) => parseInt(o));
   } catch (err) {
     console.error(`get orders for seller failed: ${err}`);
     return [];
