@@ -61,6 +61,9 @@ export const contractAddresses = {
   treatTradeIn: {
     56: "0xE0f5df4915242E4C4C06D2964Eda53C448fec442",
   },
+  treatMarketReader: {
+    56: "0x407e9F630B8163169E047D8eEb688fb10c714fb1",
+  },
 };
 
 // Trigger deploy
