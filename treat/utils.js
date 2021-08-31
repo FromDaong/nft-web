@@ -592,7 +592,12 @@ export const getMaxIdForSale = async (treatMarketplaceContract) => {
   return await treatMarketplaceContract.methods.maxTokenId().call();
 };
 
-export const getNftRangeBalance = async (treatMarketReaderContract, account, startNftId, endNftId) => {
+export const getNftRangeBalance = async (
+  treatMarketReaderContract,
+  account,
+  startNftId,
+  endNftId
+) => {
   try {
     const amount = await treatMarketReaderContract.methods
       .readNftRangeBalance(account, startNftId, endNftId)
@@ -619,10 +624,7 @@ export const getAllOrdersForSeller = async (
   }
 };
 
-export const getAllOrdersForNft = async (
-  treatMarketReaderContract,
-  nftId
-) => {
+export const getAllOrdersForNft = async (treatMarketReaderContract, nftId) => {
   try {
     const orders = await treatMarketReaderContract.methods
       .readAllOrdersForNft(nftId)
@@ -642,10 +644,19 @@ export const getOrdersInfoForNftRange = async (
 ) => {
   try {
     const orders = await treatMarketReaderContract.methods
-      .readOrdersForNftRange(startNftId, endNftId)
+      .readOrderPricesForNftRange(startNftId, endNftId)
       .call();
-    console.log({ rawOrders: orders });
-    return orders.map((o) => parseInt(o));
+    // console.log({ rawOrders: orders });
+
+    const x = orders.sellers.map((o, i) => {
+      return {
+        seller: o,
+        price: orders.prices[i],
+        nftId: Number(orders.nftIds[i]),
+      };
+    });
+    return x;
+    // return orders.map((o) => parseInt(o));
   } catch (err) {
     console.error(`get orders for seller failed: ${err}`);
     return [];
