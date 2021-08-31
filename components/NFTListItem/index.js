@@ -40,7 +40,6 @@ const NFTListItem = ({
   modelData,
 }) => {
   const [image, setBase64Image] = useState();
-  console.log({ data });
 
   useEffect(() => {
     (async () => {

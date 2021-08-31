@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import {
   getTreatMarketplaceContract,
+  getTreatMarketReaderContract,
   getResaleOrder,
   getOpenOrdersForNft,
+  getOrdersInfoForNftRange,
 } from "../treat/utils";
 import useTreat from "./useTreat";
 
@@ -11,29 +13,44 @@ const useGetAllOpenOrders = (maxId: number) => {
 
   const treat = useTreat();
   const treatMarketplaceContract = getTreatMarketplaceContract(treat);
+  const treatMarketReaderContract = getTreatMarketReaderContract(treat);
 
   useEffect(() => {
     async function fetchAllOrders() {
       const sales = [];
+      const rangeArray = [];
+
       for (let i = 1; i <= maxId; i++) {
-        const sellers = await getOpenOrdersForNft(treatMarketplaceContract, i);
-        for (let s = 0; s < sellers.length; s++) {
-          const seller = sellers[s];
-          const order = await getResaleOrder(
-            treatMarketplaceContract,
-            i,
-            seller
-          );
-          if (!sales[i]) {
-            sales[i] = [];
-          }
-          if (order) {
-            sales[i].push({ ...order, mintId: order.nftId, nftId: i });
-          }
+        if (i % 5 === 0) {
+          rangeArray.push({
+            min: i - 5,
+            max: i,
+          });
         }
       }
 
-      setOrderBook(sales);
+      const orders = await Promise.all(
+        rangeArray.map((a) => {
+          return new Promise(async (resolve, reject) => {
+            const order = await getOrdersInfoForNftRange(
+              treatMarketReaderContract,
+              a.min,
+              a.max
+            );
+            resolve(order);
+          });
+        })
+      );
+
+      const singleArray = [].concat(...orders);
+
+      let ids = singleArray.map((o) => o.nftId);
+      let filtered = singleArray.filter(
+        ({ id }, index) => !ids.includes(id, index + 1)
+      );
+
+      console.log({ finalArrayLen: filtered });
+      setOrderBook(filtered);
     }
 
     fetchAllOrders();

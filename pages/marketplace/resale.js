@@ -66,7 +66,8 @@ const Marketplace = ({ search }) => {
     (async () => {
       if (orderBookArray.length === 0) {
         const storedArrayGrab = await localStorage.getItem("orderBookArray");
-        await setStoredArray(JSON.parse(storedArrayGrab));
+        console.log({ storedArrayGrab });
+        // await setStoredArray(JSON.parse(storedArrayGrab));
       }
     })();
   }, []);
@@ -224,13 +225,22 @@ const Marketplace = ({ search }) => {
       >
         <Hero
           title={"Resale Marketplace"}
-          subtitle="The brand new official Treat resale marketplaces!"
+          subtitle={`The brand new official Treat resale marketplaces!`}
           additionalContent={
-            <Link href="/marketplace/creator">
-              <Button variant="primary w-sm-100">
-                <b>{"Go to The Sweet Shop"}</b>
-              </Button>
-            </Link>
+            <>
+              <p
+                className="totw-secondary-text"
+                style={{ maxWidth: "none", marginTop: -12, fontSize: "0.95em" }}
+              >
+                Number of active resale listings:{" "}
+                {renderArray ? renderArray.length : "Loading..."}
+              </p>
+              <Link href="/marketplace/creator">
+                <Button variant="primary w-sm-100">
+                  <b>{"Go to The Sweet Shop"}</b>
+                </Button>
+              </Link>
+            </>
           }
         />
         <div className="full-width-search white-tp-bg p-3 d-flex">
@@ -272,7 +282,7 @@ const Marketplace = ({ search }) => {
                 style={{ minHeight: 500 }}
                 className="d-flex justify-content-center align-items-center w-100"
               >
-                <Loading custom="Loading... First load may take upto a few minutes, please ensure your wallet is connected." />
+                <Loading custom="Loading data from the blockchain... Please ensure your wallet is connected." />
               </div>
             ) : (
               <>
@@ -283,7 +293,7 @@ const Marketplace = ({ search }) => {
                     index={i}
                     order={o}
                     account={account}
-                    key={`${o.nftId}_${o.seller}`}
+                    key={`${o.nftId}_${o.seller}_${o.price}_${i}`}
                     setPendingModal={setShowPendingModal}
                     openCompleteModal={() => setShowCompleteModal(true)}
                     setCancelOrderData={setCancelOrderData}
