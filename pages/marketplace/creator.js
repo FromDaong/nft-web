@@ -1,6 +1,7 @@
 import { useWallet } from "use-wallet";
 import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
+import Pagination from "react-bootstrap/Pagination";
 import useSWR from "swr";
 import React, { useState, useEffect, useReducer } from "react";
 import Loading from "../../components/Loading";
@@ -9,6 +10,7 @@ import Hero from "../../components/Hero";
 import { Order } from "../../components/CreatorMarketplaceListItem";
 import { motion, AnimateSharedLayout } from "framer-motion";
 import { forceCheck } from "react-lazyload";
+import { usePagination } from "react-use-pagination";
 
 const Marketplace = ({ search }) => {
   const [_, forceUpdate] = useReducer((x) => x + 1, 0);
@@ -16,7 +18,7 @@ const Marketplace = ({ search }) => {
   const [cancelOrderData, setCancelOrderData] = useState(null);
   const [purchaseOrderData, setPurchaseOrderData] = useState(null);
   const [showPendingModal, setShowPendingModal] = useState(null);
-  const [renderArray, setRenderArray] = useState(null);
+  const [nftDataArray, setNftDataArray] = useState([]);
   const [searchFilter, setSearchFilter] = useState(search || "");
   const [sortBy, setSortBy] = useState("Recent");
   const { account } = useWallet();
@@ -24,7 +26,7 @@ const Marketplace = ({ search }) => {
   const updateObArr = () => {
     const ob = orderBookArray;
 
-    if (ob) setRenderArray([]);
+    if (ob) setNftDataArray([]);
 
     const obArr = ob?.sort((a, b) => {
       switch (sortBy) {
@@ -37,19 +39,71 @@ const Marketplace = ({ search }) => {
       }
     });
 
-    if (obArr) setRenderArray(obArr);
+    if (obArr) setNftDataArray(obArr);
     forceCheck();
   };
 
-  useEffect(() => {
-    updateObArr();
-    forceUpdate();
-  }, [sortBy, showPendingModal]);
+  const finalArray = nftDataArray
+    .map((orderBookNft) => {
+      console.log({ orderBookNft });
+      if (
+        !orderBookNft.attributes[0].value
+          .toLowerCase()
+          .includes(searchFilter.toLowerCase()) &&
+        !orderBookNft.name.toLowerCase().includes(searchFilter.toLowerCase())
+      ) {
+        return undefined;
+      } else return orderBookNft;
+    })
+    .filter((e) => e);
+
+  const {
+    currentPage,
+    totalPages,
+    setPage,
+    setPageSize,
+    setNextPage,
+    setPreviousPage,
+    startIndex,
+    endIndex,
+  } = usePagination({
+    totalItems: finalArray ? finalArray.length : 0,
+    initialPageSize: 25,
+  });
 
   useEffect(() => {
     updateObArr();
     forceUpdate();
-  }, [orderBookArray]);
+    setPage(0);
+  }, [orderBookArray, sortBy, showPendingModal]);
+
+  const startNumber = currentPage - 5 > 0 ? currentPage - 5 : 0;
+  const endNumber = currentPage + 5 < totalPages ? currentPage + 5 : totalPages;
+
+  let items = [];
+  if (currentPage !== 0)
+    items.push(<Pagination.First onClick={() => setPage(0)} />);
+  if (currentPage !== 0)
+    items.push(<Pagination.Prev onClick={setPreviousPage} />);
+
+  for (let number = startNumber; number < endNumber; number++) {
+    items.push(
+      <Pagination.Item
+        key={number}
+        active={number === currentPage}
+        onClick={() => {
+          setPageSize(25);
+          setPage(number);
+        }}
+      >
+        {number + 1}
+      </Pagination.Item>
+    );
+  }
+  if (currentPage !== totalPages - 1)
+    items.push(<Pagination.Next onClick={setNextPage} />);
+  if (currentPage !== totalPages - 1)
+    items.push(<Pagination.Last onClick={() => setPage(totalPages)} />);
 
   return (
     <AnimateSharedLayout>
@@ -127,7 +181,7 @@ const Marketplace = ({ search }) => {
               },
             }}
           >
-            {!renderArray ? (
+            {!finalArray ? (
               <div
                 style={{ minHeight: 500 }}
                 className="d-flex justify-content-center align-items-center w-100"
@@ -136,9 +190,10 @@ const Marketplace = ({ search }) => {
               </div>
             ) : (
               <>
-                {renderArray.map((o, i) => (
+                {finalArray.slice(startIndex, endIndex).map((o, i) => (
                   <Order
                     searchFilter={searchFilter}
+                    nftResult={o}
                     index={i}
                     order={o}
                     account={account}
@@ -152,6 +207,10 @@ const Marketplace = ({ search }) => {
               </>
             )}
           </motion.div>
+
+          <div className="d-flex justify-content-center">
+            <Pagination>{items}</Pagination>
+          </div>
         </div>
       </motion.main>
     </AnimateSharedLayout>
