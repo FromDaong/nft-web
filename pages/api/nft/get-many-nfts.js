@@ -27,7 +27,6 @@ export default async (req, res) => {
   switch (method) {
     case "POST":
       try {
-        console.log(req.body.nfts, 123);
         if (!req.body.nfts) return res.status(200).json([]);
 
         let NFTres = await NFT.find({ id: { $in: req.body.nfts } });

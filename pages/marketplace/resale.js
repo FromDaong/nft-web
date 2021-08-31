@@ -127,8 +127,6 @@ const Marketplace = ({ search }) => {
       })
       .filter((e) => e);
 
-  console.log({ renderArray });
-
   const {
     currentPage,
     totalPages,

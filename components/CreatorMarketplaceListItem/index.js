@@ -17,15 +17,6 @@ export const Order = ({
 
   const isOwner = !!account && account.toUpperCase() === data.model_bnb_address;
 
-  if (
-    !data ||
-    (!data.attributes[0].value
-      .toLowerCase()
-      .includes(searchFilter.toLowerCase()) &&
-      !data.name.toLowerCase().includes(searchFilter.toLowerCase()))
-  )
-    return <></>;
-
   return (
     <div className="col-md-4">
       <LazyLoad height={400} offset={400} once>
