@@ -26,8 +26,9 @@ const WalletModal = ({ show, handleClose }) => {
   const { connect, error } = useWallet();
   const [bscModalShow, setBscModalShow] = useState(false);
 
-  const connectToWallet = (provider) => {
-    connect(provider);
+  const connectToWallet = async (provider) => {
+    await connect(provider);
+    console.log({ provider });
     localStorage.setItem("connectedBefore", true);
   };
 
