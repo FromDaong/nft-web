@@ -67,6 +67,9 @@ export const contractAddresses = {
   treatSupscriptions: {
     56: "0x6D66571fF0c347B84aA5a3104af6BE4889Bd9877",
   },
+  subscriberMart: {
+    56: "0x16d68Fe18D8b7dFF8A8626c90AE5d2d949A7C7d5",
+  }
 };
 
 // Trigger deploy

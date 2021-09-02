@@ -51,6 +51,10 @@ export const getTreatMartContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treatMart;
 };
 
+export const getSubscriberMartContract = (treat) => {
+  return treat && treat.contracts && treat.contracts.subscriberMart;
+};
+
 export const getCreatorMartContract = (treat) => {
   return treat && treat.contracts && treat.contracts.creatorMart;
 };
@@ -95,6 +99,12 @@ export const getFreeTreatsContract = (treat) => {
 
 export const getTreatNftCost = async (treatMartContract, nftId) => {
   return new BigNumber(await treatMartContract.methods.nftCosts(nftId).call());
+};
+
+export const getSubscriberNftCost = async (subscriberMartContract, nftId) => {
+  return new BigNumber(
+    await subscriberMartContract.methods.nftCosts(nftId).call()
+  );
 };
 
 export const getCreatorNftCost = async (creatorMartContract, nftId) => {
@@ -180,6 +190,17 @@ export const mintNft = async (treatmartContract, account, nftId, nftCost) => {
   }
 };
 
+// user redeems nft
+export const mintSubNft = async (subscriberMartContract, account, nftId, nftCost) => {
+  try {
+    return await subscriberMartContract.methods
+      .redeem(nftId)
+      .send({ from: account, value: nftCost });
+  } catch (e) {
+    return undefined;
+  }
+};
+
 export const mintCreatorNft = async (
   creatorMartContract,
   account,
@@ -190,6 +211,22 @@ export const mintCreatorNft = async (
     return await creatorMartContract.methods
       .redeem(nftId)
       .send({ from: account, value: nftCost });
+  } catch (e) {
+    return undefined;
+  }
+};
+
+export const mintManySubNft = async (
+  subscriberMartContract,
+  account,
+  nftId,
+  nftCost,
+  amount
+) => {
+  try {
+    return await subscriberMartContract.methods
+      .redeemMultiple(nftId, amount)
+      .send({ from: account, value: nftCost * amount });
   } catch (e) {
     return undefined;
   }
@@ -232,6 +269,27 @@ export const createAndAddNFTs = async (
   }
 };
 
+export const createAndAddSubscriberNFTs = async (
+  subscriberMartContract,
+  account,
+  maxSupplys,
+  amounts,
+  isNotListedFlags,
+  hexData
+) => {
+  try {
+    console.log({ maxSupplys, amounts, hexData });
+    const result = await subscriberMartContract.methods
+      .createAndAddNFTs(maxSupplys, amounts, isNotListedFlags, hexData)
+      .send({ from: account, value: 0 });
+
+    return result.events.NFTCreatedAndAdded.returnValues;
+  } catch (e) {
+    console.log({ e });
+    return undefined;
+  }
+};
+
 export const createNFTs = async (
   creatorMinterHelperContract,
   account,
@@ -240,6 +298,21 @@ export const createNFTs = async (
   try {
     return await creatorMinterHelperContract.methods
       .createTreats(maxSupplys)
+      .send({ from: account, value: 0 });
+  } catch (e) {
+    return undefined;
+  }
+};
+
+export const addSubscriberNft = async (
+  subscriberMartContract,
+  account,
+  nftIds,
+  nftCosts
+) => {
+  try {
+    return await subscriberMartContract.methods
+      .addNFT(nftIds, nftCosts)
       .send({ from: account, value: 0 });
   } catch (e) {
     return undefined;
@@ -255,6 +328,20 @@ export const addCreatorNft = async (
   try {
     return await creatorMartContract.methods
       .addNFT(nftIds, nftCosts)
+      .send({ from: account, value: 0 });
+  } catch (e) {
+    return undefined;
+  }
+};
+
+export const addSubscriberFreeTreat = async (
+  subscriberMartContract,
+  account,
+  nftIds
+) => {
+  try {
+    return await subscriberMartContract.methods
+      .addGiveAwayTreat(nftIds, nftCosts)
       .send({ from: account, value: 0 });
   } catch (e) {
     return undefined;
@@ -290,6 +377,21 @@ export const mintFreeTreat = async (
   }
 };
 
+export const mintFreeSubscriberTreat = async (
+  subscriberMartContract,
+  account,
+  nftId,
+  nftCost
+) => {
+  try {
+    return await subscriberMartContract.methods
+      .redeemFreeTreat(nftId)
+      .send({ from: account, value: 0 });
+  } catch (e) {
+    return undefined;
+  }
+};
+
 export const mintFreeCreatorTreat = async (
   creatorMartContract,
   account,
@@ -308,6 +410,16 @@ export const mintFreeCreatorTreat = async (
 export const getSetIds = async (treatMartContract, setId) => {
   try {
     const txHash = await treatMartContract.methods.getSetIds(setId).call();
+    console.log(txHash);
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+};
+
+export const getSubscriberSetIds = async (subscriberMartContract, setId) => {
+  try {
+    const txHash = await subscriberMartContract.methods.getSetIds(setId).call();
     console.log(txHash);
   } catch (e) {
     console.error(e);
@@ -334,6 +446,15 @@ export const getSetPrice = async (treatMartContract, setId) => {
   }
 };
 
+export const getSubscriberSetPrice = async (subscriberMartContract, setId) => {
+  try {
+    return await subscriberMartContract.methods.nftSetCosts(setId).call();
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+};
+
 export const getCreatorSetPrice = async (creatorMartContract, setId) => {
   try {
     return await creatorMartContract.methods.nftSetCosts(setId).call();
@@ -352,6 +473,25 @@ export const redeemSet = async (
   console.log({ mintSetCost: setCost?.toString() });
   try {
     const txHash = await treatMartContract.methods.redeemSet(nftSetId).send({
+      from: account,
+      value: setCost,
+    });
+    console.log(txHash);
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+};
+
+export const redeemSubscriberSet = async (
+  subscriberMartContract,
+  account,
+  nftSetId,
+  setCost
+) => {
+  console.log({ mintSetCost: setCost?.toString() });
+  try {
+    const txHash = await subscriberMartContract.methods.redeemSet(nftSetId).send({
       from: account,
       value: setCost,
     });
@@ -424,6 +564,15 @@ export const getNftV1Balance = async (treatNFTMinterV1, account, nftId) => {
 export const getIsGiveAwayNft = async (creatorMart, nftId) => {
   try {
     return await creatorMart.methods.isGiveAwayCard(nftId).call();
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+};
+
+export const getIsGiveAwaySubscriberNft = async (subscriberMart, nftId) => {
+  try {
+    return await subscriberMart.methods.isGiveAwayCard(nftId).call();
   } catch (e) {
     console.error(e);
     return undefined;
