@@ -67,6 +67,10 @@ export const getTreatMarketReaderContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treatMarketReader;
 };
 
+export const getTreatSubscriptionContract = (treat) => {
+  return treat && treat.contracts && treat.contracts.treatSubscriptions;
+};
+
 export const getTreatMarketplaceAddress = (treat) => {
   return (
     treat &&
@@ -97,6 +101,72 @@ export const getCreatorNftCost = async (creatorMartContract, nftId) => {
   return new BigNumber(
     await creatorMartContract.methods.nftCosts(nftId).call()
   );
+};
+
+export const getSubCost = async (treatSubscriptionContract, creatorAddress) => {
+  return new BigNumber(
+    await treatSubscriptionContract.methods.creatorSubscriptionCost(creatorAddress).call()
+  );
+};
+
+export const isSubscribed = async (treatSubscriptionContract, creatorAddress) => {
+  return await treatSubscriptionContract.methods.getIsSubscribedNow(creatorAddress).call();
+};
+
+export const lockSub = async (treatSubscriptionContract, account, subscriberAddress) => {
+  try {
+    const result = await treatSubscriptionContract.methods
+      .lockSubscriber(subscriberAddress)
+      .send({ from: account, value: 0 });
+      return result.events.SubscriberLocked.returnValues;
+  } catch (e) {
+    return undefined;
+  }
+};
+
+export const unlockSub = async (treatSubscriptionContract, account, subscriberAddress) => {
+  try {
+    const result = await treatSubscriptionContract.methods
+      .unLockSubscriber(subscriberAddress)
+      .send({ from: account, value: 0 });
+      return result.events.SubscriberUnlocked.returnValues;
+  } catch (e) {
+    return undefined;
+  }
+};
+
+export const subscribeTo = async (treatSubscriptionContract, account, creatorAddress, subCost, totalSubUnits) => {
+  try {
+    const result = await treatSubscriptionContract.methods
+      .subscribe(creatorAddress, totalSubUnits)
+      .send({ from: account, value: subCost });
+      return result.events.Subscribed.returnValues;
+  } catch (e) {
+    return undefined;
+  }
+};
+
+export const createSub = async (treatSubscriptionContract, account, subCost) => {
+  try {
+    const result = await treatSubscriptionsContract.methods
+    //return await treatSubscriptionContract.methods
+      .createSubscription(subCost)
+      .send({ from: account, value: 0 });
+      return result.events.SubscriptionCreated.returnValues;
+  } catch (e) {
+    return undefined;
+  }
+};
+
+export const editSub = async (treatSubscriptionContract, account, subCost) => {
+  try {
+    const result = await treatSubscriptionContract.methods
+      .setSubscriptionCost(subCost)
+      .send({ from: account, value: 0 });
+      return result.events.SubscriptionEdited.returnValues;
+  } catch (e) {
+    return undefined;
+  }
 };
 
 // user redeems nft

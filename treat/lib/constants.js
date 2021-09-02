@@ -64,6 +64,9 @@ export const contractAddresses = {
   treatMarketReader: {
     56: "0xFa6C813B1f2e75019dDB81aB518108571c737B22",
   },
+  treatSupscriptions: {
+    56: "0x6D66571fF0c347B84aA5a3104af6BE4889Bd9877",
+  },
 };
 
 // Trigger deploy
