@@ -55,6 +55,9 @@ const SweetShopNFTs = ({ modelData, onRedeemSet, modelNFTs }) => {
                 <NFTListItem modelData={modelData} data={m} key={m.id} />
               </div>
             ))}
+        {modelNFTs.length === 0 && (
+          <div className="text-center w-100 mt-5">Empty</div>
+        )}
       </motion.div>
     </>
   );

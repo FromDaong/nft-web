@@ -9,8 +9,10 @@ import { useRouter } from "next/router";
 import { modelSetBundles } from "../../treat/lib/constants";
 import useGetTreatSetCost from "../../hooks/useGetTreatSetCost";
 import useRedeemSet from "../../hooks/useRedeemSet";
-import { ChevronLeft } from "react-bootstrap-icons";
+import { useWallet } from "use-wallet";
 import SweetShopNFTs from "../../components/CreatorPage/SweetShopNFTs";
+import SubscriptionNFTs from "../../components/CreatorPage/SubscriptionNFTs";
+import { Clipboard } from "react-bootstrap-icons";
 
 const ViewModelWrapper = ({ username }) => {
   const { data: res } = useSWR(`/api/model/${username}`);
@@ -79,7 +81,7 @@ const ViewModelWrapper = ({ username }) => {
             padding: 10,
           }}
         >
-          Loading...
+          Loading Creator...
         </h5>
         <Spinner
           animation="border"
@@ -87,7 +89,7 @@ const ViewModelWrapper = ({ username }) => {
           size="xl"
           style={{ marginTop: 5 }}
         >
-          <span className="sr-only">Loading...</span>
+          <span className="sr-only">Loading Creator...</span>
         </Spinner>
       </div>
     );
@@ -117,37 +119,62 @@ const ViewModel = ({
 }) => {
   const [selectedTab, setSelectedTab] = useState("NEW NFTs");
   const [otherTab, setOtherTab] = useState("OUT OF PRINT");
+  const [copied, setCopied] = useState(false);
   const [key, setKey] = useState("sub");
+  const { account } = useWallet();
 
   return (
     <div className="container">
       <div className="view-model white-tp-bg">
-        <div className="banner"></div>
+        <div
+          className="banner"
+          style={{ backgroundImage: `url(${modelData.banner_pic})` }}
+        ></div>
         <div className="profile-top-container col-md-12">
           <div
             style={{ backgroundImage: `url(${modelData.profile_pic})` }}
             className="profile-pic"
           />
           <div className="buttons">
-            <div className="mr-2">
-              <Button
-                className="px-4"
-                style={{
-                  marginTop: 15,
-                  width: "100%",
-                  borderRadius: 25,
-                  display: "inline-block",
-                }}
-              >
-                Edit Profile
-              </Button>
-            </div>
+            {account === modelData.address && (
+              <div className="mr-2">
+                <Link href="/creator-dashboard">
+                  <Button
+                    className="px-4"
+                    style={{
+                      marginTop: 15,
+                      width: "100%",
+                      borderRadius: 25,
+                      display: "inline-block",
+                    }}
+                  >
+                    Edit Profile
+                  </Button>
+                </Link>
+              </div>
+            )}
             <div>
               <Button
                 className="px-4"
                 style={{ marginTop: 15, width: "100%", borderRadius: 25 }}
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    `https://treatdao.com/creator/${modelData.username}`
+                  );
+                  setCopied(true);
+                }}
               >
-                Share
+                {copied ? (
+                  <>
+                    <Clipboard className="mb-1 mr-1" />
+                    Copied
+                  </>
+                ) : (
+                  <>
+                    <Clipboard className="mb-1 mr-1" />
+                    Copy URL
+                  </>
+                )}
               </Button>
             </div>
           </div>
@@ -170,9 +197,12 @@ const ViewModel = ({
               className="mb-3"
             >
               <Tab eventKey="sub" title="Subscription NFTs">
-                <div className="col-md-12">
-                  <>asd</>
-                </div>
+                <SubscriptionNFTs
+                  isSubscribed={false}
+                  modelNFTs={newNFTs}
+                  onRedeemSet={onRedeemSet}
+                  modelData={modelData}
+                />
               </Tab>
               <Tab eventKey="sweet" title="Sweet Shop NFTs">
                 <SweetShopNFTs
