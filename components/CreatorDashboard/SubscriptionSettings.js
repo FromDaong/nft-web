@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
-import toBuffer from "blob-to-buffer";
+import Web3 from "web3";
 import { Button, InputGroup, FormControl, Form } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/router";
 import Hero from "../../components/Hero";
-import Loading from "../../components/Loading";
+import BlankModal from "../../components/BlankModal";
+import useCreateSubscription from "../../hooks/useCreateSubscription";
 import { create } from "ipfs-http-client";
 import { useWallet } from "use-wallet";
 import { GearFill } from "react-bootstrap-icons";
@@ -14,10 +15,11 @@ import { GearFill } from "react-bootstrap-icons";
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
 const EditProfile = ({}) => {
+  const [showPendingModal, setShowPendingModal] = useState(null);
+  const [showCompleteModal, setShowCompleteModal] = useState(null);
   const router = useRouter();
   const { account } = useWallet();
   const { data: res } = useSWR(`/api/model/find-by-address/${account}`);
-  const [success, setSuccess] = useState(false);
 
   console.log({ res });
 
@@ -37,6 +39,9 @@ const EditProfile = ({}) => {
       SubmitToServer();
     },
   });
+
+  const weiPrice = Web3.utils.toWei((formik.values.price || 0).toString());
+  const { onCreateSubscription } = useCreateSubscription(weiPrice);
 
   const SubmitToServer = async () => {
     try {
@@ -68,35 +73,34 @@ const EditProfile = ({}) => {
     }
   };
 
-  const ipfsUpload = (file, field) => {
-    toBuffer(file, (err, buff) => {
-      console.log({ err, file });
-      if (err || !file) return;
-      client.add(buff).then((results) => {
-        console.log("=> IPFS Dropzone added: ", results);
-        formik.setFieldValue(
-          field,
-          `https://ipfs.infura.io/ipfs/${results.path}`
-        );
-      });
+  const setSubscriptionPrice = () => {
+    setShowPendingModal(true);
+    onCreateSubscription().then((s) => {
+      console.log({ s });
+      setShowPendingModal(false);
+      if (s) {
+        setShowCompleteModal(true);
+      }
     });
   };
 
-  console.log({ res });
-
-  if (success || (res && res.pending))
-    return (
-      <Hero
-        title="Your application has been submitted!"
-        subtitle="When approved you will see a creator dashboard at the top of the navigation bar.  You can check back in a few hours."
-      />
-    );
-
-  if (res && res.rejected)
-    return <Hero title="Your application has been rejected" />;
-
   return (
     <div className="white-tp-bg" style={{ minHeight: 400 }}>
+      <BlankModal
+        show={!!showPendingModal}
+        handleClose={() => setShowPendingModal(false)}
+        title={"Waiting for Transaction Confirmation ⌛"}
+        subtitle={
+          "Please confirm this transaction in your wallet and wait here for upto a few minutes for the transaction to confirm..."
+        }
+        noButton={true}
+        account={account}
+      />
+      <BlankModal
+        show={!!showCompleteModal}
+        handleClose={() => setShowCompleteModal(false)}
+        account={account}
+      />
       <div
         className="px-4 py-2 w-100 d-flex"
         style={{
@@ -131,7 +135,7 @@ const EditProfile = ({}) => {
             </div>
             <Button
               variant="primary w-100 mb-3"
-              onClick={formik.handleSubmit}
+              onClick={setSubscriptionPrice}
               type="submit"
             >
               Update Subscription Price
