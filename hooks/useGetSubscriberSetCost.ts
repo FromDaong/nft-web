@@ -14,14 +14,14 @@ const useGetSubscriberSetCost = (id: number) => {
   const treat = useTreat();
   const subscriberMartContract = getSubscriberMartContract(treat);
 
-  const fetchNftCost = useCallback(async () => {
+  const fetchSetCost = useCallback(async () => {
     const nftSetCost = await getSubscriberSetPrice(subscriberMartContract, id);
     setNftSetCost(new BigNumber(nftSetCost));
   }, [id, treat]);
 
   useEffect(() => {
     if (treat) {
-      fetchNftCost();
+      fetchSetCost();
     }
   }, [id, treat]);
 
