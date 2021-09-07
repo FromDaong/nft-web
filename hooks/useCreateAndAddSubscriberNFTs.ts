@@ -1,4 +1,7 @@
-import { getSubscriberMartContract, createAndAddSubscriberNFTs } from "../treat/utils";
+import {
+  getSubscriberMartContract,
+  createAndAddSubscriberNFTs,
+} from "../treat/utils";
 import { useCallback } from "react";
 import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";

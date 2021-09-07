@@ -17,6 +17,7 @@
 
     margin-bottom: -160px;
     background-size: cover;
+    background-position: center;
     background: #d3678d;
   }
 
@@ -38,10 +39,10 @@
     .profile-pic {
       width: 150px;
       height: 150px;
-      border-radius: 100%;
+      border-radius: 10px;
       background-size: cover;
       background-position: center;
-      border: 3.5px solid white;
+      border: 4.5px solid white;
     }
 
     .buttons {
@@ -111,6 +112,36 @@
 
   .nft-card {
     box-shadow: none !important;
+  }
+
+  .not-subscribed-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    max-width: 600px;
+    text-align: center;
+    margin: auto !important;
+    padding-top: 50px;
+
+    @media (max-width: 900px) {
+      padding-bottom: 75px;
+    }
+
+    .title {
+      font-weight: bolder;
+      font-size: 1.25em;
+    }
+
+    .bio {
+      margin-bottom: 15px;
+    }
+
+    .amount {
+      color: #d3678d;
+      margin-top: 5px;
+    }
   }
 }
 
