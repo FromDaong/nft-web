@@ -156,18 +156,6 @@ export const subscribeTo = async (treatSubscriptionContract, account, creatorAdd
   }
 };
 
-export const createSub = async (treatSubscriptionContract, account, subCost) => {
-  try {
-    const result = await treatSubscriptionsContract.methods
-    //return await treatSubscriptionContract.methods
-      .createSubscription(subCost)
-      .send({ from: account, value: 0 });
-      return result.events.SubscriptionCreated.returnValues;
-  } catch (e) {
-    return undefined;
-  }
-};
-
 export const editSub = async (treatSubscriptionContract, account, subCost) => {
   try {
     const result = await treatSubscriptionContract.methods
