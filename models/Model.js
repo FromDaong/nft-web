@@ -55,6 +55,9 @@ const ModelSchema = new mongoose.Schema(
       },
     ],
     subscription: {
+      price: {
+        type: Number,
+      },
       description: {
         type: String,
       },
