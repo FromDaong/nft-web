@@ -1,12 +1,9 @@
 import BigNumber from "bignumber.js";
 import { getTreatSubscriptionContract, getSubCost } from "../treat/utils";
-
-import { Contract } from "web3-eth-contract";
 import { useCallback, useEffect, useState } from "react";
-import useBlock from "./useBlock";
 import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";
-import bsc from "@binance-chain/bsc-use-wallet";
+import { getBalanceNumber } from "../utils/formatBalance";
 
 const useGetSubscriptionCost = (address: string) => {
   const [subscriptionCost, setSubscriptionCost] = useState(new BigNumber(0));
@@ -15,15 +12,16 @@ const useGetSubscriptionCost = (address: string) => {
   const subscriptionContract = getTreatSubscriptionContract(treat);
 
   const fetchSubCost = useCallback(async () => {
-    const subscriptionCost = await getSubCost(subscriptionContract, id);
+    const subscriptionCost = await getSubCost(subscriptionContract, address);
+    console.log({ subcriptionCostInitial: getBalanceNumber(subscriptionCost) });
     setSubscriptionCost(new BigNumber(subscriptionCost));
-  }, [id, treat]);
+  }, [address, treat]);
 
   useEffect(() => {
     if (treat) {
       fetchSubCost();
     }
-  }, [id, treat]);
+  }, [address, treat]);
 
   return subscriptionCost;
 };
