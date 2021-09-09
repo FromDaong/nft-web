@@ -7,7 +7,8 @@ import * as Yup from "yup";
 import { useRouter } from "next/router";
 import Hero from "../../components/Hero";
 import BlankModal from "../../components/BlankModal";
-import useCreateSubscription from "../../hooks/useCreateSubscription";
+import useEditSubscription from "../../hooks/useEditSubscription";
+import useGetSubscriptionCost from "../../hooks/useGetSubscriptionCost";
 import { create } from "ipfs-http-client";
 import { useWallet } from "use-wallet";
 import { GearFill } from "react-bootstrap-icons";
@@ -19,14 +20,13 @@ const EditProfile = ({}) => {
   const [showCompleteModal, setShowCompleteModal] = useState(null);
   const router = useRouter();
   const { account } = useWallet();
+  const subscriptionCost = useGetSubscriptionCost(account);
   const { data: res } = useSWR(`/api/model/find-by-address/${account}`);
-
-  console.log({ res });
 
   const formik = useFormik({
     initialValues: {
       enabled: res.subscription && res.subscription.enabled,
-      price: res.subscription && res.subscription.price,
+      price: subscriptionCost,
       description: res.subscription && res.subscription.description,
     },
     validateOnChange: false,
@@ -41,7 +41,7 @@ const EditProfile = ({}) => {
   });
 
   const weiPrice = Web3.utils.toWei((formik.values.price || 0).toString());
-  const { onCreateSubscription } = useCreateSubscription(weiPrice);
+  const { onEditSubscription } = useEditSubscription(weiPrice);
 
   const SubmitToServer = async () => {
     try {
@@ -75,8 +75,7 @@ const EditProfile = ({}) => {
 
   const setSubscriptionPrice = () => {
     setShowPendingModal(true);
-    onCreateSubscription().then((s) => {
-      console.log({ s });
+    onEditSubscription().then((s) => {
       setShowPendingModal(false);
       if (s) {
         setShowCompleteModal(true);
@@ -125,13 +124,17 @@ const EditProfile = ({}) => {
         <Form onSubmit={formik.handleSubmit}>
           <div className="pb-4">
             <div className="pb-4">
-              <label>Subscription Price in BNB (30 days)</label>
+              <label>Subscription Price in BNB</label>
               <FormControl
                 placeholder="E.g. alexanbt"
-                name="username"
+                name="price"
                 value={formik.values.price}
                 onChange={formik.handleChange}
               />
+              <small>
+                Price for 30 day subscription. Use 0.00 BNB to deactivate
+                subscriptions.
+              </small>
             </div>
             <Button
               variant="primary w-100 mb-3"
