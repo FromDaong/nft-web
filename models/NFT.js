@@ -40,6 +40,9 @@ const NFTSchema = new mongoose.Schema(
     model_profile_pic: {
       type: String,
     },
+    subscription_nft: {
+      type: Boolean,
+    },
     attributes: [
       {
         trait_type: { type: String, required: true },

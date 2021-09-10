@@ -54,6 +54,11 @@ const ModelSchema = new mongoose.Schema(
         id: String,
       },
     ],
+    sub_nfts: [
+      {
+        id: String,
+      },
+    ],
     subscription: {
       price: {
         type: Number,

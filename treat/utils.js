@@ -123,10 +123,11 @@ export const getSubCost = async (treatSubscriptionContract, creatorAddress) => {
 
 export const isSubscribed = async (
   treatSubscriptionContract,
+  subscriberAddress,
   creatorAddress
 ) => {
   return await treatSubscriptionContract.methods
-    .getIsSubscribedNow(creatorAddress)
+    .getIsSubscribedNow(subscriberAddress, creatorAddress)
     .call();
 };
 
@@ -172,22 +173,6 @@ export const subscribeTo = async (
       .subscribe(creatorAddress, totalSubUnits)
       .send({ from: account, value: subCost });
     return result.events.Subscribed.returnValues;
-  } catch (e) {
-    return undefined;
-  }
-};
-
-export const createSub = async (
-  treatSubscriptionContract,
-  account,
-  subCost
-) => {
-  try {
-    const result = await treatSubscriptionContract.methods
-      //return await treatSubscriptionContract.methods
-      .createSubscription(subCost)
-      .send({ from: account, value: 0 });
-    return result.events.SubscriptionCreated.returnValues;
   } catch (e) {
     return undefined;
   }

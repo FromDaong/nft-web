@@ -3,6 +3,7 @@ import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import { Tabs, Tab } from "react-bootstrap";
 import useSWR from "swr";
+import Web3 from "web3";
 import Link from "next/link";
 import Layout from "../../components/Layout";
 import { useRouter } from "next/router";
@@ -12,11 +13,14 @@ import useRedeemSet from "../../hooks/useRedeemSet";
 import { useWallet } from "use-wallet";
 import SweetShopNFTs from "../../components/CreatorPage/SweetShopNFTs";
 import SubscriptionNFTs from "../../components/CreatorPage/SubscriptionNFTs";
+import useGetSubscriptionCost from "../../hooks/useGetSubscriptionCost";
+import useGetIsSubscribed from "../../hooks/useGetIsSubscribed";
 import { Clipboard } from "react-bootstrap-icons";
 
 const ViewModelWrapper = ({ username }) => {
   const { data: res } = useSWR(`/api/model/${username}`);
   const [modelData, setModelData] = useState();
+  const [subNFTs, setSubNFTs] = useState([]);
   const [modelNFTs, setModelNFTs] = useState();
   const [newNFTs, setNewNFTs] = useState([]);
   const [outOfPrintNFTs, setOutOfPrintNFTs] = useState([]);
@@ -27,13 +31,19 @@ const ViewModelWrapper = ({ username }) => {
       if (res) {
         setModelData(res);
 
-        if (!res.nfts || res.nfts.length === 0) return setModelNFTs([]);
-
+        if (!res.nfts || res.nfts.length === 0) setModelNFTs([]);
         const mNfts = await Promise.all(
           res.nfts.map(async (nft) => {
             const x = await fetch(`/api/nft/${nft.id}`);
             const j = await x.json();
-            console.log({ j });
+            return j;
+          })
+        );
+
+        const fetchedSubNFTs = await Promise.all(
+          res.sub_nfts.map(async (nft) => {
+            const x = await fetch(`/api/nft/${nft.id}`);
+            const j = await x.json();
             return j;
           })
         );
@@ -43,8 +53,11 @@ const ViewModelWrapper = ({ username }) => {
           (nft) => nft.maxSupply === nft.totalSupply
         );
 
+        console.log({ fetchedSubNFTs });
+
         setModelNFTs(mNfts);
         setNewNFTs(newNFTs);
+        setSubNFTs(fetchedSubNFTs);
         setOutOfPrintNFTs(outOfPrint);
       }
     })();
@@ -98,6 +111,7 @@ const ViewModelWrapper = ({ username }) => {
       <Layout>
         <ViewModel
           modelData={modelData}
+          subNFTs={subNFTs}
           modelNFTs={modelNFTs}
           newNFTs={newNFTs}
           outOfPrintNFTs={outOfPrintNFTs}
@@ -111,17 +125,19 @@ const ViewModelWrapper = ({ username }) => {
 
 const ViewModel = ({
   modelData,
-  modelNFTs,
   newNFTs,
+  subNFTs,
   outOfPrintNFTs,
-  nftSetPrice,
   onRedeemSet,
 }) => {
-  const [selectedTab, setSelectedTab] = useState("NEW NFTs");
-  const [otherTab, setOtherTab] = useState("OUT OF PRINT");
   const [copied, setCopied] = useState(false);
   const [key, setKey] = useState("sub");
   const { account } = useWallet();
+  const subscriptionCost = useGetSubscriptionCost(modelData.address);
+  const isSubscribed = useGetIsSubscribed(modelData.address);
+  const formattedSubCost = Web3.utils.fromWei(subscriptionCost.toString());
+
+  console.log(subNFTs);
 
   return (
     <div className="container">
@@ -197,12 +213,17 @@ const ViewModel = ({
               className="mb-3"
             >
               <Tab eventKey="sub" title="Subscription NFTs">
-                <SubscriptionNFTs
-                  isSubscribed={false}
-                  modelNFTs={newNFTs}
-                  onRedeemSet={onRedeemSet}
-                  modelData={modelData}
-                />
+                {formattedSubCost && (
+                  <SubscriptionNFTs
+                    isSubscribed={isSubscribed}
+                    modelNFTs={subNFTs}
+                    onRedeemSet={onRedeemSet}
+                    modelData={modelData}
+                    subscriptionCost={subscriptionCost}
+                    formattedSubCost={formattedSubCost}
+                    account={account}
+                  />
+                )}
               </Tab>
               <Tab eventKey="sweet" title="Sweet Shop NFTs">
                 <SweetShopNFTs
