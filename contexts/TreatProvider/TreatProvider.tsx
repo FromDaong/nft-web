@@ -19,7 +19,7 @@ declare global {
 }
 
 const TreatProvider: React.FC = ({ children }) => {
-  const { ethereum }: { ethereum: any } = useWallet()
+  const { ethereum } = useWallet()
   const [treat, setTreat] = useState<any>()
 
   if(typeof window !== 'undefined') {
