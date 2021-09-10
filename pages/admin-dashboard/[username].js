@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
-import useWallet from "use-wallet";
+import { useWallet } from "use-wallet";
 import useSWR from "swr";
 import Link from "next/link";
 import Layout from "../../components/Layout";
