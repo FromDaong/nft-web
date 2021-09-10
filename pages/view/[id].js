@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import useSWR from "swr";
 import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
 import useGetFreeTreat from "../../hooks/useGetFreeTreat";
+import useGetFreeSubscriberTreat from "../../hooks/useGetFreeSubscriberTreat";
 import useGetFreeCreatorTreat from "../../hooks/useGetFreeCreatorTreat";
 import useGetNftTotalSupply from "../../hooks/useGetNftTotalSupply";
 import useGetTreatNFTCost from "../../hooks/useGetTreatNftCost";
@@ -169,6 +170,10 @@ const ViewNFT = ({ nftData, image, account }) => {
   const [showModal, setShowModal] = useState(false);
   const { onGetFreeTreat } = useGetFreeTreat(nftData.id, nftCost);
   const { onGetFreeCreatorTreat } = useGetFreeCreatorTreat(nftData.id, nftCost);
+  const { onGetFreeSubscriberTreat } = useGetFreeSubscriberTreat(
+    nftData.id,
+    nftCost
+  );
   const openOrders = useGetOpenOrdersForNft(nftData.id);
 
   const onMintNft = async () => {
@@ -181,6 +186,7 @@ const ViewNFT = ({ nftData, image, account }) => {
   };
 
   const onMintFreeNft = async () => {
+    if (nftData.subscription_nft) return onGetFreeSubscriberTreat();
     if (nftData.old_totw) {
       return await onGetFreeTreat();
     } else {

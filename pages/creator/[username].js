@@ -131,7 +131,7 @@ const ViewModel = ({
   onRedeemSet,
 }) => {
   const [copied, setCopied] = useState(false);
-  const [key, setKey] = useState("sub");
+  const [key, setKey] = useState(Number(formattedSubCost) ? "sub" : "sweet");
   const { account } = useWallet();
   const subscriptionCost = useGetSubscriptionCost(modelData.address);
   const isSubscribed = useGetIsSubscribed(modelData.address);
@@ -212,8 +212,8 @@ const ViewModel = ({
               onSelect={(k) => setKey(k)}
               className="mb-3"
             >
-              <Tab eventKey="sub" title="Subscription NFTs">
-                {formattedSubCost && (
+              {Number(formattedSubCost) !== 0 && (
+                <Tab eventKey="sub" title="Subscription NFTs">
                   <SubscriptionNFTs
                     isSubscribed={isSubscribed}
                     modelNFTs={subNFTs}
@@ -223,8 +223,8 @@ const ViewModel = ({
                     formattedSubCost={formattedSubCost}
                     account={account}
                   />
-                )}
-              </Tab>
+                </Tab>
+              )}
               <Tab eventKey="sweet" title="Sweet Shop NFTs">
                 <SweetShopNFTs
                   modelNFTs={newNFTs}
