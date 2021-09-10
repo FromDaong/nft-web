@@ -186,7 +186,7 @@ const Marketplace = ({ search }) => {
                 style={{ minHeight: 500 }}
                 className="d-flex justify-content-center align-items-center w-100"
               >
-                <Loading custom="Loading... This may take upto a few minutes, please ensure your wallet is connected." />
+                <Loading custom="Loading... This may take up to a few minutes, please ensure your wallet is connected." />
               </div>
             ) : (
               <>

@@ -142,7 +142,7 @@ const AdminDashboard = ({ username }) => {
         title={"Confirming Transaction ⌛ - Don't close this browser window"}
         centered
         subtitle={
-          "Please confirm this transaction in your wallet and wait here for upto a few minutes for the transaction to confirm. Do not close this browser window!"
+          "Please confirm this transaction in your wallet and wait here for up to a few minutes for the transaction to confirm. Do not close this browser window!"
         }
         noButton={true}
       />

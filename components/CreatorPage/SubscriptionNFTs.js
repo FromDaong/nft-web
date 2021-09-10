@@ -79,7 +79,7 @@ const SubscriptionNFTs = ({
         handleClose={() => setShowPendingModal(false)}
         title={"Waiting for Transaction Confirmation ⌛"}
         subtitle={
-          "Please confirm this transaction in your wallet and wait here for upto a few minutes for the transaction to confirm..."
+          "Please confirm this transaction in your wallet and wait here for up to a few minutes for the transaction to confirm..."
         }
         noButton={true}
         account={account}

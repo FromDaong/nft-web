@@ -4,27 +4,27 @@ const NFTSchema = new mongoose.Schema(
   {
     id: {
       type: Number,
-      required: [true, "Please add a NFT ID"],
+      required: [true, "Please add an NFT ID"],
     },
     name: {
       type: String,
-      required: [true, "Please add a NFT name"],
+      required: [true, "Please add an NFT name"],
     },
     description: {
       type: String,
-      required: [true, "Please add a NFT description"],
+      required: [true, "Please add an NFT description"],
     },
     list_price: {
       type: Number,
-      required: [true, "Please add a NFT list price"],
+      required: [true, "Please add an NFT list price"],
     },
     external_url: {
       type: String,
-      required: [true, "Please add a NFT external url"],
+      required: [true, "Please add an NFT external url"],
     },
     image: {
       type: String,
-      required: [true, "Please add a NFT image"],
+      required: [true, "Please add an NFT image"],
     },
     blurhash: {
       type: String,
