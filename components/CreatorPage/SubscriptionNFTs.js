@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import NFTListItem from "../NFTListItem";
 import { Button } from "react-bootstrap";
+import useSubscribe from "../../hooks/useSubscribe";
+import BlankModal from "../../components/BlankModal";
 
 const variants = {
   show: {
@@ -18,27 +20,75 @@ const variants = {
   },
 };
 
-const SweetShopNFTs = ({ modelData, onRedeemSet, modelNFTs, isSubscribed }) => {
+const SubscriptionNFTs = ({
+  modelData,
+  onRedeemSet,
+  modelNFTs,
+  isSubscribed,
+  subscriptionCost,
+  formattedSubCost,
+  account,
+}) => {
+  const [showPendingModal, setShowPendingModal] = useState(null);
+  const [showCompleteModal, setShowCompleteModal] = useState(null);
+  const [revealedNFTs, setRevealedNFTs] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { onSubscribe } = useSubscribe(modelData.address, 1, subscriptionCost);
+  const renderNFTs = revealedNFTs || modelNFTs;
+
+  const revealNFTs = async () => {
+    if (account && treat) {
+      const signature = await treat.signMessage(account, "Reveal Contents");
+
+      const nftIds = modelNFTs.map((n) => n.id);
+
+      setIsLoading(true);
+      const res = await fetch(`/api/nft/view-sub-nfts`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ nft_ids: nftIds, signature }),
+      });
+      const resJSON = await res.json();
+
+      setIsLoading(false);
+      if (resJSON.success) {
+        setRevealedNFTs(resJSON.results);
+      }
+    }
+  };
+
+  const handleSubscribe = async () => {
+    setShowPendingModal(true);
+    onSubscribe()
+      .then((s) => {
+        setShowPendingModal(false);
+        if (s) {
+          setShowCompleteModal(true);
+        }
+      })
+      .catch((e) => console.log({ e }));
+  };
+
   return (
     <>
-      {!!onRedeemSet && (
-        <div
-          style={{
-            backgroundColor: "rgba(255,255,255,0.75)",
-            marginBottom: "25px",
-            display: "flex",
-            justifyContent: "center",
-            paddingTop: "2%",
-            paddingBottom: "2%",
-            borderRadius: "8px",
-          }}
-        >
-          <Button onClick={onRedeemSet} size="lg">
-            Redeem full set for {getDisplayBalance(nftSetPrice)} BNB
-          </Button>
-        </div>
-      )}
-
+      <BlankModal
+        show={!!showPendingModal}
+        handleClose={() => setShowPendingModal(false)}
+        title={"Waiting for Transaction Confirmation ⌛"}
+        subtitle={
+          "Please confirm this transaction in your wallet and wait here for upto a few minutes for the transaction to confirm..."
+        }
+        noButton={true}
+        account={account}
+      />
+      <BlankModal
+        show={!!showCompleteModal}
+        handleClose={() => setShowCompleteModal(false)}
+        account={account}
+      />
       {!isSubscribed ? (
         <div className="not-subscribed-container">
           <div className="title">Subscribe to {modelData.username}</div>
@@ -47,8 +97,20 @@ const SweetShopNFTs = ({ modelData, onRedeemSet, modelNFTs, isSubscribed }) => {
             available exclusively to subscribers.
             {/* {modelData.subscription.description} */}
           </div>
-          <Button>Subscribe to see NFTs</Button>
-          <div className="amount">0.06 BNB for 30 days</div>
+          <Button onClick={handleSubscribe}>Subscribe to see NFTs</Button>
+          <div className="amount">{formattedSubCost} BNB for 30 days</div>
+        </div>
+      ) : !revealedNFTs ? (
+        <div className="not-subscribed-container">
+          <div className="title">
+            You're Subscribed to {modelData.username}!
+          </div>
+          <div className="bio">
+            To view {modelData.username}'s subscription NFTs, sign this message
+            transaction so we can confirm your wallet with our backend.
+            {/* {modelData.subscription.description} */}
+          </div>
+          <Button onClick={revealNFTs}>Reveal Subscription NFTs</Button>
         </div>
       ) : (
         <motion.div
@@ -58,13 +120,21 @@ const SweetShopNFTs = ({ modelData, onRedeemSet, modelNFTs, isSubscribed }) => {
           initial="hidden"
           variants={variants}
         >
-          {modelNFTs &&
-            modelNFTs.length > 0 &&
-            modelNFTs
+          {modelNFTs.length === 0 && (
+            <div className="text-center w-100 mt-5">Empty</div>
+          )}
+          {renderNFTs &&
+            renderNFTs.length > 0 &&
+            renderNFTs
               .sort((a, b) => a.list_price - b.list_price)
               .map((m) => (
                 <div className="col-xs-12 col-md-6 col-xl-4 ">
-                  <NFTListItem modelData={modelData} data={m} key={m.id} />
+                  <NFTListItem
+                    isLoading={isLoading}
+                    modelData={modelData}
+                    data={m}
+                    key={m.id}
+                  />
                 </div>
               ))}
         </motion.div>
@@ -72,4 +142,4 @@ const SweetShopNFTs = ({ modelData, onRedeemSet, modelNFTs, isSubscribed }) => {
     </>
   );
 };
-export default SweetShopNFTs;
+export default SubscriptionNFTs;

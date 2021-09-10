@@ -18,6 +18,7 @@ import {
   PiggyBankFill,
   PencilFill,
 } from "react-bootstrap-icons";
+import SubscriptionNFTs from "../../components/CreatorDashboard/SubscriptionNFTs";
 
 const variants = {
   show: {
@@ -84,12 +85,15 @@ const CreatorDashboardWrapper = ({ modelData }) => {
 };
 
 const ViewNFT = ({ modelData, account }) => {
-  const [serverNftBalances, setServerNftBalances] = useState(null);
+  // const [serverNftBalances, setServerNftBalances] = useState(null);
 
-  const maxNftSupply = useGetNftMaxSupply(account);
+  // const maxNftSupply = useGetNftMaxSupply(account);
   const [isLoading, setIsLoading] = useState(false);
 
   const { data: nftData } = useSWR(`/api/model/nfts-from-address/${account}`);
+  const { data: subNftData } = useSWR(
+    `/api/model/sub-nfts-from-address/${account}`
+  );
 
   const transferNFTClick = (x) => {
     setTransferNFTData(x);
@@ -154,7 +158,7 @@ const ViewNFT = ({ modelData, account }) => {
                 <Nav.Item className="white-tp-bg mt-2">
                   <Nav.Link eventKey="created-nfts">
                     <CameraFill className="mr-2 mb-1" />
-                    Public NFTs
+                    Sweet Shop NFTs
                   </Nav.Link>
                 </Nav.Item>
                 <Nav.Item className="white-tp-bg mt-2">
@@ -180,27 +184,23 @@ const ViewNFT = ({ modelData, account }) => {
             <div className="col-md-9 pr-0 mt-4 mt-md-0 pl-0 pl-md-3">
               <Tab.Content>
                 <Tab.Pane eventKey="edit-profile">
-                  <EditProfile
-                    hideNFTs={hideNFTs}
-                    transferNFTClick={transferNFTClick}
-                    isLoading={isLoading}
-                    nftData={nftData}
-                    modelData={modelData}
-                  />
+                  <EditProfile modelData={modelData} />
                 </Tab.Pane>
                 <Tab.Pane eventKey="created-nfts">
                   <CreatedNFTs
                     hideNFTs={hideNFTs}
                     transferNFTClick={transferNFTClick}
-                    isLoading={isLoading}
                     nftData={nftData}
                     modelData={modelData}
                   />
                 </Tab.Pane>
                 <Tab.Pane eventKey="subscription-nfts">
-                  <h4 className="text-center w-100 text-primary bold">
-                    Coming very soon...
-                  </h4>
+                  <SubscriptionNFTs
+                    hideNFTs={hideNFTs}
+                    transferNFTClick={transferNFTClick}
+                    nftData={subNftData}
+                    modelData={modelData}
+                  />
                 </Tab.Pane>
                 <Tab.Pane eventKey="subscription-settings">
                   <SubscriptionSettings />

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import CreatorNFTItem from "../../components/CreatorNFTItem";
+import CreatorNFTItem from "../CreatorNFTItem";
 import { Button } from "react-bootstrap";
 import Link from "next/link";
-import { CameraFill, PlusCircle } from "react-bootstrap-icons";
+import { PatchCheckFill, PlusCircle } from "react-bootstrap-icons";
 
 const variants = {
   show: {
@@ -20,7 +20,7 @@ const variants = {
   },
 };
 
-const CreatedNFTs = ({
+const SubscriptionNFTs = ({
   transferNFTClick,
   listOrderClick,
   isLoading,
@@ -45,11 +45,11 @@ const CreatedNFTs = ({
               fontSize: 24,
             }}
           >
-            <CameraFill className="pb-1 mr-1" /> Sweet Shop NFTs
+            <PatchCheckFill className="pb-1 mr-1" /> Subscription NFTs
           </h2>
         </div>
 
-        <Link href="/creator-dashboard/create-nft">
+        <Link href="/creator-dashboard/create-sub-nft">
           <Button variant="primary  w-100" style={{ maxWidth: 250 }}>
             <b>
               <PlusCircle className="pb-1 mr-2" size={24} />
@@ -107,4 +107,4 @@ const CreatedNFTs = ({
   );
 };
 
-export default CreatedNFTs;
+export default SubscriptionNFTs;

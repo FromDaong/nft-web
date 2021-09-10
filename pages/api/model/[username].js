@@ -53,12 +53,23 @@ export default async (req, res) => {
             .json({ success: false, error: "please send req body" });
         }
 
-        model.username = req.body.username;
-        model.bio = req.body.bio;
-        model.social_account = req.body.social_account;
-        model.profile_pic = req.body.profile_pic;
-        model.banner_pic = req.body.banner_pic;
-        model.email = req.body.email;
+        if (req.body.username) model.username = req.body.username;
+        if (req.body.bio) model.bio = req.body.bio;
+        if (req.body.social_account)
+          model.social_account = req.body.social_account;
+        if (req.body.profile_pic) model.profile_pic = req.body.profile_pic;
+        if (req.body.banner_pic) model.banner_pic = req.body.banner_pic;
+        if (req.body.email) model.email = req.body.email;
+
+        // Subscription description
+        if (req.body.subscription_description) {
+          if (model.subscription)
+            model.subscription.description = req.body.subscription_description;
+          else
+            model.subscription = {
+              description: req.body.subscription_description,
+            };
+        }
 
         console.log({ model });
 

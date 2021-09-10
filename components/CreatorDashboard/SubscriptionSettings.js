@@ -25,15 +25,17 @@ const EditProfile = ({}) => {
 
   const formik = useFormik({
     initialValues: {
-      enabled: res.subscription && res.subscription.enabled,
-      price: subscriptionCost,
-      description: res.subscription && res.subscription.description,
+      price:
+        subscriptionCost && Web3.utils.fromWei(subscriptionCost.toString()),
+      subscription_description:
+        res.subscription && res.subscription.description,
     },
     validateOnChange: false,
     validateOnBlur: false,
+    enableReinitialize: true,
     validationSchema: Yup.object().shape({
       price: Yup.string().required("Please add a price"),
-      description: Yup.string(),
+      subscription_description: Yup.string(),
     }),
     onSubmit: (values) => {
       SubmitToServer();
@@ -75,12 +77,14 @@ const EditProfile = ({}) => {
 
   const setSubscriptionPrice = () => {
     setShowPendingModal(true);
-    onEditSubscription().then((s) => {
-      setShowPendingModal(false);
-      if (s) {
-        setShowCompleteModal(true);
-      }
-    });
+    onEditSubscription()
+      .then((s) => {
+        setShowPendingModal(false);
+        if (s) {
+          setShowCompleteModal(true);
+        }
+      })
+      .catch((e) => console.log({ e }));
   };
 
   return (
@@ -136,19 +140,15 @@ const EditProfile = ({}) => {
                 subscriptions.
               </small>
             </div>
-            <Button
-              variant="primary w-100 mb-3"
-              onClick={setSubscriptionPrice}
-              type="submit"
-            >
+            <Button variant="primary w-100 mb-3" onClick={setSubscriptionPrice}>
               Update Subscription Price
             </Button>
             <div className="pb-3">
               <label>Subscription description</label>
               <FormControl
                 as="textarea"
-                name="bio"
-                value={formik.values.bio}
+                name="subscription_description"
+                value={formik.values.subscription_description}
                 onChange={formik.handleChange}
               />
               <small>

@@ -142,21 +142,6 @@
 		"constant": false,
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "subscriptionCost",
-				"type": "uint256"
-			}
-		],
-		"name": "createSubscription",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
 				"internalType": "address payable",
 				"name": "_to",
 				"type": "address"

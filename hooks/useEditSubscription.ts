@@ -8,6 +8,7 @@ const useEditSubscription = (amount: number) => {
   const treat = useTreat();
   const treatSubscriptionContract = getTreatSubscriptionContract(treat);
 
+  console.log({ amount });
   const handleEditSubscription = useCallback(async () => {
     const txHash = await editSub(treatSubscriptionContract, account, amount);
     console.log(txHash);

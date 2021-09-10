@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import toBuffer from "blob-to-buffer";
 import { Form, Button } from "react-bootstrap";
 import { useFormik, FieldArray, FormikProvider } from "formik";
-import useCreateAndAddNFTs from "../../hooks/useCreateAndAddNFTs";
+import useCreateAndAddSubscriberNFTs from "../../hooks/useCreateAndAddSubscriberNFTs";
 import { useRouter } from "next/router";
 import { useWallet } from "use-wallet";
 import Loading from "../../components/Loading";
@@ -85,7 +85,7 @@ const CreateNFT = ({ modelData }) => {
           list_price: Yup.string().required("Please add the NFT list price"),
           description: Yup.string().required("Please add a NFT description"),
           external_url: Yup.string().required("Please add a external_url"),
-          blurhash: Yup.string(),
+          blurhash: Yup.string().required("Please add a blurhash"),
           image: Yup.string().required("Please add a image"),
           max_supply: Yup.string().required("Please add a max supply"),
           model_handle: Yup.string().required("Please add a model handle"),
@@ -109,7 +109,7 @@ const CreateNFT = ({ modelData }) => {
   const [maxSupplyArray, setMaxSupplyArray] = useState(null);
   const [amountsArray, setAmountsArray] = useState(null);
 
-  const { onCreateAndAddNFTs } = useCreateAndAddNFTs(
+  const { onCreateAndAddSubscriberNFTs } = useCreateAndAddSubscriberNFTs(
     maxSupplyArray,
     amountsArray,
     "0x"
@@ -130,7 +130,7 @@ const CreateNFT = ({ modelData }) => {
   const SubmitToServer = async () => {
     try {
       setShowPendingModal(true);
-      const createNFTResult = await onCreateAndAddNFTs();
+      const createNFTResult = await onCreateAndAddSubscriberNFTs();
 
       if (!createNFTResult) return setShowPendingModal(false);
 
@@ -140,7 +140,7 @@ const CreateNFT = ({ modelData }) => {
         blurhash: nftData.blurhash ? nftData.blurhash : null,
       }));
 
-      const res = await fetch(`/api/model/create-nfts`, {
+      const res = await fetch(`/api/model/create-sub-nfts`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -194,8 +194,8 @@ const CreateNFT = ({ modelData }) => {
 
       <div className="container">
         <Hero
-          title="Create Treat Shop NFTs"
-          subtitle="Complete this form carefully. Make sure you don't leave this page after submitting the creation transaction."
+          title="Create New Subscription NFTs"
+          subtitle="Complete this form carefully. Make sure you don't leave this page after submitting the creation transaction. NFTs created on this page will only be available to your subscribers and will be unblurred. If listed on the resale marketplace, the NFTs will be blurred publicly."
         />
 
         {(!formik.values.nfts || formik.values.nfts.length === 0) && (
@@ -224,6 +224,7 @@ const CreateNFT = ({ modelData }) => {
               formik.values.nfts.map((nft, i) => (
                 <CreatingNFTItem
                   formik={formik}
+                  blurRequired={true}
                   modelData={modelData}
                   index={i}
                   key={nft.image}
