@@ -7,7 +7,7 @@ import useGetFreeTreat from "../../hooks/useGetFreeTreat";
 import useGetFreeCreatorTreat from "../../hooks/useGetFreeCreatorTreat";
 import useGetNftTotalSupply from "../../hooks/useGetNftTotalSupply";
 import useGetTreatNFTCost from "../../hooks/useGetTreatNftCost";
-import getSubscriberNftCost from "../../hooks/usegetSubscriberNftCost";
+import getSubscriberNftCost from "../../hooks/useGetSubscriberNftCost";
 import getCreatorNftCost from "../../hooks/useGetCreatorNftCost";
 import useGetOpenOrdersForNft from "../../hooks/useGetOpenOrdersForNft";
 import useMintCreatorNft from "../../hooks/useMintCreatorNft";
@@ -163,6 +163,7 @@ const ViewNFT = ({ nftData, image, account }) => {
   const remainingNfts = maxNftSupply.minus(mintedNfts);
   const { onMintNft: onMintTotwNft } = useMintNft(nftData.id, nftCost);
   const { onMintCreatorNft } = useMintCreatorNft(nftData.id, nftCost);
+  const { onMintSub } = useMintSub(nftData.id, nftCost);
 
   const [showModal, setShowModal] = useState(false);
   const { onGetFreeTreat } = useGetFreeTreat(nftData.id, nftCost);
