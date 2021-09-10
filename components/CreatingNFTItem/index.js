@@ -120,7 +120,12 @@ const CreatingNFTItem = ({
               placeholder="E.g. 120"
               name={`nfts[${index}].list_price`}
               value={formik.values.nfts[index].list_price}
-              onChange={formik.handleChange}
+              onChange={(e) =>
+                formik.setFieldValue(
+                  `nfts[${index}].list_price`,
+                  +Number(e.target.value).toFixed(4)
+                )
+              }
             />
           </div>
         </div>
