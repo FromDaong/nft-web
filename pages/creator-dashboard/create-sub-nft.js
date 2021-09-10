@@ -62,8 +62,8 @@ const CreateNFT = ({ modelData }) => {
   const formik = useFormik({
     initialValues: {
       nfts: ipfsFiles.map((file) => ({
-        name: "NFT name here",
-        list_price: 1,
+        name: "",
+        list_price: 0,
         description: "",
         blurhash: false,
         image: file,
