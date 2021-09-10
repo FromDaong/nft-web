@@ -132,6 +132,7 @@ const EditProfile = ({}) => {
               <FormControl
                 placeholder="E.g. alexanbt"
                 name="price"
+                type="number"
                 value={formik.values.price}
                 onChange={formik.handleChange}
               />
