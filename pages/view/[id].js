@@ -12,6 +12,7 @@ import getCreatorNftCost from "../../hooks/useGetCreatorNftCost";
 import useGetOpenOrdersForNft from "../../hooks/useGetOpenOrdersForNft";
 import useMintCreatorNft from "../../hooks/useMintCreatorNft";
 import useMintNft from "../../hooks/useMintNft";
+import useMintSubcriberNft from "../../hooks/useMintSubscriberNft";
 import { useWallet } from "use-wallet";
 import { getDisplayBalance } from "../../utils/formatBalance";
 import { generateFromString } from "generate-avatar";
@@ -163,7 +164,7 @@ const ViewNFT = ({ nftData, image, account }) => {
   const remainingNfts = maxNftSupply.minus(mintedNfts);
   const { onMintNft: onMintTotwNft } = useMintNft(nftData.id, nftCost);
   const { onMintCreatorNft } = useMintCreatorNft(nftData.id, nftCost);
-  const { onMintSub } = useMintSub(nftData.id, nftCost);
+  const { onMintSubscriberNft } = useMintSubcriberNft(nftData.id, nftCost);
 
   const [showModal, setShowModal] = useState(false);
   const { onGetFreeTreat } = useGetFreeTreat(nftData.id, nftCost);
@@ -171,6 +172,7 @@ const ViewNFT = ({ nftData, image, account }) => {
   const openOrders = useGetOpenOrdersForNft(nftData.id);
 
   const onMintNft = async () => {
+    if (nftData.subscription_nft) return onMintSubscriberNft();
     if (nftData.old_totw) {
       return await onMintTotwNft();
     } else {
