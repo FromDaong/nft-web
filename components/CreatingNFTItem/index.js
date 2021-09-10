@@ -53,14 +53,14 @@ const CreatingNFTItem = ({
     canvas.width = image.width;
     canvas.height = image.height;
     const context = canvas.getContext("2d");
-    context.drawImage(image, 0, 0);
-    return context.getImageData(0, 0, image.width, image.height);
+    context.drawImage(image, 0, 0, image.width / 4, image.height / 4);
+    return context.getImageData(0, 0, image.width / 4, image.height / 4);
   };
 
   const encodeImageToBlurhash = async (imageUrl) => {
     const image = await loadImage(imageUrl);
     const imageData = getImageData(image);
-    return encode(imageData.data, imageData.width, imageData.height, 4, 4);
+    return encode(imageData.data, imageData.width, imageData.height, 9, 9);
   };
 
   const changeBlurhash = async (e) => {
