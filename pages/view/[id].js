@@ -7,6 +7,7 @@ import useGetFreeTreat from "../../hooks/useGetFreeTreat";
 import useGetFreeCreatorTreat from "../../hooks/useGetFreeCreatorTreat";
 import useGetNftTotalSupply from "../../hooks/useGetNftTotalSupply";
 import useGetTreatNFTCost from "../../hooks/useGetTreatNftCost";
+import getSubscriberNftCost from "../../hooks/usegetSubscriberNftCost";
 import getCreatorNftCost from "../../hooks/useGetCreatorNftCost";
 import useGetOpenOrdersForNft from "../../hooks/useGetOpenOrdersForNft";
 import useMintCreatorNft from "../../hooks/useMintCreatorNft";
@@ -152,8 +153,10 @@ const ViewNFTWrapper = ({ id }) => {
 const ViewNFT = ({ nftData, image, account }) => {
   const totwNftCost = useGetTreatNFTCost(nftData.id);
   const creatorNftCost = getCreatorNftCost(nftData.id);
+  const subscriberNftCost = getSubscriberNftCost(nftData.id);
 
-  const nftCost = nftData.old_totw ? totwNftCost : creatorNftCost;
+  let nftCost = nftData.old_totw ? totwNftCost : creatorNftCost;
+  nftCost = nftData.subscription_nft ? subscriberNftCost : nftCost;
 
   const maxNftSupply = useGetNftMaxSupply(nftData.id);
   const mintedNfts = useGetNftTotalSupply(nftData.id);
