@@ -83,7 +83,7 @@ const CreateNFT = ({ modelData }) => {
           id: Yup.number(),
           name: Yup.string().required("Please add a name"),
           list_price: Yup.string().required("Please add the NFT list price"),
-          description: Yup.string().required("Please add a NFT description"),
+          description: Yup.string().required("Please add an NFT description"),
           external_url: Yup.string().required("Please add a external_url"),
           blurhash: Yup.string(),
           image: Yup.string().required("Please add a image"),
@@ -182,7 +182,7 @@ const CreateNFT = ({ modelData }) => {
         title={"Confirming Transaction ⌛ - Don't close this browser window"}
         centered
         subtitle={
-          "Please confirm this transaction in your wallet and wait here for upto a few minutes for the transaction to confirm. Do not close this browser window!"
+          "Please confirm this transaction in your wallet and wait here for up to a few minutes for the transaction to confirm. Do not close this browser window!"
         }
         noButton={true}
       />
