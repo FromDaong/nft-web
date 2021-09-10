@@ -7,7 +7,7 @@ import SubscriptionSettings from "../../components/CreatorDashboard/Subscription
 import Referrals from "../../components/CreatorDashboard/Referrals";
 import { Nav, Tab } from "react-bootstrap";
 import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
-import useWallet from "use-wallet";
+import { useWallet } from "use-wallet";
 import Link from "next/link";
 import useSWR from "swr";
 import Layout from "../../components/Layout";

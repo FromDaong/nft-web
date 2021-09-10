@@ -11,7 +11,7 @@ import getCreatorNftCost from "../../hooks/useGetCreatorNftCost";
 import useGetOpenOrdersForNft from "../../hooks/useGetOpenOrdersForNft";
 import useMintCreatorNft from "../../hooks/useMintCreatorNft";
 import useMintNft from "../../hooks/useMintNft";
-import useWallet from "use-wallet";
+import { useWallet } from "use-wallet";
 import { getDisplayBalance } from "../../utils/formatBalance";
 import { generateFromString } from "generate-avatar";
 import { Blurhash } from "react-blurhash";
