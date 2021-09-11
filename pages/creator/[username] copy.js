@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import useSWR from "swr";
-import { useWallet } from "use-wallet";
+import useWallet from "use-wallet";
 import NFTListItem from "../../components/NFTListItem";
 import Layout from "../../components/Layout";
 import { useRouter } from "next/router";
