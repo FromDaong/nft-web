@@ -68,5 +68,6 @@ export const contractAddresses = {
 
 // Trigger deploy
 export const modelSetBundles = {
-  theredchrystalclear: 3,
+  iya_themodel: 1,
+  little_sophiaaa: 2,
 };
