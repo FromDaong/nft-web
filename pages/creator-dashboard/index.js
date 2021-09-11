@@ -5,7 +5,7 @@ import CreatedNFTs from "../../components/CreatorDashboard/CreatedNFTs";
 import Referrals from "../../components/CreatorDashboard/Referrals";
 import { Nav, Tab } from "react-bootstrap";
 import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
-import useWallet from "use-wallet";
+import { useWallet } from "use-wallet";
 import useSWR from "swr";
 import Layout from "../../components/Layout";
 import {

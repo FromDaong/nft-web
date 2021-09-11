@@ -13,7 +13,7 @@ import useGetNftMaxSupply from "../hooks/useGetNftMaxSupply";
 import useGetNftBalance from "../hooks/useGetNftBalance";
 import { getDisplayBalance } from "../utils/formatBalance";
 import useGetOpenOrdersForSeller from "../hooks/useGetOpenOrdersForSeller";
-import useWallet from "use-wallet";
+import { useWallet } from "use-wallet";
 import useSWR from "swr";
 import BigNumber from "bignumber.js";
 import Layout from "../components/Layout";
