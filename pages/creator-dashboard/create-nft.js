@@ -194,7 +194,7 @@ const CreateNFT = ({ modelData }) => {
 
       <div className="container">
         <Hero
-          title="Create Treat Shop NFTs"
+          title="Create Sweet Shop NFTs"
           subtitle="Complete this form carefully. Make sure you don't leave this page after submitting the creation transaction."
         />
 

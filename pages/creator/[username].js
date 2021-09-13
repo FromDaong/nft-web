@@ -21,6 +21,7 @@ const ViewModelWrapper = ({ username }) => {
   const { data: res } = useSWR(`/api/model/${username}`);
   const [modelData, setModelData] = useState();
   const [subNFTs, setSubNFTs] = useState([]);
+  const [totwNFTs, setTotwNFTs] = useState([]);
   const [modelNFTs, setModelNFTs] = useState();
   const [newNFTs, setNewNFTs] = useState([]);
   const [outOfPrintNFTs, setOutOfPrintNFTs] = useState([]);
@@ -48,15 +49,19 @@ const ViewModelWrapper = ({ username }) => {
           })
         );
 
-        let newNFTs = mNfts.filter((nft) => nft.maxSupply > nft.totalSupply);
-        let outOfPrint = mNfts.filter(
-          (nft) => nft.maxSupply === nft.totalSupply
+        let newNFTs = mNfts.filter(
+          (nft) => nft.maxSupply > nft.totalSupply && !nft.totw && !nft.old_totw
         );
+        let outOfPrint = mNfts.filter(
+          (nft) => nft.maxSupply === nft.totalSupply || nft.old_totw
+        );
+        let getTotwNFTs = mNfts.filter((nft) => nft.totw);
 
-        console.log({ fetchedSubNFTs });
+        console.log({ newNFTs });
 
         setModelNFTs(mNfts);
         setNewNFTs(newNFTs);
+        setTotwNFTs(getTotwNFTs);
         setSubNFTs(fetchedSubNFTs);
         setOutOfPrintNFTs(outOfPrint);
       }
@@ -113,6 +118,7 @@ const ViewModelWrapper = ({ username }) => {
           modelData={modelData}
           subNFTs={subNFTs}
           modelNFTs={modelNFTs}
+          totwNFTs={totwNFTs}
           newNFTs={newNFTs}
           outOfPrintNFTs={outOfPrintNFTs}
           nftSetPrice={nftSetPrice}
@@ -127,15 +133,20 @@ const ViewModel = ({
   modelData,
   newNFTs,
   subNFTs,
+  totwNFTs,
   outOfPrintNFTs,
   onRedeemSet,
 }) => {
   const [copied, setCopied] = useState(false);
-  const [key, setKey] = useState(Number(formattedSubCost) ? "sub" : "sweet");
   const { account } = useWallet();
-  const subscriptionCost = useGetSubscriptionCost(modelData.address);
-  const isSubscribed = useGetIsSubscribed(modelData.address);
+  const subscriptionCost = useGetSubscriptionCost(modelData.address || "");
+  const isSubscribed = useGetIsSubscribed(modelData.address || "");
   const formattedSubCost = Web3.utils.fromWei(subscriptionCost.toString());
+  const [key, setKey] = useState(totwNFTs.length !== 0 ? "totw" : "sweet");
+
+  useEffect(() => {
+    if (Number(formattedSubCost) !== 0) setKey("sub");
+  }, [formattedSubCost]);
 
   console.log(subNFTs);
 
@@ -198,8 +209,10 @@ const ViewModel = ({
 
         <div className="profile-info">
           <div className="col-md-12">
-            <div className="name">{modelData.username}</div>
-            <div className="username">{modelData.username}</div>
+            <div className="name">
+              {modelData.display_name || modelData.username}
+            </div>
+            <div className="username">@{modelData.username}</div>
             <p className="bio">{modelData.bio}</p>
             <a className="link" href={modelData.social_account} target="_blank">
               {modelData.social_account}
@@ -212,6 +225,15 @@ const ViewModel = ({
               onSelect={(k) => setKey(k)}
               className="mb-3"
             >
+              {totwNFTs.length > 0 && (
+                <Tab eventKey="totw" title="TOTW NFTs">
+                  <SweetShopNFTs
+                    modelNFTs={totwNFTs}
+                    onRedeemSet={onRedeemSet}
+                    modelData={modelData}
+                  />
+                </Tab>
+              )}
               {Number(formattedSubCost) !== 0 && (
                 <Tab eventKey="sub" title="Subscription NFTs">
                   <SubscriptionNFTs

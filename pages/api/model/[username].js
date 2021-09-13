@@ -53,6 +53,7 @@ export default async (req, res) => {
             .json({ success: false, error: "please send req body" });
         }
 
+        if (req.body.display_name) model.display_name = req.body.display_name;
         if (req.body.username) model.username = req.body.username;
         if (req.body.bio) model.bio = req.body.bio;
         if (req.body.social_account)
