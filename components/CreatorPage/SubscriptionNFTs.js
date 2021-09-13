@@ -94,8 +94,16 @@ const SubscriptionNFTs = ({
           <div className="title">Subscribe to {modelData.username}</div>
           <div className="bio">
             Subscribe to mint exclusive NFTs from {modelData.username} that are
-            available exclusively to subscribers.
-            {/* {modelData.subscription.description} */}
+            available only to subscribers. You will immediately get access to{" "}
+            <b>{modelData.sub_nfts.length} NFTs</b>, as well as any new NFTs{" "}
+            {modelData.username} creates.
+            {modelData.subscription && modelData.subscription.description && (
+              <>
+                <br />
+                <br />
+                {modelData.subscription.description}
+              </>
+            )}
           </div>
           <Button onClick={handleSubscribe}>Subscribe to see NFTs</Button>
           <div className="amount">{formattedSubCost} BNB for 30 days</div>

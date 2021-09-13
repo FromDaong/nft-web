@@ -27,6 +27,7 @@ const EditProfile = ({}) => {
     validateOnChange: false,
     validateOnBlur: false,
     validationSchema: Yup.object().shape({
+      display_name: Yup.string(),
       username: Yup.string().required("Please add a username"),
       bio: Yup.string().required("Please add the Creator bio"),
       social_account: Yup.string(),
@@ -124,6 +125,17 @@ const EditProfile = ({}) => {
         <Form onSubmit={formik.handleSubmit}>
           <div className="pb-4">
             <div className="pb-4">
+              <label>Display Name</label>
+              <FormControl
+                placeholder="E.g. Alena"
+                name="display_name"
+                value={formik.values.display_name}
+                onChange={formik.handleChange}
+              />
+              <small>Displayed on your profile.</small>
+            </div>
+
+            <div className="pb-4">
               <label>Username</label>
               <FormControl
                 placeholder="E.g. alexanbt"
@@ -131,7 +143,9 @@ const EditProfile = ({}) => {
                 value={formik.values.username}
                 onChange={formik.handleChange}
               />
-              <small>treatdao.com/creator/{formik.values.username}</small>
+              <small>
+                https://treatdao.com/creator/{formik.values.username}
+              </small>
             </div>
 
             <div className="pb-3">
@@ -185,9 +199,7 @@ const EditProfile = ({}) => {
             <div className="pb-4">
               <label className="m-0">Change Banner Photo</label>
               <br />
-              <small>
-                {/* Please ensure photo is square, 1000 x 1000 recommended. */}
-              </small>
+              <small>1080 x 240 recommended.</small>
               <FormControl
                 type="file"
                 size="lg"
