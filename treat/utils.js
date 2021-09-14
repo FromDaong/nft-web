@@ -891,6 +891,8 @@ export const getOrdersInfoForNftRange = async (
         listDate: orders.listDates[i],
       };
     });
+
+    console.log({ startNftId, endNftId, x });
     return x;
   } catch (err) {
     console.error(`get orders for seller failed: ${err}`);
