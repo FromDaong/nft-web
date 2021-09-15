@@ -131,6 +131,16 @@ export const isSubscribed = async (
     .call();
 };
 
+export const isSubLocked = async (
+  treatSubscriptionContract,
+  subscriberAddress,
+  creatorAddress
+) => {
+  return await treatSubscriptionContract.methods
+    .hasCreatorLockedSubscriber(creatorAddress, subscriberAddress)
+    .call();
+};
+
 export const lockSub = async (
   treatSubscriptionContract,
   account,
