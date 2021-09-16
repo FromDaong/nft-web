@@ -44,6 +44,7 @@ const ViewModelWrapper = ({ username }) => {
         const fetchedSubNFTs = await Promise.all(
           res.sub_nfts.map(async (nft) => {
             const x = await fetch(`/api/nft/${nft.id}`);
+            console.log({ x });
             const j = await x.json();
             return j;
           })
