@@ -58,7 +58,7 @@ const NFTListItem = ({
   return (
     <motion.div variants={disableAnimations ? {} : variants} layout>
       <Link href={`/view/${data.id}`}>
-        <div className="nft-card mb-4" style={{ margin: "auto" }}>
+        <div className="nft-card">
           <div className="totw-tag-wrapper">
             {isOwner ? (
               <div className="totw-tag">MY NFT</div>
