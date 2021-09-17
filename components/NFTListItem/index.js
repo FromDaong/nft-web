@@ -116,7 +116,7 @@ const NFTListItem = ({
           <div className="text-container container">
             <div className="title-section">
               <div className="title">{data.name}</div>
-              <div className="name">
+              <div className="s">
                 {owner && <b>Creator: </b>}
                 {data.attributes[0].value}
               </div>

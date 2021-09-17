@@ -1,24 +1,30 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
+import { Tabs, Tab } from "react-bootstrap";
 import useSWR from "swr";
-import useWallet from "use-wallet";
-import NFTListItem from "../../components/NFTListItem";
+import Web3 from "web3";
+import Link from "next/link";
 import Layout from "../../components/Layout";
 import { useRouter } from "next/router";
 import { modelSetBundles } from "../../treat/lib/constants";
 import useGetTreatSetCost from "../../hooks/useGetTreatSetCost";
 import useRedeemSet from "../../hooks/useRedeemSet";
-import { getDisplayBalance } from "../../utils/formatBalance";
-import { motion } from "framer-motion";
+import { useWallet } from "use-wallet";
+import SweetShopNFTs from "../../components/CreatorPage/SweetShopNFTs";
+import SubscriptionNFTs from "../../components/CreatorPage/SubscriptionNFTs";
+import useGetSubscriptionCost from "../../hooks/useGetSubscriptionCost";
+import useGetIsSubscribed from "../../hooks/useGetIsSubscribed";
+import { Clipboard } from "react-bootstrap-icons";
 
 const ViewModelWrapper = ({ username }) => {
   const { data: res } = useSWR(`/api/model/${username}`);
   const [modelData, setModelData] = useState();
+  const [subNFTs, setSubNFTs] = useState([]);
+  const [totwNFTs, setTotwNFTs] = useState([]);
   const [modelNFTs, setModelNFTs] = useState();
   const [newNFTs, setNewNFTs] = useState([]);
   const [outOfPrintNFTs, setOutOfPrintNFTs] = useState([]);
-  const { status } = useWallet();
   const router = useRouter();
 
   useEffect(() => {
@@ -26,24 +32,38 @@ const ViewModelWrapper = ({ username }) => {
       if (res) {
         setModelData(res);
 
-        if (!res.nfts || res.nfts.length === 0) return setModelNFTs([]);
-
+        if (!res.nfts || res.nfts.length === 0) setModelNFTs([]);
         const mNfts = await Promise.all(
           res.nfts.map(async (nft) => {
             const x = await fetch(`/api/nft/${nft.id}`);
             const j = await x.json();
-            console.log({ j });
             return j;
           })
         );
 
-        let newNFTs = mNfts.filter((nft) => nft.maxSupply > nft.totalSupply);
-        let outOfPrint = mNfts.filter(
-          (nft) => nft.maxSupply === nft.totalSupply
+        const fetchedSubNFTs = await Promise.all(
+          res.sub_nfts.map(async (nft) => {
+            const x = await fetch(`/api/nft/${nft.id}`);
+            console.log({ x });
+            const j = await x.json();
+            return j;
+          })
         );
+
+        let newNFTs = mNfts.filter(
+          (nft) => nft.maxSupply > nft.totalSupply && !nft.totw && !nft.old_totw
+        );
+        let outOfPrint = mNfts.filter(
+          (nft) => nft.maxSupply === nft.totalSupply || nft.old_totw
+        );
+        let getTotwNFTs = mNfts.filter((nft) => nft.totw);
+
+        console.log({ newNFTs });
 
         setModelNFTs(mNfts);
         setNewNFTs(newNFTs);
+        setTotwNFTs(getTotwNFTs);
+        setSubNFTs(fetchedSubNFTs);
         setOutOfPrintNFTs(outOfPrint);
       }
     })();
@@ -57,7 +77,7 @@ const ViewModelWrapper = ({ username }) => {
 
   console.log({ setId, nftSetPrice });
 
-  if (!modelData || !modelData.username || status !== "connected") {
+  if (!modelData || !modelData.username) {
     return (
       <div
         style={{
@@ -80,7 +100,7 @@ const ViewModelWrapper = ({ username }) => {
             padding: 10,
           }}
         >
-          Please make sure your Binance Smart Chain wallet is connected.
+          Loading Creator...
         </h5>
         <Spinner
           animation="border"
@@ -88,7 +108,7 @@ const ViewModelWrapper = ({ username }) => {
           size="xl"
           style={{ marginTop: 5 }}
         >
-          <span className="sr-only">Loading...</span>
+          <span className="sr-only">Loading Creator...</span>
         </Spinner>
       </div>
     );
@@ -97,7 +117,9 @@ const ViewModelWrapper = ({ username }) => {
       <Layout>
         <ViewModel
           modelData={modelData}
+          subNFTs={subNFTs}
           modelNFTs={modelNFTs}
+          totwNFTs={totwNFTs}
           newNFTs={newNFTs}
           outOfPrintNFTs={outOfPrintNFTs}
           nftSetPrice={nftSetPrice}
@@ -110,109 +132,145 @@ const ViewModelWrapper = ({ username }) => {
 
 const ViewModel = ({
   modelData,
-  modelNFTs,
   newNFTs,
+  subNFTs,
+  totwNFTs,
   outOfPrintNFTs,
-  nftSetPrice,
   onRedeemSet,
 }) => {
-  const [selectedTab, setSelectedTab] = useState("NEW NFTs");
-  const [otherTab, setOtherTab] = useState("OUT OF PRINT");
+  const [copied, setCopied] = useState(false);
+  const { account } = useWallet();
+  const subscriptionCost = useGetSubscriptionCost(modelData.address || "");
+  const isSubscribed = useGetIsSubscribed(modelData.address || "");
+  const formattedSubCost = Web3.utils.fromWei(subscriptionCost.toString());
+  const [key, setKey] = useState(totwNFTs.length !== 0 ? "totw" : "sweet");
 
-  const switchTab = () => {
-    const current = selectedTab;
-    const other = otherTab;
-    setSelectedTab(other);
-    setOtherTab(current);
-  };
+  useEffect(() => {
+    if (Number(formattedSubCost) !== 0) setKey("sub");
+  }, [formattedSubCost]);
+
+  console.log(subNFTs);
 
   return (
     <div className="container">
-      <div className="view-model row">
-        <div className="image-wrapper col-lg-3 p-0 pr-lg-3">
-          <div className="image-container text-center text-lg-left">
-            <img src={modelData.profile_pic} className="profile-pic" />
-            <div className="title mt-3">{modelData.username}</div>
-            <div
-              className="bio text-center mt-2"
-              style={{ fontSize: ".9em", color: "#777" }}
-            >
-              {modelData.bio}
-            </div>
-          </div>
-
-          <a href="/creators">
-            <Button style={{ marginTop: 15, width: "100%" }}>
-              View all Models
-            </Button>
-          </a>
-        </div>
-        <div className="col-lg-9 text-container container mt-4 mt-lg-0">
-          {!!onRedeemSet && (
-            <div
-              style={{
-                backgroundColor: "rgba(255,255,255,0.75)",
-                marginBottom: "25px",
-                display: "flex",
-                justifyContent: "center",
-                paddingTop: "2%",
-                paddingBottom: "2%",
-                borderRadius: "8px",
-              }}
-            >
-              <Button onClick={onRedeemSet} size="lg">
-                Redeem full set for {getDisplayBalance(nftSetPrice)} BNB
+      <div className="view-model white-tp-bg">
+        <div
+          className="banner"
+          style={{ backgroundImage: `url(${modelData.banner_pic})` }}
+        ></div>
+        <div className="profile-top-container col-md-12">
+          <div
+            style={{ backgroundImage: `url(${modelData.profile_pic})` }}
+            className="profile-pic"
+          />
+          <div className="buttons">
+            {account === modelData.address && (
+              <div className="mr-2">
+                <Link href="/creator-dashboard">
+                  <Button
+                    className="px-4"
+                    style={{
+                      marginTop: 15,
+                      width: "100%",
+                      borderRadius: 25,
+                      display: "inline-block",
+                    }}
+                  >
+                    Edit Profile
+                  </Button>
+                </Link>
+              </div>
+            )}
+            <div>
+              <Button
+                className="px-4"
+                style={{ marginTop: 15, width: "100%", borderRadius: 25 }}
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    `https://treatdao.com/creator/${modelData.username}`
+                  );
+                  setCopied(true);
+                }}
+              >
+                {copied ? (
+                  <>
+                    <Clipboard className="mb-1 mr-1" />
+                    Copied
+                  </>
+                ) : (
+                  <>
+                    <Clipboard className="mb-1 mr-1" />
+                    Copy URL
+                  </>
+                )}
               </Button>
             </div>
-          )}
+          </div>
+        </div>
 
-          {/* <div row>
-            <Button
-              onClick={() => {
-                switchTab();
-              }}
-              disabled={selectedTab === "NEW NFTs"}
+        <div className="profile-info">
+          <div className="col-md-12">
+            <div className="name">
+              {modelData.display_name || modelData.username}
+            </div>
+            <div className="username">@{modelData.username}</div>
+            <p className="bio">{modelData.bio}</p>
+            <a className="link" href={modelData.social_account} target="_blank">
+              {modelData.social_account}
+            </a>
+          </div>
+          <div className="tabs-container">
+            <Tabs
+              id="controlled-tab-example"
+              activeKey={key}
+              onSelect={(k) => setKey(k)}
+              className="mb-3"
             >
-              NEW LISTINGS
-            </Button>
-            <Button
-              onClick={() => {
-                switchTab();
-              }}
-              disabled={selectedTab === "OUT OF PRINT"}
-            >
-              OUT OF PRINT
-            </Button>
-          </div> */}
-
-          <motion.div
-            className="nft-list row mt-5"
-            animate={modelNFTs && modelNFTs.length > 0 && "show"}
-            exit="hidden"
-            initial="hidden"
-            variants={{
-              show: { transition: { staggerChildren: 0.15 }, opacity: 1 },
-              hidden: {
-                transition: {
-                  staggerChildren: 0.02,
-                  staggerDirection: -1,
-                  when: "afterChildren",
-                },
-              },
-            }}
-          >
-            {modelNFTs &&
-              modelNFTs.length > 0 &&
-              modelNFTs
-                .sort((a, b) => a.list_price - b.list_price)
-                .map((m) => (
-                  <div className="col-md-6">
-                    <NFTListItem modelData={modelData} data={m} key={m.id} />
-                  </div>
-                ))}
-          </motion.div>
+              {totwNFTs.length > 0 && (
+                <Tab eventKey="totw" title="TOTW NFTs">
+                  <SweetShopNFTs
+                    modelNFTs={totwNFTs}
+                    onRedeemSet={onRedeemSet}
+                    modelData={modelData}
+                  />
+                </Tab>
+              )}
+              {Number(formattedSubCost) !== 0 && (
+                <Tab eventKey="sub" title="Subscription NFTs">
+                  <SubscriptionNFTs
+                    isSubscribed={isSubscribed}
+                    modelNFTs={subNFTs}
+                    onRedeemSet={onRedeemSet}
+                    modelData={modelData}
+                    subscriptionCost={subscriptionCost}
+                    formattedSubCost={formattedSubCost}
+                    account={account}
+                  />
+                </Tab>
+              )}
+              <Tab eventKey="sweet" title="Sweet Shop NFTs">
+                <SweetShopNFTs
+                  modelNFTs={newNFTs}
+                  onRedeemSet={onRedeemSet}
+                  modelData={modelData}
+                />
+              </Tab>
+              <Tab eventKey="soldout" title="Sold out NFTs">
+                <SweetShopNFTs
+                  modelNFTs={outOfPrintNFTs}
+                  onRedeemSet={onRedeemSet}
+                  modelData={modelData}
+                />
+              </Tab>
+            </Tabs>
+          </div>
         </div>
       </div>
+      <Link href="/creators">
+        <div className="w-100 text-center mt-15">
+          <Button style={{ marginTop: 15 }}>Back to All Creators</Button>
+        </div>
+      </Link>
     </div>
   );
 };

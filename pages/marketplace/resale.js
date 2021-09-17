@@ -20,6 +20,7 @@ import BigNumber from "bignumber.js";
 
 const Marketplace = ({ search }) => {
   const maxId = useGetMaxIdForSale();
+  console.log({ maxId });
 
   const [cancelOrderData, setCancelOrderData] = useState(null);
   const [storedArray, setStoredArray] = useState(null);
@@ -66,7 +67,6 @@ const Marketplace = ({ search }) => {
     (async () => {
       if (orderBookArray.length === 0) {
         const storedArrayGrab = await localStorage.getItem("orderBookArray");
-        console.log({ storedArrayGrab });
         // await setStoredArray(JSON.parse(storedArrayGrab));
       }
     })();
@@ -114,7 +114,6 @@ const Marketplace = ({ search }) => {
         const nftResult = populatedNftData.find(
           (x) => x.id === orderBookNft.nftId
         );
-
         if (!nftResult) return undefined;
 
         if (
@@ -183,7 +182,7 @@ const Marketplace = ({ search }) => {
         handleClose={() => setShowPendingModal(false)}
         title={"Waiting for Transaction Confirmation ⌛"}
         subtitle={
-          "Please confirm this transaction in your wallet and wait here for upto a few minutes for the transaction to confirm..."
+          "Please confirm this transaction in your wallet and wait here for up to a few minutes for the transaction to confirm..."
         }
         noButton={true}
         account={account}

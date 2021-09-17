@@ -4,11 +4,11 @@ const NFTSchema = new mongoose.Schema(
   {
     nft_id: {
       type: Number,
-      required: [true, "Please add a NFT ID"],
+      required: [true, "Please add an NFT ID"],
     },
     seller: {
       type: String,
-      required: [true, "Please add a NFT seller"],
+      required: [true, "Please add an NFT seller"],
     },
     expires_date: {
       type: String,

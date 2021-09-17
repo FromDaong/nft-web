@@ -15,7 +15,7 @@ const CreateNFT = () => {
     validateOnChange: false,
     validateOnBlur: false,
     validationSchema: Yup.object().shape({
-      id: Yup.number().required("Please add a nft id"),
+      id: Yup.number().required("Please add an NFT id"),
       name: Yup.string().required("Please add a name"),
       list_price: Yup.string().required("Please add the NFT list price"),
       description: Yup.string(),

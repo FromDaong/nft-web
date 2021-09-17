@@ -45,7 +45,7 @@ const CreatedNFTs = ({
               fontSize: 24,
             }}
           >
-            <CameraFill className="pb-1 mr-1" /> Public NFTs
+            <CameraFill className="pb-1 mr-1" /> Sweet Shop NFTs
           </h2>
         </div>
 

@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import Spinner from "react-bootstrap/Spinner";
+import { Spinner, Button } from "react-bootstrap";
+import EditProfile from "../../components/CreatorDashboard/EditProfile";
 import CreatedNFTs from "../../components/CreatorDashboard/CreatedNFTs";
+import SubscriptionSettings from "../../components/CreatorDashboard/SubscriptionSettings";
 import Referrals from "../../components/CreatorDashboard/Referrals";
 import { Nav, Tab } from "react-bootstrap";
 import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
-import useWallet from "use-wallet";
+import { useWallet } from "use-wallet";
+import Link from "next/link";
 import useSWR from "swr";
 import Layout from "../../components/Layout";
 import {
@@ -13,7 +16,9 @@ import {
   PatchCheckFill,
   GearFill,
   PiggyBankFill,
+  PencilFill,
 } from "react-bootstrap-icons";
+import SubscriptionNFTs from "../../components/CreatorDashboard/SubscriptionNFTs";
 
 const variants = {
   show: {
@@ -80,12 +85,15 @@ const CreatorDashboardWrapper = ({ modelData }) => {
 };
 
 const ViewNFT = ({ modelData, account }) => {
-  const [serverNftBalances, setServerNftBalances] = useState(null);
+  // const [serverNftBalances, setServerNftBalances] = useState(null);
 
-  const maxNftSupply = useGetNftMaxSupply(account);
+  // const maxNftSupply = useGetNftMaxSupply(account);
   const [isLoading, setIsLoading] = useState(false);
 
   const { data: nftData } = useSWR(`/api/model/nfts-from-address/${account}`);
+  const { data: subNftData } = useSWR(
+    `/api/model/sub-nfts-from-address/${account}`
+  );
 
   const transferNFTClick = (x) => {
     setTransferNFTData(x);
@@ -117,6 +125,11 @@ const ViewNFT = ({ modelData, account }) => {
             >
               Connected wallet address: {account}
             </p>
+            <Link href={`/creator/${modelData.username}`}>
+              <Button variant="primary  w-sm-100">
+                <b>{"Go to My Creator Profile"}</b>
+              </Button>
+            </Link>
           </div>
 
           <div
@@ -132,14 +145,20 @@ const ViewNFT = ({ modelData, account }) => {
             className="mt-4 mt-md-0"
           ></div>
         </motion.div>
-        <Tab.Container id="left-tabs-example" defaultActiveKey="created-nfts">
+        <Tab.Container id="left-tabs-example" defaultActiveKey="edit-profile">
           <div className="mt-2 row">
             <div className="col-md-3 p-0">
               <Nav variant="pills" className="flex-column">
                 <Nav.Item className="white-tp-bg">
+                  <Nav.Link eventKey="edit-profile">
+                    <PencilFill className="mr-2 mb-1" />
+                    Edit Profile
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item className="white-tp-bg mt-2">
                   <Nav.Link eventKey="created-nfts">
                     <CameraFill className="mr-2 mb-1" />
-                    Public NFTs
+                    Sweet Shop NFTs
                   </Nav.Link>
                 </Nav.Item>
                 <Nav.Item className="white-tp-bg mt-2">
@@ -164,24 +183,27 @@ const ViewNFT = ({ modelData, account }) => {
             </div>
             <div className="col-md-9 pr-0 mt-4 mt-md-0 pl-0 pl-md-3">
               <Tab.Content>
+                <Tab.Pane eventKey="edit-profile">
+                  <EditProfile modelData={modelData} />
+                </Tab.Pane>
                 <Tab.Pane eventKey="created-nfts">
                   <CreatedNFTs
                     hideNFTs={hideNFTs}
                     transferNFTClick={transferNFTClick}
-                    isLoading={isLoading}
                     nftData={nftData}
                     modelData={modelData}
                   />
                 </Tab.Pane>
                 <Tab.Pane eventKey="subscription-nfts">
-                  <h4 className="text-center w-100 text-primary bold">
-                    Coming very soon...
-                  </h4>
+                  <SubscriptionNFTs
+                    hideNFTs={hideNFTs}
+                    transferNFTClick={transferNFTClick}
+                    nftData={subNftData}
+                    modelData={modelData}
+                  />
                 </Tab.Pane>
                 <Tab.Pane eventKey="subscription-settings">
-                  <h4 className="text-center w-100 text-primary bold">
-                    Coming very soon...
-                  </h4>
+                  <SubscriptionSettings />
                 </Tab.Pane>
                 <Tab.Pane eventKey="referrals">
                   <Referrals

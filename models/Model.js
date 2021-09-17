@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 
 const ModelSchema = new mongoose.Schema(
   {
+    display_name: {
+      type: String,
+    },
     username: {
       type: String,
       unique: "Username is already taken",
@@ -19,6 +22,11 @@ const ModelSchema = new mongoose.Schema(
     },
     profile_pic: {
       type: String,
+    },
+    banner_pic: {
+      type: String,
+      default:
+        "https://ipfs.infura.io/ipfs/QmdRewQfGbQP95hcyabRwRnXKWFH8Lyrr8ak6xc2y4uWTP",
     },
     social_account: {
       type: String,
@@ -46,6 +54,22 @@ const ModelSchema = new mongoose.Schema(
         id: String,
       },
     ],
+    sub_nfts: [
+      {
+        id: String,
+      },
+    ],
+    subscription: {
+      price: {
+        type: Number,
+      },
+      description: {
+        type: String,
+      },
+      enabled: {
+        type: Boolean,
+      },
+    },
     referred: [],
   },
   {

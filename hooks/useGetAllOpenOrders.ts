@@ -20,10 +20,17 @@ const useGetAllOpenOrders = (maxId: number) => {
       const sales = [];
       const rangeArray = [];
 
-      for (let i = 1; i <= maxId; i++) {
+      for (let i = 1; i <= Number(maxId); i++) {
+        console.log(i, maxId);
         if (i % 5 === 0) {
           rangeArray.push({
             min: i - 5,
+            max: i,
+          });
+        } else if (i === Number(maxId)) {
+          console.log("HERE§");
+          rangeArray.push({
+            min: rangeArray[rangeArray.length - 1].max,
             max: i,
           });
         }
@@ -49,7 +56,6 @@ const useGetAllOpenOrders = (maxId: number) => {
         ({ id }, index) => !ids.includes(id, index + 1)
       );
 
-      console.log({ finalArrayLen: filtered });
       setOrderBook(filtered);
     }
 
