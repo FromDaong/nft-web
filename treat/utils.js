@@ -51,6 +51,10 @@ export const getTreatMartContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treatMart;
 };
 
+export const getSubscriberMartContract = (treat) => {
+  return treat && treat.contracts && treat.contracts.subscriberMart;
+};
+
 export const getCreatorMartContract = (treat) => {
   return treat && treat.contracts && treat.contracts.creatorMart;
 };
@@ -65,6 +69,10 @@ export const getTreatMarketplaceContract = (treat) => {
 
 export const getTreatMarketReaderContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treatMarketReader;
+};
+
+export const getTreatSubscriptionContract = (treat) => {
+  return treat && treat.contracts && treat.contracts.treatSubscriptions;
 };
 
 export const getTreatMarketplaceAddress = (treat) => {
@@ -93,16 +101,124 @@ export const getTreatNftCost = async (treatMartContract, nftId) => {
   return new BigNumber(await treatMartContract.methods.nftCosts(nftId).call());
 };
 
+export const getSubscriberNftCost = async (subscriberMartContract, nftId) => {
+  return new BigNumber(
+    await subscriberMartContract.methods.nftCosts(nftId).call()
+  );
+};
+
 export const getCreatorNftCost = async (creatorMartContract, nftId) => {
   return new BigNumber(
     await creatorMartContract.methods.nftCosts(nftId).call()
   );
 };
 
+export const getSubCost = async (treatSubscriptionContract, creatorAddress) => {
+  return new BigNumber(
+    await treatSubscriptionContract.methods
+      .creatorSubscriptionCost(creatorAddress)
+      .call()
+  );
+};
+
+export const isSubscribed = async (
+  treatSubscriptionContract,
+  subscriberAddress,
+  creatorAddress
+) => {
+  return await treatSubscriptionContract.methods
+    .getIsSubscribedNow(subscriberAddress, creatorAddress)
+    .call();
+};
+
+export const isSubLocked = async (
+  treatSubscriptionContract,
+  subscriberAddress,
+  creatorAddress
+) => {
+  return await treatSubscriptionContract.methods
+    .hasCreatorLockedSubscriber(creatorAddress, subscriberAddress)
+    .call();
+};
+
+export const lockSub = async (
+  treatSubscriptionContract,
+  account,
+  subscriberAddress
+) => {
+  try {
+    const result = await treatSubscriptionContract.methods
+      .lockSubscriber(subscriberAddress)
+      .send({ from: account, value: 0 });
+    return result.events.SubscriberLocked.returnValues;
+  } catch (e) {
+    return undefined;
+  }
+};
+
+export const unlockSub = async (
+  treatSubscriptionContract,
+  account,
+  subscriberAddress
+) => {
+  try {
+    const result = await treatSubscriptionContract.methods
+      .unLockSubscriber(subscriberAddress)
+      .send({ from: account, value: 0 });
+    return result.events.SubscriberUnlocked.returnValues;
+  } catch (e) {
+    return undefined;
+  }
+};
+
+export const subscribeTo = async (
+  treatSubscriptionContract,
+  account,
+  creatorAddress,
+  subCost,
+  totalSubUnits
+) => {
+  try {
+    const result = await treatSubscriptionContract.methods
+      .subscribe(creatorAddress, totalSubUnits)
+      .send({ from: account, value: subCost });
+    return result.events.Subscribed.returnValues;
+  } catch (e) {
+    return undefined;
+  }
+};
+
+export const editSub = async (treatSubscriptionContract, account, subCost) => {
+  try {
+    const result = await treatSubscriptionContract.methods
+      .setSubscriptionCost(subCost)
+      .send({ from: account, value: 0 });
+    return result.events.SubscriptionEdited.returnValues;
+  } catch (e) {
+    return undefined;
+  }
+};
+
 // user redeems nft
 export const mintNft = async (treatmartContract, account, nftId, nftCost) => {
   try {
     return await treatmartContract.methods
+      .redeem(nftId)
+      .send({ from: account, value: nftCost });
+  } catch (e) {
+    return undefined;
+  }
+};
+
+// user redeems nft
+export const mintSubNft = async (
+  subscriberMartContract,
+  account,
+  nftId,
+  nftCost
+) => {
+  try {
+    return await subscriberMartContract.methods
       .redeem(nftId)
       .send({ from: account, value: nftCost });
   } catch (e) {
@@ -120,6 +236,22 @@ export const mintCreatorNft = async (
     return await creatorMartContract.methods
       .redeem(nftId)
       .send({ from: account, value: nftCost });
+  } catch (e) {
+    return undefined;
+  }
+};
+
+export const mintManySubNft = async (
+  subscriberMartContract,
+  account,
+  nftId,
+  nftCost,
+  amount
+) => {
+  try {
+    return await subscriberMartContract.methods
+      .redeemMultiple(nftId, amount)
+      .send({ from: account, value: nftCost * amount });
   } catch (e) {
     return undefined;
   }
@@ -162,6 +294,27 @@ export const createAndAddNFTs = async (
   }
 };
 
+export const createAndAddSubscriberNFTs = async (
+  subscriberMartContract,
+  account,
+  maxSupplys,
+  amounts,
+  isNotListedFlags,
+  hexData
+) => {
+  try {
+    console.log({ maxSupplys, amounts, hexData });
+    const result = await subscriberMartContract.methods
+      .createAndAddNFTs(maxSupplys, amounts, isNotListedFlags, hexData)
+      .send({ from: account, value: 0 });
+
+    return result.events.NFTCreatedAndAdded.returnValues;
+  } catch (e) {
+    console.log({ e });
+    return undefined;
+  }
+};
+
 export const createNFTs = async (
   creatorMinterHelperContract,
   account,
@@ -170,6 +323,21 @@ export const createNFTs = async (
   try {
     return await creatorMinterHelperContract.methods
       .createTreats(maxSupplys)
+      .send({ from: account, value: 0 });
+  } catch (e) {
+    return undefined;
+  }
+};
+
+export const addSubscriberNft = async (
+  subscriberMartContract,
+  account,
+  nftIds,
+  nftCosts
+) => {
+  try {
+    return await subscriberMartContract.methods
+      .addNFT(nftIds, nftCosts)
       .send({ from: account, value: 0 });
   } catch (e) {
     return undefined;
@@ -185,6 +353,20 @@ export const addCreatorNft = async (
   try {
     return await creatorMartContract.methods
       .addNFT(nftIds, nftCosts)
+      .send({ from: account, value: 0 });
+  } catch (e) {
+    return undefined;
+  }
+};
+
+export const addSubscriberFreeTreat = async (
+  subscriberMartContract,
+  account,
+  nftIds
+) => {
+  try {
+    return await subscriberMartContract.methods
+      .addGiveAwayTreat(nftIds, nftCosts)
       .send({ from: account, value: 0 });
   } catch (e) {
     return undefined;
@@ -220,6 +402,21 @@ export const mintFreeTreat = async (
   }
 };
 
+export const mintFreeSubscriberTreat = async (
+  subscriberMartContract,
+  account,
+  nftId,
+  nftCost
+) => {
+  try {
+    return await subscriberMartContract.methods
+      .redeemFreeTreat(nftId)
+      .send({ from: account, value: 0 });
+  } catch (e) {
+    return undefined;
+  }
+};
+
 export const mintFreeCreatorTreat = async (
   creatorMartContract,
   account,
@@ -245,6 +442,16 @@ export const getSetIds = async (treatMartContract, setId) => {
   }
 };
 
+export const getSubscriberSetIds = async (subscriberMartContract, setId) => {
+  try {
+    const txHash = await subscriberMartContract.methods.getSetIds(setId).call();
+    console.log(txHash);
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+};
+
 export const getCreatorSetIds = async (creatorMartContract, setId) => {
   try {
     const txHash = await creatorMartContract.methods.getSetIds(setId).call();
@@ -258,6 +465,15 @@ export const getCreatorSetIds = async (creatorMartContract, setId) => {
 export const getSetPrice = async (treatMartContract, setId) => {
   try {
     return await treatMartContract.methods.nftSetCosts(setId).call();
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+};
+
+export const getSubscriberSetPrice = async (subscriberMartContract, setId) => {
+  try {
+    return await subscriberMartContract.methods.nftSetCosts(setId).call();
   } catch (e) {
     console.error(e);
     return undefined;
@@ -285,6 +501,27 @@ export const redeemSet = async (
       from: account,
       value: setCost,
     });
+    console.log(txHash);
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+};
+
+export const redeemSubscriberSet = async (
+  subscriberMartContract,
+  account,
+  nftSetId,
+  setCost
+) => {
+  console.log({ mintSetCost: setCost?.toString() });
+  try {
+    const txHash = await subscriberMartContract.methods
+      .redeemSet(nftSetId)
+      .send({
+        from: account,
+        value: setCost,
+      });
     console.log(txHash);
   } catch (e) {
     console.error(e);
@@ -354,6 +591,15 @@ export const getNftV1Balance = async (treatNFTMinterV1, account, nftId) => {
 export const getIsGiveAwayNft = async (creatorMart, nftId) => {
   try {
     return await creatorMart.methods.isGiveAwayCard(nftId).call();
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+};
+
+export const getIsGiveAwaySubscriberNft = async (subscriberMart, nftId) => {
+  try {
+    return await subscriberMart.methods.isGiveAwayCard(nftId).call();
   } catch (e) {
     console.error(e);
     return undefined;
@@ -655,6 +901,8 @@ export const getOrdersInfoForNftRange = async (
         listDate: orders.listDates[i],
       };
     });
+
+    console.log({ startNftId, endNftId, x });
     return x;
   } catch (err) {
     console.error(`get orders for seller failed: ${err}`);

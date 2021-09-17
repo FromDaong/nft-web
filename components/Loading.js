@@ -10,6 +10,7 @@ const Loading = ({ custom }) => {
         display: "flex",
         zIndex: 10000,
         top: 0,
+        paddingTop: "35vh",
         left: 0,
         justifyContent: "center",
         flexDirection: "column",

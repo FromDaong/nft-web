@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
-import useWallet from "use-wallet";
+import { useWallet } from "use-wallet";
 import useSWR from "swr";
 import Link from "next/link";
 import Layout from "../../components/Layout";
@@ -142,7 +142,7 @@ const AdminDashboard = ({ username }) => {
         title={"Confirming Transaction ⌛ - Don't close this browser window"}
         centered
         subtitle={
-          "Please confirm this transaction in your wallet and wait here for upto a few minutes for the transaction to confirm. Do not close this browser window!"
+          "Please confirm this transaction in your wallet and wait here for up to a few minutes for the transaction to confirm. Do not close this browser window!"
         }
         noButton={true}
       />

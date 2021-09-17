@@ -35,6 +35,7 @@ const CreatingNFTItem = ({
   handleChange,
   index,
   modelData,
+  blurRequired,
 }) => {
   const [blurhash, setBlurHash] = useState("");
 
@@ -52,22 +53,19 @@ const CreatingNFTItem = ({
     canvas.width = image.width;
     canvas.height = image.height;
     const context = canvas.getContext("2d");
-    context.drawImage(image, 0, 0);
-    return context.getImageData(0, 0, image.width, image.height);
+    context.drawImage(image, 0, 0, image.width / 4, image.height / 4);
+    return context.getImageData(0, 0, image.width / 4, image.height / 4);
   };
 
   const encodeImageToBlurhash = async (imageUrl) => {
     const image = await loadImage(imageUrl);
     const imageData = getImageData(image);
-    return encode(imageData.data, imageData.width, imageData.height, 4, 4);
+    return encode(imageData.data, imageData.width, imageData.height, 9, 9);
   };
 
   const changeBlurhash = async (e) => {
     if (e.target.checked) {
-      await formik.setFieldValue(
-        `nfts[${index}].blurhash`,
-        blurhash || "Loading Blurhash, Please wait a minute..."
-      );
+      await formik.setFieldValue(`nfts[${index}].blurhash`, blurhash);
       if (blurhash) return;
 
       const returnedBlurhash = await encodeImageToBlurhash(imageUrl);
@@ -80,8 +78,7 @@ const CreatingNFTItem = ({
 
   useEffect(() => {
     (async () => {
-      // const returnedBlurhash = await encodeImageToBlurhash(imageUrl);
-      // setBlurHash(returnedBlurhash);
+      if (blurRequired) changeBlurhash({ target: { checked: true } });
     })();
   }, [imageUrl]);
 
@@ -123,7 +120,12 @@ const CreatingNFTItem = ({
               placeholder="E.g. 120"
               name={`nfts[${index}].list_price`}
               value={formik.values.nfts[index].list_price}
-              onChange={formik.handleChange}
+              onChange={(e) =>
+                formik.setFieldValue(
+                  `nfts[${index}].list_price`,
+                  +Number(e.target.value).toFixed(4)
+                )
+              }
             />
           </div>
         </div>
@@ -139,26 +141,35 @@ const CreatingNFTItem = ({
         </div>
         <div className="pb-4">
           <label className="w-100">
-            Blur this NFT publicly so users must "Pay to Reveal" the content?
+            {blurRequired
+              ? "Generated Blurhash for Resale Marketplace:"
+              : 'Blur this NFT publicly so users must "Pay to Reveal" the content?'}
           </label>
           <div className="row">
-            <div className="col-md-2 text-center pt-2">
-              <Form.Check
-                className="d-inline mt-2"
-                type="switch"
-                id={`nfts[${index}].blurhash`}
-                name={`nfts[${index}].blurhash`}
-                checked={!!formik.values.nfts[index].blurhash}
-                onChange={changeBlurhash}
-              />
-            </div>
+            {!blurRequired && (
+              <div className="col-md-2 text-center pt-2">
+                <Form.Check
+                  className="d-inline mt-2"
+                  type="switch"
+                  id={`nfts[${index}].blurhash`}
+                  name={`nfts[${index}].blurhash`}
+                  checked={!!formik.values.nfts[index].blurhash}
+                  onChange={changeBlurhash}
+                />
+              </div>
+            )}
             <div className="col-md-10">
-              {formik.values.nfts[index].blurhash && (
+              {!formik.values.nfts[index].blurhash && !blurRequired ? (
+                <></>
+              ) : (
                 <>
                   <FormControl
                     placeholder="E.g. eKO2?U%2Tw=wR6]~RBVZRip0};RPxuwH%3tLOtxZ%gixI.ENa0NZIV"
                     name={`nfts[${index}].blurhash`}
-                    value={formik.values.nfts[index].blurhash}
+                    value={
+                      formik.values.nfts[index].blurhash ||
+                      "Loading Blurhash, Please wait a minute..."
+                    }
                     onChange={formik.handleChange}
                   />
                   <small>(Auto-generated Blurhash for this image)</small>

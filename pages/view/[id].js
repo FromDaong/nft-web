@@ -4,14 +4,17 @@ import Button from "react-bootstrap/Button";
 import useSWR from "swr";
 import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
 import useGetFreeTreat from "../../hooks/useGetFreeTreat";
+import useGetFreeSubscriberTreat from "../../hooks/useGetFreeSubscriberTreat";
 import useGetFreeCreatorTreat from "../../hooks/useGetFreeCreatorTreat";
 import useGetNftTotalSupply from "../../hooks/useGetNftTotalSupply";
 import useGetTreatNFTCost from "../../hooks/useGetTreatNftCost";
+import getSubscriberNftCost from "../../hooks/useGetSubscriberNftCost";
 import getCreatorNftCost from "../../hooks/useGetCreatorNftCost";
 import useGetOpenOrdersForNft from "../../hooks/useGetOpenOrdersForNft";
 import useMintCreatorNft from "../../hooks/useMintCreatorNft";
 import useMintNft from "../../hooks/useMintNft";
-import useWallet from "use-wallet";
+import useMintSubcriberNft from "../../hooks/useMintSubscriberNft";
+import { useWallet } from "use-wallet";
 import { getDisplayBalance } from "../../utils/formatBalance";
 import { generateFromString } from "generate-avatar";
 import { Blurhash } from "react-blurhash";
@@ -152,21 +155,29 @@ const ViewNFTWrapper = ({ id }) => {
 const ViewNFT = ({ nftData, image, account }) => {
   const totwNftCost = useGetTreatNFTCost(nftData.id);
   const creatorNftCost = getCreatorNftCost(nftData.id);
+  const subscriberNftCost = getSubscriberNftCost(nftData.id);
 
-  const nftCost = nftData.old_totw ? totwNftCost : creatorNftCost;
+  let nftCost = nftData.old_totw ? totwNftCost : creatorNftCost;
+  nftCost = nftData.subscription_nft ? subscriberNftCost : nftCost;
 
   const maxNftSupply = useGetNftMaxSupply(nftData.id);
   const mintedNfts = useGetNftTotalSupply(nftData.id);
   const remainingNfts = maxNftSupply.minus(mintedNfts);
   const { onMintNft: onMintTotwNft } = useMintNft(nftData.id, nftCost);
   const { onMintCreatorNft } = useMintCreatorNft(nftData.id, nftCost);
+  const { onMintSubscriberNft } = useMintSubcriberNft(nftData.id, nftCost);
 
   const [showModal, setShowModal] = useState(false);
   const { onGetFreeTreat } = useGetFreeTreat(nftData.id, nftCost);
   const { onGetFreeCreatorTreat } = useGetFreeCreatorTreat(nftData.id, nftCost);
+  const { onGetFreeSubscriberTreat } = useGetFreeSubscriberTreat(
+    nftData.id,
+    nftCost
+  );
   const openOrders = useGetOpenOrdersForNft(nftData.id);
 
   const onMintNft = async () => {
+    if (nftData.subscription_nft) return onMintSubscriberNft();
     if (nftData.old_totw) {
       return await onMintTotwNft();
     } else {
@@ -175,6 +186,7 @@ const ViewNFT = ({ nftData, image, account }) => {
   };
 
   const onMintFreeNft = async () => {
+    if (nftData.subscription_nft) return onGetFreeSubscriberTreat();
     if (nftData.old_totw) {
       return await onGetFreeTreat();
     } else {

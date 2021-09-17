@@ -13,7 +13,7 @@ import useGetNftMaxSupply from "../hooks/useGetNftMaxSupply";
 import useGetNftBalance from "../hooks/useGetNftBalance";
 import { getDisplayBalance } from "../utils/formatBalance";
 import useGetOpenOrdersForSeller from "../hooks/useGetOpenOrdersForSeller";
-import useWallet from "use-wallet";
+import { useWallet } from "use-wallet";
 import useSWR from "swr";
 import BigNumber from "bignumber.js";
 import Layout from "../components/Layout";
@@ -366,7 +366,7 @@ const ViewNFT = ({ account, nftArray }) => {
           handleClose={() => setShowPendingModal(false)}
           title={"Waiting for Transaction Confirmation ⌛"}
           subtitle={
-            "Please confirm this transaction in your wallet and wait here for upto a few minutes for the transaction to confirm..."
+            "Please confirm this transaction in your wallet and wait here for up to a few minutes for the transaction to confirm..."
           }
           noButton={true}
           account={account}

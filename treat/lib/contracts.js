@@ -6,8 +6,10 @@ import BigNumber from "bignumber.js/bignumber";
 import TreatAbi from "./abi/treat.json";
 import TreatMarketplaceAbi from "./abi/treatMarketplace.json";
 import TreatMarketReaderAbi from "./abi/treatmarketreader.json";
+import TreatSubscriptionsAbi from "./abi/treatsubscriptions.json";
 import TreatMartAbi from "./abi/treatmart.json";
 import CreatorMartAbi from "./abi/creatormart.json";
+import SubscriberMartAbi from "./abi/subscribermart.json";
 import TreatNFTMinterAbi from "./abi/treatnftminter.json";
 import TreatNFTMinterV1Abi from "./abi/treatnftminterv1.json";
 import TreatTradeInAbi from "./abi/treattradein.json";
@@ -28,8 +30,10 @@ export class Contracts {
     this.treatNFTMinterV1 = new this.web3.eth.Contract(TreatNFTMinterV1Abi);
     this.treatMart = new this.web3.eth.Contract(TreatMartAbi);
     this.creatorMart = new this.web3.eth.Contract(CreatorMartAbi);
+    this.subscriberMart = new this.web3.eth.Contract(SubscriberMartAbi);
     this.treatMarketplace = new this.web3.eth.Contract(TreatMarketplaceAbi);
     this.treatMarketReader = new this.web3.eth.Contract(TreatMarketReaderAbi);
+    this.treatSubscriptions = new this.web3.eth.Contract(TreatSubscriptionsAbi);
     this.weth = new this.web3.eth.Contract(WETHAbi);
     this.treatTradeIn = new this.web3.eth.Contract(TreatTradeInAbi);
 
@@ -69,8 +73,13 @@ export class Contracts {
       this.treatMarketReader,
       contractAddresses.treatMarketReader[networkId]
     );
+    setProvider(
+      this.treatSubscriptions,
+      contractAddresses.treatSubscriptions[networkId]
+    );
     setProvider(this.treatTradeIn, contractAddresses.treatTradeIn[networkId]);
     setProvider(this.creatorMart, contractAddresses.creatorMart[networkId]);
+    setProvider(this.subscriberMart, contractAddresses.subscriberMart[networkId]);
     setProvider(this.weth, contractAddresses.weth[networkId]);
   }
 
@@ -80,8 +89,10 @@ export class Contracts {
     this.treatNFTMinterV1.options.from = account;
     this.treatMart.options.from = account;
     this.creatorMart.options.from = account;
+    this.subscriberMart.options.from = account;
     this.treatMarketplace.options.from = account;
     this.treatMarketReader.options.from = account;
+    this.treatSubscriptions.options.from = account;
     this.treatTradeIn.options.from = account;
   }
 
