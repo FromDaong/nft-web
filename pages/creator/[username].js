@@ -137,6 +137,7 @@ const ViewModel = ({
   totwNFTs,
   outOfPrintNFTs,
   onRedeemSet,
+  nftSetPrice,
 }) => {
   const [copied, setCopied] = useState(false);
   const { account } = useWallet();
@@ -232,6 +233,7 @@ const ViewModel = ({
                     modelNFTs={totwNFTs}
                     onRedeemSet={onRedeemSet}
                     modelData={modelData}
+                    nftSetPrice={nftSetPrice}
                   />
                 </Tab>
               )}
