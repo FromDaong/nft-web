@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import NFTListItem from "../NFTListItem";
 import { Button } from "react-bootstrap";
 import LazyLoad from "react-lazyload";
+import { getDisplayBalance } from "../../utils/formatBalance";
 
 const variants = {
   show: {
@@ -19,10 +20,10 @@ const variants = {
   },
 };
 
-const SweetShopNFTs = ({ modelData, onRedeemSet, modelNFTs }) => {
+const SweetShopNFTs = ({ modelData, onRedeemSet, modelNFTs, nftSetPrice }) => {
   return (
     <>
-      {!!onRedeemSet && (
+      {!!onRedeemSet && nftSetPrice && (
         <div
           style={{
             backgroundColor: "rgba(255,255,255,0.75)",
