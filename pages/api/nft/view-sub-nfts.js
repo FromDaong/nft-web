@@ -36,6 +36,8 @@ export default async (req, res) => {
 
         let results = await Promise.all(
           nft_ids.map(async (id) => {
+            if (!id) return undefined;
+
             const nftData = await NFT.findOne({ id: Number(id) });
             const isSignerSubscribed = await isSubscribed(
               treatSubscriptionContract,
