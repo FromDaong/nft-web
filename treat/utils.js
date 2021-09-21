@@ -63,6 +63,10 @@ export const getCreatorMinterHelperContract = (treat) => {
   return treat && treat.contracts && treat.contracts.creatorMinterHelper;
 };
 
+export const getTotwMinterHelperContract = (treat) => {
+  return treat && treat.contracts && treat.contracts.totwMinterHelper;
+};
+
 export const getTreatMarketplaceContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treatMarketplace;
 };
@@ -269,6 +273,25 @@ export const mintManyCreatorNft = async (
       .redeemMultiple(nftId, amount)
       .send({ from: account, value: nftCost * amount });
   } catch (e) {
+    return undefined;
+  }
+};
+
+export const createBulkTotwNFTs = async (
+  totwMinterHelperContract,
+  account,
+  maxSupplys,
+  creatorAddresses
+) => {
+  try {
+    console.log({ maxSupplys, creatorAddress });
+    const result = await totwMinterHelperContract.methods
+      .createTreats(maxSupplys, creatorAddress)
+      .send({ from: account, value: 0 });
+
+    return result.events.TotwNftsCreated.returnValues;
+  } catch (e) {
+    console.log({ e });
     return undefined;
   }
 };
