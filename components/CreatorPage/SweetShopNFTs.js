@@ -59,7 +59,10 @@ const SweetShopNFTs = ({ modelData, onRedeemSet, modelNFTs, nftSetPrice }) => {
                 </LazyLoad>
               </div>
             ))}
-        {modelNFTs.length === 0 && (
+        {!modelNFTs && (
+          <div className="text-center w-100 mt-5">Loading NFTs...</div>
+        )}
+        {modelNFTs && modelNFTs.length === 0 && (
           <div className="text-center w-100 mt-5">Empty</div>
         )}
       </motion.div>
