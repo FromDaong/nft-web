@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import NFTListItem from "../NFTListItem";
 import { Button } from "react-bootstrap";
+import LazyLoad from "react-lazyload";
 
 const variants = {
   show: {
@@ -52,7 +53,9 @@ const SweetShopNFTs = ({ modelData, onRedeemSet, modelNFTs }) => {
             .sort((a, b) => a.list_price - b.list_price)
             .map((m) => (
               <div className="col-xs-12 col-md-6 col-xl-4 ">
-                <NFTListItem modelData={modelData} data={m} key={m.id} />
+                <LazyLoad height={400} unmountIfInvisible>
+                  <NFTListItem modelData={modelData} data={m} key={m.id} />
+                </LazyLoad>
               </div>
             ))}
         {modelNFTs.length === 0 && (
