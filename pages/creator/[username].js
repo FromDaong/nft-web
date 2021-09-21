@@ -20,11 +20,11 @@ import { Clipboard } from "react-bootstrap-icons";
 const ViewModelWrapper = ({ username }) => {
   const { data: res } = useSWR(`/api/model/${username}`);
   const [modelData, setModelData] = useState();
-  const [subNFTs, setSubNFTs] = useState([]);
-  const [totwNFTs, setTotwNFTs] = useState([]);
+  const [subNFTs, setSubNFTs] = useState();
+  const [totwNFTs, setTotwNFTs] = useState();
   const [modelNFTs, setModelNFTs] = useState();
-  const [newNFTs, setNewNFTs] = useState([]);
-  const [outOfPrintNFTs, setOutOfPrintNFTs] = useState([]);
+  const [newNFTs, setNewNFTs] = useState();
+  const [outOfPrintNFTs, setOutOfPrintNFTs] = useState();
   const router = useRouter();
 
   useEffect(() => {
@@ -144,7 +144,9 @@ const ViewModel = ({
   const subscriptionCost = useGetSubscriptionCost(modelData.address || "");
   const isSubscribed = useGetIsSubscribed(modelData.address || "");
   const formattedSubCost = Web3.utils.fromWei(subscriptionCost.toString());
-  const [key, setKey] = useState(totwNFTs.length !== 0 ? "totw" : "sweet");
+  const [key, setKey] = useState(
+    totwNFTs && totwNFTs.length !== 0 ? "totw" : "sweet"
+  );
 
   useEffect(() => {
     if (Number(formattedSubCost) !== 0) setKey("sub");
@@ -227,7 +229,7 @@ const ViewModel = ({
               onSelect={(k) => setKey(k)}
               className="mb-3"
             >
-              {totwNFTs.length > 0 && (
+              {totwNFTs && totwNFTs.length > 0 && (
                 <Tab eventKey="totw" title="TOTW NFTs">
                   <SweetShopNFTs
                     modelNFTs={totwNFTs}
