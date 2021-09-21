@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";
 
-const usecreateBulkTotwNFTs = (
+const useCreateBulkTotwNFTs = (
   maxSupplys: Array<number>,
   creatorAddress: string
 ) => {
