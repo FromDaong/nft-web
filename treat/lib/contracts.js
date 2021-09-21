@@ -4,6 +4,7 @@ import { SUBTRACT_GAS_LIMIT, contractAddresses } from "./constants.js";
 
 import BigNumber from "bignumber.js/bignumber";
 import TreatAbi from "./abi/treat.json";
+import TotwMinterHelperAbi from "./abi/totwminterhelper.json";
 import TreatMarketplaceAbi from "./abi/treatMarketplace.json";
 import TreatMarketReaderAbi from "./abi/treatmarketreader.json";
 import TreatSubscriptionsAbi from "./abi/treatsubscriptions.json";
@@ -31,6 +32,7 @@ export class Contracts {
     this.treatMart = new this.web3.eth.Contract(TreatMartAbi);
     this.creatorMart = new this.web3.eth.Contract(CreatorMartAbi);
     this.subscriberMart = new this.web3.eth.Contract(SubscriberMartAbi);
+    this.totwMinterHelper = new this.web3.eth.Contract(TotwMinterHelperAbi);
     this.treatMarketplace = new this.web3.eth.Contract(TreatMarketplaceAbi);
     this.treatMarketReader = new this.web3.eth.Contract(TreatMarketReaderAbi);
     this.treatSubscriptions = new this.web3.eth.Contract(TreatSubscriptionsAbi);
@@ -66,6 +68,10 @@ export class Contracts {
 
     setProvider(this.treatMart, contractAddresses.treatMart[networkId]);
     setProvider(
+      this.totwMinterHelper,
+      contractAddresses.totwMinterHelper[networkId]
+    );
+    setProvider(
       this.treatMarketplace,
       contractAddresses.treatMarketplace[networkId]
     );
@@ -90,6 +96,7 @@ export class Contracts {
     this.treatMart.options.from = account;
     this.creatorMart.options.from = account;
     this.subscriberMart.options.from = account;
+    this.totwMinterHelper.options.from = account;
     this.treatMarketplace.options.from = account;
     this.treatMarketReader.options.from = account;
     this.treatSubscriptions.options.from = account;
