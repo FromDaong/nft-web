@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import toBuffer from "blob-to-buffer";
 import { Form, Button } from "react-bootstrap";
 import { useFormik, FieldArray, FormikProvider } from "formik";
-import useCreateAndAddSubscriberNFTs from "../../hooks/useCreateAndAddSubscriberNFTs";
+import useCreateBulkTotwNFTs from "../../hooks/useCreateBulkTotwNFTs";
 import { useRouter } from "next/router";
 import { useWallet } from "use-wallet";
 import Loading from "../../components/Loading";
@@ -12,7 +12,7 @@ import { useDropzone } from "react-dropzone";
 import { create } from "ipfs-http-client";
 import async from "async";
 import BlankModal from "../../components/BlankModal";
-import BigNumber from "bignumber.js";
+import { FormControl } from "react-bootstrap";
 import { useEffect } from "react";
 import * as Yup from "yup";
 import Web3 from "web3";
@@ -26,6 +26,11 @@ const CreateNFT = ({ modelData }) => {
 
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
+  const [modelUsername, setModelUsername] = useState("");
+
+  const [maxSupplyArray, setMaxSupplyArray] = useState(null);
+  const [amountsArray, setAmountsArray] = useState(null);
+  const [totwModelData, setTotwModelData] = useState(null);
 
   const onDrop = (files) => {
     if (files && files.length > 0) {
@@ -62,16 +67,16 @@ const CreateNFT = ({ modelData }) => {
   const formik = useFormik({
     initialValues: {
       nfts: ipfsFiles.map((file) => ({
-        name: "",
-        list_price: 0,
+        name: "NFT name here",
+        list_price: 1,
         description: "",
         blurhash: false,
         image: file,
         max_supply: 10,
         external_url: "https://treatdao.com/",
-        model_handle: modelData.username,
-        model_profile_pic: modelData.profile_pic,
-        model_bnb_address: modelData.address,
+        model_handle: totwModelData.username,
+        model_profile_pic: totwModelData.profile_pic,
+        model_bnb_address: totwModelData.address,
       })),
     },
     enableReinitialize: true,
@@ -85,7 +90,7 @@ const CreateNFT = ({ modelData }) => {
           list_price: Yup.string().required("Please add the NFT list price"),
           description: Yup.string().required("Please add an NFT description"),
           external_url: Yup.string().required("Please add a external_url"),
-          blurhash: Yup.string().required("Please add a blurhash"),
+          blurhash: Yup.string(),
           image: Yup.string().required("Please add a image"),
           max_supply: Yup.string().required("Please add a max supply"),
           model_handle: Yup.string().required("Please add a model handle"),
@@ -106,22 +111,23 @@ const CreateNFT = ({ modelData }) => {
     },
   });
 
-  const [maxSupplyArray, setMaxSupplyArray] = useState(null);
-  const [amountsArray, setAmountsArray] = useState(null);
-
-  const { onCreateAndAddSubscriberNFTs } = useCreateAndAddSubscriberNFTs(
+  const { onCreateBulkTotwNFTs } = useCreateBulkTotwNFTs(
     maxSupplyArray,
-    amountsArray,
-    "0x"
+    totwModelData ? totwModelData.address : "0x"
   );
+
+  const setModelData = async () => {
+    const x = await fetch(`/api/admin/get-info/${modelUsername}`);
+    const j = await x.json();
+    if (!j.username) return;
+    setTotwModelData(j);
+  };
 
   useEffect(() => {
     const maxSupplies = formik.values.nfts.map((n) => n.max_supply);
     const amounts = formik.values.nfts.map(
       (n) => n.list_price && Web3.utils.toWei(n.list_price.toString())
     );
-
-    console.log({ amounts });
 
     setMaxSupplyArray(maxSupplies);
     setAmountsArray(amounts);
@@ -130,7 +136,7 @@ const CreateNFT = ({ modelData }) => {
   const SubmitToServer = async () => {
     try {
       setShowPendingModal(true);
-      const createNFTResult = await onCreateAndAddSubscriberNFTs();
+      const createNFTResult = await onCreateBulkTotwNFTs();
 
       if (!createNFTResult) return setShowPendingModal(false);
 
@@ -140,7 +146,7 @@ const CreateNFT = ({ modelData }) => {
         blurhash: nftData.blurhash ? nftData.blurhash : null,
       }));
 
-      const res = await fetch(`/api/model/create-sub-nfts`, {
+      const res = await fetch(`/api/model/create-totw-nfts`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -148,7 +154,7 @@ const CreateNFT = ({ modelData }) => {
         },
         body: JSON.stringify({
           nfts: submitValues,
-          address: modelData.address,
+          address: totwModelData.address,
         }),
       });
 
@@ -194,24 +200,49 @@ const CreateNFT = ({ modelData }) => {
 
       <div className="container">
         <Hero
-          title="Create New Subscription NFTs"
-          subtitle="Complete this form carefully. Make sure you don't leave this page after submitting the creation transaction. NFTs created on this page will only be available to your subscribers and will be unblurred. If listed on the resale marketplace, the NFTs will be blurred publicly."
+          title="Create TOTW NFTs"
+          subtitle="Complete this form carefully. Make sure you don't leave this page after submitting the creation transaction."
         />
 
         {(!formik.values.nfts || formik.values.nfts.length === 0) && (
-          <div className="white-tp-container p-4 row">
-            <div
-              className="dropzone justify-content-center flex"
-              {...getRootProps()}
-              style={{ minHeight: 200 }}
-            >
-              <input {...getInputProps()} />
-              <p className="mb-0 text-center" style={{ fontSize: "1.1em" }}>
-                Step 1: Drag 'n' drop your all your high resolution images here,{" "}
-                <br />
-                or click to here to select them
-              </p>
-            </div>
+          <div className="white-tp-container p-4 col-md-12">
+            {!totwModelData && (
+              <div className="model-name">
+                <div className="pb-4">
+                  <label>Step 1: Model Username</label>
+                  <FormControl
+                    placeholder="E.g. alenaxbt"
+                    value={modelUsername}
+                    // onChange={handleChange}
+                    onChange={(e) => {
+                      setModelUsername(e.target.value);
+                    }}
+                  />
+                </div>
+
+                <Button
+                  type="submit"
+                  variant="primary py-2 w-100"
+                  onClick={() => setModelData()}
+                >
+                  <b>CONTINUE</b>
+                </Button>
+              </div>
+            )}
+            {totwModelData && (
+              <div
+                className="col-md-12 dropzone justify-content-center flex"
+                {...getRootProps()}
+                style={{ minHeight: 200 }}
+              >
+                <input {...getInputProps()} />
+                <p className="mb-0 text-center" style={{ fontSize: "1.1em" }}>
+                  Step 2: Drag 'n' drop your all your high resolution images
+                  here, <br />
+                  or click to here to select them
+                </p>
+              </div>
+            )}
           </div>
         )}
 
@@ -224,8 +255,7 @@ const CreateNFT = ({ modelData }) => {
               formik.values.nfts.map((nft, i) => (
                 <CreatingNFTItem
                   formik={formik}
-                  blurRequired={true}
-                  modelData={modelData}
+                  modelData={totwModelData}
                   index={i}
                   key={nft.image}
                   imageUrl={nft.image}
@@ -260,7 +290,7 @@ const CreateNFT = ({ modelData }) => {
 const CreateNFTWrapper = (props) => {
   const { account, status } = useWallet();
 
-  if (status !== "connected" || !props.modelData) {
+  if (status !== "connected") {
     return <Loading />;
   } else {
     return <CreateNFT {...props} />;

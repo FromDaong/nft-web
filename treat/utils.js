@@ -281,7 +281,7 @@ export const createBulkTotwNFTs = async (
   totwMinterHelperContract,
   account,
   maxSupplys,
-  creatorAddresses
+  creatorAddress
 ) => {
   try {
     console.log({ maxSupplys, creatorAddress });
