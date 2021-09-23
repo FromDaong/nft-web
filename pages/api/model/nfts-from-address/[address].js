@@ -13,7 +13,9 @@ export default async (req, res) => {
   switch (method) {
     case "GET":
       try {
-        let modelRes = await Model.findOne({ address });
+        let modelRes = await Model.findOne({
+          address: { $regex: new RegExp(address, "i") },
+        });
 
         if (!modelRes) return res.status(200);
 
