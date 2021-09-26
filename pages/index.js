@@ -137,9 +137,11 @@ const Home = () => {
                 </div>
                 <div className="secondary-text">
                   Treat is an open platform for creators to curate their adult
-                  content as NFTs. Hold the $TREAT token to have a say in the
-                  future of the only NSFW platform that focuses on
-                  decentralization first and foremost
+                  content as NFTs.
+                  <br />
+                  Hold the $TREAT token to have a say in the future of the only
+                  NSFW platform that focuses on decentralization first and
+                  foremost
                 </div>
                 <div className="buttons row pt-4">
                   <div className="col-md-6  mt-2">
