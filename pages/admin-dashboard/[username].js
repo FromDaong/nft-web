@@ -200,7 +200,7 @@ const AdminDashboard = ({ username }) => {
             <h5 className="col-md-6 pb-3">
               <b>Email:</b>
               <br />
-              {data.email.toString()}
+              {data.email}
             </h5>
             <h5 className="col-md-6 pb-3">
               <b>Passbase status:</b>

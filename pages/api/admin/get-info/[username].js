@@ -1,5 +1,6 @@
 import dbConnect from "../../../../utils/dbConnect";
 import Model from "../../../../models/Model";
+import withSession from "../../../../lib/session";
 
 dbConnect();
 
@@ -12,7 +13,7 @@ const config = new PassbaseConfiguration({
 });
 const client = new PassbaseClient(config);
 
-export default async (req, res) => {
+export default withSession(async (req, res) => {
   const {
     query: { username },
     method,
@@ -20,9 +21,11 @@ export default async (req, res) => {
 
   switch (method) {
     case "GET":
-      // try {
+      const user = await req.session.get("admin");
+
+      if (!user) return res.status(400).json({ success: false });
+
       let modelRes = await Model.findOne({ username });
-      let identity;
 
       if (!modelRes)
         return res
@@ -40,14 +43,13 @@ export default async (req, res) => {
             const returnData = { ...modelRes.toObject(), identity: null };
             res.status(200).json(returnData);
           });
+      } else {
+        const returnData = { ...modelRes.toObject(), identity: null };
+        res.status(200).json(returnData);
       }
-      // } catch (error) {
-      //   console.log({ error });
-      //   res.status(400).json({ success: false, error: error });
-      // }
       break;
     default:
       res.status(400).json({ success: false });
       break;
   }
-};
+});

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import NFTListItem from "../NFTListItem";
 import { Button } from "react-bootstrap";
+import LazyLoad from "react-lazyload";
+import { getDisplayBalance } from "../../utils/formatBalance";
 
 const variants = {
   show: {
@@ -18,10 +20,10 @@ const variants = {
   },
 };
 
-const SweetShopNFTs = ({ modelData, onRedeemSet, modelNFTs }) => {
+const SweetShopNFTs = ({ modelData, onRedeemSet, modelNFTs, nftSetPrice }) => {
   return (
     <>
-      {!!onRedeemSet && (
+      {!!onRedeemSet && nftSetPrice && (
         <div
           style={{
             backgroundColor: "rgba(255,255,255,0.75)",
@@ -52,10 +54,15 @@ const SweetShopNFTs = ({ modelData, onRedeemSet, modelNFTs }) => {
             .sort((a, b) => a.list_price - b.list_price)
             .map((m) => (
               <div className="col-xs-12 col-md-6 col-xl-4 ">
-                <NFTListItem modelData={modelData} data={m} key={m.id} />
+                <LazyLoad height={400} unmountIfInvisible>
+                  <NFTListItem modelData={modelData} data={m} key={m.id} />
+                </LazyLoad>
               </div>
             ))}
-        {modelNFTs.length === 0 && (
+        {!modelNFTs && (
+          <div className="text-center w-100 mt-5">Loading NFTs...</div>
+        )}
+        {modelNFTs && modelNFTs.length === 0 && (
           <div className="text-center w-100 mt-5">Empty</div>
         )}
       </motion.div>
