@@ -17,10 +17,16 @@ import {
   UserRejectedRequestError,
 } from "@binance-chain/bsc-connector";
 import { motion, AnimatePresence } from "framer-motion";
-
-const allowedRoutes = ["/"];
+import ReactGA from "react-ga";
 
 function MyApp({ Component, pageProps }) {
+  useEffect(() => {
+    ReactGA.initialize("UA-207897573-1");
+
+    //to report page view
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }, []);
+
   const { status, account, connect } = useWallet();
   const router = useRouter();
 
