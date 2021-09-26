@@ -133,12 +133,13 @@ const Home = () => {
             <div className="row">
               <div className="col-lg-6 hero-text">
                 <div className="heading-text">
-                  Maybe it's time to treat yourself...
+                  It's time to treat yourself...
                 </div>
                 <div className="secondary-text">
-                  Treat is an exclusive platform for models to sell NFTs. Hold
-                  $TREAT to have a say on which models are chosen & new platform
-                  features.
+                  Treat is an open platform for creators to curate their adult
+                  content as NFTs. Hold the $TREAT token to have a say in the
+                  future of the only NSFW platform that focuses on
+                  decentralization first and foremost
                 </div>
                 <div className="buttons row pt-4">
                   <div className="col-md-6  mt-2">
@@ -186,7 +187,7 @@ const Home = () => {
                 style={{ background: "#D3678E" }}
               >
                 <div className="big-text">
-                  <CountUp delay={1} duration={2} end={17} />+
+                  <CountUp delay={1} duration={2} end={47} />+
                 </div>
                 <div className="small-text">Creators on TreatDAO</div>
               </div>
@@ -194,7 +195,7 @@ const Home = () => {
             <div className="col-lg-4 stats-wrapper">
               <div className="stats-container">
                 <div className="big-text">
-                  <CountUp delay={1} duration={3} end={123} />+ NFTs
+                  <CountUp delay={1} duration={3} end={345} />+ NFTs
                 </div>
                 <div className="small-text">Released on TreatDAO</div>
               </div>
@@ -205,7 +206,7 @@ const Home = () => {
                 style={{ background: "#F19592" }}
               >
                 <div className="big-text">
-                  <CountUp delay={1} duration={3} end={189} />+ BNB
+                  <CountUp delay={1} duration={3} end={250} />+ BNB
                 </div>
                 <div className="small-text">Earned by Creators</div>
               </div>
@@ -222,9 +223,10 @@ const Home = () => {
                 className="totw-secondary-text m-0 mt-3 pb-3"
                 style={{ lineHeight: 1.75 }}
               >
-                Buy and sell Treat NFTs on the brand new offical Treat creator
-                marketplace. Find exclusive Treat of the Weeks that are no
-                longer available for minting on the resale marketplace.
+                Buy and sell Treat NFTs on our brand new Resale Marketplace,
+                built by us. Find exclusive Treat of the Week content from our
+                expansive catalog of creators as well as purchasing content from
+                our open creator marketplace: The Sweet Shop.
               </p>
 
               <Link href="/marketplace">
@@ -232,7 +234,7 @@ const Home = () => {
                   variant="primary mt-3 py-2 w-100"
                   style={{ maxWidth: 250 }}
                 >
-                  <b>GO TO MARKETPLACES</b>
+                  <b>Explore our Marketplaces</b>
                 </Button>
               </Link>
             </div>
@@ -261,19 +263,23 @@ const Home = () => {
                 the Week
               </div>
               <p className="totw-secondary-text">
-                "Treat of the Week" is the name we give to a featured creator
-                from TreatDAO once a week. We choose a creator and work with
-                them on a series of NFTs, which we feature on the homepage as
-                well as all of our socials.
+                Our Treat of the Week is a curated showcase of creators either
+                sponsored by TreatDAO or is chosen by the community.
                 <br />
                 <br />
-                To apply to become a model on TreatDAO or the “Treat of the
-                Week”, fill in our short form.
+                We assist the chosen creators to have a unique set of content
+                exclusive to TreatDAO and only available to purchase for one
+                week. We feature the Treat of the Week on our homepage as well
+                as all of our social media accounts.
+                <br />
+                <br />
+                To apply to become a creator or to be considered for Treat of
+                the Week, please use the button below
               </p>
               <div className="totw-buttons">
                 <a href="/become-creator">
                   <Button variant="primary py-2 px-5 mt-4">
-                    <b>Apply to Become a Creator</b>
+                    <b>Become a Creator</b>
                   </Button>
                 </a>
                 <a href="/creators">
@@ -298,8 +304,15 @@ const Home = () => {
             Current Treat of the Week NFTs
           </motion.div>
           <p className="totw-secondary-text m-0">
-            These are the NFTs from the TOTW drops which are live now. To see
-            previous creations, visit our Marketplace.
+            “Below is our current Treat of the Week creator(s) NFTs available
+            for purchase. To view previous creators and purchase their content,
+            please visit our{" "}
+            <a
+              href="/marketplace/resale"
+              style={{ color: "inherit", textDecoration: "underline" }}
+            >
+              Resale Marketplace
+            </a>
           </p>
           <div className="nft-list row">{nftListRender}</div>
         </Scroll.Element>
