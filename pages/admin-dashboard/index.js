@@ -77,11 +77,18 @@ const AdminDashboard = () => {
           title={"Admin Dashboard"}
           subtitle={`Approve and reject creator application requests here. Click an application for more info`}
           additionalContent={
-            <Link href="/api/admin/logout">
-              <Button variant="primary  w-sm-100">
-                <b>{"Logout"}</b>
-              </Button>
-            </Link>
+            <>
+              <Link href="/admin-dashboard/create-totw-nfts">
+                <Button variant="primary w-sm-100 mr-2">
+                  <b>{"Create TOTW NFTs"}</b>
+                </Button>
+              </Link>
+              <Link href="/api/admin/logout">
+                <Button variant="primary  w-sm-100">
+                  <b>{"Logout"}</b>
+                </Button>
+              </Link>
+            </>
           }
         />
         {/* <div className="white-tp-bg mt-4 p-3">

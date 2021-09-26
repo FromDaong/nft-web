@@ -65,11 +65,14 @@ export const contractAddresses = {
     56: "0xFa6C813B1f2e75019dDB81aB518108571c737B22",
   },
   treatSubscriptions: {
-    56: "0x4e415d3fDa01C0BF19c6fEAd2EdA05D93fE5ee73",
+    56: "0x0d5FA8001E1193E03A66f9C969F2419450b0909d",
   },
   subscriberMart: {
     56: "0x16d68Fe18D8b7dFF8A8626c90AE5d2d949A7C7d5",
   },
+  totwMinterHelper: {
+    56: "0xc09398a905BceF7A8cA7F3e31D68E5C33D1ea270",
+  }
 };
 
 // Trigger deploy

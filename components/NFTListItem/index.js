@@ -3,6 +3,7 @@ import { generateFromString } from "generate-avatar";
 import { Blurhash } from "react-blurhash";
 import { EyeSlash } from "react-bootstrap-icons";
 import { motion } from "framer-motion";
+import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import Link from "next/link";
 
@@ -86,14 +87,27 @@ const NFTListItem = ({
               minHeight: 300,
             }}
           >
+            <Spinner
+              animation="border"
+              role="status"
+              className="mt-5 mb-5"
+              style={{ position: "absolute", margin: "auto", zIndex: 1 }}
+              variant="light"
+            >
+              <span className="sr-only">Loading...</span>
+            </Spinner>
             {data.image ? (
               <div
-                style={{ background: `url(${data.image})`, minHeight: 375 }}
+                style={{
+                  background: `url(${data.image})`,
+                  minHeight: 375,
+                  zIndex: 100,
+                }}
                 className="dynamic-image"
               />
             ) : (
               <>
-                <div className="info-overlay">
+                <div className="info-overlay" style={{ zIndex: 100 }}>
                   <EyeSlash size={32} />
                   <div>Purchase to View</div>
                 </div>
@@ -101,7 +115,7 @@ const NFTListItem = ({
                   style={{
                     borderRadius: 8,
                     overflow: "hidden",
-                    zIndex: 0,
+                    zIndex: 95,
                   }}
                   hash={data.blurhash}
                   width={"100%"}
