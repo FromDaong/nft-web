@@ -139,6 +139,7 @@ const Home = () => {
                   Treat is an open platform for creators to curate their adult
                   content as NFTs.
                   <br />
+                  <br />
                   Hold the $TREAT token to have a say in the future of the only
                   NSFW platform that focuses on decentralization first and
                   foremost
@@ -265,8 +266,8 @@ const Home = () => {
                 the Week
               </div>
               <p className="totw-secondary-text">
-                Our Treat of the Week is a curated showcase of creators either
-                sponsored by TreatDAO or is chosen by the community.
+                Our Treat of the Week is a curated showcase of creators which
+                are chosen by either TreatDAO or the community.
                 <br />
                 <br />
                 We assist the chosen creators to have a unique set of content
@@ -300,22 +301,23 @@ const Home = () => {
             animate={{ x: 0, opacity: 1 }}
             style={{ x: 100, opacity: 0 }}
             transition={{ delay: 1 }}
-            className="heading-text p-0 mt-4 pink-bg"
-            style={{ fontSize: "3em" }}
+            className="p-0 mt-4 pink-bg"
           >
-            Current Treat of the Week NFTs
+            <div className="heading-text" style={{ fontSize: "3em" }}>
+              Current Treat of the Week NFTs
+            </div>
+            <p className="totw-secondary-text m-0">
+              “Below is our current Treat of the Week creator(s) NFTs available
+              for purchase. To view previous creators and purchase their
+              content, please visit our{" "}
+              <a
+                href="/marketplace/resale"
+                style={{ color: "inherit", textDecoration: "underline" }}
+              >
+                Resale Marketplace
+              </a>
+            </p>
           </motion.div>
-          <p className="totw-secondary-text m-0">
-            “Below is our current Treat of the Week creator(s) NFTs available
-            for purchase. To view previous creators and purchase their content,
-            please visit our{" "}
-            <a
-              href="/marketplace/resale"
-              style={{ color: "inherit", textDecoration: "underline" }}
-            >
-              Resale Marketplace
-            </a>
-          </p>
           <div className="nft-list row">{nftListRender}</div>
         </Scroll.Element>
       </div>
