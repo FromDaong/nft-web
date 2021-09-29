@@ -333,8 +333,8 @@ const ViewNFT = ({ nftData, image, account }) => {
             <hr style={{ marginTop: 25, marginBottom: 25 }} />
             <div className="history-container">
               <div className="history-title">Purchase History</div>
-              {/* <div className="bio">Coming soon...</div> */}
-              <div className="history-events">{historyEventsRender}</div>
+              <div className="bio">Coming soon...</div>
+              {/* <div className="history-events">{historyEventsRender}</div> */}
             </div>
           </div>
         </div>
