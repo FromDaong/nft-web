@@ -35,7 +35,11 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
 
   console.log(remainingNfts.toNumber());
 
-  if (remainingNfts.toNumber() < 0 || isNaN(remainingNfts.toNumber())) {
+  if (
+    remainingNfts.toNumber() < 0 ||
+    isNaN(remainingNfts.toNumber()) ||
+    !nftData
+  ) {
     return (
       <Spinner animation="border" role="status" className="p3 mt-3 mb-2">
         <span className="sr-only">Loading...</span>
@@ -47,7 +51,12 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
     <Button
       variant="primary w-100 mt-3 py-3"
       style={{ borderRadius: 7 }}
-      disabled={disabled || remainingNfts.toNumber() === 0 || isOldTotw}
+      disabled={
+        disabled ||
+        remainingNfts.toNumber() === 0 ||
+        isOldTotw ||
+        nftData.subscription_nft
+      }
       onClick={async () => {
         setDisabled(true);
         setConfrimWallet(true);
@@ -92,8 +101,14 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
         </div>
       ) : (
         <b>
-          {remainingNfts.toNumber() > 0 && !isOldTotw && `BUY NOW`}
+          {remainingNfts.toNumber() > 0 &&
+            !isOldTotw &&
+            !nftData.subscription_nft &&
+            `BUY NOW`}
           {(remainingNfts.toNumber() === 0 || isOldTotw) && `SOLD OUT`}
+          {nftData.subscription_nft &&
+            remainingNfts.toNumber() > 0 &&
+            `SUBSCRIPTION NFT`}
         </b>
       )}
     </Button>
