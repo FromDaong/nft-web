@@ -23,6 +23,7 @@ import Layout from "../../components/Layout";
 import { EyeSlash } from "react-bootstrap-icons";
 import BigNumber from "bignumber.js";
 import Link from "next/link";
+import useGetIsSubscribed from "../../hooks/useGetIsSubscribed";
 import Web3 from "web3";
 
 const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
@@ -30,6 +31,7 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
 
   const [disabled, setDisabled] = useState(false);
   const [confirmWallet, setConfrimWallet] = useState(false);
+  const isSubscribed = useGetIsSubscribed(nftData.model_bnb_address || "");
 
   const isOldTotw = nftData.old_totw && !nftData.totw;
 
@@ -55,7 +57,7 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
         disabled ||
         remainingNfts.toNumber() === 0 ||
         isOldTotw ||
-        nftData.subscription_nft
+        (nftData.subscription_nft && !isSubscribed)
       }
       onClick={async () => {
         setDisabled(true);
