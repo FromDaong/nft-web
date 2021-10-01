@@ -110,7 +110,7 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
           {(remainingNfts.toNumber() === 0 || isOldTotw) && `SOLD OUT`}
           {nftData.subscription_nft &&
             remainingNfts.toNumber() > 0 &&
-            `SUBSCRIPTION NFT`}
+            `BUY SUBSCRIPTION NFT`}
         </b>
       )}
     </Button>
