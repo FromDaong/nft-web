@@ -46,6 +46,9 @@ const ModelSchema = new mongoose.Schema(
     hidden: {
       type: Boolean,
     },
+    referrer_address: {
+      type: String,
+    },
     identity_access_key: {
       type: String,
     },
