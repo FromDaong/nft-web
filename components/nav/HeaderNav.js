@@ -10,12 +10,12 @@ import BalanceModal from "../BalanceModal";
 import Link from "next/link";
 
 const HeaderNav = ({ modelData }) => {
-  const { status, account, error, reset } = useWallet();
+  const { status, account, error, reset, chainId } = useWallet();
   const [walletModalShow, setWalletModalShow] = useState(false);
   const [balanceModalShow, setBalanceModalShow] = useState(false);
   const [ageModalShow, setAgeModalShow] = useState(false);
 
-  console.log({ status, error, account });
+  console.log({ chainId });
 
   useEffect(() => {
     (async () => {
@@ -121,9 +121,13 @@ const HeaderNav = ({ modelData }) => {
           ) : (
             <div className="ml-md-4">
               <NavDropdown
-                title={`WALLET ${account.substring(0, 6)}...`}
+                title={
+                  chainId === 56
+                    ? `${account.substring(0, 6)}...${account.substr(-5)}`
+                    : "Switch Chain to BSC"
+                }
+                disabled={chainId !== 56}
                 id="basic-nav-dropdown"
-                variant="primary"
               >
                 <Link href="/my-nfts" passHref>
                   <NavDropdown.Item>MY NFTs</NavDropdown.Item>
