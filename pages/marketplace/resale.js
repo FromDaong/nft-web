@@ -17,6 +17,7 @@ import { forceCheck } from "react-lazyload";
 import Link from "next/link";
 import { usePagination } from "react-use-pagination";
 import BigNumber from "bignumber.js";
+import Fuse from "fuse.js";
 
 const Marketplace = ({ search }) => {
   const maxId = useGetMaxIdForSale();
@@ -106,7 +107,7 @@ const Marketplace = ({ search }) => {
     fetcher
   );
 
-  const renderArray =
+  const populatedArray =
     orderBookArray &&
     populatedNftData &&
     orderBookArray
@@ -115,18 +116,27 @@ const Marketplace = ({ search }) => {
           (x) => x.id === orderBookNft.nftId
         );
         if (!nftResult) return undefined;
-
-        if (
-          !nftResult.attributes[0].value
-            .toLowerCase()
-            .includes(searchFilter.toLowerCase()) &&
-          !nftResult.name.toLowerCase().includes(searchFilter.toLowerCase())
-        ) {
-          return undefined;
-        } else return { ...orderBookNft, ...nftResult };
+        return { ...orderBookNft, ...nftResult };
       })
       .filter((e) => e);
 
+  console.log({ populatedArray });
+
+  const fuse = new Fuse(populatedArray, {
+    keys: ["name", "description", "model_handle"],
+  });
+
+  let renderArray;
+
+  if (populatedArray) {
+    renderArray =
+      searchFilter !== ""
+        ? fuse.search(searchFilter)
+        : populatedArray.map((d, idx) => ({
+            item: d,
+            refIndex: idx,
+          }));
+  }
   const {
     currentPage,
     totalPages,
@@ -277,10 +287,7 @@ const Marketplace = ({ search }) => {
         <div className="container fluid">
           <div className="nft-list row mt-5">
             {!renderArray || renderArray.length === 0 ? (
-              <div
-                style={{ minHeight: 500 }}
-                className="d-flex justify-content-center align-items-center w-100"
-              >
+              <div className="d-flex justify-content-center align-items-center w-100">
                 <Loading custom="Loading data from the blockchain... Please ensure your wallet is connected." />
               </div>
             ) : (
@@ -288,11 +295,11 @@ const Marketplace = ({ search }) => {
                 {renderArray.slice(startIndex, endIndex).map((o, i) => (
                   <Order
                     searchFilter={searchFilter}
-                    nftResult={o}
-                    index={i}
-                    order={o}
+                    nftResult={o.item}
+                    index={o.refIndex}
+                    order={o.item}
                     account={account}
-                    key={`${o.nftId}_${o.seller}_${o.price}_${i}`}
+                    key={o.refIndex}
                     setPendingModal={setShowPendingModal}
                     openCompleteModal={() => setShowCompleteModal(true)}
                     setCancelOrderData={setCancelOrderData}
