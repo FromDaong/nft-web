@@ -11,6 +11,7 @@ import { Order } from "../../components/CreatorMarketplaceListItem";
 import { motion, AnimateSharedLayout } from "framer-motion";
 import { forceCheck } from "react-lazyload";
 import { usePagination } from "react-use-pagination";
+import Fuse from "fuse.js";
 
 const Marketplace = ({ search }) => {
   const [_, forceUpdate] = useReducer((x) => x + 1, 0);
@@ -22,6 +23,10 @@ const Marketplace = ({ search }) => {
   const [searchFilter, setSearchFilter] = useState(search || "");
   const [sortBy, setSortBy] = useState("Recent");
   const { account } = useWallet();
+
+  const fuse = new Fuse(nftDataArray, {
+    keys: ["name", "description", "model_handle"],
+  });
 
   const updateObArr = () => {
     const ob = orderBookArray;
@@ -43,19 +48,13 @@ const Marketplace = ({ search }) => {
     forceCheck();
   };
 
-  const finalArray = nftDataArray
-    .map((orderBookNft) => {
-      console.log({ orderBookNft });
-      if (
-        !orderBookNft.attributes[0].value
-          .toLowerCase()
-          .includes(searchFilter.toLowerCase()) &&
-        !orderBookNft.name.toLowerCase().includes(searchFilter.toLowerCase())
-      ) {
-        return undefined;
-      } else return orderBookNft;
-    })
-    .filter((e) => e);
+  const finalArray =
+    searchFilter !== ""
+      ? fuse.search(searchFilter)
+      : nftDataArray.map((d, idx) => ({
+          item: d,
+          refIndex: idx,
+        }));
 
   const {
     currentPage,
@@ -193,11 +192,11 @@ const Marketplace = ({ search }) => {
                 {finalArray.slice(startIndex, endIndex).map((o, i) => (
                   <Order
                     searchFilter={searchFilter}
-                    nftResult={o}
+                    nftResult={o.item}
                     index={i}
-                    order={o}
+                    order={o.item}
                     account={account}
-                    key={`${o.nftId}_${o.seller}`}
+                    key={o.refIndex}
                     setPendingModal={setShowPendingModal}
                     openCompleteModal={() => setShowCompleteModal(true)}
                     setCancelOrderData={setCancelOrderData}
