@@ -47,6 +47,10 @@ export const getTreatTradeInContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treatTradeIn;
 };
 
+export const getTreatV1ForV2Contract = (treat) => {
+  return treat && treat.contracts && treat.contracts.treatV1ForV2;
+};
+
 export const getTreatMartContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treatMart;
 };
@@ -581,6 +585,23 @@ export const redeemV1forV2 = async (
   try {
     const txHash = await treatTradeInContract.methods
       .tradeInMultiple(nftIds, amounts)
+      .send({ from: account });
+  } catch (e) {
+    console.log({ e });
+    console.error(e);
+    return undefined;
+  }
+};
+
+export const tradeInV1ForV2 = async (
+  treatV1ForV2Contract,
+  account,
+  amount
+) => {
+  console.log({ v1Amount: amount?.toString() });
+  try {
+    const txHash = await treatV1ForV2Contract.methods
+      .tradeInTreat(amount)
       .send({ from: account });
   } catch (e) {
     console.log({ e });
