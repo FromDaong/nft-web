@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, InputGroup, FormControl, Form } from "react-bootstrap";
 import CreatingNFTItemPreview from "../CreatingNFTItemPreview";
 import { encode } from "blurhash";
-import { set } from "react-ga";
+import TagsSelector from "../TagsSelector";
 
 let easing = [0.175, 0.85, 0.42, 0.96];
 
@@ -180,6 +180,17 @@ const CreatingNFTItem = ({
         </div>
         <div className="pb-4">
           <label>Maximum Supply</label>
+          <FormControl
+            type="number"
+            placeholder="E.g. 1500"
+            name={`nfts[${index}].max_supply`}
+            value={formik.values.nfts[index].max_supply}
+            onChange={formik.handleChange}
+          />
+        </div>
+        <div className="pb-4">
+          <label>Tags</label>
+          <TagsSelector />
           <FormControl
             type="number"
             placeholder="E.g. 1500"
