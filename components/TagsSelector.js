@@ -1,7 +1,7 @@
 import React from "react";
 import Spinner from "react-bootstrap/Spinner";
 
-const Loading = ({ custom }) => {
+const TagsSelector = ({ custom }) => {
   return (
     <div
       style={{
@@ -25,7 +25,7 @@ const Loading = ({ custom }) => {
         }}
       >
         {custom ||
-          "Loading... Please ensure your Binance Smart Chain wallet is connected."}
+          "TagsSelector... Please ensure your Binance Smart Chain wallet is connected."}
       </h5>
       <Spinner
         animation="border"
@@ -33,10 +33,10 @@ const Loading = ({ custom }) => {
         size="xl"
         style={{ marginTop: 5 }}
       >
-        <span className="sr-only">Loading...</span>
+        <span className="sr-only">TagsSelector...</span>
       </Spinner>
     </div>
   );
 };
 
-export default Loading;
+export default TagsSelector;
