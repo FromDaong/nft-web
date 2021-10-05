@@ -199,41 +199,6 @@ const CreateModel = () => {
                 }
               />
             </div>
-            {/* <div className="pb-5 pt-2 verify-container">
-              <label>Verify your identity</label>
-
-              <VerifyButton
-                id="asd"
-                // hidestream
-                apiKey="zYe9VHCjf5z2MoiuQGlvRK3KRPmQ0B7Kaghp6qyFZ8PfTnQa0zFRuZZWgoVGeAVX"
-                onStart={() => {}}
-                onError={(errorCode) => {}}
-                onFinish={(identityAccessKey) => {
-                  formik.setFieldValue(
-                    "identity_access_key",
-                    identityAccessKey
-                  );
-                }}
-              />
-
-              <small>
-                <b className="text-danger">
-                  Please ensure you return to submit this form after you have
-                  completed ID verification with passbase.
-                </b>
-              </small>
-              {/* <FormControl
-                type="file"
-                size="lg"
-                placeholder="E.g. https://img.ur/123"
-                name="verification_photo"
-                className="bg-white p-3 rounded"
-                // value={formik.values.verification_photo}
-                onChange={(file) =>
-                  ipfsUpload(file.target.files[0], "verification_photo")
-                }
-              /> */}
-            {/* </div>  */}
             <Button
               variant="primary w-100"
               onClick={formik.handleSubmit}
