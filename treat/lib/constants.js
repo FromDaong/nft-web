@@ -35,7 +35,7 @@ export const contractAddresses = {
     97: "0x8fF95CE7984410fda65A08646E16FC7BaC6bea7b",
   },
   treat2: {
-    97: "0xE17Fc82E888dCD5f6f174e4373522C2aa0211CF9",
+    97: "0x5Bfa598212A6c15Dea22De0af2bd1B5124efAa9d",
   },
   weth: {
     56: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
@@ -77,7 +77,7 @@ export const contractAddresses = {
     56: "0xc09398a905BceF7A8cA7F3e31D68E5C33D1ea270",
   },
   treatV1ForV2: {
-    97: "0x1E9c3D7502cEbd3d6eE5A719a2FF35AA980B828C"
+    97: "0xD99F67F5604D19371df6e599085719a365711d56"
   }
 };
 
