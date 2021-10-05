@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import App from "next/app";
 import Navbar from "../components/nav/HeaderNav";
+import V2Banner from "../components/V2Banner";
 import Footer from "../components/Footer";
 import "../styles/index.scss";
 import useSWR, { SWRConfig } from "swr";
@@ -95,6 +96,7 @@ function MyApp({ Component, pageProps }) {
       >
         <TreatProvider>
           <div>
+            <V2Banner />
             <Navbar modelData={modelData} />
             <Container style={{ minHeight: "75vh" }}>
               <AnimatePresence
