@@ -39,21 +39,27 @@ export const contractAddresses = {
   },
   weth: {
     56: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+    97: "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
   },
   treatNFTMinter: {
     56: "0x36f8f51f65fe200311f709b797baf4e193dd0b0d",
+    97: "0xe7F8059Ac6f4A230C0c08aDfa9e09A2156236239",
   },
   treatNFTMinterV1: {
     56: "0xde39d0b9a93dcd541c24e80c8361f362aab0f213",
+    97: "0xde83588bdB26c91B642C779a7C41722ca2364563",
   },
   creatorMart: {
     56: "0x9F52D25473CE2DEc1b9D5F44Ad133Ab80BBa1f86",
+    97: "0x76936371d434Ec96803C4c2983b9AF6ad2f2678c",
   },
   creatorMinterHelper: {
     56: "0x66685ccCfD3c1C65220973CDb5E33f706e1F0537",
+    97: "0x0119b60DB932306Bea68414fbFb0ef4d9769AA2b",
   },
   treatMart: {
     56: "0x741864585bf7e9C533d52fe02427cE4bf75678D4",
+    97: "0x250a0463D2A1C774Bbad4D667afda7ac6A38ab5C",
   },
   treatMarketplace: {
     56: "0xA38978E839c08046FA80B0fee55736253Ab3B8a3",
@@ -63,18 +69,23 @@ export const contractAddresses = {
   },
   treatTradeIn: {
     56: "0xE0f5df4915242E4C4C06D2964Eda53C448fec442",
+    97: "0x34289187D887486cD1C98d6253621ae6ADC7cb3e",
   },
   treatMarketReader: {
     56: "0xFa6C813B1f2e75019dDB81aB518108571c737B22",
+    97: "0x28F1526838868aA83c9a90B054873d15BB88FB6F",
   },
   treatSubscriptions: {
     56: "0x0d5FA8001E1193E03A66f9C969F2419450b0909d",
+    97: "0xe8b1eaa85c05FDF13FeCc6358302b035B000f6B3",
   },
   subscriberMart: {
     56: "0x16d68Fe18D8b7dFF8A8626c90AE5d2d949A7C7d5",
+    97: "0x33Cc2629bcc81f87FBF75a5428B5696f53cEb452",
   },
   totwMinterHelper: {
     56: "0xc09398a905BceF7A8cA7F3e31D68E5C33D1ea270",
+    97: "0x756f7fc71f67808037A2B3801e8d6afAf83b043C",
   },
   treatV1ForV2: {
     97: "0xD99F67F5604D19371df6e599085719a365711d56"
