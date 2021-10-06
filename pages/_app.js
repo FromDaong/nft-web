@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../components/nav/HeaderNav";
 import V2Banner from "../components/V2Banner";
 import Footer from "../components/Footer";
+import useTokenBalance from "../hooks/useTokenBalance";
 import "../styles/index.scss";
 import useSWR, { SWRConfig } from "swr";
 import fetch from "../lib/fetchJson";
@@ -21,6 +22,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import ReactGA from "react-ga";
 
 function MyApp({ Component, pageProps }) {
+  const oldTokenBalance = useTokenBalance(
+    "0x8fF95CE7984410fda65A08646E16FC7BaC6bea7b"
+  );
+
   useEffect(() => {
     ReactGA.initialize("UA-207897573-1");
 
@@ -96,7 +101,7 @@ function MyApp({ Component, pageProps }) {
       >
         <TreatProvider>
           <div>
-            <V2Banner />
+            {true && <V2Banner oldTokenBalance={oldTokenBalance} />}
             <Navbar modelData={modelData} />
             <Container style={{ minHeight: "75vh" }}>
               <AnimatePresence
