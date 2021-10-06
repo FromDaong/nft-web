@@ -101,7 +101,9 @@ function MyApp({ Component, pageProps }) {
       >
         <TreatProvider>
           <div>
-            {true && <V2Banner oldTokenBalance={oldTokenBalance} />}
+            {oldTokenBalance > 0 && (
+              <V2Banner oldTokenBalance={oldTokenBalance} />
+            )}
             <Navbar modelData={modelData} />
             <Container style={{ minHeight: "75vh" }}>
               <AnimatePresence
