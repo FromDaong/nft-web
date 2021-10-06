@@ -765,6 +765,12 @@ export const approve = async (treatMart, account) => {
     .send({ from: account });
 };
 
+export const approveTreatOneForTwo = async (treat, account) => {
+  return await treat.methods
+    .approve(treatV1ForV2.options.address, ethers.constants.MaxUint256)
+    .send({ from: account});
+}
+
 export const approveMarketplace = async (
   treatNftMinterContract,
   treatMarketplaceAddress,
