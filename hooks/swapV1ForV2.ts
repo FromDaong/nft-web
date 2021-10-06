@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";
 
-const tradeInV1ForV2 = (amount: number) => {
+const swapV1ForV2 = (amount: number) => {
   const { account } = useWallet();
   const treat = useTreat();
   const treatTradeInV1ForV2Contract = getTreatV1ForV2Contract(treat);
@@ -21,4 +21,4 @@ const tradeInV1ForV2 = (amount: number) => {
   return { onTradeInV1ForV2: handleTradeInV1ForV2 };
 };
 
-export default tradeInV1ForV2;
+export default swapV1ForV2;
