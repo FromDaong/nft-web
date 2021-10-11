@@ -14,6 +14,7 @@ import SubscriberMartAbi from "./abi/subscribermart.json";
 import TreatNFTMinterAbi from "./abi/treatnftminter.json";
 import TreatNFTMinterV1Abi from "./abi/treatnftminterv1.json";
 import TreatTradeInAbi from "./abi/treattradein.json";
+import TreatV1ForV2Abi from "./abi/treatv1forv2.json";
 import WETHAbi from "./abi/weth.json";
 
 export class Contracts {
@@ -38,6 +39,7 @@ export class Contracts {
     this.treatSubscriptions = new this.web3.eth.Contract(TreatSubscriptionsAbi);
     this.weth = new this.web3.eth.Contract(WETHAbi);
     this.treatTradeIn = new this.web3.eth.Contract(TreatTradeInAbi);
+    this.treatV1ForV2 = new this.web3.eth.Contract(TreatV1ForV2Abi);
 
     this.setProvider(provider, networkId);
     this.setDefaultAccount(this.web3.eth.defaultAccount);
@@ -84,6 +86,7 @@ export class Contracts {
       contractAddresses.treatSubscriptions[networkId]
     );
     setProvider(this.treatTradeIn, contractAddresses.treatTradeIn[networkId]);
+    setProvider(this.treatV1ForV2, contractAddresses.treatV1ForV2[networkId]);
     setProvider(this.creatorMart, contractAddresses.creatorMart[networkId]);
     setProvider(this.subscriberMart, contractAddresses.subscriberMart[networkId]);
     setProvider(this.weth, contractAddresses.weth[networkId]);
@@ -101,6 +104,7 @@ export class Contracts {
     this.treatMarketReader.options.from = account;
     this.treatSubscriptions.options.from = account;
     this.treatTradeIn.options.from = account;
+    this.treatV1ForV2.options.from = account;
   }
 
   async callContractFunction(method, options) {
