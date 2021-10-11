@@ -78,11 +78,16 @@ const V2Banner = ({ oldTokenBalance }) => {
             <b>{"Approve V2 Contract"}</b>
           </Button>
         )}
-        <Button variant="outline ml-3">
-          <b className="text-white" style={{ textDecoration: "underline" }}>
-            {"More Info"}
-          </b>
-        </Button>
+        <a
+          href="https://docs.google.com/gview?url=https://github.com/TreatDAO/litepaper/raw/main/TreatPaperFinal.pdf&embedded=true"
+          target="_blank"
+        >
+          <Button variant="outline ml-3">
+            <b className="text-white" style={{ textDecoration: "underline" }}>
+              {"More Info"}
+            </b>
+          </Button>
+        </a>
       </div>
     </>
   );

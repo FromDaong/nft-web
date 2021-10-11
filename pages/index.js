@@ -162,7 +162,7 @@ const Home = () => {
                   </div>
                   <div className="col-md-6 mt-2">
                     <a
-                      href="https://app.1inch.io/#/56/swap/BNB/TREAT"
+                      href="https://pancakeswap.finance/info/token/0x01bd7acb6fF3B6Dd5aefA05CF085F2104f3fC53F"
                       target="_blank"
                     >
                       <Button variant="light w-100 py-2">
