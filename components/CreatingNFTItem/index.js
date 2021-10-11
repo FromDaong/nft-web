@@ -38,6 +38,11 @@ const CreatingNFTItem = ({
   blurRequired,
 }) => {
   const [blurhash, setBlurHash] = useState("");
+  const [selectedTags, setSelectedTags] = useState([]);
+
+  useEffect(() => {
+    formik.setFieldValue(`nfts[${index}].tags`, selectedTags);
+  }, [selectedTags]);
 
   const loadImage = async (src) =>
     new Promise((resolve, reject) => {
@@ -190,13 +195,9 @@ const CreatingNFTItem = ({
         </div>
         <div className="pb-4">
           <label>Tags</label>
-          <TagsSelector />
-          <FormControl
-            type="number"
-            placeholder="E.g. 1500"
-            name={`nfts[${index}].max_supply`}
-            value={formik.values.nfts[index].max_supply}
-            onChange={formik.handleChange}
+          <TagsSelector
+            selectedTags={selectedTags}
+            setSelectedTags={setSelectedTags}
           />
         </div>
         <Form.Control.Feedback type="invalid" className="d-block">

@@ -94,3 +94,12 @@
     color: white;
   }
 }
+
+.tags-container {
+  .toggle-button > input {
+    display: none;
+  }
+  .toggle-button {
+    margin-right: 5px;
+  }
+}
