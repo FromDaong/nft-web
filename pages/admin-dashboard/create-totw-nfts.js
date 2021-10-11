@@ -71,6 +71,7 @@ const CreateNFT = ({ modelData }) => {
         list_price: 1,
         description: "",
         blurhash: false,
+        tags: [],
         image: file,
         max_supply: 10,
         external_url: "https://treatdao.com/",
