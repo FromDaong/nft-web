@@ -14,7 +14,7 @@ import {
 
 const BalanceModal = ({ show, handleClose, account }) => {
   const myBalance = useTokenBalance(
-    "0xac0C7d9B063eD2C0946982dDB378e03886C064E6"
+    "0x01bd7acb6fF3B6Dd5aefA05CF085F2104f3fC53F"
   );
 
   const { connect } = useWallet();
@@ -29,7 +29,7 @@ const BalanceModal = ({ show, handleClose, account }) => {
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header>
           <Modal.Title className="text-center w-100 font-weight-bolder">
-            {getDisplayBalance(myBalance)} $TREAT
+            {getDisplayBalance(myBalance)} $TREAT V2
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>

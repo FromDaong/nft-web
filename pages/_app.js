@@ -23,7 +23,7 @@ import ReactGA from "react-ga";
 
 function MyApp({ Component, pageProps }) {
   const oldTokenBalance = useTokenBalance(
-    "0x8fF95CE7984410fda65A08646E16FC7BaC6bea7b"
+    "0xac0c7d9b063ed2c0946982ddb378e03886c064e6"
   );
 
   useEffect(() => {
