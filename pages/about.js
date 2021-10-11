@@ -125,7 +125,7 @@ const About = () => {
                   DEXes and exchanges:
                 </p>
                 <a
-                  href="https://app.1inch.io/#/56/swap/BNB/TREAT"
+                  href="https://pancakeswap.finance/info/token/0x01bd7acb6fF3B6Dd5aefA05CF085F2104f3fC53F"
                   target="_blank"
                 >
                   <Button variant="primary py-2 px-4 mt-3 w-sm-100">
