@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 // import App from "next/app";
 import Navbar from "../components/nav/HeaderNav";
+import V2Banner from "../components/V2Banner";
 import Footer from "../components/Footer";
+import useTokenBalance from "../hooks/useTokenBalance";
 import "../styles/index.scss";
 import useSWR, { SWRConfig } from "swr";
 import fetch from "../lib/fetchJson";
@@ -18,8 +20,13 @@ import {
 } from "@binance-chain/bsc-connector";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactGA from "react-ga";
+import { IntercomProvider, useIntercom } from "react-use-intercom";
 
 function MyApp({ Component, pageProps }) {
+  const oldTokenBalance = useTokenBalance(
+    "0xac0c7d9b063ed2c0946982ddb378e03886c064e6"
+  );
+
   useEffect(() => {
     ReactGA.initialize("UA-207897573-1");
 
@@ -73,7 +80,11 @@ function MyApp({ Component, pageProps }) {
   }, [status]);
 
   return (
-    <>
+    <IntercomProvider
+      appId={"a3jgejbc"}
+      autoBoot
+      autoBootProps={{ name: account }}
+    >
       <Head>
         <title>Treat DAO</title>
         <meta name="title" content="Treat DAO" />
@@ -95,6 +106,9 @@ function MyApp({ Component, pageProps }) {
       >
         <TreatProvider>
           <div>
+            {oldTokenBalance > 0 && (
+              <V2Banner oldTokenBalance={oldTokenBalance} />
+            )}
             <Navbar modelData={modelData} />
             <Container style={{ minHeight: "75vh" }}>
               <AnimatePresence
@@ -112,7 +126,7 @@ function MyApp({ Component, pageProps }) {
           </div>
         </TreatProvider>
       </SWRConfig>
-    </>
+    </IntercomProvider>
   );
 }
 
