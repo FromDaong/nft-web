@@ -20,6 +20,7 @@ import {
 } from "@binance-chain/bsc-connector";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactGA from "react-ga";
+import { IntercomProvider, useIntercom } from "react-use-intercom";
 
 function MyApp({ Component, pageProps }) {
   const oldTokenBalance = useTokenBalance(
@@ -79,7 +80,11 @@ function MyApp({ Component, pageProps }) {
   }, [status]);
 
   return (
-    <>
+    <IntercomProvider
+      appId={"a3jgejbc"}
+      autoBoot
+      autoBootProps={{ name: account }}
+    >
       <Head>
         <title>Treat DAO</title>
         <meta name="title" content="Treat DAO" />
@@ -121,7 +126,7 @@ function MyApp({ Component, pageProps }) {
           </div>
         </TreatProvider>
       </SWRConfig>
-    </>
+    </IntercomProvider>
   );
 }
 
