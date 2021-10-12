@@ -25,7 +25,7 @@ export default withSession(async (req, res) => {
         };
 
         // const identity = await client.getIdentityById("identity_access_key");
-        console.log({ nftBody });
+
         const newNFT = await Model.create(nftBody);
 
         if (req.body.referrer_address) {

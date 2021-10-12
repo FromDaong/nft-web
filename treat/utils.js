@@ -47,6 +47,10 @@ export const getTreatTradeInContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treatTradeIn;
 };
 
+export const getTreatV1ForV2Contract = (treat) => {
+  return treat && treat.contracts && treat.contracts.treatV1ForV2;
+};
+
 export const getTreatMartContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treatMart;
 };
@@ -589,6 +593,19 @@ export const redeemV1forV2 = async (
   }
 };
 
+export const tradeInV1ForV2 = async (treatV1ForV2Contract, account, amount) => {
+  console.log({ v1Amount: amount?.toString() });
+  try {
+    const txHash = await treatV1ForV2Contract.methods
+      .tradeInTreat(amount)
+      .send({ from: account });
+  } catch (e) {
+    console.log({ e });
+    console.error(e);
+    return undefined;
+  }
+};
+
 export const getNftBalance = async (treatNFTMinter, account, nftId) => {
   try {
     const amount = await treatNFTMinter.methods
@@ -742,6 +759,22 @@ export const approve = async (treatMart, account) => {
   return await treatMart.methods
     .approve(treatMart.options.address, ethers.constants.MaxUint256)
     .send({ from: account });
+};
+
+export const approveTreatOneForTwo = async (treat, treatV1ForV2, account) => {
+  return await treat.methods
+    .approve(treatV1ForV2.options.address, ethers.constants.MaxUint256)
+    .send({ from: account });
+};
+
+export const hasApprovedTreatOneForTwoContract = async (
+  treat,
+  treatV1ForV2,
+  account
+) => {
+  return await treat.methods
+    .allowance(account, treatV1ForV2.options.address)
+    .call();
 };
 
 export const approveMarketplace = async (
