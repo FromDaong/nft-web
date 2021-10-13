@@ -378,6 +378,7 @@ export const addCreatorNft = async (
   nftCosts
 ) => {
   try {
+    console.log({ nftIds, nftCosts });
     return await creatorMartContract.methods
       .addNFT(nftIds, nftCosts)
       .send({ from: account, value: 0 });

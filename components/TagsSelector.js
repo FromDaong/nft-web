@@ -31,7 +31,6 @@ const TagsSelector = ({ selectedTags, setSelectedTags }) => {
     "Pegging",
     "Toys",
     "Exclusive",
-    "TOTW",
   ];
 
   // const [selectedTags, setSelectedTags] = useState([]);

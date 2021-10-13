@@ -1,79 +1,48 @@
-import React, { useState } from "react";
-import toBuffer from "blob-to-buffer";
+import React, { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useFormik, FieldArray, FormikProvider } from "formik";
-import useCreateAndAddNFTs from "../../hooks/useCreateAndAddNFTs";
+import useAddCreatorNFTs from "../../../hooks/useAddCreatorNft";
 import { useRouter } from "next/router";
 import { useWallet } from "use-wallet";
-import Loading from "../../components/Loading";
-import Hero from "../../components/Hero";
-import CreatingNFTItem from "../../components/CreatingNFTItem";
-import { useDropzone } from "react-dropzone";
+import Loading from "../../../components/Loading";
+import Hero from "../../../components/Hero";
+import EditingNFTItem from "../../../components/EditingNFTItem";
 import { create } from "ipfs-http-client";
-import async from "async";
-import BlankModal from "../../components/BlankModal";
-import BigNumber from "bignumber.js";
-import { useEffect } from "react";
+import BlankModal from "../../../components/BlankModal";
 import * as Yup from "yup";
 import Web3 from "web3";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
-const CreateNFT = ({ modelData }) => {
-  const [ipfsFiles, setIpfsFiles] = useState([]);
+const CreateNFT = ({ modelData, id }) => {
   const router = useRouter();
   const [success, setSuccess] = useState(false);
 
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
 
-  const onDrop = (files) => {
-    if (files && files.length > 0) {
-      async.map(
-        files,
-        (file, cb) => {
-          toBuffer(file, (err, buff) => {
-            console.log({ err, file });
-            if (err) return cb(err);
-            client.add(buff).then((results) => {
-              console.log("=> IPFS Dropzone added: ", results);
-              cb(null, `https://ipfs.infura.io/ipfs/${results.path}`);
-            });
-          });
-        },
-        (err, results) => {
-          if (err)
-            return console.error("=> IPFS Dropzone: IPFS Upload Error: ", err);
-          console.log({ results });
-          setIpfsFiles(results);
-        }
-      );
-    }
-  };
+  const [nftData, setNftData] = useState(null);
 
-  const {
-    acceptedFiles: files,
-    getRootProps,
-    getInputProps,
-  } = useDropzone({
-    onDrop,
-  });
+  useEffect(() => {
+    fetch(`/api/model/find-nft/${id}`)
+      .then((r) => r.json())
+      .then((json) => {
+        setNftData(json);
+      });
+  }, [id]);
 
   const formik = useFormik({
     initialValues: {
-      nfts: ipfsFiles.map((file) => ({
-        name: "",
-        list_price: 1,
-        description: "",
-        blurhash: false,
-        tags: [],
-        image: file,
-        max_supply: 1,
-        external_url: "https://treatdao.com/",
-        model_handle: modelData.username,
-        model_profile_pic: modelData.profile_pic,
-        model_bnb_address: modelData.address,
-      })),
+      name: nftData && nftData.name,
+      list_price: nftData && nftData.list_price,
+      description: nftData && nftData.description,
+      blurhash: nftData && nftData.blurhash,
+      tags: nftData && nftData.tags,
+      image: nftData && nftData.image,
+      external_url: nftData && nftData.external_url,
+      model_handle: nftData && nftData.model_handle,
+      model_profile_pic: nftData && nftData.model_profile_pic,
+      model_bnb_address: nftData && nftData.model_bnb_address,
     },
     enableReinitialize: true,
     validateOnChange: false,
@@ -88,7 +57,6 @@ const CreateNFT = ({ modelData }) => {
           external_url: Yup.string().required("Please add a external_url"),
           blurhash: Yup.string(),
           image: Yup.string().required("Please add a image"),
-          max_supply: Yup.string().required("Please add a max supply"),
           model_handle: Yup.string().required("Please add a model handle"),
           model_profile_pic: Yup.string().required(
             "Please add a model profile pic"
@@ -107,31 +75,15 @@ const CreateNFT = ({ modelData }) => {
     },
   });
 
-  const [maxSupplyArray, setMaxSupplyArray] = useState(null);
-  const [amountsArray, setAmountsArray] = useState(null);
-
-  const { onCreateAndAddNFTs } = useCreateAndAddNFTs(
-    maxSupplyArray,
-    amountsArray,
-    "0x"
+  const { onAddCreatorNFTs } = useAddCreatorNFTs(
+    [nftData && nftData.id],
+    [Web3.utils.toWei(formik.values.list_price.toString())]
   );
-
-  useEffect(() => {
-    const maxSupplies = formik.values.nfts.map((n) => n.max_supply);
-    const amounts = formik.values.nfts.map(
-      (n) => n.list_price && Web3.utils.toWei(n.list_price.toString())
-    );
-
-    console.log({ amounts });
-
-    setMaxSupplyArray(maxSupplies);
-    setAmountsArray(amounts);
-  }, [formik.values.nfts]);
 
   const SubmitToServer = async () => {
     try {
       setShowPendingModal(true);
-      const createNFTResult = await onCreateAndAddNFTs();
+      const createNFTResult = await onAddCreatorNFTs();
 
       if (!createNFTResult) return setShowPendingModal(false);
 
@@ -175,6 +127,8 @@ const CreateNFT = ({ modelData }) => {
     }
   };
 
+  if (!nftData) return <Loading />;
+
   return (
     <FormikProvider value={formik}>
       <BlankModal
@@ -195,45 +149,17 @@ const CreateNFT = ({ modelData }) => {
 
       <div className="container">
         <Hero
-          title="Create Sweet Shop NFTs"
+          title={`Editing ${formik.values.name || nftData.name}`}
           subtitle="Complete this form carefully. Make sure you don't leave this page after submitting the creation transaction."
         />
 
-        {(!formik.values.nfts || formik.values.nfts.length === 0) && (
-          <div className="white-tp-container p-4 row">
-            <div
-              className="dropzone justify-content-center flex"
-              {...getRootProps()}
-              style={{ minHeight: 200 }}
-            >
-              <input {...getInputProps()} />
-              <p className="mb-0 text-center" style={{ fontSize: "1.1em" }}>
-                Step 1: Drag 'n' drop your all your high resolution images here,{" "}
-                <br />
-                or click to here to select them
-              </p>
-            </div>
-          </div>
-        )}
-
         <Form onSubmit={formik.handleSubmit}>
-          <FieldArray
-            name="nfts"
-            render={(arrayHelpers) =>
-              formik.values.nfts &&
-              formik.values.nfts.length > 0 &&
-              formik.values.nfts.map((nft, i) => (
-                <CreatingNFTItem
-                  formik={formik}
-                  modelData={modelData}
-                  index={i}
-                  key={nft.image}
-                  imageUrl={nft.image}
-                  handleChange={formik.handleChange}
-                  arrayHelpers={arrayHelpers}
-                />
-              ))
-            }
+          <EditingNFTItem
+            nftData={nftData}
+            formik={formik}
+            modelData={modelData}
+            imageUrl={nftData.image}
+            handleChange={formik.handleChange}
           />
           <div className="buttons row pt-4">
             <div className="col-md-6 mt-2 text-center">
@@ -242,12 +168,8 @@ const CreateNFT = ({ modelData }) => {
               </Button>
             </div>
             <div className="col-md-6  mt-2 text-center">
-              <Button
-                type="submit"
-                variant="primary py-2 w-100"
-                disabled={ipfsFiles.length === 0}
-              >
-                <b>CREATE NFTs</b>
+              <Button type="submit" variant="primary py-2 w-100">
+                <b>SAVE EDITS</b>
               </Button>
             </div>
           </div>
@@ -265,6 +187,10 @@ const CreateNFTWrapper = (props) => {
   } else {
     return <CreateNFT {...props} />;
   }
+};
+
+CreateNFTWrapper.getInitialProps = async ({ query: { id } }) => {
+  return { id };
 };
 
 export default CreateNFTWrapper;
