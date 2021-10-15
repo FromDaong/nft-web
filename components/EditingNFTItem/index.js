@@ -4,8 +4,6 @@ import CreatingNFTItemPreview from "../CreatingNFTItemPreview";
 import { encode } from "blurhash";
 import TagsSelector from "../TagsSelector";
 
-let easing = [0.175, 0.85, 0.42, 0.96];
-
 const EditingNFTItem = ({
   imageUrl,
   formik,
@@ -82,7 +80,7 @@ const EditingNFTItem = ({
       <div className="col-md-1" />
       <div className="col-md-7 d-flex justify-content-center flex-column">
         <div className="row pt-5 pt-md-0">
-          <div className="pb-4 col-md-6">
+          <div className="pb-4 col-md-12">
             <label>NFT Name</label>
             <FormControl
               placeholder="E.g. Morning Wood"
@@ -95,11 +93,12 @@ const EditingNFTItem = ({
               }}
             />
           </div>
-          <div className="pb-4 col-md-6">
+          {/* <div className="pb-4 col-md-6">
             <label>NFT List Price (in BNB)</label>
             <FormControl
               type="number"
               max={nftData.list_price}
+              step="any"
               placeholder="E.g. 120"
               name={`list_price`}
               value={formik.values.list_price}
@@ -110,7 +109,7 @@ const EditingNFTItem = ({
                 )
               }
             />
-          </div>
+          </div> */}
         </div>
         <div className="pb-4">
           <label>NFT Description</label>
@@ -164,7 +163,7 @@ const EditingNFTItem = ({
         <div className="pb-4">
           <label>Tags</label>
           <TagsSelector
-            selectedTags={selectedTags}
+            selectedTags={formik.values.tags || []}
             setSelectedTags={setSelectedTags}
           />
         </div>

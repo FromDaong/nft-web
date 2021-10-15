@@ -12,6 +12,38 @@ import { motion, AnimateSharedLayout } from "framer-motion";
 import { forceCheck } from "react-lazyload";
 import { usePagination } from "react-use-pagination";
 import Fuse from "fuse.js";
+import Select from "react-select";
+
+const tags = [
+  { value: "SFW", label: "SFW" },
+  { value: "NSFW", label: "NSFW" },
+  { value: "Artistic", label: "Artistic" },
+  { value: "Glamour", label: "Glamour" },
+  { value: "Cosplay", label: "Cosplay" },
+  { value: "Natural", label: "Natural" },
+  { value: "Solo", label: "Solo" },
+  { value: "Boy - girl", label: "Boy - girl" },
+  { value: "Girl - girl", label: "Girl - girl" },
+  { value: "Boy - boy", label: "Boy - boy" },
+  { value: "Group", label: "Group" },
+  { value: "Lingerie", label: "Lingerie" },
+  { value: "BDSM", label: "BDSM" },
+  { value: "Latex", label: "Latex" },
+  { value: "Pantyhose", label: "Pantyhose" },
+  { value: "Feet", label: "Feet" },
+  { value: "Pregnant", label: "Pregnant" },
+  { value: "Smoking", label: "Smoking" },
+  { value: "Femdom", label: "Femdom" },
+  { value: "Findom", label: "Findom" },
+  { value: "Flexible", label: "Flexible" },
+  { value: "Outdoor", label: "Outdoor" },
+  { value: "Oil", label: "Oil" },
+  { value: "Masturbation", label: "Masturbation" },
+  { value: "Anal", label: "Anal" },
+  { value: "Pegging", label: "Pegging" },
+  { value: "Toys", label: "Toys" },
+  { value: "Exclusive", label: "Exclusive" },
+];
 
 const Marketplace = ({ search }) => {
   const [_, forceUpdate] = useReducer((x) => x + 1, 0);
@@ -26,6 +58,7 @@ const Marketplace = ({ search }) => {
 
   const fuse = new Fuse(nftDataArray, {
     keys: ["name", "description", "model_handle"],
+    shouldSort: false,
   });
 
   const updateObArr = () => {
@@ -138,33 +171,63 @@ const Marketplace = ({ search }) => {
             onChange={(e) => setSearchFilter(e.target.value)}
             style={{ fontSize: "1.1em" }}
           />
-          <Dropdown>
-            <Dropdown.Toggle
-              variant="transparent"
-              id="dropdown-basic"
-              size="lg"
-            >
-              {sortBy}
-            </Dropdown.Toggle>
 
-            <Dropdown.Menu>
-              <Dropdown.Item onClick={() => setSortBy("Recent")}>
-                Most Recent
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => setSortBy("Price Low to High")}>
-                Price Low to High
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => setSortBy("Price High to Low")}>
-                Price High to Low
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+          <div className="d-flex">
+            {/* <Select
+              options={tags}
+              placeholder="Select Tags..."
+              isMulti
+              styles={{
+                control: () => ({
+                  minWidth: 175,
+                  height: "100%",
+                  borderColor: "black",
+                  background: "none",
+                  display: "flex",
+                  fontSize: "1.2em",
+                }),
+                indicatorSeparator: () => ({
+                  display: "none",
+                }),
+                indicatorsContainer: () => ({
+                  color: "black",
+                  marginTop: 5,
+                  display: "flex",
+                }),
+                placeholder: () => ({
+                  color: "black",
+                  position: "absolute",
+                }),
+              }}
+            /> */}
+            <Dropdown>
+              <Dropdown.Toggle
+                variant="transparent"
+                id="dropdown-basic"
+                size="lg"
+              >
+                {sortBy}
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={() => setSortBy("Recent")}>
+                  Most Recent
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => setSortBy("Price Low to High")}>
+                  Price Low to High
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => setSortBy("Price High to Low")}>
+                  Price High to Low
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
         </div>
         <br />
         <div className="container fluid">
           <motion.div
             layout
-            className="nft-list row mt-5"
+            className="nft-list row mt-5 full-width justify-content-center"
             animate="show"
             exit="hidden"
             initial="hidden"
@@ -180,7 +243,7 @@ const Marketplace = ({ search }) => {
               },
             }}
           >
-            {!finalArray ? (
+            {!finalArray || finalArray.length === 0 ? (
               <div
                 style={{ minHeight: 500 }}
                 className="d-flex justify-content-center align-items-center w-100"

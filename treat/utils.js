@@ -383,6 +383,7 @@ export const addCreatorNft = async (
       .addNFT(nftIds, nftCosts)
       .send({ from: account, value: 0 });
   } catch (e) {
+    console.log({ e });
     return undefined;
   }
 };

@@ -23,7 +23,7 @@ export const Order = ({
   if (!nftResult) return <></>;
 
   return (
-    <div className="col-md-4">
+    <div className="order-container">
       <LazyLoad height={400} offset={400} once>
         {!!order && nftResult ? (
           <NFTListItem
