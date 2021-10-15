@@ -124,6 +124,7 @@ const Marketplace = ({ search }) => {
 
   const fuse = new Fuse(populatedArray, {
     keys: ["name", "description", "model_handle"],
+    shouldSort: false,
   });
 
   let renderArray;
@@ -284,7 +285,7 @@ const Marketplace = ({ search }) => {
           </Dropdown>
         </div>
         <br />
-        <div className="container fluid">
+        <div className="full-width justify-content-center">
           <div className="nft-list row mt-5">
             {!renderArray || renderArray.length === 0 ? (
               <div className="d-flex justify-content-center align-items-center w-100">

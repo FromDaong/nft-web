@@ -18,7 +18,7 @@ export const Order = ({
   const isOwner = !!account && account.toUpperCase() === data.model_bnb_address;
 
   return (
-    <div className="col-md-4">
+    <div className="order-container">
       <LazyLoad height={400} offset={400} once>
         {!!order ? (
           <NFTListItem

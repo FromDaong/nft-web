@@ -52,7 +52,7 @@ const CreateNFT = ({ modelData, id }) => {
         Yup.object().shape({
           id: Yup.number(),
           name: Yup.string().required("Please add a name"),
-          list_price: Yup.string().required("Please add the NFT list price"),
+          // list_price: Yup.string().required("Please add the NFT list price"),
           description: Yup.string().required("Please add an NFT description"),
           external_url: Yup.string().required("Please add a external_url"),
           blurhash: Yup.string(),
@@ -76,31 +76,39 @@ const CreateNFT = ({ modelData, id }) => {
   });
 
   const { onAddCreatorNFTs } = useAddCreatorNFTs(
-    [nftData && nftData.id],
-    [Web3.utils.toWei(formik.values.list_price.toString())]
+    [nftData && nftData.id, 620],
+    [
+      Web3.utils.toWei(
+        formik.values.list_price ? formik.values.list_price.toString() : "0"
+      ),
+      Web3.utils.toWei(
+        formik.values.list_price ? formik.values.list_price.toString() : "0"
+      ),
+    ]
   );
 
   const SubmitToServer = async () => {
     try {
       setShowPendingModal(true);
-      const createNFTResult = await onAddCreatorNFTs();
+      // const createNFTResult = await onAddCreatorNFTs();
 
-      if (!createNFTResult) return setShowPendingModal(false);
+      // if (!createNFTResult) return setShowPendingModal(false);
 
-      const submitValues = formik.values.nfts.map((nftData, i) => ({
-        ...nftData,
-        id: createNFTResult.nftIds[i],
-        blurhash: nftData.blurhash ? nftData.blurhash : null,
-      }));
+      // const submitValues = formik.values.nfts.map((nftData, i) => ({
+      //   ...nftData,
+      //   id: createNFTResult.nftIds[i],
+      //   blurhash: nftData.blurhash ? nftData.blurhash : null,
+      // }));
 
-      const res = await fetch(`/api/model/create-nfts`, {
+      const res = await fetch(`/api/model/edit-nft`, {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          nfts: submitValues,
+          id: nftData.id,
+          ...formik.values,
           address: modelData.address,
         }),
       });
