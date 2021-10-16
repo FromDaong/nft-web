@@ -100,6 +100,7 @@ const CreatingNFTItem = ({
             <FormControl
               type="number"
               placeholder="E.g. 120"
+              step="any"
               name={`nfts[${index}].list_price`}
               value={formik.values.nfts[index].list_price}
               onChange={(e) =>
