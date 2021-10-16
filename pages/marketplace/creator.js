@@ -48,18 +48,13 @@ const tags = [
 const Marketplace = ({ search }) => {
   const [_, forceUpdate] = useReducer((x) => x + 1, 0);
   const { data: orderBookArray } = useSWR(`/api/nft/get-marketplace-nfts`);
-  const [cancelOrderData, setCancelOrderData] = useState(null);
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const [purchaseOrderData, setPurchaseOrderData] = useState(null);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [nftDataArray, setNftDataArray] = useState([]);
   const [searchFilter, setSearchFilter] = useState(search || "");
   const [sortBy, setSortBy] = useState("Recent");
   const { account } = useWallet();
-
-  const fuse = new Fuse(nftDataArray, {
-    keys: ["name", "description", "model_handle"],
-    shouldSort: false,
-  });
 
   const updateObArr = () => {
     const ob = orderBookArray;
@@ -80,6 +75,32 @@ const Marketplace = ({ search }) => {
     if (obArr) setNftDataArray(obArr);
     forceCheck();
   };
+
+  const taggedArray = nftDataArray
+    .map((d) => {
+      const selectedOptionsMap = selectedOptions.map((e) => e.value);
+      if (d.tags.length > 0)
+        console.log({
+          item: d.tags,
+          selectedOptionsMap,
+          some: selectedOptionsMap.some((r) => d.tags.includes(r)),
+        });
+      if (
+        selectedOptionsMap.length > 0 &&
+        !selectedOptionsMap.some((r) => d.tags.includes(r))
+      ) {
+        console.log("WHY");
+        return undefined;
+      } else return d;
+    })
+    .filter((e) => e);
+
+  console.log({ taggedArray });
+
+  const fuse = new Fuse(taggedArray, {
+    keys: ["name", "description", "model_handle"],
+    shouldSort: false,
+  });
 
   const finalArray =
     searchFilter !== ""
@@ -177,6 +198,8 @@ const Marketplace = ({ search }) => {
               options={tags}
               placeholder="Select Tags..."
               isMulti
+              value={selectedOptions}
+              onChange={(val) => setSelectedOptions(val)}
               styles={{
                 control: () => ({
                   minWidth: 175,
@@ -262,7 +285,6 @@ const Marketplace = ({ search }) => {
                     key={o.refIndex}
                     setPendingModal={setShowPendingModal}
                     openCompleteModal={() => setShowCompleteModal(true)}
-                    setCancelOrderData={setCancelOrderData}
                     setPurchaseOrderData={setPurchaseOrderData}
                   />
                 ))}
