@@ -60,55 +60,51 @@ const Marketplace = ({ search }) => {
     const ob = orderBookArray;
 
     if (ob) setNftDataArray([]);
+    if (ob) setNftDataArray(ob);
 
-    const obArr = ob?.sort((a, b) => {
-      switch (sortBy) {
-        case "Price Low to High":
-          return Number(a.list_price) - Number(b.list_price);
-        case "Price High to Low":
-          return Number(b.list_price) - Number(a.list_price);
-        default:
-          return new Date(b.createdAt) - new Date(a.createdAt);
-      }
-    });
-
-    if (obArr) setNftDataArray(obArr);
     forceCheck();
   };
 
-  const taggedArray = nftDataArray
-    .map((d) => {
-      const selectedOptionsMap = selectedOptions.map((e) => e.value);
-      if (d.tags.length > 0)
-        console.log({
-          item: d.tags,
-          selectedOptionsMap,
-          some: selectedOptionsMap.some((r) => d.tags.includes(r)),
-        });
-      if (
-        selectedOptionsMap.length > 0 &&
-        !selectedOptionsMap.some((r) => d.tags.includes(r))
-      ) {
-        console.log("WHY");
-        return undefined;
-      } else return d;
-    })
-    .filter((e) => e);
-
-  console.log({ taggedArray });
-
-  const fuse = new Fuse(taggedArray, {
-    keys: ["name", "description", "model_handle"],
+  const fuse = new Fuse(nftDataArray, {
+    keys: ["name", "description", "model_handle", "tags"],
     shouldSort: false,
+    useExtendedMatch: true,
+    includeScore: true,
   });
 
-  const finalArray =
-    searchFilter !== ""
-      ? fuse.search(searchFilter)
-      : nftDataArray.map((d, idx) => ({
-          item: d,
-          refIndex: idx,
-        }));
+  let selectedOptionsStr = "";
+  selectedOptions.forEach((e) => (selectedOptionsStr += `="${e.value}" `));
+
+  let filteredArray;
+
+  if (searchFilter !== "" && selectedOptionsStr === "") {
+    filteredArray = fuse.search({
+      $or: [
+        { name: searchFilter },
+        { description: searchFilter },
+        { searchFilter: searchFilter },
+      ],
+    });
+  } else if (searchFilter !== "" && selectedOptionsStr !== "") {
+    filteredArray = fuse.search({
+      $and: [{ tags: selectedOptionsStr }],
+      $or: [{ name: searchFilter }],
+    });
+  } else if (searchFilter == "" && selectedOptionsStr !== "") {
+    filteredArray = fuse.search({
+      $and: [{ tags: selectedOptionsStr }],
+    });
+  } else {
+    filteredArray = nftDataArray.map((d, idx) => ({
+      item: d,
+      refIndex: idx,
+    }));
+  }
+
+  useEffect(() => {
+    if (searchFilter !== "") setSortBy("Relevancy");
+    else setSortBy("Recent");
+  }, [searchFilter]);
 
   const {
     currentPage,
@@ -120,7 +116,7 @@ const Marketplace = ({ search }) => {
     startIndex,
     endIndex,
   } = usePagination({
-    totalItems: finalArray ? finalArray.length : 0,
+    totalItems: filteredArray ? filteredArray.length + 1 : 0,
     initialPageSize: 25,
   });
 
@@ -158,6 +154,19 @@ const Marketplace = ({ search }) => {
   if (currentPage !== totalPages - 1)
     items.push(<Pagination.Last onClick={() => setPage(totalPages)} />);
 
+  const finalArray = filteredArray?.sort((a, b) => {
+    switch (sortBy) {
+      case "Relevancy":
+        return Number(a.score) - Number(b.score);
+      case "Price Low to High":
+        return Number(a.item.list_price) - Number(b.item.list_price);
+      case "Price High to Low":
+        return Number(b.item.list_price) - Number(a.item.list_price);
+      default:
+        return new Date(b.item.createdAt) - new Date(a.item.createdAt);
+    }
+  });
+
   return (
     <AnimateSharedLayout>
       <motion.main
@@ -194,7 +203,7 @@ const Marketplace = ({ search }) => {
           />
 
           <div className="d-flex">
-            {/* <Select
+            <Select
               options={tags}
               placeholder="Select Tags..."
               isMulti
@@ -222,7 +231,7 @@ const Marketplace = ({ search }) => {
                   position: "absolute",
                 }),
               }}
-            /> */}
+            />
             <Dropdown>
               <Dropdown.Toggle
                 variant="transparent"
@@ -233,6 +242,14 @@ const Marketplace = ({ search }) => {
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
+                <Dropdown.Item
+                  onClick={() => setSortBy("Relevancy")}
+                  style={{
+                    visibility: searchFilter === "" ? "hidden" : "visible",
+                  }}
+                >
+                  Relevancy
+                </Dropdown.Item>
                 <Dropdown.Item onClick={() => setSortBy("Recent")}>
                   Most Recent
                 </Dropdown.Item>
@@ -275,19 +292,21 @@ const Marketplace = ({ search }) => {
               </div>
             ) : (
               <>
-                {finalArray.slice(startIndex, endIndex).map((o, i) => (
-                  <Order
-                    searchFilter={searchFilter}
-                    nftResult={o.item}
-                    index={i}
-                    order={o.item}
-                    account={account}
-                    key={o.refIndex}
-                    setPendingModal={setShowPendingModal}
-                    openCompleteModal={() => setShowCompleteModal(true)}
-                    setPurchaseOrderData={setPurchaseOrderData}
-                  />
-                ))}
+                {finalArray
+                  .slice(startIndex, endIndex || finalArray.length)
+                  .map((o, i) => (
+                    <Order
+                      searchFilter={searchFilter}
+                      nftResult={o.item}
+                      index={i}
+                      order={o.item}
+                      account={account}
+                      key={o.refIndex}
+                      setPendingModal={setShowPendingModal}
+                      openCompleteModal={() => setShowCompleteModal(true)}
+                      setPurchaseOrderData={setPurchaseOrderData}
+                    />
+                  ))}
               </>
             )}
           </motion.div>
@@ -302,7 +321,6 @@ const Marketplace = ({ search }) => {
 };
 
 Marketplace.getInitialProps = async ({ query: { search } }) => {
-  console.log({ search });
   return { search };
 };
 
