@@ -285,8 +285,8 @@ const Marketplace = ({ search }) => {
           </Dropdown>
         </div>
         <br />
-        <div className="full-width justify-content-center">
-          <div className="nft-list row mt-5">
+        <div className="">
+          <div className="nft-list row mt-5 full-width justify-content-center">
             {!renderArray || renderArray.length === 0 ? (
               <div className="d-flex justify-content-center align-items-center w-100">
                 <Loading custom="Loading data from the blockchain... Please ensure your wallet is connected." />
