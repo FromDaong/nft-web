@@ -50,7 +50,7 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="https://www.coingecko.com/en/coins/treatdao"
+                  href="https://www.coingecko.com/en/coins/treatdao-v2"
                   target="_blank"
                 >
                   CoinGecko

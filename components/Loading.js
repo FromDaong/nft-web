@@ -12,6 +12,7 @@ const Loading = ({ custom }) => {
         justifyContent: "center",
         flexDirection: "column",
         alignItems: "center",
+        paddingTop: 50,
         paddingBottom: 50,
       }}
     >

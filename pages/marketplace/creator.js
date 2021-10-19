@@ -6,17 +6,19 @@ import useSWR from "swr";
 import React, { useState, useEffect, useReducer } from "react";
 import Loading from "../../components/Loading";
 import Link from "next/link";
+import tags from "../../utils/tags";
 import Hero from "../../components/Hero";
 import { Order } from "../../components/CreatorMarketplaceListItem";
 import { motion, AnimateSharedLayout } from "framer-motion";
 import { forceCheck } from "react-lazyload";
 import { usePagination } from "react-use-pagination";
 import Fuse from "fuse.js";
+import Select from "react-select";
 
 const Marketplace = ({ search }) => {
   const [_, forceUpdate] = useReducer((x) => x + 1, 0);
   const { data: orderBookArray } = useSWR(`/api/nft/get-marketplace-nfts`);
-  const [cancelOrderData, setCancelOrderData] = useState(null);
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const [purchaseOrderData, setPurchaseOrderData] = useState(null);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [nftDataArray, setNftDataArray] = useState([]);
@@ -24,37 +26,55 @@ const Marketplace = ({ search }) => {
   const [sortBy, setSortBy] = useState("Recent");
   const { account } = useWallet();
 
-  const fuse = new Fuse(nftDataArray, {
-    keys: ["name", "description", "model_handle"],
-  });
-
   const updateObArr = () => {
     const ob = orderBookArray;
 
     if (ob) setNftDataArray([]);
+    if (ob) setNftDataArray(ob);
 
-    const obArr = ob?.sort((a, b) => {
-      switch (sortBy) {
-        case "Price Low to High":
-          return Number(a.list_price) - Number(b.list_price);
-        case "Price High to Low":
-          return Number(b.list_price) - Number(a.list_price);
-        default:
-          return new Date(b.createdAt) - new Date(a.createdAt);
-      }
-    });
-
-    if (obArr) setNftDataArray(obArr);
     forceCheck();
   };
 
-  const finalArray =
-    searchFilter !== ""
-      ? fuse.search(searchFilter)
-      : nftDataArray.map((d, idx) => ({
-          item: d,
-          refIndex: idx,
-        }));
+  const fuse = new Fuse(nftDataArray, {
+    keys: ["name", "description", "model_handle", "tags"],
+    shouldSort: false,
+    useExtendedMatch: true,
+    includeScore: true,
+  });
+
+  let selectedOptionsStr = "";
+  selectedOptions.forEach((e) => (selectedOptionsStr += `="${e.value}" `));
+
+  let filteredArray;
+
+  if (searchFilter !== "" && selectedOptionsStr === "") {
+    filteredArray = fuse.search({
+      $or: [
+        { name: searchFilter },
+        { description: searchFilter },
+        { model_handle: searchFilter },
+      ],
+    });
+  } else if (searchFilter !== "" && selectedOptionsStr !== "") {
+    filteredArray = fuse.search({
+      $and: [{ tags: selectedOptionsStr }],
+      $or: [{ name: searchFilter }],
+    });
+  } else if (searchFilter == "" && selectedOptionsStr !== "") {
+    filteredArray = fuse.search({
+      $and: [{ tags: selectedOptionsStr }],
+    });
+  } else {
+    filteredArray = nftDataArray.map((d, idx) => ({
+      item: d,
+      refIndex: idx,
+    }));
+  }
+
+  useEffect(() => {
+    if (searchFilter !== "") setSortBy("Relevancy");
+    else setSortBy("Recent");
+  }, [searchFilter]);
 
   const {
     currentPage,
@@ -66,7 +86,7 @@ const Marketplace = ({ search }) => {
     startIndex,
     endIndex,
   } = usePagination({
-    totalItems: finalArray ? finalArray.length : 0,
+    totalItems: filteredArray ? filteredArray.length + 1 : 0,
     initialPageSize: 25,
   });
 
@@ -104,6 +124,19 @@ const Marketplace = ({ search }) => {
   if (currentPage !== totalPages - 1)
     items.push(<Pagination.Last onClick={() => setPage(totalPages)} />);
 
+  const finalArray = filteredArray?.sort((a, b) => {
+    switch (sortBy) {
+      case "Relevancy":
+        return Number(a.score) - Number(b.score);
+      case "Price Low to High":
+        return Number(a.item.list_price) - Number(b.item.list_price);
+      case "Price High to Low":
+        return Number(b.item.list_price) - Number(a.item.list_price);
+      default:
+        return new Date(b.item.createdAt) - new Date(a.item.createdAt);
+    }
+  });
+
   return (
     <AnimateSharedLayout>
       <motion.main
@@ -138,33 +171,73 @@ const Marketplace = ({ search }) => {
             onChange={(e) => setSearchFilter(e.target.value)}
             style={{ fontSize: "1.1em" }}
           />
-          <Dropdown>
-            <Dropdown.Toggle
-              variant="transparent"
-              id="dropdown-basic"
-              size="lg"
-            >
-              {sortBy}
-            </Dropdown.Toggle>
 
-            <Dropdown.Menu>
-              <Dropdown.Item onClick={() => setSortBy("Recent")}>
-                Most Recent
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => setSortBy("Price Low to High")}>
-                Price Low to High
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => setSortBy("Price High to Low")}>
-                Price High to Low
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+          <div className="d-flex">
+            <Select
+              options={tags}
+              placeholder="Select Tags..."
+              isMulti
+              value={selectedOptions}
+              onChange={(val) => setSelectedOptions(val)}
+              styles={{
+                control: () => ({
+                  minWidth: 175,
+                  height: "100%",
+                  borderColor: "black",
+                  background: "none",
+                  display: "flex",
+                  fontSize: "1.2em",
+                }),
+                indicatorSeparator: () => ({
+                  display: "none",
+                }),
+                indicatorsContainer: () => ({
+                  color: "black",
+                  marginTop: 5,
+                  display: "flex",
+                }),
+                placeholder: () => ({
+                  color: "black",
+                  position: "absolute",
+                }),
+              }}
+            />
+            <Dropdown>
+              <Dropdown.Toggle
+                variant="transparent"
+                id="dropdown-basic"
+                size="lg"
+              >
+                {sortBy}
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <Dropdown.Item
+                  onClick={() => setSortBy("Relevancy")}
+                  style={{
+                    display: searchFilter === "" ? "none" : "block",
+                  }}
+                >
+                  Relevancy
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => setSortBy("Recent")}>
+                  Most Recent
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => setSortBy("Price Low to High")}>
+                  Price Low to High
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => setSortBy("Price High to Low")}>
+                  Price High to Low
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
         </div>
         <br />
         <div className="container fluid">
           <motion.div
             layout
-            className="nft-list row mt-5"
+            className="nft-list row mt-5 full-width justify-content-center"
             animate="show"
             exit="hidden"
             initial="hidden"
@@ -188,22 +261,25 @@ const Marketplace = ({ search }) => {
                 <Loading custom="Loading... This may take up to a few minutes, please ensure your wallet is connected." />
               </div>
             ) : (
-              <>
-                {finalArray.slice(startIndex, endIndex).map((o, i) => (
-                  <Order
-                    searchFilter={searchFilter}
-                    nftResult={o.item}
-                    index={i}
-                    order={o.item}
-                    account={account}
-                    key={o.refIndex}
-                    setPendingModal={setShowPendingModal}
-                    openCompleteModal={() => setShowCompleteModal(true)}
-                    setCancelOrderData={setCancelOrderData}
-                    setPurchaseOrderData={setPurchaseOrderData}
-                  />
-                ))}
-              </>
+              finalArray.length > 0 && (
+                <>
+                  {finalArray
+                    .slice(startIndex, endIndex || finalArray.length)
+                    .map((o, i) => (
+                      <Order
+                        searchFilter={searchFilter}
+                        nftResult={o.item}
+                        index={i}
+                        order={o.item}
+                        account={account}
+                        key={o.refIndex}
+                        setPendingModal={setShowPendingModal}
+                        openCompleteModal={() => setShowCompleteModal(true)}
+                        setPurchaseOrderData={setPurchaseOrderData}
+                      />
+                    ))}
+                </>
+              )
             )}
           </motion.div>
 
@@ -217,7 +293,6 @@ const Marketplace = ({ search }) => {
 };
 
 Marketplace.getInitialProps = async ({ query: { search } }) => {
-  console.log({ search });
   return { search };
 };
 

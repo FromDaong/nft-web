@@ -4,12 +4,10 @@ import CreatingNFTItemPreview from "../CreatingNFTItemPreview";
 import { encode } from "blurhash";
 import TagsSelector from "../TagsSelector";
 
-let easing = [0.175, 0.85, 0.42, 0.96];
-
-const CreatingNFTItem = ({
+const EditingNFTItem = ({
   imageUrl,
   formik,
-  handleChange,
+  nftData,
   index,
   modelData,
   blurRequired,
@@ -18,7 +16,7 @@ const CreatingNFTItem = ({
   const [selectedTags, setSelectedTags] = useState([]);
 
   useEffect(() => {
-    formik.setFieldValue(`nfts[${index}].tags`, selectedTags);
+    formik.setFieldValue(`tags`, selectedTags);
   }, [selectedTags]);
 
   const loadImage = async (src) =>
@@ -47,14 +45,14 @@ const CreatingNFTItem = ({
 
   const changeBlurhash = async (e) => {
     if (e.target.checked) {
-      await formik.setFieldValue(`nfts[${index}].blurhash`, blurhash);
+      await formik.setFieldValue(`blurhash`, blurhash);
       if (blurhash) return;
 
       const returnedBlurhash = await encodeImageToBlurhash(imageUrl);
       setBlurHash(returnedBlurhash);
-      formik.setFieldValue(`nfts[${index}].blurhash`, returnedBlurhash);
+      formik.setFieldValue(`blurhash`, returnedBlurhash);
     } else {
-      formik.setFieldValue(`nfts[${index}].blurhash`, false);
+      formik.setFieldValue(`blurhash`, false);
     }
   };
 
@@ -69,11 +67,11 @@ const CreatingNFTItem = ({
       <div className="col-md-4">
         <CreatingNFTItemPreview
           imageUrl={imageUrl}
-          name={formik.values.nfts[index].name}
+          name={formik.values.name}
           isOwner={true}
           modelData={modelData}
           // price={getDisplayBalance(new BigNumber(order.price))}
-          price={formik.values.nfts[index].list_price}
+          price={formik.values.list_price}
           // owner={order.seller}
           quantity={1}
           disableAnimations={true}
@@ -82,43 +80,44 @@ const CreatingNFTItem = ({
       <div className="col-md-1" />
       <div className="col-md-7 d-flex justify-content-center flex-column">
         <div className="row pt-5 pt-md-0">
-          <div className="pb-4 col-md-6">
+          <div className="pb-4 col-md-12">
             <label>NFT Name</label>
             <FormControl
               placeholder="E.g. Morning Wood"
-              name={`nfts[${index}].name`}
-              value={formik.values.nfts[index].name}
+              name={`name`}
+              value={formik.values.name}
               // onChange={handleChange}
               onChange={(e) => {
                 console.log({ e: e.target.value });
-                formik.setFieldValue(`nfts[${index}].name`, e.target.value);
+                formik.setFieldValue(`name`, e.target.value);
               }}
             />
           </div>
-          <div className="pb-4 col-md-6">
+          {/* <div className="pb-4 col-md-6">
             <label>NFT List Price (in BNB)</label>
             <FormControl
               type="number"
-              placeholder="E.g. 120"
+              max={nftData.list_price}
               step="any"
-              name={`nfts[${index}].list_price`}
-              value={formik.values.nfts[index].list_price}
+              placeholder="E.g. 120"
+              name={`list_price`}
+              value={formik.values.list_price}
               onChange={(e) =>
                 formik.setFieldValue(
-                  `nfts[${index}].list_price`,
+                  `list_price`,
                   +Number(e.target.value).toFixed(4)
                 )
               }
             />
-          </div>
+          </div> */}
         </div>
         <div className="pb-4">
           <label>NFT Description</label>
           <FormControl
             placeholder="E.g. Let's make you rise."
             as="textarea"
-            name={`nfts[${index}].description`}
-            value={formik.values.nfts[index].description}
+            name={`description`}
+            value={formik.values.description}
             onChange={formik.handleChange}
           />
         </div>
@@ -134,23 +133,23 @@ const CreatingNFTItem = ({
                 <Form.Check
                   className="d-inline mt-2"
                   type="switch"
-                  id={`nfts[${index}].blurhash`}
-                  name={`nfts[${index}].blurhash`}
-                  checked={!!formik.values.nfts[index].blurhash}
+                  id={`blurhash`}
+                  name={`blurhash`}
+                  checked={!!formik.values.blurhash}
                   onChange={changeBlurhash}
                 />
               </div>
             )}
             <div className="col-md-10">
-              {!formik.values.nfts[index].blurhash && !blurRequired ? (
+              {!formik.values.blurhash && !blurRequired ? (
                 <></>
               ) : (
                 <>
                   <FormControl
                     placeholder="E.g. eKO2?U%2Tw=wR6]~RBVZRip0};RPxuwH%3tLOtxZ%gixI.ENa0NZIV"
-                    name={`nfts[${index}].blurhash`}
+                    name={`blurhash`}
                     value={
-                      formik.values.nfts[index].blurhash ||
+                      formik.values.blurhash ||
                       "Loading Blurhash, Please wait a minute..."
                     }
                     onChange={formik.handleChange}
@@ -162,30 +161,17 @@ const CreatingNFTItem = ({
           </div>{" "}
         </div>
         <div className="pb-4">
-          <label>Maximum Supply</label>
-          <FormControl
-            type="number"
-            placeholder="E.g. 1500"
-            name={`nfts[${index}].max_supply`}
-            value={formik.values.nfts[index].max_supply}
-            onChange={formik.handleChange}
-          />
-        </div>
-        <div className="pb-4">
           <label>Tags</label>
           <TagsSelector
-            selectedTags={selectedTags}
+            selectedTags={formik.values.tags || []}
             setSelectedTags={setSelectedTags}
           />
         </div>
         <Form.Control.Feedback type="invalid" className="d-block">
           {Object.keys(
-            (formik.errors &&
-              formik.errors.nfts &&
-              formik.errors.nfts[index]) ||
-              []
+            (formik.errors && formik.errors.nfts && formik.errors) || []
           ).map((e) => (
-            <div>{formik.errors.nfts[index][e]}</div>
+            <div>{formik.errors[e]}</div>
           ))}
           {formik.errors.code}
         </Form.Control.Feedback>
@@ -194,4 +180,4 @@ const CreatingNFTItem = ({
   );
 };
 
-export default CreatingNFTItem;
+export default EditingNFTItem;
