@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
+import Badge from "react-bootstrap/Badge";
 import useSWR from "swr";
 import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
 import useGetFreeTreat from "../../hooks/useGetFreeTreat";
@@ -24,7 +25,6 @@ import { EyeSlash } from "react-bootstrap-icons";
 import BigNumber from "bignumber.js";
 import Link from "next/link";
 import useGetIsSubscribed from "../../hooks/useGetIsSubscribed";
-import Web3 from "web3";
 
 const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   const { account } = useWallet();
@@ -311,6 +311,12 @@ const ViewNFT = ({ nftData, image, account }) => {
                   )}
                 <div className="title">{nftData.name}</div>
                 <div className="bio">{nftData.description}</div>
+                <div className="tags mt-2">
+                  {nftData.tags &&
+                    nftData.tags.map((tag) => (
+                      <Badge variant="secondary mr-2">{tag}</Badge>
+                    ))}
+                </div>
               </div>
             </div>
             <div className="stats">

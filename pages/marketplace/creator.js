@@ -82,7 +82,7 @@ const Marketplace = ({ search }) => {
       $or: [
         { name: searchFilter },
         { description: searchFilter },
-        { searchFilter: searchFilter },
+        { model_handle: searchFilter },
       ],
     });
   } else if (searchFilter !== "" && selectedOptionsStr !== "") {
@@ -245,7 +245,7 @@ const Marketplace = ({ search }) => {
                 <Dropdown.Item
                   onClick={() => setSortBy("Relevancy")}
                   style={{
-                    visibility: searchFilter === "" ? "hidden" : "visible",
+                    display: searchFilter === "" ? "none" : "block",
                   }}
                 >
                   Relevancy
