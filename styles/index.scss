@@ -188,3 +188,16 @@ iframe * {
 .no-position > * {
   position: unset;
 }
+
+.full-width {
+  width: 99vw;
+  position: relative;
+  margin-left: -50vw;
+  left: 50%;
+}
+
+.select-component {
+  height: 100%;
+  border-color: black;
+  background: none;
+}

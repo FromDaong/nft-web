@@ -68,6 +68,7 @@ const NFTSchema = new mongoose.Schema(
         timestamp: String,
       },
     ],
+    tags: [],
   },
   {
     timestamps: { createdAt: true, updatedAt: false },

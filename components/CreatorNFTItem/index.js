@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { generateFromString } from "generate-avatar";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { Blurhash } from "react-blurhash";
 import { motion } from "framer-motion";
-import { EyeSlash } from "react-bootstrap-icons";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 let easing = [0.175, 0.85, 0.42, 0.96];
 
@@ -31,16 +30,10 @@ const variants = {
   },
 };
 
-const CreatorNFTItem = ({
-  data,
-  revealNFTs,
-  modelData,
-  isLoading,
-  balance,
-  price,
-}) => {
+const CreatorNFTItem = ({ data, modelData, balance }) => {
   const [image, setBase64Image] = useState();
   const [modalData, setModalData] = useState();
+  const router = useRouter();
 
   useEffect(() => {
     (async () => {
@@ -56,7 +49,10 @@ const CreatorNFTItem = ({
     })();
   }, [data]);
 
-  console.log({ modelData });
+  const goToEditNFT = (e) => {
+    e.preventDefault(true);
+    router.push(`/creator-dashboard/edit-nft/${data.id}`);
+  };
 
   return (
     <>
@@ -140,15 +136,19 @@ const CreatorNFTItem = ({
                 </div>
               </div>
             </div>
-            {/* <div className="row">
+            <div className="row">
               <div className="col-lg-12 mt-3">
                 <span className="d-inline-block w-100">
-                  <Button className="w-100" variant="secondary" disabled>
+                  <Button
+                    className="w-100"
+                    variant="secondary"
+                    onClick={goToEditNFT}
+                  >
                     <b>Edit NFT</b>
                   </Button>
                 </span>
               </div>
-            </div> */}
+            </div>
           </div>
         </Link>
       </motion.div>
