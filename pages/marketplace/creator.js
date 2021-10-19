@@ -6,6 +6,7 @@ import useSWR from "swr";
 import React, { useState, useEffect, useReducer } from "react";
 import Loading from "../../components/Loading";
 import Link from "next/link";
+import tags from "../../utils/tags";
 import Hero from "../../components/Hero";
 import { Order } from "../../components/CreatorMarketplaceListItem";
 import { motion, AnimateSharedLayout } from "framer-motion";
@@ -13,37 +14,6 @@ import { forceCheck } from "react-lazyload";
 import { usePagination } from "react-use-pagination";
 import Fuse from "fuse.js";
 import Select from "react-select";
-
-const tags = [
-  { value: "SFW", label: "SFW" },
-  { value: "NSFW", label: "NSFW" },
-  { value: "Artistic", label: "Artistic" },
-  { value: "Glamour", label: "Glamour" },
-  { value: "Cosplay", label: "Cosplay" },
-  { value: "Natural", label: "Natural" },
-  { value: "Solo", label: "Solo" },
-  { value: "Boy - girl", label: "Boy - girl" },
-  { value: "Girl - girl", label: "Girl - girl" },
-  { value: "Boy - boy", label: "Boy - boy" },
-  { value: "Group", label: "Group" },
-  { value: "Lingerie", label: "Lingerie" },
-  { value: "BDSM", label: "BDSM" },
-  { value: "Latex", label: "Latex" },
-  { value: "Pantyhose", label: "Pantyhose" },
-  { value: "Feet", label: "Feet" },
-  { value: "Pregnant", label: "Pregnant" },
-  { value: "Smoking", label: "Smoking" },
-  { value: "Femdom", label: "Femdom" },
-  { value: "Findom", label: "Findom" },
-  { value: "Flexible", label: "Flexible" },
-  { value: "Outdoor", label: "Outdoor" },
-  { value: "Oil", label: "Oil" },
-  { value: "Masturbation", label: "Masturbation" },
-  { value: "Anal", label: "Anal" },
-  { value: "Pegging", label: "Pegging" },
-  { value: "Toys", label: "Toys" },
-  { value: "Exclusive", label: "Exclusive" },
-];
 
 const Marketplace = ({ search }) => {
   const [_, forceUpdate] = useReducer((x) => x + 1, 0);
@@ -283,7 +253,7 @@ const Marketplace = ({ search }) => {
               },
             }}
           >
-            {!finalArray || finalArray.length === 0 ? (
+            {!finalArray ? (
               <div
                 style={{ minHeight: 500 }}
                 className="d-flex justify-content-center align-items-center w-100"
@@ -291,23 +261,25 @@ const Marketplace = ({ search }) => {
                 <Loading custom="Loading... This may take up to a few minutes, please ensure your wallet is connected." />
               </div>
             ) : (
-              <>
-                {finalArray
-                  .slice(startIndex, endIndex || finalArray.length)
-                  .map((o, i) => (
-                    <Order
-                      searchFilter={searchFilter}
-                      nftResult={o.item}
-                      index={i}
-                      order={o.item}
-                      account={account}
-                      key={o.refIndex}
-                      setPendingModal={setShowPendingModal}
-                      openCompleteModal={() => setShowCompleteModal(true)}
-                      setPurchaseOrderData={setPurchaseOrderData}
-                    />
-                  ))}
-              </>
+              finalArray.length > 0 && (
+                <>
+                  {finalArray
+                    .slice(startIndex, endIndex || finalArray.length)
+                    .map((o, i) => (
+                      <Order
+                        searchFilter={searchFilter}
+                        nftResult={o.item}
+                        index={i}
+                        order={o.item}
+                        account={account}
+                        key={o.refIndex}
+                        setPendingModal={setShowPendingModal}
+                        openCompleteModal={() => setShowCompleteModal(true)}
+                        setPurchaseOrderData={setPurchaseOrderData}
+                      />
+                    ))}
+                </>
+              )
             )}
           </motion.div>
 

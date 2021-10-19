@@ -11,6 +11,7 @@ import BlankModal from "../../components/BlankModal";
 import CancelOrderModal from "../../components/CancelOrderModal";
 import PurchaseOrderModal from "../../components/PurchaseOrderModal";
 import Hero from "../../components/Hero";
+import tags from "../../utils/tags";
 import { Order } from "../../components/MarketplaceListItem";
 import { motion, AnimateSharedLayout } from "framer-motion";
 import { forceCheck } from "react-lazyload";
@@ -18,11 +19,13 @@ import Link from "next/link";
 import { usePagination } from "react-use-pagination";
 import BigNumber from "bignumber.js";
 import Fuse from "fuse.js";
+import Select from "react-select";
 
 const Marketplace = ({ search }) => {
   const maxId = useGetMaxIdForSale();
   console.log({ maxId });
 
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const [cancelOrderData, setCancelOrderData] = useState(null);
   const [storedArray, setStoredArray] = useState(null);
   const [purchaseOrderData, setPurchaseOrderData] = useState(null);
@@ -44,23 +47,7 @@ const Marketplace = ({ search }) => {
         : storedArray;
 
     if (ob) setOrderBookArray([]);
-
-    const obArr = ob?.sort((a, b) => {
-      switch (sortBy) {
-        case "Price Low to High":
-          return (
-            Number(new BigNumber(a.price)) - Number(new BigNumber(b.price))
-          );
-        case "Price High to Low":
-          return (
-            Number(new BigNumber(b.price)) - Number(new BigNumber(a.price))
-          );
-        default:
-          return new Date(+b.listDate * 1000) - new Date(+a.listDate * 1000);
-      }
-    });
-
-    if (obArr) setOrderBookArray(obArr);
+    if (ob) setOrderBookArray(ob);
     forceCheck();
   };
 
@@ -120,24 +107,67 @@ const Marketplace = ({ search }) => {
       })
       .filter((e) => e);
 
-  console.log({ populatedArray });
-
   const fuse = new Fuse(populatedArray, {
-    keys: ["name", "description", "model_handle"],
+    keys: ["name", "description", "model_handle", "tags"],
     shouldSort: false,
+    useExtendedMatch: true,
+    includeScore: true,
   });
 
-  let renderArray;
+  let filtered;
+  let selectedOptionsStr = "";
+  selectedOptions.forEach((e) => (selectedOptionsStr += `="${e.value}" `));
 
-  if (populatedArray) {
-    renderArray =
-      searchFilter !== ""
-        ? fuse.search(searchFilter)
-        : populatedArray.map((d, idx) => ({
-            item: d,
-            refIndex: idx,
-          }));
+  if (searchFilter !== "" && selectedOptionsStr === "") {
+    filtered = fuse.search({
+      $or: [
+        { name: searchFilter },
+        { description: searchFilter },
+        { model_handle: searchFilter },
+      ],
+    });
+  } else if (searchFilter !== "" && selectedOptionsStr !== "") {
+    filtered = fuse.search({
+      $and: [{ tags: selectedOptionsStr }],
+      $or: [{ name: searchFilter }],
+    });
+  } else if (searchFilter == "" && selectedOptionsStr !== "") {
+    filtered = fuse.search({
+      $and: [{ tags: selectedOptionsStr }],
+    });
+  } else if (populatedArray) {
+    filtered = populatedArray.map((d, idx) => ({
+      item: d,
+      refIndex: idx,
+    }));
   }
+
+  const renderArray = filtered?.sort((a, b) => {
+    switch (sortBy) {
+      case "Relevancy":
+        return Number(a.score) - Number(b.score);
+      case "Price Low to High":
+        return (
+          Number(new BigNumber(a.item.price)) -
+          Number(new BigNumber(b.item.price))
+        );
+      case "Price High to Low":
+        return (
+          Number(new BigNumber(b.item.price)) -
+          Number(new BigNumber(a.item.price))
+        );
+      default:
+        return (
+          new Date(+b.item.listDate * 1000) - new Date(+a.item.listDate * 1000)
+        );
+    }
+  });
+
+  useEffect(() => {
+    if (searchFilter !== "") setSortBy("Relevancy");
+    else setSortBy("Recent");
+  }, [searchFilter]);
+
   const {
     currentPage,
     totalPages,
@@ -262,27 +292,67 @@ const Marketplace = ({ search }) => {
             onChange={(e) => setSearchFilter(e.target.value)}
             style={{ fontSize: "1.1em" }}
           />
-          <Dropdown>
-            <Dropdown.Toggle
-              variant="transparent"
-              id="dropdown-basic"
-              size="lg"
-            >
-              {sortBy}
-            </Dropdown.Toggle>
 
-            <Dropdown.Menu>
-              <Dropdown.Item onClick={() => setSortBy("Recent")}>
-                Most Recent
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => setSortBy("Price Low to High")}>
-                Price Low to High
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => setSortBy("Price High to Low")}>
-                Price High to Low
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+          <div className="d-flex">
+            <Select
+              options={tags}
+              placeholder="Select Tags..."
+              isMulti
+              value={selectedOptions}
+              onChange={(val) => setSelectedOptions(val)}
+              styles={{
+                control: () => ({
+                  minWidth: 175,
+                  height: "100%",
+                  borderColor: "black",
+                  background: "none",
+                  display: "flex",
+                  fontSize: "1.2em",
+                }),
+                indicatorSeparator: () => ({
+                  display: "none",
+                }),
+                indicatorsContainer: () => ({
+                  color: "black",
+                  marginTop: 5,
+                  display: "flex",
+                }),
+                placeholder: () => ({
+                  color: "black",
+                  position: "absolute",
+                }),
+              }}
+            />
+            <Dropdown>
+              <Dropdown.Toggle
+                variant="transparent"
+                id="dropdown-basic"
+                size="lg"
+              >
+                {sortBy}
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <Dropdown.Item
+                  onClick={() => setSortBy("Relevancy")}
+                  style={{
+                    display: searchFilter === "" ? "none" : "block",
+                  }}
+                >
+                  Relevancy
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => setSortBy("Recent")}>
+                  Most Recent
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => setSortBy("Price Low to High")}>
+                  Price Low to High
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => setSortBy("Price High to Low")}>
+                  Price High to Low
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
         </div>
         <br />
         <div className="">
