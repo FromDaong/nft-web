@@ -149,7 +149,7 @@ const NFTListItem = ({
                   <EyeSlash size={32} />
                   <div className="pt-1">Click to Reveal</div>
                 </div>
-                {isBlurhashValid(data.blurhash) ? (
+                {isBlurhashValid(data.blurhash) && data.blurhash.length > 5 ? (
                   <Blurhash
                     style={{ borderRadius: 5, overflow: "hidden" }}
                     hash={data.blurhash}

@@ -21,7 +21,11 @@ export default async (req, res) => {
               {
                 profile_pic: n.profile_pic.replace(
                   "https://ipfs.infura.io/ipfs/",
-                  "https://treatdao.mypinata.cloud/ipfs"
+                  "https://treatdao.mypinata.cloud/ipfs/"
+                ),
+                banner_pic: n.banner_pic.replace(
+                  "https://ipfs.infura.io/ipfs/",
+                  "https://treatdao.mypinata.cloud/ipfs/"
                 ),
               }
             );
