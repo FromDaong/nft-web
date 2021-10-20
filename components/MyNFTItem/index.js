@@ -5,6 +5,7 @@ import Tooltip from "react-bootstrap/Tooltip";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { Blurhash } from "react-blurhash";
+import { isBlurhashValid } from "blurhash";
 import { motion } from "framer-motion";
 import { EyeSlash } from "react-bootstrap-icons";
 import Link from "next/link";
@@ -148,15 +149,21 @@ const NFTListItem = ({
                   <EyeSlash size={32} />
                   <div className="pt-1">Click to Reveal</div>
                 </div>
-                <Blurhash
-                  style={{ borderRadius: 5, overflow: "hidden" }}
-                  hash={data.blurhash}
-                  width={"100%"}
-                  height={300}
-                  resolutionX={32}
-                  resolutionY={32}
-                  punch={1}
-                />
+                {isBlurhashValid(data.blurhash) ? (
+                  <Blurhash
+                    style={{ borderRadius: 5, overflow: "hidden" }}
+                    hash={data.blurhash}
+                    width={"100%"}
+                    height={300}
+                    resolutionX={32}
+                    resolutionY={32}
+                    punch={1}
+                  />
+                ) : (
+                  <h3 className="text-center p4">
+                    Please contaact admin. Invalid Blurhash.
+                  </h3>
+                )}
               </>
             )}
           </div>

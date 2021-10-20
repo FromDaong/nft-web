@@ -26,7 +26,7 @@ const ModelSchema = new mongoose.Schema(
     banner_pic: {
       type: String,
       default:
-        "https://ipfs.infura.io/ipfs/QmdRewQfGbQP95hcyabRwRnXKWFH8Lyrr8ak6xc2y4uWTP",
+        "https://treatdao.mypinata.cloud/ipfs/QmdRewQfGbQP95hcyabRwRnXKWFH8Lyrr8ak6xc2y4uWTP",
     },
     social_account: {
       type: String,

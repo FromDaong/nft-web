@@ -42,7 +42,7 @@ const CreateNFT = ({ modelData }) => {
             if (err) return cb(err);
             client.add(buff).then((results) => {
               console.log("=> IPFS Dropzone added: ", results);
-              cb(null, `https://ipfs.infura.io/ipfs/${results.path}`);
+              cb(null, `https://treatdao.mypinata.cloud/ipfs/${results.path}`);
             });
           });
         },

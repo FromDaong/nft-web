@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { Blurhash } from "react-blurhash";
+import { isBlurhashValid } from "blurhash";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -107,7 +108,7 @@ const CreatorNFTItem = ({ data, modelData, balance }) => {
                   style={{ background: `url(${image})`, minHeight: 375 }}
                   className="dynamic-image"
                 />
-              ) : (
+              ) : isBlurhashValid(data.blurhash).result ? (
                 <>
                   <Blurhash
                     style={{
@@ -122,6 +123,10 @@ const CreatorNFTItem = ({ data, modelData, balance }) => {
                     punch={1}
                   />
                 </>
+              ) : (
+                <h3 className="text-center p4">
+                  Please contaact admin. Invalid Blurhash.
+                </h3>
               )}
             </div>
             <div className="text-container container">
