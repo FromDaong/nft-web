@@ -76,11 +76,8 @@ const CreateNFT = ({ modelData, id }) => {
   });
 
   const { onAddCreatorNFTs } = useAddCreatorNFTs(
-    [nftData && nftData.id, 620],
+    [nftData && nftData.id],
     [
-      Web3.utils.toWei(
-        formik.values.list_price ? formik.values.list_price.toString() : "0"
-      ),
       Web3.utils.toWei(
         formik.values.list_price ? formik.values.list_price.toString() : "0"
       ),
@@ -90,9 +87,9 @@ const CreateNFT = ({ modelData, id }) => {
   const SubmitToServer = async () => {
     try {
       setShowPendingModal(true);
-      // const createNFTResult = await onAddCreatorNFTs();
+      const createNFTResult = await onAddCreatorNFTs();
 
-      // if (!createNFTResult) return setShowPendingModal(false);
+      if (!createNFTResult) return setShowPendingModal(false);
 
       // const submitValues = formik.values.nfts.map((nftData, i) => ({
       //   ...nftData,

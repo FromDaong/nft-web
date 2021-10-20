@@ -38,6 +38,7 @@ export default withSession(async (req, res) => {
 
         const nft = await NFT.findOne({ id: req.body.id });
         nft.name = req.body.name;
+        nft.list_price = req.body.list_price;
         nft.description = req.body.description;
         nft.tags = req.body.tags;
         nft.blurhash = req.body.blurhash;

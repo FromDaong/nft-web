@@ -4,14 +4,7 @@ import CreatingNFTItemPreview from "../CreatingNFTItemPreview";
 import { encode } from "blurhash";
 import TagsSelector from "../TagsSelector";
 
-const EditingNFTItem = ({
-  imageUrl,
-  formik,
-  nftData,
-  index,
-  modelData,
-  blurRequired,
-}) => {
+const EditingNFTItem = ({ imageUrl, formik, modelData, blurRequired }) => {
   const [blurhash, setBlurHash] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
 
@@ -93,11 +86,12 @@ const EditingNFTItem = ({
               }}
             />
           </div>
-          {/* <div className="pb-4 col-md-6">
+          <div className="pb-4 col-md-12">
             <label>NFT List Price (in BNB)</label>
             <FormControl
               type="number"
-              max={nftData.list_price}
+              max={formik.values.list_price}
+              min={0}
               step="any"
               placeholder="E.g. 120"
               name={`list_price`}
@@ -109,7 +103,7 @@ const EditingNFTItem = ({
                 )
               }
             />
-          </div> */}
+          </div>
         </div>
         <div className="pb-4">
           <label>NFT Description</label>
