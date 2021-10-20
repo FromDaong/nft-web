@@ -110,7 +110,7 @@ const Marketplace = ({ search }) => {
   const fuse = new Fuse(populatedArray, {
     keys: ["name", "description", "model_handle", "tags"],
     shouldSort: false,
-    useExtendedMatch: true,
+    useExtendedSearch: true,
     includeScore: true,
   });
 
