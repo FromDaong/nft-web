@@ -79,7 +79,7 @@ const EditProfile = ({}) => {
         console.log("=> IPFS Dropzone added: ", results);
         formik.setFieldValue(
           field,
-          `https://ipfs.infura.io/ipfs/${results.path}`
+          `https://treatdao.mypinata.cloud/ipfs/${results.path}`
         );
         setDisabled(false);
       });

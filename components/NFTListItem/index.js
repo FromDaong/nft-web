@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { generateFromString } from "generate-avatar";
 import { Blurhash } from "react-blurhash";
+import { isBlurhashValid } from "blurhash";
 import { EyeSlash } from "react-bootstrap-icons";
 import { motion } from "framer-motion";
 import Spinner from "react-bootstrap/Spinner";
@@ -107,23 +108,31 @@ const NFTListItem = ({
               />
             ) : (
               <>
-                <div className="info-overlay" style={{ zIndex: 100 }}>
-                  <EyeSlash size={32} />
-                  <div>Purchase to View</div>
-                </div>
-                <Blurhash
-                  style={{
-                    borderRadius: 8,
-                    overflow: "hidden",
-                    zIndex: 95,
-                  }}
-                  hash={data.blurhash}
-                  width={"100%"}
-                  height={375}
-                  resolutionX={32}
-                  resolutionY={32}
-                  punch={1}
-                />
+                {isBlurhashValid(data.blurhash).result ? (
+                  <>
+                    <div className="info-overlay" style={{ zIndex: 100 }}>
+                      <EyeSlash size={32} />
+                      <div>Purchase to View</div>
+                    </div>
+                    <Blurhash
+                      style={{
+                        borderRadius: 8,
+                        overflow: "hidden",
+                        zIndex: 95,
+                      }}
+                      hash={data.blurhash}
+                      width={"100%"}
+                      height={375}
+                      resolutionX={32}
+                      resolutionY={32}
+                      punch={1}
+                    />
+                  </>
+                ) : (
+                  <h3 className="text-center p4">
+                    Please contaact admin. Invalid Blurhash.
+                  </h3>
+                )}
               </>
             )}
           </div>
