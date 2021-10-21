@@ -9,6 +9,7 @@ import { isBlurhashValid } from "blurhash";
 import { motion } from "framer-motion";
 import { EyeSlash } from "react-bootstrap-icons";
 import Link from "next/link";
+import LazyLoad from "react-lazyload";
 
 let easing = [0.175, 0.85, 0.42, 0.96];
 
@@ -45,28 +46,29 @@ const NFTListItem = ({
   price,
   hasOpenOrder,
 }) => {
-  // const [image, setBase64Image] = useState();
+  const [image, setBase64Image] = useState();
   const [modalData, setModalData] = useState();
+  var base64regex =
+    /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
 
-  // useEffect(() => {
-  //   (async () => {
-  //     if (data.image) {
-  //       fetch(data.image)
-  //         .then((r) => r.text())
-  //         .then((blob) => {
-  //           // if (data.old_totw)
-  //           // setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
-  //           setBase64Image(data.image);
-  //         });
-  //     }
-  //   })();
-  // }, [data]);
+  useEffect(() => {
+    (async () => {
+      if (data.image && data.old_totw) {
+        fetch(data.image)
+          .then((r) => r.text())
+          .then((blob) => {
+            const replacedText = blob.replace(`"`, "").replace(/["']/g, "");
+            console.log(base64regex.test(replacedText));
+            setBase64Image(replacedText);
+          });
+      }
+    })();
+  }, [data]);
 
-  const image = data.image;
   console.log({ image, data });
 
   return (
-    <>
+    <LazyLoad height={400} offset={400} once>
       <Modal
         size="lg"
         show={modalData ? true : false}
@@ -121,7 +123,7 @@ const NFTListItem = ({
             {data.image ? (
               <div
                 style={{
-                  background: `url(${data.image})`,
+                  background: `url(${image || data.image})`,
                   minHeight: 375,
                 }}
                 className="dynamic-image"
@@ -229,7 +231,7 @@ const NFTListItem = ({
           )}
         </div>
       </motion.div>
-    </>
+    </LazyLoad>
   );
 };
 

@@ -97,69 +97,73 @@ const OwnedNfts = ({
   isLoading,
 }) => {
   return (
-    <div className="white-tp-bg" style={{ minHeight: 400 }}>
+    <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
       <div
-        className="px-4 py-2 w-100 d-flex"
+        className="px-4 py-2 w-100"
         style={{
           background: "#FFFDF2",
-          justifyContent: "space-between",
-          alignItems: "center",
-          borderRadius: 8,
         }}
       >
-        <div>
-          <h2
-            className="heading-text-primary pt-1"
-            style={{
-              fontSize: 24,
-            }}
-          >
-            My NFTs
-          </h2>
-        </div>
-        {nftBalances.length > 0 && (
-          <div className="button-container">
-            {serverNftBalances ? (
-              <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
-                <b>{"Hide Contents 🙈"}</b>
-              </Button>
-            ) : (
-              <Button variant="primary  w-sm-100" onClick={revealNFTs}>
-                <b>{"Reveal Contents 👀"}</b>
-              </Button>
-            )}
+        <div
+          className="container d-flex"
+          style={{
+            justifyContent: "space-between",
+            alignItems: "center",
+            borderRadius: 8,
+          }}
+        >
+          <div>
+            <h2
+              className="heading-text-primary pt-1"
+              style={{
+                fontSize: 24,
+              }}
+            >
+              My NFTs
+            </h2>
           </div>
-        )}
+          {nftBalances.length > 0 && (
+            <div className="button-container">
+              {serverNftBalances ? (
+                <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
+                  <b>{"Hide Contents 🙈"}</b>
+                </Button>
+              ) : (
+                <Button variant="primary  w-sm-100" onClick={revealNFTs}>
+                  <b>{"Reveal Contents 👀"}</b>
+                </Button>
+              )}
+            </div>
+          )}
+        </div>
       </div>
       {nftBalances.length > 0 ? (
-        <div className="container px-4">
-          <div className="d-flex text-left justify-content-center mt-5">
-            <motion.div
-              className="card-columns w-100 w-100"
-              animate="show"
-              exit="hidden"
-              initial="hidden"
-              variants={variants}
-            >
-              {nftBalances.map((nft) => {
-                return (
-                  nft.balance > 0 && (
-                    <div className="card bg-transparent border-0">
-                      <MyNFTItem
-                        balance={nft.balance}
-                        isLoading={isLoading}
-                        data={nft}
-                        revealNFTs={revealNFTs}
-                        transferNFTClick={transferNFTClick}
-                        listOrderClick={listOrderClick}
-                        hasOpenOrder={nft.hasOpenOrder}
-                      />
-                    </div>
-                  )
-                );
-              })}
-            </motion.div>
-          </div>
+        <div className="">
+          <motion.div
+            className="d-flex text-left justify-content-center mt-5 w-100 flex-wrap"
+            animate="show"
+            exit="hidden"
+            initial="hidden"
+            variants={variants}
+          >
+            {nftBalances.map((nft) => {
+              return (
+                nft.balance > 0 && (
+                  <div className="order-container">
+                    <MyNFTItem
+                      balance={nft.balance}
+                      isLoading={isLoading}
+                      data={nft}
+                      revealNFTs={revealNFTs}
+                      transferNFTClick={transferNFTClick}
+                      listOrderClick={listOrderClick}
+                      hasOpenOrder={nft.hasOpenOrder}
+                    />
+                  </div>
+                )
+              );
+            })}
+          </motion.div>
         </div>
       ) : (
         <div
@@ -190,39 +194,40 @@ const OpenOrders = ({
   const openOrders = useGetOpenOrdersForSeller();
 
   return (
-    <div className="white-tp-bg" style={{ minHeight: 400 }}>
-      <div
-        className="px-4 py-2 w-100 d-flex"
-        style={{
-          background: "#FFFDF2",
-          justifyContent: "space-between",
-          alignItems: "center",
-          borderRadius: 8,
-        }}
-      >
-        <div>
-          <h2
-            className="heading-text-primary pt-1"
-            style={{
-              fontSize: 24,
-            }}
-          >
-            Listed on Re-Sale Marketplace
-          </h2>
-        </div>
-        {nftBalances.length > 0 && (
-          <div className="button-container">
-            {serverNftBalances ? (
-              <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
-                <b>{"Hide Contents 🙈"}</b>
-              </Button>
-            ) : (
-              <Button variant="primary  w-sm-100" onClick={revealNFTs}>
-                <b>{"Reveal Contents 👀"}</b>
-              </Button>
-            )}
+    <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
+      <div style={{ background: "#FFFDF2" }}>
+        <div
+          className="px-4 py-2 w-100 container d-flex"
+          style={{
+            justifyContent: "space-between",
+            alignItems: "center",
+            borderRadius: 8,
+          }}
+        >
+          <div>
+            <h2
+              className="heading-text-primary pt-1"
+              style={{
+                fontSize: 24,
+              }}
+            >
+              Listed on Re-Sale Marketplace
+            </h2>
           </div>
-        )}
+          {nftBalances.length > 0 && (
+            <div className="button-container">
+              {serverNftBalances ? (
+                <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
+                  <b>{"Hide Contents 🙈"}</b>
+                </Button>
+              ) : (
+                <Button variant="primary  w-sm-100" onClick={revealNFTs}>
+                  <b>{"Reveal Contents 👀"}</b>
+                </Button>
+              )}
+            </div>
+          )}
+        </div>
       </div>
       {nftBalances.length > 0 ? (
         <div className="container px-4 ">
