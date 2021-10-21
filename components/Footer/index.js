@@ -37,7 +37,16 @@ const Footer = () => {
               <li>
                 <a
                   class=""
-                  href="https://pancakeswap.finance/info/token/0x01bd7acb6fF3B6Dd5aefA05CF085F2104f3fC53F"
+                  href="https://docs.google.com/gview?url=https://github.com/TreatDAO/litepaper/raw/main/TreatPaperFinal.pdf&embedded=true"
+                  target="_blank"
+                >
+                  Litepaper
+                </a>
+              </li>
+              <li>
+                <a
+                  class=""
+                  href="https://pancakeswap.finance/swap?inputCurrency=0x01bd7acb6ff3b6dd5aefa05cf085f2104f3fc53f"
                   target="_blank"
                 >
                   Swap Tokens
@@ -58,7 +67,7 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="https://coinmarketcap.com/currencies/treat-dao/"
+                  href="https://coinmarketcap.com/en/currencies/treat-dao-new/"
                   target="_blank"
                 >
                   CoinMarketCap
@@ -99,6 +108,19 @@ const Footer = () => {
           <div class="col-md-3 mt-3 mt-md-0">
             <h5>Resources</h5>
             <ul class="list-unstyled text-small">
+              <li>
+                <a href="https://help.treatdao.com/" target="_blank">
+                  Help Center
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.bonfire.com/store/treatdao-merch/"
+                  target="_blank"
+                >
+                  Merch Store
+                </a>
+              </li>
               <li>
                 <a href="/about">About</a>
               </li>
