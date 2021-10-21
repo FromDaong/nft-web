@@ -1,9 +1,13 @@
 import dbConnect from "../../../utils/dbConnect";
-import Model from "../../../models/Model";
+import NFT from "../../../models/NFT";
 // import User from "../../../../models/User";
 import withSession from "../../../lib/session";
 
 dbConnect();
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 export default async (req, res) => {
   const { method } = req;
@@ -11,26 +15,33 @@ export default async (req, res) => {
   switch (method) {
     case "GET":
       try {
-        const Models = await Model.find();
+        const NFTs = await NFT.find();
 
         const returnNFTs = await Promise.all(
-          Models.map(async (n) => {
-            // if (isNaN(n.id)) return;
-            const newnft = await Model.updateOne(
-              { _id: n._id },
+          NFTs.map(async (n, i) => {
+            await sleep(i * 1000);
+            const result = await fetch(
+              `https://api.pinata.cloud/pinning/pinByHash`,
               {
-                profile_pic: n.profile_pic.replace(
-                  "https://ipfs.infura.io/ipfs/",
-                  "https://treatdao.mypinata.cloud/ipfs/"
-                ),
-                banner_pic: n.banner_pic.replace(
-                  "https://ipfs.infura.io/ipfs/",
-                  "https://treatdao.mypinata.cloud/ipfs/"
-                ),
+                method: "POST",
+                headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json",
+                  pinata_api_key: "b949556813c4f284c550",
+                  pinata_secret_api_key:
+                    "7a7b755c9c067dedb142c2cb9e9c077aebf561b552c440bf67b87331bac32939",
+                },
+                body: JSON.stringify({
+                  hashToPin: n.image.replace(
+                    "https://treatdao.mypinata.cloud/ipfs/",
+                    ""
+                  ),
+                }),
               }
             );
-
-            return newnft;
+            console.log({ result });
+            const resJSON = await result.json();
+            return resJSON;
           })
         );
 

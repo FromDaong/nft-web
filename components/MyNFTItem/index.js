@@ -45,22 +45,25 @@ const NFTListItem = ({
   price,
   hasOpenOrder,
 }) => {
-  const [image, setBase64Image] = useState();
+  // const [image, setBase64Image] = useState();
   const [modalData, setModalData] = useState();
 
-  useEffect(() => {
-    (async () => {
-      if (data.image) {
-        fetch(data.image)
-          .then((r) => r.text())
-          .then((blob) => {
-            if (data.old_totw)
-              setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
-            else setBase64Image(data.image);
-          });
-      }
-    })();
-  }, [data]);
+  // useEffect(() => {
+  //   (async () => {
+  //     if (data.image) {
+  //       fetch(data.image)
+  //         .then((r) => r.text())
+  //         .then((blob) => {
+  //           // if (data.old_totw)
+  //           // setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
+  //           setBase64Image(data.image);
+  //         });
+  //     }
+  //   })();
+  // }, [data]);
+
+  const image = data.image;
+  console.log({ image, data });
 
   return (
     <>
@@ -116,24 +119,13 @@ const NFTListItem = ({
             }}
           >
             {data.image ? (
-              image ? (
-                <div
-                  style={{
-                    background: `url(${image || data.image})`,
-                    minHeight: 375,
-                  }}
-                  className="dynamic-image"
-                />
-              ) : (
-                <Spinner
-                  animation="border"
-                  role="status"
-                  className="mt-5 mb-5"
-                  variant="light"
-                >
-                  <span className="sr-only">Loading...</span>
-                </Spinner>
-              )
+              <div
+                style={{
+                  background: `url(${data.image})`,
+                  minHeight: 375,
+                }}
+                className="dynamic-image"
+              />
             ) : isLoading ? (
               <Spinner
                 animation="border"
