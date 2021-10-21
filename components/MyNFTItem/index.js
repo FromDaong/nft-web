@@ -9,7 +9,6 @@ import { isBlurhashValid } from "blurhash";
 import { motion } from "framer-motion";
 import { EyeSlash } from "react-bootstrap-icons";
 import Link from "next/link";
-import LazyLoad from "react-lazyload";
 
 let easing = [0.175, 0.85, 0.42, 0.96];
 
@@ -68,7 +67,7 @@ const NFTListItem = ({
   console.log({ image, data });
 
   return (
-    <LazyLoad height={400} offset={400} once>
+    <>
       <Modal
         size="lg"
         show={modalData ? true : false}
@@ -231,7 +230,7 @@ const NFTListItem = ({
           )}
         </div>
       </motion.div>
-    </LazyLoad>
+    </>
   );
 };
 

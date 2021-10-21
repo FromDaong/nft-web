@@ -16,6 +16,7 @@ import useGetOpenOrdersForSeller from "../hooks/useGetOpenOrdersForSeller";
 import { useWallet } from "use-wallet";
 import useSWR from "swr";
 import BigNumber from "bignumber.js";
+import LazyLoad from "react-lazyload";
 import Layout from "../components/Layout";
 
 const variants = {
@@ -149,17 +150,19 @@ const OwnedNfts = ({
             {nftBalances.map((nft) => {
               return (
                 nft.balance > 0 && (
-                  <div className="order-container">
-                    <MyNFTItem
-                      balance={nft.balance}
-                      isLoading={isLoading}
-                      data={nft}
-                      revealNFTs={revealNFTs}
-                      transferNFTClick={transferNFTClick}
-                      listOrderClick={listOrderClick}
-                      hasOpenOrder={nft.hasOpenOrder}
-                    />
-                  </div>
+                  <LazyLoad height={400} offset={400}>
+                    <div className="order-container">
+                      <MyNFTItem
+                        balance={nft.balance}
+                        isLoading={isLoading}
+                        data={nft}
+                        revealNFTs={revealNFTs}
+                        transferNFTClick={transferNFTClick}
+                        listOrderClick={listOrderClick}
+                        hasOpenOrder={nft.hasOpenOrder}
+                      />
+                    </div>
+                  </LazyLoad>
                 )
               );
             })}
@@ -246,20 +249,22 @@ const OpenOrders = ({
                   );
 
                   return (
-                    <div className="card bg-transparent border-0">
-                      <MyNFTItem
-                        price={
-                          order &&
-                          order.price &&
-                          getDisplayBalance(new BigNumber(order.price))
-                        }
-                        balance={order?.quantity}
-                        data={nft}
-                        isLoading={isLoading}
-                        revealNFTs={revealNFTs}
-                        cancelOrderClick={cancelOrderClick}
-                      />
-                    </div>
+                    <LazyLoad height={400} offset={400}>
+                      <div className="card bg-transparent border-0">
+                        <MyNFTItem
+                          price={
+                            order &&
+                            order.price &&
+                            getDisplayBalance(new BigNumber(order.price))
+                          }
+                          balance={order?.quantity}
+                          data={nft}
+                          isLoading={isLoading}
+                          revealNFTs={revealNFTs}
+                          cancelOrderClick={cancelOrderClick}
+                        />
+                      </div>
+                    </LazyLoad>
                   );
                 }
               })}
