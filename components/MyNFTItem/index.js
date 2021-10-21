@@ -77,7 +77,7 @@ const NFTListItem = ({
         <Modal.Body>
           <div
             className="modal-image"
-            style={{ background: `url(${image})` }}
+            style={{ background: `url(${image || data.image})` }}
           ></div>
           <h4 className="text-center pt-3">{data.description}</h4>
         </Modal.Body>
