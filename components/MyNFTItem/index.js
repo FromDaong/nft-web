@@ -119,23 +119,35 @@ const NFTListItem = ({
               }
             }}
           >
-            {data.image ? (
-              <div
-                style={{
-                  background: `url(${image || data.image})`,
-                  minHeight: 375,
-                }}
-                className="dynamic-image"
-              />
-            ) : isLoading ? (
-              <Spinner
-                animation="border"
-                role="status"
-                className="mt-5 mb-5"
-                variant="light"
-              >
-                <span className="sr-only">Loading...</span>
-              </Spinner>
+            {data.image || isLoading ? (
+              <>
+                <div
+                  style={{
+                    position: "absolute",
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Spinner
+                    animation="border"
+                    role="status"
+                    className="mt-5 mb-5"
+                    variant="light"
+                  >
+                    <span className="sr-only">Loading...</span>
+                  </Spinner>
+                </div>
+                <div
+                  style={{
+                    background: `url(${image || data.image})`,
+                    minHeight: 375,
+                    zIndex: 100,
+                  }}
+                  className="dynamic-image"
+                />
+              </>
             ) : (
               <>
                 <div className="info-overlay">
