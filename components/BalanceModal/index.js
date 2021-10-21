@@ -36,7 +36,7 @@ const BalanceModal = ({ show, handleClose, account }) => {
           <div className="row">
             <div className="col-md-6">
               <a
-                href="https://pancakeswap.finance/info/token/0x01bd7acb6fF3B6Dd5aefA05CF085F2104f3fC53F"
+                href="https://pancakeswap.finance/swap?inputCurrency=0x01bd7acb6ff3b6dd5aefa05cf085f2104f3fc53f"
                 target="_blank"
               >
                 <Button className="mb-2 w-100">Exchange $TREAT</Button>
