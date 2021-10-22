@@ -9,6 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@apollo/client": "^3.4.16",
     "@binance-chain/bsc-connector": "^1.0.0",
     "@binance-chain/bsc-use-wallet": "^0.8.1",
     "@passbase/button": "^4.0.1",
@@ -27,6 +28,7 @@
     "framer-motion": "^4.1.17",
     "fuse.js": "^6.4.6",
     "generate-avatar": "^1.4.6",
+    "graphql": "^15.6.1",
     "ipfs": "^0.57.0",
     "ipfs-http-client": "^52.0.0",
     "isomorphic-unfetch": "^3.1.0",
