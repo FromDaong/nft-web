@@ -23,7 +23,12 @@ import { generateFromString } from "generate-avatar";
 import { Blurhash } from "react-blurhash";
 import NFTPurchaseModal from "../../components/NFTPurchaseModal";
 import Layout from "../../components/Layout";
-import { EyeSlash, Bag, ShopWindow } from "react-bootstrap-icons";
+import {
+  EyeSlash,
+  Bag,
+  ShopWindow,
+  ArrowUpRightSquare,
+} from "react-bootstrap-icons";
 import BigNumber from "bignumber.js";
 import Link from "next/link";
 import useGetIsSubscribed from "../../hooks/useGetIsSubscribed";
@@ -286,22 +291,29 @@ const ViewNFT = ({ nftData, image, account }) => {
   const purchaseHistoryRender =
     mintHistoryData &&
     mintHistoryData.sales.map((e) => (
-      <div className="history-event">
-        <div className="pic">
-          <Bag size={32} style={{ color: "DA5184" }} />
+      <div className="history-event d-flex justify-content-between">
+        <div className="d-flex align-items-center">
+          <div className="pic">
+            <Bag size={32} style={{ color: "DA5184" }} />
+          </div>
+          <div className="details">
+            <div className="label">
+              {`${new Date(
+                e.purchaseDate * 1000
+              ).toLocaleDateString()} at ${new Date(
+                e.purchaseDate * 1000
+              ).toLocaleTimeString()}`}
+            </div>
+            <div className="event">
+              {e.buyer.substring(0, 6)}...{e.buyer.substr(-5)} purchased for{" "}
+              <b>{Web3.utils.fromWei(e.cost)}</b>
+            </div>
+          </div>
         </div>
-        <div className="details">
-          <div className="label">
-            {`${new Date(
-              e.purchaseDate * 1000
-            ).toLocaleDateString()} at ${new Date(
-              e.purchaseDate * 1000
-            ).toLocaleTimeString()}`}
-          </div>
-          <div className="event">
-            {e.buyer.substring(0, 6)}...{e.buyer.substr(-5)} purchased for{" "}
-            <b>{Web3.utils.fromWei(e.cost)}</b>
-          </div>
+        <div>
+          <a href={"https://bscscan.com/tx/" + e.id} target="_blank">
+            <ArrowUpRightSquare size={24} />
+          </a>
         </div>
       </div>
     ));
@@ -310,22 +322,29 @@ const ViewNFT = ({ nftData, image, account }) => {
     resaleHistoryData &&
     resaleHistoryData.sales &&
     resaleHistoryData.sales.map((e) => (
-      <div className="history-event">
-        <div className="pic">
-          <Bag size={32} style={{ color: "DA5184" }} />
+      <div className="history-event d-flex justify-content-between">
+        <div className="d-flex align-items-center">
+          <div className="pic">
+            <Bag size={32} style={{ color: "DA5184" }} />
+          </div>
+          <div className="details">
+            <div className="label">
+              {`${new Date(
+                e.purchaseDate * 1000
+              ).toLocaleDateString()} at ${new Date(
+                e.purchaseDate * 1000
+              ).toLocaleTimeString()}`}
+            </div>
+            <div className="event">
+              {e.buyer.substring(0, 6)}...{e.buyer.substr(-5)} purchased for{" "}
+              <b>{Web3.utils.fromWei(e.cost)}</b>
+            </div>
+          </div>
         </div>
-        <div className="details">
-          <div className="label">
-            {`${new Date(
-              e.purchaseDate * 1000
-            ).toLocaleDateString()} at ${new Date(
-              e.purchaseDate * 1000
-            ).toLocaleTimeString()}`}
-          </div>
-          <div className="event">
-            {e.buyer.substring(0, 6)}...{e.buyer.substr(-5)} purchased for{" "}
-            <b>{Web3.utils.fromWei(e.cost)}</b>
-          </div>
+        <div>
+          <a href={"https://bscscan.com/tx/" + e.id} target="_blank">
+            <ArrowUpRightSquare size={24} />
+          </a>
         </div>
       </div>
     ));
@@ -451,15 +470,15 @@ const ViewNFT = ({ nftData, image, account }) => {
             <Tab.Container defaultActiveKey="resale" id="id">
               <Nav variant="pills" fill className="mb-4">
                 <Nav.Item>
-                  <Nav.Link eventKey="resale">
-                    Resale Marketplace Listings
-                  </Nav.Link>
+                  <Nav.Link eventKey="resale">Resale Listings</Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="purchase_history">
-                    Purchase History
-                  </Nav.Link>
-                </Nav.Item>
+                {+nftData.id > 92 && (
+                  <Nav.Item>
+                    <Nav.Link eventKey="purchase_history">
+                      Purchase History
+                    </Nav.Link>
+                  </Nav.Item>
+                )}
                 <Nav.Item>
                   <Nav.Link eventKey="resale_history">Resale History</Nav.Link>
                 </Nav.Item>
@@ -483,10 +502,14 @@ const ViewNFT = ({ nftData, image, account }) => {
                     <div className="history-title text-center mt-2">
                       Purchase History
                     </div>
-                    <div className="bio text-center">
-                      Total sold:{" "}
-                      {mintHistoryData && mintHistoryData.sales.length}
-                    </div>
+                    {loadingResaleHistory ? (
+                      <div className="bio text-center">Loading...</div>
+                    ) : (
+                      <div className="bio text-center">
+                        Total minted:{" "}
+                        {mintHistoryData && mintHistoryData.sales.length}
+                      </div>
+                    )}
                     <div className="history-events">
                       {purchaseHistoryRender}
                     </div>
@@ -497,10 +520,14 @@ const ViewNFT = ({ nftData, image, account }) => {
                     <div className="history-title text-center">
                       Resale History
                     </div>
-                    <div className="bio text-center">
-                      Total resold:{" "}
-                      {resaleHistoryData && resaleHistoryData.sales.length}
-                    </div>
+                    {loadingResaleHistory ? (
+                      <div className="bio text-center">Loading...</div>
+                    ) : (
+                      <div className="bio text-center">
+                        Total resold:{" "}
+                        {resaleHistoryData && resaleHistoryData.sales.length}
+                      </div>
+                    )}
                     <div className="history-events">{resaleHistoryRender}</div>
                   </div>
                 </Tab.Pane>
