@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
+import { Nav, Tab } from "react-bootstrap";
+import Web3 from "web3";
 import useSWR from "swr";
 import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
 import useGetFreeTreat from "../../hooks/useGetFreeTreat";
@@ -21,10 +23,11 @@ import { generateFromString } from "generate-avatar";
 import { Blurhash } from "react-blurhash";
 import NFTPurchaseModal from "../../components/NFTPurchaseModal";
 import Layout from "../../components/Layout";
-import { EyeSlash } from "react-bootstrap-icons";
+import { EyeSlash, Bag, ShopWindow } from "react-bootstrap-icons";
 import BigNumber from "bignumber.js";
 import Link from "next/link";
 import useGetIsSubscribed from "../../hooks/useGetIsSubscribed";
+import { gql, useQuery, ApolloConsumer } from "@apollo/client";
 
 const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   const { account } = useWallet();
@@ -193,6 +196,68 @@ const ViewNFT = ({ nftData, image, account }) => {
   );
   const openOrders = useGetOpenOrdersForNft(nftData.id);
 
+  const {
+    loading: loadingResaleHistory,
+    error: errorResaleHistory,
+    data: resaleHistoryData,
+  } = useQuery(
+    gql`
+      query getSales($first: Int, $orderBy: String, $orderDirection: String) {
+        sales(
+          first: 200,
+          orderBy: "cost",
+          orderDirection: "asc",
+          where: {
+            treatsPurchased_contains: [${nftData.id}],
+            sourceContract: "0xA38978E839c08046FA80B0fee55736253Ab3B8a3"
+          }
+        ) {
+          id
+          cost
+          sourceContract
+          treatsPurchased
+          seller
+          buyer
+          purchaseDate
+        }
+      }
+    `,
+    {
+      variables: { language: "english" },
+    }
+  );
+
+  console.log({ resaleHistoryData });
+
+  const {
+    loading: loadingMintHistory,
+    error: errorMintHistory,
+    data: mintHistoryData,
+  } = useQuery(
+    gql`
+      query getSales($first: Int) {
+        sales(
+          first: 200
+          where: {
+            treatsPurchased_contains: [${nftData.id}],
+            sourceContract_not_in: ["0xA38978E839c08046FA80B0fee55736253Ab3B8a3","0xe0f5df4915242e4c4c06d2964eda53c448fec442"]
+          }
+        ) {
+          id
+          cost
+          sourceContract
+          treatsPurchased
+          seller
+          buyer
+          purchaseDate
+        }
+      }
+    `,
+    {
+      variables: { language: "english" },
+    }
+  );
+
   const onMintNft = async () => {
     if (nftData.subscription_nft) return onMintSubscriberNft();
     if (nftData.old_totw) {
@@ -218,24 +283,59 @@ const ViewNFT = ({ nftData, image, account }) => {
     };
   });
 
-  const historyEventsRender = historyEvents.map((e) => (
-    <div className="history-event">
-      <div className="pic">
-        <img src={nftData.model_profile_pic} />
+  const purchaseHistoryRender =
+    mintHistoryData &&
+    mintHistoryData.sales.map((e) => (
+      <div className="history-event">
+        <div className="pic">
+          <Bag size={32} style={{ color: "DA5184" }} />
+        </div>
+        <div className="details">
+          <div className="label">
+            {`${new Date(
+              e.purchaseDate * 1000
+            ).toLocaleDateString()} at ${new Date(
+              e.purchaseDate * 1000
+            ).toLocaleTimeString()}`}
+          </div>
+          <div className="event">
+            {e.buyer.substring(0, 6)}...{e.buyer.substr(-5)} purchased for{" "}
+            <b>{Web3.utils.fromWei(e.cost)}</b>
+          </div>
+        </div>
       </div>
-      <div className="details">
-        <div className="label">{e.when}</div>
-        <div className="event">{e.event}</div>
+    ));
+
+  const resaleHistoryRender =
+    resaleHistoryData &&
+    resaleHistoryData.sales &&
+    resaleHistoryData.sales.map((e) => (
+      <div className="history-event">
+        <div className="pic">
+          <Bag size={32} style={{ color: "DA5184" }} />
+        </div>
+        <div className="details">
+          <div className="label">
+            {`${new Date(
+              e.purchaseDate * 1000
+            ).toLocaleDateString()} at ${new Date(
+              e.purchaseDate * 1000
+            ).toLocaleTimeString()}`}
+          </div>
+          <div className="event">
+            {e.buyer.substring(0, 6)}...{e.buyer.substr(-5)} purchased for{" "}
+            <b>{Web3.utils.fromWei(e.cost)}</b>
+          </div>
+        </div>
       </div>
-    </div>
-  ));
+    ));
 
   const openOrdersRender = openOrders.map((e) => (
     <Link href={`/marketplace/resale?search=${nftData.name}`} passHref={true}>
       <a>
         <div className="history-event">
           <div className="pic">
-            <img src={nftData.model_profile_pic} />
+            <ShopWindow size={35} style={{ color: "DA5184" }} />
           </div>
           <div className="details">
             <div className="label">{e.seller}</div>
@@ -348,17 +448,64 @@ const ViewNFT = ({ nftData, image, account }) => {
               </div>
             </div>
             <hr style={{ marginTop: 25, marginBottom: 25 }} />
-            <div className="history-container">
-              <div className="history-title">Marketplace Listings</div>
-              {/* <div className="bio">Coming soon...</div> */}
-              <div className="history-events">{openOrdersRender}</div>
-            </div>
-            <hr style={{ marginTop: 25, marginBottom: 25 }} />
-            <div className="history-container">
-              <div className="history-title">Purchase History</div>
-              <div className="bio">Coming soon...</div>
-              {/* <div className="history-events">{historyEventsRender}</div> */}
-            </div>
+            <Tab.Container defaultActiveKey="resale" id="id">
+              <Nav variant="pills" fill className="mb-4">
+                <Nav.Item>
+                  <Nav.Link eventKey="resale">
+                    Resale Marketplace Listings
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="purchase_history">
+                    Purchase History
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="resale_history">Resale History</Nav.Link>
+                </Nav.Item>
+              </Nav>
+              <Tab.Content>
+                <Tab.Pane eventKey="resale" title="Resale Listings">
+                  <div className="history-container">
+                    <div className="history-title text-center mt-2">
+                      Resale Marketplace Listings
+                    </div>
+                    <div className="bio text-center">
+                      Total currently listed:{" "}
+                      {openOrdersRender && openOrdersRender.length}
+                    </div>
+                    {/* <div className="bio">Coming soon...</div> */}
+                    <div className="history-events">{openOrdersRender}</div>
+                  </div>
+                </Tab.Pane>
+                <Tab.Pane eventKey="purchase_history" title="Purchase History">
+                  <div className="history-container">
+                    <div className="history-title text-center mt-2">
+                      Purchase History
+                    </div>
+                    <div className="bio text-center">
+                      Total sold:{" "}
+                      {mintHistoryData && mintHistoryData.sales.length}
+                    </div>
+                    <div className="history-events">
+                      {purchaseHistoryRender}
+                    </div>
+                  </div>
+                </Tab.Pane>
+                <Tab.Pane eventKey="resale_history" title="Purchase History">
+                  <div className="history-container">
+                    <div className="history-title text-center">
+                      Resale History
+                    </div>
+                    <div className="bio text-center">
+                      Total resold:{" "}
+                      {resaleHistoryData && resaleHistoryData.sales.length}
+                    </div>
+                    <div className="history-events">{resaleHistoryRender}</div>
+                  </div>
+                </Tab.Pane>
+              </Tab.Content>
+            </Tab.Container>
           </div>
         </div>
       </div>

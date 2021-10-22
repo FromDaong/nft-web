@@ -182,6 +182,7 @@
   .history-event {
     width: 100%;
     display: flex;
+    align-items: center;
     margin-top: 20px;
     .pic {
       img {
@@ -191,8 +192,8 @@
     }
     .details {
       font-weight: 600;
-      margin-left: 15px;
       margin-right: 50px;
+      width: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;

@@ -21,6 +21,14 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import ReactGA from "react-ga";
 import { IntercomProvider, useIntercom } from "react-use-intercom";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  ApolloConsumer,
+  useQuery,
+  gql,
+} from "@apollo/client";
 
 function MyApp({ Component, pageProps }) {
   const oldTokenBalance = useTokenBalance(
@@ -44,6 +52,11 @@ function MyApp({ Component, pageProps }) {
   if (process.env.NEXT_PUBLIC_STOP) {
     return <PublicStop />;
   }
+
+  const client = new ApolloClient({
+    uri: "https://api.thegraph.com/subgraphs/name/0x6e6f6c61/treat",
+    cache: new InMemoryCache(),
+  });
 
   useEffect(() => {
     (async () => {
@@ -80,53 +93,55 @@ function MyApp({ Component, pageProps }) {
   }, [status]);
 
   return (
-    <IntercomProvider
-      appId={"a3jgejbc"}
-      autoBoot
-      autoBootProps={{ name: account }}
-    >
-      <Head>
-        <title>Treat DAO</title>
-        <meta name="title" content="Treat DAO" />
-        <meta name="image" content="https://i.imgur.com/OEiuwp4.jpg" />
-        <meta property="og:image" content="https://i.imgur.com/OEiuwp4.jpg" />
-
-        <meta
-          name="description"
-          content="Treat is an exclusive platform for creators to sell NFTs. Hold $TREAT to have a say on which creators are chosen & new platform features."
-        />
-      </Head>
-      <SWRConfig
-        value={{
-          fetcher: fetch,
-          onError: (err) => {
-            console.error(err);
-          },
-        }}
+    <ApolloProvider client={client}>
+      <IntercomProvider
+        appId={"a3jgejbc"}
+        autoBoot
+        autoBootProps={{ name: account }}
       >
-        <TreatProvider>
-          <div>
-            {oldTokenBalance > 0 && (
-              <V2Banner oldTokenBalance={oldTokenBalance} />
-            )}
-            <Navbar modelData={modelData} />
-            <Container style={{ minHeight: "75vh" }}>
-              <AnimatePresence
-                exitBeforeEnter
-                onExitComplete={() => window.scrollTo(0, 0)}
-              >
-                <Component
-                  {...pageProps}
-                  modelData={modelData}
-                  key={router.route}
-                />
-              </AnimatePresence>
-            </Container>
-            <Footer />
-          </div>
-        </TreatProvider>
-      </SWRConfig>
-    </IntercomProvider>
+        <Head>
+          <title>Treat DAO</title>
+          <meta name="title" content="Treat DAO" />
+          <meta name="image" content="https://i.imgur.com/OEiuwp4.jpg" />
+          <meta property="og:image" content="https://i.imgur.com/OEiuwp4.jpg" />
+
+          <meta
+            name="description"
+            content="Treat is an exclusive platform for creators to sell NFTs. Hold $TREAT to have a say on which creators are chosen & new platform features."
+          />
+        </Head>
+        <SWRConfig
+          value={{
+            fetcher: fetch,
+            onError: (err) => {
+              console.error(err);
+            },
+          }}
+        >
+          <TreatProvider>
+            <div>
+              {oldTokenBalance > 0 && (
+                <V2Banner oldTokenBalance={oldTokenBalance} />
+              )}
+              <Navbar modelData={modelData} />
+              <Container style={{ minHeight: "75vh" }}>
+                <AnimatePresence
+                  exitBeforeEnter
+                  onExitComplete={() => window.scrollTo(0, 0)}
+                >
+                  <Component
+                    {...pageProps}
+                    modelData={modelData}
+                    key={router.route}
+                  />
+                </AnimatePresence>
+              </Container>
+              <Footer />
+            </div>
+          </TreatProvider>
+        </SWRConfig>
+      </IntercomProvider>
+    </ApolloProvider>
   );
 }
 
