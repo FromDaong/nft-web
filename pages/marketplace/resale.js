@@ -272,8 +272,7 @@ const Marketplace = ({ search }) => {
                 className="totw-secondary-text"
                 style={{ maxWidth: "none", marginTop: -12, fontSize: "0.95em" }}
               >
-                Number of active resale listings:{" "}
-                {renderArray ? renderArray.length : "Loading..."}
+                Total: {renderArray ? renderArray.length : "Loading..."}
               </p>
               <Link href="/marketplace/creator">
                 <Button variant="primary w-sm-100">

@@ -206,7 +206,7 @@ const Home = () => {
             <div className="col-lg-4 stats-wrapper">
               <div
                 className="stats-container"
-                style={{ background: "##ff837f" }}
+                style={{ background: "#ff837f" }}
               >
                 <div className="big-text">
                   <CountUp delay={1} duration={3} end={250} />+ BNB
