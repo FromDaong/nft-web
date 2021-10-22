@@ -187,7 +187,7 @@ const Home = () => {
             <div className="col-lg-4 stats-wrapper">
               <div
                 className="stats-container"
-                style={{ background: "#D3678E" }}
+                style={{ background: "#DA5184" }}
               >
                 <div className="big-text">
                   <CountUp delay={1} duration={2} end={47} />+
@@ -206,7 +206,7 @@ const Home = () => {
             <div className="col-lg-4 stats-wrapper">
               <div
                 className="stats-container"
-                style={{ background: "#F19592" }}
+                style={{ background: "##ff837f" }}
               >
                 <div className="big-text">
                   <CountUp delay={1} duration={3} end={250} />+ BNB
