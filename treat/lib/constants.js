@@ -97,4 +97,5 @@ export const contractAddresses = {
 // Trigger deploy
 export const modelSetBundles = {
   davinaastewart: 5,
+  BaliGroupShoot: 6,
 };
