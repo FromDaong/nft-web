@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 import Link from "next/link";
 
 let easing = [0.175, 0.85, 0.42, 0.96];
@@ -79,7 +80,29 @@ const CreatingNFTItemPreview = ({
         </Link>
         <div className="img-container text-center text-lg-left d-flex justify-content-center align-items-center">
           <div
-            style={{ background: `url(${imageUrl})`, backgroundColor: "#333" }}
+            style={{
+              position: "absolute",
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Spinner
+              animation="border"
+              role="status"
+              className="mt-5 mb-5"
+              variant="light"
+            >
+              <span className="sr-only">Loading...</span>
+            </Spinner>
+          </div>
+          <div
+            style={{
+              background: `url(${imageUrl})`,
+              backgroundColor: "#333",
+              zIndex: 100,
+            }}
             className="dynamic-image"
           />
           {/* <div className="info-overlay">
