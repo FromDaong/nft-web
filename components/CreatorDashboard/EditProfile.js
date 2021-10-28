@@ -10,6 +10,7 @@ import Loading from "../../components/Loading";
 import { create } from "ipfs-http-client";
 import { useWallet } from "use-wallet";
 import { PencilFill } from "react-bootstrap-icons";
+import axios from "axios";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -72,21 +73,28 @@ const EditProfile = ({}) => {
 
   const ipfsUpload = (file, field) => {
     setDisabled(true);
-    toBuffer(file, (err, buff) => {
-      console.log({ err, file });
-      if (err || !file) return;
-      client.add(buff).then((results) => {
-        console.log("=> IPFS Dropzone added: ", results);
+
+    let data = new FormData();
+    data.append("file", file);
+
+    axios
+      .post("https://api.pinata.cloud/pinning/pinFileToIPFS", data, {
+        headers: {
+          "Content-Type": `multipart/form-data`,
+          pinata_api_key: "b949556813c4f284c550",
+          pinata_secret_api_key:
+            "7a7b755c9c067dedb142c2cb9e9c077aebf561b552c440bf67b87331bac32939",
+        },
+      })
+      .then(function (response) {
+        console.log({ response });
         formik.setFieldValue(
           field,
-          `https://treatdao.mypinata.cloud/ipfs/${results.path}`
+          `https://treatdao.mypinata.cloud/ipfs/${response.data.IpfsHash}`
         );
         setDisabled(false);
       });
-    });
   };
-
-  console.log({ res });
 
   if (success || (res && res.pending))
     return (
