@@ -32,30 +32,28 @@ const CreateNFT = ({ modelData }) => {
       async.map(
         files,
         (file, cb) => {
-          toBuffer(file, (err, buff) => {
-            console.log({ err, file });
-            if (err) return cb(err);
+          console.log({ err, file });
+          if (err) return cb(err);
 
-            let data = new FormData();
-            data.append("file", file);
+          let data = new FormData();
+          data.append("file", file);
 
-            axios
-              .post("https://api.pinata.cloud/pinning/pinFileToIPFS", data, {
-                headers: {
-                  "Content-Type": `multipart/form-data`,
-                  pinata_api_key: "b949556813c4f284c550",
-                  pinata_secret_api_key:
-                    "7a7b755c9c067dedb142c2cb9e9c077aebf561b552c440bf67b87331bac32939",
-                },
-              })
-              .then(function (response) {
-                console.log({ response });
-                return cb(
-                  null,
-                  `https://treatdao.mypinata.cloud/ipfs/${response.data.IpfsHash}`
-                );
-              });
-          });
+          axios
+            .post("https://api.pinata.cloud/pinning/pinFileToIPFS", data, {
+              headers: {
+                "Content-Type": `multipart/form-data`,
+                pinata_api_key: "b949556813c4f284c550",
+                pinata_secret_api_key:
+                  "7a7b755c9c067dedb142c2cb9e9c077aebf561b552c440bf67b87331bac32939",
+              },
+            })
+            .then(function (response) {
+              console.log({ response });
+              return cb(
+                null,
+                `https://treatdao.mypinata.cloud/ipfs/${response.data.IpfsHash}`
+              );
+            });
         },
         (err, results) => {
           if (err)
