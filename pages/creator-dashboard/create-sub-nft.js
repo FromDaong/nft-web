@@ -32,9 +32,6 @@ const CreateNFT = ({ modelData }) => {
       async.map(
         files,
         (file, cb) => {
-          console.log({ err, file });
-          if (err) return cb(err);
-
           let data = new FormData();
           data.append("file", file);
 
