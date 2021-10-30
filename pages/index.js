@@ -93,11 +93,13 @@ const Home = () => {
       .map((model) => {
         if (model && model.totw)
           return (
-            <ModelListItem
-              key={model.username}
-              data={model}
-              disableAnim={true}
-            />
+            <div className="col-md-4">
+              <ModelListItem
+                key={model.username}
+                data={model}
+                disableAnim={true}
+              />
+            </div>
           );
         else return undefined;
       })
@@ -133,7 +135,7 @@ const Home = () => {
             <div className="row">
               <div className="col-lg-6 hero-text">
                 <div className="heading-text">
-                  It's time to treat yourself...
+                  It's time to trick or treat yourself...
                 </div>
                 <div className="secondary-text">
                   Treat is an open platform for creators to curate their adult
@@ -144,7 +146,7 @@ const Home = () => {
                   NSFW platform that focuses on decentralization first and
                   foremost
                 </div>
-                <div className="buttons row pt-4">
+                <div className="buttons row pt-4" style={{ maxWidth: 500 }}>
                   <div className="col-md-6  mt-2">
                     <Scroll.Link
                       to="nft-list"
@@ -174,7 +176,7 @@ const Home = () => {
               </div>
               <div className="col-lg-1"></div>
               <div className="col-lg-5 hero-logo-container mt-5 d-lg-flex d-none">
-                <img src={"/assets/hero-logo.png"} alt="" />
+                <img src={"/assets/logodark.png"} alt="" />
               </div>
             </div>
           </motion.div>
@@ -190,7 +192,7 @@ const Home = () => {
                 style={{ background: "#DA5184" }}
               >
                 <div className="big-text">
-                  <CountUp delay={1} duration={2} end={47} />+
+                  <CountUp delay={1} duration={2} end={75} />+
                 </div>
                 <div className="small-text">Creators on TreatDAO</div>
               </div>
@@ -198,7 +200,7 @@ const Home = () => {
             <div className="col-lg-4 stats-wrapper">
               <div className="stats-container">
                 <div className="big-text">
-                  <CountUp delay={1} duration={3} end={345} />+ NFTs
+                  <CountUp delay={1} duration={3} end={500} />+ NFTs
                 </div>
                 <div className="small-text">Released on TreatDAO</div>
               </div>
@@ -209,7 +211,7 @@ const Home = () => {
                 style={{ background: "#ff837f" }}
               >
                 <div className="big-text">
-                  <CountUp delay={1} duration={3} end={250} />+ BNB
+                  <CountUp delay={1} duration={3} end={300} />+ BNB
                 </div>
                 <div className="small-text">Earned by Creators</div>
               </div>
@@ -256,16 +258,14 @@ const Home = () => {
             className="hero"
             className="row totw-section my-4"
           >
-            <div className="col-lg-8 d-flex flex-column justify-content-center">
+            <div className="col-lg-12 d-flex flex-column justify-content-center align-content-center text-center mb-4">
               <div
-                className="heavy-shadow p-0 mb-4 center-mobile"
+                className="heavy-shadow p-0 mb-2 center-mobile"
                 style={{ fontSize: "5.5em", lineHeight: 1.15 }}
               >
-                Treat of
-                <br />
-                the Week
+                Trick or Treat of the Week
               </div>
-              <p className="totw-secondary-text">
+              <p className="totw-secondary-text" style={{ maxWidth: "none" }}>
                 Our Treat of the Week is a curated showcase of creators which
                 are chosen by either TreatDAO or the community.
                 <br />
@@ -279,7 +279,7 @@ const Home = () => {
                 To apply to become a creator or to be considered for Treat of
                 the Week, please use the button below
               </p>
-              <div className="totw-buttons">
+              <div className="totw-buttons mb-4">
                 <a href="/become-creator">
                   <Button variant="primary py-2 px-5 mt-4">
                     <b>Become a Creator</b>
@@ -292,7 +292,7 @@ const Home = () => {
                 </a>
               </div>
             </div>
-            <div className="col-lg-4">{modelListRender}</div>
+            <div className="col-lg-12">{modelListRender}</div>
           </motion.div>
         </Scroll.Element>
         <br />
