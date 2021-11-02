@@ -29,6 +29,9 @@ import {
   useQuery,
   gql,
 } from "@apollo/client";
+import "swiper/scss";
+import "swiper/scss/navigation";
+import "swiper/scss/pagination";
 
 function MyApp({ Component, pageProps }) {
   const oldTokenBalance = useTokenBalance(

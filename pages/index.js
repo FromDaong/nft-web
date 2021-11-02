@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import NFTListItem from "../components/NFTListItem";
 import ModelListItem from "../components/ModelListItem";
+import SwiperNFTList from "../components/SwiperNFTList";
 import Layout from "../components/Layout";
 import { motion, useAnimation } from "framer-motion";
 import Link from "next/link";
@@ -10,6 +11,11 @@ import useSWR from "swr";
 import CountUp from "react-countup";
 import * as Scroll from "react-scroll";
 import { useInView } from "react-intersection-observer";
+import {
+  PatchCheckFill,
+  PlusCircleFill,
+  ShopWindow,
+} from "react-bootstrap-icons";
 
 const Home = () => {
   const { data: nftResult } = useSWR(`/api/nft`);
@@ -132,14 +138,17 @@ const Home = () => {
             style={{ x: -100, opacity: 0 }}
             className="hero"
           >
-            <div className="row">
-              <div className="col-lg-6 hero-text">
+            <div className="row align-items-center">
+              <div className="col-lg-6 hero-text mt-3">
                 <div className="heading-text">
-                  It's time to trick or treat yourself...
+                  It's time to <br />
+                  treat yourself...
                 </div>
                 <div className="secondary-text">
-                  Treat is an open platform for creators to curate their adult
-                  content as NFTs.
+                  <b style={{ fontSize: "1.1em" }}>
+                    Treat is an open platform for creators to curate their adult
+                    content as NFTs.
+                  </b>
                   <br />
                   <br />
                   Hold the $TREAT token to have a say in the future of the only
@@ -157,7 +166,7 @@ const Home = () => {
                     >
                       <Button variant="primary w-100 py-2">
                         <Link href="/marketplace">
-                          <b>VIEW MARKETPLACES</b>
+                          <b>View Marketplaces</b>
                         </Link>
                       </Button>
                     </Scroll.Link>
@@ -168,87 +177,81 @@ const Home = () => {
                       target="_blank"
                     >
                       <Button variant="light w-100 py-2">
-                        <b>BUY $TREAT</b>
+                        <b>Buy $TREAT</b>
                       </Button>
                     </a>
+                  </div>
+                </div>
+                <div className="stats row mt-5">
+                  <div className="col-md-6 stat-container">
+                    <div className="big-text">
+                      <CountUp delay={1} duration={2} end={600} />+
+                    </div>
+                    <div className="small-text">
+                      NFTs listed by <CountUp delay={1} duration={1} end={80} />
+                      + creators
+                    </div>
+                  </div>
+                  <div className="col-md-6 stat-container">
+                    <div className="big-text">
+                      <CountUp delay={1} duration={2} end={250} />+
+                    </div>
+                    <div className="small-text">BNB in NFT transactions</div>
                   </div>
                 </div>
               </div>
               <div className="col-lg-1"></div>
               <div className="col-lg-5 hero-logo-container mt-5 d-lg-flex d-none">
-                <img src={"/assets/logodark.png"} alt="" />
-              </div>
-            </div>
-          </motion.div>
-          <motion.div
-            animate={{ x: 0, opacity: 1 }}
-            style={{ x: 100, opacity: 0 }}
-            transition={{ delay: 1 }}
-            className="stats-components-wrapper row"
-          >
-            <div className="col-lg-4 stats-wrapper">
-              <div
-                className="stats-container"
-                style={{ background: "#DA5184" }}
-              >
-                <div className="big-text">
-                  <CountUp delay={1} duration={2} end={75} />+
-                </div>
-                <div className="small-text">Creators on TreatDAO</div>
-              </div>
-            </div>
-            <div className="col-lg-4 stats-wrapper">
-              <div className="stats-container">
-                <div className="big-text">
-                  <CountUp delay={1} duration={3} end={500} />+ NFTs
-                </div>
-                <div className="small-text">Released on TreatDAO</div>
-              </div>
-            </div>
-            <div className="col-lg-4 stats-wrapper">
-              <div
-                className="stats-container"
-                style={{ background: "#ff837f" }}
-              >
-                <div className="big-text">
-                  <CountUp delay={1} duration={3} end={300} />+ BNB
-                </div>
-                <div className="small-text">Earned by Creators</div>
+                <img src={"/assets/heroimage.png"} alt="" />
               </div>
             </div>
           </motion.div>
         </div>
-        <Scroll.Element name="marketplace-list">
-          <div className="pink-bg mb-5 mt-2 row d-flex align-items-center">
-            <div className="col-md-7">
-              <div className="heading-text p-0" style={{ fontSize: "3.5em" }}>
-                Treat Marketplaces
+        <div className="how-it-works mt-4 mb-5">
+          <div className="heading">How it works</div>
+          <div className="main-section row">
+            <div className="step col-md-4">
+              <div className="icon">
+                <PatchCheckFill size={64} color={"#eb518a"} />
               </div>
-              <p
-                className="totw-secondary-text m-0 mt-3 pb-3"
-                style={{ lineHeight: 1.75 }}
-              >
-                Buy and sell Treat NFTs on our brand new Resale Marketplace,
-                built by us. Find exclusive Treat of the Week content from our
-                expansive catalog of creators as well as purchasing content from
-                our open creator marketplace: The Sweet Shop.
-              </p>
-
-              <Link href="/marketplace">
-                <Button
-                  variant="primary mt-3 py-2 w-100"
-                  style={{ maxWidth: 250 }}
-                >
-                  <b>Explore our Marketplaces</b>
-                </Button>
-              </Link>
+              <div className="title" style={{ color: "#eb518a" }}>
+                Verify Creators
+              </div>
+              <div className="desc">
+                We use industry leading identity verification technology to make
+                sure our creators are who they say they are, and are able to
+                consent to using TreatDAO
+              </div>
             </div>
-            <div className="col-md-1"></div>
-            <div className="col-md-4">
-              <img src={"/assets/transfer.png"} className="w-100 pt-3" alt="" />
+            <div className="step col-md-4">
+              <div className="icon">
+                <PlusCircleFill size={64} color={"#7736c8"} />
+              </div>
+              <div className="title" style={{ color: "#7736c8" }}>
+                Mint new NFTs
+              </div>
+              <div className="desc">
+                We use industry leading identity verification technology to make
+                sure our creators are who they say they are, and are able to
+                consent to using TreatDAO
+              </div>
+            </div>
+            <div className="step col-md-4">
+              <div className="icon">
+                <ShopWindow size={64} color={"#EF6B67"} />
+              </div>
+              <div className="title" style={{ color: "#EF6B67" }}>
+                Resale Marketplace
+              </div>
+              <div className="desc">
+                We use industry leading identity verification technology to make
+                sure our creators are who they say they are, and are able to
+                consent to using TreatDAO
+              </div>
             </div>
           </div>
-        </Scroll.Element>
+        </div>
+        <SwiperNFTList />
         <br />
         <Scroll.Element name="model-list">
           <motion.div

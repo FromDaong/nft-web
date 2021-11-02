@@ -11,8 +11,44 @@
 @import "./resale.css";
 @import "./nftCard.scss";
 
+@font-face {
+  font-family: "Circular Pro";
+  src: url("../public/fonts/CircularPro-Book.eot");
+  src: url("../public/fonts/CircularPro-Book.eot?#iefix")
+      format("embedded-opentype"),
+    url("../public/fonts/CircularPro-Book.woff2") format("woff2"),
+    url("../public/fonts/CircularPro-Book.woff") format("woff"),
+    url("../public/fonts/CircularPro-Book.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Circular Pro";
+  src: url("../public/fonts/CircularPro-Medium.eot");
+  src: url("../public/fonts/CircularPro-Medium.eot?#iefix")
+      format("embedded-opentype"),
+    url("../public/fonts/CircularPro-Medium.woff2") format("woff2"),
+    url("../public/fonts/CircularPro-Medium.woff") format("woff"),
+    url("../public/fonts/CircularPro-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Circular Pro";
+  src: url("../public/fonts/CircularPro-Bold.eot");
+  src: url("../public/fonts/CircularPro-Bold.eot?#iefix")
+      format("embedded-opentype"),
+    url("../public/fonts/CircularPro-Bold.woff2") format("woff2"),
+    url("../public/fonts/CircularPro-Bold.woff") format("woff"),
+    url("../public/fonts/CircularPro-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
 * {
-  font-family: "Quicksand", sans-serif;
+  font-family: "Circular Pro", sans-serif;
 }
 
 $theme-colors: (
