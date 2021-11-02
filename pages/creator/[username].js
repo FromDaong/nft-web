@@ -144,13 +144,12 @@ const ViewModel = ({
   const subscriptionCost = useGetSubscriptionCost(modelData.address || "");
   const isSubscribed = useGetIsSubscribed(modelData.address || "");
   const formattedSubCost = Web3.utils.fromWei(subscriptionCost.toString());
-  const [key, setKey] = useState(
-    totwNFTs && totwNFTs.length !== 0 ? "totw" : "sweet"
-  );
+  const [key, setKey] = useState("sweet");
 
   useEffect(() => {
     if (Number(formattedSubCost) !== 0) setKey("sub");
-  }, [formattedSubCost]);
+    if (totwNFTs && totwNFTs.length !== 0) setKey("totw");
+  }, [formattedSubCost, totwNFTs]);
 
   console.log(subNFTs);
 
