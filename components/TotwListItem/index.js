@@ -8,17 +8,30 @@ import SwiperCore, {
   Autoplay,
 } from "swiper";
 import NFTListItem from "../NFTListItem";
+import useSWR from "swr";
 
 SwiperCore.use([Pagination, EffectCoverflow, Navigation, Autoplay]);
 
-const SwiperNFTList = ({ nftData }) => {
+const TotwListItem = ({ modelData }) => {
+  const { data: nftData } = useSWR(
+    `/api/nft/nfts-from-username/${modelData.username}`
+  );
+
+  console.log({ nftData });
+
   return (
-    <div className="nft-section-container">
+    <div className="totw-list-item-container">
       <div className="top-bar">
-        <div className="title">Newly created</div>
+        <div className="totw-name">
+          <div
+            className="pic"
+            style={{ backgroundImage: `url(${modelData.profile_pic})` }}
+          ></div>
+          {modelData.username}
+        </div>
         <div className="button">
           <Button variant="primary py-2 px-4">
-            <b>View All</b>
+            <b>Purchase Set</b>
           </Button>
         </div>
       </div>
@@ -44,15 +57,20 @@ const SwiperNFTList = ({ nftData }) => {
           }}
         >
           {nftData &&
-            nftData.map((nft, i) => (
-              <SwiperSlide className="slide" key={nft.id}>
-                <NFTListItem data={nft} disableAnimations />
-              </SwiperSlide>
-            ))}
+            nftData.nfts &&
+            nftData.nfts.map((nft, i) => {
+              if (nft && nft.totw)
+                return (
+                  <SwiperSlide className="slide" key={nft.id}>
+                    <NFTListItem data={nft} disableAnimations />
+                  </SwiperSlide>
+                );
+              else return null;
+            })}
         </Swiper>
       </div>
     </div>
   );
 };
 
-export default SwiperNFTList;
+export default TotwListItem;

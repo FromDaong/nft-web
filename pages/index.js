@@ -3,6 +3,8 @@ import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import NFTListItem from "../components/NFTListItem";
 import ModelListItem from "../components/ModelListItem";
+import TotwListItem from "../components/TotwListItem";
+import CreatorList from "../components/CreatorList";
 import SwiperNFTList from "../components/SwiperNFTList";
 import Layout from "../components/Layout";
 import { motion, useAnimation } from "framer-motion";
@@ -18,7 +20,7 @@ import {
 } from "react-bootstrap-icons";
 
 const Home = () => {
-  const { data: nftResult } = useSWR(`/api/nft`);
+  const { data: nftResult } = useSWR(`/api/nft?limit=20`);
   const { data: modelResult } = useSWR(`/api/model`);
   const [nftData, setNftData] = useState();
   const [modelData, setModelData] = useState();
@@ -231,9 +233,9 @@ const Home = () => {
                 Mint new NFTs
               </div>
               <div className="desc">
-                We use industry leading identity verification technology to make
-                sure our creators are who they say they are, and are able to
-                consent to using TreatDAO
+                Use or in-house NFT minter, where you can convert photos into
+                Treat NFTs to be sold on our public creator marketplace which we
+                call: “The Sweet Shop”
               </div>
             </div>
             <div className="step col-md-4">
@@ -244,24 +246,30 @@ const Home = () => {
                 Resale Marketplace
               </div>
               <div className="desc">
-                We use industry leading identity verification technology to make
-                sure our creators are who they say they are, and are able to
-                consent to using TreatDAO
+                List your NFTs publicly on our resale marketplace for others to
+                purchase. Blurred NFTs' hidden images are only viewable by their
+                owner.
               </div>
             </div>
           </div>
         </div>
-        <SwiperNFTList />
+        <SwiperNFTList nftData={nftData} />
         <br />
-        <Scroll.Element name="model-list">
-          <motion.div
-            transition={{ delay: 1.5 }}
-            animate={{ opacity: 1 }}
-            style={{ opacity: 0 }}
-            className="hero"
-            className="row totw-section my-4"
-          >
-            <div className="col-lg-12 d-flex flex-column justify-content-center align-content-center text-center mb-4">
+        <CreatorList modelData={modelData} />
+        <div className="totw-section-container">
+          <div className="section-title">Treat of the week</div>
+          <div className="desc">
+            TOTW is a curated showcase of creators which are chosen by either
+            TreatDAO or the community.
+            <br />
+            We assist the chosen creators to have a unique set of content
+            exclusive to TreatDAO and only available to purchase for one week.
+          </div>
+
+          {modelData &&
+            modelData.map((m) => m.totw && <TotwListItem modelData={m} />)}
+        </div>
+        {/* <div className="col-lg-12 d-flex flex-column justify-content-center align-content-center text-center mb-4">
               <div
                 className="heavy-shadow p-0 mb-2 center-mobile"
                 style={{ fontSize: "5.5em", lineHeight: 1.15 }}
@@ -294,12 +302,10 @@ const Home = () => {
                   </Button>
                 </a>
               </div>
-            </div>
-            <div className="col-lg-12">{modelListRender}</div>
-          </motion.div>
-        </Scroll.Element>
+            </div> */}
+        {/* <div className="col-lg-12">{modelListRender}</div> */}
         <br />
-        <Scroll.Element name="nft-list">
+        {/* <Scroll.Element name="nft-list">
           <motion.div
             animate={{ x: 0, opacity: 1 }}
             style={{ x: 100, opacity: 0 }}
@@ -322,7 +328,7 @@ const Home = () => {
             </p>
           </motion.div>
           <div className="nft-list row">{nftListRender}</div>
-        </Scroll.Element>
+        </Scroll.Element> */}
       </div>
     </Layout>
   );
