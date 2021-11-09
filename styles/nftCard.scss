@@ -11,6 +11,20 @@
   position: relative;
   transition: 0.2s all;
 
+  &.purple {
+    border-color: #7736c8 !important;
+    .totw-tag {
+      color: #7736c8 !important;
+    }
+    .text-container {
+      background: #7736c8 !important;
+    }
+    .profile-pic,
+    .img-container {
+      border-color: #6c53a5 !important;
+    }
+  }
+
   &:hover {
     cursor: pointer;
     transform: scale(1.02, 1.02);
