@@ -17,7 +17,7 @@ export default async (req, res) => {
           return returnObj;
         });
 
-        res.status(200).json(returnModels);
+        res.status(200).json(returnModels.reverse());
       } catch (error) {
         console.log({ error });
         res.status(400).json({ success: false, error: error });
