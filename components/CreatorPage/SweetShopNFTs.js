@@ -59,12 +59,7 @@ const SweetShopNFTs = ({ modelData, onRedeemSet, modelNFTs, nftSetPrice }) => {
                   unmountIfInvisible
                   style={{ display: "flex", justifyContent: "center" }}
                 >
-                  <NFTListItem
-                    modelData={modelData}
-                    data={m}
-                    key={m.id}
-                    disableAnimations
-                  />
+                  <NFTListItem modelData={modelData} data={m} key={m.id} />
                 </LazyLoad>
               </div>
             ))}
