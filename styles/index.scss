@@ -85,7 +85,7 @@ html {
 
   a {
     color: #da5184;
-    text-transform: uppercase;
+    text-transform: unset;
     font-weight: bolder;
   }
 
@@ -133,8 +133,9 @@ a:hover {
 }
 
 .heading-text {
-  color: #fffdf2;
-  text-shadow: 3px 3px 1px #f19590;
+  letter-spacing: -2px;
+  line-height: 1;
+  color: #eb518a;
   font-weight: bolder;
   font-size: 2em;
 }
