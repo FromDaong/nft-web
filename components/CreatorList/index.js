@@ -16,9 +16,11 @@ const CreatorList = ({ modelData }) => {
       <div className="top-bar">
         <div className="title">New creators</div>
         <div className="button">
-          <Button variant="primary py-2 px-4">
-            <b>View All</b>
-          </Button>
+          <Link href="/creators">
+            <Button variant="primary py-2 px-4">
+              <b>View All</b>
+            </Button>
+          </Link>
         </div>
       </div>
       <div className="model-display-section row">
