@@ -35,6 +35,22 @@ export const getTreatContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treat;
 };
 
+export const getTreat2Contract = (treat) => {
+  return treat && treat.contracts && treat.contracts.treat2;
+};
+
+export const getTreatPancakeLPContract = (treat) => {
+  return treat && treat.contracts && treat.contracts.treatPancakeLP;
+};
+
+export const getMelonContract = (treat) => {
+  return treat && treat.contracts && treat.contracts.melon;
+};
+
+export const getMasterMelonFarmerContract = (treat) => {
+  return treat && treat.contracts && treat.contracts.masterMelonFarmer;
+};
+
 export const getTreatNFTMinterContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treatNFTMinter;
 };
@@ -967,3 +983,53 @@ export const getOrdersInfoForNftRange = async (
     return [];
   }
 };
+
+export const approveTreatStaking = async (treat2, masterMelonFarmer, account) => {
+  return await treat2.methods
+    .approve(masterMelonFarmer.options.address, ethers.constants.MaxUint256)
+    .send({ from: account });
+};
+
+export const approveTreatPancakeLPStaking = async (treatPancakeLP, masterMelonFarmer, account) => {
+  return await treatPancakeLP.methods
+    .approve(masterMelonFarmer.options.address, ethers.constants.MaxUint256)
+    .send({ from: account });
+};
+
+export const stakeFarm = async (masterMelonFarmerContract, pid, amount) => {
+  const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
+  if (pid === 0) {
+    const tx = await masterMelonFarmerContract.enterStaking(value)
+    const receipt = await tx.wait()
+    return receipt.status
+  }
+
+  const tx = await masterMelonFarmerContract.deposit(pid, value)
+  const receipt = await tx.wait()
+  return receipt.status
+}
+
+export const unstakeFarm = async (masterMelonFarmerContract, pid, amount) => {
+  const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
+  if (pid === 0) {
+    const tx = await masterMelonFarmerContract.leaveStaking(value)
+    const receipt = await tx.wait()
+    return receipt.status
+  }
+
+  const tx = await masterMelonFarmerContract.withdraw(pid, value)
+  const receipt = await tx.wait()
+  return receipt.status
+}
+
+export const harvestFarm = async (masterMelonFarmerContract, pid) => {
+  if (pid === 0) {
+    const tx = await masterMelonFarmerContract.leaveStaking('0')
+    const receipt = await tx.wait()
+    return receipt.status
+  }
+
+  const tx = await masterMelonFarmerContract.deposit(pid, '0')
+  const receipt = await tx.wait()
+  return receipt.status
+}

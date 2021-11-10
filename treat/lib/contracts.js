@@ -19,6 +19,7 @@ import WETHAbi from "./abi/weth.json";
 import Treat2Abi from "./abi/treat2.json";
 import MasterMelonFarmerAbi from "./abi/mastermelonfarmer.json";
 import MelonAbi from "./abi/melontoken.json";
+import PancakeLPAbi from "./abi/pancakelp.json";
 
 export class Contracts {
   constructor(provider, networkId, web3, options) {
@@ -46,6 +47,7 @@ export class Contracts {
     this.treat2 = new this.web3.eth.Contract(Treat2Abi);
     this.melon = new this.web3.eth.Contract(MelonAbi);
     this.masterMelonFarmer = new this.web3.eth.Contract(MasterMelonFarmerAbi);
+    this.treatPancakeLP = new.this.web3.eth.Contract(PancakeLPAbi);
 
     this.setProvider(provider, networkId);
     this.setDefaultAccount(this.web3.eth.defaultAccount);
@@ -99,6 +101,7 @@ export class Contracts {
     setProvider(this.treat2, contractAddresses.treat2[networkId]);
     setProvider(this.melon, contractAddresses.melon[networkId]);
     setProvider(this.masterMelonFarmer, contractAddresses.masterMelonFarmer[networkId]);
+    setProvider(this.treatPancakeLP, contractAddresses.treatPancakeLP[networkId]);
   }
 
   setDefaultAccount(account) {
@@ -117,6 +120,7 @@ export class Contracts {
     this.treat2.options.from = account;
     this.melon.options.from = account;
     this.masterMelonFarmer.options.from = account;
+    this.treatPancakeLP.options.from = account;
   }
 
   async callContractFunction(method, options) {
