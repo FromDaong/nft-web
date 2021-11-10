@@ -92,6 +92,14 @@ export const contractAddresses = {
     56: "0xcF9fF354f29334E6Beeb2245051846801aE73f8F",
     97: "0xD99F67F5604D19371df6e599085719a365711d56",
   },
+  masterMelonFarmer: {
+    //56: "",
+    97: "0xB5cE7e717261cd38Ad10802b6b4aA9C16822300e",
+  },
+  melon: {
+    //56: "",
+    97: "0x17604Afe531536F97c320e998a724b50FAc848B6",
+  }
 };
 
 // Trigger deploy

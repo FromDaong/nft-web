@@ -16,6 +16,9 @@ import TreatNFTMinterV1Abi from "./abi/treatnftminterv1.json";
 import TreatTradeInAbi from "./abi/treattradein.json";
 import TreatV1ForV2Abi from "./abi/treatv1forv2.json";
 import WETHAbi from "./abi/weth.json";
+import Treat2Abi from "./abi/treat2.json";
+import MasterMelonFarmerAbi from "./abi/mastermelonfarmer.json";
+import MelonAbi from "./abi/melontoken.json";
 
 export class Contracts {
   constructor(provider, networkId, web3, options) {
@@ -40,6 +43,9 @@ export class Contracts {
     this.weth = new this.web3.eth.Contract(WETHAbi);
     this.treatTradeIn = new this.web3.eth.Contract(TreatTradeInAbi);
     this.treatV1ForV2 = new this.web3.eth.Contract(TreatV1ForV2Abi);
+    this.treat2 = new this.web3.eth.Contract(Treat2Abi);
+    this.melon = new this.web3.eth.Contract(MelonAbi);
+    this.masterMelonFarmer = new this.web3.eth.Contract(MasterMelonFarmerAbi);
 
     this.setProvider(provider, networkId);
     this.setDefaultAccount(this.web3.eth.defaultAccount);
@@ -90,6 +96,9 @@ export class Contracts {
     setProvider(this.creatorMart, contractAddresses.creatorMart[networkId]);
     setProvider(this.subscriberMart, contractAddresses.subscriberMart[networkId]);
     setProvider(this.weth, contractAddresses.weth[networkId]);
+    setProvider(this.treat2, contractAddresses.treat2[networkId]);
+    setProvider(this.melon, contractAddresses.melon[networkId]);
+    setProvider(this.masterMelonFarmer, contractAddresses.masterMelonFarmer[networkId]);
   }
 
   setDefaultAccount(account) {
@@ -105,6 +114,9 @@ export class Contracts {
     this.treatSubscriptions.options.from = account;
     this.treatTradeIn.options.from = account;
     this.treatV1ForV2.options.from = account;
+    this.treat2.options.from = account;
+    this.melon.options.from = account;
+    this.masterMelonFarmer.options.from = account;
   }
 
   async callContractFunction(method, options) {
