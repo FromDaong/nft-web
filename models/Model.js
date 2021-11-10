@@ -52,6 +52,9 @@ const ModelSchema = new mongoose.Schema(
     identity_access_key: {
       type: String,
     },
+    bundle_id: {
+      type: String,
+    },
     nfts: [
       {
         id: String,

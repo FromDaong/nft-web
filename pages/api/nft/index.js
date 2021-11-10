@@ -24,7 +24,12 @@ export default async (req, res) => {
           return returnObj;
         });
 
-        res.status(200).json(returnNFTs);
+        if (req.query.limit) {
+          const r = returnNFTs.reverse().slice(0, req.query.limit);
+          return res.status(200).json(r);
+        } else {
+          return res.status(200).json(returnNFTs);
+        }
       } catch (error) {
         console.log({ error });
         res.status(400).json({ success: false, error: error });

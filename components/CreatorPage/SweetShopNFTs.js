@@ -54,7 +54,11 @@ const SweetShopNFTs = ({ modelData, onRedeemSet, modelNFTs, nftSetPrice }) => {
             .sort((a, b) => a.list_price - b.list_price)
             .map((m) => (
               <div className="col-xs-12 col-md-6 col-xl-4 ">
-                <LazyLoad height={400} unmountIfInvisible>
+                <LazyLoad
+                  height={400}
+                  unmountIfInvisible
+                  style={{ display: "flex", justifyContent: "center" }}
+                >
                   <NFTListItem modelData={modelData} data={m} key={m.id} />
                 </LazyLoad>
               </div>
