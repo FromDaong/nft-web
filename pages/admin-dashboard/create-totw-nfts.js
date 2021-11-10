@@ -16,6 +16,7 @@ import { FormControl } from "react-bootstrap";
 import { useEffect } from "react";
 import * as Yup from "yup";
 import Web3 from "web3";
+import axios from "axios";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -37,14 +38,25 @@ const CreateNFT = ({ modelData }) => {
       async.map(
         files,
         (file, cb) => {
-          toBuffer(file, (err, buff) => {
-            console.log({ err, file });
-            if (err) return cb(err);
-            client.add(buff).then((results) => {
-              console.log("=> IPFS Dropzone added: ", results);
-              cb(null, `https://treatdao.mypinata.cloud/ipfs/${results.path}`);
+          let data = new FormData();
+          data.append("file", file);
+
+          axios
+            .post("https://api.pinata.cloud/pinning/pinFileToIPFS", data, {
+              headers: {
+                "Content-Type": `multipart/form-data`,
+                pinata_api_key: "b949556813c4f284c550",
+                pinata_secret_api_key:
+                  "7a7b755c9c067dedb142c2cb9e9c077aebf561b552c440bf67b87331bac32939",
+              },
+            })
+            .then(function (response) {
+              console.log({ response });
+              return cb(
+                null,
+                `https://treatdao.mypinata.cloud/ipfs/${response.data.IpfsHash}`
+              );
             });
-          });
         },
         (err, results) => {
           if (err)
