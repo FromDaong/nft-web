@@ -5,6 +5,9 @@ import LazyLoad from "react-lazyload";
 import NFTListItem from "../NFTListItem";
 import useSWR from "swr";
 import Link from "next/link";
+import { getDisplayBalance } from "../../utils/formatBalance";
+import useGetTreatSetCost from "../../hooks/useGetTreatSetCost";
+import useRedeemSet from "../../hooks/useRedeemSet";
 
 const TotwListItem = ({ modelData }) => {
   const { data: nftData } = useSWR(
@@ -12,6 +15,12 @@ const TotwListItem = ({ modelData }) => {
   );
 
   console.log({ nftData });
+
+  const setId = modelData.bundle_id;
+  const nftSetPrice = useGetTreatSetCost(setId);
+  const { onRedeemSet } = setId
+    ? useRedeemSet(setId, nftSetPrice)
+    : { onRedeemSet: null };
 
   return (
     <LazyLoad>
@@ -27,8 +36,8 @@ const TotwListItem = ({ modelData }) => {
             </div>
           </Link>
           <div className="button">
-            <Button variant="primary py-2 px-4">
-              <b>Purchase Set</b>
+            <Button variant="primary py-2 px-4" onClick={onRedeemSet}>
+              <b>Purchase Set {getDisplayBalance(nftSetPrice)} BNB</b>
             </Button>
           </div>
         </div>

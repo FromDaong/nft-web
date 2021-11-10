@@ -275,6 +275,7 @@
   .top-bar {
     z-index: 200;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
 
     .title {
