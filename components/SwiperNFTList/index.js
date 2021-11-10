@@ -2,32 +2,36 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, {
-  Pagination,
   EffectCoverflow,
   Navigation,
+  FreeMode,
   Autoplay,
 } from "swiper";
 import NFTListItem from "../NFTListItem";
 import LazyLoad from "react-lazyload";
+import Link from "next/link";
 
-SwiperCore.use([Pagination, EffectCoverflow, Navigation, Autoplay]);
+SwiperCore.use([EffectCoverflow, Navigation, Autoplay, FreeMode]);
 
 const SwiperNFTList = ({ nftData }) => {
   return (
     <LazyLoad>
       <div className="nft-section-container">
         <div className="top-bar">
-          <div className="title">Newly created</div>
+          <div className="title">Newly created NFTs</div>
           <div className="button">
-            <Button variant="primary py-2 px-4">
-              <b>View All</b>
-            </Button>
+            <Link href="/marketplace/creator">
+              <Button variant="primary py-2 px-4">
+                <b>View All</b>
+              </Button>
+            </Link>
           </div>
         </div>
         <div className="nft-display-section">
           <Swiper
-            modules={[Pagination, EffectCoverflow, Navigation, Autoplay]}
+            modules={[EffectCoverflow, Navigation, Autoplay, FreeMode]}
             effect="coverflow"
+            freeMode={true}
             breakpoints={{
               320: {
                 slidesPerView: 1,

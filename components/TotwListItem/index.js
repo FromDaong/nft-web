@@ -32,7 +32,7 @@ const TotwListItem = ({ modelData }) => {
             </Button>
           </div>
         </div>
-        <div className="nft-display-section">
+        <div className="nft-display-section padded">
           <Swiper
             breakpoints={{
               320: {
@@ -41,15 +41,15 @@ const TotwListItem = ({ modelData }) => {
               },
               1080: {
                 slidesPerView: 3,
-                spaceBetween: 40,
+                spaceBetween: 10,
               },
               1540: {
                 slidesPerView: 4,
-                spaceBetween: 40,
+                spaceBetween: 10,
               },
-              1920: {
+              1780: {
                 slidesPerView: 5,
-                spaceBetween: 40,
+                spaceBetween: 10,
               },
             }}
             // centeredSlides

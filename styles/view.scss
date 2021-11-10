@@ -50,12 +50,12 @@
       margin: 25px 0;
       display: flex;
       .stat {
-        font-weight: 600;
         margin-right: 50px;
         .label {
           color: #a5a18d;
         }
         .number {
+          font-weight: 600;
           font-size: 1.75em;
         }
       }
@@ -67,6 +67,13 @@
     .creator {
       margin-top: 10px;
       display: flex;
+      transition: 0.1s opacity;
+
+      &:hover {
+        cursor: pointer;
+        opacity: 0.6;
+      }
+
       .pic {
         img {
           max-width: 60px;
@@ -74,15 +81,16 @@
         }
       }
       .details {
-        font-weight: 600;
         margin-left: 15px;
         margin-right: 50px;
 
         .label {
+          font-weight: normal;
           color: #a5a18d;
           font-size: 1em;
         }
         .name {
+          font-weight: 600;
           font-size: 1.4em;
         }
       }
@@ -130,8 +138,7 @@
 
   .bio {
     color: #a5a18d;
-    font-weight: 600;
-    margin-top: 5px;
+    font-weight: normal !important;
     font-size: 16px;
   }
 }
