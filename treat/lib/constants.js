@@ -90,8 +90,8 @@ export const contractAddresses = {
   },
   treatV1ForV2: {
     56: "0xcF9fF354f29334E6Beeb2245051846801aE73f8F",
-    97: "0xD99F67F5604D19371df6e599085719a365711d56"
-  }
+    97: "0xD99F67F5604D19371df6e599085719a365711d56",
+  },
 };
 
 // Trigger deploy
@@ -99,5 +99,5 @@ export const modelSetBundles = {
   BaliGroupShoot: 6,
   lilshawtygem: 7,
   StellaMarisol: 8,
-  nftdevan: 9,
+  devan: 9,
 };

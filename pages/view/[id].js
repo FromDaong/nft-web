@@ -114,11 +114,11 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
           {remainingNfts.toNumber() > 0 &&
             !isOldTotw &&
             !nftData.subscription_nft &&
-            `BUY NOW`}
-          {(remainingNfts.toNumber() === 0 || isOldTotw) && `SOLD OUT`}
+            `Buy Now`}
+          {(remainingNfts.toNumber() === 0 || isOldTotw) && `Sold Out`}
           {nftData.subscription_nft &&
             remainingNfts.toNumber() > 0 &&
-            `BUY SUBSCRIPTION NFT`}
+            `Buy Subscription NFT`}
         </b>
       )}
     </Button>
@@ -440,7 +440,7 @@ const ViewNFT = ({ nftData, image, account }) => {
             </div>
             <div className="stats">
               <div className="stat">
-                <div className="label">LIST PRICE</div>
+                <div className="label">List Price</div>
                 <div className="number">{getDisplayBalance(nftCost)} BNB</div>
               </div>
               {/* <div className="stat">
@@ -449,22 +449,24 @@ const ViewNFT = ({ nftData, image, account }) => {
             </div> */}
             </div>
             <div className="creator-wrapper">
-              <div className="creator">
-                <div className="pic">
-                  <img
-                    src={
-                      nftData.model_profile_pic ||
-                      `data:image/svg+xml;utf8,${generateFromString(
-                        nftData.model_handle
-                      )}`
-                    }
-                  />
+              <Link href={`/creator/${nftData.model_handle}`}>
+                <div className="creator">
+                  <div className="pic">
+                    <img
+                      src={
+                        nftData.model_profile_pic ||
+                        `data:image/svg+xml;utf8,${generateFromString(
+                          nftData.model_handle
+                        )}`
+                      }
+                    />
+                  </div>
+                  <div className="details">
+                    <div className="label">Creator</div>
+                    <div className="name">{nftData.model_handle}</div>
+                  </div>
                 </div>
-                <div className="details">
-                  <div className="label">CREATOR</div>
-                  <div className="name">{nftData.model_handle}</div>
-                </div>
-              </div>
+              </Link>
             </div>
             <hr style={{ marginTop: 25, marginBottom: 25 }} />
             <Tab.Container defaultActiveKey="resale" id="id">

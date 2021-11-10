@@ -59,39 +59,34 @@ const HeaderNav = ({ modelData }) => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse className="justify-content-end">
           <Link href="/creators" passhref>
-            <Nav.Link href="/creators">CREATORS</Nav.Link>
+            <Nav.Link href="/creators">Creators</Nav.Link>
           </Link>
           {account && !account.pending && !account.rejected && (
             <>
-              <NavDropdown title="MARKETPLACES">
-                <NavDropdown.Item href="#action/3.1" className="p-0">
-                  <Link href="/marketplace" passHref>
-                    <Nav.Link>TREAT MARKETPLACES</Nav.Link>
-                  </Link>
-                </NavDropdown.Item>
+              <NavDropdown title="Marketplaces">
                 <NavDropdown.Item href="#action/3.1" className="p-0">
                   <Link href="/marketplace/creator" passHref>
-                    <Nav.Link>THE SWEET SHOP</Nav.Link>
+                    <Nav.Link>The Sweet Shop</Nav.Link>
                   </Link>
                 </NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.1" className="p-0">
                   <Link href="/marketplace/resale" passHref>
-                    <Nav.Link>RESALE MARKETPLACE</Nav.Link>
+                    <Nav.Link>Resale Marketplace</Nav.Link>
                   </Link>
                 </NavDropdown.Item>
               </NavDropdown>
               <Link href="/my-nfts" passHref>
-                <Nav.Link>MY NFTs</Nav.Link>
+                <Nav.Link>My NFTs</Nav.Link>
               </Link>
               {modelData && !modelData.pending && !modelData.rejected ? (
                 <Link href="/creator-dashboard" passHref>
                   <Nav.Link style={{ color: "#c34573" }}>
-                    CREATOR DASHBOARD
+                    Creator Dashboard
                   </Nav.Link>
                 </Link>
               ) : (
                 <Link href="/become-creator" passHref>
-                  <Nav.Link>APPLY</Nav.Link>
+                  <Nav.Link>Apply</Nav.Link>
                 </Link>
               )}
             </>
@@ -100,13 +95,13 @@ const HeaderNav = ({ modelData }) => {
           {!account && (
             <>
               <Link href="/about" passHref>
-                <Nav.Link>ABOUT</Nav.Link>
+                <Nav.Link>About</Nav.Link>
               </Link>
               <Nav.Link
                 href="https://treatdao.medium.com/c6aaa613725d"
                 target="_blank"
               >
-                BLOG
+                Blog
               </Nav.Link>
             </>
           )}
@@ -116,7 +111,7 @@ const HeaderNav = ({ modelData }) => {
               variant="primary px-4 ml-md-4"
               onClick={() => setWalletModalShow(true)}
             >
-              <b>CONNECT WALLET</b>
+              <b>Connect Wallet</b>
             </Button>
           ) : (
             <div className="ml-md-4">
@@ -130,31 +125,32 @@ const HeaderNav = ({ modelData }) => {
                 id="basic-nav-dropdown"
               >
                 <Link href="/my-nfts" passHref>
-                  <NavDropdown.Item>MY NFTs</NavDropdown.Item>
+                  <NavDropdown.Item>My NFTs</NavDropdown.Item>
                 </Link>
                 <NavDropdown.Item
                   onClick={() => {
                     setBalanceModalShow(true);
                   }}
                 >
-                  $TREAT BALANCE
+                  $Treat Balance
                 </NavDropdown.Item>
                 {!modelData || modelData.pending || modelData.rejected ? (
                   <Link href="/become-creator" passHref>
-                    <NavDropdown.Item>BECOME A CREATOR</NavDropdown.Item>
+                    <NavDropdown.Item>Become a Creator</NavDropdown.Item>
                   </Link>
                 ) : (
                   <Link href="/creator-dashboard" passHref>
-                    <NavDropdown.Item>CREATOR DASHBOARD</NavDropdown.Item>
+                    <NavDropdown.Item>Creator Dashboard</NavDropdown.Item>
                   </Link>
                 )}
                 <NavDropdown.Item
+                  style={{ borderRadius: 8 }}
                   onClick={() => {
                     localStorage.removeItem("connectedBefore");
                     reset();
                   }}
                 >
-                  DISCONNECT
+                  Disconnect
                 </NavDropdown.Item>
               </NavDropdown>
             </div>

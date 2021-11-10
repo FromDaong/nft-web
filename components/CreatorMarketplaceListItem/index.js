@@ -19,7 +19,7 @@ export const Order = ({
 
   return (
     <div className="order-container">
-      <LazyLoad height={400} offset={400} once>
+      <LazyLoad height={400} offset={600} once>
         {!!order ? (
           <NFTListItem
             data={data}

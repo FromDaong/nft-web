@@ -3,6 +3,9 @@ import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 import NFTListItem from "../components/NFTListItem";
 import ModelListItem from "../components/ModelListItem";
+import TotwListItem from "../components/TotwListItem";
+import CreatorList from "../components/CreatorList";
+import SwiperNFTList from "../components/SwiperNFTList";
 import Layout from "../components/Layout";
 import { motion, useAnimation } from "framer-motion";
 import Link from "next/link";
@@ -10,9 +13,15 @@ import useSWR from "swr";
 import CountUp from "react-countup";
 import * as Scroll from "react-scroll";
 import { useInView } from "react-intersection-observer";
+import {
+  PatchCheckFill,
+  PlusCircleFill,
+  ShopWindow,
+  EaselFill,
+} from "react-bootstrap-icons";
 
 const Home = () => {
-  const { data: nftResult } = useSWR(`/api/nft`);
+  const { data: nftResult } = useSWR(`/api/nft?limit=20`);
   const { data: modelResult } = useSWR(`/api/model`);
   const [nftData, setNftData] = useState();
   const [modelData, setModelData] = useState();
@@ -36,93 +45,6 @@ const Home = () => {
     })();
   }, [nftResult, modelResult]);
 
-  let nftListRender;
-
-  if (nftData) {
-    nftListRender = (
-      <motion.div
-        className="nft-list row mt-5"
-        animate={controls}
-        exit="hidden"
-        initial="hidden"
-        ref={ref}
-        variants={{
-          show: { transition: { staggerChildren: 0.15 }, opacity: 1 },
-          hidden: {
-            transition: {
-              staggerChildren: 0.02,
-              staggerDirection: -1,
-              when: "afterChildren",
-            },
-          },
-        }}
-      >
-        {nftData
-          .sort((a, b) => a.list_price - b.list_price)
-          .map((nft) => {
-            if (nft.totw)
-              return (
-                <div className="col-md-6 col-xl-4">
-                  <NFTListItem key={nft.id} data={nft} />
-                </div>
-              );
-            else return undefined;
-          })
-          .filter((e) => e)}
-      </motion.div>
-    );
-  } else {
-    nftListRender = (
-      <div className="w-100 d-flex justify-content-center align-items-center">
-        <Spinner
-          animation="border"
-          role="status"
-          size="xl"
-          style={{ textAlign: "center" }}
-        >
-          <span className="sr-only">Loading...</span>
-        </Spinner>
-      </div>
-    );
-  }
-
-  let modelListRender;
-
-  if (modelData) {
-    const mR = modelData
-      .map((model) => {
-        if (model && model.totw)
-          return (
-            <div className="col-md-4">
-              <ModelListItem
-                key={model.username}
-                data={model}
-                disableAnim={true}
-              />
-            </div>
-          );
-        else return undefined;
-      })
-      .filter((e) => e);
-
-    modelListRender = (
-      <div className="row flex justify-content-center">{mR}</div>
-    );
-  } else {
-    modelListRender = (
-      <div className="w-100 d-flex justify-content-center align-items-center">
-        <Spinner
-          animation="border"
-          role="status"
-          size="xl"
-          style={{ textAlign: "center" }}
-        >
-          <span className="sr-only">Loading...</span>
-        </Spinner>
-      </div>
-    );
-  }
-
   return (
     <Layout>
       <div className="home container">
@@ -132,14 +54,17 @@ const Home = () => {
             style={{ x: -100, opacity: 0 }}
             className="hero"
           >
-            <div className="row">
-              <div className="col-lg-6 hero-text">
+            <div className="row align-items-center">
+              <div className="col-lg-6 hero-text mt-3">
                 <div className="heading-text">
-                  It's time to trick or treat yourself...
+                  It's time to <br />
+                  treat yourself...
                 </div>
                 <div className="secondary-text">
-                  Treat is an open platform for creators to curate their adult
-                  content as NFTs.
+                  <b style={{ fontSize: "1.1em" }}>
+                    Treat is an open platform for creators to curate their adult
+                    content as NFTs.
+                  </b>
                   <br />
                   <br />
                   Hold the $TREAT token to have a say in the future of the only
@@ -149,16 +74,14 @@ const Home = () => {
                 <div className="buttons row pt-4" style={{ maxWidth: 500 }}>
                   <div className="col-md-6  mt-2">
                     <Scroll.Link
-                      to="nft-list"
+                      to="marketplace-list"
                       spy={true}
                       smooth={true}
                       offset={50}
                       duration={1000}
                     >
                       <Button variant="primary w-100 py-2">
-                        <Link href="/marketplace">
-                          <b>VIEW MARKETPLACES</b>
-                        </Link>
+                        <b>View Marketplaces</b>
                       </Button>
                     </Scroll.Link>
                   </div>
@@ -168,158 +91,144 @@ const Home = () => {
                       target="_blank"
                     >
                       <Button variant="light w-100 py-2">
-                        <b>BUY $TREAT</b>
+                        <b>Buy $TREAT</b>
                       </Button>
                     </a>
+                  </div>
+                </div>
+                <div className="stats row mt-5">
+                  <div className="col-md-6 stat-container">
+                    <div className="big-text">
+                      <CountUp delay={1} duration={2} end={600} />+
+                    </div>
+                    <div className="small-text">
+                      NFTs listed by <CountUp delay={1} duration={1} end={80} />
+                      + creators
+                    </div>
+                  </div>
+                  <div className="col-md-6 stat-container">
+                    <div className="big-text">
+                      <CountUp delay={1} duration={2} end={250} />+
+                    </div>
+                    <div className="small-text">BNB in NFT transactions</div>
                   </div>
                 </div>
               </div>
               <div className="col-lg-1"></div>
               <div className="col-lg-5 hero-logo-container mt-5 d-lg-flex d-none">
-                <img src={"/assets/logodark.png"} alt="" />
-              </div>
-            </div>
-          </motion.div>
-          <motion.div
-            animate={{ x: 0, opacity: 1 }}
-            style={{ x: 100, opacity: 0 }}
-            transition={{ delay: 1 }}
-            className="stats-components-wrapper row"
-          >
-            <div className="col-lg-4 stats-wrapper">
-              <div
-                className="stats-container"
-                style={{ background: "#DA5184" }}
-              >
-                <div className="big-text">
-                  <CountUp delay={1} duration={2} end={75} />+
-                </div>
-                <div className="small-text">Creators on TreatDAO</div>
-              </div>
-            </div>
-            <div className="col-lg-4 stats-wrapper">
-              <div className="stats-container">
-                <div className="big-text">
-                  <CountUp delay={1} duration={3} end={500} />+ NFTs
-                </div>
-                <div className="small-text">Released on TreatDAO</div>
-              </div>
-            </div>
-            <div className="col-lg-4 stats-wrapper">
-              <div
-                className="stats-container"
-                style={{ background: "#ff837f" }}
-              >
-                <div className="big-text">
-                  <CountUp delay={1} duration={3} end={300} />+ BNB
-                </div>
-                <div className="small-text">Earned by Creators</div>
+                <img src={"/assets/heroimage.png"} alt="" />
               </div>
             </div>
           </motion.div>
         </div>
         <Scroll.Element name="marketplace-list">
-          <div className="pink-bg mb-5 mt-2 row d-flex align-items-center">
-            <div className="col-md-7">
-              <div className="heading-text p-0" style={{ fontSize: "3.5em" }}>
-                Treat Marketplaces
+          <div className="how-it-works mt-4 mb-5">
+            <div className="heading">How it works</div>
+            <div className="main-section row">
+              <div className="step col-md-4">
+                <div className="icon">
+                  <PatchCheckFill size={64} color={"#eb518a"} />
+                </div>
+                <div className="title" style={{ color: "#eb518a" }}>
+                  Verify Creators
+                </div>
+                <div className="desc">
+                  We use industry leading identity verification technology to
+                  make sure our creators are who they say they are, and are able
+                  to consent to using TreatDAO
+                </div>
               </div>
-              <p
-                className="totw-secondary-text m-0 mt-3 pb-3"
-                style={{ lineHeight: 1.75 }}
-              >
-                Buy and sell Treat NFTs on our brand new Resale Marketplace,
-                built by us. Find exclusive Treat of the Week content from our
-                expansive catalog of creators as well as purchasing content from
-                our open creator marketplace: The Sweet Shop.
-              </p>
-
-              <Link href="/marketplace">
-                <Button
-                  variant="primary mt-3 py-2 w-100"
-                  style={{ maxWidth: 250 }}
-                >
-                  <b>Explore our Marketplaces</b>
-                </Button>
-              </Link>
+              <div className="step col-md-4">
+                <div className="icon">
+                  <PlusCircleFill size={64} color={"#7736c8"} />
+                </div>
+                <div className="title" style={{ color: "#7736c8" }}>
+                  Mint new NFTs
+                </div>
+                <div className="desc">
+                  Use or in-house NFT minter, where you can convert photos into
+                  Treat NFTs to be sold on our public creator marketplace which
+                  we call: “The Sweet Shop”
+                </div>
+              </div>
+              <div className="step col-md-4">
+                <div className="icon">
+                  <ShopWindow size={64} color={"#EF6B67"} />
+                </div>
+                <div className="title" style={{ color: "#EF6B67" }}>
+                  Resale Marketplace
+                </div>
+                <div className="desc">
+                  List your NFTs publicly on our resale marketplace for others
+                  to purchase. Blurred NFTs' hidden images are only viewable by
+                  their owner.
+                </div>
+              </div>
             </div>
+          </div>
+          <div className="pink-bg mb-5 mt-4 row d-flex align-items-center marketplace-section">
             <div className="col-md-1"></div>
             <div className="col-md-4">
               <img src={"/assets/transfer.png"} className="w-100 pt-3" alt="" />
             </div>
+            <div className="col-md-1"></div>
+
+            <div className="col-md-6">
+              <div className="in-house">Our in house</div>
+              <div className="heading p-0" style={{ fontSize: "3.5em" }}>
+                Marketplaces
+              </div>
+              <p className="marketplace-buttons-container pt-4">
+                <Link href="/marketplace/creator">
+                  <div className="marketplace-button">
+                    <div className="icon">
+                      <EaselFill size={48} />
+                    </div>
+                    <div className="content">
+                      <div className="title">The Sweet Shop</div>
+                      <div className="description">
+                        Find and buy NFTs directly from models, photographers
+                        and performers. Verified creators can create NFTs freely
+                        on this marketplace.
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+                <Link href="/marketplace/resale">
+                  <div className="marketplace-button orange">
+                    <div className="icon">
+                      <ShopWindow size={48} />
+                    </div>
+                    <div className="content">
+                      <div className="title">Resale Marketplace</div>
+                      <div className="description">
+                        Buy and sell minted Treat NFTs on the official
+                        aftermarket. Find sold out NFTs here, as well as
+                        exclusive NFTs bought from a creator’s subscription.
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </p>
+            </div>
           </div>
         </Scroll.Element>
+        <SwiperNFTList nftData={nftData} />
+        <div className="totw-section-container mt-5">
+          <div className="section-title">Treat of the week</div>
+          <div className="desc">
+            TOTW is a curated showcase of creators which are chosen by either
+            TreatDAO or the community.
+            <br />
+            We assist the chosen creators to have a unique set of content
+            exclusive to TreatDAO and only available to purchase for one week.
+          </div>
+
+          {modelData &&
+            modelData.map((m) => m.totw && <TotwListItem modelData={m} />)}
+        </div>
         <br />
-        <Scroll.Element name="model-list">
-          <motion.div
-            transition={{ delay: 1.5 }}
-            animate={{ opacity: 1 }}
-            style={{ opacity: 0 }}
-            className="hero"
-            className="row totw-section my-4"
-          >
-            <div className="col-lg-12 d-flex flex-column justify-content-center align-content-center text-center mb-4">
-              <div
-                className="heavy-shadow p-0 mb-2 center-mobile"
-                style={{ fontSize: "5.5em", lineHeight: 1.15 }}
-              >
-                Trick or Treat of the Week
-              </div>
-              <p className="totw-secondary-text" style={{ maxWidth: "none" }}>
-                Our Treat of the Week is a curated showcase of creators which
-                are chosen by either TreatDAO or the community.
-                <br />
-                <br />
-                We assist the chosen creators to have a unique set of content
-                exclusive to TreatDAO and only available to purchase for one
-                week. We feature the Treat of the Week on our homepage as well
-                as all of our social media accounts.
-                <br />
-                <br />
-                To apply to become a creator or to be considered for Treat of
-                the Week, please use the button below
-              </p>
-              <div className="totw-buttons mb-4">
-                <a href="/become-creator">
-                  <Button variant="primary py-2 px-5 mt-4">
-                    <b>Become a Creator</b>
-                  </Button>
-                </a>
-                <a href="/creators">
-                  <Button variant="light ml-md-4 py-2 px-5 mt-4">
-                    <b>View All Creators</b>
-                  </Button>
-                </a>
-              </div>
-            </div>
-            <div className="col-lg-12">{modelListRender}</div>
-          </motion.div>
-        </Scroll.Element>
-        <br />
-        <Scroll.Element name="nft-list">
-          <motion.div
-            animate={{ x: 0, opacity: 1 }}
-            style={{ x: 100, opacity: 0 }}
-            transition={{ delay: 1 }}
-            className="p-0 mt-4 pink-bg"
-          >
-            <div className="heading-text" style={{ fontSize: "3em" }}>
-              Current Treat of the Week NFTs
-            </div>
-            <p className="totw-secondary-text m-0">
-              “Below is our current Treat of the Week creator(s) NFTs available
-              for purchase. To view previous creators and purchase their
-              content, please visit our{" "}
-              <a
-                href="/marketplace/resale"
-                style={{ color: "inherit", textDecoration: "underline" }}
-              >
-                Resale Marketplace
-              </a>
-            </p>
-          </motion.div>
-          <div className="nft-list row">{nftListRender}</div>
-        </Scroll.Element>
+        <CreatorList modelData={modelData} />
       </div>
     </Layout>
   );

@@ -150,7 +150,7 @@ const OwnedNfts = ({
             {nftBalances.map((nft) => {
               return (
                 nft.balance > 0 && (
-                  <LazyLoad height={400} offset={400}>
+                  <LazyLoad height={400} offset={600}>
                     <div className="order-container">
                       <MyNFTItem
                         balance={nft.balance}
@@ -249,7 +249,7 @@ const OpenOrders = ({
                   );
 
                   return (
-                    <LazyLoad height={400} offset={400}>
+                    <LazyLoad height={400} offset={600}>
                       <div className="card bg-transparent border-0">
                         <MyNFTItem
                           price={
