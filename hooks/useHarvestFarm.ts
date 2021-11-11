@@ -4,11 +4,13 @@ import { useWallet } from "use-wallet";
 import { getMasterMelonFarmerContract, harvestFarm } from '../treat/utils'
 
 const useHarvestFarm = (farmPid: number) => {
+  const { account } = useWallet();
+  const treat = useTreat();
   const masterMelonFarmerContract = getMasterMelonFarmerContract(treat)
 
   const handleHarvest = useCallback(async () => {
     await harvestFarm(masterMelonFarmerContract, farmPid)
-  }, [farmPid, masterMelonFarmerContract])
+  }, [account, farmPid, masterMelonFarmerContract])
 
   return { onReward: handleHarvest }
 }
