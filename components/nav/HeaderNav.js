@@ -95,13 +95,13 @@ const HeaderNav = ({ modelData }) => {
           {!account && (
             <>
               <Link href="/about" passHref>
-                <Nav.Link>ABOUT</Nav.Link>
+                <Nav.Link>About</Nav.Link>
               </Link>
               <Nav.Link
                 href="https://treatdao.medium.com/c6aaa613725d"
                 target="_blank"
               >
-                BLOG
+                Blog
               </Nav.Link>
             </>
           )}
@@ -111,7 +111,7 @@ const HeaderNav = ({ modelData }) => {
               variant="primary px-4 ml-md-4"
               onClick={() => setWalletModalShow(true)}
             >
-              <b>CONNECT WALLET</b>
+              <b>Connect Wallet</b>
             </Button>
           ) : (
             <div className="ml-md-4">
