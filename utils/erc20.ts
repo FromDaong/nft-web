@@ -1,45 +1,49 @@
-import Web3 from 'web3'
-import { provider } from 'web3-core'
-import { Contract } from 'web3-eth-contract'
-import { AbiItem } from 'web3-utils'
-import ERC20ABI from '../constants/abi/ERC20.json'
+import Web3 from "web3";
+import { provider } from "web3-core";
+import { Contract } from "web3-eth-contract";
+import { AbiItem } from "web3-utils";
+import ERC20ABI from "../constants/abi/ERC20.json";
 
 export const getContract = (provider: provider, address: string) => {
-  const web3 = new Web3(provider)
+  console.log({ address });
+  const web3 = new Web3(provider);
   const contract = new web3.eth.Contract(
-    (ERC20ABI.abi as unknown) as AbiItem,
-    address,
-  )
-  return contract
-}
+    ERC20ABI.abi as unknown as AbiItem,
+    address
+  );
+  return contract;
+};
 
 export const getAllowance = async (
   lpContract: Contract,
   smoltingPotContract: Contract,
-  account: string,
+  account: string
 ): Promise<string> => {
   try {
     const allowance: string = await lpContract.methods
       .allowance(account, smoltingPotContract.options.address)
-      .call()
-    return allowance
+      .call();
+    return allowance;
   } catch (e) {
-    return '0'
+    return "0";
   }
-}
+};
 
 export const getBalance = async (
   provider: provider,
   tokenAddress: string,
-  userAddress: string,
+  userAddress: string
 ): Promise<string> => {
-  const lpContract = getContract(provider, tokenAddress)
+  const lpContract = getContract(provider, tokenAddress);
   try {
     const balance: string = await lpContract.methods
       .balanceOf(userAddress)
-      .call()
-    return balance
+      .call();
+
+    console.log({ balance });
+    return balance;
   } catch (e) {
-    return '0'
+    console.log({ e });
+    return "0";
   }
-}
+};

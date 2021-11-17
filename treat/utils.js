@@ -305,7 +305,6 @@ export const createBulkTotwNFTs = async (
   creatorAddress
 ) => {
   try {
-    console.log({ maxSupplys, creatorAddress });
     const result = await totwMinterHelperContract.methods
       .createTreats(maxSupplys, creatorAddress)
       .send({ from: account, value: 0 });
@@ -326,7 +325,6 @@ export const createAndAddNFTs = async (
   hexData
 ) => {
   try {
-    console.log({ maxSupplys, amounts, hexData });
     const result = await creatorMartContract.methods
       .createAndAddNFTs(maxSupplys, amounts, isNotListedFlags, hexData)
       .send({ from: account, value: 0 });
@@ -347,7 +345,6 @@ export const createAndAddSubscriberNFTs = async (
   hexData
 ) => {
   try {
-    console.log({ maxSupplys, amounts, hexData });
     const result = await subscriberMartContract.methods
       .createAndAddNFTs(maxSupplys, amounts, isNotListedFlags, hexData)
       .send({ from: account, value: 0 });
@@ -1016,18 +1013,47 @@ export const approveTreatPancakeLPStaking = async (
     .send({ from: account });
 };
 
-export const stakeFarm = async (masterMelonFarmerContract, pid, amount) => {
+export const hasApprovedTreatStaking = async (
+  treat2,
+  masterMelonFarmer,
+  account
+) => {
+  return treat2.methods
+    .allowance(account, masterMelonFarmer.options.address)
+    .call();
+};
+
+export const hasApprovedTreatPancakeLPStaking = async (
+  treatPancakeLP,
+  masterMelonFarmer,
+  account
+) => {
+  return treatPancakeLP.methods
+    .allowance(account, masterMelonFarmer.options.address)
+    .call();
+};
+
+export const stakeFarm = async (
+  masterMelonFarmerContract,
+  pid,
+  amount,
+  account
+) => {
   // const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString();
   const value = Web3.utils.toWei(amount.toString());
   if (pid === 0) {
-    const tx = await masterMelonFarmerContract.enterStaking(value);
-    const receipt = await tx.wait();
-    return receipt.status;
+    const tx = await masterMelonFarmerContract.methods
+      .enterStaking(value)
+      .send({ from: account });
+
+    return tx;
   }
 
-  const tx = await masterMelonFarmerContract.deposit(pid, value);
-  const receipt = await tx.wait();
-  return receipt.status;
+  const tx = await masterMelonFarmerContract.methods
+    .deposit(pid, value)
+    .send({ from: account });
+
+  return tx;
 };
 
 export const getStaked = async (masterMelonFarmerContract, pid, account) => {
@@ -1041,28 +1067,41 @@ export const getStaked = async (masterMelonFarmerContract, pid, account) => {
   }
 };
 
-export const unstakeFarm = async (masterMelonFarmerContract, pid, amount) => {
+export const unstakeFarm = async (
+  masterMelonFarmerContract,
+  pid,
+  amount,
+  account
+) => {
   // const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString();
   const value = Web3.utils.toWei(amount.toString());
   if (pid === 0) {
-    const tx = await masterMelonFarmerContract.leaveStaking(value);
-    const receipt = await tx.wait();
-    return receipt.status;
+    const tx = await masterMelonFarmerContract.methods
+      .leaveStaking(value)
+      .send({ from: account });
+
+    return tx;
   }
 
-  const tx = await masterMelonFarmerContract.withdraw(pid, value);
-  const receipt = await tx.wait();
-  return receipt.status;
+  const tx = await masterMelonFarmerContract.methods
+    .withdraw(pid, value)
+    .send({ from: account });
+
+  return tx;
 };
 
 export const harvestFarm = async (masterMelonFarmerContract, pid) => {
   if (pid === 0) {
-    const tx = await masterMelonFarmerContract.leaveStaking("0");
-    const receipt = await tx.wait();
-    return receipt.status;
+    const tx = await masterMelonFarmerContract.methods
+      .leaveStaking("0")
+      .send({ from: account });
+
+    return tx;
   }
 
-  const tx = await masterMelonFarmerContract.deposit(pid, "0");
-  const receipt = await tx.wait();
-  return receipt.status;
+  const tx = await masterMelonFarmerContract.methods
+    .deposit(pid, "0")
+    .send({ from: account });
+
+  return tx;
 };

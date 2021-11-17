@@ -7,11 +7,15 @@ const useStakeFarms = (pid: number) => {
   const { account } = useWallet();
   const treat = useTreat();
   const masterMelonFarmerContract = getMasterMelonFarmerContract(treat);
-  console.log({ masterMelonFarmerContract });
 
   const handleStake = useCallback(
     async (amount: string) => {
-      const txHash = await stakeFarm(masterMelonFarmerContract, pid, amount);
+      const txHash = await stakeFarm(
+        masterMelonFarmerContract,
+        pid,
+        amount,
+        account
+      );
       console.info(txHash);
     },
     [account, masterMelonFarmerContract, pid]

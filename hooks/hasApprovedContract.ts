@@ -1,25 +1,38 @@
 import {
-  hasApprovedContract,
-  getTreatContract,
-  getTreatV1ForV2Contract,
+  hasApprovedTreatStaking,
+  hasApprovedTreatPancakeLPStaking,
+  getTreat2Contract,
+  getTreatPancakeLPContract,
+  getMasterMelonFarmerContract,
 } from "../treat/utils";
 import { useCallback, useEffect, useState } from "react";
 import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";
 
-const hasWalletApprovedContract = (contractAddress) => {
+const hasWalletApprovedContract = (pid) => {
   const { account } = useWallet();
   const treat = useTreat();
-  const treatContract = getTreatContract(treat);
+  const treatContract = getTreat2Contract(treat);
+  const treatLpContract = getTreatPancakeLPContract(treat);
+  const masterMelonFarmerContract = getMasterMelonFarmerContract(treat);
+
   const [hasApprovedState, setHasApprovedState] = useState(false);
   // const treatV1ForV2Contract = getTreatV1ForV2Contract(treat);
 
   const useHasApprovedContract = useCallback(async () => {
-    const hasApproved = await hasApprovedContract(
-      treatContract,
-      contractAddress,
-      account
-    );
+    let hasApproved;
+    if (pid === 0)
+      hasApproved = await hasApprovedTreatStaking(
+        treatContract,
+        masterMelonFarmerContract,
+        account
+      );
+    else
+      hasApproved = await hasApprovedTreatPancakeLPStaking(
+        treatLpContract,
+        masterMelonFarmerContract,
+        account
+      );
 
     setHasApprovedState(hasApproved);
   }, [account, treatContract]);

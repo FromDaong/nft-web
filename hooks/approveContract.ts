@@ -1,20 +1,37 @@
 import { useCallback } from "react";
 import { useWallet } from "use-wallet";
 import {
-  approveContract,
-  getTreatContract,
-  getTreatV1ForV2Contract,
+  approveTreatStaking,
+  approveTreatPancakeLPStaking,
+  getTreat2Contract,
+  getTreatPancakeLPContract,
+  getMasterMelonFarmerContract,
 } from "../treat/utils";
 import useTreat from "./useTreat";
 
-const useApproveContract = (contractAddress) => {
+const useApproveContract = (pid) => {
   const { account } = useWallet();
   const treat = useTreat();
-  const treatContract = getTreatContract(treat);
+  const treatContract = getTreat2Contract(treat);
+  const treatLpContract = getTreatPancakeLPContract(treat);
+  const masterMelonFarmerContract = getMasterMelonFarmerContract(treat);
 
   const handleApprove = useCallback(async () => {
     try {
-      const tx = await approveContract(treatContract, contractAddress, account);
+      let tx;
+      if (pid === 0)
+        tx = await approveTreatStaking(
+          treatContract,
+          masterMelonFarmerContract,
+          account
+        );
+      else
+        tx = await approveTreatPancakeLPStaking(
+          treatLpContract,
+          masterMelonFarmerContract,
+          account
+        );
+
       console.log("tx ", tx);
       return tx;
     } catch (e) {

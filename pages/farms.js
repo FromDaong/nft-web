@@ -10,11 +10,11 @@ import useTreat from "../hooks/useTreat";
 import { contractAddresses } from "../treat/lib/constants.js";
 
 const Farms = () => {
-  const { networkId } = useWallet();
-  const treatBal = useTokenBalance(contractAddresses.treat2[networkId]);
+  const { chainId } = useWallet();
+  const treatBal = useTokenBalance(contractAddresses.treat2[chainId]);
+  const treatLpBal = useTokenBalance(contractAddresses.treatPancakeLP[chainId]);
   const treat = useTreat();
   const masterMelonFarmerContract = getMasterMelonFarmerContract(treat);
-  console.log({ treatBal });
 
   return (
     <>
@@ -40,6 +40,14 @@ const Farms = () => {
             pid={0}
             contract={masterMelonFarmerContract}
             treatBal={treatBal}
+          />
+          <br />
+          <br />
+          <Farm
+            title={"Treat/BNB"}
+            pid={1}
+            contract={masterMelonFarmerContract}
+            treatBal={treatLpBal}
           />
         </div>
       </motion.main>

@@ -4,17 +4,22 @@ import BlankModal from "../components/BlankModal";
 import { getDisplayBalance } from "../utils/formatBalance";
 import hasApprovedContract from "../hooks/hasApprovedContract";
 import useApproveContract from "../hooks/approveContract";
+import useGetStakedAmount from "../hooks/useGetStakedAmount";
 import useStakeFarms from "../hooks/useStakeFarms";
-import { useHarvestFarms } from "../hooks/useHarvestFarm";
-import { useUnstakeFarms } from "../hooks/useUnstakeFarms";
+import useHarvestFarms from "../hooks/useHarvestFarm";
+import useUnstakeFarms from "../hooks/useUnstakeFarms";
 
 const Farm = ({ contract, treatBal, title, pid }) => {
-  const hasApproved = contract && hasApprovedContract(contract.options.address);
-  const { onApprove } =
-    contract && useApproveContract(contract.options.address);
+  const hasApproved = contract && hasApprovedContract(pid);
+  console.log({ hasApproved });
+  const { onReward } = contract && useHarvestFarms(pid);
+  const { onApprove } = contract && useApproveContract(pid);
   const { onStake } = contract && useStakeFarms(pid);
+  const { onUnstake } = contract && useUnstakeFarms(pid);
+  const stakedAmount = useGetStakedAmount(pid);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
+  const [unstakeAmount, setUnstakeAmount] = useState(0);
   const [stakeAmount, setStakeAmount] = useState(0);
 
   const approveContract = () => {
@@ -53,7 +58,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
       />
       {/* END MODALS */}
 
-      <div className="title">$Treat</div>
+      <div className="title">{title}</div>
       <div className="body row">
         {/* STAKE */}
         <div className="col-md-4 section">
@@ -95,15 +100,23 @@ const Farm = ({ contract, treatBal, title, pid }) => {
           <div className="description-container">
             <b className="larger">Staked:</b>
             <br />
-            <b>{getDisplayBalance(treatBal)}</b> $Treat
+            <b>{stakedAmount && getDisplayBalance(stakedAmount)}</b> $Treat
           </div>
           <div className="input-container">
             <InputGroup className="mb-3">
               <FormControl
                 placeholder="Amount"
                 aria-describedby="basic-addon2"
+                onChange={(e) => setUnstakeAmount(e.target.value)}
+                value={unstakeAmount}
               />
-              <Button variant="primary" className="px-4 py-2">
+              <Button
+                variant="primary"
+                className="px-4 py-2"
+                onClick={() =>
+                  setUnstakeAmount(getDisplayBalance(stakedAmount))
+                }
+              >
                 Max
               </Button>
             </InputGroup>
@@ -112,7 +125,11 @@ const Farm = ({ contract, treatBal, title, pid }) => {
             {!+hasApproved ? (
               approveButton
             ) : (
-              <Button variant="primary" className="w-100 py-2">
+              <Button
+                variant="primary"
+                className="w-100 py-2"
+                onClick={() => onUnstake(unstakeAmount)}
+              >
                 <b>Unstake</b>
               </Button>
             )}
@@ -122,10 +139,10 @@ const Farm = ({ contract, treatBal, title, pid }) => {
           <div className="description-container mb-3">
             <b className="larger">Unclaimed Rewards:</b>
             <br />
-            <b>1027</b> $Treat
+            <b>Coming soon</b> $Melon
           </div>
           <div className="button-container">
-            <Button variant="info" className="w-100 py-2">
+            <Button variant="info" className="w-100 py-2" onClick={onReward}>
               <b>Claim Rewards</b>
             </Button>
           </div>
