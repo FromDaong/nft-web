@@ -999,12 +999,12 @@ export const approveTreatPancakeLPStaking = async (treatPancakeLP, masterMelonFa
 export const stakeFarm = async (masterMelonFarmerContract, pid, amount) => {
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
   if (pid === 0) {
-    const tx = await masterMelonFarmerContract.enterStaking(value)
+    const tx = await masterMelonFarmerContract.methods.enterStaking(value).send({from: account});
     const receipt = await tx.wait()
     return receipt.status
   }
 
-  const tx = await masterMelonFarmerContract.deposit(pid, value)
+  const tx = await masterMelonFarmerContract.methods.deposit(pid, value).send({from: account});
   const receipt = await tx.wait()
   return receipt.status
 }
@@ -1012,24 +1012,24 @@ export const stakeFarm = async (masterMelonFarmerContract, pid, amount) => {
 export const unstakeFarm = async (masterMelonFarmerContract, pid, amount) => {
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
   if (pid === 0) {
-    const tx = await masterMelonFarmerContract.leaveStaking(value)
+    const tx = await masterMelonFarmerContract.methods.leaveStaking(value).send({from: account});
     const receipt = await tx.wait()
     return receipt.status
   }
 
-  const tx = await masterMelonFarmerContract.withdraw(pid, value)
+  const tx = await masterMelonFarmerContract.methods.withdraw(pid, value).send({from: account});
   const receipt = await tx.wait()
   return receipt.status
 }
 
 export const harvestFarm = async (masterMelonFarmerContract, pid) => {
   if (pid === 0) {
-    const tx = await masterMelonFarmerContract.leaveStaking('0')
+    const tx = await masterMelonFarmerContract.methods.leaveStaking('0').send({from: account});
     const receipt = await tx.wait()
     return receipt.status
   }
 
-  const tx = await masterMelonFarmerContract.deposit(pid, '0')
+  const tx = await masterMelonFarmerContract.methods.deposit(pid, '0').send({from: account});
   const receipt = await tx.wait()
   return receipt.status
 }
