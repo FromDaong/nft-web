@@ -124,7 +124,7 @@ const HeaderNav = ({ modelData }) => {
                     ? `${account.substring(0, 6)}...${account.substr(-5)}`
                     : "Switch Chain to BSC"
                 }
-                disabled={chainId !== 56}
+                disabled={chainId !== 56 && chainId !== 97}
                 id="basic-nav-dropdown"
               >
                 <Link href="/my-nfts" passHref>
