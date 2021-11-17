@@ -231,7 +231,7 @@ export const editSub = async (treatSubscriptionContract, account, subCost) => {
 export const buyMelonNft = async (melonmartContract, account, nftCost) => {
   try {
     return await melonmartContract.methods
-      .redeem()
+      .redeem(0)
       .send({ from: account });
   } catch (e) {
     return undefined;
