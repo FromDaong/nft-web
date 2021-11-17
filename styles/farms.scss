@@ -1,0 +1,42 @@
+.farm {
+  color: #eb518a;
+  border-radius: 5px;
+
+  .title {
+    font-weight: bolder;
+    font-size: 1.5em;
+    text-align: center;
+    border-bottom: 2px solid #eb518a;
+    padding: 20px;
+  }
+
+  .body {
+    padding: 20px;
+
+    .section {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px 20px;
+
+      &.purple {
+        color: #7736c8;
+      }
+    }
+
+    .larger {
+      font-size: 1.25em;
+    }
+
+    .input-container {
+      margin: 25px 0 15px 0;
+      height: 45px;
+
+      input {
+        border: 2px solid #eb518a;
+        border-right: 0px;
+        height: 45px;
+      }
+    }
+  }
+}
