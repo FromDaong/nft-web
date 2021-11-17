@@ -1099,6 +1099,17 @@ export const getStaked = async (masterMelonFarmerContract, pid, account) => {
   }
 };
 
+export const getPendingMelons = async (masterMelonFarmerContract, pid, account) => {
+  try {
+    const { amount } = await masterMelonFarmerContract.methods
+      .pendingCake(pid, account)
+      .call();
+    return new BigNumber(amount);
+  } catch {
+    return new BigNumber(0);
+  }
+};
+
 export const unstakeFarm = async (
   masterMelonFarmerContract,
   pid,
@@ -1137,3 +1148,4 @@ export const harvestFarm = async (masterMelonFarmerContract, pid) => {
 
   return tx;
 };
+
