@@ -80,6 +80,10 @@ export const getCreatorMartContract = (treat) => {
   return treat && treat.contracts && treat.contracts.creatorMart;
 };
 
+export const getMelonMartContract = (treat) => {
+  return treat && treat.contracts && treat.contracts.melonMart;
+};
+
 export const getCreatorMinterHelperContract = (treat) => {
   return treat && treat.contracts && treat.contracts.creatorMinterHelper;
 };
@@ -225,6 +229,16 @@ export const editSub = async (treatSubscriptionContract, account, subCost) => {
 };
 
 // user redeems nft
+export const buyMelonNft = async (melonmartContract, account, nftCost) => {
+  try {
+    return await melonmartContract.methods
+      .redeem(0)
+      .send({ from: account });
+  } catch (e) {
+    return undefined;
+  }
+};
+
 export const mintNft = async (treatmartContract, account, nftId, nftCost) => {
   try {
     return await treatmartContract.methods
@@ -310,6 +324,26 @@ export const createBulkTotwNFTs = async (
       .send({ from: account, value: 0 });
 
     return result.events.TotwNftsCreated.returnValues;
+  } catch (e) {
+    console.log({ e });
+    return undefined;
+  }
+};
+
+export const createAndAddMelonNFTs = async (
+  melonMartContract,
+  account,
+  maxSupplys,
+  creators,
+  hexData
+) => {
+  try {
+    console.log({ maxSupplys, creators, hexData });
+    const result = await melonMartContract.methods
+      .createAndAddNFTs(maxSupplys, creators, hexData)
+      .send({ from: account, value: 0 });
+
+    return result.events.MelonNFTCreatedAndAdded.returnValues;
   } catch (e) {
     console.log({ e });
     return undefined;
