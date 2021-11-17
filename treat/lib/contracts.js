@@ -11,6 +11,7 @@ import TreatSubscriptionsAbi from "./abi/treatsubscriptions.json";
 import TreatMartAbi from "./abi/treatmart.json";
 import CreatorMartAbi from "./abi/creatormart.json";
 import SubscriberMartAbi from "./abi/subscribermart.json";
+import MelonMartAbi from "./abi/melonmart.json";
 import TreatNFTMinterAbi from "./abi/treatnftminter.json";
 import TreatNFTMinterV1Abi from "./abi/treatnftminterv1.json";
 import TreatTradeInAbi from "./abi/treattradein.json";
@@ -37,6 +38,7 @@ export class Contracts {
     this.treatMart = new this.web3.eth.Contract(TreatMartAbi);
     this.creatorMart = new this.web3.eth.Contract(CreatorMartAbi);
     this.subscriberMart = new this.web3.eth.Contract(SubscriberMartAbi);
+    this.melonMart = new this.web3.eth.Contract(MelonMartAbi);
     this.totwMinterHelper = new this.web3.eth.Contract(TotwMinterHelperAbi);
     this.treatMarketplace = new this.web3.eth.Contract(TreatMarketplaceAbi);
     this.treatMarketReader = new this.web3.eth.Contract(TreatMarketReaderAbi);
@@ -97,6 +99,7 @@ export class Contracts {
     setProvider(this.treatV1ForV2, contractAddresses.treatV1ForV2[networkId]);
     setProvider(this.creatorMart, contractAddresses.creatorMart[networkId]);
     setProvider(this.subscriberMart, contractAddresses.subscriberMart[networkId]);
+    setProvider(this.melonMart, contractAddresses.melonMart[networkId]);
     setProvider(this.weth, contractAddresses.weth[networkId]);
     setProvider(this.treat2, contractAddresses.treat2[networkId]);
     setProvider(this.melon, contractAddresses.melon[networkId]);
@@ -111,6 +114,7 @@ export class Contracts {
     this.treatMart.options.from = account;
     this.creatorMart.options.from = account;
     this.subscriberMart.options.from = account;
+    this.melonMart.options.from = account;
     this.totwMinterHelper.options.from = account;
     this.treatMarketplace.options.from = account;
     this.treatMarketReader.options.from = account;
