@@ -5,7 +5,7 @@ import { useWallet } from "use-wallet";
 
 const useCreateAndAddMelonNFTs = (
   maxSupplys: Array<number>,
-  creators: Array<address>,
+  creators: Array<string>,
   hexData: string
 ) => {
   const { account } = useWallet();
@@ -13,7 +13,6 @@ const useCreateAndAddMelonNFTs = (
   const melonMartContract = getMelonMartContract(treat);
 
   const handleCreateAndAddMelonNFTs = useCallback(async () => {
-    console.log({ maxSupplys, amounts });
     const res = await createAndAddMelonNFTs(
       melonMartContract,
       account,
