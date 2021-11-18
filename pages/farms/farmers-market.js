@@ -116,7 +116,7 @@ const Marketplace = ({ search }) => {
               finalArray.length > 0 && (
                 <div className="d-flex justify-content-center flex-wrap w-100">
                   {finalArray.map((o, i) => (
-                    <div classname="m-1" style={{ width: 355 }}>
+                    <div classname="p-1" style={{ width: 355 }}>
                       <NFTListItem data={o} disableAnimations />
                     </div>
                   ))}
