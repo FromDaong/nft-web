@@ -346,7 +346,7 @@ export const createAndAddMelonNFTs = async (
       .createAndAddNFTs(maxSupplys, creators, hexData)
       .send({ from: account, value: 0 });
 
-    console.log(result.events.MelonNFTCreatedAndAdded.returnValues)
+    console.log(result.events.MelonNFTCreatedAndAdded.returnValues);
     return result.events.MelonNFTCreatedAndAdded.returnValues;
   } catch (e) {
     console.log({ e1: e });
@@ -1143,7 +1143,7 @@ export const unstakeFarm = async (
   return tx;
 };
 
-export const harvestFarm = async (masterMelonFarmerContract, pid) => {
+export const harvestFarm = async (masterMelonFarmerContract, pid, account) => {
   if (pid === 0) {
     const tx = await masterMelonFarmerContract.methods
       .leaveStaking("0")
