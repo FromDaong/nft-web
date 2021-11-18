@@ -9,7 +9,7 @@ async function dbConnect() {
 
   // test
   const db = await mongoose.connect(
-    "mongodb+srv://treat:hfqqjOWs0WS1mUGE@treatcluster.9uuso.mongodb.net/treat_test?retryWrites=true&w=majority",
+    "mongodb+srv://treat:hfqqjOWs0WS1mUGE@treatcluster.9uuso.mongodb.net/treat_bsctestnet?retryWrites=true&w=majority",
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
