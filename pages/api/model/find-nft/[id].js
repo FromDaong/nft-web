@@ -5,7 +5,7 @@ import TreatNFTMinterAbi from "../../../../treat/lib/abi/treatnftminter.json";
 
 dbConnect();
 
-const web3 = new Web3("https://bsc-dataseed2.defibit.io");
+const web3 = new Web3("https://data-seed-prebsc-1-s1.binance.org:8545/");
 
 export default async (req, res) => {
   const {
