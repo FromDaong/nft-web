@@ -1,13 +1,16 @@
 import React from "react";
-import Hero from "../components/Hero";
-import Farm from "../components/Farm";
-import Loading from "../components/Loading";
-import useTokenBalance from "../hooks/useTokenBalance";
+import Hero from "../../components/Hero";
+import Farm from "../../components/Farm";
+import Loading from "../../components/Loading";
+import useTokenBalance from "../../hooks/useTokenBalance";
 import { motion } from "framer-motion";
 import { useWallet } from "use-wallet";
-import { getMasterMelonFarmerContract } from "../treat/utils";
-import useTreat from "../hooks/useTreat";
-import { contractAddresses } from "../treat/lib/constants.js";
+import { getMasterMelonFarmerContract } from "../../treat/utils";
+import useTreat from "../../hooks/useTreat";
+import { contractAddresses } from "../../treat/lib/constants.js";
+import { Button } from "react-bootstrap";
+
+import Link from "next/link";
 
 const Farms = () => {
   const { chainId } = useWallet();
@@ -30,11 +33,25 @@ const Farms = () => {
         transition={{ type: "linear" }} // Set the transition to linear
         className=""
       >
-        <Hero
-          title={"Farming Dashboard"}
-          subtitle={"Farm $Treat for $Melons to get exclusive NFTs"}
-        />
+        <center>
+          <Hero
+            title={"Farming Dashboard"}
+            subtitle={
+              "Farm $Treat to earn $Melon. Exchange $Melon at the Farmers' market to get exclusive NFTs."
+            }
+          />
+        </center>
         <div className="farming-container">
+          <div className="melon-balance pink-bg">
+            <div>
+              <b>🍈 $Melon Balance:</b> 0
+            </div>
+            <Link href="/farms/farmers-market">
+              <Button variant="success">
+                <b>Go to Farmers' 🍈 Market</b>
+              </Button>
+            </Link>
+          </div>
           <Farm
             title={"$Treat"}
             pid={0}
@@ -43,8 +60,9 @@ const Farms = () => {
           />
           <br />
           <br />
+          <br />
           <Farm
-            title={"Treat/BNB"}
+            title={"$Treat/BNB"}
             pid={1}
             contract={masterMelonFarmerContract}
             treatBal={treatLpBal}
