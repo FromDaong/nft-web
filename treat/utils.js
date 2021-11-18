@@ -343,7 +343,7 @@ export const createAndAddMelonNFTs = async (
 
     return result.events.MelonNFTCreatedAndAdded.returnValues;
   } catch (e) {
-    console.log({ e });
+    console.log({ e1: e });
     return undefined;
   }
 };
@@ -1099,7 +1099,11 @@ export const getStaked = async (masterMelonFarmerContract, pid, account) => {
   }
 };
 
-export const getPendingMelons = async (masterMelonFarmerContract, pid, account) => {
+export const getPendingMelons = async (
+  masterMelonFarmerContract,
+  pid,
+  account
+) => {
   try {
     const { amount } = await masterMelonFarmerContract.methods
       .pendingMelon(pid, account)
@@ -1148,4 +1152,3 @@ export const harvestFarm = async (masterMelonFarmerContract, pid) => {
 
   return tx;
 };
-

@@ -33,7 +33,6 @@ export default withSession(async (req, res) => {
             return new Promise(async (resolve, reject) => {
               const nftBody = {
                 id: Number(nft.id),
-                list_price: nft.list_price,
                 name: nft.name,
                 description: nft.description,
                 external_url: nft.external_url,
