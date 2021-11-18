@@ -69,13 +69,13 @@ const ViewModelWrapper = ({ username }) => {
     })();
   }, [res]);
 
-  const setId = modelSetBundles[username];
-  const nftSetPrice = useGetTreatSetCost(setId);
-  const { onRedeemSet } = setId
-    ? useRedeemSet(setId, nftSetPrice)
-    : { onRedeemSet: null };
+  // const setId = modelSetBundles[username];
+  // const nftSetPrice = useGetTreatSetCost(setId);
+  // const { onRedeemSet } = setId
+  //   ? useRedeemSet(setId, nftSetPrice)
+  //   : { onRedeemSet: null };
 
-  console.log({ setId, nftSetPrice });
+  // console.log({ setId, nftSetPrice });
 
   if (!modelData || !modelData.username) {
     return (
@@ -122,8 +122,8 @@ const ViewModelWrapper = ({ username }) => {
           totwNFTs={totwNFTs}
           newNFTs={newNFTs}
           outOfPrintNFTs={outOfPrintNFTs}
-          nftSetPrice={nftSetPrice}
-          onRedeemSet={onRedeemSet}
+          // nftSetPrice={nftSetPrice}
+          // onRedeemSet={onRedeemSet}
         />
       </Layout>
     );
