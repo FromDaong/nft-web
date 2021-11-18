@@ -12,8 +12,7 @@ export default async (req, res) => {
     case "GET":
       try {
         const NFTs = await NFT.find({
-          old_totw: { $exists: false },
-          subscription_nft: { $exists: false },
+          melon_nft: true,
         });
 
         const returnNFTs = await NFTs.map((n) => {

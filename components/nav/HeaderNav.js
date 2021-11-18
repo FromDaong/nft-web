@@ -15,8 +15,6 @@ const HeaderNav = ({ modelData }) => {
   const [balanceModalShow, setBalanceModalShow] = useState(false);
   const [ageModalShow, setAgeModalShow] = useState(false);
 
-  console.log({ chainId });
-
   useEffect(() => {
     (async () => {
       const verified = await localStorage.getItem("ageVerified");
@@ -58,12 +56,22 @@ const HeaderNav = ({ modelData }) => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse className="justify-content-end">
-          <Link href="/farms" passhref>
-            <Nav.Link href="/creators">Farms</Nav.Link>
-          </Link>
+          <NavDropdown title="Farms">
+            <NavDropdown.Item href="/farms" className="p-0">
+              <Link href="/farms" passHref>
+                <Nav.Link>Farming Dashboard</Nav.Link>
+              </Link>
+            </NavDropdown.Item>
+            <NavDropdown.Item href="#action/3.1" className="p-0">
+              <Link href="/farms/farmers-market" passHref>
+                <Nav.Link>Farmers' Market</Nav.Link>
+              </Link>
+            </NavDropdown.Item>
+          </NavDropdown>
           <Link href="/creators" passhref>
             <Nav.Link href="/creators">Creators</Nav.Link>
           </Link>
+
           {account && !account.pending && !account.rejected && (
             <>
               <NavDropdown title="Marketplaces">

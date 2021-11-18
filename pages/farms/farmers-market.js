@@ -1,27 +1,33 @@
 import { useWallet } from "use-wallet";
-import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
 import useSWR from "swr";
 import React, { useState, useEffect, useReducer } from "react";
 import Loading from "../../components/Loading";
+import BlankModal from "../../components/BlankModal";
 import Link from "next/link";
-import tags from "../../utils/tags";
+import useBuyMelonNft from "../../hooks/useBuyMelonNft";
 import Hero from "../../components/Hero";
 import { Order } from "../../components/CreatorMarketplaceListItem";
 import { motion, AnimateSharedLayout } from "framer-motion";
 import { forceCheck } from "react-lazyload";
-import Select from "react-select";
 
 const Marketplace = ({ search }) => {
-  const [_, forceUpdate] = useReducer((x) => x + 1, 0);
   const { data: orderBookArray } = useSWR(`/api/nft/get-melon-nfts`);
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const [purchaseOrderData, setPurchaseOrderData] = useState(null);
   const [showPendingModal, setShowPendingModal] = useState(null);
+  const [showCompleteModal, setShowCompleteModal] = useState(null);
   const [nftDataArray, setNftDataArray] = useState([]);
-  const [searchFilter, setSearchFilter] = useState(search || "");
-  const [sortBy, setSortBy] = useState("Recent");
+  const { onBuyMelonNft } = useBuyMelonNft();
   const { account } = useWallet();
+
+  const actionWithModal = (action, param) => {
+    setShowPendingModal(true);
+    action(param)
+      .then(() => {
+        setShowPendingModal(false);
+        setShowCompleteModal(true);
+      })
+      .catch((e) => console.log({ e }));
+  };
 
   const updateObArr = () => {
     const ob = orderBookArray;
@@ -32,10 +38,30 @@ const Marketplace = ({ search }) => {
     forceCheck();
   };
 
+  useEffect(() => {
+    updateObArr();
+  }, []);
+
   const finalArray = nftDataArray;
 
   return (
     <AnimateSharedLayout>
+      {/* START MODALS */}
+      <BlankModal
+        show={!!showPendingModal}
+        handleClose={() => setShowPendingModal(false)}
+        title={"Waiting for Transaction Confirmation ⌛"}
+        subtitle={
+          "Please confirm this transaction in your wallet and wait here for up to a few minutes for the transaction to confirm..."
+        }
+        noButton={true}
+      />
+      <BlankModal
+        show={!!showCompleteModal}
+        handleClose={() => setShowCompleteModal(false)}
+      />
+      {/* END MODALS */}
+
       <motion.main
         variants={{
           hidden: { opacity: 0, x: -200, y: 0 },
@@ -60,11 +86,12 @@ const Marketplace = ({ search }) => {
                     <b>{"Farming Dashboard"}</b>
                   </Button>
                 </Link>
-                <Link href="/marketplace/resale">
-                  <Button variant="success w-sm-100 m-2">
-                    <b>{"Redeem Exclusive NFT"}</b>
-                  </Button>
-                </Link>
+                <Button
+                  variant="success w-sm-100 m-2"
+                  onClick={() => actionWithModal(onBuyMelonNft)}
+                >
+                  <b>{"Redeem Exclusive NFT"}</b>
+                </Button>
               </div>
             }
           />
@@ -98,21 +125,19 @@ const Marketplace = ({ search }) => {
             ) : (
               finalArray.length > 0 && (
                 <>
-                  {finalArray
-                    .slice(startIndex, endIndex || finalArray.length)
-                    .map((o, i) => (
-                      <Order
-                        searchFilter={searchFilter}
-                        nftResult={o.item}
-                        index={i}
-                        order={o.item}
-                        account={account}
-                        key={o.refIndex}
-                        setPendingModal={setShowPendingModal}
-                        openCompleteModal={() => setShowCompleteModal(true)}
-                        setPurchaseOrderData={setPurchaseOrderData}
-                      />
-                    ))}
+                  {finalArray.map((o, i) => (
+                    <Order
+                      searchFilter={searchFilter}
+                      nftResult={o}
+                      index={i}
+                      order={o}
+                      account={account}
+                      key={i}
+                      setPendingModal={setShowPendingModal}
+                      openCompleteModal={() => setShowCompleteModal(true)}
+                      setPurchaseOrderData={setPurchaseOrderData}
+                    />
+                  ))}
                 </>
               )
             )}
