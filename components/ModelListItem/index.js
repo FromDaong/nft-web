@@ -44,11 +44,11 @@ const ModelListItem = ({ data, totwOnly = false, disableAnim }) => {
     })();
   }, [data]);
 
-  const setId = modelSetBundles[data.username];
-  const nftSetPrice = useGetTreatSetCost(setId);
-  const { onRedeemSet } = setId
-    ? useRedeemSet(setId, nftSetPrice)
-    : { onRedeemSet: null };
+  // const setId = modelSetBundles[data.username];
+  // const nftSetPrice = useGetTreatSetCost(setId);
+  // const { onRedeemSet } = setId
+  //   ? useRedeemSet(setId, nftSetPrice)
+  //   : { onRedeemSet: null };
 
   return (
     <motion.div variants={variants} initial={disableAnim}>
@@ -70,7 +70,7 @@ const ModelListItem = ({ data, totwOnly = false, disableAnim }) => {
           </div>
         </div>
       </a>
-      {!!onRedeemSet && totwOnly && (
+      {/* {!!onRedeemSet && totwOnly && (
         <div className="model-list-item">
           <div
             style={{
@@ -96,7 +96,7 @@ const ModelListItem = ({ data, totwOnly = false, disableAnim }) => {
             </Button>
           </div>
         </div>
-      )}
+      )} */}
     </motion.div>
   );
 };
