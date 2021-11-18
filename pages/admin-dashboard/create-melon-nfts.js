@@ -99,7 +99,7 @@ const CreateNFT = ({ modelData }) => {
         Yup.object().shape({
           id: Yup.number(),
           name: Yup.string().required("Please add a name"),
-          list_price: Yup.string().required("Please add the NFT list price"),
+          // list_price: Yup.string().required("Please add the NFT list price"),
           description: Yup.string().required("Please add an NFT description"),
           external_url: Yup.string().required("Please add a external_url"),
           blurhash: Yup.string(),
@@ -125,7 +125,9 @@ const CreateNFT = ({ modelData }) => {
 
   const { onCreateAndAddMelonNFTs } = useCreateAndAddMelonNFTs(
     maxSupplyArray,
-    totwModelData ? totwModelData.address : "0x"
+    totwModelData
+      ? Array(maxSupplyArray.length).fill(totwModelData.address)
+      : ["0x"]
   );
 
   const setModelData = async () => {
@@ -273,6 +275,7 @@ const CreateNFT = ({ modelData }) => {
                   imageUrl={nft.image}
                   handleChange={formik.handleChange}
                   arrayHelpers={arrayHelpers}
+                  disablePrice
                 />
               ))
             }

@@ -13,6 +13,7 @@ const CreatingNFTItem = ({
   index,
   modelData,
   blurRequired,
+  disablePrice,
 }) => {
   const [blurhash, setBlurHash] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
@@ -95,22 +96,24 @@ const CreatingNFTItem = ({
               }}
             />
           </div>
-          <div className="pb-4 col-md-6">
-            <label>NFT List Price (in BNB)</label>
-            <FormControl
-              type="number"
-              placeholder="E.g. 120"
-              step="any"
-              name={`nfts[${index}].list_price`}
-              value={formik.values.nfts[index].list_price}
-              onChange={(e) =>
-                formik.setFieldValue(
-                  `nfts[${index}].list_price`,
-                  +Number(e.target.value).toFixed(4)
-                )
-              }
-            />
-          </div>
+          {!disablePrice && (
+            <div className="pb-4 col-md-6">
+              <label>NFT List Price (in BNB)</label>
+              <FormControl
+                type="number"
+                placeholder="E.g. 120"
+                step="any"
+                name={`nfts[${index}].list_price`}
+                value={formik.values.nfts[index].list_price}
+                onChange={(e) =>
+                  formik.setFieldValue(
+                    `nfts[${index}].list_price`,
+                    +Number(e.target.value).toFixed(4)
+                  )
+                }
+              />
+            </div>
+          )}
         </div>
         <div className="pb-4">
           <label>NFT Description</label>
