@@ -5,6 +5,7 @@ import Loading from "../../components/Loading";
 import useTokenBalance from "../../hooks/useTokenBalance";
 import { motion } from "framer-motion";
 import { useWallet } from "use-wallet";
+import { getDisplayBalance } from "../../utils/formatBalance";
 import { getMasterMelonFarmerContract, getPendingMelons } from "../../treat/utils";
 import useTreat from "../../hooks/useTreat";
 import { contractAddresses } from "../../treat/lib/constants.js";
@@ -16,7 +17,7 @@ const Farms = () => {
   const { chainId } = useWallet();
   const treatBal = useTokenBalance(contractAddresses.treat2[chainId]);
   const treatLpBal = useTokenBalance(contractAddresses.treatPancakeLP[chainId]);
-  const melonBal = useTokenBalance(contractAddresses.melon[chainId]);
+  const melonBal = getDisplayBalance(useTokenBalance(contractAddresses.melon[chainId]));
   const treat = useTreat();
   const masterMelonFarmerContract = getMasterMelonFarmerContract(treat);
 
@@ -85,4 +86,3 @@ const FarmsWrapper = (props) => {
 };
 
 export default FarmsWrapper;
-//trigger deploy
