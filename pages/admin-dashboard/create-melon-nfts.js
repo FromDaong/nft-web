@@ -30,7 +30,7 @@ const CreateNFT = ({ modelData }) => {
   const [modelUsername, setModelUsername] = useState("");
 
   const [maxSupplyArray, setMaxSupplyArray] = useState(null);
-  const [amountsArray, setAmountsArray] = useState(null);
+  // const [amountsArray, setAmountsArray] = useState(null);
   const [totwModelData, setTotwModelData] = useState(null);
 
   const onDrop = (files) => {
@@ -80,7 +80,6 @@ const CreateNFT = ({ modelData }) => {
     initialValues: {
       nfts: ipfsFiles.map((file) => ({
         name: "",
-        list_price: 1,
         description: "",
         blurhash: false,
         tags: [],
@@ -138,12 +137,12 @@ const CreateNFT = ({ modelData }) => {
 
   useEffect(() => {
     const maxSupplies = formik.values.nfts.map((n) => n.max_supply);
-    const amounts = formik.values.nfts.map(
-      (n) => n.list_price && Web3.utils.toWei(n.list_price.toString())
-    );
+    // const amounts = formik.values.nfts.map(
+    //   (n) => n.list_price && Web3.utils.toWei(n.list_price.toString())
+    // );
 
     setMaxSupplyArray(maxSupplies);
-    setAmountsArray(amounts);
+    // setAmountsArray(amounts);
   }, [formik.values.nfts]);
 
   const SubmitToServer = async () => {
