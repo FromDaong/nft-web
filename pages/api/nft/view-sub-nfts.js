@@ -14,12 +14,12 @@ const web3 = new Web3("https://data-seed-prebsc-1-s1.binance.org:8545/");
 
 const treatNFTMinter = new web3.eth.Contract(
   TreatNFTMinterAbi,
-  contractAddresses.treatNFTMinter[56]
+  contractAddresses.treatNFTMinter[97]
 );
 
 const treatSubscriptionContract = new web3.eth.Contract(
   TreatSubscriptionsAbi,
-  contractAddresses.treatSubscriptions[56]
+  contractAddresses.treatSubscriptions[97]
 );
 
 dbConnect();
