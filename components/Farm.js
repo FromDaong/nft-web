@@ -154,7 +154,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
           <div className="description-container mb-3">
             <b className="larger">Unclaimed Rewards:</b>
             <br />
-            <b>{pendingMelons && getDisplayBalance(pendingMelons)}</b> $Melon
+            <b>{getDisplayBalance(pendingMelons)}</b> $Melon
           </div>
           <div className="button-container">
             <Button
