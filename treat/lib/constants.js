@@ -36,7 +36,7 @@ export const contractAddresses = {
   },
   treat2: {
     56: "0x01bd7acb6fF3B6Dd5aefA05CF085F2104f3fC53F",
-    97: "0x5Bfa598212A6c15Dea22De0af2bd1B5124efAa9d",
+    97: "0xdE637209AC5E70fA2F2B6C86684E860fd474A33E",
   },
   weth: {
     56: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
@@ -94,7 +94,7 @@ export const contractAddresses = {
   },
   masterMelonFarmer: {
     //56: "",
-    97: "0xB5cE7e717261cd38Ad10802b6b4aA9C16822300e",
+    97: "0x67e9307BC23f14940952529C238d4490fe79D68F",
   },
   melon: {
     //56: "",
