@@ -10,7 +10,11 @@ const useGetPendingMelons = (pid: number) => {
   const masterMelonFarmerContract = getMasterMelonFarmerContract(treat);
 
   const fetchPendingMelons = useCallback(async () => {
-    const amount = await getPendingMelons(masterMelonFarmerContract, pid, account);
+    const amount = await getPendingMelons(
+      masterMelonFarmerContract,
+      pid,
+      account
+    );
 
     setPendingMelons(amount);
   }, [account, masterMelonFarmerContract, pid]);
