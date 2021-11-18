@@ -43,6 +43,9 @@ const NFTSchema = new mongoose.Schema(
     totw: {
       type: Boolean,
     },
+    melon_nft: {
+      type: Boolean,
+    },
     old_totw: {
       type: Boolean,
     },

@@ -34,6 +34,16 @@ const Farm = ({ contract, treatBal, title, pid }) => {
       .catch((e) => console.log({ e }));
   };
 
+  const actionWithModal = (action, param) => {
+    setShowPendingModal(true);
+    action(param)
+      .then(() => {
+        setShowPendingModal(false);
+        setShowCompleteModal(true);
+      })
+      .catch((e) => console.log({ e }));
+  };
+
   const approveButton = (
     <Button variant="primary" className="w-100 py-2" onClick={approveContract}>
       <b>Approve Contract</b>
@@ -58,7 +68,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
       />
       {/* END MODALS */}
 
-      <div className="title">{title}</div>
+      <div className="title">Stake {title}</div>
       <div className="body row">
         {/* STAKE */}
         <div className="col-md-4 section">
@@ -75,8 +85,12 @@ const Farm = ({ contract, treatBal, title, pid }) => {
                 onChange={(e) => setStakeAmount(e.target.value)}
                 value={stakeAmount}
               />
-              <Button variant="primary" className="px-4 py-2">
-                Max
+              <Button
+                variant="primary"
+                className="px-4 py-2"
+                onClick={(e) => setStakeAmount(getDisplayBalance(treatBal))}
+              >
+                <b>Max</b>
               </Button>
             </InputGroup>
           </div>
@@ -87,7 +101,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
               <Button
                 variant="primary"
                 className="w-100 py-2"
-                onClick={() => onStake(stakeAmount)}
+                onClick={() => actionWithModal(onStake, stakeAmount)}
               >
                 <b>Stake</b>
               </Button>
@@ -100,7 +114,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
           <div className="description-container">
             <b className="larger">Staked:</b>
             <br />
-            <b>{stakedAmount && getDisplayBalance(stakedAmount)}</b> $Treat
+            <b>{stakedAmount && getDisplayBalance(stakedAmount)}</b> {title}
           </div>
           <div className="input-container">
             <InputGroup className="mb-3">
@@ -117,7 +131,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
                   setUnstakeAmount(getDisplayBalance(stakedAmount))
                 }
               >
-                Max
+                <b>Max</b>
               </Button>
             </InputGroup>
           </div>
@@ -128,7 +142,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
               <Button
                 variant="primary"
                 className="w-100 py-2"
-                onClick={() => onUnstake(unstakeAmount)}
+                onClick={() => actionWithModal(onUnstake, unstakeAmount)}
               >
                 <b>Unstake</b>
               </Button>
@@ -139,11 +153,15 @@ const Farm = ({ contract, treatBal, title, pid }) => {
           <div className="description-container mb-3">
             <b className="larger">Unclaimed Rewards:</b>
             <br />
-            <b>Coming soon</b> $Melon
+            <b>0</b> $Melon
           </div>
           <div className="button-container">
-            <Button variant="info" className="w-100 py-2" onClick={onReward}>
-              <b>Claim Rewards</b>
+            <Button
+              variant="info"
+              className="w-100 py-2"
+              onClick={() => actionWithModal(onReward, stakeAmount)}
+            >
+              <b>Claim $Melon Rewards</b>
             </Button>
           </div>
         </div>
