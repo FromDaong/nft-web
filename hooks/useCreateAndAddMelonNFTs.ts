@@ -5,8 +5,7 @@ import { useWallet } from "use-wallet";
 
 const useCreateAndAddMelonNFTs = (
   maxSupplys: Array<number>,
-  creators: Array<string>,
-  hexData: string
+  creators: Array<string>
 ) => {
   const { account } = useWallet();
   const treat = useTreat();
@@ -18,11 +17,11 @@ const useCreateAndAddMelonNFTs = (
       account,
       maxSupplys,
       creators,
-      hexData
+      "0x"
     );
 
     return res;
-  }, [account, maxSupplys, creators, hexData, melonMartContract]);
+  }, [account, maxSupplys, creators, melonMartContract]);
 
   return { onCreateAndAddMelonNFTs: handleCreateAndAddMelonNFTs };
 };

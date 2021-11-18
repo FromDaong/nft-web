@@ -83,6 +83,11 @@ const AdminDashboard = () => {
                   <b>{"Create TOTW NFTs"}</b>
                 </Button>
               </Link>
+              <Link href="/admin-dashboard/create-melon-nfts">
+                <Button variant="success w-sm-100 mr-2">
+                  <b>{"Create $Melon NFTs"}</b>
+                </Button>
+              </Link>
               <Link href="/api/admin/logout">
                 <Button variant="primary  w-sm-100">
                   <b>{"Logout"}</b>
