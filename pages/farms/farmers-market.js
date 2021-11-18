@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import useSWR from "swr";
 import React, { useState, useEffect, useReducer } from "react";
 import Loading from "../../components/Loading";
+import NFTListItem from "../../components/NFTListItem";
 import BlankModal from "../../components/BlankModal";
 import Link from "next/link";
 import useBuyMelonNft from "../../hooks/useBuyMelonNft";
@@ -43,6 +44,8 @@ const Marketplace = ({ search }) => {
   }, []);
 
   const finalArray = nftDataArray;
+
+  console.log({ finalArray });
 
   return (
     <AnimateSharedLayout>
@@ -126,17 +129,7 @@ const Marketplace = ({ search }) => {
               finalArray.length > 0 && (
                 <>
                   {finalArray.map((o, i) => (
-                    <Order
-                      searchFilter={searchFilter}
-                      nftResult={o}
-                      index={i}
-                      order={o}
-                      account={account}
-                      key={i}
-                      setPendingModal={setShowPendingModal}
-                      openCompleteModal={() => setShowCompleteModal(true)}
-                      setPurchaseOrderData={setPurchaseOrderData}
-                    />
+                    <NFTListItem data={o} disableAnimations />
                   ))}
                 </>
               )

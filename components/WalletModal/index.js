@@ -48,6 +48,7 @@ const WalletModal = ({ show, handleClose }) => {
                   decimals: 18,
                 },
                 // rpcUrls: ["https://data-seed-prebsc-1-s1.binance.org:8545/"],
+                // rpcUrls: ["https://bsc-dataseed2.defibit.io"],
                 blockExplorerUrls: ["https://bscscan.com"],
                 rpcUrls: ["https://data-seed-prebsc-1-s1.binance.org:8545/"],
                 // blockExplorerUrls: ["https://testnet.bscscan.com"],
