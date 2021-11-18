@@ -14,7 +14,7 @@ import Select from "react-select";
 
 const Marketplace = ({ search }) => {
   const [_, forceUpdate] = useReducer((x) => x + 1, 0);
-  const { data: orderBookArray } = useSWR(`/api/nft/get-marketplace-nfts`);
+  const { data: orderBookArray } = useSWR(`/api/nft/get-melon-nfts`);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [purchaseOrderData, setPurchaseOrderData] = useState(null);
   const [showPendingModal, setShowPendingModal] = useState(null);
@@ -55,7 +55,7 @@ const Marketplace = ({ search }) => {
             subtitle="Redeem a random NFT from the pool of exclusive NFTs listed below for 10 $Melon."
             additionalContent={
               <div>
-                <Link href="/marketplace/resale">
+                <Link href="/farms">
                   <Button variant="primary w-sm-100 m-2">
                     <b>{"Farming Dashboard"}</b>
                   </Button>
