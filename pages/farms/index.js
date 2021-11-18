@@ -37,7 +37,7 @@ const Farms = () => {
           <Hero
             title={"Farming Dashboard"}
             subtitle={
-              "Farm $Treat to earn $Melon. Exchange $Melon at the Farmers' market to get exclusive NFTs."
+              "Stake $Treat to earn $Melon. Exchange $Melon at the Farmers' Market to get exclusive NFTs."
             }
           />
         </center>
