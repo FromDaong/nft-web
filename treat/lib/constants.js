@@ -102,7 +102,7 @@ export const contractAddresses = {
   },
   treatPancakeLP: {
     56: "0xfa0c171aFE708b97ad61a136cB0499CDb1b7B10e",
-    97: "0x673E46b2058d3eD440fc9512A99E4e69966Cca8E",
+    97: "0x5278654c3c1d1666c909f33c80cea3e555838d88",
   },
   melonMart: {
     //56: "",
