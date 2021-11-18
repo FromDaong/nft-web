@@ -149,12 +149,14 @@ const NFTListItem = ({
               </div>
             )}
           </div>
-          <div className="stats">
-            <div className="stat">
-              <div className="number">{price || data.list_price}</div>
-              <div className="label">BNB</div>
+          {(price || data.list_price) && (
+            <div className="stats">
+              <div className="stat">
+                <div className="number">{price || data.list_price}</div>
+                <div className="label">BNB</div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
         {buttonLabel && buttonFunction && (
           <div className="row">

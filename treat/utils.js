@@ -336,11 +336,17 @@ export const createAndAddMelonNFTs = async (
   hexData
 ) => {
   try {
-    console.log({ maxSupplys, creators, hexData });
+    console.log({
+      maxSupplys,
+      creators,
+      hexData,
+      account: account.toLowerCase(),
+    });
     const result = await melonMartContract.methods
       .createAndAddNFTs(maxSupplys, creators, hexData)
       .send({ from: account, value: 0 });
 
+    console.log(result.events.MelonNFTCreatedAndAdded.returnValues)
     return result.events.MelonNFTCreatedAndAdded.returnValues;
   } catch (e) {
     console.log({ e1: e });

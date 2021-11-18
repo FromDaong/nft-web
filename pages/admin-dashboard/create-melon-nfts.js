@@ -151,6 +151,7 @@ const CreateNFT = ({ modelData }) => {
     try {
       setShowPendingModal(true);
       const createNFTResult = await onCreateAndAddMelonNFTs();
+      console.log({ createNFTResult });
 
       if (!createNFTResult) return setShowPendingModal(false);
 

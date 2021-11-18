@@ -20,6 +20,7 @@ const useCreateAndAddMelonNFTs = (
       "0x"
     );
 
+    console.log({ res }, 312);
     return res;
   }, [account, maxSupplys, creators, melonMartContract]);
 
