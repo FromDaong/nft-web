@@ -109,11 +109,3 @@ export const contractAddresses = {
     97: "0x2f411B2c4C269745C8Df4A4AAcd14DD79F040b83",
   }
 };
-
-// Trigger deploy
-export const modelSetBundles = {
-  BaliGroupShoot: 6,
-  lilshawtygem: 7,
-  StellaMarisol: 8,
-  devan: 9,
-};

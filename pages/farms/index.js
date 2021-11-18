@@ -5,7 +5,7 @@ import Loading from "../../components/Loading";
 import useTokenBalance from "../../hooks/useTokenBalance";
 import { motion } from "framer-motion";
 import { useWallet } from "use-wallet";
-import { getMasterMelonFarmerContract } from "../../treat/utils";
+import { getMasterMelonFarmerContract, getPendingMelons } from "../../treat/utils";
 import useTreat from "../../hooks/useTreat";
 import { contractAddresses } from "../../treat/lib/constants.js";
 import { Button } from "react-bootstrap";
@@ -16,6 +16,7 @@ const Farms = () => {
   const { chainId } = useWallet();
   const treatBal = useTokenBalance(contractAddresses.treat2[chainId]);
   const treatLpBal = useTokenBalance(contractAddresses.treatPancakeLP[chainId]);
+  const melonBal = useTokenBalance(contractAddresses.melon[chainId]);
   const treat = useTreat();
   const masterMelonFarmerContract = getMasterMelonFarmerContract(treat);
 
@@ -44,7 +45,7 @@ const Farms = () => {
         <div className="farming-container">
           <div className="melon-balance pink-bg">
             <div>
-              <b>🍈 $Melon Balance:</b> 0
+              <b>🍈 $Melon Balance:</b> {melonBal}
             </div>
             <Link href="/farms/farmers-market">
               <Button variant="success">
