@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { InputGroup, FormControl, Button } from "react-bootstrap";
 import BlankModal from "../components/BlankModal";
-import { getDisplayBalance } from "../utils/formatBalance";
+import { getDisplayBalance, getBalanceNumber } from "../utils/formatBalance";
+import useGetPendingMelons from "../hooks/useGetPendingMelons";
 import hasApprovedContract from "../hooks/hasApprovedContract";
 import useApproveContract from "../hooks/approveContract";
 import useGetStakedAmount from "../hooks/useGetStakedAmount";
@@ -16,6 +17,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
   const { onApprove } = contract && useApproveContract(pid);
   const { onStake } = contract && useStakeFarms(pid);
   const { onUnstake } = contract && useUnstakeFarms(pid);
+  const pendingMelons = useGetPendingMelons(pid);
   const stakedAmount = useGetStakedAmount(pid);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
@@ -88,7 +90,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
               <Button
                 variant="primary"
                 className="px-4 py-2"
-                onClick={(e) => setStakeAmount(getDisplayBalance(treatBal))}
+                onClick={(e) => setStakeAmount(getBalanceNumber(treatBal))}
               >
                 <b>Max</b>
               </Button>
@@ -127,9 +129,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
               <Button
                 variant="primary"
                 className="px-4 py-2"
-                onClick={() =>
-                  setUnstakeAmount(getDisplayBalance(stakedAmount))
-                }
+                onClick={() => setUnstakeAmount(getBalanceNumber(stakedAmount))}
               >
                 <b>Max</b>
               </Button>
@@ -153,7 +153,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
           <div className="description-container mb-3">
             <b className="larger">Unclaimed Rewards:</b>
             <br />
-            <b>0</b> $Melon
+            <b>{pendingMelons && getDisplayBalance(pendingMelons)}</b> $Melon
           </div>
           <div className="button-container">
             <Button
