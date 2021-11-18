@@ -30,20 +30,7 @@ const Marketplace = ({ search }) => {
       .catch((e) => console.log({ e }));
   };
 
-  const updateObArr = () => {
-    const ob = orderBookArray;
-
-    if (ob) setNftDataArray([]);
-    if (ob) setNftDataArray(ob);
-
-    forceCheck();
-  };
-
-  useEffect(() => {
-    updateObArr();
-  }, []);
-
-  const finalArray = nftDataArray;
+  const finalArray = orderBookArray;
 
   console.log({ finalArray });
 
@@ -127,11 +114,16 @@ const Marketplace = ({ search }) => {
               </div>
             ) : (
               finalArray.length > 0 && (
-                <>
+                <div className="d-flex justify-content-center flex-wrap w-100">
                   {finalArray.map((o, i) => (
-                    <NFTListItem data={o} disableAnimations />
+                    <div
+                      classname="d-flex justify-content-center"
+                      style={{ width: 370 }}
+                    >
+                      <NFTListItem data={o} disableAnimations />
+                    </div>
                   ))}
-                </>
+                </div>
               )
             )}
           </motion.div>
