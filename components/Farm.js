@@ -18,6 +18,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
   const { onStake } = contract && useStakeFarms(pid);
   const { onUnstake } = contract && useUnstakeFarms(pid);
   const pendingMelons = useGetPendingMelons(pid);
+  console.log({ pendingMelons });
   const stakedAmount = useGetStakedAmount(pid);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);

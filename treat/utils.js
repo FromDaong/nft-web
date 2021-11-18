@@ -1111,9 +1111,10 @@ export const getPendingMelons = async (
   account
 ) => {
   try {
-    const { amount } = await masterMelonFarmerContract.methods
+    const amount = await masterMelonFarmerContract.methods
       .pendingMelon(pid, account)
       .call();
+
     return new BigNumber(amount);
   } catch {
     return new BigNumber(0);
