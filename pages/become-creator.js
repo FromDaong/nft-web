@@ -123,7 +123,12 @@ const CreateModel = () => {
                 placeholder="E.g. alexanbt"
                 name="username"
                 value={formik.values.username}
-                onChange={formik.handleChange}
+                onChange={(e) =>
+                  formik.setFieldValue(
+                    "username",
+                    e.target.value.replace(" ", "")
+                  )
+                }
               />
               <small>treatdao.com/creator/{formik.values.username}</small>
             </div>

@@ -8,11 +8,18 @@ import BlankModal from "../../components/BlankModal";
 import Link from "next/link";
 import useBuyMelonNft from "../../hooks/useBuyMelonNft";
 import Hero from "../../components/Hero";
-import { Order } from "../../components/CreatorMarketplaceListItem";
+import useTokenBalance from "../../hooks/useTokenBalance";
+import { contractAddresses } from "../../treat/lib/constants.js";
+import { getDisplayBalance } from "../../utils/formatBalance";
 import { motion, AnimateSharedLayout } from "framer-motion";
 import { forceCheck } from "react-lazyload";
 
 const Marketplace = ({ search }) => {
+  const { chainId } = useWallet();
+  const treatBal = useTokenBalance(contractAddresses.treat2[chainId]);
+  const melonBal = getDisplayBalance(
+    useTokenBalance(contractAddresses.melon[chainId])
+  );
   const { data: orderBookArray } = useSWR(`/api/nft/get-melon-nfts`);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
@@ -73,19 +80,24 @@ const Marketplace = ({ search }) => {
               <div>
                 <Link href="/farms">
                   <Button variant="primary w-sm-100 m-2">
-                    <b>{"Farming Dashboard"}</b>
+                    <b>{"Go to Farming Dashboard"}</b>
                   </Button>
                 </Link>
-                <Button
-                  variant="success w-sm-100 m-2"
-                  onClick={() => actionWithModal(onBuyMelonNft)}
-                >
-                  <b>{"Redeem Exclusive NFT"}</b>
-                </Button>
               </div>
             }
           />
         </center>
+        <div className="melon-balance mb-0 pb-0 pink-bg">
+          <div>
+            <b>🍈 $Melon Balance:</b> {melonBal}
+          </div>
+          <Button
+            variant="success w-sm-100"
+            onClick={() => actionWithModal(onBuyMelonNft)}
+          >
+            <b>{"Redeem Exclusive NFT"}</b>
+          </Button>
+        </div>
         <div className="container fluid">
           <motion.div
             layout

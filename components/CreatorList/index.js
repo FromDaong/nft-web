@@ -11,6 +11,11 @@ import Link from "next/link";
 SwiperCore.use([Pagination, EffectCoverflow, Navigation, Autoplay]);
 
 const CreatorList = ({ modelData }) => {
+  const modelsWithNFTs =
+    modelData &&
+    modelData
+      .map((model) => (model.nfts && model.nfts.length > 0 ? model : null))
+      .filter((e) => e);
   return (
     <div className="model-section-container">
       <div className="top-bar">
@@ -24,8 +29,8 @@ const CreatorList = ({ modelData }) => {
         </div>
       </div>
       <div className="model-display-section row">
-        {modelData &&
-          modelData.slice(0, 12).map((model, i) => (
+        {modelsWithNFTs &&
+          modelsWithNFTs.slice(0, 12).map((model, i) => (
             <Link href={`/creator/${model.username}`}>
               <div className="model-list-item-container col-md-3">
                 <div
