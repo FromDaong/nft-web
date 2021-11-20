@@ -106,6 +106,6 @@ export const contractAddresses = {
   },
   melonMart: {
     //56: "",
-    97: "0x2f411B2c4C269745C8Df4A4AAcd14DD79F040b83",
+    97: "0x1D6d323070cA13235D1D7FC7Ad78A36aE62c8725",
   }
 };
