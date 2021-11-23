@@ -71,10 +71,6 @@ export const getTotwMinterHelperContract = (treat) => {
   return treat && treat.contracts && treat.contracts.totwMinterHelper;
 };
 
-export const getMinterPermissionHelperContract = (treat) => {
-  return treat && treat.contracts && treat.contracts.minterPermissionHelper;
-};
-
 export const getTreatMarketplaceContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treatMarketplace;
 };
@@ -709,12 +705,12 @@ export const getNftTotalSupply = async (treatNFTMinter, nftId) => {
 };
 
 export const addPerformerToMinter = async (
-  minterPermissionHelper,
+  treatNFTMinter,
   account,
   performerAddress
 ) => {
   try {
-    return await minterPermissionHelper.methods
+    return await treatNFTMinter.methods
       .addPerformer(performerAddress)
       .send({ from: account, value: 0 });
   } catch (e) {

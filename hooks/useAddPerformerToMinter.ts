@@ -1,4 +1,4 @@
-import { addPerformerToMinter, getMinterPermissionHelperContract } from "../treat/utils";
+import { addPerformerToMinter, getTreatNFTMinterContract } from "../treat/utils";
 import { useCallback } from "react";
 import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";
@@ -6,17 +6,17 @@ import { useWallet } from "use-wallet";
 const useAddPerformerToMinter = (modelAddress: string) => {
   const { account } = useWallet();
   const treat = useTreat();
-  const minterPermissionHelperContract = getMinterPermissionHelperContract(treat);
+  const treatNftMinterContract = getTreatNFTMinterContract(treat);
 
   const handleAddPerformerToMinter = useCallback(async () => {
     const txHash = await addPerformerToMinter(
-      minterPermissionHelperContract,
+      treatNftMinterContract,
       account,
       modelAddress
     );
     console.log(txHash);
     return txHash;
-  }, [account, modelAddress, minterPermissionHelperContract]);
+  }, [account, modelAddress, treatNftMinterContract]);
 
   return { onAddPerformerToMinter: handleAddPerformerToMinter };
 };
