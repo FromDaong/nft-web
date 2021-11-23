@@ -75,12 +75,12 @@ const CreateNFT = ({ modelData }) => {
     initialValues: {
       nfts: ipfsFiles.map((file) => ({
         name: "",
-        list_price: 1,
+        list_price: 0.01,
         description: "",
         blurhash: false,
         tags: [],
         image: file,
-        max_supply: 1,
+        max_supply: 10,
         external_url: "https://treatdao.com/",
         model_handle: modelData.username,
         model_profile_pic: modelData.profile_pic,
