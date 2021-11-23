@@ -21,6 +21,7 @@ import Treat2Abi from "./abi/treat2.json";
 import MasterMelonFarmerAbi from "./abi/mastermelonfarmer.json";
 import MelonAbi from "./abi/melontoken.json";
 import PancakeLPAbi from "./abi/treatpancakelp.json";
+import MinterPermissionHelperAbi from "./abi/nftminterpermissionhelper.json";
 
 export class Contracts {
   constructor(provider, networkId, web3, options) {
@@ -50,6 +51,7 @@ export class Contracts {
     this.melon = new this.web3.eth.Contract(MelonAbi);
     this.masterMelonFarmer = new this.web3.eth.Contract(MasterMelonFarmerAbi);
     this.treatPancakeLP = new this.web3.eth.Contract(PancakeLPAbi);
+    this.minterPermissionHelper = new this.web3.eth.Contract(MinterPermissionHelperAbi);
 
     this.setProvider(provider, networkId);
     this.setDefaultAccount(this.web3.eth.defaultAccount);
@@ -114,6 +116,7 @@ export class Contracts {
       this.treatPancakeLP,
       contractAddresses.treatPancakeLP[networkId]
     );
+    setProvider(this.minterPermissionHelper, contractAddresses.minterPermissionHelper[networkId]);
   }
 
   setDefaultAccount(account) {
@@ -134,6 +137,7 @@ export class Contracts {
     this.melon.options.from = account;
     this.masterMelonFarmer.options.from = account;
     this.treatPancakeLP.options.from = account;
+    this.minterPermissionHelper.options.from = account;
   }
 
   async callContractFunction(method, options) {
