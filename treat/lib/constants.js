@@ -107,5 +107,9 @@ export const contractAddresses = {
   melonMart: {
     //56: "",
     97: "0x1D6d323070cA13235D1D7FC7Ad78A36aE62c8725",
+  },
+  minterPermissionHelper: {
+    56: "0xcbeae003281F14598bE320E1eCe1236A6860b235",
+    97: "0x80582136C2d6c710aD528F2A9d30504665f65306",
   }
 };
