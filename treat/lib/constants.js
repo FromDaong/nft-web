@@ -94,7 +94,7 @@ export const contractAddresses = {
   },
   masterMelonFarmer: {
     //56: "",
-    97: "0x67e9307BC23f14940952529C238d4490fe79D68F",
+    97: "0xaB6AcF99Da8f510Db0deB8D0d0B04dF93BeA7Df2",
   },
   melon: {
     //56: "",
