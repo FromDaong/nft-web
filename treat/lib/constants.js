@@ -97,7 +97,7 @@ export const contractAddresses = {
     97: "0xaB6AcF99Da8f510Db0deB8D0d0B04dF93BeA7Df2",
   },
   melon: {
-    //56: "",
+    56: "0x045F789e383B23076e7339aeBCab71D38dAD0f8A",
     97: "0x17604Afe531536F97c320e998a724b50FAc848B6",
   },
   treatPancakeLP: {
@@ -105,7 +105,7 @@ export const contractAddresses = {
     97: "0x5278654c3c1d1666c909f33c80cea3e555838d88",
   },
   melonMart: {
-    //56: "",
+    56: "0xC3AE43eD146ffD40FC94f35Cf59F558f644955c9",
     97: "0x1D6d323070cA13235D1D7FC7Ad78A36aE62c8725",
   },
   minterPermissionHelper: {

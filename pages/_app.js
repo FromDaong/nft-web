@@ -151,12 +151,12 @@ function MyApp({ Component, pageProps }) {
 function walletWrapper(props) {
   return (
     <UseWalletProvider
-      chainId={97}
+      chainId={56}
       connectors={{
         bsc,
         bsw: {
           web3ReactConnector() {
-            return new BscConnector({ supportedChainIds: [97] });
+            return new BscConnector({ supportedChainIds: [56] });
           },
           handleActivationError(err) {
             if (err instanceof UserRejectedRequestError) {
@@ -165,8 +165,8 @@ function walletWrapper(props) {
           },
         },
         walletconnect: {
-          rpcUrl: "https://data-seed-prebsc-1-s1.binance.org:8545/",
-          chainId: 97,
+          rpcUrl: "https://bsc-dataseed2.defibit.io/",
+          chainId: 56,
         },
       }}
     >

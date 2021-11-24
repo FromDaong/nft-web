@@ -10,16 +10,16 @@ import {
   getTreatSubscriptionContract,
 } from "../../../treat/utils";
 
-const web3 = new Web3("https://data-seed-prebsc-1-s1.binance.org:8545/");
+const web3 = new Web3("https://bsc-dataseed2.defibit.io/");
 
 const treatNFTMinter = new web3.eth.Contract(
   TreatNFTMinterAbi,
-  contractAddresses.treatNFTMinter[97]
+  contractAddresses.treatNFTMinter[56]
 );
 
 const treatSubscriptionContract = new web3.eth.Contract(
   TreatSubscriptionsAbi,
-  contractAddresses.treatSubscriptions[97]
+  contractAddresses.treatSubscriptions[56]
 );
 
 dbConnect();
