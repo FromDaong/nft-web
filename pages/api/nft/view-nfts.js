@@ -7,16 +7,16 @@ import TreatMarketplaceAbi from "../../../treat/lib/abi/treatMarketplace.json";
 import { contractAddresses } from "../../../treat/lib/constants";
 import { getOpenOrdersForSeller } from "../../../treat/utils";
 
-const web3 = new Web3("https://data-seed-prebsc-1-s1.binance.org:8545/");
+const web3 = new Web3("https://bsc-dataseed2.defibit.io/");
 
 const treatNFTMinter = new web3.eth.Contract(
   TreatNFTMinterAbi,
-  contractAddresses.treatNFTMinter[97]
+  contractAddresses.treatNFTMinter[56]
 );
 
 const treatMarketplace = new web3.eth.Contract(
   TreatMarketplaceAbi,
-  contractAddresses.treatMarketplace[97]
+  contractAddresses.treatMarketplace[56]
 );
 
 dbConnect();
