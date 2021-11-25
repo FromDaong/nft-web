@@ -15,7 +15,7 @@ import BlankModal from "../../components/BlankModal";
 import { FormControl } from "react-bootstrap";
 import { useEffect } from "react";
 import * as Yup from "yup";
-import Web3 from "web3";
+import useSWR from "swr";
 import axios from "axios";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
@@ -28,6 +28,10 @@ const CreateNFT = ({ modelData }) => {
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
   const [modelUsername, setModelUsername] = useState("");
+
+  const { data: bnbPrice } = useSWR(
+    `https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT`
+  );
 
   const [maxSupplyArray, setMaxSupplyArray] = useState(null);
   // const [amountsArray, setAmountsArray] = useState(null);
@@ -269,6 +273,7 @@ const CreateNFT = ({ modelData }) => {
               formik.values.nfts.length > 0 &&
               formik.values.nfts.map((nft, i) => (
                 <CreatingNFTItem
+                  bnbPrice={bnbPrice}
                   formik={formik}
                   modelData={totwModelData}
                   index={i}
