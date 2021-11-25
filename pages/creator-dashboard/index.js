@@ -120,10 +120,24 @@ const ViewNFT = ({ modelData, account }) => {
               {modelData && modelData.username}'s Dashboard
             </div>
             <p
-              className="totw-secondary-text m-0 mt-2 pb-3"
+              className="totw-secondary-text m-0 mt-2 "
               style={{ maxWidth: "none" }}
             >
               Connected wallet address: {account}
+            </p>
+            <p
+              className="totw-secondary-text m-0 pb-3"
+              style={{ maxWidth: "none" }}
+            >
+              <a
+                href="https://t.me/TreatContentCreators"
+                target="_blank"
+                className="text-primary"
+              >
+                <small>
+                  <b>Join our creator Telegram community</b>
+                </small>
+              </a>
             </p>
             <Link href={`/creator/${modelData.username}`}>
               <Button variant="primary  w-sm-100">
