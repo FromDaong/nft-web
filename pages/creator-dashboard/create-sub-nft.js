@@ -16,8 +16,7 @@ import { useEffect } from "react";
 import * as Yup from "yup";
 import Web3 from "web3";
 import axios from "axios";
-
-const client = create("https://ipfs.infura.io:5001/api/v0");
+import useSWR from "swr";
 
 const CreateNFT = ({ modelData }) => {
   const [ipfsFiles, setIpfsFiles] = useState([]);
@@ -118,6 +117,10 @@ const CreateNFT = ({ modelData }) => {
     },
   });
 
+  const { data: bnbPrice } = useSWR(
+    `https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT`
+  );
+
   const [maxSupplyArray, setMaxSupplyArray] = useState(null);
   const [amountsArray, setAmountsArray] = useState(null);
 
@@ -208,6 +211,25 @@ const CreateNFT = ({ modelData }) => {
         <Hero
           title="Create New Subscription NFTs"
           subtitle="Complete this form carefully. Make sure you don't leave this page after submitting the creation transaction. NFTs created on this page will only be available to your subscribers and will be unblurred. If listed on the resale marketplace, the NFTs will be blurred publicly."
+          additionalContent={
+            <p
+              className="totw-secondary-text m-0 pb-3"
+              style={{ maxWidth: "none" }}
+            >
+              <a
+                href="https://help.treatdao.com/en/articles/5761127-how-to-price-your-nfts-to-sell-on-treat"
+                target="_blank"
+                className="text-primary"
+              >
+                <small>
+                  <b>
+                    Want to know where to start and how to best price your NFTs?
+                    Click here
+                  </b>
+                </small>
+              </a>
+            </p>
+          }
         />
 
         {(!formik.values.nfts || formik.values.nfts.length === 0) && (
@@ -235,6 +257,7 @@ const CreateNFT = ({ modelData }) => {
               formik.values.nfts.length > 0 &&
               formik.values.nfts.map((nft, i) => (
                 <CreatingNFTItem
+                  bnbPrice={bnbPrice.price}
                   formik={formik}
                   blurRequired={true}
                   modelData={modelData}

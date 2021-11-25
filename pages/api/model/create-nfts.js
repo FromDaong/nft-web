@@ -8,7 +8,7 @@ import Web3 from "web3";
 
 dbConnect();
 
-const web3 = new Web3("https://bsc-dataseed2.defibit.io");
+const web3 = new Web3("https://bsc-dataseed2.defibit.io/");
 
 const treatNFTMinter = new web3.eth.Contract(
   TreatNFTMinterAbi,
@@ -89,6 +89,7 @@ export default withSession(async (req, res) => {
 
         res.status(200).json({ success: true, newNFTs });
       } catch (error) {
+        console.log({ error });
         res.status(400).json({ success: false, error: error });
       }
       break;

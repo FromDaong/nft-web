@@ -57,6 +57,8 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
     );
   }
 
+  if (nftData.melon_nft) return null;
+
   return (
     <Button
       variant="primary w-100 mt-3 py-3"
@@ -428,6 +430,11 @@ const ViewNFT = ({ nftData, image, account }) => {
                       {nftData.maxSupply}
                     </div>
                   )}
+                {nftData.melon_nft && (
+                  <div className="edition mb-4 text-success">
+                    Available exclusively on Farmers' Market
+                  </div>
+                )}
                 <div className="title">{nftData.name}</div>
                 <div className="bio">{nftData.description}</div>
                 <div className="tags mt-2">

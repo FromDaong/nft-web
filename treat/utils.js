@@ -1,6 +1,7 @@
 import BigNumber from "bignumber.js";
 import { decToBn } from "../utils/index";
 import { ethers } from "ethers";
+import Web3 from "web3";
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
@@ -35,6 +36,22 @@ export const getTreatContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treat;
 };
 
+export const getTreat2Contract = (treat) => {
+  return treat && treat.contracts && treat.contracts.treat2;
+};
+
+export const getTreatPancakeLPContract = (treat) => {
+  return treat && treat.contracts && treat.contracts.treatPancakeLP;
+};
+
+export const getMelonContract = (treat) => {
+  return treat && treat.contracts && treat.contracts.melon;
+};
+
+export const getMasterMelonFarmerContract = (treat) => {
+  return treat && treat.contracts && treat.contracts.masterMelonFarmer;
+};
+
 export const getTreatNFTMinterContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treatNFTMinter;
 };
@@ -63,12 +80,20 @@ export const getCreatorMartContract = (treat) => {
   return treat && treat.contracts && treat.contracts.creatorMart;
 };
 
+export const getMelonMartContract = (treat) => {
+  return treat && treat.contracts && treat.contracts.melonMart;
+};
+
 export const getCreatorMinterHelperContract = (treat) => {
   return treat && treat.contracts && treat.contracts.creatorMinterHelper;
 };
 
 export const getTotwMinterHelperContract = (treat) => {
   return treat && treat.contracts && treat.contracts.totwMinterHelper;
+};
+
+export const getMinterPermissionHelperContract = (treat) => {
+  return treat && treat.contracts && treat.contracts.minterPermissionHelper;
 };
 
 export const getTreatMarketplaceContract = (treat) => {
@@ -208,6 +233,14 @@ export const editSub = async (treatSubscriptionContract, account, subCost) => {
 };
 
 // user redeems nft
+export const buyMelonNft = async (melonmartContract, account) => {
+  try {
+    return await melonmartContract.methods.redeem(0).send({ from: account });
+  } catch (e) {
+    return undefined;
+  }
+};
+
 export const mintNft = async (treatmartContract, account, nftId, nftCost) => {
   try {
     return await treatmartContract.methods
@@ -288,7 +321,6 @@ export const createBulkTotwNFTs = async (
   creatorAddress
 ) => {
   try {
-    console.log({ maxSupplys, creatorAddress });
     const result = await totwMinterHelperContract.methods
       .createTreats(maxSupplys, creatorAddress)
       .send({ from: account, value: 0 });
@@ -296,6 +328,32 @@ export const createBulkTotwNFTs = async (
     return result.events.TotwNftsCreated.returnValues;
   } catch (e) {
     console.log({ e });
+    return undefined;
+  }
+};
+
+export const createAndAddMelonNFTs = async (
+  melonMartContract,
+  account,
+  maxSupplys,
+  creators,
+  hexData
+) => {
+  try {
+    console.log({
+      maxSupplys,
+      creators,
+      hexData,
+      account: account.toLowerCase(),
+    });
+    const result = await melonMartContract.methods
+      .createAndAddNFTs(maxSupplys, creators, hexData)
+      .send({ from: account, value: 0 });
+
+    console.log(result.events.MelonNFTCreatedAndAdded.returnValues);
+    return result.events.MelonNFTCreatedAndAdded.returnValues;
+  } catch (e) {
+    console.log({ e1: e });
     return undefined;
   }
 };
@@ -309,7 +367,6 @@ export const createAndAddNFTs = async (
   hexData
 ) => {
   try {
-    console.log({ maxSupplys, amounts, hexData });
     const result = await creatorMartContract.methods
       .createAndAddNFTs(maxSupplys, amounts, isNotListedFlags, hexData)
       .send({ from: account, value: 0 });
@@ -330,7 +387,6 @@ export const createAndAddSubscriberNFTs = async (
   hexData
 ) => {
   try {
-    console.log({ maxSupplys, amounts, hexData });
     const result = await subscriberMartContract.methods
       .createAndAddNFTs(maxSupplys, amounts, isNotListedFlags, hexData)
       .send({ from: account, value: 0 });
@@ -705,12 +761,12 @@ export const getNftTotalSupply = async (treatNFTMinter, nftId) => {
 };
 
 export const addPerformerToMinter = async (
-  treatNFTMinter,
+  minterPermissionHelper,
   account,
   performerAddress
 ) => {
   try {
-    return await treatNFTMinter.methods
+    return await minterPermissionHelper.methods
       .addPerformer(performerAddress)
       .send({ from: account, value: 0 });
   } catch (e) {
@@ -769,6 +825,12 @@ export const approveTreatOneForTwo = async (treat, treatV1ForV2, account) => {
     .send({ from: account });
 };
 
+export const approveContract = async (treat, contractAddress, account) => {
+  return await treat.methods
+    .approve(contractAddress, ethers.constants.MaxUint256)
+    .send({ from: account });
+};
+
 export const hasApprovedTreatOneForTwoContract = async (
   treat,
   treatV1ForV2,
@@ -777,6 +839,11 @@ export const hasApprovedTreatOneForTwoContract = async (
   return await treat.methods
     .allowance(account, treatV1ForV2.options.address)
     .call();
+};
+
+// has approved
+export const hasApprovedContract = async (treat, address, account) => {
+  return await treat.methods.allowance(account, address).call();
 };
 
 export const approveMarketplace = async (
@@ -966,4 +1033,133 @@ export const getOrdersInfoForNftRange = async (
     console.error(`get orders for seller failed: ${err}`);
     return [];
   }
+};
+
+export const approveTreatStaking = async (
+  treat2,
+  masterMelonFarmer,
+  account
+) => {
+  return await treat2.methods
+    .approve(masterMelonFarmer.options.address, ethers.constants.MaxUint256)
+    .send({ from: account });
+};
+
+export const approveTreatPancakeLPStaking = async (
+  treatPancakeLP,
+  masterMelonFarmer,
+  account
+) => {
+  return await treatPancakeLP.methods
+    .approve(masterMelonFarmer.options.address, ethers.constants.MaxUint256)
+    .send({ from: account });
+};
+
+export const hasApprovedTreatStaking = async (
+  treat2,
+  masterMelonFarmer,
+  account
+) => {
+  return treat2.methods
+    .allowance(account, masterMelonFarmer.options.address)
+    .call();
+};
+
+export const hasApprovedTreatPancakeLPStaking = async (
+  treatPancakeLP,
+  masterMelonFarmer,
+  account
+) => {
+  return treatPancakeLP.methods
+    .allowance(account, masterMelonFarmer.options.address)
+    .call();
+};
+
+export const stakeFarm = async (
+  masterMelonFarmerContract,
+  pid,
+  amount,
+  account
+) => {
+  // const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString();
+  const value = Web3.utils.toWei(amount.toString());
+  if (pid === 0) {
+    const tx = await masterMelonFarmerContract.methods
+      .enterStaking(value)
+      .send({ from: account });
+
+    return tx;
+  }
+
+  const tx = await masterMelonFarmerContract.methods
+    .deposit(pid, value)
+    .send({ from: account });
+
+  return tx;
+};
+
+export const getStaked = async (masterMelonFarmerContract, pid, account) => {
+  try {
+    const { amount } = await masterMelonFarmerContract.methods
+      .userInfo(pid, account)
+      .call();
+    return new BigNumber(amount);
+  } catch {
+    return new BigNumber(0);
+  }
+};
+
+export const getPendingMelons = async (
+  masterMelonFarmerContract,
+  pid,
+  account
+) => {
+  try {
+    const amount = await masterMelonFarmerContract.methods
+      .pendingMelon(pid, account)
+      .call();
+
+    return new BigNumber(amount);
+  } catch {
+    return new BigNumber(0);
+  }
+};
+
+export const unstakeFarm = async (
+  masterMelonFarmerContract,
+  pid,
+  amount,
+  account
+) => {
+  // const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString();
+  const value = Web3.utils.toWei(amount.toString());
+  if (pid === 0) {
+    const tx = await masterMelonFarmerContract.methods
+      .leaveStaking(value)
+      .send({ from: account });
+
+    return tx;
+  }
+
+  const tx = await masterMelonFarmerContract.methods
+    .withdraw(pid, value)
+    .send({ from: account });
+
+  return tx;
+};
+
+export const harvestFarm = async (masterMelonFarmerContract, pid, account) => {
+  if (pid === 0) {
+    const tx = await masterMelonFarmerContract.methods
+      .leaveStaking("0")
+      .send({ from: account });
+
+    return tx;
+  }
+
+  const tx = await masterMelonFarmerContract.methods
+    .deposit(pid, "0")
+    .send({ from: account });
+
+  return tx;
 };

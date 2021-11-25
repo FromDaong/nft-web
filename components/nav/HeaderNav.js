@@ -15,8 +15,6 @@ const HeaderNav = ({ modelData }) => {
   const [balanceModalShow, setBalanceModalShow] = useState(false);
   const [ageModalShow, setAgeModalShow] = useState(false);
 
-  console.log({ chainId });
-
   useEffect(() => {
     (async () => {
       const verified = await localStorage.getItem("ageVerified");
@@ -58,9 +56,22 @@ const HeaderNav = ({ modelData }) => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse className="justify-content-end">
+          <NavDropdown title="Farms">
+            <NavDropdown.Item href="/farms" className="p-0">
+              <Link href="/farms" passHref>
+                <Nav.Link>Farming Dashboard</Nav.Link>
+              </Link>
+            </NavDropdown.Item>
+            <NavDropdown.Item href="#action/3.1" className="p-0">
+              <Link href="/farms/farmers-market" passHref>
+                <Nav.Link>Farmers' Market</Nav.Link>
+              </Link>
+            </NavDropdown.Item>
+          </NavDropdown>
           <Link href="/creators" passhref>
             <Nav.Link href="/creators">Creators</Nav.Link>
           </Link>
+
           {account && !account.pending && !account.rejected && (
             <>
               <NavDropdown title="Marketplaces">
@@ -121,7 +132,7 @@ const HeaderNav = ({ modelData }) => {
                     ? `${account.substring(0, 6)}...${account.substr(-5)}`
                     : "Switch Chain to BSC"
                 }
-                disabled={chainId !== 56}
+                disabled={chainId !== 56 && chainId !== 97}
                 id="basic-nav-dropdown"
               >
                 <Link href="/my-nfts" passHref>

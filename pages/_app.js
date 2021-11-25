@@ -165,7 +165,7 @@ function walletWrapper(props) {
           },
         },
         walletconnect: {
-          rpcUrl: "https://bsc-dataseed2.defibit.io",
+          rpcUrl: "https://bsc-dataseed2.defibit.io/",
           chainId: 56,
         },
       }}

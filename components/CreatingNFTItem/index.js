@@ -3,6 +3,7 @@ import { Button, InputGroup, FormControl, Form } from "react-bootstrap";
 import CreatingNFTItemPreview from "../CreatingNFTItemPreview";
 import { encode } from "blurhash";
 import TagsSelector from "../TagsSelector";
+import CountUp from "react-countup";
 
 let easing = [0.175, 0.85, 0.42, 0.96];
 
@@ -13,7 +14,10 @@ const CreatingNFTItem = ({
   index,
   modelData,
   blurRequired,
+  disablePrice,
+  bnbPrice,
 }) => {
+  // const bnbPrice = 640.23;
   const [blurhash, setBlurHash] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
 
@@ -95,22 +99,34 @@ const CreatingNFTItem = ({
               }}
             />
           </div>
-          <div className="pb-4 col-md-6">
-            <label>NFT List Price (in BNB)</label>
-            <FormControl
-              type="number"
-              placeholder="E.g. 120"
-              step="any"
-              name={`nfts[${index}].list_price`}
-              value={formik.values.nfts[index].list_price}
-              onChange={(e) =>
-                formik.setFieldValue(
-                  `nfts[${index}].list_price`,
-                  +Number(e.target.value).toFixed(4)
-                )
-              }
-            />
-          </div>
+          {!disablePrice && (
+            <div className="pb-4 col-md-6">
+              <label>NFT List Price (in BNB)</label>
+              <FormControl
+                type="number"
+                placeholder="E.g. 120"
+                step="any"
+                name={`nfts[${index}].list_price`}
+                value={formik.values.nfts[index].list_price}
+                onChange={(e) =>
+                  formik.setFieldValue(
+                    `nfts[${index}].list_price`,
+                    +Number(e.target.value).toFixed(4)
+                  )
+                }
+              />
+              {bnbPrice && (
+                <small>
+                  ~$
+                  <CountUp
+                    duration={0.5}
+                    decimals={2}
+                    end={bnbPrice * formik.values.nfts[index].list_price}
+                  />
+                </small>
+              )}
+            </div>
+          )}
         </div>
         <div className="pb-4">
           <label>NFT Description</label>

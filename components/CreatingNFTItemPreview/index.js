@@ -137,12 +137,14 @@ const CreatingNFTItemPreview = ({
               </div>
             )}
           </div>
-          <div className="stats">
-            <div className="stat">
-              <div className="number">{price}</div>
-              <div className="label">BNB</div>
+          {price && (
+            <div className="stats">
+              <div className="stat">
+                <div className="number">{price}</div>
+                <div className="label">BNB</div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
         {buttonLabel && buttonFunction && (
           <div className="row">
