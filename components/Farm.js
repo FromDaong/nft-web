@@ -84,14 +84,17 @@ const Farm = ({ contract, treatBal, title, pid }) => {
             <InputGroup className="mb-3">
               <FormControl
                 placeholder="Amount"
+                type="number"
                 aria-describedby="basic-addon2"
-                onChange={(e) => setStakeAmount(e.target.value)}
+                onChange={(e) => setStakeAmount(Math.round(e.target.value))}
                 value={stakeAmount}
               />
               <Button
                 variant="primary"
                 className="px-4 py-2"
-                onClick={(e) => setStakeAmount(getBalanceNumber(treatBal))}
+                onClick={(e) =>
+                  setStakeAmount(Math.round(getBalanceNumber(treatBal)))
+                }
               >
                 <b>Max</b>
               </Button>
@@ -123,14 +126,17 @@ const Farm = ({ contract, treatBal, title, pid }) => {
             <InputGroup className="mb-3">
               <FormControl
                 placeholder="Amount"
+                type="number"
                 aria-describedby="basic-addon2"
-                onChange={(e) => setUnstakeAmount(e.target.value)}
+                onChange={(e) => setUnstakeAmount(Math.round(e.target.value))}
                 value={unstakeAmount}
               />
               <Button
                 variant="primary"
                 className="px-4 py-2"
-                onClick={() => setUnstakeAmount(getBalanceNumber(stakedAmount))}
+                onClick={() =>
+                  setUnstakeAmount(Math.round(getBalanceNumber(stakedAmount)))
+                }
               >
                 <b>Max</b>
               </Button>
