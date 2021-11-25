@@ -44,12 +44,6 @@ const ModelListItem = ({ data, totwOnly = false, disableAnim }) => {
     })();
   }, [data]);
 
-  const setId = modelSetBundles[data.username];
-  const nftSetPrice = useGetTreatSetCost(setId);
-  const { onRedeemSet } = setId
-    ? useRedeemSet(setId, nftSetPrice)
-    : { onRedeemSet: null };
-
   return (
     <motion.div variants={variants} initial={disableAnim}>
       <a href={`/creator/${data.username.replace("@", "")}`}>
@@ -70,33 +64,6 @@ const ModelListItem = ({ data, totwOnly = false, disableAnim }) => {
           </div>
         </div>
       </a>
-      {!!onRedeemSet && totwOnly && (
-        <div className="model-list-item">
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <span style={{ fontSize: "1.8em" }}>
-              <b>Bundle Discount</b>
-            </span>
-            <img src={"/assets/treat-tag-25.png"} style={{ height: "6em" }} />
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Button onClick={onRedeemSet} size="lg">
-              <b>BUY FULL SET</b>
-            </Button>
-          </div>
-        </div>
-      )}
     </motion.div>
   );
 };

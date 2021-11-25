@@ -16,7 +16,6 @@ const NFTSchema = new mongoose.Schema(
     },
     list_price: {
       type: Number,
-      required: [true, "Please add an NFT list price"],
     },
     external_url: {
       type: String,
@@ -41,6 +40,9 @@ const NFTSchema = new mongoose.Schema(
       type: String,
     },
     totw: {
+      type: Boolean,
+    },
+    melon_nft: {
       type: Boolean,
     },
     old_totw: {

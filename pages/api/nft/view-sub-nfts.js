@@ -10,7 +10,7 @@ import {
   getTreatSubscriptionContract,
 } from "../../../treat/utils";
 
-const web3 = new Web3("https://bsc-dataseed2.defibit.io");
+const web3 = new Web3("https://bsc-dataseed2.defibit.io/");
 
 const treatNFTMinter = new web3.eth.Contract(
   TreatNFTMinterAbi,

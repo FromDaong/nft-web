@@ -36,7 +36,7 @@ export const contractAddresses = {
   },
   treat2: {
     56: "0x01bd7acb6fF3B6Dd5aefA05CF085F2104f3fC53F",
-    97: "0x5Bfa598212A6c15Dea22De0af2bd1B5124efAa9d",
+    97: "0xdE637209AC5E70fA2F2B6C86684E860fd474A33E",
   },
   weth: {
     56: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
@@ -92,12 +92,24 @@ export const contractAddresses = {
     56: "0xcF9fF354f29334E6Beeb2245051846801aE73f8F",
     97: "0xD99F67F5604D19371df6e599085719a365711d56",
   },
-};
-
-// Trigger deploy
-export const modelSetBundles = {
-  BaliGroupShoot: 6,
-  lilshawtygem: 7,
-  StellaMarisol: 8,
-  devan: 9,
+  masterMelonFarmer: {
+    56: "0x56088617B75822183323Ce56A742d163d19E7598",
+    97: "0xaB6AcF99Da8f510Db0deB8D0d0B04dF93BeA7Df2",
+  },
+  melon: {
+    56: "0x045F789e383B23076e7339aeBCab71D38dAD0f8A",
+    97: "0x17604Afe531536F97c320e998a724b50FAc848B6",
+  },
+  treatPancakeLP: {
+    56: "0xfa0c171aFE708b97ad61a136cB0499CDb1b7B10e",
+    97: "0x5278654c3c1d1666c909f33c80cea3e555838d88",
+  },
+  melonMart: {
+    56: "0xC3AE43eD146ffD40FC94f35Cf59F558f644955c9",
+    97: "0x1D6d323070cA13235D1D7FC7Ad78A36aE62c8725",
+  },
+  minterPermissionHelper: {
+    56: "0xcbeae003281F14598bE320E1eCe1236A6860b235",
+    97: "0x80582136C2d6c710aD528F2A9d30504665f65306",
+  }
 };

@@ -12,11 +12,11 @@ import { useDropzone } from "react-dropzone";
 import { create } from "ipfs-http-client";
 import async from "async";
 import BlankModal from "../../components/BlankModal";
-import BigNumber from "bignumber.js";
 import { useEffect } from "react";
 import * as Yup from "yup";
 import Web3 from "web3";
 import axios from "axios";
+import useSWR from "swr";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -24,6 +24,9 @@ const CreateNFT = ({ modelData }) => {
   const [ipfsFiles, setIpfsFiles] = useState([]);
   const router = useRouter();
   const [success, setSuccess] = useState(false);
+  const { data: bnbPrice } = useSWR(
+    `https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT`
+  );
 
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
@@ -209,6 +212,25 @@ const CreateNFT = ({ modelData }) => {
         <Hero
           title="Create Sweet Shop NFTs"
           subtitle="Complete this form carefully. Make sure you don't leave this page after submitting the creation transaction."
+          additionalContent={
+            <p
+              className="totw-secondary-text m-0 pb-3"
+              style={{ maxWidth: "none" }}
+            >
+              <a
+                href="https://help.treatdao.com/en/articles/5761127-how-to-price-your-nfts-to-sell-on-treat"
+                target="_blank"
+                className="text-primary"
+              >
+                <small>
+                  <b>
+                    Want to know where to start and how to best price your NFTs?
+                    Click here
+                  </b>
+                </small>
+              </a>
+            </p>
+          }
         />
 
         {(!formik.values.nfts || formik.values.nfts.length === 0) && (
@@ -236,6 +258,7 @@ const CreateNFT = ({ modelData }) => {
               formik.values.nfts.length > 0 &&
               formik.values.nfts.map((nft, i) => (
                 <CreatingNFTItem
+                  bnbPrice={bnbPrice && bnbPrice.price}
                   formik={formik}
                   modelData={modelData}
                   index={i}

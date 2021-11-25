@@ -8,7 +8,7 @@ import Web3 from "web3";
 
 dbConnect();
 
-const web3 = new Web3("https://bsc-dataseed2.defibit.io");
+const web3 = new Web3("https://bsc-dataseed2.defibit.io/");
 
 const treatNFTMinter = new web3.eth.Contract(
   TreatNFTMinterAbi,

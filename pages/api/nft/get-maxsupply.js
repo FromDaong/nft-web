@@ -7,7 +7,7 @@ import treatmart from "../../../treat/lib/abi/treatmart.json";
 import { contractAddresses } from "../../../treat/lib/constants";
 import { getOpenOrdersForSeller } from "../../../treat/utils";
 
-const web3 = new Web3("https://bsc-dataseed2.defibit.io");
+const web3 = new Web3("https://bsc-dataseed2.defibit.io/");
 
 const treatNFTMart = new web3.eth.Contract(
   treatmart,
