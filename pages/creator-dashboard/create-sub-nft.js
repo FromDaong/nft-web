@@ -208,6 +208,25 @@ const CreateNFT = ({ modelData }) => {
         <Hero
           title="Create New Subscription NFTs"
           subtitle="Complete this form carefully. Make sure you don't leave this page after submitting the creation transaction. NFTs created on this page will only be available to your subscribers and will be unblurred. If listed on the resale marketplace, the NFTs will be blurred publicly."
+          additionalContent={
+            <p
+              className="totw-secondary-text m-0 pb-3"
+              style={{ maxWidth: "none" }}
+            >
+              <a
+                href="https://help.treatdao.com/en/articles/5761127-how-to-price-your-nfts-to-sell-on-treat"
+                target="_blank"
+                className="text-primary"
+              >
+                <small>
+                  <b>
+                    Want to know where to start and how to best price your NFTs?
+                    Click here
+                  </b>
+                </small>
+              </a>
+            </p>
+          }
         />
 
         {(!formik.values.nfts || formik.values.nfts.length === 0) && (
