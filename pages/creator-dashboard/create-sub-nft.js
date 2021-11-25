@@ -16,8 +16,7 @@ import { useEffect } from "react";
 import * as Yup from "yup";
 import Web3 from "web3";
 import axios from "axios";
-
-const client = create("https://ipfs.infura.io:5001/api/v0");
+import useSWR from "swr";
 
 const CreateNFT = ({ modelData }) => {
   const [ipfsFiles, setIpfsFiles] = useState([]);
@@ -117,6 +116,10 @@ const CreateNFT = ({ modelData }) => {
       SubmitToServer();
     },
   });
+
+  const { data: bnbPrice } = useSWR(
+    `https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT`
+  );
 
   const [maxSupplyArray, setMaxSupplyArray] = useState(null);
   const [amountsArray, setAmountsArray] = useState(null);
@@ -254,6 +257,7 @@ const CreateNFT = ({ modelData }) => {
               formik.values.nfts.length > 0 &&
               formik.values.nfts.map((nft, i) => (
                 <CreatingNFTItem
+                  bnbPrice={bnbPrice.price}
                   formik={formik}
                   blurRequired={true}
                   modelData={modelData}
