@@ -51,6 +51,9 @@ export const getMelonContract = (treat) => {
 export const getMasterMelonFarmerContract = (treat) => {
   return treat && treat.contracts && treat.contracts.masterMelonFarmer;
 };
+export const getV1MasterMelonFarmerContract = (treat) => {
+  return treat && treat.contracts && treat.contracts.v1MasterMelonFarmer;
+};
 
 export const getTreatNFTMinterContract = (treat) => {
   return treat && treat.contracts && treat.contracts.treatNFTMinter;
