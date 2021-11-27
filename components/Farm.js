@@ -101,7 +101,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
             </InputGroup>
           </div>
           <div className="button-container">
-            {!+hasApproved ? (
+            {/*!+hasApproved ? (
               approveButton
             ) : (
               <Button
@@ -111,7 +111,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
               >
                 <b>Stake</b>
               </Button>
-            )}
+            )*/}
           </div>
         </div>
 
