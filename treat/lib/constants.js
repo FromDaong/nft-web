@@ -93,6 +93,10 @@ export const contractAddresses = {
     97: "0xD99F67F5604D19371df6e599085719a365711d56",
   },
   masterMelonFarmer: {
+    56: "0xFe01fd1c890C3de7A749Bf135218f1aA869d2db7",
+    97: "0xaB6AcF99Da8f510Db0deB8D0d0B04dF93BeA7Df2",
+  },
+  v1MasterMelonFarmer: {
     56: "0x56088617B75822183323Ce56A742d163d19E7598",
     97: "0xaB6AcF99Da8f510Db0deB8D0d0B04dF93BeA7Df2",
   },
@@ -111,5 +115,5 @@ export const contractAddresses = {
   minterPermissionHelper: {
     56: "0xcbeae003281F14598bE320E1eCe1236A6860b235",
     97: "0x80582136C2d6c710aD528F2A9d30504665f65306",
-  }
+  },
 };

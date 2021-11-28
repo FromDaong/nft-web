@@ -1,22 +1,30 @@
-import { useCallback } from 'react'
+import { useCallback } from "react";
 import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";
-import { getMasterMelonFarmerContract, unstakeFarm } from '../treat/utils'
+import {
+  getMasterMelonFarmerContract,
+  getV1MasterMelonFarmerContract,
+  unstakeFarm,
+} from "../treat/utils";
 
-const useUnstakeFarms = (pid: number) => {
+const useUnstakeFarms = (pid: number, v1: boolean) => {
   const { account } = useWallet();
   const treat = useTreat();
-  const masterMelonFarmerContract = getMasterMelonFarmerContract(treat)
+  const masterMelonFarmerContract = getMasterMelonFarmerContract(treat);
+  const v1MasterMelonFarmerContract = getV1MasterMelonFarmerContract(treat);
 
   const handleUnstake = useCallback(
     async (amount: string) => {
-      await unstakeFarm(masterMelonFarmerContract, pid, amount)
+      await unstakeFarm(
+        v1 ? v1MasterMelonFarmerContract : masterMelonFarmerContract,
+        pid,
+        amount
+      );
     },
-    [masterMelonFarmerContract, pid],
-  )
+    [masterMelonFarmerContract, pid]
+  );
 
-  return { onUnstake: handleUnstake }
-}
+  return { onUnstake: handleUnstake };
+};
 
-export default useUnstakeFarms
-
+export default useUnstakeFarms;

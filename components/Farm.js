@@ -16,9 +16,10 @@ const Farm = ({ contract, treatBal, title, pid }) => {
   const { onReward } = contract && useHarvestFarms(pid);
   const { onApprove } = contract && useApproveContract(pid);
   const { onStake } = contract && useStakeFarms(pid);
+  const { onUnstake: onV1Unstake } = contract && useUnstakeFarms(pid, true);
   const { onUnstake } = contract && useUnstakeFarms(pid);
   const pendingMelons = useGetPendingMelons(pid);
-  console.log({ pendingMelons });
+  const v1StakedAmount = useGetStakedAmount(pid, true);
   const stakedAmount = useGetStakedAmount(pid);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
@@ -86,14 +87,14 @@ const Farm = ({ contract, treatBal, title, pid }) => {
                 placeholder="Amount"
                 type="number"
                 aria-describedby="basic-addon2"
-                onChange={(e) => setStakeAmount(Math.round(e.target.value))}
+                onChange={(e) => setStakeAmount(Math.floor(e.target.value))}
                 value={stakeAmount}
               />
               <Button
                 variant="primary"
                 className="px-4 py-2"
                 onClick={(e) =>
-                  setStakeAmount(Math.round(getBalanceNumber(treatBal)))
+                  setStakeAmount(Math.floor(getBalanceNumber(treatBal)))
                 }
               >
                 <b>Max</b>
@@ -120,7 +121,11 @@ const Farm = ({ contract, treatBal, title, pid }) => {
           <div className="description-container">
             <b className="larger">Staked:</b>
             <br />
-            <b>{stakedAmount && getDisplayBalance(stakedAmount)}</b> {title}
+            <b>
+              {stakedAmount &&
+                getDisplayBalance(v1StakedAmount || stakedAmount)}
+            </b>{" "}
+            {title}
           </div>
           <div className="input-container">
             <InputGroup className="mb-3">
@@ -128,14 +133,16 @@ const Farm = ({ contract, treatBal, title, pid }) => {
                 placeholder="Amount"
                 type="number"
                 aria-describedby="basic-addon2"
-                onChange={(e) => setUnstakeAmount(Math.round(e.target.value))}
+                onChange={(e) => setUnstakeAmount(Math.floor(e.target.value))}
                 value={unstakeAmount}
               />
               <Button
                 variant="primary"
                 className="px-4 py-2"
                 onClick={() =>
-                  setUnstakeAmount(Math.round(getBalanceNumber(stakedAmount)))
+                  setUnstakeAmount(
+                    Math.floor(getBalanceNumber(v1StakedAmount || stakedAmount))
+                  )
                 }
               >
                 <b>Max</b>
@@ -149,7 +156,12 @@ const Farm = ({ contract, treatBal, title, pid }) => {
               <Button
                 variant="primary"
                 className="w-100 py-2"
-                onClick={() => actionWithModal(onUnstake, unstakeAmount)}
+                onClick={() =>
+                  actionWithModal(
+                    v1StakedAmount ? onV1Unstake : onUnstake,
+                    unstakeAmount
+                  )
+                }
               >
                 <b>Unstake</b>
               </Button>
