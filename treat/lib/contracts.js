@@ -50,8 +50,11 @@ export class Contracts {
     this.treat2 = new this.web3.eth.Contract(Treat2Abi);
     this.melon = new this.web3.eth.Contract(MelonAbi);
     this.masterMelonFarmer = new this.web3.eth.Contract(MasterMelonFarmerAbi);
+    this.v1MasterMelonFarmer = new this.web3.eth.Contract(MasterMelonFarmerAbi);
     this.treatPancakeLP = new this.web3.eth.Contract(PancakeLPAbi);
-    this.minterPermissionHelper = new this.web3.eth.Contract(MinterPermissionHelperAbi);
+    this.minterPermissionHelper = new this.web3.eth.Contract(
+      MinterPermissionHelperAbi
+    );
 
     this.setProvider(provider, networkId);
     this.setDefaultAccount(this.web3.eth.defaultAccount);
@@ -113,10 +116,17 @@ export class Contracts {
       contractAddresses.masterMelonFarmer[networkId]
     );
     setProvider(
+      this.v1MasterMelonFarmer,
+      contractAddresses.v1MasterMelonFarmer[networkId]
+    );
+    setProvider(
       this.treatPancakeLP,
       contractAddresses.treatPancakeLP[networkId]
     );
-    setProvider(this.minterPermissionHelper, contractAddresses.minterPermissionHelper[networkId]);
+    setProvider(
+      this.minterPermissionHelper,
+      contractAddresses.minterPermissionHelper[networkId]
+    );
   }
 
   setDefaultAccount(account) {
@@ -136,6 +146,7 @@ export class Contracts {
     this.treat2.options.from = account;
     this.melon.options.from = account;
     this.masterMelonFarmer.options.from = account;
+    this.v1MasterMelonFarmer.options.from = account;
     this.treatPancakeLP.options.from = account;
     this.minterPermissionHelper.options.from = account;
   }
