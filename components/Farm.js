@@ -9,6 +9,7 @@ import useGetStakedAmount from "../hooks/useGetStakedAmount";
 import useStakeFarms from "../hooks/useStakeFarms";
 import useHarvestFarms from "../hooks/useHarvestFarm";
 import useUnstakeFarms from "../hooks/useUnstakeFarms";
+import BigNumber from "bignumber.js";
 
 const Farm = ({ contract, treatBal, title, pid }) => {
   const hasApproved = contract && hasApprovedContract(pid);
@@ -29,7 +30,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
   const formattedV1StakedAmount =
     v1StakedAmount && getBalanceNumber(v1StakedAmount);
 
-  console.log({ formattedV1StakedAmount });
+  console.log({ unstakeAmount, bn: new BigNumber(unstakeAmount) });
 
   const approveContract = () => {
     setShowPendingModal(true);
@@ -174,7 +175,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
                 className="w-100 py-2"
                 onClick={() =>
                   actionWithModal(
-                    v1StakedAmount ? onV1Unstake : onUnstake,
+                    !!formattedV1StakedAmount ? onV1Unstake : onUnstake,
                     unstakeAmount
                   )
                 }
