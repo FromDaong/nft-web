@@ -165,7 +165,8 @@ function walletWrapper(props) {
           },
         },
         walletconnect: {
-          rpcUrl: "https://bsc-dataseed2.defibit.io/",
+          rpcUrl:
+            "https://divine-restless-feather.bsc.quiknode.pro/f9ead03ddd05508e4fe1f6952eea26ac035c8408/",
           chainId: 56,
         },
       }}

@@ -76,8 +76,8 @@ const Farm = ({ contract, treatBal, title, pid }) => {
         show={!!showCompleteModal}
         handleClose={() => setShowCompleteModal(false)}
       />
-      {/* END MODALS */}
 
+      {/* END MODALS */}
       <div className="title">
         Stake {title}
         {!!formattedV1StakedAmount && (
