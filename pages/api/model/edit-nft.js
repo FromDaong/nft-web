@@ -8,7 +8,9 @@ import Web3 from "web3";
 
 dbConnect();
 
-const web3 = new Web3("https://bsc-dataseed2.defibit.io/");
+const web3 = new Web3(
+  "https://divine-restless-feather.bsc.quiknode.pro/f9ead03ddd05508e4fe1f6952eea26ac035c8408/"
+);
 
 const treatNFTMinter = new web3.eth.Contract(
   TreatNFTMinterAbi,
