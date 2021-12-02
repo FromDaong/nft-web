@@ -322,7 +322,7 @@ const ViewNFT = ({ account, nftArray }) => {
     if (account && treat) {
       const signature = await treat.signMessage(account, "Reveal Contents");
 
-      const nftIds = nftArray.map((n) => n.id);
+      const nftIds = nftBalances.map((n) => n.id);
 
       setIsLoading(true);
       const res = await fetch(`/api/nft/view-nfts`, {
