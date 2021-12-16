@@ -15,6 +15,7 @@ const BlankModal = ({
   buttonLabel,
   noButton,
   centered,
+  hideClose,
 }) => {
   const router = useRouter();
   const reload = () => {
@@ -46,9 +47,11 @@ const BlankModal = ({
               {buttonLabel || "Finish"}
             </Button>
           )}
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
+          {!hideClose && (
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+          )}
         </Modal.Footer>
       </Modal>
     </>

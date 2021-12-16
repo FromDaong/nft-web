@@ -1,5 +1,5 @@
 import dbConnect from "../../../utils/dbConnect";
-import NFT from "../../../models/NFT";
+import PendingNFT from "../../../models/PendingNFT";
 import Model from "../../../models/Model";
 import withSession from "../../../lib/session";
 import { contractAddresses } from "../../../treat/lib/constants";
@@ -41,7 +41,7 @@ export default withSession(async (req, res) => {
           req.body.nfts.map((nft) => {
             return new Promise(async (resolve, reject) => {
               const nftBody = {
-                id: Number(nft.id),
+                tx_hash: nft.tx_hash,
                 list_price: nft.list_price,
                 name: nft.name,
                 description: nft.description,
@@ -65,29 +65,18 @@ export default withSession(async (req, res) => {
               };
 
               try {
-                const newNFT = await NFT.create(nftBody);
-                await Model.updateOne(
-                  { address: nft.model_bnb_address },
-                  {
-                    $push: {
-                      nfts: {
-                        id: nft.id,
-                      },
-                    },
-                  },
-                  {
-                    _id: false,
-                  }
-                );
+                const newNFT = await PendingNFT.create(nftBody);
+                console.log("NEW NFT CREATED");
                 resolve(newNFT);
               } catch (e) {
+                console.log("NEW NFT ERRORED");
                 reject(e);
               }
             });
           })
         );
 
-        console.log("New NFT THROUGH CREATE NFTs", newNFTs);
+        console.log("New NFT", newNFTs);
 
         res.status(200).json({ success: true, newNFTs });
       } catch (error) {

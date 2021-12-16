@@ -4,11 +4,10 @@ const NFTSchema = new mongoose.Schema(
   {
     id: {
       type: Number,
-      required: [true, "Please add an NFT ID"],
-      unique: "ID is already taken",
     },
     tx_hash: {
       type: String,
+      required: [true, "Please add a TX hash"],
     },
     name: {
       type: String,
@@ -93,4 +92,5 @@ const NFTSchema = new mongoose.Schema(
 
 NFTSchema.plugin(require("mongoose-beautiful-unique-validation"));
 
-module.exports = mongoose.models.NFT || mongoose.model("NFT", NFTSchema);
+module.exports =
+  mongoose.models.PendingNFT || mongoose.model("PendingNFT", NFTSchema);
