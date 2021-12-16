@@ -143,7 +143,7 @@ const Home = () => {
                   Mint new NFTs
                 </div>
                 <div className="desc">
-                  Use or in-house NFT minter, where you can convert photos into
+                  Use our in-house NFT minter, where you can convert photos into
                   Treat NFTs to be sold on our public creator marketplace which
                   we call: “The Sweet Shop”
                 </div>
