@@ -367,14 +367,25 @@ export const createAndAddNFTs = async (
   maxSupplys,
   amounts,
   isNotListedFlags,
-  hexData
+  hexData,
+  returnPromise
 ) => {
   try {
-    const result = await creatorMartContract.methods
-      .createAndAddNFTs(maxSupplys, amounts, isNotListedFlags, hexData)
-      .send({ from: account, value: 0 });
-
-    return result.events.NFTCreatedAndAdded.returnValues;
+    if (!returnPromise) {
+      const result = await creatorMartContract.methods.createAndAddNFTs(
+        maxSupplys,
+        amounts,
+        isNotListedFlags,
+        hexData
+      );
+      return result.events.NFTCreatedAndAdded.returnValues;
+    } else
+      return creatorMartContract.methods.createAndAddNFTs(
+        maxSupplys,
+        amounts,
+        isNotListedFlags,
+        hexData
+      );
   } catch (e) {
     console.log({ e });
     return undefined;

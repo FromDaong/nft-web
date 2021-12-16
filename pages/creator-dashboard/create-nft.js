@@ -24,6 +24,8 @@ const CreateNFT = ({ modelData }) => {
   const [ipfsFiles, setIpfsFiles] = useState([]);
   const router = useRouter();
   const [success, setSuccess] = useState(false);
+  const [sentWithoutIds, setSentWithoutIds] = useState(false);
+  const [sentWithIds, setSentWithIds] = useState(false);
   const { data: bnbPrice } = useSWR(
     `https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT`
   );
@@ -125,12 +127,6 @@ const CreateNFT = ({ modelData }) => {
   const [maxSupplyArray, setMaxSupplyArray] = useState(null);
   const [amountsArray, setAmountsArray] = useState(null);
 
-  const { onCreateAndAddNFTs } = useCreateAndAddNFTs(
-    maxSupplyArray,
-    amountsArray,
-    "0x"
-  );
-
   useEffect(() => {
     const maxSupplies = formik.values.nfts.map((n) => n.max_supply);
     const amounts = formik.values.nfts.map(
@@ -143,18 +139,67 @@ const CreateNFT = ({ modelData }) => {
     setAmountsArray(amounts);
   }, [formik.values.nfts]);
 
-  const SubmitToServer = async () => {
-    try {
-      setShowPendingModal(true);
-      const createNFTResult = await onCreateAndAddNFTs();
+  const {
+    onCreateAndAddNFTs,
+    data: createNFTResult,
+    txHash,
+  } = useCreateAndAddNFTs(maxSupplyArray, amountsArray, "0x");
 
-      if (!createNFTResult) return setShowPendingModal(false);
+  useEffect(() => {
+    if (!showPendingModal || !txHash || sentWithoutIds) return;
 
+    (async () => {
+      // Create NFTs without NFT IDs
+      const submitValues = formik.values.nfts.map((nftData, i) => ({
+        ...nftData,
+        tx_hash: txHash,
+        blurhash: nftData.blurhash ? nftData.blurhash : null,
+      }));
+
+      const res = await fetch(`/api/model/create-nfts-without-ids`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nfts: submitValues,
+          address: modelData.address,
+        }),
+      });
+      const resJSON = await res.json();
+
+      if (resJSON.error && resJSON.error.errors) {
+        console.log(resJSON.error);
+        const ogErrors = Object.assign({}, resJSON.error.errors);
+        Object.keys(ogErrors).map((e) => {
+          ogErrors[e] = resJSON.error.errors[e].message;
+        });
+        formik.setErrors(ogErrors);
+        formik.setSubmitting(false);
+      }
+
+      if (resJSON.success) {
+        setSentWithoutIds(true);
+        setShowPendingModal(false);
+        setShowCompleteModal(true);
+      }
+    })();
+  }, [txHash]);
+
+  useEffect(() => {
+    if (!createNFTResult || sentWithIds) return;
+
+    (async () => {
+      // Create NFTs without NFT IDs
       const submitValues = formik.values.nfts.map((nftData, i) => ({
         ...nftData,
         id: createNFTResult.nftIds[i],
         blurhash: nftData.blurhash ? nftData.blurhash : null,
       }));
+
+      setShowPendingModal(true);
+      setShowCompleteModal(false);
 
       const res = await fetch(`/api/model/create-nfts`, {
         method: "POST",
@@ -179,12 +224,18 @@ const CreateNFT = ({ modelData }) => {
         formik.setErrors(ogErrors);
         formik.setSubmitting(false);
       }
-
       if (resJSON.success) {
-        setSuccess(true);
+        setSentWithIds(true);
         setShowPendingModal(false);
         setShowCompleteModal(true);
       }
+    })();
+  }, [createNFTResult]);
+
+  const SubmitToServer = async () => {
+    try {
+      setShowPendingModal(true);
+      const createNFTResult = await onCreateAndAddNFTs();
     } catch (error) {
       console.log(error);
     }
@@ -203,6 +254,7 @@ const CreateNFT = ({ modelData }) => {
         noButton={true}
       />
       <BlankModal
+        hideClose
         show={!!showCompleteModal}
         handleClose={() => setShowCompleteModal(false)}
         buttonAction={() => router.push("/creator-dashboard")}
