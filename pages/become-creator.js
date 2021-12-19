@@ -3,7 +3,6 @@ import useSWR from "swr";
 import toBuffer from "blob-to-buffer";
 import {
   Button,
-  InputGroup,
   FormControl,
   Form,
   FormCheck,
@@ -212,7 +211,7 @@ const CreateModel = () => {
                 }
               />
             </div>
-            <div className="pb-5 pt-2 verify-container">
+            <div className="pb-4 pt-2 verify-container">
               <label>Verify your identity</label>
 
               <VerifyButton
@@ -263,7 +262,7 @@ const CreateModel = () => {
                     <label className="black">
                       I agree to the{" "}
                       <a
-                        href="/tos"
+                        href="https://drive.google.com/file/d/1Li5EAK8sP71rY1wT9J87mUCjLWmjcO2a/view?usp=sharing"
                         style={{
                           color: "inherit",
                           textDecoration: "underline",
@@ -276,7 +275,7 @@ const CreateModel = () => {
                   </FormCheck.Label>
                 </FormCheck>
                 <small className="text-danger">
-                  {formik.errors["terms_accepted"]}{" "}
+                  {formik.errors["terms_accepted"]}
                 </small>
               </FormGroup>
             </div>
