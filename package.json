@@ -55,7 +55,7 @@
     "react-select": "^5.1.0",
     "react-use-intercom": "^1.4.0",
     "react-use-pagination": "^2.0.1",
-    "sass": "^1.36.0",
+    "sass": "~1.32.12",
     "stripe": "^8.165.0",
     "styled-components": "^5.3.1",
     "swiper": "^7.2.0",
