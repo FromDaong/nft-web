@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 import toBuffer from "blob-to-buffer";
-import { Button, InputGroup, FormControl, Form } from "react-bootstrap";
+import {
+  Button,
+  FormControl,
+  Form,
+  FormCheck,
+  FormGroup,
+} from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/router";
@@ -41,6 +47,7 @@ const CreateModel = () => {
       email: Yup.string().required("Please add a Email"),
       referrer_address: Yup.string(),
       identity_access_key: Yup.string().required("Please verify your identity"),
+      terms_accepted: Yup.boolean().oneOf([true], "Please accept the terms"),
     }),
     onSubmit: (values) => {
       SubmitToServer();
@@ -204,7 +211,7 @@ const CreateModel = () => {
                 }
               />
             </div>
-            <div className="pb-5 pt-2 verify-container">
+            <div className="pb-4 pt-2 verify-container">
               <label>Verify your identity</label>
 
               <VerifyButton
@@ -239,6 +246,40 @@ const CreateModel = () => {
                 }
               /> */}
             </div>
+
+            <div className="pb-4">
+              <br />
+              <FormGroup>
+                <FormCheck>
+                  <Form.Check.Input
+                    type="checkbox"
+                    isValid={formik.values.terms_accepted}
+                    onChange={(e) =>
+                      formik.setFieldValue("terms_accepted", e.target.checked)
+                    }
+                  />
+                  <FormCheck.Label>
+                    <label className="black">
+                      I agree to the{" "}
+                      <a
+                        href="https://drive.google.com/file/d/1Li5EAK8sP71rY1wT9J87mUCjLWmjcO2a/view?usp=sharing"
+                        style={{
+                          color: "inherit",
+                          textDecoration: "underline",
+                        }}
+                        target="_blank"
+                      >
+                        terms of service.
+                      </a>
+                    </label>
+                  </FormCheck.Label>
+                </FormCheck>
+                <small className="text-danger">
+                  {formik.errors["terms_accepted"]}
+                </small>
+              </FormGroup>
+            </div>
+
             <Button
               variant="primary w-100"
               onClick={formik.handleSubmit}
