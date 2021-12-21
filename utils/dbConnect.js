@@ -9,9 +9,13 @@ async function dbConnect() {
 
   // test
   const db = await mongoose.connect(process.env.MONGO_URL, {
+    // const db = await mongoose.connect(
+    //   "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false",
+    //   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-  });
+  }
+  );
 
   //
   // const db = await mongoose.connect("mongodb://localhost:27017/treat", {
