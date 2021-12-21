@@ -101,6 +101,8 @@ export default withSession(async (req, res) => {
         });
         console.log({ numberOfNFTs, nftIDs });
 
+
+        res.status(200).json({ success: true });
         // console.log({ logs });
       } catch (error) {
         console.log({ error });
