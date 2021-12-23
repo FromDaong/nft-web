@@ -21,8 +21,7 @@ const ModelListItem = ({ data, totwOnly = false, disableAnim }) => {
     <a href={`/creator/${data.username.replace("@", "")}`}>
       <div className="model-list-item">
         <div className="creator">
-          <div className="pic">
-            <img src={data.profile_pic} className="profile-pic" />
+          <div className="pic" style={{ backgroundImage: `url(${data.profile_pic})` }}>
           </div>
           <div className="details">
             <div className="label">CREATOR</div>
