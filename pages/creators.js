@@ -16,7 +16,7 @@ const Creators = () => {
 
   const fuse = new Fuse(modelData, {
     keys: ["username", "display_name"],
-    shouldSort: false,
+    shouldSort: true,
     useExtendedSearch: true,
     includeScore: true,
   });
