@@ -9,6 +9,8 @@ import Fuse from "fuse.js";
 import Select from "react-select";
 
 const Creators = () => {
+  // TODO Get models total items
+  // get data for relevant models (startIndex endIndex)
   const { data: modelData } = useSWR(`/api/model`);
   const [searchFilter, setSearchFilter] = useState("");
 
