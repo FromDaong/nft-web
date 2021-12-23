@@ -1,29 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Spinner from "react-bootstrap/Spinner";
 import ModelListItem from "../ModelListItem";
-import useSWR from "swr";
 import * as Scroll from "react-scroll";
-import { motion } from "framer-motion";
 
-const ModelList = ({ totwOnly = false }) => {
-  const { data: modelResult } = useSWR(`/api/model`);
-  const [modelData, setModelData] = useState();
-  const [showToast, setShowToast] = useState(true);
-  const toggleShowToast = () => setShowToast(!showToast);
+/**
+ *
+ * TODO
+ * Move pagination to its own component
+ * Pass model data down to model list component.
+ *
+ */
 
-  useEffect(() => {
-    (async () => {
-      if (modelResult) {
-        setModelData(modelResult);
-      }
-    })();
-  }, [modelResult]);
+const ModelList = ({ totwOnly = false, modelData, startIndex, endIndex }) => {
 
   let modelListRender;
 
   if (modelData) {
     const mR = modelData
-      .map((model) => {
+      .slice(startIndex, endIndex || modelData.length)
+      .map((raw) => {
+        const model = raw.item;
+
         if (model.pending || model.rejected || model.hidden) return undefined;
         if (totwOnly) {
           if (model && model.totw) {
@@ -39,7 +36,7 @@ const ModelList = ({ totwOnly = false }) => {
           } else return undefined;
         } else {
           return (
-            <div className="card bg-transparent border-0">
+            <div className="bg-transparent border-0 col-md-4">
               <ModelListItem key={model.username} data={model} />
             </div>
           );
@@ -48,27 +45,9 @@ const ModelList = ({ totwOnly = false }) => {
       .filter((e) => e);
 
     modelListRender = (
-      <motion.div
-        className="card-columns"
-        animate="show"
-        exit="hidden"
-        initial="hidden"
-        variants={{
-          show: {
-            transition: { staggerChildren: 0.05 },
-            opacity: 1,
-          },
-          hidden: {
-            transition: {
-              staggerChildren: 0.02,
-              staggerDirection: -1,
-              when: "afterChildren",
-            },
-          },
-        }}
-      >
+      <div className="row">
         {mR}
-      </motion.div>
+      </div>
     );
   } else {
     modelListRender = (

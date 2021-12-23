@@ -25,6 +25,7 @@
   }
 
   .profile-pic {
+    min-height: 300px;
     width: 100%;
   }
 
@@ -59,6 +60,11 @@
       width: 100%;
       border-radius: 8px;
     }
+    height: 450px;
+    border-radius: 8px;
+    background: lightgrey;
+    background-size: cover;
+    background-position: center;
   }
   .details {
     font-weight: 600;
