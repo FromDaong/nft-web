@@ -47,6 +47,7 @@ const Marketplace = ({ search }) => {
 
   let filteredArray;
 
+  // yes search + no dropdown
   if (searchFilter !== "" && selectedOptionsStr === "") {
     filteredArray = fuse.search({
       $or: [
@@ -55,15 +56,21 @@ const Marketplace = ({ search }) => {
         { model_handle: searchFilter },
       ],
     });
+
+    // yes search + yes dropdown
   } else if (searchFilter !== "" && selectedOptionsStr !== "") {
     filteredArray = fuse.search({
       $and: [{ tags: selectedOptionsStr }],
       $or: [{ name: searchFilter }],
     });
+
+    // no search + yes dropdown
   } else if (searchFilter == "" && selectedOptionsStr !== "") {
     filteredArray = fuse.search({
       $and: [{ tags: selectedOptionsStr }],
     });
+
+    // no filtering
   } else {
     filteredArray = nftDataArray.map((d, idx) => ({
       item: d,
