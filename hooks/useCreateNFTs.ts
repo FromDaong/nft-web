@@ -14,7 +14,7 @@ const useCreateNFTs = (maxSupplys: Array<number>) => {
       account,
       maxSupplys
     );
-    console.log(txHash);
+
     return txHash;
   }, [account, maxSupplys, creatorMinterHelperContract]);
 

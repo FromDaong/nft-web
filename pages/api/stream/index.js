@@ -37,9 +37,9 @@ export default withSession(async (req, res) => {
     case "POST":
       try {
         if (req.body.status !== "confirmed") return res.status(200);
-        console.log("New", req.body.status);
+        
         await wait(5000);
-        console.log("WAITIED");
+        
 
         const logs = await web3.eth.getPastLogs({
           address: contractAddresses.creatorMart[56],
@@ -57,20 +57,20 @@ export default withSession(async (req, res) => {
         const logDataArray = log.data
           .substring(2, log.data.length)
           .match(/.{1,64}/g);
-        console.log({ logDataArray });
+        
 
         const numberOfNFTs = Web3.utils.hexToNumber("0x" + logDataArray[4]);
-        console.log({ numberOfNFTs });
+        
 
         const nftIDs = [...Array(numberOfNFTs).keys()].map((i) =>
           web3.utils.hexToNumber("0x" + logDataArray[5 + i])
         );
-        console.log({ nftIDs });
+        
 
         const pendingNFTs = await PendingNFT.find({
           tx_hash: log.transactionHash,
         });
-        console.log({ pendingNFTs });
+        
 
         await pendingNFTs.forEach(async (n, i) => {
           try {
@@ -93,19 +93,19 @@ export default withSession(async (req, res) => {
               }
             );
 
-            console.log({ newNFT });
+            
             return newNFT;
           } catch (e) {
-            console.log({ e });
+            console.error({ e });
           }
         });
-        console.log({ numberOfNFTs, nftIDs });
+        
 
 
         res.status(200).json({ success: true });
-        // console.log({ logs });
+        
       } catch (error) {
-        console.log({ error });
+        console.error({ error });
         res.status(200).json({ success: false, error: error });
       }
       break;

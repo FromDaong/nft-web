@@ -13,7 +13,7 @@ const useGetSubscriptionCost = (address: string) => {
 
   const fetchSubCost = useCallback(async () => {
     const subscriptionCost = await getSubCost(subscriptionContract, address);
-    console.log({ subcriptionCostInitial: getBalanceNumber(subscriptionCost) });
+
     setSubscriptionCost(new BigNumber(subscriptionCost));
   }, [address, treat]);
 

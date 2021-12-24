@@ -87,11 +87,11 @@ export default withSession(async (req, res) => {
           })
         );
 
-        console.log("New NFT THROUGH CREATE NFTs", newNFTs);
+        
 
         res.status(200).json({ success: true, newNFTs });
       } catch (error) {
-        console.log({ error });
+        console.error({ error });
         res.status(400).json({ success: false, error: error });
       }
       break;

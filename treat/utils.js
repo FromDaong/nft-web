@@ -330,7 +330,7 @@ export const createBulkTotwNFTs = async (
 
     return result.events.TotwNftsCreated.returnValues;
   } catch (e) {
-    console.log({ e });
+    console.error({ e });
     return undefined;
   }
 };
@@ -343,20 +343,13 @@ export const createAndAddMelonNFTs = async (
   hexData
 ) => {
   try {
-    console.log({
-      maxSupplys,
-      creators,
-      hexData,
-      account: account.toLowerCase(),
-    });
     const result = await melonMartContract.methods
       .createAndAddNFTs(maxSupplys, creators, hexData)
       .send({ from: account, value: 0 });
 
-    console.log(result.events.MelonNFTCreatedAndAdded.returnValues);
     return result.events.MelonNFTCreatedAndAdded.returnValues;
   } catch (e) {
-    console.log({ e1: e });
+    console.error({ e1: e });
     return undefined;
   }
 };
@@ -387,7 +380,7 @@ export const createAndAddNFTs = async (
         hexData
       );
   } catch (e) {
-    console.log({ e });
+    console.error({ e });
     return undefined;
   }
 };
@@ -407,7 +400,7 @@ export const createAndAddSubscriberNFTs = async (
 
     return result.events.NFTCreatedAndAdded.returnValues;
   } catch (e) {
-    console.log({ e });
+    console.error({ e });
     return undefined;
   }
 };
@@ -448,12 +441,11 @@ export const addCreatorNft = async (
   nftCosts
 ) => {
   try {
-    console.log({ nftIds, nftCosts });
     return await creatorMartContract.methods
       .addNFT(nftIds, nftCosts)
       .send({ from: account, value: 0 });
   } catch (e) {
-    console.log({ e });
+    console.error({ e });
     return undefined;
   }
 };
@@ -534,7 +526,6 @@ export const mintFreeCreatorTreat = async (
 export const getSetIds = async (treatMartContract, setId) => {
   try {
     const txHash = await treatMartContract.methods.getSetIds(setId).call();
-    console.log(txHash);
   } catch (e) {
     console.error(e);
     return undefined;
@@ -544,7 +535,6 @@ export const getSetIds = async (treatMartContract, setId) => {
 export const getSubscriberSetIds = async (subscriberMartContract, setId) => {
   try {
     const txHash = await subscriberMartContract.methods.getSetIds(setId).call();
-    console.log(txHash);
   } catch (e) {
     console.error(e);
     return undefined;
@@ -554,7 +544,6 @@ export const getSubscriberSetIds = async (subscriberMartContract, setId) => {
 export const getCreatorSetIds = async (creatorMartContract, setId) => {
   try {
     const txHash = await creatorMartContract.methods.getSetIds(setId).call();
-    console.log(txHash);
   } catch (e) {
     console.error(e);
     return undefined;
@@ -594,13 +583,11 @@ export const redeemSet = async (
   nftSetId,
   setCost
 ) => {
-  console.log({ mintSetCost: setCost?.toString() });
   try {
     const txHash = await treatMartContract.methods.redeemSet(nftSetId).send({
       from: account,
       value: setCost,
     });
-    console.log(txHash);
   } catch (e) {
     console.error(e);
     return undefined;
@@ -613,7 +600,6 @@ export const redeemSubscriberSet = async (
   nftSetId,
   setCost
 ) => {
-  console.log({ mintSetCost: setCost?.toString() });
   try {
     const txHash = await subscriberMartContract.methods
       .redeemSet(nftSetId)
@@ -621,7 +607,6 @@ export const redeemSubscriberSet = async (
         from: account,
         value: setCost,
       });
-    console.log(txHash);
   } catch (e) {
     console.error(e);
     return undefined;
@@ -634,13 +619,11 @@ export const redeemCreatorSet = async (
   nftSetId,
   setCost
 ) => {
-  console.log({ mintSetCost: setCost?.toString() });
   try {
     const txHash = await creatorMartContract.methods.redeemSet(nftSetId).send({
       from: account,
       value: setCost,
     });
-    console.log(txHash);
   } catch (e) {
     console.error(e);
     return undefined;
@@ -653,26 +636,24 @@ export const redeemV1forV2 = async (
   nftIds,
   amounts
 ) => {
-  console.log({ v1Amounts: amounts?.toString() });
   try {
     const txHash = await treatTradeInContract.methods
       .tradeInMultiple(nftIds, amounts)
       .send({ from: account });
   } catch (e) {
-    console.log({ e });
+    console.error({ e });
     console.error(e);
     return undefined;
   }
 };
 
 export const tradeInV1ForV2 = async (treatV1ForV2Contract, account, amount) => {
-  console.log({ v1Amount: amount?.toString() });
   try {
     const txHash = await treatV1ForV2Contract.methods
       .tradeInTreat(amount)
       .send({ from: account });
   } catch (e) {
-    console.log({ e });
+    console.error({ e });
     console.error(e);
     return undefined;
   }
@@ -749,7 +730,7 @@ export const addReferrerToMinter = async (
       .addTreatReferrer(performerAddress, referrerAddress)
       .send({ from: account, value: 0 });
   } catch (e) {
-    console.log({ e });
+    console.error({ e });
     console.error(e);
     return undefined;
   }
@@ -784,7 +765,7 @@ export const addPerformerToMinter = async (
       .addPerformer(performerAddress)
       .send({ from: account, value: 0 });
   } catch (e) {
-    console.log({ e });
+    console.error({ e });
     console.error(e);
     return undefined;
   }
@@ -800,7 +781,7 @@ export const removePerformerFromMinter = async (
       .removePerformer(performerAddress)
       .send({ from: account, value: 0 });
   } catch (e) {
-    console.log({ e });
+    console.error({ e });
     console.error(e);
     return undefined;
   }
@@ -892,7 +873,7 @@ export const listOrder = async (
         from: account,
       });
   } catch (e) {
-    console.log({ error: e });
+    console.error({ error: e });
   }
 };
 
@@ -904,7 +885,6 @@ export const purchaseOrder = async (
   account,
   totalPrice
 ) => {
-  console.log({ totalPrice, nftId });
   return await treatMarketplaceContract.methods
     .purchase(nftId, quantity, seller)
     .send({
@@ -940,7 +920,7 @@ export const getOpenOrdersForSeller = async (
     const orders = await treatMarketplaceContract.methods
       .getOpenOrdersForSeller(seller)
       .call();
-    console.log({ rawOrders: orders });
+
     return orders.map((o) => parseInt(o));
   } catch (err) {
     console.error(`get orders for seller failed: ${err}`);
@@ -1001,7 +981,7 @@ export const getAllOrdersForSeller = async (
     const orders = await treatMarketReaderContract.methods
       .readAllOrdersForSeller(seller)
       .call();
-    console.log({ rawOrders: orders });
+
     return orders.map((o) => parseInt(o));
   } catch (err) {
     console.error(`get orders for seller failed: ${err}`);
@@ -1014,7 +994,7 @@ export const getAllOrdersForNft = async (treatMarketReaderContract, nftId) => {
     const orders = await treatMarketReaderContract.methods
       .readAllOrdersForNft(nftId)
       .call();
-    console.log({ rawOrders: orders });
+
     return orders.map((o) => parseInt(o));
   } catch (err) {
     console.error(`get orders for seller failed: ${err}`);
@@ -1041,7 +1021,6 @@ export const getOrdersInfoForNftRange = async (
       };
     });
 
-    console.log({ startNftId, endNftId, x });
     return x;
   } catch (err) {
     console.error(`get orders for seller failed: ${err}`);

@@ -14,7 +14,6 @@ const useUnlockSubscriber = (subAddress: string) => {
       account,
       subAddress
     );
-    console.log(txHash);
     return txHash;
   }, [account, subAddress, treatSubscriptionContract]);
 

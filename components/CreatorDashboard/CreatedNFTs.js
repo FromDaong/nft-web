@@ -69,7 +69,6 @@ const CreatedNFTs = ({
               variants={variants}
             >
               {nftData.nfts.map((nft) => {
-                console.log({ nft });
                 return (
                   nft && (
                     <div className="col-md-6 bg-transparent border-0">

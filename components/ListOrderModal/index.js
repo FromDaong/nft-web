@@ -19,8 +19,6 @@ const WalletModal = ({
 
   if (!data) return <div></div>;
 
-  console.log({ listApproval: isApprovedForAll });
-  console.log({ listData: data });
 
   if (!isApprovedForAll) {
     return (
