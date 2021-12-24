@@ -13,7 +13,6 @@ const useBuyMelonNft = () => {
 
   const handleBuyMelonNft = useCallback(async () => {
     const txHash = await buyMelonNft(melonMartContract, account);
-    console.log(txHash);
     return txHash;
   }, [account, melonMartContract]);
 

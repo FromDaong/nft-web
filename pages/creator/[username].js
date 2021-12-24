@@ -44,7 +44,7 @@ const ViewModelWrapper = ({ username }) => {
         const fetchedSubNFTs = await Promise.all(
           res.sub_nfts.map(async (nft) => {
             const x = await fetch(`/api/nft/${nft.id}`);
-            console.log({ x });
+
             const j = await x.json();
             return j;
           })
@@ -57,8 +57,6 @@ const ViewModelWrapper = ({ username }) => {
           (nft) => nft.maxSupply === nft.totalSupply || nft.old_totw
         );
         let getTotwNFTs = mNfts.filter((nft) => nft.totw);
-
-        console.log({ newNFTs });
 
         setModelNFTs(mNfts);
         setNewNFTs(newNFTs);
@@ -74,8 +72,6 @@ const ViewModelWrapper = ({ username }) => {
   // const { onRedeemSet } = setId
   //   ? useRedeemSet(setId, nftSetPrice)
   //   : { onRedeemSet: null };
-
-  // console.log({ setId, nftSetPrice });
 
   if (!modelData || !modelData.username) {
     return (
@@ -150,8 +146,6 @@ const ViewModel = ({
     if (Number(formattedSubCost) !== 0) setKey("sub");
     if (totwNFTs && totwNFTs.length !== 0) setKey("totw");
   }, [formattedSubCost, totwNFTs]);
-
-  console.log(subNFTs);
 
   return (
     <div className="container">

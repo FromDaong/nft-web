@@ -21,7 +21,7 @@ const TransactionsProvider: React.FC = ({ children }) => {
       const txs = JSON.parse(txsRaw) as TransactionsMap || {}
       dispatch(setTransactions(txs))
     } catch (e) {
-      console.log(e)
+      console.error(e);
     }
   }, [dispatch])
 

@@ -25,7 +25,7 @@ const useGetFreeSubscriberTreat = (
       id,
       treatCost
     );
-    console.log(txHash);
+
     return txHash;
   }, [account, id, treatCost, subscriberMartContract]);
 

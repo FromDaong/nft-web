@@ -15,7 +15,7 @@ const useAddCreatorNFTs = (ids: Array<number>, amounts: Array<number>) => {
       ids,
       amounts
     );
-    console.log({ txHash });
+
     return txHash;
   }, [account, ids, amounts, creatorMartContract]);
 

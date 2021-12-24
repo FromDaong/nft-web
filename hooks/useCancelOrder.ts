@@ -10,11 +10,10 @@ const useCancelOrder = (nftId: number) => {
   const treatMarketplaceContract = getTreatMarketplaceContract(treat);
 
   const handleCancelOrder = useCallback(async () => {
-    console.log({listCancel: {nftId, account, treatMarketplaceContract}})
+    
     const txHash = await cancelOrder(treatMarketplaceContract, nftId, account);
-    console.log(txHash);
 
-    return txHash;
+    return txHash; 
   }, [account, nftId])
 
   return { onCancelOrder : handleCancelOrder };

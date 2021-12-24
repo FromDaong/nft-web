@@ -28,7 +28,6 @@ const HeaderNav = ({ modelData }) => {
     }
   }, [status]);
 
-  console.log({ modelData });
 
   return (
     <Navbar expand="lg" className="mb-4" sticky="top" className="main-nav">

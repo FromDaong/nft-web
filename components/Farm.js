@@ -13,7 +13,6 @@ import BigNumber from "bignumber.js";
 
 const Farm = ({ contract, treatBal, title, pid }) => {
   const hasApproved = contract && hasApprovedContract(pid);
-  console.log({ hasApproved });
   const { onReward } = contract && useHarvestFarms(pid);
   const { onApprove } = contract && useApproveContract(pid);
   const { onStake } = contract && useStakeFarms(pid);
@@ -30,7 +29,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
   const formattedV1StakedAmount =
     v1StakedAmount && getBalanceNumber(v1StakedAmount);
 
-  console.log({ unstakeAmount, bn: new BigNumber(unstakeAmount) });
+  
 
   const approveContract = () => {
     setShowPendingModal(true);
@@ -41,7 +40,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
           setShowCompleteModal(true);
         }
       })
-      .catch((e) => console.log({ e }));
+      .catch((e) => console.error({ e }));
   };
 
   const actionWithModal = (action, param) => {
@@ -51,7 +50,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
         setShowPendingModal(false);
         setShowCompleteModal(true);
       })
-      .catch((e) => console.log({ e }));
+      .catch((e) => console.error({ e }));
   };
 
   const approveButton = (
