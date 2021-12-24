@@ -62,14 +62,11 @@ const CreateNFT = ({ modelData }) => {
               );
             });
         },
-          (err, results) => {
-            if (err)
-              return console.error(
-                "=> IPFS Dropzone: IPFS Upload Error: ",
-                err
-              );
-            setIpfsFiles(results);
-          };
+        (err, results) => {
+          if (err)
+            return console.error("=> IPFS Dropzone: IPFS Upload Error: ", err);
+          setIpfsFiles(results);
+        }
       );
     }
   };
