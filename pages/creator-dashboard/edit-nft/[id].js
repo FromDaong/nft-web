@@ -106,6 +106,8 @@ const CreateNFT = ({ modelData, id }) => {
         body: JSON.stringify({
           id: nftData.id,
           ...formik.values,
+          blurhash:
+            formik.values.blurhash !== "false" && formik.values.blurhash,
           address: modelData.address,
         }),
       });
