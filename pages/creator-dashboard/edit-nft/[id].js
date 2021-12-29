@@ -96,6 +96,13 @@ const CreateNFT = ({ modelData, id }) => {
       //   id: createNFTResult.nftIds[i],
       //   blurhash: nftData.blurhash ? nftData.blurhash : null,
       // }));
+      let bodyObj = {
+        id: nftData.id,
+        ...formik.values,
+        address: modelData.address,
+      };
+
+      if (!!!bodyObj.blurhash) delete bodyObj.blurhash;
 
       const res = await fetch(`/api/model/edit-nft`, {
         method: "POST",
@@ -103,13 +110,7 @@ const CreateNFT = ({ modelData, id }) => {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          id: nftData.id,
-          ...formik.values,
-          blurhash:
-            formik.values.blurhash !== "false" && formik.values.blurhash,
-          address: modelData.address,
-        }),
+        body: JSON.stringify(bodyObj),
       });
 
       const resJSON = await res.json();
