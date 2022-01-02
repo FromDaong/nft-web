@@ -30,7 +30,6 @@ const usePurchaseOrder = (
       account,
       Number(price)
     );
-    console.log(txHash);
 
     return txHash;
   }, [account, nftId, quantity, price, seller]);

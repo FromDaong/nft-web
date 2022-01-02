@@ -10,7 +10,6 @@ import { EyeSlash } from "react-bootstrap-icons";
 
 const NFTListItem = ({ data }) => {
   const [image, setBase64Image] = useState();
-  console.log({ data });
 
   useEffect(() => {
     (async () => {

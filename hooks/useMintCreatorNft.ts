@@ -24,7 +24,6 @@ const useMintCreatorNft = (
       id,
       treatCost
     );
-    console.log(txHash);
     return txHash;
   }, [account, id, treatCost, creatorMartContract]);
 

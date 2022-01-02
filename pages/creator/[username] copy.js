@@ -32,7 +32,7 @@ const ViewModelWrapper = ({ username }) => {
           res.nfts.map(async (nft) => {
             const x = await fetch(`/api/nft/${nft.id}`);
             const j = await x.json();
-            console.log({ j });
+
             return j;
           })
         );
@@ -55,7 +55,7 @@ const ViewModelWrapper = ({ username }) => {
     ? useRedeemSet(setId, nftSetPrice)
     : { onRedeemSet: null };
 
-  console.log({ setId, nftSetPrice });
+  
 
   if (!modelData || !modelData.username || status !== "connected") {
     return (

@@ -13,10 +13,9 @@ const useApprove = (treatMart: Contract) => {
   const handleApprove = useCallback(async () => {
     try {
       const tx = await approve(treatMartContract, account);
-      console.log("tx ", tx);
       return tx;
     } catch (e) {
-      console.log("errhandleApprove2 ", e);
+      console.error("errhandleApprove2 ", e);
       return false;
     }
   }, [account, treatMartContract]);

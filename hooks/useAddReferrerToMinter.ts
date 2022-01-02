@@ -15,7 +15,7 @@ const useAddReferrerToMinter = (modelAddress: string, refAddress: string) => {
       modelAddress,
       refAddress
     );
-    console.log(txHash);
+
     return txHash;
   }, [account, modelAddress, refAddress, treatNftMinterContract]);
 

@@ -34,12 +34,12 @@ const Marketplace = ({ search }) => {
         setShowPendingModal(false);
         setShowCompleteModal(true);
       })
-      .catch((e) => console.log({ e }));
+      .catch((e) => console.error({ e }));
   };
 
   const finalArray = orderBookArray;
 
-  console.log({ finalArray });
+  
 
   return (
     <AnimateSharedLayout>

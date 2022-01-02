@@ -12,7 +12,7 @@ const V2Banner = ({ oldTokenBalance }) => {
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
   const hasApproved = hasApprovedV1ForV2();
-  console.log({ hasApproved });
+
 
   const approveContract = () => {
     setShowPendingModal(true);
@@ -23,7 +23,7 @@ const V2Banner = ({ oldTokenBalance }) => {
           setShowCompleteModal(true);
         }
       })
-      .catch((e) => console.log({ e }));
+      .catch((e) => console.error({ e }));
   };
 
   const swapTokens = () => {
@@ -35,7 +35,7 @@ const V2Banner = ({ oldTokenBalance }) => {
           setShowCompleteModal(true);
         }
       })
-      .catch((e) => console.log({ e }));
+      .catch((e) => console.error({ e }));
   };
 
   return (

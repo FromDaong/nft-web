@@ -13,15 +13,15 @@ const useApproveFarm = (lpContract: Contract, pid: Number) => {
     try {
       if (pid == 0) {
         const tx = await approveTreatStaking(masterMelonFarmerContract, account);
-        console.log("tx ", tx);
+        
         return tx;
       } else {
         const tx = await approveTreatPancakeLPStaking(masterMelonFarmerContract, account);
-        console.log("tx ", tx);
+        
         return tx;
       }
     } catch (e) {
-      console.log("errhandleApprove2 ", e);
+      console.error("errhandleApprove2 ", e);
       return false;
     }
   }, [account, masterMelonFarmerContract]);

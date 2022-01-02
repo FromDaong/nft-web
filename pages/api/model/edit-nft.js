@@ -23,7 +23,7 @@ export default withSession(async (req, res) => {
   switch (method) {
     case "POST":
       try {
-        console.log(req.body);
+        
         if (!req.body.address || !req.body.id)
           return res
             .status(400)
@@ -49,7 +49,7 @@ export default withSession(async (req, res) => {
 
         res.status(200).json({ success: true, nft });
       } catch (error) {
-        console.log({ error });
+        console.error({ error });
         res.status(400).json({ success: false, error: error });
       }
       break;

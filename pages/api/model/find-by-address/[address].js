@@ -34,7 +34,7 @@ export default async (req, res) => {
 
         res.status(200).json(returnData);
       } catch (error) {
-        console.log({ error });
+        console.error({ error });
         res.status(400).json({ success: false, error: error });
       }
       break;

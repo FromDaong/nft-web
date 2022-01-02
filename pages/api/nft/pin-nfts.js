@@ -39,7 +39,7 @@ export default async (req, res) => {
                 }),
               }
             );
-            console.log({ result });
+            
             const resJSON = await result.json();
             return resJSON;
           })
@@ -47,7 +47,7 @@ export default async (req, res) => {
 
         res.status(200).json(returnNFTs);
       } catch (error) {
-        console.log({ error });
+        console.error({ error });
         res.status(400).json({ success: false, error: error });
       }
       break;
