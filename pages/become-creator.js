@@ -24,6 +24,7 @@ const VerifyButton = dynamic(() => import("@passbase/button/react"), {
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
+
 const CreateModel = () => {
   const router = useRouter();
   const [success, setSuccess] = useState(false);
@@ -42,7 +43,9 @@ const CreateModel = () => {
       username: Yup.string().required("Please add a username"),
       bio: Yup.string().required("Please add the Creator bio"),
       model_bnb_address: Yup.string(),
-      social_account: Yup.string(),
+      social_account: Yup.string()
+        .url("Please add a valid social media link")
+        .required("Please add a social account"),
       profile_pic: Yup.string().required("Please add a Profile Photo"),
       email: Yup.string().required("Please add a Email"),
       referrer_address: Yup.string(),
@@ -190,6 +193,9 @@ const CreateModel = () => {
                 value={formik.values.social_account}
                 onChange={formik.handleChange}
               />
+              <small className="text-danger">
+                {formik.errors["social_account"]}
+              </small>
             </div>
             <div className="pb-4">
               <label className="m-0">Profile Picture</label>
