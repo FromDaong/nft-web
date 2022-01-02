@@ -15,7 +15,7 @@ import Hero from "../components/Hero";
 import Loading from "../components/Loading";
 import { create } from "ipfs-http-client";
 import { useWallet } from "use-wallet";
-// import VerifyButton from "@passbase/button/react";
+
 import dynamic from "next/dynamic";
 
 const VerifyButton = dynamic(() => import("@passbase/button/react"), {
@@ -34,7 +34,7 @@ const CreateModel = () => {
     initialValues: {
       address: account,
       referrer_address: router.query.r,
-      // identity_access_key: "asd",
+      identity_access_key: "",
     },
     validateOnChange: false,
     validateOnBlur: false,
@@ -46,7 +46,6 @@ const CreateModel = () => {
       profile_pic: Yup.string().required("Please add a Profile Photo"),
       email: Yup.string().required("Please add a Email"),
       referrer_address: Yup.string(),
-      identity_access_key: Yup.string().required("Please verify your identity"),
       terms_accepted: Yup.boolean().oneOf([true], "Please accept the terms"),
     }),
     onSubmit: (values) => {
@@ -56,7 +55,6 @@ const CreateModel = () => {
 
   const SubmitToServer = async () => {
     try {
-      console.log({ 1: 1 });
       const res = await fetch(`/api/model/become`, {
         method: "POST",
         headers: {
@@ -228,12 +226,12 @@ const CreateModel = () => {
                 }}
               />
 
-              <small>
+              {/* <small>
                 <b className="text-danger">
                   Please ensure you return to submit this form after you have
                   completed ID verification with passbase.
                 </b>
-              </small>
+              </small> */}
               {/* <FormControl
                 type="file"
                 size="lg"
