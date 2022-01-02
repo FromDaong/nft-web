@@ -16,8 +16,6 @@ export default withSession(async (req, res) => {
         //   return res.status(403);
         // }
 
-        console.log(req.body);
-
         if (!req.body.master_password || req.body.master_password !== "lmao")
           res.status(400).json({ success: false, error: "invalid pass" });
 
@@ -47,10 +45,9 @@ export default withSession(async (req, res) => {
           ],
         };
 
-        console.log({ nftBody });
         const newNFT = await NFT.create(nftBody);
 
-        console.log("New NFT", newNFT);
+        
 
         res.status(200).json({ success: true, newNFT });
       } catch (error) {

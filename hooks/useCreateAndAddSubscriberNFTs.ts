@@ -16,7 +16,6 @@ const useCreateAndAddSubscriberNFTs = (
   const subscriberMartContract = getSubscriberMartContract(treat);
 
   const handleCreateAndAddSubscriberNFTs = useCallback(async () => {
-    console.log({ maxSupplys, amounts });
     const res = await createAndAddSubscriberNFTs(
       subscriberMartContract,
       account,

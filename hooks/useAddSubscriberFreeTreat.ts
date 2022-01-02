@@ -17,7 +17,6 @@ const useAddSubscriberFreeTreat = (ids: Array<number>) => {
       account,
       ids
     );
-    console.log(txHash);
     return txHash;
   }, [account, ids, subscriberMartContract]);
 

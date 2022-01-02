@@ -23,7 +23,6 @@ import Select from "react-select";
 
 const Marketplace = ({ search }) => {
   const maxId = useGetMaxIdForSale();
-  console.log({ maxId });
 
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [cancelOrderData, setCancelOrderData] = useState(null);
@@ -390,7 +389,6 @@ const Marketplace = ({ search }) => {
 };
 
 Marketplace.getInitialProps = async ({ query: { search } }) => {
-  console.log({ search });
   return { search };
 };
 

@@ -9,13 +9,7 @@ const useRedeemSet = (id: number, treatCost: number) => {
   const treatMartContract = getTreatMartContract(treat);
 
   const handleRedeemSet = useCallback(async () => {
-    const txHash = await redeemSet(
-      treatMartContract,
-      account,
-      id,
-      treatCost
-    );
-    console.log(txHash);
+    const txHash = await redeemSet(treatMartContract, account, id, treatCost);
     return txHash;
   }, [account, id, treatCost, treatMartContract]);
 

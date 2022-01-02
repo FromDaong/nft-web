@@ -19,7 +19,6 @@ const useMintNft = (
 
   const handleMintNft = useCallback(async () => {
     const txHash = await mintNft(treatMartContract, account, id, treatCost);
-    console.log(txHash);
     return txHash;
   }, [account, id, treatCost, treatMartContract]);
 

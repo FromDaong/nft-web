@@ -17,7 +17,6 @@ const useRemovePerformerFromMinter = (modelAddress: string) => {
       account,
       modelAddress
     );
-    console.log(txHash);
     return txHash;
   }, [account, modelAddress, treatNftMinterContract]);
 

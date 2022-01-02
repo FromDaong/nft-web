@@ -23,7 +23,7 @@ export default async (req, res) => {
           modelRes.nfts.map(async (nft) => {
             const n = await NFT.findOne({ id: +nft.id });
             if (!n) {
-              console.log({ nft, username });
+              
               return;
             }
             const returnObj = { ...n.toObject() };
@@ -41,7 +41,7 @@ export default async (req, res) => {
 
         res.status(200).json(returnData);
       } catch (error) {
-        console.log({ error });
+        console.error({ error });
         res.status(400).json({ success: false, error: error });
       }
       break;

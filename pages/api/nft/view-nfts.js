@@ -38,7 +38,7 @@ export default async (req, res) => {
           signer
         );
 
-        console.log({ signer, nft_ids });
+        
 
         let results = await Promise.all(
           nft_ids.map(async (id) => {
@@ -46,7 +46,7 @@ export default async (req, res) => {
               .balanceOf(signer, id)
               .call();
 
-            console.log({ balance });
+            
 
             const bigNumberBalance = new BigNumber(balance);
             const numberBalance = bigNumberBalance.toNumber();
@@ -72,7 +72,7 @@ export default async (req, res) => {
 
         res.status(200).json({ success: true, results });
       } catch (error) {
-        console.log({ error });
+        console.error({ error });
         res.status(400).json({ success: false, error: error });
       }
       break;

@@ -18,8 +18,6 @@ const PurchaseOrderModal = ({
 }) => {
   if (!data) return <div></div>;
 
-  console.log({ listData: data });
-
   const remainingBalance = useGetRemainingOrderBalance(account, data.id);
   const orderData = { ...order, remainingBalance };
 

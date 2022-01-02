@@ -17,22 +17,15 @@ const useApproveMarketplace = () => {
 
   const handleApprove = useCallback(async () => {
     try {
-      console.log({
-        listApproveArgs: {
-          treatNftMinterContract,
-          treatMarketplaceAddress,
-          account,
-        },
-      });
       const tx = await approveMarketplace(
         treatNftMinterContract,
         treatMarketplaceAddress,
         account
       );
-      console.log("tx ", tx);
+
       return tx;
     } catch (e) {
-      console.log("errhandleApprove2 ", e);
+      console.error("errhandleApprove2 ", e);
       return false;
     }
   }, [account, treatNftMinterContract, treatMarketplaceAddress]);
