@@ -197,7 +197,19 @@ const CreateModel = () => {
                     placeholder="https://twitter.com/alexanbt"
                     name="social_account"
                     value={formik.values.social_account}
-                    onChange={formik.handleChange}
+                    onChange={(e) => {
+                      let value = e.target.value;
+                      const regex = new RegExp(
+                        /(\S+\.(com|net|org|edu|gov)(\/\S+)?)/
+                      );
+
+                      if (value.match(regex)) {
+                        if (!value.startsWith("http")) {
+                          value = `https://${value}`;
+                        }
+                      }
+                      formik.setFieldValue("social_account", value);
+                    }}
                   />
                   <small className="text-danger">
                     {formik.errors["social_account"]}
