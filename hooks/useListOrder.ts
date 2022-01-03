@@ -16,7 +16,6 @@ const useListOrder = () => {
       price: number,
       expiresDate: number
     ) => {
-      console.log({ nftId, quantity, price });
       const txHash = await listOrder(
         treatMarketplaceContract,
         account,
@@ -25,7 +24,6 @@ const useListOrder = () => {
         price,
         expiresDate
       );
-      console.log(txHash);
       return txHash;
     },
     [account]

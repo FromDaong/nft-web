@@ -84,13 +84,11 @@ function MyApp({ Component, pageProps }) {
             body: JSON.stringify({ mint: tx }),
           });
 
-          console.log({ res });
-
           if (res.success) {
             localStorage.removeItem("tx");
           }
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
       }
     })();
@@ -190,8 +188,6 @@ function walletWrapper(props) {
 // MyApp.getInitialProps = async () => {
 //   const res = await fetch(`/api/brand/get`);
 //   const data = await res.json();
-
-//   console.log(res, data);
 
 //   return { brand: data };
 // };

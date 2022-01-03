@@ -9,11 +9,8 @@ const useGetIsGiveAwayNft = () => {
   const creatorMartContract = getCreatorMartContract(treat);
 
   const handleGetIsGiveAwayNft = useCallback(async () => {
-    const txHash = await getIsGiveAwayNft(
-      creatorMartContract,
-      account
-    );
-    console.log(txHash);
+    const txHash = await getIsGiveAwayNft(creatorMartContract, account);
+
     return txHash;
   }, [account, creatorMartContract]);
 

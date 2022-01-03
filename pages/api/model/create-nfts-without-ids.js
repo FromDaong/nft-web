@@ -66,21 +66,21 @@ export default withSession(async (req, res) => {
 
               try {
                 const newNFT = await PendingNFT.create(nftBody);
-                console.log("NEW NFT CREATED");
+                
                 resolve(newNFT);
               } catch (e) {
-                console.log("NEW NFT ERRORED");
+                console.error("NEW NFT ERRORED", e);
                 reject(e);
               }
             });
           })
         );
 
-        console.log("New NFT", newNFTs);
+        
 
         res.status(200).json({ success: true, newNFTs });
       } catch (error) {
-        console.log({ error });
+        console.error({ error });
         res.status(400).json({ success: false, error: error });
       }
       break;

@@ -9,11 +9,8 @@ const useGetIsNftAdmin = () => {
   const treatNftMinterContract = getTreatNFTMinterContract(treat);
 
   const handleGetIsNftAdmin = useCallback(async () => {
-    const txHash = await isAdminForMinter(
-      treatNftMinterContract,
-      account
-    );
-    console.log(txHash);
+    const txHash = await isAdminForMinter(treatNftMinterContract, account);
+
     return txHash;
   }, [account, treatNftMinterContract]);
 

@@ -9,12 +9,8 @@ const useAddCreatorFreeTreat = (ids: Array<number>) => {
   const creatorMartContract = getCreatorMartContract(treat);
 
   const handleAddCreatorFreeTreat = useCallback(async () => {
-    const txHash = await addCreatorFreeTreat(
-      creatorMartContract,
-      account,
-      ids
-    );
-    console.log(txHash);
+    const txHash = await addCreatorFreeTreat(creatorMartContract, account, ids);
+
     return txHash;
   }, [account, ids, creatorMartContract]);
 

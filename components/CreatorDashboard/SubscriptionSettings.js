@@ -58,7 +58,7 @@ const EditProfile = ({}) => {
       const resJSON = await serverRes.json();
 
       if (resJSON.error && resJSON.error.errors) {
-        console.log(resJSON.error);
+        console.error(resJSON.error);
         const ogErrors = Object.assign({}, resJSON.error.errors);
         Object.keys(ogErrors).map((e) => {
           ogErrors[e] = resJSON.error.errors[e].message;
@@ -71,7 +71,7 @@ const EditProfile = ({}) => {
         router.reload();
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -84,7 +84,7 @@ const EditProfile = ({}) => {
           setShowCompleteModal(true);
         }
       })
-      .catch((e) => console.log({ e }));
+      .catch((e) => console.error({ e }));
   };
 
   return (
