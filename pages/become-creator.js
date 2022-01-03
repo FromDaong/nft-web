@@ -97,7 +97,7 @@ const CreateModel = () => {
     });
   };
 
-  const handleVerificationFinish = (identityAccessKey) => {
+  const handleVerificationFinish = async (identityAccessKey) => {
     try {
       setStep("submitting");
       const res = await fetch(`/api/model/${res.username}`, {
