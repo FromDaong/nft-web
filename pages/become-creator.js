@@ -98,10 +98,37 @@ const CreateModel = () => {
   };
 
   const handleVerificationFinish = (identityAccessKey) => {
-    console.log("identityAccessKey", identityAccessKey);
-  };
+    try {
+      setStep("submitting");
+      const res = await fetch(`/api/model/${res.username}`, {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          identity_access_key: identityAccessKey,
+        }),
+      });
+      const resJSON = await res.json();
 
-  console.log({ res });
+      if (resJSON.error && resJSON.error.errors) {
+        const ogErrors = Object.assign({}, resJSON.error.errors);
+        Object.keys(ogErrors).map((e) => {
+          ogErrors[e] = resJSON.error.errors[e].message;
+        });
+        formik.setErrors(ogErrors);
+        formik.setSubmitting(false);
+      }
+
+      if (resJSON.success) {
+        setSuccess(true);
+        setStep("signup");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   if (success || (res && res.pending && res.identity_access_key.length > 0))
     return (
@@ -323,6 +350,9 @@ const CreateModel = () => {
                   onError={(errorCode) => {}}
                   onFinish={handleVerificationFinish}
                 />
+                <small className="text-danger">
+                  {formik.errors["identity_access_key"]}
+                </small>
               </div>
             </div>
           </div>
