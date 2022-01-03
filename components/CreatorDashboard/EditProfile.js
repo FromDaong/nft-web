@@ -21,7 +21,6 @@ const EditProfile = ({}) => {
   const [success, setSuccess] = useState(false);
   const [disabled, setDisabled] = useState(false);
 
-  console.log({ res });
 
   const formik = useFormik({
     initialValues: res,
@@ -54,7 +53,7 @@ const EditProfile = ({}) => {
       const resJSON = await serverRes.json();
 
       if (resJSON.error && resJSON.error.errors) {
-        console.log(resJSON.error);
+        console.error(resJSON.error);
         const ogErrors = Object.assign({}, resJSON.error.errors);
         Object.keys(ogErrors).map((e) => {
           ogErrors[e] = resJSON.error.errors[e].message;
@@ -67,7 +66,7 @@ const EditProfile = ({}) => {
         router.reload();
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -87,7 +86,7 @@ const EditProfile = ({}) => {
         },
       })
       .then(function (response) {
-        console.log({ response });
+        console.error({ response });
         formik.setFieldValue(
           field,
           `https://treatdao.mypinata.cloud/ipfs/${response.data.IpfsHash}`

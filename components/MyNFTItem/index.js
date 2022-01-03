@@ -57,14 +57,12 @@ const NFTListItem = ({
           .then((r) => r.text())
           .then((blob) => {
             const replacedText = blob.replace(`"`, "").replace(/["']/g, "");
-            console.log(base64regex.test(replacedText));
             setBase64Image(replacedText);
           });
       }
     })();
   }, [data]);
 
-  console.log({ image, data });
 
   return (
     <>

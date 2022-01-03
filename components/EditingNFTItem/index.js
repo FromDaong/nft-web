@@ -81,7 +81,6 @@ const EditingNFTItem = ({ imageUrl, formik, modelData, blurRequired }) => {
               value={formik.values.name}
               // onChange={handleChange}
               onChange={(e) => {
-                console.log({ e: e.target.value });
                 formik.setFieldValue(`name`, e.target.value);
               }}
             />

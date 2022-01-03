@@ -7,7 +7,6 @@ import useGetOpenOrdersForNft from "../../hooks/useGetOpenOrdersForNft";
 
 const NFTResaleListItem = ({ data }) => {
   const [image, setBase64Image] = useState();
-  console.log({ id: data.id, data });
 
   const orders = useGetOpenOrdersForNft(data.id);
 

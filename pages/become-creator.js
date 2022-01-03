@@ -69,7 +69,6 @@ const CreateModel = () => {
       const resJSON = await res.json();
 
       if (resJSON.error && resJSON.error.errors) {
-        console.log(resJSON.error);
         const ogErrors = Object.assign({}, resJSON.error.errors);
         Object.keys(ogErrors).map((e) => {
           ogErrors[e] = resJSON.error.errors[e].message;
@@ -82,16 +81,14 @@ const CreateModel = () => {
         setStep("verify");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   const ipfsUpload = (file, field) => {
     toBuffer(file, (err, buff) => {
-      console.log({ err, file });
       if (err || !file) return;
       client.add(buff).then((results) => {
-        console.log("=> IPFS Dropzone added: ", results);
         formik.setFieldValue(
           field,
           `https://treatdao.mypinata.cloud/ipfs/${results.path}`

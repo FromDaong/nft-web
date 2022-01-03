@@ -47,10 +47,10 @@ export default async (req, res) => {
               nftData.model_bnb_address
             );
 
-            console.log({ isSignerSubscribed });
+            
 
             if (isSignerSubscribed) {
-              console.log({ nftData });
+              
               return {
                 ...nftData.toObject(),
               };
@@ -64,7 +64,7 @@ export default async (req, res) => {
 
         res.status(200).json({ success: true, results });
       } catch (error) {
-        console.log({ error });
+        console.error({ error });
         res.status(400).json({ success: false, error: error });
       }
       break;

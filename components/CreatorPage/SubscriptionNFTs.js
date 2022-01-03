@@ -69,7 +69,7 @@ const SubscriptionNFTs = ({
           setShowCompleteModal(true);
         }
       })
-      .catch((e) => console.log({ e }));
+      .catch((e) => console.error({ e }));
   };
 
   return (

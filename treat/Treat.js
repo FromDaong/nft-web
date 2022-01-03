@@ -47,7 +47,6 @@ export class Treat {
   }
 
   signMessage = async (key, msg) => {
-    console.log({ key });
     return await this.web3.eth.personal.sign(msg, key);
   };
 

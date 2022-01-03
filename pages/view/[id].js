@@ -43,8 +43,6 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
 
   const isOldTotw = nftData.old_totw && !nftData.totw;
 
-  console.log(remainingNfts.toNumber());
-
   if (
     remainingNfts.toNumber() < 0 ||
     isNaN(remainingNfts.toNumber()) ||
@@ -74,7 +72,7 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
         setConfrimWallet(true);
 
         const txHash = await onMintNft();
-        console.log({ txHash });
+
         if (!txHash) {
           setDisabled(false);
           return;
@@ -134,7 +132,6 @@ const ViewNFTWrapper = ({ id }) => {
 
   useEffect(() => {
     (async () => {
-      console.log({ res });
       if (res) setNftData(res);
     })();
   }, [res]);
@@ -233,8 +230,6 @@ const ViewNFT = ({ nftData, image, account }) => {
       variables: { language: "english" },
     }
   );
-
-  console.log({ resaleHistoryData });
 
   const {
     loading: loadingMintHistory,
