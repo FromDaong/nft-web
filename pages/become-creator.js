@@ -44,9 +44,7 @@ const CreateModel = () => {
       username: Yup.string().required("Please add a username"),
       bio: Yup.string().required("Please add the Creator bio"),
       model_bnb_address: Yup.string(),
-      social_account: Yup.string()
-        .url("Please add a valid social media link")
-        .required("Please add a social account"),
+      social_account: Yup.string().required("Please add a social account"),
       profile_pic: Yup.string().required("Please add a Profile Photo"),
       email: Yup.string().required("Please add a Email"),
       referrer_address: Yup.string(),
@@ -59,6 +57,7 @@ const CreateModel = () => {
 
   const SubmitToServer = async () => {
     try {
+      setStep("submitting");
       const res = await fetch(`/api/model/become`, {
         method: "POST",
         headers: {
@@ -126,7 +125,7 @@ const CreateModel = () => {
 
   return (
     <div className="no-position" style={{ maxWidth: 800, margin: "auto" }}>
-      {step === "signup" && (
+      {(step === "signup" || step === "submitting") && (
         <motion.div
           animate={{ y: 0, opacity: 1 }}
           style={{ y: -100, opacity: 0 }}
@@ -258,13 +257,22 @@ const CreateModel = () => {
                   </FormGroup>
                 </div>
 
-                <Button
-                  variant="primary w-100"
-                  onClick={formik.handleSubmit}
-                  type="submit"
-                >
-                  Submit Application
-                </Button>
+                {step === "signup" && (
+                  <Button
+                    variant="primary w-100"
+                    onClick={formik.handleSubmit}
+                    type="submit"
+                  >
+                    Submit Application
+                  </Button>
+                )}
+
+                {step === "submitting" && (
+                  <Button variant="primary w-100 disabled" onClick={null}>
+                    Submitting...
+                  </Button>
+                )}
+
                 {Object.keys(formik.errors).length > 0 && (
                   <Form.Control.Feedback type="invalid" className="d-block">
                     {Object.keys(formik.errors).map((e) => (
@@ -287,8 +295,8 @@ const CreateModel = () => {
           className="pink-bg mb-5"
         >
           <Hero
-            title="Become a Creator"
-            subtitle="Verfiy your identity to apply to become a creator. Creators are able to mint NFTs on TreatDAO!"
+            title="Verfiy your identity"
+            subtitle="Verfiy your identity to complete your creator application. Creators are able to mint NFTs on TreatDAO!"
           />
           <div
             className="container p-4 pb-0 white-tp-container-no-filter"
