@@ -147,8 +147,6 @@ const ViewModel = ({
     if (totwNFTs && totwNFTs.length !== 0) setKey("totw");
   }, [formattedSubCost, totwNFTs]);
 
-  console.log(subNFTs);
-
   const formatURL = (str) => {
     if (str) {
       if (str.length < 1) return str;
