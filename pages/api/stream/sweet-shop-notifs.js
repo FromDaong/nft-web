@@ -3,25 +3,13 @@ import PendingNFT from "../../../models/PendingNFT";
 import NFT from "../../../models/NFT";
 import Model from "../../../models/Model";
 import withSession from "../../../lib/session";
-import { contractAddresses } from "../../../treat/lib/constants";
+const sgClient = require("@sendgrid/mail");
 
 import Web3 from "web3";
 
 dbConnect();
 
-const web3 = new Web3(
-  "https://divine-restless-feather.bsc.quiknode.pro/f9ead03ddd05508e4fe1f6952eea26ac035c8408/"
-);
-
-function wait(time) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => resolve("hello"), time);
-  });
-}
-// const contract = new web3.eth.Contract(
-//   TreatMarketplaceAbi,
-//   contractAddresses.creatorMart[56]
-// );
+sgClient.setApiKey(process.env.SENDGRID_API_KEY);
 
 export default withSession(async (req, res) => {
   const { method } = req;
@@ -37,61 +25,48 @@ export default withSession(async (req, res) => {
     case "POST":
       try {
         if (req.body.status !== "confirmed") return res.status(200);
+        console.log("New sale", req.body);
 
-        if (!logs || logs.length === 0)
-          return res.status(200).json({ success: false });
+        const nftId =
+          req.body.contractCall &&
+          req.body.contractCall.params &&
+          req.body.contractCall.params.nftId;
 
-        const log = logs.find((l) => l.transactionHash === req.body.hash);
-        const logDataArray = log.data
-          .substring(2, log.data.length)
-          .match(/.{1,64}/g);
-        console.log({ logDataArray });
+        if (!nftId) return res.status(400);
 
-        const numberOfNFTs = Web3.utils.hexToNumber("0x" + logDataArray[4]);
-        console.log({ numberOfNFTs });
+        console.log({ nftId }, "New Sale");
+        const nftData = await NFT.findOne({ id: nftId });
 
-        const nftIDs = [...Array(numberOfNFTs).keys()].map((i) =>
-          web3.utils.hexToNumber("0x" + logDataArray[5 + i])
-        );
-        console.log({ nftIDs });
+        if (!nftData) return res.status(400);
 
-        const pendingNFTs = await PendingNFT.find({
-          tx_hash: log.transactionHash,
+        const modelData = await Model.findOne({
+          username: nftData.model_handle,
         });
-        console.log({ pendingNFTs });
 
-        await pendingNFTs.forEach(async (n, i) => {
-          try {
-            const nftExists = await NFT.findOne({ id: nftIDs[i] });
-            if (nftExists) return nftExists;
+        const msg = {
+          to: modelData.email,
+          from: {
+            email: "noreply@treatdao.com",
+            name: "Treat DAO",
+          },
+          templateId: "d-d5da0ec9d69f43db8e8001dbc280e47a",
+          dynamicTemplateData: {
+            nft_name: nftData.name,
+            nft_price: nftData.list_price,
+            nft_url: `https://treatdao.com/view/${nftId}`,
+          },
+        };
 
-            const newNFT = await NFT.create({
-              id: nftIDs[i],
-              ...n.toObject(),
-            });
+        console.log("attempting to send email");
 
-            await Model.updateOne(
-              { address: n.model_bnb_address },
-              {
-                $push: {
-                  nfts: {
-                    id: nftIDs[i],
-                  },
-                },
-              }
-            );
-
-            console.log({ newNFT });
-            return newNFT;
-          } catch (e) {
-            console.log({ e });
-          }
-        });
-        console.log({ numberOfNFTs, nftIDs });
-
-
-        res.status(200).json({ success: true });
-        // console.log({ logs });
+        try {
+          const sgClientResponse = await sgClient.send(msg);
+          console.log("email sent", sgClientResponse);
+          res.status(200).json({ success: true });
+        } catch (e) {
+          console.error(e);
+          res.status(500).json({ success: false });
+        }
       } catch (error) {
         console.log({ error });
         res.status(200).json({ success: false, error: error });
