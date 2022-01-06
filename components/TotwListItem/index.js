@@ -14,8 +14,6 @@ const TotwListItem = ({ modelData }) => {
     `/api/nft/nfts-from-username/${modelData.username}`
   );
 
-  console.log({ nftData });
-
   const setId = modelData.bundle_id;
   const nftSetPrice = useGetTreatSetCost(setId);
   const { onRedeemSet } = setId

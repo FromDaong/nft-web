@@ -15,7 +15,6 @@ const useCreateBulkTotwNFTs = (
   const totwMinterHelperContract = getTotwMinterHelperContract(treat);
 
   const handleCreateBulkTotwNFTs = useCallback(async () => {
-    console.log({ maxSupplys, creatorAddress });
     const res = await createBulkTotwNFTs(
       totwMinterHelperContract,
       account,

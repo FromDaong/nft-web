@@ -36,7 +36,7 @@ export default async (req, res) => {
             .status(400)
             .json({ success: false, error: "nft not found" });
 
-        // console.log("call api", id);
+        
         // it's safe to use .toNumber on these BigNumbers here because supply should always be in a valid int32 range
         const maxSupply = (
           await getNftMaxSupply(treatNFTMinter, id)
@@ -55,7 +55,7 @@ export default async (req, res) => {
 
         res.status(200).json(returnData);
       } catch (error) {
-        console.log({ error });
+        console.error({ error });
         res.status(400).json({ success: false, error: error });
       }
       break;
@@ -71,7 +71,7 @@ export default async (req, res) => {
 
         // const prev = NFTres.mints.find((e) => e.buyer === mint.account);
         const mint = req.body.mint;
-        console.log({ mint });
+        
 
         const balance = await treatNFTMinter.methods
           .balanceOf(mint.buyer, mint.nftId)
@@ -92,7 +92,7 @@ export default async (req, res) => {
             .json({ success: false, error: "you don't own this nft" });
         }
       } catch (error) {
-        console.log({ error });
+        console.error({ error });
         res.status(400).json({ success: false, error: error });
       }
       break;

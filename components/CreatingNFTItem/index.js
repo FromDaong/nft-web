@@ -94,7 +94,6 @@ const CreatingNFTItem = ({
               value={formik.values.nfts[index].name}
               // onChange={handleChange}
               onChange={(e) => {
-                console.log({ e: e.target.value });
                 formik.setFieldValue(`nfts[${index}].name`, e.target.value);
               }}
             />

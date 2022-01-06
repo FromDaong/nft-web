@@ -56,7 +56,6 @@ const CreateNFT = ({ modelData }) => {
               },
             })
             .then(function (response) {
-              console.log({ response });
               return cb(
                 null,
                 `https://treatdao.mypinata.cloud/ipfs/${response.data.IpfsHash}`
@@ -66,7 +65,6 @@ const CreateNFT = ({ modelData }) => {
         (err, results) => {
           if (err)
             return console.error("=> IPFS Dropzone: IPFS Upload Error: ", err);
-          console.log({ results });
           setIpfsFiles(results);
         }
       );
@@ -122,7 +120,7 @@ const CreateNFT = ({ modelData }) => {
       ),
     }),
     handleChange: (c) => {
-      console.log({ c });
+      
     },
     onSubmit: (values) => {
       SubmitToServer();
@@ -179,7 +177,7 @@ const CreateNFT = ({ modelData }) => {
       const resJSON = await res.json();
 
       if (resJSON.error && resJSON.error.errors) {
-        console.log(resJSON.error);
+        console.error(resJSON.error);
         const ogErrors = Object.assign({}, resJSON.error.errors);
         Object.keys(ogErrors).map((e) => {
           ogErrors[e] = resJSON.error.errors[e].message;
@@ -194,7 +192,7 @@ const CreateNFT = ({ modelData }) => {
         setShowCompleteModal(true);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

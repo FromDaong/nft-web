@@ -67,9 +67,7 @@ const CreateNFT = ({ modelData, id }) => {
         })
       ),
     }),
-    handleChange: (c) => {
-      console.log({ c });
-    },
+    handleChange: (c) => {},
     onSubmit: (values) => {
       SubmitToServer();
     },
@@ -116,7 +114,7 @@ const CreateNFT = ({ modelData, id }) => {
       const resJSON = await res.json();
 
       if (resJSON.error && resJSON.error.errors) {
-        console.log(resJSON.error);
+        console.error(resJSON.error);
         const ogErrors = Object.assign({}, resJSON.error.errors);
         Object.keys(ogErrors).map((e) => {
           ogErrors[e] = resJSON.error.errors[e].message;
@@ -131,7 +129,7 @@ const CreateNFT = ({ modelData, id }) => {
         setShowCompleteModal(true);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

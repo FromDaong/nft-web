@@ -5,7 +5,6 @@ import { AbiItem } from "web3-utils";
 import ERC20ABI from "../constants/abi/ERC20.json";
 
 export const getContract = (provider: provider, address: string) => {
-  console.log({ address });
   const web3 = new Web3(provider);
   const contract = new web3.eth.Contract(
     ERC20ABI.abi as unknown as AbiItem,
@@ -40,10 +39,9 @@ export const getBalance = async (
       .balanceOf(userAddress)
       .call();
 
-    console.log({ balance });
     return balance;
   } catch (e) {
-    console.log({ e });
+    console.error({ e });
     return "0";
   }
 };
