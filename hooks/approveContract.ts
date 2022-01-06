@@ -32,10 +32,9 @@ const useApproveContract = (pid) => {
           account
         );
 
-      console.log("tx ", tx);
       return tx;
     } catch (e) {
-      console.log("errhandleApprove ", e);
+      console.error("errhandleApprove ", e);
       return false;
     }
   }, [account, treatContract]);

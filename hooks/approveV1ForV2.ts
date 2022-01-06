@@ -20,10 +20,10 @@ const approveV1ForV2 = () => {
         treatV1ForV2Contract,
         account
       );
-      console.log("tx ", tx);
+      
       return tx;
     } catch (e) {
-      console.log("errhandleApprove1for2 ", e);
+      console.error("errhandleApprove1for2 ", e);
       return false;
     }
   }, [account, treatContract]);

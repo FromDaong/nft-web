@@ -10,12 +10,12 @@ const useAddSubscriberNFTs = (ids: Array<number>, amounts: Array<number>) => {
 
   const handleAddSubscriberNFTs = useCallback(async () => {
     const txHash = await addSubscriberNft(
-        subscriberMartContract,
+      subscriberMartContract,
       account,
       ids,
       amounts
     );
-    console.log(txHash);
+
     return txHash;
   }, [account, ids, amounts, subscriberMartContract]);
 

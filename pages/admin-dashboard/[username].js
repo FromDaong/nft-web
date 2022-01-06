@@ -87,7 +87,6 @@ const AdminDashboard = ({ username }) => {
     data && data.referrer_address
   );
   const referrerFromContract = useGetReferrer(data && data.address);
-  console.log({ referrerFromContract });
 
   if (!data)
     return (

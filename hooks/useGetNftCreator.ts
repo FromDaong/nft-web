@@ -32,7 +32,6 @@ const useGetNftCreator = (nftArray) => {
             );
 
             const creatorAddress = await nftCreatorAddress.toNumber();
-            console.log({ nftCreatorAddress: nftCreatorAddress.toNumber() });
             return { ...nft, nftCreatorAddress: creatorAddress };
           }
         })
@@ -41,7 +40,6 @@ const useGetNftCreator = (nftArray) => {
     })();
   }, [nftArray]);
 
-  console.log({ nftCreatorAddress });
   return nftCreatorAddress;
 };
 

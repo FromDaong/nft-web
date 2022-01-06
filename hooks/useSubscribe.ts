@@ -24,7 +24,6 @@ const useSubscribe = (
       Number(totalPrice),
       totalSubUnits
     );
-    console.log(txHash);
 
     return txHash;
   }, [account, creatorAddress, totalPrice, totalSubUnits, treatSubscriptionContract]);

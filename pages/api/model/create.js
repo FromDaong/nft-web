@@ -22,10 +22,10 @@ export default withSession(async (req, res) => {
           nfts: [],
         };
 
-        console.log({ nftBody });
+        
         const newNFT = await Model.create(nftBody);
 
-        console.log("New Model", newNFT);
+        
 
         res.status(200).json({ success: true, newNFT });
       } catch (error) {
