@@ -32,7 +32,6 @@ import {
 import "swiper/scss";
 import "swiper/scss/navigation";
 import "swiper/scss/pagination";
-import Snowfall from "react-snowfall";
 
 function MyApp({ Component, pageProps }) {
   const oldTokenBalance = useTokenBalance(
@@ -114,10 +113,6 @@ function MyApp({ Component, pageProps }) {
             content="Treat is an exclusive platform for creators to sell NFTs. Hold $TREAT to have a say on which creators are chosen & new platform features."
           />
         </Head>
-        <Snowfall
-          snowflakeCount={250}
-          color={"#FE93B9"}
-        />
         <SWRConfig
           value={{
             fetcher: fetch,
