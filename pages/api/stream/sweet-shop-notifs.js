@@ -35,15 +35,17 @@ export default withSession(async (req, res) => {
             req.body.contractCall.params &&
             req.body.contractCall.params._nft);
 
-        if (!nftId) return res.status(400);
+        if (!nftId)
+          return res.status(400).json({ success: false, error: "no nft id" });
 
         console.log({ nftId }, "New Sale");
         const nftData = await NFT.findOne({ id: nftId });
 
-        if (!nftData) return res.status(400);
+        if (!nftData)
+          return res.status(400).json({ success: false, error: "no nft data" });
 
         const modelData = await Model.findOne({
-          username: nftData.model_handle,
+          address: nftData.model_bnb_address,
         });
 
         const msg = {
