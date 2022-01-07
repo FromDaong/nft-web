@@ -28,9 +28,10 @@ export default withSession(async (req, res) => {
         console.log("New sale", req.body);
 
         const nftId =
-          req.body.contractCall &&
-          req.body.contractCall.params &&
-          req.body.contractCall.params.nftId;
+          (req.body.contractCall &&
+            req.body.contractCall.params &&
+            req.body.contractCall.params.nftId) ||
+          req.body.contractCall.params._nft;
 
         if (!nftId) return res.status(400);
 
