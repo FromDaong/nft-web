@@ -24,7 +24,8 @@ export default withSession(async (req, res) => {
       break;
     case "POST":
       try {
-        if (req.body.status !== "confirmed") return res.status(200);
+        if (req.body.status !== "confirmed")
+          return res.status(200).json({ success: false });
         console.log("New sale", req.body);
 
         const nftId =
@@ -47,6 +48,11 @@ export default withSession(async (req, res) => {
         const modelData = await Model.findOne({
           address: nftData.model_bnb_address,
         });
+
+        if (!modelData.email)
+          return res
+            .status(200)
+            .json({ success: false, error: "no model email" });
 
         const msg = {
           to: modelData.email,
