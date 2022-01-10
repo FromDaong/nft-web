@@ -75,6 +75,7 @@ const CreateModel = () => {
         });
         formik.setErrors(ogErrors);
         formik.setSubmitting(false);
+        setStep("signup");
       }
 
       if (resJSON.success) {
