@@ -110,7 +110,7 @@ const HeaderNav = ({ modelData }) => {
                 <Nav.Link>About</Nav.Link>
               </Link>
               <Nav.Link
-                href="https://treatdao.medium.com/c6aaa613725d"
+                href="https://treatdao.medium.com/"
                 target="_blank"
               >
                 Blog
