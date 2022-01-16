@@ -136,6 +136,16 @@ const Marketplace = ({ search }) => {
       case "Relevancy":
         return Number(a.score) - Number(b.score);
       case "Price Low to High":
+        const aMaxSupply = Number(a.item.max_supply);
+        const bMaxSupply = Number(b.item.max_supply);
+
+        const aTotalMints = a.item.mints;
+        const bTotalMints = b.item.mints;
+
+        if (a.item.list_price === b.item.list_price) {
+          // Compare mints if price is the same
+          return bMaxSupply - bTotalMints - (aMaxSupply - aTotalMints);
+        }
         return Number(a.item.list_price) - Number(b.item.list_price);
       case "Price High to Low":
         return Number(b.item.list_price) - Number(a.item.list_price);
