@@ -303,6 +303,7 @@ const Marketplace = ({ search }) => {
                     .map((o, i) => (
                       <Order
                         searchFilter={searchFilter}
+                        soldOut={o.item.mints === Number(o.item.max_supply)}
                         nftResult={o.item}
                         index={i}
                         order={o.item}

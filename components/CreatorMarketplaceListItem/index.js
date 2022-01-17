@@ -12,6 +12,7 @@ export const Order = ({
   searchFilter,
   setCancelOrderData,
   setPurchaseOrderData,
+  soldOut,
 }) => {
   const data = order;
 
@@ -23,6 +24,7 @@ export const Order = ({
         {!!order ? (
           <NFTListItem
             data={data}
+            soldOut={soldOut}
             isOwner={isOwner}
             price={
               isNaN(order.list_price)
