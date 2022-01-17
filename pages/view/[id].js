@@ -200,13 +200,6 @@ const ViewNFT = ({ nftData, image, account }) => {
   );
   const openOrders = useGetOpenOrdersForNft(nftData.id);
 
-  console.log({
-    remainingNfts: remainingNfts.toString(),
-    mintedNfts: mintedNfts.toString(),
-    maxNftSupply: maxNftSupply.toString(),
-    id: nftData.id,
-  });
-
   const {
     loading: loadingResaleHistory,
     error: errorResaleHistory,

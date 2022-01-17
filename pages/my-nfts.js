@@ -168,6 +168,15 @@ const OwnedNfts = ({
             })}
           </motion.div>
         </div>
+      ) : isLoading ? (
+        <Spinner
+          animation="border"
+          role="status"
+          size="xl"
+          style={{ marginTop: 5 }}
+        >
+          <span className="sr-only">Loading...</span>
+        </Spinner>
       ) : (
         <div
           className="w-100 text-center font-weight-bold d-flex align-items-center justify-content-center h-100"
