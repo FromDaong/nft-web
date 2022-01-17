@@ -14,6 +14,7 @@ import { forceCheck } from "react-lazyload";
 import { usePagination } from "react-use-pagination";
 import Fuse from "fuse.js";
 import Select from "react-select";
+import { useRouter } from "next/dist/client/router";
 
 const Marketplace = ({ search }) => {
   const [_, forceUpdate] = useReducer((x) => x + 1, 0);
@@ -25,6 +26,7 @@ const Marketplace = ({ search }) => {
   const [searchFilter, setSearchFilter] = useState(search || "");
   const [sortBy, setSortBy] = useState("Recent");
   const { account } = useWallet();
+  const router = useRouter();
 
   const updateObArr = () => {
     const ob = orderBookArray;
@@ -77,6 +79,19 @@ const Marketplace = ({ search }) => {
       refIndex: idx,
     }));
   }
+
+  useEffect(() => {
+    const queryFilter = router.query.s;
+    const persistedFilter = localStorage.getItem("searchFilter");
+    // Check if url has filter and if so, set it
+    // Else check if there is persisted filter
+    if (queryFilter) {
+      setSearchFilter(queryFilter);
+      localStorage.setItem("searchFilter", queryFilter);
+    } else if (persistedFilter) {
+      setSearchFilter(persistedFilter);
+    }
+  }, []);
 
   useEffect(() => {
     if (searchFilter !== "") setSortBy("Relevancy");
@@ -185,7 +200,10 @@ const Marketplace = ({ search }) => {
             type="text"
             className="flex-grow-1 pl-2"
             value={searchFilter}
-            onChange={(e) => setSearchFilter(e.target.value)}
+            onChange={(e) => {
+              setSearchFilter(e.target.value);
+              localStorage.setItem("searchFilter", e.target.value);
+            }}
             style={{ fontSize: "1.1em" }}
           />
 
