@@ -40,6 +40,7 @@ const NFTListItem = ({
   quantity,
   disableAnimations,
   modelData,
+  soldOut,
 }) => {
   const [image, setBase64Image] = useState();
 
@@ -59,7 +60,11 @@ const NFTListItem = ({
 
   return (
     <Link href={`/view/${data.id}`}>
-      <div className={`nft-card ${data.totw && "purple"}`}>
+      <div
+        className={`nft-card ${data.totw && "purple"} ${
+          soldOut ? "opacity-half" : ""
+        }`}
+      >
         <div className="totw-tag-wrapper">
           {isOwner ? (
             <div className="totw-tag">MY NFT</div>
