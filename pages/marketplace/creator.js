@@ -16,6 +16,9 @@ import Fuse from "fuse.js";
 import Select from "react-select";
 import { useRouter } from "next/dist/client/router";
 
+// TODO: Fetch NFTs from blockchain
+// database seems to be outdated
+
 const Marketplace = ({ search }) => {
   const [_, forceUpdate] = useReducer((x) => x + 1, 0);
   const { data: orderBookArray } = useSWR(`/api/nft/get-marketplace-nfts`);

@@ -76,6 +76,17 @@ const NFTListItem = ({
               {quantity}x Available
             </div>
           )}
+          <div className="quantity-wrapper totw-tag">
+            {data.max_supply}
+            {data.max_supply === "1"
+              ? "st"
+              : data.max_supply === "2"
+              ? "nd"
+              : data.max_supply === "3"
+              ? "rd"
+              : "th"}{" "}
+            edition
+          </div>
         </div>
         <Link href={`/creator/${data.attributes[0].value.replace("@", "")}`}>
           <div
@@ -83,6 +94,7 @@ const NFTListItem = ({
             style={{ backgroundImage: `url(${data.model_profile_pic})` }}
           />
         </Link>
+
         <div
           className="img-container text-center text-lg-left d-flex justify-content-center align-items-center"
           style={{
