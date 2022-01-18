@@ -56,6 +56,21 @@ const NFTListItem = ({
     })();
   }, [data]);
 
+  function ordinal_suffix_of(i) {
+    var j = i % 10,
+      k = i % 100;
+    if (j == 1 && k != 11) {
+      return i + "st";
+    }
+    if (j == 2 && k != 12) {
+      return i + "nd";
+    }
+    if (j == 3 && k != 13) {
+      return i + "rd";
+    }
+    return i + "th";
+  }
+
   if (!data.attributes) return <div></div>;
 
   return (
@@ -77,15 +92,16 @@ const NFTListItem = ({
             </div>
           )}
           <div className="quantity-wrapper totw-tag">
-            {data.max_supply}
             {data.max_supply === "1"
-              ? "st"
-              : data.max_supply === "2"
-              ? "nd"
-              : data.max_supply === "3"
-              ? "rd"
-              : "th"}{" "}
-            edition
+              ? "Exclusive"
+              : Number(data.max_supply) - data.mints <= 5
+              ? "Limited"
+              : new Intl.NumberFormat("en-IN", {
+                  maximumSignificantDigits: 3,
+                }).format(data.mints + 1) +
+                ordinal_suffix_of(data.mints + 1) +
+                " " +
+                "edition"}
           </div>
         </div>
         <Link href={`/creator/${data.attributes[0].value.replace("@", "")}`}>
