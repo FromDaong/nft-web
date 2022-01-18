@@ -145,15 +145,16 @@ const CreateModel = () => {
   if (res && res.accepted) return <Hero title="You are already a creator" />;
 
   useEffect(() => {
-    if (
-      res &&
-      (res.identity_access_key.length === 0 ||
-        res.identity_access_key === undefined)
-    ) {
-      setStep("verify");
-    } else {
-      setStep("signup");
+    if (res) {
+      if (!res.identity_access_key) {
+        return setStep("verify");
+      }
+      if (res.identity_access_key.length < 1) {
+        return setStep("verify");
+      }
     }
+
+    return setStep("signup");
   }, [res]);
 
   return (
