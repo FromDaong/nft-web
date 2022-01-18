@@ -233,6 +233,7 @@ const ViewModel = ({
               activeKey={key}
               onSelect={(k) => setKey(k)}
               className="mb-3"
+              mountOnEnter
             >
               {totwNFTs && totwNFTs.length > 0 && (
                 <Tab eventKey="totw" title="TOTW NFTs">
