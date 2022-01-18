@@ -28,7 +28,7 @@ const client = create("https://ipfs.infura.io:5001/api/v0");
 const CreateModel = () => {
   const router = useRouter();
   const [success, setSuccess] = useState(false);
-  const [step, setStep] = useState("signup");
+  const [step, setStep] = useState("loading");
   const { account } = useWallet();
   const { data: res } = useSWR(`/api/model/find-by-address/${account}`);
 
@@ -142,9 +142,17 @@ const CreateModel = () => {
   if (res && res.rejected)
     return <Hero title="Your application has been rejected" />;
 
+  if (res && res.accepted) return <Hero title="You are already a creator" />;
+
   useEffect(() => {
-    if (res && res.identity_access_key.length === 0) {
+    if (
+      res &&
+      (res.identity_access_key.length === 0 ||
+        res.identity_access_key === undefined)
+    ) {
       setStep("verify");
+    } else {
+      setStep("signup");
     }
   }, [res]);
 
@@ -359,6 +367,8 @@ const CreateModel = () => {
           </div>
         </motion.div>
       )}
+
+      {step === "loading" && <Loading custom={"Loading..."} />}
     </div>
   );
 };
