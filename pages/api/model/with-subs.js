@@ -19,9 +19,9 @@ export default async (req, res) => {
 
         const sortedModels = await returnModels.sort(
           (a, b) =>
-            a.nfts.length +
-            a.sub_nfts.length -
-            (b.nfts.length + b.sub_nfts.length)
+            b.nfts.length +
+            b.sub_nfts.length -
+            (a.nfts.length + a.sub_nfts.length)
         );
 
         res.status(200).json(sortedModels);
