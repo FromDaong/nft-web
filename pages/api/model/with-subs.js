@@ -9,7 +9,6 @@ export default async (req, res) => {
   switch (method) {
     case "GET":
       try {
-        // TODO: Apply filter for models with subscription only
         const Models = await Model.find({ subscription: { $exists: true } });
 
         const returnModels = await Models.map((n) => {
@@ -18,7 +17,14 @@ export default async (req, res) => {
           return returnObj;
         });
 
-        res.status(200).json(returnModels.reverse());
+        const sortedModels = await returnModels.sort(
+          (a, b) =>
+            a.nfts.length +
+            a.sub_nfts.length -
+            (b.nfts.length + b.sub_nfts.length)
+        );
+
+        res.status(200).json(sortedModels);
       } catch (error) {
         console.error({ error });
         res.status(400).json({ success: false, error: error });
