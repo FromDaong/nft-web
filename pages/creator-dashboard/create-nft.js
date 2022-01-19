@@ -26,7 +26,7 @@ const CreateNFT = ({ modelData }) => {
   const [success, setSuccess] = useState(false);
   const [sentWithoutIds, setSentWithoutIds] = useState(false);
   const [sentWithIds, setSentWithIds] = useState(false);
-  const { data: bnbPrice } = useSWR(
+  const { data: bnbPrice, error: bnbError } = useSWR(
     `https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT`
   );
 
