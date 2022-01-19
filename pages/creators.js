@@ -7,13 +7,14 @@ import PaginationComponent from "../components/PaginationComponent";
 import { usePagination } from "react-use-pagination";
 import Fuse from "fuse.js";
 import ErrorFallback from "../components/Fallback/Error";
-import Select from "react-select";
+import { useRouter } from "next/dist/client/router";
 
 const Creators = () => {
   // TODO Get models total items
   // get data for relevant models (startIndex endIndex)
   const { data: modelData, error } = useSWR(`/api/model`);
   const [searchFilter, setSearchFilter] = useState("");
+  const router = useRouter();
 
   const fuse = new Fuse(modelData, {
     keys: ["username", "display_name"],

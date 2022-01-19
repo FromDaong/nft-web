@@ -21,6 +21,7 @@ import BigNumber from "bignumber.js";
 import Fuse from "fuse.js";
 import Select from "react-select";
 import ErrorFallback from "../../components/Fallback/Error";
+import { useRouter } from "next/dist/client/router";
 
 const Marketplace = ({ search }) => {
   const maxId = useGetMaxIdForSale();
@@ -37,6 +38,7 @@ const Marketplace = ({ search }) => {
   const [orderBook] = useGetAllOpenOrders(maxId);
   const { account } = useWallet();
   const [_, forceUpdate] = useReducer((x) => x + 1, 0);
+  const router = useRouter();
 
   const initOrderBookArray = orderBook && orderBook.flat();
 
