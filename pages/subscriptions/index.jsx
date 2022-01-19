@@ -9,6 +9,7 @@ import Fuse from "fuse.js";
 import { useState } from "react";
 import Loading from "../../components/Loading";
 import ErrorFallback from "../../components/Fallback/Error";
+import { useRouter } from "next/dist/client/router";
 
 export default function Index() {
   // TODO Get models total items
@@ -16,6 +17,7 @@ export default function Index() {
   const { data: modelData, error: loadingError } =
     useSWR(`/api/model/with-subs`);
   const [searchFilter, setSearchFilter] = useState("");
+  const router = useRouter();
 
   const fuse = new Fuse(modelData, {
     keys: ["username", "display_name"],
