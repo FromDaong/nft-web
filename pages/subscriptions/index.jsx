@@ -69,7 +69,7 @@ export default function Index() {
       undefined,
       { shallow: true }
     );
-  }, [searchFilter, sortBy, currentPage]);
+  }, [searchFilter, currentPage]);
 
   return (
     <>

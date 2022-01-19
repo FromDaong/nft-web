@@ -66,7 +66,7 @@ const Creators = () => {
       undefined,
       { shallow: true }
     );
-  }, [searchFilter, sortBy, currentPage]);
+  }, [searchFilter, currentPage]);
 
   return (
     <>
