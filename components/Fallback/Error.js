@@ -1,4 +1,4 @@
-export default function Error({ custom, customTitle }) {
+export default function ErrorFallback({ custom, customTitle }) {
   return (
     <div
       style={{

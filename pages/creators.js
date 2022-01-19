@@ -6,12 +6,13 @@ import useSWR from "swr";
 import PaginationComponent from "../components/PaginationComponent";
 import { usePagination } from "react-use-pagination";
 import Fuse from "fuse.js";
+import ErrorFallback from "../components/Fallback/Error";
 import Select from "react-select";
 
 const Creators = () => {
   // TODO Get models total items
   // get data for relevant models (startIndex endIndex)
-  const { data: modelData } = useSWR(`/api/model`);
+  const { data: modelData, error } = useSWR(`/api/model`);
   const [searchFilter, setSearchFilter] = useState("");
 
   const fuse = new Fuse(modelData, {
@@ -25,16 +26,15 @@ const Creators = () => {
   // yes search + no dropdown
   if (searchFilter !== "") {
     filteredArray = fuse.search({
-      $or: [
-        { username: searchFilter },
-        { display_name: searchFilter },
-      ],
+      $or: [{ username: searchFilter }, { display_name: searchFilter }],
     });
   } else {
-    filteredArray = modelData && modelData.map((d, idx) => ({
-      item: d,
-      refIndex: idx,
-    }));
+    filteredArray =
+      modelData &&
+      modelData.map((d, idx) => ({
+        item: d,
+        refIndex: idx,
+      }));
   }
 
   const {
@@ -82,14 +82,24 @@ const Creators = () => {
           />
         </div>
         <br />
-        <ModelList totwOnly={false} endIndex={endIndex} startIndex={startIndex} modelData={filteredArray || []} />
+        {!error ? (
+          <ModelList
+            totwOnly={false}
+            endIndex={endIndex}
+            startIndex={startIndex}
+            modelData={filteredArray || []}
+          />
+        ) : (
+          <ErrorFallback custom="Failed to load models" />
+        )}
         <PaginationComponent
           currentPage={currentPage}
           totalPages={totalPages}
           setPage={setPage}
           setPageSize={setPageSize}
           setNextPage={setNextPage}
-          setPreviousPage={setPreviousPage} />
+          setPreviousPage={setPreviousPage}
+        />
       </motion.main>
     </>
   );

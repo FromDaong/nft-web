@@ -13,6 +13,7 @@ import { contractAddresses } from "../../treat/lib/constants.js";
 import { getDisplayBalance } from "../../utils/formatBalance";
 import { motion, AnimateSharedLayout } from "framer-motion";
 import { forceCheck } from "react-lazyload";
+import ErrorFallback from "../../components/Fallback/Error";
 
 const Marketplace = ({ search }) => {
   const { chainId } = useWallet();
@@ -20,7 +21,7 @@ const Marketplace = ({ search }) => {
   const melonBal = getDisplayBalance(
     useTokenBalance(contractAddresses.melon[chainId])
   );
-  const { data: orderBookArray } = useSWR(`/api/nft/get-melon-nfts`);
+  const { data: orderBookArray, error } = useSWR(`/api/nft/get-melon-nfts`);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
   const [nftDataArray, setNftDataArray] = useState([]);
@@ -38,8 +39,6 @@ const Marketplace = ({ search }) => {
   };
 
   const finalArray = orderBookArray;
-
-  
 
   return (
     <AnimateSharedLayout>
@@ -124,6 +123,8 @@ const Marketplace = ({ search }) => {
               >
                 <Loading custom="Loading... This may take up to a few minutes, please ensure your wallet is connected." />
               </div>
+            ) : error ? (
+              <ErrorFallback custom="Error loading page" />
             ) : (
               finalArray.length > 0 && (
                 <div className="d-flex justify-content-center flex-wrap w-100">

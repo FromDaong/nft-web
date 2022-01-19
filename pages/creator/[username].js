@@ -16,9 +16,10 @@ import SubscriptionNFTs from "../../components/CreatorPage/SubscriptionNFTs";
 import useGetSubscriptionCost from "../../hooks/useGetSubscriptionCost";
 import useGetIsSubscribed from "../../hooks/useGetIsSubscribed";
 import { Clipboard } from "react-bootstrap-icons";
+import ErrorFallback from "../../components/Fallback/Error";
 
 const ViewModelWrapper = ({ username }) => {
-  const { data: res } = useSWR(`/api/model/${username}`);
+  const { data: res, error } = useSWR(`/api/model/${username}`);
   const [modelData, setModelData] = useState();
   const [subNFTs, setSubNFTs] = useState();
   const [totwNFTs, setTotwNFTs] = useState();
@@ -108,7 +109,10 @@ const ViewModelWrapper = ({ username }) => {
         </Spinner>
       </div>
     );
-  } else {
+  } else if (error) {
+    return <ErrorFallback custom="Failed to load user data" />;
+  }
+  {
     return (
       <Layout>
         <ViewModel

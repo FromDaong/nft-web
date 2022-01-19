@@ -8,7 +8,7 @@ import { usePagination } from "react-use-pagination";
 import Fuse from "fuse.js";
 import { useState } from "react";
 import Loading from "../../components/Loading";
-import Error from "../../components/Fallback/Error";
+import ErrorFallback from "../../components/Fallback/Error";
 
 export default function Index() {
   // TODO Get models total items
@@ -89,7 +89,9 @@ export default function Index() {
           {!filteredArray && !loadingError ? (
             <Loading />
           ) : loadingError ? (
-            <Error custom={"Failed to load models with subscriptions."} />
+            <ErrorFallback
+              custom={"Failed to load models with subscriptions."}
+            />
           ) : (
             <ModelList
               totwOnly={false}

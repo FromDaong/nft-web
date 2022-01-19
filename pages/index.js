@@ -16,10 +16,12 @@ import {
   ShopWindow,
   EaselFill,
 } from "react-bootstrap-icons";
+import ErrorFallback from "../components/Fallback/Error";
 
 const Home = () => {
-  const { data: nftResult } = useSWR(`/api/nft?limit=20`);
-  const { data: modelResult } = useSWR(`/api/model`);
+  const { data: nftResult, error: nftResultError } =
+    useSWR(`/api/nft?limit=20`);
+  const { data: modelResult, error: modelResultError } = useSWR(`/api/model`);
   const [nftData, setNftData] = useState();
   const [modelData, setModelData] = useState();
   const [ref, inView] = useInView();
@@ -210,7 +212,11 @@ const Home = () => {
             </div>
           </div>
         </Scroll.Element>
-        <SwiperNFTList nftData={nftData} />
+        {!nftResultError ? (
+          <SwiperNFTList nftData={nftData} />
+        ) : (
+          <ErrorFallback custom="Failed to load NFTs" />
+        )}
         <div className="totw-section-container mt-5">
           <div className="section-title">Treat of the week</div>
           <div className="desc">
@@ -221,8 +227,11 @@ const Home = () => {
             exclusive to TreatDAO and only available to purchase for one week.
           </div>
 
-          {modelData &&
-            modelData.map((m) => m.totw && <TotwListItem modelData={m} />)}
+          {modelData && !error ? (
+            modelData.map((m) => m.totw && <TotwListItem modelData={m} />)
+          ) : (
+            <ErrorFallback custom="Failed to load TOTW" />
+          )}
         </div>
         <br />
         <CreatorList modelData={modelData} />
