@@ -86,22 +86,15 @@ const NFTListItem = ({
           ) : (
             data.totw && <div className="totw-tag">TOTW</div>
           )}
-          {quantity > 1 && (
-            <div className="quantity-wrapper totw-tag">
-              {quantity}x Available
-            </div>
-          )}
+
           <div className="quantity-wrapper totw-tag">
-            {data.max_supply === "1"
-              ? "Exclusive"
-              : Number(data.max_supply) - data.mints <= 5
-              ? "Limited"
-              : new Intl.NumberFormat("en-IN", {
-                  maximumSignificantDigits: 3,
-                }).format(data.mints + 1) +
-                ordinal_suffix_of(data.mints + 1) +
-                " " +
-                "edition"}
+            {false &&
+              // TODO: Show this when graph is fixed
+              Number(data.max_supply) - data.mints < 10 && (
+                <div className="quantity-wrapper totw-tag">
+                  {Number(data.max_supply) - data.mints} of 10 left
+                </div>
+              )}
           </div>
         </div>
         <Link href={`/creator/${data.attributes[0].value.replace("@", "")}`}>

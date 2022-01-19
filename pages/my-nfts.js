@@ -49,7 +49,7 @@ const MyNFTsWrapper = () => {
     })();
   }, [res]);
 
-  if (status !== "connected" || !nftArray) {
+  if (status !== "connected" || (!nftArray && nftArray?.length !== 0)) {
     return (
       <div
         style={{
