@@ -15,13 +15,16 @@ import { usePagination } from "react-use-pagination";
 import Fuse from "fuse.js";
 import Select from "react-select";
 import { useRouter } from "next/dist/client/router";
+import Error from "../../components/Fallback/Error";
 
 // TODO: Fetch NFTs from blockchain
 // database seems to be outdated
 
 const Marketplace = ({ search }) => {
   const [_, forceUpdate] = useReducer((x) => x + 1, 0);
-  const { data: orderBookArray } = useSWR(`/api/nft/get-marketplace-nfts`);
+  const { data: orderBookArray, error } = useSWR(
+    `/api/nft/get-marketplace-nfts`
+  );
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [purchaseOrderData, setPurchaseOrderData] = useState(null);
   const [showPendingModal, setShowPendingModal] = useState(null);
@@ -291,13 +294,15 @@ const Marketplace = ({ search }) => {
               },
             }}
           >
-            {!finalArray ? (
+            {finalArray?.length === 0 && !error ? (
               <div
                 style={{ minHeight: 500 }}
                 className="d-flex justify-content-center align-items-center w-100"
               >
                 <Loading custom="Loading... This may take up to a few minutes, please ensure your wallet is connected." />
               </div>
+            ) : error ? (
+              <Error custom={"Failed to load NFTs"} />
             ) : (
               finalArray.length > 0 && (
                 <>
