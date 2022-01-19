@@ -86,31 +86,6 @@ const Marketplace = ({ search }) => {
     }));
   }
 
-  useEffect(() => {
-    const queryFilter = router.query.s;
-    const persistedFilter = localStorage.getItem("searchFilter");
-    const persistedSortBy = localStorage.getItem("sortBy");
-
-    // Check if url has filter and if so, set it
-    // Else check if there is persisted filter
-    if (queryFilter) {
-      setSearchFilter(queryFilter);
-      localStorage.setItem("searchFilter", queryFilter);
-    } else if (persistedFilter) {
-      setSearchFilter(persistedFilter);
-      setSortBy(persistedSortBy);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (searchFilter !== "") setSortBy("Relevancy");
-    else setSortBy("Recent");
-  }, [searchFilter]);
-
-  useEffect(() => {
-    localStorage.setItem("sortBy", sortBy);
-  }, [sortBy]);
-
   const {
     currentPage,
     totalPages,
@@ -124,6 +99,31 @@ const Marketplace = ({ search }) => {
     totalItems: filteredArray ? filteredArray.length + 1 : 0,
     initialPageSize: 25,
   });
+
+  useEffect(() => {
+    const queryFilter = router.query.s;
+    const persistedPageNumber = router.query.p;
+    const persistedSortBy = router.query.sort;
+
+    setSearchFilter(queryFilter);
+    setSortBy(persistedSortBy ?? "Relevancy");
+    setPage(persistedPageNumber ?? 1);
+  }, []);
+
+  useEffect(() => {
+    if (searchFilter !== "") setSortBy("Relevancy");
+    else setSortBy("Recent");
+
+    router.query.s = searchFilter;
+  }, [searchFilter]);
+
+  useEffect(() => {
+    localStorage.setItem("sortBy", sortBy);
+  }, [sortBy]);
+
+  useEffect(() => {
+    router.query.p = currentPage;
+  }, [currentPage]);
 
   useEffect(() => {
     updateObArr();
@@ -215,7 +215,6 @@ const Marketplace = ({ search }) => {
             value={searchFilter}
             onChange={(e) => {
               setSearchFilter(e.target.value);
-              localStorage.setItem("searchFilter", e.target.value);
             }}
             style={{ fontSize: "1.1em" }}
           />
