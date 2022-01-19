@@ -145,12 +145,12 @@ const CreateModel = () => {
   if (res && res.accepted) return <Hero title="You are already a creator" />;
 
   useEffect(() => {
+    console.log(res);
     if (res) {
-      console.log(res);
       if (res.rejected) {
         return setStep("rejected");
       }
-      if (res.pending && res.identity_access_key.length > 0) {
+      if (res.pending && res?.identity_access_key?.length > 0) {
         return setStep("pending");
       }
       if (res.accepted) {
@@ -159,11 +159,11 @@ const CreateModel = () => {
       if (!res.identity_access_key) {
         return setStep("verify");
       }
-      if (res.pending && res.identity_access_key?.length < 1) {
+      if (res.pending && res?.identity_access_key?.length < 1) {
         return setStep("verify");
       }
-      return setStep("signup");
     }
+    return setStep("signup");
   }, [res]);
 
   return (
