@@ -318,7 +318,6 @@ const ViewNFT = ({ account, nftArray, isLoading }) => {
   const [cancelOrderData, setCancelOrderData] = useState(null);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   const transferNFTClick = (x) => {
     setTransferNFTData(x);
@@ -353,7 +352,6 @@ const ViewNFT = ({ account, nftArray, isLoading }) => {
       });
       const resJSON = await res.json();
 
-      setIsLoading(false);
       if (resJSON.success) {
         setServerNftBalances(resJSON.results);
       }

@@ -14,6 +14,8 @@ const Creators = () => {
   // get data for relevant models (startIndex endIndex)
   const { data: modelData, error } = useSWR(`/api/model`);
   const [searchFilter, setSearchFilter] = useState("");
+  const [initialRender, setInitialRender] = useState(true);
+
   const router = useRouter();
 
   const fuse = new Fuse(modelData, {
@@ -58,6 +60,7 @@ const Creators = () => {
 
     setSearchFilter(queryFilter ?? "");
     setPage(persistedPageNumber ?? 1);
+    setInitialRender(false);
   }, []);
 
   useEffect(() => {
@@ -67,6 +70,12 @@ const Creators = () => {
       { shallow: true }
     );
   }, [searchFilter, currentPage]);
+
+  useEffect(() => {
+    if (!initialRender) {
+      setPage(0);
+    }
+  }, [searchFilter, sortBy]);
 
   return (
     <>
