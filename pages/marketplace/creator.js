@@ -89,6 +89,8 @@ const Marketplace = ({ search }) => {
   useEffect(() => {
     const queryFilter = router.query.s;
     const persistedFilter = localStorage.getItem("searchFilter");
+    const persistedSortBy = localStorage.getItem("sortBy");
+
     // Check if url has filter and if so, set it
     // Else check if there is persisted filter
     if (queryFilter) {
@@ -96,6 +98,7 @@ const Marketplace = ({ search }) => {
       localStorage.setItem("searchFilter", queryFilter);
     } else if (persistedFilter) {
       setSearchFilter(persistedFilter);
+      setSortBy(persistedSortBy);
     }
   }, []);
 
@@ -103,6 +106,10 @@ const Marketplace = ({ search }) => {
     if (searchFilter !== "") setSortBy("Relevancy");
     else setSortBy("Recent");
   }, [searchFilter]);
+
+  useEffect(() => {
+    localStorage.setItem("sortBy", sortBy);
+  }, [sortBy]);
 
   const {
     currentPage,

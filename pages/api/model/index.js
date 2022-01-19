@@ -9,7 +9,6 @@ export default async (req, res) => {
   switch (method) {
     case "GET":
       try {
-        // TODO: Implement sort by number of NFTS in both NFTS and sub_nfts
         const Models = await Model.find();
 
         const returnModels = await Models.map((n) => {
