@@ -49,7 +49,7 @@ const MyNFTsWrapper = () => {
     })();
   }, [res]);
 
-  if (status !== "connected" || (!nftArray && nftArray?.length !== 0)) {
+  if (status !== "connected" || !nftArray) {
     return (
       <div
         style={{
@@ -87,7 +87,13 @@ const MyNFTsWrapper = () => {
   } else if (error) {
     return <ErrorFallback custom="Failed to load my NFT's" />;
   } else {
-    return <ViewNFT account={account} nftArray={nftArray} />;
+    return (
+      <ViewNFT
+        account={account}
+        nftArray={nftArray}
+        isLoading={!nftArray && !error}
+      />
+    );
   }
 };
 
@@ -300,7 +306,7 @@ const OpenOrders = ({
   );
 };
 
-const ViewNFT = ({ account, nftArray }) => {
+const ViewNFT = ({ account, nftArray, isLoading }) => {
   const [serverNftBalances, setServerNftBalances] = useState(null);
 
   const maxNftSupply = useGetNftMaxSupply(account);
