@@ -149,12 +149,11 @@ const CreateModel = () => {
       if (!res.identity_access_key) {
         return setStep("verify");
       }
-      if (res.identity_access_key.length < 1) {
+      if (res.identity_access_key?.length < 1) {
         return setStep("verify");
       }
+      return setStep("signup");
     }
-
-    return setStep("signup");
   }, [res]);
 
   return (
