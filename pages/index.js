@@ -227,7 +227,7 @@ const Home = () => {
             exclusive to TreatDAO and only available to purchase for one week.
           </div>
 
-          {modelData && !error ? (
+          {modelData && !modelResultError ? (
             modelData.map((m) => m.totw && <TotwListItem modelData={m} />)
           ) : (
             <ErrorFallback custom="Failed to load TOTW" />
