@@ -131,18 +131,6 @@ const CreateModel = () => {
     }
   };
 
-  if (success || (res && res.pending && res.identity_access_key.length > 0))
-    return (
-      <Hero
-        title="Your application has been submitted!"
-        subtitle="When approved you will see a creator dashboard at the top of the navigation bar.  You can check back in a few hours."
-      />
-    );
-
-  if (res && res.rejected)
-    return <Hero title="Your application has been rejected" />;
-
-  if (res && res.accepted) return <Hero title="You are already a creator" />;
 
   useEffect(() => {
     console.log(res);
@@ -153,7 +141,7 @@ const CreateModel = () => {
       if (res.pending && res?.identity_access_key?.length > 0) {
         return setStep("pending");
       }
-      if (res.accepted) {
+      if (!res.rejected && !res.pending) {
         return setStep("accepted");
       }
       if (!res.identity_access_key) {
@@ -162,8 +150,9 @@ const CreateModel = () => {
       if (res.pending && res?.identity_access_key?.length < 1) {
         return setStep("verify");
       }
+    } else {
+      return setStep("signup");
     }
-    return setStep("signup");
   }, [res]);
 
   return (
