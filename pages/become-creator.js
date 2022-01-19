@@ -150,14 +150,17 @@ const CreateModel = () => {
       if (res.pending && res?.identity_access_key?.length < 1) {
         return setStep("verify");
       }
+      return setStep("signup");
     }
-    return setStep("signup");
-    
   }, [res]);
 
   return (
     <div className="no-position" style={{ maxWidth: 800, margin: "auto" }}>
       {step === "accepted" && <Hero title="You are already a creator" />}
+
+      {step === "rejected" && (
+        <Hero title="Your application has been rejected" />
+      )}
 
       {step === "pending" && (
         <Hero
@@ -165,6 +168,7 @@ const CreateModel = () => {
           subtitle="When approved you will see a creator dashboard at the top of the navigation bar.  You can check back in a few hours."
         />
       )}
+
       {(step === "signup" || step === "submitting") && (
         <motion.div
           animate={{ y: 0, opacity: 1 }}
