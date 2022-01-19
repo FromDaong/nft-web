@@ -105,20 +105,22 @@ const Marketplace = ({ search }) => {
     const queryFilter = router.query.s;
     const persistedPageNumber = router.query.p;
     const persistedSortBy = router.query.sort;
+    const tags = router.query.tags;
 
     setSearchFilter(queryFilter ?? "");
     setSortBy(persistedSortBy ?? "Recent");
     setPage(persistedPageNumber ?? 0);
+    selectedOptionsStr = tags;
     setInitialRender(false);
   }, []);
 
   useEffect(() => {
     router.push(
-      `/${router.pathname}?s=${searchFilter}&p=${currentPage}&sort=${sortBy}`,
+      `/${router.pathname}?s=${searchFilter}&p=${currentPage}&sort=${sortBy}&tags='${selectedOptionsStr}'`,
       undefined,
       { shallow: true }
     );
-  }, [searchFilter, sortBy, currentPage]);
+  }, [searchFilter, sortBy, currentPage, selectedOptionsStr]);
 
   useEffect(() => {
     updateObArr();
