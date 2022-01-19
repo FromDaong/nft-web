@@ -52,6 +52,23 @@ export default function Index() {
     totalItems: filteredArray ? filteredArray.length + 1 : 0,
     initialPageSize: 25,
   });
+
+  useEffect(() => {
+    const queryFilter = router.query.s;
+    const persistedPageNumber = router.query.p;
+
+    setSearchFilter(queryFilter ?? "");
+    setPage(persistedPageNumber ?? 1);
+  }, []);
+
+  useEffect(() => {
+    router.push(
+      `/${router.pathname}?s=${searchFilter}&p=${currentPage}`,
+      undefined,
+      { shallow: true }
+    );
+  }, [searchFilter, sortBy, currentPage]);
+
   return (
     <>
       <motion.main

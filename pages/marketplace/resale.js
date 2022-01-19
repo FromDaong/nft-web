@@ -163,11 +163,6 @@ const Marketplace = ({ search }) => {
     }
   });
 
-  useEffect(() => {
-    if (searchFilter !== "") setSortBy("Relevancy");
-    else setSortBy("Recent");
-  }, [searchFilter]);
-
   const {
     currentPage,
     totalPages,
@@ -181,6 +176,22 @@ const Marketplace = ({ search }) => {
     totalItems: renderArray ? renderArray.length : 0,
     initialPageSize: 10,
   });
+
+  useEffect(() => {
+    const queryFilter = router.query.s;
+    const persistedPageNumber = router.query.p;
+
+    setSearchFilter(queryFilter ?? "");
+    setPage(persistedPageNumber ?? 1);
+  }, []);
+
+  useEffect(() => {
+    router.push(
+      `/${router.pathname}?s=${searchFilter}&p=${currentPage}`,
+      undefined,
+      { shallow: true }
+    );
+  }, [searchFilter, sortBy, currentPage]);
 
   const startNumber = currentPage - 5 > 0 ? currentPage - 5 : 0;
   const endNumber = currentPage + 5 < totalPages ? currentPage + 5 : totalPages;
