@@ -124,7 +124,7 @@ const CreateModel = () => {
 
       if (resJSON.success) {
         setSuccess(true);
-        setStep("signup");
+        setStep("pending");
       }
     } catch (error) {
       console.error(error);
@@ -146,10 +146,20 @@ const CreateModel = () => {
 
   useEffect(() => {
     if (res) {
+      console.log(res);
+      if (res.rejected) {
+        return setStep("rejected");
+      }
+      if (res.pending && res.identity_access_key.length > 0) {
+        return setStep("pending");
+      }
+      if (res.accepted) {
+        return setStep("accepted");
+      }
       if (!res.identity_access_key) {
         return setStep("verify");
       }
-      if (res.identity_access_key?.length < 1) {
+      if (res.pending && res.identity_access_key?.length < 1) {
         return setStep("verify");
       }
       return setStep("signup");
@@ -158,6 +168,14 @@ const CreateModel = () => {
 
   return (
     <div className="no-position" style={{ maxWidth: 800, margin: "auto" }}>
+      {step === "accepted" && <Hero title="You are already a creator" />}
+
+      {step === "pending" && (
+        <Hero
+          title="Your application has been submitted!"
+          subtitle="When approved you will see a creator dashboard at the top of the navigation bar.  You can check back in a few hours."
+        />
+      )}
       {(step === "signup" || step === "submitting") && (
         <motion.div
           animate={{ y: 0, opacity: 1 }}
