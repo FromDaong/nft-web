@@ -77,7 +77,7 @@ export default function Index() {
     if (!initialRender) {
       setPage(0);
     }
-  }, [searchFilter, sortBy]);
+  }, [searchFilter]);
 
   return (
     <>
