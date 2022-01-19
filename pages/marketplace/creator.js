@@ -31,6 +31,7 @@ const Marketplace = ({ search }) => {
   const [nftDataArray, setNftDataArray] = useState([]);
   const [searchFilter, setSearchFilter] = useState(search || "");
   const [sortBy, setSortBy] = useState("Recent");
+  const [initialRender, setInitialRender] = useState(true);
   const { account } = useWallet();
   const router = useRouter();
 
@@ -107,7 +108,8 @@ const Marketplace = ({ search }) => {
 
     setSearchFilter(queryFilter ?? "");
     setSortBy(persistedSortBy ?? "Recent");
-    setPage(persistedPageNumber ?? 1);
+    setPage(persistedPageNumber ?? 0);
+    setInitialRender(false);
   }, []);
 
   useEffect(() => {
@@ -121,8 +123,10 @@ const Marketplace = ({ search }) => {
   useEffect(() => {
     updateObArr();
     forceUpdate();
-    setPage(0);
-  }, [orderBookArray, sortBy, showPendingModal]);
+    if (!initialRender) {
+      setPage(0);
+    }
+  }, [searchFilter, orderBookArray, sortBy, showPendingModal]);
 
   const startNumber = currentPage - 5 > 0 ? currentPage - 5 : 0;
   const endNumber = currentPage + 5 < totalPages ? currentPage + 5 : totalPages;

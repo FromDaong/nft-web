@@ -17,6 +17,7 @@ export default function Index() {
   const { data: modelData, error: loadingError } =
     useSWR(`/api/model/with-subs`);
   const [searchFilter, setSearchFilter] = useState("");
+  const [initialRender, setInitialRender] = useState(true);
   const router = useRouter();
 
   const fuse = new Fuse(modelData, {
@@ -61,6 +62,7 @@ export default function Index() {
 
     setSearchFilter(queryFilter ?? "");
     setPage(persistedPageNumber ?? 1);
+    setInitialRender(false);
   }, []);
 
   useEffect(() => {
@@ -70,6 +72,12 @@ export default function Index() {
       { shallow: true }
     );
   }, [searchFilter, currentPage]);
+
+  useEffect(() => {
+    if (!initialRender) {
+      setPage(0);
+    }
+  }, [searchFilter, sortBy]);
 
   return (
     <>
