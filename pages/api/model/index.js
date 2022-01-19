@@ -18,7 +18,14 @@ export default async (req, res) => {
           return returnObj;
         });
 
-        res.status(200).json(returnModels.reverse());
+        const sortedModels = await returnModels.sort(
+          (a, b) =>
+            b.nfts.length +
+            b.sub_nfts.length -
+            (a.nfts.length + a.sub_nfts.length)
+        );
+
+        res.status(200).json(sortedModels);
       } catch (error) {
         console.error({ error });
         res.status(400).json({ success: false, error: error });
