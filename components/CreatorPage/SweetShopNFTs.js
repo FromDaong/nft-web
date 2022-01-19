@@ -52,17 +52,25 @@ const SweetShopNFTs = ({ modelData, onRedeemSet, modelNFTs, nftSetPrice }) => {
           modelNFTs.length > 0 &&
           modelNFTs
             .sort((a, b) => a.list_price - b.list_price)
-            .map((m) => (
-              <div key={m.id} className="col-xs-12 col-md-6 col-xl-4 ">
-                <LazyLoad
-                  height={400}
-                  unmountIfInvisible
-                  style={{ display: "flex", justifyContent: "center" }}
-                >
-                  <NFTListItem modelData={modelData} data={m} key={m.id} />
-                </LazyLoad>
-              </div>
-            ))}
+            .map((m, i) => {
+              return i < 3 ? (
+                <div key={m.id} className="col-xs-12 col-md-6 col-xl-4 ">
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    <NFTListItem modelData={modelData} data={m} key={m.id} />
+                  </div>
+                </div>
+              ) : (
+                <div key={m.id} className="col-xs-12 col-md-6 col-xl-4 ">
+                  <LazyLoad
+                    height={400}
+                    unmountIfInvisible
+                    style={{ display: "flex", justifyContent: "center" }}
+                  >
+                    <NFTListItem modelData={modelData} data={m} key={m.id} />
+                  </LazyLoad>
+                </div>
+              );
+            })}
         {!modelNFTs && (
           <div className="text-center w-100 mt-5">Loading NFTs...</div>
         )}
