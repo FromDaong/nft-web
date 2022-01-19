@@ -105,25 +105,18 @@ const Marketplace = ({ search }) => {
     const persistedPageNumber = router.query.p;
     const persistedSortBy = router.query.sort;
 
-    setSearchFilter(queryFilter);
-    setSortBy(persistedSortBy ?? "Relevancy");
+    setSearchFilter(queryFilter ?? "");
+    setSortBy(persistedSortBy ?? "Recent");
     setPage(persistedPageNumber ?? 1);
   }, []);
 
   useEffect(() => {
-    if (searchFilter !== "") setSortBy("Relevancy");
-    else setSortBy("Recent");
-
-    router.query.s = searchFilter;
-  }, [searchFilter]);
-
-  useEffect(() => {
-    localStorage.setItem("sortBy", sortBy);
-  }, [sortBy]);
-
-  useEffect(() => {
-    router.query.p = currentPage;
-  }, [currentPage]);
+    router.push(
+      `/${router.pathname}?s=${searchFilter}&p=${currentPage}&sort=${sortBy}`,
+      undefined,
+      { shallow: true }
+    );
+  }, [searchFilter, sortBy, currentPage]);
 
   useEffect(() => {
     updateObArr();
