@@ -18,6 +18,7 @@ import useSWR from "swr";
 import BigNumber from "bignumber.js";
 import LazyLoad from "react-lazyload";
 import Layout from "../components/Layout";
+import ErrorFallback from "../components/Fallback/Error";
 
 const variants = {
   show: {
@@ -37,7 +38,7 @@ const variants = {
 const MyNFTsWrapper = () => {
   const { account, status } = useWallet();
 
-  const { data: res } = useSWR(`/api/nft`);
+  const { data: res, error } = useSWR(`/api/nft`);
   const [nftArray, setNftData] = useState();
 
   useEffect(() => {
@@ -83,6 +84,8 @@ const MyNFTsWrapper = () => {
         </Spinner>
       </div>
     );
+  } else if (error) {
+    return <ErrorFallback custom="Failed to load my NFT's" />;
   } else {
     return <ViewNFT account={account} nftArray={nftArray} />;
   }

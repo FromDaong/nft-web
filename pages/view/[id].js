@@ -126,7 +126,7 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
 };
 
 const ViewNFTWrapper = ({ id }) => {
-  const { data: res } = useSWR(`/api/nft/${id}`);
+  const { data: res, error } = useSWR(`/api/nft/${id}`);
   const [nftData, setNftData] = useState();
   const { status } = useWallet();
 
@@ -171,6 +171,8 @@ const ViewNFTWrapper = ({ id }) => {
         </Spinner>
       </div>
     );
+  } else if (error) {
+    return <Error custom="Could not load NFT" />;
   } else {
     return <ViewNFT nftData={nftData} />;
   }

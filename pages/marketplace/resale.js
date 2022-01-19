@@ -20,6 +20,7 @@ import { usePagination } from "react-use-pagination";
 import BigNumber from "bignumber.js";
 import Fuse from "fuse.js";
 import Select from "react-select";
+import ErrorFallback from "../../components/Fallback/Error";
 
 const Marketplace = ({ search }) => {
   const maxId = useGetMaxIdForSale();
@@ -86,7 +87,7 @@ const Marketplace = ({ search }) => {
       body: JSON.stringify(jsonBody),
     }).then((a) => a.json());
 
-  const { data: populatedNftData } = useSWR(
+  const { data: populatedNftData, error } = useSWR(
     orderBookArray && orderBookArray.length > 0 && jsonBody
       ? `/api/nft/get-many-nfts`
       : null,
@@ -359,6 +360,8 @@ const Marketplace = ({ search }) => {
               <div className="d-flex justify-content-center align-items-center w-100">
                 <Loading custom="Loading data from the blockchain... Please ensure your wallet is connected." />
               </div>
+            ) : error ? (
+              <ErrorFallback custom="Error loading page" />
             ) : (
               <>
                 {renderArray.slice(startIndex, endIndex).map((o, i) => (
