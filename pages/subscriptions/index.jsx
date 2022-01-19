@@ -6,7 +6,7 @@ import PaginationComponent from "../../components/PaginationComponent";
 import ModelList from "../../components/ModelList";
 import { usePagination } from "react-use-pagination";
 import Fuse from "fuse.js";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Loading from "../../components/Loading";
 import ErrorFallback from "../../components/Fallback/Error";
 import { useRouter } from "next/dist/client/router";

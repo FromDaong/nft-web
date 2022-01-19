@@ -101,7 +101,7 @@ const Marketplace = ({ search }) => {
     populatedNftData &&
     orderBookArray
       .map((orderBookNft) => {
-        const nftResult = populatedNftData.find(
+        const nftResult = populatedNftData?.find(
           (x) => x.id === orderBookNft.nftId
         );
         if (!nftResult) return undefined;
