@@ -150,9 +150,9 @@ const CreateModel = () => {
       if (res.pending && res?.identity_access_key?.length < 1) {
         return setStep("verify");
       }
-    } else {
-      return setStep("signup");
     }
+    return setStep("signup");
+    
   }, [res]);
 
   return (
