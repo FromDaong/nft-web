@@ -56,7 +56,7 @@ const Marketplace = ({ search }) => {
 
 
   useEffect(() => {
-    selectedOptions.forEach((e) => setSelectedOptionsStr(selectedOptionsStr + `="${e.value}" `));
+    selectedOptions.forEach((e) => e.value && setSelectedOptionsStr(selectedOptionsStr + `="${e.value}" `));
   }, [selectedOptions])
 
   let filteredArray;
@@ -178,12 +178,18 @@ const Marketplace = ({ search }) => {
       let tagsArray = renamedTags.split(',').reverse()
       tagsArray.pop()
       tagsArray = tagsArray.map(tag => tag.replaceAll('"', ''))
-      setSelectedOptions(tagsArray)
-      console.log({setSelectedOptions, tagsArray})
+      tagsArray.map(tag => setSelectedOptions(current => [
+          ...current, 
+          {
+            label: tag,
+            value: tag
+          }
+        ]
+      ))
     }
   }, []);
 
-  console.log({selectedOptionsStr})
+  console.log({selectedOptionsStr, selectedOptions})
 
 
   useEffect(() => {
