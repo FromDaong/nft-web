@@ -90,9 +90,7 @@ const EditProfile = ({}) => {
 
   return (
     <div className="white-tp-bg" style={{ minHeight: 200 }}>
-     
-
-     <div
+      <div
         className="px-4 py-2 w-100 d-flex"
         style={{
           background: "#FFFDF2",
@@ -101,7 +99,6 @@ const EditProfile = ({}) => {
           borderRadius: 8,
         }}
       >
-         
         <div>
           <h2
             className="heading-text-primary pt-1"
@@ -112,36 +109,54 @@ const EditProfile = ({}) => {
             <InfoCircleFill className="pb-1 mr-1" /> Creator Resources
           </h2>
         </div>
-        
       </div>
-      <div className="p-5">
-      Helpful links and resources for creators:
-      <br></br>
-      <ListGroup defaultActiveKey="#link1">
-    <ListGroup.Item action target="_blank" href="https://drive.google.com/file/d/1B0Q1Jkja4a2LsPrUTaS-ANNnD7m_jqQD/view?usp=sharing">
-      Creator's Guide
-    </ListGroup.Item>
-    <ListGroup.Item action target="_blank" href="https://drive.google.com/file/d/1Li5EAK8sP71rY1wT9J87mUCjLWmjcO2a/view">
-      Content Creator Agreement
-    </ListGroup.Item>
-    <ListGroup.Item action target="_blank" href="https://t.me/TreatContentCreators">
-      Creator Community Telegram
-    </ListGroup.Item>
-    <ListGroup.Item action target="_blank" href="https://drive.google.com/file/d/1V17GZVo2HA8T9zrrmG4690j-0h4IPWwN/view?usp=sharing">
-    Explainer Guide
-    </ListGroup.Item>
-    <ListGroup.Item action target="_blank" href="https://drive.google.com/file/d/1wZYC_Lj-MWxvJhw86BzGLHIbWOqADRvL/view?usp=sharing">
-    Beginner Tips
-    </ListGroup.Item>
-    <ListGroup.Item action target="_blank" href="https://docs.google.com/gview?url=https://github.com/TreatDAO/litepaper/raw/main/TreatPaperFinal.pdf&embedded=true">
-      Litepaper
-    </ListGroup.Item>
-</ListGroup>
-            </div>
+      <div className="p-4">
+        <ListGroup defaultActiveKey="#link1">
+          <ListGroup.Item
+            action
+            target="_blank"
+            href="https://drive.google.com/file/d/1B0Q1Jkja4a2LsPrUTaS-ANNnD7m_jqQD/view?usp=sharing"
+          >
+            Creator's Guide
+          </ListGroup.Item>
+          <ListGroup.Item
+            action
+            target="_blank"
+            href="https://drive.google.com/file/d/1Li5EAK8sP71rY1wT9J87mUCjLWmjcO2a/view"
+          >
+            Content Creator Agreement
+          </ListGroup.Item>
+          <ListGroup.Item
+            action
+            target="_blank"
+            href="https://t.me/TreatContentCreators"
+          >
+            Creator Community Telegram
+          </ListGroup.Item>
+          <ListGroup.Item
+            action
+            target="_blank"
+            href="https://drive.google.com/file/d/1V17GZVo2HA8T9zrrmG4690j-0h4IPWwN/view?usp=sharing"
+          >
+            Explainer Guide
+          </ListGroup.Item>
+          <ListGroup.Item
+            action
+            target="_blank"
+            href="https://drive.google.com/file/d/1wZYC_Lj-MWxvJhw86BzGLHIbWOqADRvL/view?usp=sharing"
+          >
+            Beginner Tips
+          </ListGroup.Item>
+          <ListGroup.Item
+            action
+            target="_blank"
+            href="https://docs.google.com/gview?url=https://github.com/TreatDAO/litepaper/raw/main/TreatPaperFinal.pdf&embedded=true"
+          >
+            Litepaper
+          </ListGroup.Item>
+        </ListGroup>
+      </div>
     </div>
-
-
-  
   );
 };
 
