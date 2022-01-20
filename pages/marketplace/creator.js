@@ -33,7 +33,6 @@ const Marketplace = ({ search }) => {
   const [sortBy, setSortBy] = useState("Recent");
   const [initialRender, setInitialRender] = useState(true);
   const [persistedPageNumber, setPersistedPageNumber] = useState(0);
-  const [selectedOptionsStr, setSelectedOptionsStr] = useState("");
 
   const { account } = useWallet();
   const router = useRouter();
@@ -54,11 +53,9 @@ const Marketplace = ({ search }) => {
     includeScore: true,
   });
 
-
-  useEffect(() => {
-    selectedOptions.forEach((e) => e.value && setSelectedOptionsStr(selectedOptionsStr + `="${e.value}" `));
-  }, [selectedOptions])
-
+  let selectedOptionsStr = "";
+  selectedOptions.forEach((e) => (selectedOptionsStr += `="${e.value}"`));
+  console.log({ selectedOptionsStr });
   let filteredArray;
 
   // yes search + no dropdown
@@ -172,27 +169,31 @@ const Marketplace = ({ search }) => {
     setPersistedPageNumber(
       persistedPageNumber ? Number(persistedPageNumber) : 0
     );
-    setSelectedOptionsStr(tags ?? "");
-    if(tags) {
-      let renamedTags = tags.replaceAll('=', ',')
-      let tagsArray = renamedTags.split(',').reverse()
-      tagsArray.pop()
-      tagsArray = tagsArray.map(tag => tag.replaceAll('"', ''))
-      tagsArray.map(tag => setSelectedOptions(current => [
-          ...current, 
+    if (tags) {
+      let renamedTags = tags.replaceAll("=", ",");
+      let tagsArray = renamedTags.split(",").reverse();
+      tagsArray.pop();
+      tagsArray = tagsArray.map((tag) => tag.replaceAll('"', ""));
+      tagsArray.map((tag) =>
+        setSelectedOptions((current) => [
+          ...current,
           {
             label: tag,
-            value: tag
-          }
-        ]
-      ))
+            value: tag,
+          },
+        ])
+      );
     }
   }, []);
 
   useEffect(() => {
     if (searchFilter || sortBy || currentPage) {
       router.push(
-        `/${router.pathname}?${searchFilter && `s=${searchFilter}&`}${currentPage ? `p=${currentPage}&` : ''}${selectedOptionsStr ? `tags=${selectedOptionsStr}&` : ''}${sortBy ? `sort=${sortBy}&` : ''}`.trim(),
+        `${router.pathname}?${searchFilter && `s=${searchFilter}&`}${
+          currentPage ? `p=${currentPage}&` : ""
+        }${selectedOptionsStr ? `tags=${selectedOptionsStr}&` : ""}${
+          sortBy ? `sort=${sortBy}&` : ""
+        }`.trim(),
         undefined,
         { shallow: true }
       );
@@ -205,7 +206,6 @@ const Marketplace = ({ search }) => {
   }, [searchFilter, orderBookArray, sortBy, showPendingModal]);
 
   useEffect(() => {
-    console.log({ finalArray, persistedPageNumber });
     if (finalArray.length !== 0 && persistedPageNumber) {
       setPage(persistedPageNumber);
       setPersistedPageNumber(null);

@@ -14,7 +14,7 @@ const Creators = () => {
   // get data for relevant models (startIndex endIndex)
   const { data: modelData, error } = useSWR(`/api/model`);
   const [searchFilter, setSearchFilter] = useState("");
-  const [persistedPageNumber, setPersistedPageNumber] = useState(0)
+  const [persistedPageNumber, setPersistedPageNumber] = useState(0);
 
   const router = useRouter();
 
@@ -59,25 +59,29 @@ const Creators = () => {
     const persistedPageNumber = router.query.p;
 
     setSearchFilter(queryFilter ?? "");
-    setPersistedPageNumber(persistedPageNumber ? Number(persistedPageNumber) : 0)
+    setPersistedPageNumber(
+      persistedPageNumber ? Number(persistedPageNumber) : 0
+    );
   }, []);
 
   useEffect(() => {
     if (searchFilter || currentPage) {
       router.push(
-      `/${router.pathname}?${searchFilter && `s=${searchFilter}&`}${currentPage && `p=${currentPage}`}`,
-      undefined,
-      { shallow: true }
-    );
+        `${router.pathname}?${searchFilter && `s=${searchFilter}&`}${
+          currentPage && `p=${currentPage}`
+        }`,
+        undefined,
+        { shallow: true }
+      );
     }
   }, [searchFilter, currentPage]);
 
   useEffect(() => {
-    if(filteredArray && persistedPageNumber) {
-      setPage(persistedPageNumber)
-      setPersistedPageNumber(null)
+    if (filteredArray && persistedPageNumber) {
+      setPage(persistedPageNumber);
+      setPersistedPageNumber(null);
     }
-  }, [filteredArray])
+  }, [filteredArray]);
 
   return (
     <>
