@@ -34,7 +34,7 @@ const Marketplace = ({ search }) => {
   const [showCompleteModal, setShowCompleteModal] = useState(null);
   const [orderBookArray, setOrderBookArray] = useState([]);
   const [searchFilter, setSearchFilter] = useState(search || "");
-  const [initialRender, setInitialRender] = useState(true);
+  const [persistedPageNumber, setPersistedPageNumber] = useState(0)
   const [sortBy, setSortBy] = useState("Recent");
   const [orderBook] = useGetAllOpenOrders(maxId);
   const { account } = useWallet();
@@ -185,8 +185,7 @@ const Marketplace = ({ search }) => {
     const persistedPageNumber = router.query.p;
 
     setSearchFilter(queryFilter ?? "");
-    setPage(persistedPageNumber ?? 1);
-    setInitialRender(false);
+    setPersistedPageNumber(persistedPageNumber ? Number(persistedPageNumber) : 0)
   }, []);
 
   useEffect(() => {
@@ -197,7 +196,12 @@ const Marketplace = ({ search }) => {
     );
   }, [searchFilter, sortBy, currentPage]);
 
-  useEffect(() => {}, [searchFilter, sortBy]);
+  useEffect(() => {
+    if(renderArray.length !== 0 && persistedPageNumber) {
+      setPage(persistedPageNumber)
+      setPersistedPageNumber(null)
+    }
+  }, [renderArray])
 
   const startNumber = currentPage - 5 > 0 ? currentPage - 5 : 0;
   const endNumber = currentPage + 5 < totalPages ? currentPage + 5 : totalPages;
@@ -230,9 +234,6 @@ const Marketplace = ({ search }) => {
   useEffect(() => {
     updateObArr();
     forceUpdate();
-    if (!initialRender) {
-      setPage(0);
-    }
   }, [sortBy, storedArray, searchFilter]);
 
   return (
