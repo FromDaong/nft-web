@@ -336,7 +336,6 @@ const ViewNFT = ({ account, nftArray }) => {
 
       const nftIds = nftBalances.map((n) => n.id);
 
-      setIsLoading(true);
       const res = await fetch(`/api/nft/view-nfts`, {
         method: "POST",
         headers: {
