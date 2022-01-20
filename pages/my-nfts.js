@@ -87,13 +87,7 @@ const MyNFTsWrapper = () => {
   } else if (error) {
     return <ErrorFallback custom="Failed to load my NFT's" />;
   } else {
-    return (
-      <ViewNFT
-        account={account}
-        nftArray={nftArray}
-        isLoading={!nftArray && !error}
-      />
-    );
+    return <ViewNFT account={account} nftArray={nftArray} />;
   }
 };
 
@@ -106,7 +100,6 @@ const OwnedNfts = ({
   serverNftBalances,
   isLoading,
 }) => {
-  console.log({ nftBalances, isLoading });
   return (
     <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
       <div
@@ -357,8 +350,6 @@ const ViewNFT = ({ account, nftArray }) => {
   if (v1NFTs.length > 0) {
     return <TradeInNFTs v1NFTs={v1NFTs} account={account} />;
   }
-
-  console.log({ serverNftBalances, nftBalancesInitial, isLoading });
 
   return (
     <Layout>
