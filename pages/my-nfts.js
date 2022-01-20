@@ -19,6 +19,7 @@ import BigNumber from "bignumber.js";
 import LazyLoad from "react-lazyload";
 import Layout from "../components/Layout";
 import ErrorFallback from "../components/Fallback/Error";
+import Loading from "../components/Loading";
 
 const variants = {
   show: {
@@ -37,7 +38,6 @@ const variants = {
 
 const MyNFTsWrapper = () => {
   const { account, status } = useWallet();
-
   const { data: res, error } = useSWR(`/api/nft`);
   const [nftArray, setNftData] = useState();
 
@@ -106,6 +106,7 @@ const OwnedNfts = ({
   serverNftBalances,
   isLoading,
 }) => {
+  console.log({ nftBalances, isLoading });
   return (
     <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
       <div
@@ -178,14 +179,7 @@ const OwnedNfts = ({
           </motion.div>
         </div>
       ) : isLoading ? (
-        <Spinner
-          animation="border"
-          role="status"
-          size="xl"
-          style={{ marginTop: 5 }}
-        >
-          <span className="sr-only">Loading...</span>
-        </Spinner>
+        <Loading custom="Please wait, loading your owned NFTs" />
       ) : (
         <div
           className="w-100 text-center font-weight-bold d-flex align-items-center justify-content-center h-100"
@@ -306,11 +300,12 @@ const OpenOrders = ({
   );
 };
 
-const ViewNFT = ({ account, nftArray, isLoading }) => {
+const ViewNFT = ({ account, nftArray }) => {
   const [serverNftBalances, setServerNftBalances] = useState(null);
 
   const maxNftSupply = useGetNftMaxSupply(account);
-  const nftBalancesInitial = useGetNftBalance(nftArray);
+  const { totalNftBalances: nftBalancesInitial, loading: isLoading } =
+    useGetNftBalance(nftArray);
 
   const nftBalances = serverNftBalances || nftBalancesInitial;
   const [transferNFTData, setTransferNFTData] = useState(null);
@@ -363,6 +358,8 @@ const ViewNFT = ({ account, nftArray, isLoading }) => {
   if (v1NFTs.length > 0) {
     return <TradeInNFTs v1NFTs={v1NFTs} account={account} />;
   }
+
+  console.log({ serverNftBalances, nftBalancesInitial, isLoading });
 
   return (
     <Layout>

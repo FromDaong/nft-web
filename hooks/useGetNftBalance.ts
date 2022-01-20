@@ -18,6 +18,7 @@ const useGetNftBalance = (nftArray) => {
   const treatNFTMinterContract = getTreatNFTMinterContract(treat);
   const treatMarketplaceContract = getTreatMarketplaceContract(treat);
   const treatMarketplaceV1Contract = getTreatNFTMinterV1Contract(treat);
+  const [loading, setLoading] = useState(false);
   const block = useBlock();
 
   // const fetchBalance = useCallback(
@@ -31,6 +32,7 @@ const useGetNftBalance = (nftArray) => {
 
   useEffect(() => {
     (async () => {
+      setLoading(true);
       const listedOrders = await getOpenOrdersForSeller(
         treatMarketplaceContract,
         account
@@ -73,10 +75,12 @@ const useGetNftBalance = (nftArray) => {
       newNFTBalances = newNFTBalances.filter((e) => e);
 
       setBalance(newNFTBalances);
-    })();
+    })()
+      .then(() => setLoading(false))
+      .catch((err) => console.warn(err));
   }, [nftArray]);
 
-  return totalNftBalances;
+  return { totalNftBalances, loading };
 };
 
 export default useGetNftBalance;
