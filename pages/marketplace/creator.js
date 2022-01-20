@@ -32,7 +32,7 @@ const Marketplace = ({ search }) => {
   const [searchFilter, setSearchFilter] = useState(search || "");
   const [sortBy, setSortBy] = useState("Recent");
   const [initialRender, setInitialRender] = useState(true);
-  const [persistedPageNumber, setPersistedPageNumber] = useState(0)
+  const [persistedPageNumber, setPersistedPageNumber] = useState(0);
   const { account } = useWallet();
   const router = useRouter();
 
@@ -103,8 +103,8 @@ const Marketplace = ({ search }) => {
   });
 
   const setSort = (sortBy) => {
-    setSortBy(sortBy)
-  }
+    setSortBy(sortBy);
+  };
 
   const startNumber = currentPage - 5 > 0 ? currentPage - 5 : 0;
   const endNumber = currentPage + 5 < totalPages ? currentPage + 5 : totalPages;
@@ -165,16 +165,24 @@ const Marketplace = ({ search }) => {
     setSearchFilter(queryFilter ?? "");
     setSort(persistedSortBy ?? "Recent");
     setPage(persistedPageNumber ? Number(persistedPageNumber) : 0);
-    setPersistedPageNumber(persistedPageNumber ? Number(persistedPageNumber) : 0)
+    setPersistedPageNumber(
+      persistedPageNumber ? Number(persistedPageNumber) : 0
+    );
     selectedOptionsStr = tags;
   }, []);
 
   useEffect(() => {
-    router.push(
-      `/${router.pathname}?s=${searchFilter}&p=${currentPage}&sort=${sortBy}&tags=${selectedOptionsStr}`,
-      undefined,
-      { shallow: true }
-    );
+    if (searchFilter || sortBy || currentPage) {
+      router.push(
+        `/${router.pathname}?
+        ${searchFilter && `s=${searchFilter}&`}
+        ${currentPage && `p=${currentPage}&`}
+        ${sortBy && `sort=${sortBy}&`}
+        ${tags && `tags=${selectedOptionsStr}`}`,
+        undefined,
+        { shallow: true }
+      );
+    }
   }, [searchFilter, sortBy, currentPage, selectedOptionsStr, initialRender]);
 
   useEffect(() => {
@@ -183,12 +191,12 @@ const Marketplace = ({ search }) => {
   }, [searchFilter, orderBookArray, sortBy, showPendingModal]);
 
   useEffect(() => {
-    console.log({finalArray, persistedPageNumber})
-    if(finalArray.length !== 0 && persistedPageNumber) {
-      setPage(persistedPageNumber)
-      setPersistedPageNumber(null)
+    console.log({ finalArray, persistedPageNumber });
+    if (finalArray.length !== 0 && persistedPageNumber) {
+      setPage(persistedPageNumber);
+      setPersistedPageNumber(null);
     }
-  }, [finalArray])
+  }, [finalArray]);
 
   return (
     <AnimateSharedLayout>
