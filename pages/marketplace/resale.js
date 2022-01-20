@@ -35,6 +35,7 @@ const Marketplace = ({ search }) => {
   const [orderBookArray, setOrderBookArray] = useState([]);
   const [searchFilter, setSearchFilter] = useState(search || "");
   const [persistedPageNumber, setPersistedPageNumber] = useState(0);
+  const [selectedOptionsStr, setSelectedOptionsStr] = useState("");
   const [sortBy, setSortBy] = useState("Recent");
   const [orderBook] = useGetAllOpenOrders(maxId);
   const { account } = useWallet();
@@ -118,8 +119,12 @@ const Marketplace = ({ search }) => {
   });
 
   let filtered;
-  let selectedOptionsStr = "";
-  selectedOptions.forEach((e) => (selectedOptionsStr += `="${e.value}" `));
+  useEffect(() => {
+    selectedOptions.forEach(
+      (e) =>
+        e.value && setSelectedOptionsStr(selectedOptionsStr + `="${e.value}" `)
+    );
+  }, [selectedOptions]);
 
   if (searchFilter !== "" && selectedOptionsStr === "") {
     filtered = fuse.search({
@@ -183,12 +188,29 @@ const Marketplace = ({ search }) => {
   useEffect(() => {
     const queryFilter = router.query.s;
     const persistedPageNumber = router.query.p;
+    const tags = router.query.tags;
 
     setSearchFilter(queryFilter ?? "");
     setPersistedPageNumber(
       persistedPageNumber ? Number(persistedPageNumber) : 0
     );
-    console.log({ q: router.query });
+
+    setSelectedOptionsStr(tags ?? "");
+    if (tags) {
+      let renamedTags = tags.replaceAll("=", ",");
+      let tagsArray = renamedTags.split(",").reverse();
+      tagsArray.pop();
+      tagsArray = tagsArray.map((tag) => tag.replaceAll('"', ""));
+      tagsArray.map((tag) =>
+        setSelectedOptions((current) => [
+          ...current,
+          {
+            label: tag,
+            value: tag,
+          },
+        ])
+      );
+    }
   }, []);
 
   useEffect(() => {
