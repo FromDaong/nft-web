@@ -63,6 +63,8 @@ export default async (req, res) => {
         if (req.body.profile_pic) model.profile_pic = req.body.profile_pic;
         if (req.body.banner_pic) model.banner_pic = req.body.banner_pic;
         if (req.body.email) model.email = req.body.email;
+        if (req.body.identity_access_key)
+          model.identity_access_key = req.body.identity_access_key;
 
         // Subscription description
         if (req.body.subscription_description) {
