@@ -188,6 +188,7 @@ const Marketplace = ({ search }) => {
     setPersistedPageNumber(
       persistedPageNumber ? Number(persistedPageNumber) : 0
     );
+    console.log({ q: router.query });
   }, []);
 
   useEffect(() => {
