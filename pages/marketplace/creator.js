@@ -33,6 +33,8 @@ const Marketplace = ({ search }) => {
   const [sortBy, setSortBy] = useState("Recent");
   const [initialRender, setInitialRender] = useState(true);
   const [persistedPageNumber, setPersistedPageNumber] = useState(0);
+    const [selectedOptionsStr, setSelectedOptionsStr] = useState("");
+
   const { account } = useWallet();
   const router = useRouter();
 
@@ -52,8 +54,10 @@ const Marketplace = ({ search }) => {
     includeScore: true,
   });
 
-  let selectedOptionsStr = "";
-  selectedOptions.forEach((e) => (selectedOptionsStr += `="${e.value}" `));
+
+  useEffect(() => {
+    selectedOptions.forEach((e) => setSelectedOptionsStr(selectedOptionsStr + `="${e.value}" `));
+  }, [selectedOptions])
 
   let filteredArray;
 
@@ -168,17 +172,24 @@ const Marketplace = ({ search }) => {
     setPersistedPageNumber(
       persistedPageNumber ? Number(persistedPageNumber) : 0
     );
-    selectedOptionsStr = tags;
+    setSelectedOptionsStr(tags ?? "");
+    if(tags) {
+      let renamedTags = tags.replaceAll('=', ',')
+      let tagsArray = renamedTags.split(',').reverse()
+      tagsArray.pop()
+      tagsArray = tagsArray.map(tag => tag.replaceAll('"', ''))
+      setSelectedOptions(tagsArray)
+      console.log({setSelectedOptions, tagsArray})
+    }
   }, []);
+
+  console.log({selectedOptionsStr})
+
 
   useEffect(() => {
     if (searchFilter || sortBy || currentPage) {
       router.push(
-        `/${router.pathname}?
-        ${searchFilter && `s=${searchFilter}&`}
-        ${currentPage && `p=${currentPage}&`}
-        ${sortBy && `sort=${sortBy}&`}
-        ${tags && `tags=${selectedOptionsStr}`}`,
+        `/${router.pathname}?${searchFilter && `s=${searchFilter}&`}${currentPage ? `p=${currentPage}&` : ''}${selectedOptionsStr ? `tags=${selectedOptionsStr}&` : ''}${sortBy ? `sort=${sortBy}&` : ''}`.trim(),
         undefined,
         { shallow: true }
       );
