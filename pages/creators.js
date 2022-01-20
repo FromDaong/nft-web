@@ -14,7 +14,7 @@ const Creators = () => {
   // get data for relevant models (startIndex endIndex)
   const { data: modelData, error } = useSWR(`/api/model`);
   const [searchFilter, setSearchFilter] = useState("");
-  const [initialRender, setInitialRender] = useState(true);
+  const [persistedPageNumber, setPersistedPageNumber] = useState(0)
 
   const router = useRouter();
 
@@ -59,8 +59,7 @@ const Creators = () => {
     const persistedPageNumber = router.query.p;
 
     setSearchFilter(queryFilter ?? "");
-    setPage(persistedPageNumber ?? 1);
-    setInitialRender(false);
+    setPersistedPageNumber(persistedPageNumber ? Number(persistedPageNumber) : 0)
   }, []);
 
   useEffect(() => {
@@ -72,11 +71,12 @@ const Creators = () => {
   }, [searchFilter, currentPage]);
 
   useEffect(() => {
-    if (!initialRender) {
-      setPage(0);
+    if(filteredArray && persistedPageNumber) {
+      setPage(persistedPageNumber)
+      setPersistedPageNumber(null)
     }
-  }, [searchFilter]);
-
+  }, [filteredArray])
+  
   return (
     <>
       <motion.main
@@ -129,6 +129,10 @@ const Creators = () => {
       </motion.main>
     </>
   );
+};
+
+Creators.getInitialProps = async ({ query: { search } }) => {
+  return { search };
 };
 
 export default Creators;

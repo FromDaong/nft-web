@@ -32,6 +32,7 @@ const Marketplace = ({ search }) => {
   const [searchFilter, setSearchFilter] = useState(search || "");
   const [sortBy, setSortBy] = useState("Recent");
   const [initialRender, setInitialRender] = useState(true);
+  const [persistedPageNumber, setPersistedPageNumber] = useState(0)
   const { account } = useWallet();
   const router = useRouter();
 
@@ -101,34 +102,9 @@ const Marketplace = ({ search }) => {
     initialPageSize: 25,
   });
 
-  useEffect(() => {
-    const queryFilter = router.query.s;
-    const persistedPageNumber = router.query.p;
-    const persistedSortBy = router.query.sort;
-    const tags = router.query.tags;
-
-    setSearchFilter(queryFilter ?? "");
-    setSortBy(persistedSortBy ?? "Recent");
-    setPage(persistedPageNumber ?? 0);
-    selectedOptionsStr = tags;
-    setInitialRender(false);
-  }, []);
-
-  useEffect(() => {
-    router.push(
-      `/${router.pathname}?s=${searchFilter}&p=${currentPage}&sort=${sortBy}&tags='${selectedOptionsStr}'`,
-      undefined,
-      { shallow: true }
-    );
-  }, [searchFilter, sortBy, currentPage, selectedOptionsStr]);
-
-  useEffect(() => {
-    updateObArr();
-    forceUpdate();
-    if (!initialRender) {
-      setPage(0);
-    }
-  }, [searchFilter, orderBookArray, sortBy, showPendingModal]);
+  const setSort = (sortBy) => {
+    setSortBy(sortBy)
+  }
 
   const startNumber = currentPage - 5 > 0 ? currentPage - 5 : 0;
   const endNumber = currentPage + 5 < totalPages ? currentPage + 5 : totalPages;
@@ -180,6 +156,39 @@ const Marketplace = ({ search }) => {
         return new Date(b.item.createdAt) - new Date(a.item.createdAt);
     }
   });
+
+  useEffect(() => {
+    const queryFilter = router.query.s;
+    const persistedPageNumber = router.query.p;
+    const persistedSortBy = router.query.sort;
+    const tags = router.query.tags;
+    setSearchFilter(queryFilter ?? "");
+    setSort(persistedSortBy ?? "Recent");
+    setPage(persistedPageNumber ? Number(persistedPageNumber) : 0);
+    setPersistedPageNumber(persistedPageNumber ? Number(persistedPageNumber) : 0)
+    selectedOptionsStr = tags;
+  }, []);
+
+  useEffect(() => {
+    router.push(
+      `/${router.pathname}?s=${searchFilter}&p=${currentPage}&sort=${sortBy}&tags=${selectedOptionsStr}`,
+      undefined,
+      { shallow: true }
+    );
+  }, [searchFilter, sortBy, currentPage, selectedOptionsStr, initialRender]);
+
+  useEffect(() => {
+    updateObArr();
+    forceUpdate();
+  }, [searchFilter, orderBookArray, sortBy, showPendingModal]);
+
+  useEffect(() => {
+    console.log({finalArray, persistedPageNumber})
+    if(finalArray.length !== 0 && persistedPageNumber) {
+      setPage(persistedPageNumber)
+      setPersistedPageNumber(null)
+    }
+  }, [finalArray])
 
   return (
     <AnimateSharedLayout>
@@ -259,20 +268,20 @@ const Marketplace = ({ search }) => {
 
               <Dropdown.Menu>
                 <Dropdown.Item
-                  onClick={() => setSortBy("Relevancy")}
+                  onClick={() => setSort("Relevancy")}
                   style={{
                     display: searchFilter === "" ? "none" : "block",
                   }}
                 >
                   Relevancy
                 </Dropdown.Item>
-                <Dropdown.Item onClick={() => setSortBy("Recent")}>
+                <Dropdown.Item onClick={() => setSort("Recent")}>
                   Most Recent
                 </Dropdown.Item>
-                <Dropdown.Item onClick={() => setSortBy("Price Low to High")}>
+                <Dropdown.Item onClick={() => setSort("Price Low to High")}>
                   Price Low to High
                 </Dropdown.Item>
-                <Dropdown.Item onClick={() => setSortBy("Price High to Low")}>
+                <Dropdown.Item onClick={() => setSort("Price High to Low")}>
                   Price High to Low
                 </Dropdown.Item>
               </Dropdown.Menu>
