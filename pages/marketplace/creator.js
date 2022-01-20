@@ -33,7 +33,7 @@ const Marketplace = ({ search }) => {
   const [sortBy, setSortBy] = useState("Recent");
   const [initialRender, setInitialRender] = useState(true);
   const [persistedPageNumber, setPersistedPageNumber] = useState(0);
-    const [selectedOptionsStr, setSelectedOptionsStr] = useState("");
+  const [selectedOptionsStr, setSelectedOptionsStr] = useState("");
 
   const { account } = useWallet();
   const router = useRouter();
