@@ -276,6 +276,8 @@ const OpenOrders = ({
             </motion.div>
           </div>
         </div>
+      ) : isLoading ? (
+        <Loading custom="Please wait, loading data" />
       ) : (
         <div
           className="w-100 text-center font-weight-bold d-flex align-items-center justify-content-center h-100"
