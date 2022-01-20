@@ -189,9 +189,6 @@ const Marketplace = ({ search }) => {
     }
   }, []);
 
-  console.log({selectedOptionsStr, selectedOptions})
-
-
   useEffect(() => {
     if (searchFilter || sortBy || currentPage) {
       router.push(
