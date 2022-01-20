@@ -65,11 +65,13 @@ export default function Index() {
   }, []);
 
   useEffect(() => {
-    router.push(
-      `/${router.pathname}?s=${searchFilter}&p=${currentPage}`,
+    if (searchFilter || currentPage) {
+      router.push(
+      `/${router.pathname}?${searchFilter && `s=${searchFilter}&`}${currentPage && `p=${currentPage}`}`,
       undefined,
       { shallow: true }
     );
+    }
   }, [searchFilter, currentPage]);
 
   useEffect(() => {
