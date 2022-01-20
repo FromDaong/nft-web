@@ -11,7 +11,8 @@ import useEditSubscription from "../../hooks/useEditSubscription";
 import useGetSubscriptionCost from "../../hooks/useGetSubscriptionCost";
 import { create } from "ipfs-http-client";
 import { useWallet } from "use-wallet";
-import { GearFill } from "react-bootstrap-icons";
+import { InfoCircleFill } from "react-bootstrap-icons";
+import { ListGroup } from "react-bootstrap";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -58,7 +59,7 @@ const EditProfile = ({}) => {
       const resJSON = await serverRes.json();
 
       if (resJSON.error && resJSON.error.errors) {
-        console.error(resJSON.error);
+        console.log(resJSON.error);
         const ogErrors = Object.assign({}, resJSON.error.errors);
         Object.keys(ogErrors).map((e) => {
           ogErrors[e] = resJSON.error.errors[e].message;
@@ -71,7 +72,7 @@ const EditProfile = ({}) => {
         router.reload();
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
 
@@ -84,26 +85,11 @@ const EditProfile = ({}) => {
           setShowCompleteModal(true);
         }
       })
-      .catch((e) => console.error({ e }));
+      .catch((e) => console.log({ e }));
   };
 
   return (
     <div className="white-tp-bg" style={{ minHeight: 200 }}>
-      <BlankModal
-        show={!!showPendingModal}
-        handleClose={() => setShowPendingModal(false)}
-        title={"Waiting for Transaction Confirmation ⌛"}
-        subtitle={
-          "Please confirm this transaction in your wallet and wait here for up to a few minutes for the transaction to confirm..."
-        }
-        noButton={true}
-        account={account}
-      />
-      <BlankModal
-        show={!!showCompleteModal}
-        handleClose={() => setShowCompleteModal(false)}
-        account={account}
-      />
       <div
         className="px-4 py-2 w-100 d-flex"
         style={{
@@ -113,7 +99,6 @@ const EditProfile = ({}) => {
           borderRadius: 8,
         }}
       >
-         
         <div>
           <h2
             className="heading-text-primary pt-1"
@@ -121,48 +106,57 @@ const EditProfile = ({}) => {
               fontSize: 24,
             }}
           >
-            <GearFill className="pb-1 mr-1" /> Subscription Settings
+            <InfoCircleFill className="pb-1 mr-1" /> Creator Resources
           </h2>
         </div>
       </div>
-      <div className="col-sm-12 pt-3">
-        <Form onSubmit={formik.handleSubmit}>
-          <div className="pb-3">
-            <div className="pb-3">
-              <label>Subscription Price in BNB</label>
-              <FormControl
-                placeholder="E.g. alexanbt"
-                name="price"
-                type="number"
-                value={formik.values.price}
-                onChange={formik.handleChange}
-              />
-              <small>
-                Price for 30 day subscription. Use 0.00 BNB to deactivate
-                subscriptions.
-              </small>
-            </div>
-            <Button variant="primary w-100 mb-3" onClick={setSubscriptionPrice}>
-              Update Subscription Price
-            </Button>
-            
-          
-            
-            {Object.keys(formik.errors).length > 0 && (
-              <Form.Control.Feedback type="invalid" className="d-block">
-                {Object.keys(formik.errors).map((e) => (
-                  <div>{formik.errors[e]}</div>
-                ))}
-                {formik.errors.code}
-              </Form.Control.Feedback>
-            )}
-          </div>
-        </Form>
+      <div className="p-4">
+        <ListGroup defaultActiveKey="#link1">
+          <ListGroup.Item
+            action
+            target="_blank"
+            href="https://drive.google.com/file/d/1B0Q1Jkja4a2LsPrUTaS-ANNnD7m_jqQD/view?usp=sharing"
+          >
+            Creator's Guide
+          </ListGroup.Item>
+          <ListGroup.Item
+            action
+            target="_blank"
+            href="https://drive.google.com/file/d/1Li5EAK8sP71rY1wT9J87mUCjLWmjcO2a/view"
+          >
+            Content Creator Agreement
+          </ListGroup.Item>
+          <ListGroup.Item
+            action
+            target="_blank"
+            href="https://t.me/TreatContentCreators"
+          >
+            Creator Community Telegram
+          </ListGroup.Item>
+          <ListGroup.Item
+            action
+            target="_blank"
+            href="https://drive.google.com/file/d/1V17GZVo2HA8T9zrrmG4690j-0h4IPWwN/view?usp=sharing"
+          >
+            Explainer Guide
+          </ListGroup.Item>
+          <ListGroup.Item
+            action
+            target="_blank"
+            href="https://drive.google.com/file/d/1wZYC_Lj-MWxvJhw86BzGLHIbWOqADRvL/view?usp=sharing"
+          >
+            Beginner Tips
+          </ListGroup.Item>
+          <ListGroup.Item
+            action
+            target="_blank"
+            href="https://docs.google.com/gview?url=https://github.com/TreatDAO/litepaper/raw/main/TreatPaperFinal.pdf&embedded=true"
+          >
+            Litepaper
+          </ListGroup.Item>
+        </ListGroup>
       </div>
     </div>
-
-
-  
   );
 };
 
