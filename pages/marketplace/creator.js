@@ -54,7 +54,7 @@ const Marketplace = ({ search }) => {
   });
 
   let selectedOptionsStr = "";
-  selectedOptions.forEach((e) => (selectedOptionsStr += `="${e.value}"`));
+  selectedOptions.forEach((e) => (selectedOptionsStr += `="${e.value}" `));
   console.log({ selectedOptionsStr });
   let filteredArray;
 
