@@ -275,16 +275,14 @@ const ViewModel = ({
         </div>
       </div>
       <Link href="/creators">
-        <a>
-          <div className="w-100 text-center mt-15">
-            <Button
-              style={{ marginTop: 15 }}
-              variant="transparent"
-              className="text-primary"
-            >
-              Back to All Creators
-            </Button>
-          </div>
+        <a className="w-100 text-center mt-15">
+          <Button
+            style={{ marginTop: 15 }}
+            variant="transparent"
+            className="text-primary"
+          >
+            Back to All Creators
+          </Button>
         </a>
       </Link>
     </div>
