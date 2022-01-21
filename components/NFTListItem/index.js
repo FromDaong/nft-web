@@ -66,12 +66,13 @@ const NFTListItem = ({
 
   return (
     <Link href={`/view/${data.id}`}>
-      <a>
+      <a className="row m-0 w-100 my-4">
         <div
         ref={rr}
         className={`nft-card ${data.totw && "purple"} ${
           soldOut ? "opacity-half" : ""
         }`}
+        style={{width: "100%"}}
       >
         <div className="totw-tag-wrapper">
           {isOwner ? (
