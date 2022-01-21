@@ -156,7 +156,11 @@ const ViewModel = ({
       <div className="view-model white-tp-bg">
         <div
           className="banner"
-          style={{ backgroundImage: `url(${modelData.banner_pic})` }}
+          style={{
+            backgroundImage: `url(${modelData.banner_pic})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
         ></div>
         <div className="profile-top-container col-md-12">
           <div
