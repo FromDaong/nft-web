@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createRef } from "react";
 import { generateFromString } from "generate-avatar";
 import { Blurhash } from "react-blurhash";
 import { isBlurhashValid } from "blurhash";
@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import Link from "next/link";
-import useSWR from "swr";
+// import useIntersectionObserver from "../../hooks/useIntersection";
 
 let easing = [0.175, 0.85, 0.42, 0.96];
 
@@ -45,6 +45,11 @@ const NFTListItem = ({
 }) => {
   const [image, setBase64Image] = useState();
 
+  const rr = createRef();
+  // const isIntersecting = useIntersectionObserver(rr);
+
+  // console.log({ data, isIntersecting });
+
   useEffect(() => {
     (async () => {
       if (data.image) {
@@ -61,136 +66,135 @@ const NFTListItem = ({
 
   return (
     <Link href={`/view/${data.id}`}>
-      <a>
-        <div
-          className={`nft-card ${data.totw && "purple"} ${
-            soldOut ? "opacity-half" : ""
-          }`}
-        >
-          <div className="totw-tag-wrapper">
-            {isOwner ? (
-              <div className="totw-tag">MY NFT</div>
-            ) : (
-              data.totw && <div className="totw-tag">TOTW</div>
-            )}
+      <a
+        ref={rr}
+        className={`nft-card ${data.totw && "purple"} ${
+          soldOut ? "opacity-half" : ""
+        }`}
+      >
+        <div className="totw-tag-wrapper">
+          {isOwner ? (
+            <div className="totw-tag">MY NFT</div>
+          ) : (
+            data.totw && <div className="totw-tag">TOTW</div>
+          )}
 
-            <div className="quantity-wrapper totw-tag">
-              {false &&
-                // TODO: Show this when graph is fixed
-                Number(data.max_supply) - data.mints < 10 && (
-                  <div className="quantity-wrapper totw-tag">
-                    {Number(data.max_supply) - data.mints} of 10 left
-                  </div>
-                )}
-            </div>
-          </div>
-          <Link href={`/creator/${data.attributes[0].value.replace("@", "")}`}>
-            <a>
-              <div
-                className="profile-pic"
-                style={{ backgroundImage: `url(${data.model_profile_pic})` }}
-              />
-            </a>
-          </Link>
-
-          <div
-            className="img-container text-center text-lg-left d-flex justify-content-center align-items-center"
-            style={{
-              background: "black",
-              border: "3px solid #E795B6",
-              borderRadius: 10,
-              minHeight: 300,
-            }}
-          >
-            <Spinner
-              animation="border"
-              role="status"
-              className="mt-5 mb-5"
-              style={{ position: "absolute", margin: "auto", zIndex: 1 }}
-              variant="light"
-            >
-              <span className="sr-only">Loading...</span>
-            </Spinner>
-            {data.image ? (
-              <div
-                style={{
-                  background: `url(${data.image})`,
-                  minHeight: 375,
-                  zIndex: 100,
-                }}
-                className="dynamic-image"
-              />
-            ) : (
-              <>
-                {isBlurhashValid(data.blurhash).result ? (
-                  <>
-                    <div className="info-overlay" style={{ zIndex: 100 }}>
-                      <EyeSlash size={32} />
-                      <div>Purchase to View</div>
-                    </div>
-                    <Blurhash
-                      style={{
-                        borderRadius: 8,
-                        overflow: "hidden",
-                        zIndex: 95,
-                      }}
-                      hash={data.blurhash}
-                      width={"100%"}
-                      height={375}
-                      resolutionX={32}
-                      resolutionY={32}
-                      punch={1}
-                    />
-                  </>
-                ) : (
-                  <h3 className="text-center p4">
-                    Please contaact admin. Invalid Blurhash.
-                  </h3>
-                )}
-              </>
-            )}
-          </div>
-          <div className="text-container container">
-            <div className="title-section">
-              <div className="title">{data.name}</div>
-              <div className="s">
-                {owner && <b>Creator: </b>}
-                {data.attributes[0].value}
-              </div>
-              {owner && (
-                <div className="name">
-                  <b>Owner: </b>
-                  {owner.slice(0, 6) + "..." + owner.slice(-6)}
+          <div className="quantity-wrapper totw-tag">
+            {false &&
+              // TODO: Show this when graph is fixed
+              Number(data.max_supply) - data.mints < 10 && (
+                <div className="quantity-wrapper totw-tag">
+                  {Number(data.max_supply) - data.mints} of 10 left
                 </div>
               )}
+          </div>
+        </div>
+        <Link href={`/creator/${data.attributes[0].value.replace("@", "")}`}>
+          <a>
+            <div
+              className="profile-pic"
+              style={{ backgroundImage: `url(${data.model_profile_pic})` }}
+            />
+          </a>
+        </Link>
+
+        <div
+          className="img-container text-center text-lg-left d-flex justify-content-center align-items-center"
+          style={{
+            background: "black",
+            border: "3px solid #E795B6",
+            borderRadius: 10,
+            minHeight: 300,
+          }}
+        >
+          <Spinner
+            animation="border"
+            role="status"
+            className="mt-5 mb-5"
+            style={{ position: "absolute", margin: "auto", zIndex: 1 }}
+            variant="light"
+          >
+            <span className="sr-only">Loading...</span>
+          </Spinner>
+          {data.image ? (
+            <div
+              style={{
+                background: `url(${data.image})`,
+                minHeight: 375,
+                zIndex: 100,
+              }}
+              className="dynamic-image"
+            />
+          ) : (
+            <>
+              {isBlurhashValid(data.blurhash).result ? (
+                <>
+                  <div className="info-overlay" style={{ zIndex: 100 }}>
+                    <EyeSlash size={32} />
+                    <div>Purchase to View</div>
+                  </div>
+                  <Blurhash
+                    style={{
+                      borderRadius: 8,
+                      overflow: "hidden",
+                      zIndex: 95,
+                    }}
+                    hash={data.blurhash}
+                    width={"100%"}
+                    height={375}
+                    resolutionX={32}
+                    resolutionY={32}
+                    punch={1}
+                  />
+                </>
+              ) : (
+                <h3 className="text-center p4">
+                  Please contaact admin. Invalid Blurhash.
+                </h3>
+              )}
+            </>
+          )}
+        </div>
+        <div className="text-container container">
+          <div className="title-section">
+            <div className="title">{data.name}</div>
+            <div className="s">
+              {owner && <b>Creator: </b>}
+              {data.attributes[0].value}
             </div>
-            {(price || data.list_price) && (
-              <div className="stats">
-                <div className="stat">
-                  <div className="number">{price || data.list_price}</div>
-                  <div className="label">BNB</div>
-                </div>
+            {owner && (
+              <div className="name">
+                <b>Owner: </b>
+                {owner.slice(0, 6) + "..." + owner.slice(-6)}
               </div>
             )}
           </div>
-          {buttonLabel && buttonFunction && (
-            <div className="row">
-              <div className="col-lg-12 mt-3">
-                <span className="d-inline-block w-100">
-                  <Button
-                    className="w-100"
-                    variant="secondary"
-                    onClick={buttonFunction}
-                  >
-                    <b className="d-flex align-items-center justify-content-center">
-                      {buttonLabel}
-                    </b>
-                  </Button>
-                </span>
+          {(price || data.list_price) && (
+            <div className="stats">
+              <div className="stat">
+                <div className="number">{price || data.list_price}</div>
+                <div className="label">BNB</div>
               </div>
             </div>
           )}
         </div>
+        {buttonLabel && buttonFunction && (
+          <div className="row">
+            <div className="col-lg-12 mt-3">
+              <span className="d-inline-block w-100">
+                <Button
+                  className="w-100"
+                  variant="secondary"
+                  onClick={buttonFunction}
+                >
+                  <b className="d-flex align-items-center justify-content-center">
+                    {buttonLabel}
+                  </b>
+                </Button>
+              </span>
+            </div>
+          </div>
+        )}
       </a>
     </Link>
   );

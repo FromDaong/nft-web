@@ -100,8 +100,7 @@ const OwnedNfts = ({
   serverNftBalances,
   isLoading,
 }) => {
-  const nftWithBalances = nftBalances.filter((i) => i.balance > 0);
-
+  const nftWithBalances = nftBalances.filter((i) => !i.hasOpenOrder);
   return (
     <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
       <div
@@ -128,7 +127,7 @@ const OwnedNfts = ({
               My NFTs
             </h2>
           </div>
-          {nftBalances.length > 0 && nftWithBalances > 0 && (
+          {nftWithBalances.length > 0 && (
             <div className="button-container">
               {serverNftBalances ? (
                 <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
@@ -143,7 +142,7 @@ const OwnedNfts = ({
           )}
         </div>
       </div>
-      {nftBalances.length > 0 && nftWithBalances > 0 ? (
+      {nftWithBalances.length > 0 ? (
         <div className="">
           <motion.div
             className="d-flex text-left justify-content-center mt-5 w-100 flex-wrap"
@@ -152,23 +151,21 @@ const OwnedNfts = ({
             initial="hidden"
             variants={variants}
           >
-            {nftBalances.map((nft) => {
+            {nftWithBalances.map((nft) => {
               return (
-                nft.balance > 0 && (
-                  <LazyLoad height={400} offset={600}>
-                    <div className="order-container">
-                      <MyNFTItem
-                        balance={nft.balance}
-                        isLoading={isLoading}
-                        data={nft}
-                        revealNFTs={revealNFTs}
-                        transferNFTClick={transferNFTClick}
-                        listOrderClick={listOrderClick}
-                        hasOpenOrder={nft.hasOpenOrder}
-                      />
-                    </div>
-                  </LazyLoad>
-                )
+                <LazyLoad height={400} offset={600}>
+                  <div className="order-container">
+                    <MyNFTItem
+                      balance={nft.balance}
+                      isLoading={isLoading}
+                      data={nft}
+                      revealNFTs={revealNFTs}
+                      transferNFTClick={transferNFTClick}
+                      listOrderClick={listOrderClick}
+                      hasOpenOrder={nft.hasOpenOrder}
+                    />
+                  </div>
+                </LazyLoad>
               );
             })}
           </motion.div>
