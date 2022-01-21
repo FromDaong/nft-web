@@ -66,7 +66,8 @@ const NFTListItem = ({
 
   return (
     <Link href={`/view/${data.id}`}>
-      <a
+      <a>
+        <div
         ref={rr}
         className={`nft-card ${data.totw && "purple"} ${
           soldOut ? "opacity-half" : ""
@@ -195,6 +196,7 @@ const NFTListItem = ({
             </div>
           </div>
         )}
+      </div>
       </a>
     </Link>
   );
