@@ -56,7 +56,6 @@ const Marketplace = ({ search }) => {
 
   let selectedOptionsStr = "";
   selectedOptions.forEach((e) => (selectedOptionsStr += `="${e.value}" `));
-  console.log({ selectedOptionsStr, nftDataArray, finalArray });
 
   const {
     currentPage,
@@ -143,6 +142,7 @@ const Marketplace = ({ search }) => {
   useEffect(() => {
     // yes search + no dropdown
     console.log("Received new values")
+    console.log({nftDataArray})
     if (searchFilter !== "" && selectedOptionsStr === "") {
       setFilteredArray(fuse.search({
         $or: [
