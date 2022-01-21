@@ -108,14 +108,14 @@ const Marketplace = ({ search }) => {
   };
 
   useEffect(() => {
-    if (orderBookArray) {
       updateObArr();
-    }
-  }, [])
+      forceUpdate();
+  }, [orderBookArray])
 
   useEffect(() => {
     console.log("Setting final array")
-    setFinalArray(filteredArray.sort((a, b) => {
+    const newArray = filteredArray;
+    newArray.sort((a, b) => {
         switch (sortBy) {
           case "Relevancy":
             return Number(a.score) - Number(b.score);
@@ -136,42 +136,47 @@ const Marketplace = ({ search }) => {
           default:
             return new Date(b.item.createdAt) - new Date(a.item.createdAt);
         }
-      }));
+    })
+    console.log({ newArray, filteredArray })
+    setFinalArray(newArray);
   }, [filteredArray, sortBy]);
 
   useEffect(() => {
     // yes search + no dropdown
     console.log("Received new values")
-    console.log({nftDataArray})
+    let searchResult;
     if (searchFilter !== "" && selectedOptionsStr === "") {
-      setFilteredArray(fuse.search({
+      searchResult = fuse.search({
         $or: [
           { name: searchFilter },
           { description: searchFilter },
           { model_handle: searchFilter },
         ],
-      }));
+      });
 
       // yes search + yes dropdown
     } else if (searchFilter !== "" && selectedOptionsStr !== "") {
-      setFilteredArray(fuse.search({
+      searchResult = fuse.search({
         $and: [{ tags: selectedOptionsStr }],
         $or: [{ name: searchFilter }],
-      }));
+      });
 
       // no search + yes dropdown
     } else if (searchFilter == "" && selectedOptionsStr !== "") {
-      setFilteredArray(fuse.search({
+      searchResult = fuse.search({
         $and: [{ tags: selectedOptionsStr }],
-      }));
+      });
 
       // no filtering
     } else {
-      setFilteredArray(nftDataArray.map((d, idx) => ({
+      searchResult = nftDataArray.map((d, idx) => ({
         item: d,
         refIndex: idx,
-      })));
+      }));
+    
     }
+    console.log({nftDataArray, searchResult})
+      setFilteredArray(searchResult);
   }, [searchFilter, selectedOptionsStr, nftDataArray]);
 
   useEffect(() => {
