@@ -31,8 +31,9 @@ const Marketplace = ({ search }) => {
   const [nftDataArray, setNftDataArray] = useState([]);
   const [searchFilter, setSearchFilter] = useState(search || "");
   const [sortBy, setSortBy] = useState("Recent");
-  const [initialRender, setInitialRender] = useState(true);
   const [persistedPageNumber, setPersistedPageNumber] = useState(0);
+  const [filteredArray, setFilteredArray] = useState([]);
+  const [finalArray, setFinalArray] = useState([]);
 
   const { account } = useWallet();
   const router = useRouter();
@@ -55,39 +56,7 @@ const Marketplace = ({ search }) => {
 
   let selectedOptionsStr = "";
   selectedOptions.forEach((e) => (selectedOptionsStr += `="${e.value}" `));
-  console.log({ selectedOptionsStr });
-  let filteredArray;
-
-  // yes search + no dropdown
-  if (searchFilter !== "" && selectedOptionsStr === "") {
-    filteredArray = fuse.search({
-      $or: [
-        { name: searchFilter },
-        { description: searchFilter },
-        { model_handle: searchFilter },
-      ],
-    });
-
-    // yes search + yes dropdown
-  } else if (searchFilter !== "" && selectedOptionsStr !== "") {
-    filteredArray = fuse.search({
-      $and: [{ tags: selectedOptionsStr }],
-      $or: [{ name: searchFilter }],
-    });
-
-    // no search + yes dropdown
-  } else if (searchFilter == "" && selectedOptionsStr !== "") {
-    filteredArray = fuse.search({
-      $and: [{ tags: selectedOptionsStr }],
-    });
-
-    // no filtering
-  } else {
-    filteredArray = nftDataArray.map((d, idx) => ({
-      item: d,
-      refIndex: idx,
-    }));
-  }
+  console.log({ selectedOptionsStr, nftDataArray, finalArray });
 
   const {
     currentPage,
@@ -111,10 +80,12 @@ const Marketplace = ({ search }) => {
   const endNumber = currentPage + 5 < totalPages ? currentPage + 5 : totalPages;
 
   let items = [];
-  if (currentPage !== 0)
-    items.push(<Pagination.First onClick={() => setPage(0)} />);
-  if (currentPage !== 0)
-    items.push(<Pagination.Prev onClick={setPreviousPage} />);
+  if (currentPage !== 0) {
+    items.push(<Pagination.First onClick={() => setPage(0)} />)
+  };
+  if (currentPage !== 0) {
+    items.push(<Pagination.Prev onClick={setPreviousPage} />)
+  };
 
   for (let number = startNumber; number < endNumber; number++) {
     items.push(
@@ -130,33 +101,73 @@ const Marketplace = ({ search }) => {
       </Pagination.Item>
     );
   }
-  if (currentPage !== totalPages - 1)
-    items.push(<Pagination.Next onClick={setNextPage} />);
-  if (currentPage !== totalPages - 1)
-    items.push(<Pagination.Last onClick={() => setPage(totalPages)} />);
+  if (currentPage !== totalPages - 1) {
+    items.push(<Pagination.Next onClick={setNextPage} />)
+  };
+  if (currentPage !== totalPages - 1) {
+    items.push(<Pagination.Last onClick={() => setPage(totalPages)} />)
+  };
 
-  const finalArray = filteredArray?.sort((a, b) => {
-    switch (sortBy) {
-      case "Relevancy":
-        return Number(a.score) - Number(b.score);
-      case "Price Low to High":
-        const aMaxSupply = Number(a.item.max_supply);
-        const bMaxSupply = Number(b.item.max_supply);
 
-        const aTotalMints = a.item.mints;
-        const bTotalMints = b.item.mints;
+  useEffect(() => {
+    console.log("Setting final array")
+    setFinalArray(filteredArray.sort((a, b) => {
+        switch (sortBy) {
+          case "Relevancy":
+            return Number(a.score) - Number(b.score);
+          case "Price Low to High":
+            const aMaxSupply = Number(a.item.max_supply);
+            const bMaxSupply = Number(b.item.max_supply);
 
-        if (a.item.list_price === b.item.list_price) {
-          // Compare mints if price is the same
-          return bMaxSupply - bTotalMints - (aMaxSupply - aTotalMints);
+            const aTotalMints = a.item.mints;
+            const bTotalMints = b.item.mints;
+
+            if (a.item.list_price === b.item.list_price) {
+              // Compare mints if price is the same
+              return bMaxSupply - bTotalMints - (aMaxSupply - aTotalMints);
+            }
+            return Number(a.item.list_price) - Number(b.item.list_price);
+          case "Price High to Low":
+            return Number(b.item.list_price) - Number(a.item.list_price);
+          default:
+            return new Date(b.item.createdAt) - new Date(a.item.createdAt);
         }
-        return Number(a.item.list_price) - Number(b.item.list_price);
-      case "Price High to Low":
-        return Number(b.item.list_price) - Number(a.item.list_price);
-      default:
-        return new Date(b.item.createdAt) - new Date(a.item.createdAt);
+      }));
+  }, [filteredArray, sortBy]);
+
+  useEffect(() => {
+    console.log("Received new values")
+    // yes search + no dropdown
+    if (searchFilter !== "" && selectedOptionsStr === "") {
+      setFilteredArray(fuse.search({
+        $or: [
+          { name: searchFilter },
+          { description: searchFilter },
+          { model_handle: searchFilter },
+        ],
+      }));
+
+      // yes search + yes dropdown
+    } else if (searchFilter !== "" && selectedOptionsStr !== "") {
+      setFilteredArray(fuse.search({
+        $and: [{ tags: selectedOptionsStr }],
+        $or: [{ name: searchFilter }],
+      }));
+
+      // no search + yes dropdown
+    } else if (searchFilter == "" && selectedOptionsStr !== "") {
+      setFilteredArray(fuse.search({
+        $and: [{ tags: selectedOptionsStr }],
+      }));
+
+      // no filtering
+    } else {
+      setFilteredArray(nftDataArray.map((d, idx) => ({
+        item: d,
+        refIndex: idx,
+      })));
     }
-  });
+  }, [searchFilter, selectedOptionsStr])
 
   useEffect(() => {
     const queryFilter = router.query.s;
