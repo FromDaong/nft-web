@@ -211,19 +211,19 @@ const Marketplace = ({ search }) => {
   useEffect(() => {
     if (searchFilter || sortBy || currentPage) {
       router.push(
-        `${router.pathname}?
-        ${searchFilter && `s=${searchFilter}&`}
-        ${currentPage && `p=${currentPage}&`}
-        ${sortBy && `sort=${sortBy}&`}
-        ${tags && `tags=${selectedOptionsStr}`}`,
+        `${router.pathname}?${searchFilter && `s=${searchFilter}&`}${
+          currentPage ? `p=${currentPage}&` : ""
+        }${selectedOptionsStr ? `tags=${selectedOptionsStr}&` : ""}${
+          sortBy ? `sort=${sortBy}&` : ""
+        }`.trim(),
         undefined,
         { shallow: true }
       );
     }
-  }, [searchFilter, sortBy, currentPage]);
+  }, [searchFilter, sortBy, currentPage, selectedOptionsStr]);
 
   useEffect(() => {
-    if (renderArray.length !== 0 && persistedPageNumber) {
+    if (renderArray?.length !== 0 && persistedPageNumber) {
       setPage(persistedPageNumber);
       setPersistedPageNumber(null);
     }
