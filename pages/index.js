@@ -179,34 +179,38 @@ const Home = () => {
               </div>
               <p className="marketplace-buttons-container pt-4">
                 <Link href="/marketplace/creator">
-                  <div className="marketplace-button">
-                    <div className="icon">
-                      <EaselFill size={48} />
-                    </div>
-                    <div className="content">
-                      <div className="title">The Sweet Shop</div>
-                      <div className="description">
-                        Find and buy NFTs directly from models, photographers
-                        and performers. Verified creators can create NFTs freely
-                        on this marketplace.
+                  <a>
+                    <div className="marketplace-button">
+                      <div className="icon">
+                        <EaselFill size={48} />
+                      </div>
+                      <div className="content">
+                        <div className="title">The Sweet Shop</div>
+                        <div className="description">
+                          Find and buy NFTs directly from models, photographers
+                          and performers. Verified creators can create NFTs
+                          freely on this marketplace.
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </a>
                 </Link>
                 <Link href="/marketplace/resale">
-                  <div className="marketplace-button orange">
-                    <div className="icon">
-                      <ShopWindow size={48} />
-                    </div>
-                    <div className="content">
-                      <div className="title">Resale Marketplace</div>
-                      <div className="description">
-                        Buy and sell minted Treat NFTs on the official
-                        aftermarket. Find sold out NFTs here, as well as
-                        exclusive NFTs bought from a creator’s subscription.
+                  <a>
+                    <div className="marketplace-button orange">
+                      <div className="icon">
+                        <ShopWindow size={48} />
+                      </div>
+                      <div className="content">
+                        <div className="title">Resale Marketplace</div>
+                        <div className="description">
+                          Buy and sell minted Treat NFTs on the official
+                          aftermarket. Find sold out NFTs here, as well as
+                          exclusive NFTs bought from a creator’s subscription.
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </a>
                 </Link>
               </p>
             </div>

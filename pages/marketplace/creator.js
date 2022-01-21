@@ -231,9 +231,11 @@ const Marketplace = ({ search }) => {
           subtitle="The brand new official Treat creator marketplaces!"
           additionalContent={
             <Link href="/marketplace/resale">
-              <Button variant="primary  w-sm-100">
-                <b>{"Go to Resale Marketplace"}</b>
-              </Button>
+              <a>
+                <Button variant="primary  w-sm-100">
+                  <b>{"Go to Resale Marketplace"}</b>
+                </Button>
+              </a>
             </Link>
           }
         />

@@ -78,9 +78,11 @@ const Marketplace = ({ search }) => {
             additionalContent={
               <div>
                 <Link href="/farms">
-                  <Button variant="primary w-sm-100 m-2">
-                    <b>{"Go to Farming Dashboard"}</b>
-                  </Button>
+                  <a>
+                    <Button variant="primary w-sm-100 m-2">
+                      <b>{"Go to Farming Dashboard"}</b>
+                    </Button>
+                  </a>
                 </Link>
               </div>
             }

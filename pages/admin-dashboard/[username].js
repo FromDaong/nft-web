@@ -61,9 +61,11 @@ const AdminDashboardWrapper = ({ username }) => {
           subtitle={"You are not permitted to use this dashboard"}
           additionalContent={
             <Link href="/admin-dashboard/login">
-              <Button variant="primary  w-sm-100">
-                <b>{"Login to Panel"}</b>
-              </Button>
+              <a>
+                <Button variant="primary  w-sm-100">
+                  <b>{"Login to Panel"}</b>
+                </Button>
+              </a>
             </Link>
           }
         />
@@ -94,9 +96,11 @@ const AdminDashboard = ({ username }) => {
         title={`Loading: ${username}'s application...`}
         additionalContent={
           <Link href="/admin-dashboard">
-            <Button variant="primary  w-sm-100">
-              <b>{"Back to admin panel"}</b>
-            </Button>
+            <a>
+              <Button variant="primary  w-sm-100">
+                <b>{"Back to admin panel"}</b>
+              </Button>
+            </a>
           </Link>
         }
       />
@@ -156,9 +160,11 @@ const AdminDashboard = ({ username }) => {
           subtitle={`Be super careful when approving and rejecting creators`}
           additionalContent={
             <Link href="/admin-dashboard">
-              <Button variant="primary  w-sm-100">
-                <b>{"Back to admin panel"}</b>
-              </Button>
+              <a>
+                <Button variant="primary  w-sm-100">
+                  <b>{"Back to admin panel"}</b>
+                </Button>
+              </a>
             </Link>
           }
         />

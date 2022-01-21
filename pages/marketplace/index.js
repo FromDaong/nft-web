@@ -46,20 +46,24 @@ const Home = () => {
 
             <div className="buttons">
               <Link href="/marketplace/creator">
-                <Button
-                  variant="primary mt-3 py-2 w-100"
-                  style={{ maxWidth: 250 }}
-                >
-                  <b>THE SWEET SHOP</b>
-                </Button>
+                <a>
+                  <Button
+                    variant="primary mt-3 py-2 w-100"
+                    style={{ maxWidth: 250 }}
+                  >
+                    <b>THE SWEET SHOP</b>
+                  </Button>
+                </a>
               </Link>
               <Link href="/marketplace/resale">
-                <Button
-                  variant="secondary mt-3 py-2 w-100 ml-3"
-                  style={{ maxWidth: 250 }}
-                >
-                  <b>RESALE MARKETPLACE</b>
-                </Button>
+                <a>
+                  <Button
+                    variant="secondary mt-3 py-2 w-100 ml-3"
+                    style={{ maxWidth: 250 }}
+                  >
+                    <b>RESALE MARKETPLACE</b>
+                  </Button>
+                </a>
               </Link>
             </div>
           </div>
