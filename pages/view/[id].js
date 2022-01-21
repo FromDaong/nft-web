@@ -454,7 +454,7 @@ const ViewNFT = ({ nftData, image, account }) => {
             </div>
             <div className="creator-wrapper">
               <Link href={`/creator/${nftData.model_handle}`}>
-                <div className="creator">
+                <a className="creator">
                   <div className="pic">
                     <img
                       src={
@@ -469,7 +469,7 @@ const ViewNFT = ({ nftData, image, account }) => {
                     <div className="label">Creator</div>
                     <div className="name">{nftData.model_handle}</div>
                   </div>
-                </div>
+                </a>
               </Link>
             </div>
             <hr style={{ marginTop: 25, marginBottom: 25 }} />
