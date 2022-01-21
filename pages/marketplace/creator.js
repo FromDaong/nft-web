@@ -108,6 +108,11 @@ const Marketplace = ({ search }) => {
     items.push(<Pagination.Last onClick={() => setPage(totalPages)} />)
   };
 
+  useEffect(() => {
+    if (orderBookArray) {
+      updateObArr();
+    }
+  }, [])
 
   useEffect(() => {
     console.log("Setting final array")
@@ -136,8 +141,8 @@ const Marketplace = ({ search }) => {
   }, [filteredArray, sortBy]);
 
   useEffect(() => {
-    console.log("Received new values")
     // yes search + no dropdown
+    console.log("Received new values")
     if (searchFilter !== "" && selectedOptionsStr === "") {
       setFilteredArray(fuse.search({
         $or: [
@@ -167,7 +172,7 @@ const Marketplace = ({ search }) => {
         refIndex: idx,
       })));
     }
-  }, [searchFilter, selectedOptionsStr])
+  }, [searchFilter, selectedOptionsStr, nftDataArray]);
 
   useEffect(() => {
     const queryFilter = router.query.s;
