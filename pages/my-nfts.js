@@ -243,7 +243,7 @@ const OpenOrders = ({
         <div className="container px-4 ">
           <div className="d-flex text-left justify-content-center mt-5">
             <motion.div
-              className="card-columns w-100"
+              className="d-flex text-left justify-content-center mt-5 w-100 flex-wrap"
               animate="show"
               exit="hidden"
               initial="hidden"
