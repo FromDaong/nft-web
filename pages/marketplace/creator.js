@@ -198,7 +198,7 @@ const Marketplace = ({ search }) => {
         { shallow: true }
       );
     }
-  }, [searchFilter, sortBy, currentPage, selectedOptionsStr, initialRender]);
+  }, [searchFilter, sortBy, currentPage, selectedOptionsStr]);
 
   useEffect(() => {
     updateObArr();

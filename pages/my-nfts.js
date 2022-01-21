@@ -100,6 +100,8 @@ const OwnedNfts = ({
   serverNftBalances,
   isLoading,
 }) => {
+  const nftWithBalances = nftBalances.filter((i) => i.balance > 0);
+
   return (
     <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
       <div
@@ -126,7 +128,7 @@ const OwnedNfts = ({
               My NFTs
             </h2>
           </div>
-          {nftBalances.length > 0 && (
+          {nftBalances.length > 0 && nftWithBalances > 0 && (
             <div className="button-container">
               {serverNftBalances ? (
                 <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
@@ -141,7 +143,7 @@ const OwnedNfts = ({
           )}
         </div>
       </div>
-      {nftBalances.length > 0 ? (
+      {nftBalances.length > 0 && nftWithBalances > 0 ? (
         <div className="">
           <motion.div
             className="d-flex text-left justify-content-center mt-5 w-100 flex-wrap"
@@ -183,7 +185,7 @@ const OwnedNfts = ({
             minHeight: 200,
           }}
         >
-          You haven't purchased any NFTs yet.
+          You do not own any NFTs at the moment.
         </div>
       )}
     </div>
@@ -222,7 +224,7 @@ const OpenOrders = ({
               Listed on Re-Sale Marketplace
             </h2>
           </div>
-          {nftBalances.length > 0 && (
+          {nftBalances.length > 0 && openOrders.length > 0 && (
             <div className="button-container">
               {serverNftBalances ? (
                 <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
@@ -237,7 +239,7 @@ const OpenOrders = ({
           )}
         </div>
       </div>
-      {nftBalances.length > 0 ? (
+      {nftBalances.length > 0 && openOrders.length > 0 ? (
         <div className="container px-4 ">
           <div className="d-flex text-left justify-content-center mt-5">
             <motion.div
@@ -288,7 +290,7 @@ const OpenOrders = ({
             minHeight: 200,
           }}
         >
-          You haven't purchased any NFTs yet.
+          You haven't listed any NFTs for resale yet.
         </div>
       )}
     </div>
