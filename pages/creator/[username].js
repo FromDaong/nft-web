@@ -167,17 +167,19 @@ const ViewModel = ({
             {account === modelData.address && (
               <div className="mr-2">
                 <Link href="/creator-dashboard">
-                  <Button
-                    className="px-4"
-                    style={{
-                      marginTop: 15,
-                      width: "100%",
-                      borderRadius: 25,
-                      display: "inline-block",
-                    }}
-                  >
-                    Edit Profile
-                  </Button>
+                  <a>
+                    <Button
+                      className="px-4"
+                      style={{
+                        marginTop: 15,
+                        width: "100%",
+                        borderRadius: 25,
+                        display: "inline-block",
+                      }}
+                    >
+                      Edit Profile
+                    </Button>
+                  </a>
                 </Link>
               </div>
             )}
@@ -269,15 +271,17 @@ const ViewModel = ({
         </div>
       </div>
       <Link href="/creators">
-        <div className="w-100 text-center mt-15">
-          <Button
-            style={{ marginTop: 15 }}
-            variant="transparent"
-            className="text-primary"
-          >
-            Back to All Creators
-          </Button>
-        </div>
+        <a>
+          <div className="w-100 text-center mt-15">
+            <Button
+              style={{ marginTop: 15 }}
+              variant="transparent"
+              className="text-primary"
+            >
+              Back to All Creators
+            </Button>
+          </div>
+        </a>
       </Link>
     </div>
   );

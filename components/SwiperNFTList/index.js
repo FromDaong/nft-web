@@ -21,9 +21,11 @@ const SwiperNFTList = ({ nftData }) => {
           <div className="title">Newly created NFTs</div>
           <div className="button">
             <Link href="/marketplace/creator">
-              <Button variant="primary py-2 px-4">
-                <b>View All</b>
-              </Button>
+              <a>
+                <Button variant="primary py-2 px-4">
+                  <b>View All</b>
+                </Button>
+              </a>
             </Link>
           </div>
         </div>

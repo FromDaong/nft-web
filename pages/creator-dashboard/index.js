@@ -143,9 +143,11 @@ const ViewNFT = ({ modelData, account }) => {
               </a>
             </p>
             <Link href={`/creator/${modelData.username}`}>
-              <Button variant="primary  w-sm-100">
-                <b>{"Go to My Creator Profile"}</b>
-              </Button>
+              <a>
+                <Button variant="primary  w-sm-100">
+                  <b>{"Go to My Creator Profile"}</b>
+                </Button>
+              </a>
             </Link>
           </div>
 

@@ -78,83 +78,87 @@ const CreatorNFTItem = ({ data, modelData, balance }) => {
 
       <motion.div variants={variants}>
         <Link href={`/view/${data.id}`}>
-          <div className="nft-card" style={{ boxShadow: "none" }}>
-            <div className="totw-tag-wrapper">
-              {balance > 1 && (
-                <div className="quantity-wrapper totw-tag">
-                  {balance}x Available
-                </div>
-              )}
-            </div>
+          <a>
+            <div className="nft-card" style={{ boxShadow: "none" }}>
+              <div className="totw-tag-wrapper">
+                {balance > 1 && (
+                  <div className="quantity-wrapper totw-tag">
+                    {balance}x Available
+                  </div>
+                )}
+              </div>
 
-            <Link href={`/creator/${modelData.username}`}>
+              <Link href={`/creator/${modelData.username}`}>
+                <a>
+                  <div
+                    className="profile-pic"
+                    style={{ background: `url(${modelData.profile_pic})` }}
+                  ></div>
+                </a>
+              </Link>
+
               <div
-                className="profile-pic"
-                style={{ background: `url(${modelData.profile_pic})` }}
-              ></div>
-            </Link>
-
-            <div
-              className="img-container text-center text-lg-left d-flex justify-content-center align-items-center"
-              style={{
-                background: "black",
-                border: "3px solid #E795B6",
-                borderRadius: 10,
-                minHeight: 300,
-              }}
-            >
-              {data.image ? (
-                <div
-                  style={{ background: `url(${image})`, minHeight: 375 }}
-                  className="dynamic-image"
-                />
-              ) : isBlurhashValid(data.blurhash).result ? (
-                <>
-                  <Blurhash
-                    style={{
-                      borderRadius: 8,
-                      overflow: "hidden",
-                    }}
-                    hash={data.blurhash}
-                    width={"100%"}
-                    height={375}
-                    resolutionX={32}
-                    resolutionY={32}
-                    punch={1}
+                className="img-container text-center text-lg-left d-flex justify-content-center align-items-center"
+                style={{
+                  background: "black",
+                  border: "3px solid #E795B6",
+                  borderRadius: 10,
+                  minHeight: 300,
+                }}
+              >
+                {data.image ? (
+                  <div
+                    style={{ background: `url(${image})`, minHeight: 375 }}
+                    className="dynamic-image"
                   />
-                </>
-              ) : (
-                <h3 className="text-center p4">
-                  Please contaact admin. Invalid Blurhash.
-                </h3>
-              )}
-            </div>
-            <div className="text-container container">
-              <div className="title-section">
-                <div className="title">{data.name}</div>
-                <div className="name">{data.attributes[0].value}</div>
+                ) : isBlurhashValid(data.blurhash).result ? (
+                  <>
+                    <Blurhash
+                      style={{
+                        borderRadius: 8,
+                        overflow: "hidden",
+                      }}
+                      hash={data.blurhash}
+                      width={"100%"}
+                      height={375}
+                      resolutionX={32}
+                      resolutionY={32}
+                      punch={1}
+                    />
+                  </>
+                ) : (
+                  <h3 className="text-center p4">
+                    Please contaact admin. Invalid Blurhash.
+                  </h3>
+                )}
               </div>
-              <div className="stats">
-                <div className="stat">
-                  <div className="number">{data.list_price}</div>
-                  <div className="label">BNB</div>
+              <div className="text-container container">
+                <div className="title-section">
+                  <div className="title">{data.name}</div>
+                  <div className="name">{data.attributes[0].value}</div>
+                </div>
+                <div className="stats">
+                  <div className="stat">
+                    <div className="number">{data.list_price}</div>
+                    <div className="label">BNB</div>
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-lg-12 mt-3">
+                  <span className="d-inline-block w-100">
+                    <Button
+                      className="w-100"
+                      variant="secondary"
+                      onClick={goToEditNFT}
+                    >
+                      <b>Edit NFT</b>
+                    </Button>
+                  </span>
                 </div>
               </div>
             </div>
-            <div className="row">
-              <div className="col-lg-12 mt-3">
-                <span className="d-inline-block w-100">
-                  <Button
-                    className="w-100"
-                    variant="secondary"
-                    onClick={goToEditNFT}
-                  >
-                    <b>Edit NFT</b>
-                  </Button>
-                </span>
-              </div>
-            </div>
-          </div>
+          </a>
         </Link>
       </motion.div>
     </>

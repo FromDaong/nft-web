@@ -50,12 +50,14 @@ const CreatedNFTs = ({
         </div>
 
         <Link href="/creator-dashboard/create-nft">
-          <Button variant="primary  w-100" style={{ maxWidth: 250 }}>
-            <b>
-              <PlusCircle className="pb-1 mr-2" size={24} />
-              {"CREATE NEW NFTs"}
-            </b>
-          </Button>
+          <a>
+            <Button variant="primary  w-100" style={{ maxWidth: 250 }}>
+              <b>
+                <PlusCircle className="pb-1 mr-2" size={24} />
+                {"CREATE NEW NFTs"}
+              </b>
+            </Button>
+          </a>
         </Link>
       </div>
       {nftData && nftData.nfts.length > 0 ? (

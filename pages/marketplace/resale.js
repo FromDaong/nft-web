@@ -321,9 +321,11 @@ const Marketplace = ({ search }) => {
                 Total: {renderArray ? renderArray.length : "Loading..."}
               </p>
               <Link href="/marketplace/creator">
-                <Button variant="primary w-sm-100">
-                  <b>{"Go to The Sweet Shop"}</b>
-                </Button>
+                <a>
+                  <Button variant="primary w-sm-100">
+                    <b>{"Go to The Sweet Shop"}</b>
+                  </Button>
+                </a>
               </Link>
             </>
           }
