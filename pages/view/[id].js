@@ -200,7 +200,7 @@ const ViewNFT = ({ nftData, image, account }) => {
     nftData.id,
     nftCost
   );
-  
+
   const openOrders = useGetOpenOrdersForNft(nftData.id);
 
   const {
@@ -348,7 +348,7 @@ const ViewNFT = ({ nftData, image, account }) => {
         </div>
       </div>
     ));
-
+  // Sort with lowest first
   const openOrdersRender = openOrders.sort((a, b) => new BigNumber(b.price) - new BigNumber(a.price)).map((e) => (
     <Link href={`/marketplace/resale?search=${nftData.name}`} passHref={true}>
       <a>
