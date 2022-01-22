@@ -199,7 +199,7 @@ const Marketplace = ({ search }) => {
         tagsArray.pop();
         tagsArray = tagsArray.map((tag) => tag.replaceAll('"', ""));
         tagsArray.map((tag) =>
-          setSelectedTags((current) => [
+          setSelectedOptions((current) => [
             ...current,
             {
               label: tag,
@@ -231,11 +231,6 @@ const Marketplace = ({ search }) => {
 
   useEffect(() => {
     if(finalArray.length > 0) {
-      if (selectedTags.length > 0) {
-        setSelectedOptions(selectedTags);
-        setSelectedTags([])
-      }
-
       if(persistedPageNumber) {
         setPage(persistedPageNumber);
         setPersistedPageNumber(null);
