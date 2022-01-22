@@ -114,7 +114,6 @@ const Marketplace = ({ search }) => {
   }, [orderBookArray])
 
   useEffect(() => {
-    console.log("Setting final array")
     const newArray = filteredArray;
     newArray.sort((a, b) => {
         switch (sortBy) {
@@ -138,13 +137,11 @@ const Marketplace = ({ search }) => {
             return new Date(b.item.createdAt) - new Date(a.item.createdAt);
         }
     })
-    console.log({ newArray, filteredArray })
     setFinalArray(newArray);
   }, [filteredArray, sortBy]);
 
   useEffect(() => {
     // yes search + no dropdown
-    console.log("Received new values")
     let searchResult;
     if (searchFilter !== "" && selectedOptionsStr === "") {
       searchResult = fuse.search({
@@ -177,7 +174,6 @@ const Marketplace = ({ search }) => {
       }));
     
     }
-    console.log({nftDataArray, searchResult, selectedOptionsStr})
       setFilteredArray(searchResult);
   }, [searchFilter, selectedOptionsStr, nftDataArray]);
 
