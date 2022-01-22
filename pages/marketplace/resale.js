@@ -118,7 +118,7 @@ const Marketplace = ({ search }) => {
   });
 
   let selectedOptionsStr = "";
-  selectedOptions.forEach((e) => (selectedOptionsStr += `="${e.value}" `));
+  selectedOptions.forEach((e) => (selectedOptionsStr += `="${e.value.trim()}" `));
 
   let filtered;
 
