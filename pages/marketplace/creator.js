@@ -235,6 +235,10 @@ const Marketplace = ({ search }) => {
 
   }, [finalArray]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [currentPage])
+
   return (
     <AnimateSharedLayout>
       <motion.main
