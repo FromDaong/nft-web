@@ -34,6 +34,7 @@ const Marketplace = ({ search }) => {
   const [persistedPageNumber, setPersistedPageNumber] = useState(0);
   const [filteredArray, setFilteredArray] = useState([]);
   const [finalArray, setFinalArray] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([])
 
   const { account } = useWallet();
   const router = useRouter();
@@ -55,7 +56,7 @@ const Marketplace = ({ search }) => {
   });
 
   let selectedOptionsStr = "";
-  selectedOptions.forEach((e) => (selectedOptionsStr += `="${e.value}" `));
+  selectedOptions.forEach((e) => (selectedOptionsStr += `="${e.value.trim()}" `));
 
   const {
     currentPage,
@@ -166,6 +167,7 @@ const Marketplace = ({ search }) => {
       searchResult = fuse.search({
         $and: [{ tags: selectedOptionsStr }],
       });
+      
 
       // no filtering
     } else {
@@ -175,7 +177,7 @@ const Marketplace = ({ search }) => {
       }));
     
     }
-    console.log({nftDataArray, searchResult})
+    console.log({nftDataArray, searchResult, selectedOptionsStr})
       setFilteredArray(searchResult);
   }, [searchFilter, selectedOptionsStr, nftDataArray]);
 
@@ -190,20 +192,21 @@ const Marketplace = ({ search }) => {
     setPersistedPageNumber(
       persistedPageNumber ? Number(persistedPageNumber) : 0
     );
-    if (tags) {
-      let renamedTags = tags.replaceAll("=", ",");
-      let tagsArray = renamedTags.split(",").reverse();
-      tagsArray.pop();
-      tagsArray = tagsArray.map((tag) => tag.replaceAll('"', ""));
-      tagsArray.map((tag) =>
-        setSelectedOptions((current) => [
-          ...current,
-          {
-            label: tag,
-            value: tag,
-          },
-        ])
-      );
+
+    if(tags) {
+        let renamedTags = tags.replaceAll("=", ",");
+        let tagsArray = renamedTags.split(",").reverse();
+        tagsArray.pop();
+        tagsArray = tagsArray.map((tag) => tag.replaceAll('"', ""));
+        tagsArray.map((tag) =>
+          setSelectedTags((current) => [
+            ...current,
+            {
+              label: tag,
+              value: tag,
+            },
+          ])
+        );
     }
   }, []);
 
@@ -227,10 +230,18 @@ const Marketplace = ({ search }) => {
   }, [searchFilter, orderBookArray, sortBy, showPendingModal]);
 
   useEffect(() => {
-    if (finalArray.length !== 0 && persistedPageNumber) {
-      setPage(persistedPageNumber);
-      setPersistedPageNumber(null);
+    if(finalArray.length > 0) {
+      if (selectedTags.length > 0) {
+        setSelectedOptions(selectedTags);
+        setSelectedTags([])
+      }
+
+      if(persistedPageNumber) {
+        setPage(persistedPageNumber);
+        setPersistedPageNumber(null);
+      }
     }
+
   }, [finalArray]);
 
   return (
