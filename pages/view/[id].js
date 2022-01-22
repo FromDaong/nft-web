@@ -200,6 +200,7 @@ const ViewNFT = ({ nftData, image, account }) => {
     nftData.id,
     nftCost
   );
+  
   const openOrders = useGetOpenOrdersForNft(nftData.id);
 
   const {
