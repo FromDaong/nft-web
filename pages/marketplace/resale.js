@@ -262,6 +262,10 @@ const Marketplace = ({ search }) => {
     forceUpdate();
   }, [sortBy, storedArray, searchFilter]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [currentPage])
+
   return (
     <AnimateSharedLayout>
       <BlankModal

@@ -83,6 +83,10 @@ const Creators = () => {
     }
   }, [filteredArray]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [currentPage])
+
   return (
     <>
       <motion.main
