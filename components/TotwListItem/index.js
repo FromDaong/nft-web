@@ -25,13 +25,15 @@ const TotwListItem = ({ modelData }) => {
       <div className="totw-list-item-container mt-5">
         <div className="top-bar">
           <Link href={`/creator/${modelData.username}`}>
-            <div className="totw-name">
-              <div
-                className="pic"
-                style={{ backgroundImage: `url(${modelData.profile_pic})` }}
-              ></div>
-              {modelData.username}
-            </div>
+            <a>
+              <div className="totw-name">
+                <div
+                  className="pic"
+                  style={{ backgroundImage: `url(${modelData.profile_pic})` }}
+                ></div>
+                {modelData.username}
+              </div>
+            </a>
           </Link>
           <div className="button">
             <Button variant="primary py-2 px-4" onClick={onRedeemSet}>

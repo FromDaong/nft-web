@@ -14,17 +14,30 @@ import { forceCheck } from "react-lazyload";
 import { usePagination } from "react-use-pagination";
 import Fuse from "fuse.js";
 import Select from "react-select";
+import { useRouter } from "next/dist/client/router";
+import ErrorFallback from "../../components/Fallback/Error";
+
+// TODO: Fetch NFTs from blockchain
+// database seems to be outdated
 
 const Marketplace = ({ search }) => {
   const [_, forceUpdate] = useReducer((x) => x + 1, 0);
-  const { data: orderBookArray } = useSWR(`/api/nft/get-marketplace-nfts`);
+  const { data: orderBookArray, error } = useSWR(
+    `/api/nft/get-marketplace-nfts`
+  );
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [purchaseOrderData, setPurchaseOrderData] = useState(null);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [nftDataArray, setNftDataArray] = useState([]);
   const [searchFilter, setSearchFilter] = useState(search || "");
   const [sortBy, setSortBy] = useState("Recent");
+  const [persistedPageNumber, setPersistedPageNumber] = useState(0);
+  const [filteredArray, setFilteredArray] = useState([]);
+  const [finalArray, setFinalArray] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([])
+
   const { account } = useWallet();
+  const router = useRouter();
 
   const updateObArr = () => {
     const ob = orderBookArray;
@@ -43,45 +56,7 @@ const Marketplace = ({ search }) => {
   });
 
   let selectedOptionsStr = "";
-  selectedOptions.forEach((e) => (selectedOptionsStr += `="${e.value}" `));
-
-  let filteredArray;
-
-  // yes search + no dropdown
-  if (searchFilter !== "" && selectedOptionsStr === "") {
-    filteredArray = fuse.search({
-      $or: [
-        { name: searchFilter },
-        { description: searchFilter },
-        { model_handle: searchFilter },
-      ],
-    });
-
-    // yes search + yes dropdown
-  } else if (searchFilter !== "" && selectedOptionsStr !== "") {
-    filteredArray = fuse.search({
-      $and: [{ tags: selectedOptionsStr }],
-      $or: [{ name: searchFilter }],
-    });
-
-    // no search + yes dropdown
-  } else if (searchFilter == "" && selectedOptionsStr !== "") {
-    filteredArray = fuse.search({
-      $and: [{ tags: selectedOptionsStr }],
-    });
-
-    // no filtering
-  } else {
-    filteredArray = nftDataArray.map((d, idx) => ({
-      item: d,
-      refIndex: idx,
-    }));
-  }
-
-  useEffect(() => {
-    if (searchFilter !== "") setSortBy("Relevancy");
-    else setSortBy("Recent");
-  }, [searchFilter]);
+  selectedOptions.forEach((e) => (selectedOptionsStr += `="${e.value.trim()}" `));
 
   const {
     currentPage,
@@ -97,20 +72,20 @@ const Marketplace = ({ search }) => {
     initialPageSize: 25,
   });
 
-  useEffect(() => {
-    updateObArr();
-    forceUpdate();
-    setPage(0);
-  }, [orderBookArray, sortBy, showPendingModal]);
+  const setSort = (sortBy) => {
+    setSortBy(sortBy);
+  };
 
   const startNumber = currentPage - 5 > 0 ? currentPage - 5 : 0;
   const endNumber = currentPage + 5 < totalPages ? currentPage + 5 : totalPages;
 
   let items = [];
-  if (currentPage !== 0)
-    items.push(<Pagination.First onClick={() => setPage(0)} />);
-  if (currentPage !== 0)
-    items.push(<Pagination.Prev onClick={setPreviousPage} />);
+  if (currentPage !== 0) {
+    items.push(<Pagination.First onClick={() => setPage(0)} />)
+  };
+  if (currentPage !== 0) {
+    items.push(<Pagination.Prev onClick={setPreviousPage} />)
+  };
 
   for (let number = startNumber; number < endNumber; number++) {
     items.push(
@@ -126,23 +101,143 @@ const Marketplace = ({ search }) => {
       </Pagination.Item>
     );
   }
-  if (currentPage !== totalPages - 1)
-    items.push(<Pagination.Next onClick={setNextPage} />);
-  if (currentPage !== totalPages - 1)
-    items.push(<Pagination.Last onClick={() => setPage(totalPages)} />);
+  if (currentPage !== totalPages - 1) {
+    items.push(<Pagination.Next onClick={setNextPage} />)
+  };
+  if (currentPage !== totalPages - 1) {
+    items.push(<Pagination.Last onClick={() => setPage(totalPages)} />)
+  };
 
-  const finalArray = filteredArray?.sort((a, b) => {
-    switch (sortBy) {
-      case "Relevancy":
-        return Number(a.score) - Number(b.score);
-      case "Price Low to High":
-        return Number(a.item.list_price) - Number(b.item.list_price);
-      case "Price High to Low":
-        return Number(b.item.list_price) - Number(a.item.list_price);
-      default:
-        return new Date(b.item.createdAt) - new Date(a.item.createdAt);
+  useEffect(() => {
+      updateObArr();
+      forceUpdate();
+  }, [orderBookArray])
+
+  useEffect(() => {
+    const newArray = filteredArray;
+    newArray.sort((a, b) => {
+        switch (sortBy) {
+          case "Relevancy":
+            return Number(a.score) - Number(b.score);
+          case "Price Low to High":
+            const aMaxSupply = Number(a.item.max_supply);
+            const bMaxSupply = Number(b.item.max_supply);
+
+            const aTotalMints = a.item.mints;
+            const bTotalMints = b.item.mints;
+
+            if (a.item.list_price === b.item.list_price) {
+              // Compare mints if price is the same
+              return bMaxSupply - bTotalMints - (aMaxSupply - aTotalMints);
+            }
+            return Number(a.item.list_price) - Number(b.item.list_price);
+          case "Price High to Low":
+            return Number(b.item.list_price) - Number(a.item.list_price);
+          default:
+            return new Date(b.item.createdAt) - new Date(a.item.createdAt);
+        }
+    })
+    setFinalArray(newArray);
+  }, [filteredArray, sortBy]);
+
+  useEffect(() => {
+    // yes search + no dropdown
+    let searchResult;
+    if (searchFilter !== "" && selectedOptionsStr === "") {
+      searchResult = fuse.search({
+        $or: [
+          { name: searchFilter },
+          { description: searchFilter },
+          { model_handle: searchFilter },
+        ],
+      });
+
+      // yes search + yes dropdown
+    } else if (searchFilter !== "" && selectedOptionsStr !== "") {
+      searchResult = fuse.search({
+        $and: [{ tags: selectedOptionsStr }],
+        $or: [{ name: searchFilter }],
+      });
+
+      // no search + yes dropdown
+    } else if (searchFilter == "" && selectedOptionsStr !== "") {
+      searchResult = fuse.search({
+        $and: [{ tags: selectedOptionsStr }],
+      });
+      
+
+      // no filtering
+    } else {
+      searchResult = nftDataArray.map((d, idx) => ({
+        item: d,
+        refIndex: idx,
+      }));
+    
     }
-  });
+      setFilteredArray(searchResult);
+  }, [searchFilter, selectedOptionsStr, nftDataArray]);
+
+  useEffect(() => {
+    const queryFilter = router.query.s;
+    const persistedPageNumber = router.query.p;
+    const persistedSortBy = router.query.sort;
+    const tags = router.query.tags;
+    setSearchFilter(queryFilter ?? "");
+    setSort(persistedSortBy ?? "Recent");
+    setPage(persistedPageNumber ? Number(persistedPageNumber) : 0);
+    setPersistedPageNumber(
+      persistedPageNumber ? Number(persistedPageNumber) : 0
+    );
+
+    if(tags) {
+        let renamedTags = tags.replaceAll("=", ",");
+        let tagsArray = renamedTags.split(",").reverse();
+        tagsArray.pop();
+        tagsArray = tagsArray.map((tag) => tag.replaceAll('"', ""));
+        tagsArray.map((tag) =>
+          setSelectedOptions((current) => [
+            ...current,
+            {
+              label: tag,
+              value: tag,
+            },
+          ])
+        );
+    }
+  }, []);
+
+  useEffect(() => {
+    if (searchFilter || sortBy || currentPage) {
+      router.push(
+        `${router.pathname}?${searchFilter && `s=${searchFilter}&`}${
+          currentPage ? `p=${currentPage}&` : ""
+        }${selectedOptionsStr ? `tags=${selectedOptionsStr}&` : ""}${
+          sortBy ? `sort=${sortBy}&` : ""
+        }`.trim(),
+        undefined,
+        { shallow: true }
+      );
+    }
+  }, [searchFilter, sortBy, currentPage, selectedOptionsStr]);
+
+  useEffect(() => {
+    updateObArr();
+    forceUpdate();
+  }, [searchFilter, orderBookArray, sortBy, showPendingModal]);
+
+  useEffect(() => {
+    if(finalArray.length > 0) {
+      if(persistedPageNumber) {
+        setPage(persistedPageNumber);
+        setPersistedPageNumber(null);
+      }
+    }
+
+  }, [finalArray]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [currentPage])
 
   return (
     <AnimateSharedLayout>
@@ -163,9 +258,11 @@ const Marketplace = ({ search }) => {
           subtitle="The brand new official Treat creator marketplaces!"
           additionalContent={
             <Link href="/marketplace/resale">
-              <Button variant="primary  w-sm-100">
-                <b>{"Go to Resale Marketplace"}</b>
-              </Button>
+              <a>
+                <Button variant="primary  w-sm-100">
+                  <b>{"Go to Resale Marketplace"}</b>
+                </Button>
+              </a>
             </Link>
           }
         />
@@ -175,7 +272,9 @@ const Marketplace = ({ search }) => {
             type="text"
             className="flex-grow-1 pl-2"
             value={searchFilter}
-            onChange={(e) => setSearchFilter(e.target.value)}
+            onChange={(e) => {
+              setSearchFilter(e.target.value);
+            }}
             style={{ fontSize: "1.1em" }}
           />
 
@@ -220,20 +319,20 @@ const Marketplace = ({ search }) => {
 
               <Dropdown.Menu>
                 <Dropdown.Item
-                  onClick={() => setSortBy("Relevancy")}
+                  onClick={() => setSort("Relevancy")}
                   style={{
                     display: searchFilter === "" ? "none" : "block",
                   }}
                 >
                   Relevancy
                 </Dropdown.Item>
-                <Dropdown.Item onClick={() => setSortBy("Recent")}>
+                <Dropdown.Item onClick={() => setSort("Recent")}>
                   Most Recent
                 </Dropdown.Item>
-                <Dropdown.Item onClick={() => setSortBy("Price Low to High")}>
+                <Dropdown.Item onClick={() => setSort("Price Low to High")}>
                   Price Low to High
                 </Dropdown.Item>
-                <Dropdown.Item onClick={() => setSortBy("Price High to Low")}>
+                <Dropdown.Item onClick={() => setSort("Price High to Low")}>
                   Price High to Low
                 </Dropdown.Item>
               </Dropdown.Menu>
@@ -260,13 +359,15 @@ const Marketplace = ({ search }) => {
               },
             }}
           >
-            {!finalArray ? (
+            {finalArray?.length === 0 && !error ? (
               <div
                 style={{ minHeight: 500 }}
                 className="d-flex justify-content-center align-items-center w-100"
               >
                 <Loading custom="Loading... This may take up to a few minutes, please ensure your wallet is connected." />
               </div>
+            ) : error ? (
+              <ErrorFallback custom={"Failed to load NFTs"} />
             ) : (
               finalArray.length > 0 && (
                 <>
@@ -275,6 +376,7 @@ const Marketplace = ({ search }) => {
                     .map((o, i) => (
                       <Order
                         searchFilter={searchFilter}
+                        soldOut={o.item.mints === Number(o.item.max_supply)}
                         nftResult={o.item}
                         index={i}
                         order={o.item}

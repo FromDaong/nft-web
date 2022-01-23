@@ -22,6 +22,7 @@ import {
   PencilFill,
 } from "react-bootstrap-icons";
 import SubscriptionNFTs from "../../components/CreatorDashboard/SubscriptionNFTs";
+import ErrorFallback from "../../components/Fallback/Error";
 
 const variants = {
   show: {
@@ -93,8 +94,10 @@ const ViewNFT = ({ modelData, account }) => {
   // const maxNftSupply = useGetNftMaxSupply(account);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { data: nftData } = useSWR(`/api/model/nfts-from-address/${account}`);
-  const { data: subNftData } = useSWR(
+  const { data: nftData, error: nftError } = useSWR(
+    `/api/model/nfts-from-address/${account}`
+  );
+  const { data: subNftData, error: subNftError } = useSWR(
     `/api/model/sub-nfts-from-address/${account}`
   );
 
@@ -143,9 +146,11 @@ const ViewNFT = ({ modelData, account }) => {
               </a>
             </p>
             <Link href={`/creator/${modelData.username}`}>
-              <Button variant="primary  w-sm-100">
-                <b>{"Go to My Creator Profile"}</b>
-              </Button>
+              <a>
+                <Button variant="primary  w-sm-100">
+                  <b>{"Go to My Creator Profile"}</b>
+                </Button>
+              </a>
             </Link>
           </div>
 
@@ -210,20 +215,28 @@ const ViewNFT = ({ modelData, account }) => {
                   <EditProfile modelData={modelData} />
                 </Tab.Pane>
                 <Tab.Pane eventKey="created-nfts">
-                  <CreatedNFTs
-                    hideNFTs={hideNFTs}
-                    transferNFTClick={transferNFTClick}
-                    nftData={nftData}
-                    modelData={modelData}
-                  />
+                  {!nftError ? (
+                    <CreatedNFTs
+                      hideNFTs={hideNFTs}
+                      transferNFTClick={transferNFTClick}
+                      nftData={nftData}
+                      modelData={modelData}
+                    />
+                  ) : (
+                    <ErrorFallback custom="Failed to load NFTs" />
+                  )}
                 </Tab.Pane>
                 <Tab.Pane eventKey="subscription-nfts">
-                  <SubscriptionNFTs
-                    hideNFTs={hideNFTs}
-                    transferNFTClick={transferNFTClick}
-                    nftData={subNftData}
-                    modelData={modelData}
-                  />
+                  {!subNftError ? (
+                    <SubscriptionNFTs
+                      hideNFTs={hideNFTs}
+                      transferNFTClick={transferNFTClick}
+                      nftData={subNftData}
+                      modelData={modelData}
+                    />
+                  ) : (
+                    <ErrorFallback custom="Error loading sub NFTs" />
+                  )}
                 </Tab.Pane>
                 <Tab.Pane eventKey="subscription-settings">
                   <SubscriptionSettings />

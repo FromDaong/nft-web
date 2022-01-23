@@ -72,10 +72,12 @@ const CreatingNFTItemPreview = ({
           )}
         </div>
         <Link href={`/creator/${modelData.username}`}>
-          <div
-            className="profile-pic"
-            style={{ backgroundImage: `url(${modelData.profile_pic})` }}
-          />
+          <a>
+            <div
+              className="profile-pic"
+              style={{ backgroundImage: `url(${modelData.profile_pic})` }}
+            />
+          </a>
         </Link>
         <div className="img-container text-center text-lg-left d-flex justify-content-center align-items-center">
           <div

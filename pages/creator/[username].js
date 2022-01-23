@@ -16,9 +16,10 @@ import SubscriptionNFTs from "../../components/CreatorPage/SubscriptionNFTs";
 import useGetSubscriptionCost from "../../hooks/useGetSubscriptionCost";
 import useGetIsSubscribed from "../../hooks/useGetIsSubscribed";
 import { Clipboard } from "react-bootstrap-icons";
+import ErrorFallback from "../../components/Fallback/Error";
 
 const ViewModelWrapper = ({ username }) => {
-  const { data: res } = useSWR(`/api/model/${username}`);
+  const { data: res, error } = useSWR(`/api/model/${username}`);
   const [modelData, setModelData] = useState();
   const [subNFTs, setSubNFTs] = useState();
   const [totwNFTs, setTotwNFTs] = useState();
@@ -108,7 +109,10 @@ const ViewModelWrapper = ({ username }) => {
         </Spinner>
       </div>
     );
-  } else {
+  } else if (error) {
+    return <ErrorFallback custom="Failed to load user data" />;
+  }
+  {
     return (
       <Layout>
         <ViewModel
@@ -160,7 +164,11 @@ const ViewModel = ({
       <div className="view-model white-tp-bg">
         <div
           className="banner"
-          style={{ backgroundImage: `url(${modelData.banner_pic})` }}
+          style={{
+            backgroundImage: `url(${modelData.banner_pic})`,
+            backgroundSize: "cover !important",
+            backgroundPosition: "center",
+          }}
         ></div>
         <div className="profile-top-container col-md-12">
           <div
@@ -171,17 +179,19 @@ const ViewModel = ({
             {account === modelData.address && (
               <div className="mr-2">
                 <Link href="/creator-dashboard">
-                  <Button
-                    className="px-4"
-                    style={{
-                      marginTop: 15,
-                      width: "100%",
-                      borderRadius: 25,
-                      display: "inline-block",
-                    }}
-                  >
-                    Edit Profile
-                  </Button>
+                  <a>
+                    <Button
+                      className="px-4"
+                      style={{
+                        marginTop: 15,
+                        width: "100%",
+                        borderRadius: 25,
+                        display: "inline-block",
+                      }}
+                    >
+                      Edit Profile
+                    </Button>
+                  </a>
                 </Link>
               </div>
             )}
@@ -277,7 +287,7 @@ const ViewModel = ({
         </div>
       </div>
       <Link href="/creators">
-        <div className="w-100 text-center mt-15">
+        <a className="w-100 text-center mt-15">
           <Button
             style={{ marginTop: 15 }}
             variant="transparent"
@@ -285,7 +295,7 @@ const ViewModel = ({
           >
             Back to All Creators
           </Button>
-        </div>
+        </a>
       </Link>
     </div>
   );

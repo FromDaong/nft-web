@@ -20,6 +20,8 @@ import { usePagination } from "react-use-pagination";
 import BigNumber from "bignumber.js";
 import Fuse from "fuse.js";
 import Select from "react-select";
+import ErrorFallback from "../../components/Fallback/Error";
+import { useRouter } from "next/dist/client/router";
 
 const Marketplace = ({ search }) => {
   const maxId = useGetMaxIdForSale();
@@ -32,10 +34,12 @@ const Marketplace = ({ search }) => {
   const [showCompleteModal, setShowCompleteModal] = useState(null);
   const [orderBookArray, setOrderBookArray] = useState([]);
   const [searchFilter, setSearchFilter] = useState(search || "");
+  const [persistedPageNumber, setPersistedPageNumber] = useState(0);
   const [sortBy, setSortBy] = useState("Recent");
   const [orderBook] = useGetAllOpenOrders(maxId);
   const { account } = useWallet();
   const [_, forceUpdate] = useReducer((x) => x + 1, 0);
+  const router = useRouter();
 
   const initOrderBookArray = orderBook && orderBook.flat();
 
@@ -86,7 +90,7 @@ const Marketplace = ({ search }) => {
       body: JSON.stringify(jsonBody),
     }).then((a) => a.json());
 
-  const { data: populatedNftData } = useSWR(
+  const { data: populatedNftData, error } = useSWR(
     orderBookArray && orderBookArray.length > 0 && jsonBody
       ? `/api/nft/get-many-nfts`
       : null,
@@ -98,7 +102,7 @@ const Marketplace = ({ search }) => {
     populatedNftData &&
     orderBookArray
       .map((orderBookNft) => {
-        const nftResult = populatedNftData.find(
+        const nftResult = populatedNftData?.find(
           (x) => x.id === orderBookNft.nftId
         );
         if (!nftResult) return undefined;
@@ -113,9 +117,10 @@ const Marketplace = ({ search }) => {
     includeScore: true,
   });
 
-  let filtered;
   let selectedOptionsStr = "";
-  selectedOptions.forEach((e) => (selectedOptionsStr += `="${e.value}" `));
+  selectedOptions.forEach((e) => (selectedOptionsStr += `="${e.value.trim()}" `));
+
+  let filtered;
 
   if (searchFilter !== "" && selectedOptionsStr === "") {
     filtered = fuse.search({
@@ -162,11 +167,6 @@ const Marketplace = ({ search }) => {
     }
   });
 
-  useEffect(() => {
-    if (searchFilter !== "") setSortBy("Relevancy");
-    else setSortBy("Recent");
-  }, [searchFilter]);
-
   const {
     currentPage,
     totalPages,
@@ -180,6 +180,54 @@ const Marketplace = ({ search }) => {
     totalItems: renderArray ? renderArray.length : 0,
     initialPageSize: 10,
   });
+
+  useEffect(() => {
+    const queryFilter = router.query.s;
+    const persistedPageNumber = router.query.p;
+    const tags = router.query.tags;
+
+    setSearchFilter(queryFilter ?? "");
+    setPersistedPageNumber(
+      persistedPageNumber ? Number(persistedPageNumber) : 0
+    );
+
+    if (tags) {
+      let renamedTags = tags.replaceAll("=", ",");
+      let tagsArray = renamedTags.split(",").reverse();
+      tagsArray.pop();
+      tagsArray = tagsArray.map((tag) => tag.replaceAll('"', ""));
+      tagsArray.map((tag) =>
+        setSelectedOptions((current) => [
+          ...current,
+          {
+            label: tag,
+            value: tag,
+          },
+        ])
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    if (searchFilter || sortBy || currentPage) {
+      router.push(
+        `${router.pathname}?${searchFilter && `s=${searchFilter}&`}${
+          currentPage ? `p=${currentPage}&` : ""
+        }${selectedOptionsStr ? `tags=${selectedOptionsStr}&` : ""}${
+          sortBy ? `sort=${sortBy}&` : ""
+        }`.trim(),
+        undefined,
+        { shallow: true }
+      );
+    }
+  }, [searchFilter, sortBy, currentPage, selectedOptionsStr]);
+
+  useEffect(() => {
+    if (renderArray?.length !== 0 && persistedPageNumber) {
+      setPage(persistedPageNumber);
+      setPersistedPageNumber(null);
+    }
+  }, [renderArray]);
 
   const startNumber = currentPage - 5 > 0 ? currentPage - 5 : 0;
   const endNumber = currentPage + 5 < totalPages ? currentPage + 5 : totalPages;
@@ -212,8 +260,11 @@ const Marketplace = ({ search }) => {
   useEffect(() => {
     updateObArr();
     forceUpdate();
-    setPage(0);
   }, [sortBy, storedArray, searchFilter]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [currentPage])
 
   return (
     <AnimateSharedLayout>
@@ -274,9 +325,11 @@ const Marketplace = ({ search }) => {
                 Total: {renderArray ? renderArray.length : "Loading..."}
               </p>
               <Link href="/marketplace/creator">
-                <Button variant="primary w-sm-100">
-                  <b>{"Go to The Sweet Shop"}</b>
-                </Button>
+                <a>
+                  <Button variant="primary w-sm-100">
+                    <b>{"Go to The Sweet Shop"}</b>
+                  </Button>
+                </a>
               </Link>
             </>
           }
@@ -359,6 +412,8 @@ const Marketplace = ({ search }) => {
               <div className="d-flex justify-content-center align-items-center w-100">
                 <Loading custom="Loading data from the blockchain... Please ensure your wallet is connected." />
               </div>
+            ) : error ? (
+              <ErrorFallback custom="Error loading page" />
             ) : (
               <>
                 {renderArray.slice(startIndex, endIndex).map((o, i) => (
