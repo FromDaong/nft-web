@@ -4,6 +4,8 @@ import { Spinner, Button } from "react-bootstrap";
 import EditProfile from "../../components/CreatorDashboard/EditProfile";
 import CreatedNFTs from "../../components/CreatorDashboard/CreatedNFTs";
 import SubscriptionSettings from "../../components/CreatorDashboard/SubscriptionSettings";
+import SubSettingsBox from "../../components/CreatorDashboard/SubSettingsBox";
+import CreatorResources from "../../components/CreatorDashboard/CreatorResources";
 import Referrals from "../../components/CreatorDashboard/Referrals";
 import { Nav, Tab } from "react-bootstrap";
 import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
@@ -16,6 +18,7 @@ import {
   PatchCheckFill,
   GearFill,
   PiggyBankFill,
+  InfoCircleFill,
   PencilFill,
 } from "react-bootstrap-icons";
 import SubscriptionNFTs from "../../components/CreatorDashboard/SubscriptionNFTs";
@@ -193,6 +196,12 @@ const ViewNFT = ({ modelData, account }) => {
                   </Nav.Link>
                 </Nav.Item>
                 <Nav.Item className="white-tp-bg mt-2">
+                  <Nav.Link eventKey="creator-resources">
+                    <InfoCircleFill className="mr-2 mb-1" />
+                    Creator Resources
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item className="white-tp-bg mt-2">
                   <Nav.Link eventKey="referrals">
                     <PiggyBankFill className="mr-2 mb-1" />
                     Referrals
@@ -231,6 +240,10 @@ const ViewNFT = ({ modelData, account }) => {
                 </Tab.Pane>
                 <Tab.Pane eventKey="subscription-settings">
                   <SubscriptionSettings />
+                  <SubSettingsBox/>
+                </Tab.Pane>
+                <Tab.Pane eventKey="creator-resources">
+                <CreatorResources/>
                 </Tab.Pane>
                 <Tab.Pane eventKey="referrals">
                   <Referrals

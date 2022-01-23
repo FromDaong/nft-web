@@ -20,10 +20,10 @@ const Footer = () => {
   }, [status]);
 
   return (
-    <footer class="py-5 border-top footer">
+    <footer className="py-5 border-top footer">
       <div className="container">
-        <div class="row">
-          <div class="col-md-3">
+        <div className="row">
+          <div className="col-md-3">
             <img
               src={"/assets/hero-logo.png"}
               alt=""
@@ -31,12 +31,12 @@ const Footer = () => {
               style={{ maxWidth: 150 }}
             />
           </div>
-          <div class="col-md-3 mt-5 mt-md-0">
+          <div className="col-md-3 mt-5 mt-md-0">
             <h5>$TREAT</h5>
-            <ul class="list-unstyled text-small">
+            <ul className="list-unstyled text-small">
               <li>
                 <a
-                  class=""
+                  className=""
                   href="https://docs.google.com/gview?url=https://github.com/TreatDAO/litepaper/raw/main/TreatPaperFinal.pdf&embedded=true"
                   target="_blank"
                 >
@@ -45,7 +45,7 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  class=""
+                  className=""
                   href="https://pancakeswap.finance/swap?inputCurrency=0x01bd7acb6ff3b6dd5aefa05cf085f2104f3fc53f"
                   target="_blank"
                 >
@@ -53,7 +53,7 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a class="/" href="#">
+                <a className="/" href="#">
                   Purchase NFTs
                 </a>
               </li>
@@ -75,9 +75,9 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-          <div class="col-md-3 mt-3 mt-md-0">
+          <div className="col-md-3 mt-3 mt-md-0">
             <h5>Social Media</h5>
-            <ul class="list-unstyled text-small">
+            <ul className="list-unstyled text-small">
               <li>
                 <a href="https://t.me/TreatDAO" target="_blank">
                   Telegram
@@ -105,9 +105,9 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-          <div class="col-md-3 mt-3 mt-md-0">
+          <div className="col-md-3 mt-3 mt-md-0">
             <h5>Resources</h5>
-            <ul class="list-unstyled text-small">
+            <ul className="list-unstyled text-small">
               <li>
                 <a href="https://help.treatdao.com/" target="_blank">
                   Help Center

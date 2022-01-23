@@ -151,6 +151,14 @@ const ViewModel = ({
     if (totwNFTs && totwNFTs.length !== 0) setKey("totw");
   }, [formattedSubCost, totwNFTs]);
 
+  const formatURL = (str) => {
+    if (str) {
+      if (str.length < 1) return str;
+      if (str.startsWith("http")) return str;
+      return `https://${str}`;
+    }
+  };
+
   return (
     <div className="container">
       <div className="view-model white-tp-bg">
@@ -221,8 +229,12 @@ const ViewModel = ({
             </div>
             <div className="username">@{modelData.username}</div>
             <p className="bio">{modelData.bio}</p>
-            <a className="link" href={modelData.social_account} target="_blank">
-              {modelData.social_account}
+            <a
+              className="link"
+              href={formatURL(modelData.social_account)}
+              target="_blank"
+            >
+              {formatURL(modelData.social_account)}
             </a>
           </div>
           <div className="tabs-container">
