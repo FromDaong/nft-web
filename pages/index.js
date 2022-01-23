@@ -16,10 +16,12 @@ import {
   ShopWindow,
   EaselFill,
 } from "react-bootstrap-icons";
+import ErrorFallback from "../components/Fallback/Error";
 
 const Home = () => {
-  const { data: nftResult } = useSWR(`/api/nft?limit=20`);
-  const { data: modelResult } = useSWR(`/api/model`);
+  const { data: nftResult, error: nftResultError } =
+    useSWR(`/api/nft?limit=20`);
+  const { data: modelResult, error: modelResultError } = useSWR(`/api/model`);
   const [nftData, setNftData] = useState();
   const [modelData, setModelData] = useState();
   const [ref, inView] = useInView();
@@ -177,40 +179,48 @@ const Home = () => {
               </div>
               <p className="marketplace-buttons-container pt-4">
                 <Link href="/marketplace/creator">
-                  <div className="marketplace-button">
-                    <div className="icon">
-                      <EaselFill size={48} />
-                    </div>
-                    <div className="content">
-                      <div className="title">The Sweet Shop</div>
-                      <div className="description">
-                        Find and buy NFTs directly from models, photographers
-                        and performers. Verified creators can create NFTs freely
-                        on this marketplace.
+                  <a>
+                    <div className="marketplace-button">
+                      <div className="icon">
+                        <EaselFill size={48} />
+                      </div>
+                      <div className="content">
+                        <div className="title">The Sweet Shop</div>
+                        <div className="description">
+                          Find and buy NFTs directly from models, photographers
+                          and performers. Verified creators can create NFTs
+                          freely on this marketplace.
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </a>
                 </Link>
                 <Link href="/marketplace/resale">
-                  <div className="marketplace-button orange">
-                    <div className="icon">
-                      <ShopWindow size={48} />
-                    </div>
-                    <div className="content">
-                      <div className="title">Resale Marketplace</div>
-                      <div className="description">
-                        Buy and sell minted Treat NFTs on the official
-                        aftermarket. Find sold out NFTs here, as well as
-                        exclusive NFTs bought from a creator’s subscription.
+                  <a>
+                    <div className="marketplace-button orange">
+                      <div className="icon">
+                        <ShopWindow size={48} />
+                      </div>
+                      <div className="content">
+                        <div className="title">Resale Marketplace</div>
+                        <div className="description">
+                          Buy and sell minted Treat NFTs on the official
+                          aftermarket. Find sold out NFTs here, as well as
+                          exclusive NFTs bought from a creator’s subscription.
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </a>
                 </Link>
               </p>
             </div>
           </div>
         </Scroll.Element>
-        <SwiperNFTList nftData={nftData} />
+        {!nftResultError ? (
+          <SwiperNFTList nftData={nftData} />
+        ) : (
+          <ErrorFallback custom="Failed to load NFTs" />
+        )}
         <div className="totw-section-container mt-5">
           <div className="section-title">Treat of the week</div>
           <div className="desc">
@@ -221,8 +231,11 @@ const Home = () => {
             exclusive to TreatDAO and only available to purchase for one week.
           </div>
 
-          {modelData &&
-            modelData.map((m) => m.totw && <TotwListItem modelData={m} />)}
+          {modelData && !modelResultError ? (
+            modelData.map((m) => m.totw && <TotwListItem modelData={m} />)
+          ) : (
+            <ErrorFallback custom="Failed to load TOTW" />
+          )}
         </div>
         <br />
         <CreatorList modelData={modelData} />

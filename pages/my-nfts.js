@@ -18,6 +18,8 @@ import useSWR from "swr";
 import BigNumber from "bignumber.js";
 import LazyLoad from "react-lazyload";
 import Layout from "../components/Layout";
+import ErrorFallback from "../components/Fallback/Error";
+import Loading from "../components/Loading";
 
 const variants = {
   show: {
@@ -36,8 +38,7 @@ const variants = {
 
 const MyNFTsWrapper = () => {
   const { account, status } = useWallet();
-
-  const { data: res } = useSWR(`/api/nft`);
+  const { data: res, error } = useSWR(`/api/nft`);
   const [nftArray, setNftData] = useState();
 
   useEffect(() => {
@@ -83,6 +84,8 @@ const MyNFTsWrapper = () => {
         </Spinner>
       </div>
     );
+  } else if (error) {
+    return <ErrorFallback custom="Failed to load my NFT's" />;
   } else {
     return <ViewNFT account={account} nftArray={nftArray} />;
   }
@@ -97,6 +100,7 @@ const OwnedNfts = ({
   serverNftBalances,
   isLoading,
 }) => {
+  const nftWithBalances = nftBalances.filter((i) => !i.hasOpenOrder);
   return (
     <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
       <div
@@ -123,7 +127,7 @@ const OwnedNfts = ({
               My NFTs
             </h2>
           </div>
-          {nftBalances.length > 0 && (
+          {nftWithBalances.length > 0 && (
             <div className="button-container">
               {serverNftBalances ? (
                 <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
@@ -138,7 +142,7 @@ const OwnedNfts = ({
           )}
         </div>
       </div>
-      {nftBalances.length > 0 ? (
+      {nftWithBalances.length > 0 ? (
         <div className="">
           <motion.div
             className="d-flex text-left justify-content-center mt-5 w-100 flex-wrap"
@@ -147,27 +151,27 @@ const OwnedNfts = ({
             initial="hidden"
             variants={variants}
           >
-            {nftBalances.map((nft) => {
+            {nftWithBalances.map((nft) => {
               return (
-                nft.balance > 0 && (
-                  <LazyLoad height={400} offset={600}>
-                    <div className="order-container">
-                      <MyNFTItem
-                        balance={nft.balance}
-                        isLoading={isLoading}
-                        data={nft}
-                        revealNFTs={revealNFTs}
-                        transferNFTClick={transferNFTClick}
-                        listOrderClick={listOrderClick}
-                        hasOpenOrder={nft.hasOpenOrder}
-                      />
-                    </div>
-                  </LazyLoad>
-                )
+                <LazyLoad height={400} offset={600}>
+                  <div className="order-container">
+                    <MyNFTItem
+                      balance={nft.balance}
+                      isLoading={isLoading}
+                      data={nft}
+                      revealNFTs={revealNFTs}
+                      transferNFTClick={transferNFTClick}
+                      listOrderClick={listOrderClick}
+                      hasOpenOrder={nft.hasOpenOrder}
+                    />
+                  </div>
+                </LazyLoad>
               );
             })}
           </motion.div>
         </div>
+      ) : isLoading ? (
+        <Loading custom="Please wait, loading your owned NFTs" />
       ) : (
         <div
           className="w-100 text-center font-weight-bold d-flex align-items-center justify-content-center h-100"
@@ -178,7 +182,7 @@ const OwnedNfts = ({
             minHeight: 200,
           }}
         >
-          You haven't purchased any NFTs yet.
+          You do not own any NFTs at the moment.
         </div>
       )}
     </div>
@@ -217,7 +221,7 @@ const OpenOrders = ({
               Listed on Re-Sale Marketplace
             </h2>
           </div>
-          {nftBalances.length > 0 && (
+          {nftBalances.length > 0 && openOrders.length > 0 && (
             <div className="button-container">
               {serverNftBalances ? (
                 <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
@@ -232,11 +236,11 @@ const OpenOrders = ({
           )}
         </div>
       </div>
-      {nftBalances.length > 0 ? (
+      {nftBalances.length > 0 && openOrders.length > 0 ? (
         <div className="container px-4 ">
           <div className="d-flex text-left justify-content-center mt-5">
             <motion.div
-              className="card-columns w-100"
+              className="d-flex text-left justify-content-center mt-5 w-100 flex-wrap"
               animate="show"
               exit="hidden"
               initial="hidden"
@@ -271,6 +275,8 @@ const OpenOrders = ({
             </motion.div>
           </div>
         </div>
+      ) : isLoading ? (
+        <Loading custom="Please wait, loading data" />
       ) : (
         <div
           className="w-100 text-center font-weight-bold d-flex align-items-center justify-content-center h-100"
@@ -281,7 +287,7 @@ const OpenOrders = ({
             minHeight: 200,
           }}
         >
-          You haven't purchased any NFTs yet.
+          You haven't listed any NFTs for resale yet.
         </div>
       )}
     </div>
@@ -292,7 +298,8 @@ const ViewNFT = ({ account, nftArray }) => {
   const [serverNftBalances, setServerNftBalances] = useState(null);
 
   const maxNftSupply = useGetNftMaxSupply(account);
-  const nftBalancesInitial = useGetNftBalance(nftArray);
+  const { totalNftBalances: nftBalancesInitial, loading: isLoading } =
+    useGetNftBalance(nftArray);
 
   const nftBalances = serverNftBalances || nftBalancesInitial;
   const [transferNFTData, setTransferNFTData] = useState(null);
@@ -300,7 +307,6 @@ const ViewNFT = ({ account, nftArray }) => {
   const [cancelOrderData, setCancelOrderData] = useState(null);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   const transferNFTClick = (x) => {
     setTransferNFTData(x);
@@ -324,7 +330,6 @@ const ViewNFT = ({ account, nftArray }) => {
 
       const nftIds = nftBalances.map((n) => n.id);
 
-      setIsLoading(true);
       const res = await fetch(`/api/nft/view-nfts`, {
         method: "POST",
         headers: {
@@ -335,7 +340,6 @@ const ViewNFT = ({ account, nftArray }) => {
       });
       const resJSON = await res.json();
 
-      setIsLoading(false);
       if (resJSON.success) {
         setServerNftBalances(resJSON.results);
       }

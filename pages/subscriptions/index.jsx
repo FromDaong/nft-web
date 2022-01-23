@@ -1,21 +1,23 @@
-import { useState, useEffect } from "react";
-import Hero from "../components/Hero";
-import ModelList from "../components/ModelList";
+import Hero from "../../components/Hero";
+import Layout from "../../components/Layout";
 import { motion } from "framer-motion";
 import useSWR from "swr";
-import PaginationComponent from "../components/PaginationComponent";
+import PaginationComponent from "../../components/PaginationComponent";
+import ModelList from "../../components/ModelList";
 import { usePagination } from "react-use-pagination";
 import Fuse from "fuse.js";
-import ErrorFallback from "../components/Fallback/Error";
+import { useState, useEffect } from "react";
+import Loading from "../../components/Loading";
+import ErrorFallback from "../../components/Fallback/Error";
 import { useRouter } from "next/dist/client/router";
 
-const Creators = () => {
+export default function Index() {
   // TODO Get models total items
   // get data for relevant models (startIndex endIndex)
-  const { data: modelData, error } = useSWR(`/api/model`);
+  const { data: modelData, error: loadingError } =
+    useSWR(`/api/model/with-subs`);
   const [searchFilter, setSearchFilter] = useState("");
   const [persistedPageNumber, setPersistedPageNumber] = useState(0);
-
   const router = useRouter();
 
   const fuse = new Fuse(modelData, {
@@ -101,48 +103,54 @@ const Creators = () => {
         transition={{ type: "linear" }} // Set the transition to linear
         className=""
       >
-        <Hero
-          title={"Our Creators"}
-          subtitle={
-            "Explore the creators creating content on the TreatDAO platform"
-          }
-        />
-        <div className="full-width-search white-tp-bg p-3 d-flex">
-          <input
-            placeholder="Type to search for a model..."
-            type="text"
-            className="flex-grow-1 pl-2"
-            value={searchFilter}
-            onChange={(e) => setSearchFilter(e.target.value)}
-            style={{ fontSize: "1.1em" }}
+        <Layout>
+          <div className="subscriptions">
+            <Hero
+              title={"Subscriptions"}
+              subtitle={
+                "Explore the creators with subscriptions to offer on the TreatDAO platform"
+              }
+            />
+          </div>
+          <div className="full-width-search white-tp-bg p-3 d-flex">
+            <input
+              placeholder="Type to search for a model..."
+              type="text"
+              className="flex-grow-1 pl-2"
+              value={searchFilter}
+              onChange={(e) => setSearchFilter(e.target.value)}
+              style={{ fontSize: "1.1em" }}
+            />
+          </div>
+          <br />
+          {!filteredArray && !loadingError ? (
+            <Loading />
+          ) : loadingError ? (
+            <ErrorFallback
+              custom={"Failed to load models with subscriptions."}
+            />
+          ) : (
+            <ModelList
+              totwOnly={false}
+              endIndex={endIndex}
+              startIndex={startIndex}
+              modelData={filteredArray || []}
+            />
+          )}
+          <PaginationComponent
+            currentPage={currentPage}
+            totalPages={totalPages}
+            setPage={setPage}
+            setPageSize={setPageSize}
+            setNextPage={setNextPage}
+            setPreviousPage={setPreviousPage}
           />
-        </div>
-        <br />
-        {!error ? (
-          <ModelList
-            totwOnly={false}
-            endIndex={endIndex}
-            startIndex={startIndex}
-            modelData={filteredArray || []}
-          />
-        ) : (
-          <ErrorFallback custom="Failed to load models" />
-        )}
-        <PaginationComponent
-          currentPage={currentPage}
-          totalPages={totalPages}
-          setPage={setPage}
-          setPageSize={setPageSize}
-          setNextPage={setNextPage}
-          setPreviousPage={setPreviousPage}
-        />
+        </Layout>
       </motion.main>
     </>
   );
-};
+}
 
-Creators.getInitialProps = async ({ query: { search } }) => {
+Index.getInitialProps = async ({ query: { search } }) => {
   return { search };
 };
-
-export default Creators;

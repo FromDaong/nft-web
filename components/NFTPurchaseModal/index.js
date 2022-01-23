@@ -23,7 +23,9 @@ const WalletModal = ({ show, handleClose }) => {
         </Modal.Body>
         <Modal.Footer>
           <Link href="/my-nfts">
-            <Button>Go to My NFTs</Button>
+            <a>
+              <Button>Go to My NFTs</Button>
+            </a>
           </Link>
           <Button variant="secondary" onClick={handleClose}>
             Cancel

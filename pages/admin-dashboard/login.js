@@ -64,9 +64,11 @@ const CreateNFT = () => {
           subtitle={"Welcome back, Sir / Madame."}
           additionalContent={
             <Link href="/admin-dashboard">
-              <Button variant="primary  w-sm-100">
-                <b>{"Back to admin panel"}</b>
-              </Button>
+              <a>
+                <Button variant="primary  w-sm-100">
+                  <b>{"Back to admin panel"}</b>
+                </Button>
+              </a>
             </Link>
           }
         />

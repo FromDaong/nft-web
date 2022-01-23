@@ -126,7 +126,7 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
 };
 
 const ViewNFTWrapper = ({ id }) => {
-  const { data: res } = useSWR(`/api/nft/${id}`);
+  const { data: res, error } = useSWR(`/api/nft/${id}`);
   const [nftData, setNftData] = useState();
   const { status } = useWallet();
 
@@ -171,6 +171,8 @@ const ViewNFTWrapper = ({ id }) => {
         </Spinner>
       </div>
     );
+  } else if (error) {
+    return <Error custom="Could not load NFT" />;
   } else {
     return <ViewNFT nftData={nftData} />;
   }
@@ -346,7 +348,7 @@ const ViewNFT = ({ nftData, image, account }) => {
       </div>
     ));
 
-  const openOrdersRender = openOrders.map((e) => (
+  const openOrdersRender = openOrders.sort((a, b) => new BigNumber(b.price) - new BigNumber(a.price)).map((e) => (
     <Link href={`/marketplace/resale?search=${nftData.name}`} passHref={true}>
       <a>
         <div className="history-event">
@@ -452,7 +454,7 @@ const ViewNFT = ({ nftData, image, account }) => {
             </div>
             <div className="creator-wrapper">
               <Link href={`/creator/${nftData.model_handle}`}>
-                <div className="creator">
+                <a className="creator">
                   <div className="pic">
                     <img
                       src={
@@ -467,7 +469,7 @@ const ViewNFT = ({ nftData, image, account }) => {
                     <div className="label">Creator</div>
                     <div className="name">{nftData.model_handle}</div>
                   </div>
-                </div>
+                </a>
               </Link>
             </div>
             <hr style={{ marginTop: 25, marginBottom: 25 }} />

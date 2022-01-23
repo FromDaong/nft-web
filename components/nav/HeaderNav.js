@@ -28,7 +28,6 @@ const HeaderNav = ({ modelData }) => {
     }
   }, [status]);
 
-
   return (
     <Navbar expand="lg" className="mb-4" sticky="top" className="main-nav">
       <WalletModal
@@ -55,9 +54,18 @@ const HeaderNav = ({ modelData }) => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse className="justify-content-end">
-          <Link href="/creators" passhref>
-            <Nav.Link href="/creators">Creators</Nav.Link>
-          </Link>
+          <NavDropdown title="Creators">
+            <NavDropdown.Item href="#" className="p-0">
+              <Link href="/creators" passHref>
+                <Nav.Link>All Creators</Nav.Link>
+              </Link>
+            </NavDropdown.Item>
+            <NavDropdown.Item href="#" className="p-0">
+              <Link href="/subscriptions" passHref>
+                <Nav.Link>Subscriptions</Nav.Link>
+              </Link>
+            </NavDropdown.Item>
+          </NavDropdown>
 
           {account && !account.pending && !account.rejected && (
             <>
@@ -109,10 +117,7 @@ const HeaderNav = ({ modelData }) => {
               <Link href="/about" passHref>
                 <Nav.Link>About</Nav.Link>
               </Link>
-              <Nav.Link
-                href="https://treatdao.medium.com/"
-                target="_blank"
-              >
+              <Nav.Link href="https://treatdao.medium.com/" target="_blank">
                 Blog
               </Nav.Link>
             </>

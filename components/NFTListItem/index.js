@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createRef } from "react";
 import { generateFromString } from "generate-avatar";
 import { Blurhash } from "react-blurhash";
 import { isBlurhashValid } from "blurhash";
@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import Link from "next/link";
+// import useIntersectionObserver from "../../hooks/useIntersection";
 
 let easing = [0.175, 0.85, 0.42, 0.96];
 
@@ -40,8 +41,14 @@ const NFTListItem = ({
   quantity,
   disableAnimations,
   modelData,
+  soldOut,
 }) => {
   const [image, setBase64Image] = useState();
+
+  const rr = createRef();
+  // const isIntersecting = useIntersectionObserver(rr);
+
+  // console.log({ data, isIntersecting });
 
   useEffect(() => {
     (async () => {
@@ -59,25 +66,40 @@ const NFTListItem = ({
 
   return (
     <Link href={`/view/${data.id}`}>
-      <div className={`nft-card ${data.totw && "purple"}`}>
+      <a className="row m-0 w-100 my-4">
+        <div
+        ref={rr}
+        className={`nft-card ${data.totw && "purple"} ${
+          soldOut ? "opacity-half" : ""
+        }`}
+        style={{width: "100%"}}
+      >
         <div className="totw-tag-wrapper">
           {isOwner ? (
             <div className="totw-tag">MY NFT</div>
           ) : (
             data.totw && <div className="totw-tag">TOTW</div>
           )}
-          {quantity > 1 && (
-            <div className="quantity-wrapper totw-tag">
-              {quantity}x Available
-            </div>
-          )}
+
+          <div className="quantity-wrapper totw-tag">
+            {false &&
+              // TODO: Show this when graph is fixed
+              Number(data.max_supply) - data.mints < 10 && (
+                <div className="quantity-wrapper totw-tag">
+                  {Number(data.max_supply) - data.mints} of 10 left
+                </div>
+              )}
+          </div>
         </div>
         <Link href={`/creator/${data.attributes[0].value.replace("@", "")}`}>
-          <div
-            className="profile-pic"
-            style={{ backgroundImage: `url(${data.model_profile_pic})` }}
-          />
+          <a>
+            <div
+              className="profile-pic"
+              style={{ backgroundImage: `url(${data.model_profile_pic})` }}
+            />
+          </a>
         </Link>
+
         <div
           className="img-container text-center text-lg-left d-flex justify-content-center align-items-center"
           style={{
@@ -176,6 +198,7 @@ const NFTListItem = ({
           </div>
         )}
       </div>
+      </a>
     </Link>
   );
 };
