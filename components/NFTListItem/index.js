@@ -7,7 +7,8 @@ import { motion } from "framer-motion";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import Link from "next/link";
-// import useIntersectionObserver from "../../hooks/useIntersection";
+import { InView } from 'react-intersection-observer';
+import axios from "axios";
 
 let easing = [0.175, 0.85, 0.42, 0.96];
 
@@ -44,9 +45,10 @@ const NFTListItem = ({
   soldOut,
 }) => {
   const [image, setBase64Image] = useState();
+  const [visible, setVisible] = useState(false);
+  const [model, setModel] = useState({});
 
   const rr = createRef();
-  // const isIntersecting = useIntersectionObserver(rr);
 
   // console.log({ data, isIntersecting });
 
@@ -62,12 +64,19 @@ const NFTListItem = ({
     })();
   }, [data]);
 
+  useEffect(() => {
+    if (visible) {
+      axios.get(`/api/model/find-by-id/${data.model_bnb_address}`).then((res) => setModel(res.data))
+      .catch(err => console.error(err));
+    }
+  }, [visible])
+
   if (!data.attributes) return <div></div>;
 
   return (
     <Link href={`/view/${data.id}`}>
       <a className="row m-0 w-100 my-4">
-        <div
+        <InView onChange={(inView, entry) => {if (!visible && inView) { setVisible(true) }}} as={"div"}
         ref={rr}
         className={`nft-card ${data.totw && "purple"} ${
           soldOut ? "opacity-half" : ""
@@ -91,11 +100,11 @@ const NFTListItem = ({
               )}
           </div>
         </div>
-        <Link href={`/creator/${data.attributes[0].value.replace("@", "")}`}>
+        <Link href={`/creator/${model.username}`}>
           <a>
             <div
               className="profile-pic"
-              style={{ backgroundImage: `url(${data.model_profile_pic})` }}
+              style={{ backgroundImage: `url(${model.profile_pic})` }}
             />
           </a>
         </Link>
@@ -162,7 +171,7 @@ const NFTListItem = ({
             <div className="title">{data.name}</div>
             <div className="s">
               {owner && <b>Creator: </b>}
-              {data.attributes[0].value}
+              {model.username}
             </div>
             {owner && (
               <div className="name">
@@ -197,7 +206,7 @@ const NFTListItem = ({
             </div>
           </div>
         )}
-      </div>
+      </InView>
       </a>
     </Link>
   );
