@@ -458,7 +458,7 @@ const ViewNFT = ({ nftData, image, account }) => {
               </div>
               <div className="stat">
               <div className="label">Floor Price</div>
-              <div className="number">{openOrders.length > 0 ? getDisplayBalance(new BigNumber(lowestOpenOrder)) : getDisplayBalance(nftCost)} BNB</div>
+              <div className="number">{openOrders.length > 0 ? getDisplayBalance(lowestOpenOrder) : getDisplayBalance(nftCost)} BNB</div>
             </div>
               {/* <div className="stat">
               <div className="label">CREATOR SHARE</div>
