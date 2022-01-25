@@ -12,6 +12,10 @@ const PaginationComponent = ({
   const startNumber = currentPage - 5 > 0 ? currentPage - 5 : 0;
   const endNumber = currentPage + 5 < totalPages ? currentPage + 5 : totalPages;
 
+  useEffect(() => {
+    window.scrollTo(0,0);
+  }, [currentPage])
+
   let items = [];
   if (currentPage !== 0)
     items.push(<Pagination.First onClick={() => setPage(0)} />);
