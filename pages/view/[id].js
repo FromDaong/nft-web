@@ -202,6 +202,14 @@ const ViewNFT = ({ nftData, image, account }) => {
   );
 
   const openOrders = useGetOpenOrdersForNft(nftData.id) ?? [];
+  // Get lowest price value in open orders
+  const lowestOpenOrder = openOrders.reduce(
+    (lowest, order) =>
+      lowest.price < order.price ? lowest : order,
+    { price: new BigNumber(0) }
+  );
+
+  console.log({lowestOpenOrder});
 
   const {
     loading: loadingResaleHistory,
@@ -450,7 +458,7 @@ const ViewNFT = ({ nftData, image, account }) => {
               </div>
               <div className="stat">
               <div className="label">Floor Price</div>
-              <div className="number">{openOrders.length > 0 ? getDisplayBalance(new BigNumber(openOrders.reduce((p, c) => { return (p + +c) }, 0))) : getDisplayBalance(nftCost)} BNB</div>
+              <div className="number">{openOrders.length > 0 ? getDisplayBalance(new BigNumber(lowestOpenOrder)) : getDisplayBalance(nftCost)} BNB</div>
             </div>
               {/* <div className="stat">
               <div className="label">CREATOR SHARE</div>
