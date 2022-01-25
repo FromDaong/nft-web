@@ -450,7 +450,7 @@ const ViewNFT = ({ nftData, image, account }) => {
               </div>
               <div className="stat">
               <div className="label">Floor Price</div>
-              <div className="number">{openOrders.length > 0 ? getDisplayBalance(openOrders.reduce((p, c) => { return (p + +c) }, 0)) : getDisplayBalance(nftCost)} BNB</div>
+              <div className="number">{openOrders.length > 0 ? getDisplayBalance(openOrders.reduce((p, c) => { return new BigNumber(p + +c) }, 0)) : getDisplayBalance(nftCost)} BNB</div>
             </div>
               {/* <div className="stat">
               <div className="label">CREATOR SHARE</div>
