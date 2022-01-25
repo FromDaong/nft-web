@@ -201,7 +201,7 @@ const ViewNFT = ({ nftData, image, account }) => {
     nftCost
   );
 
-  const openOrders = useGetOpenOrdersForNft(nftData.id) ?? [];
+  const openOrders = useGetOpenOrdersForNft(nftData.id);
 
   const {
     loading: loadingResaleHistory,
@@ -349,7 +349,7 @@ const ViewNFT = ({ nftData, image, account }) => {
       </div>
     ));
   // Sort with lowest first
-  const openOrdersRender = openOrders.sort((a, b) => new BigNumber(a.price) - new BigNumber(b.price)).map((e) => (
+  const openOrdersRender = openOrders.sort((a, b) => new BigNumber(b.price) - new BigNumber(a.price)).map((e) => (
     <Link href={`/marketplace/resale?search=${nftData.name}`} passHref={true}>
       <a>
         <div className="history-event">
@@ -450,7 +450,7 @@ const ViewNFT = ({ nftData, image, account }) => {
               </div>
               <div className="stat">
               <div className="label">Floor Price</div>
-              <div className="number">{getDisplayBalance(openOrders.reduce((p, c) => p + +c), 0)} BNB</div>
+              <div className="number">{getDisplayBalance(openOrders.reduce((p, c) => (p + +c), 0))} BNB</div>
             </div>
               {/* <div className="stat">
               <div className="label">CREATOR SHARE</div>
