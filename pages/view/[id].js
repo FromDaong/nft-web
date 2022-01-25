@@ -203,11 +203,11 @@ const ViewNFT = ({ nftData, image, account }) => {
 
   const openOrders = useGetOpenOrdersForNft(nftData.id) ?? [];
   // Get lowest price value in open orders
-  const lowestOpenOrder = openOrders.reduce(
+  const lowestOpenOrder = new BigNumber(openOrders.reduce(
     (lowest, order) =>
       lowest.price < order.price ? lowest : order,
-    { price: new BigNumber(0) }
-  );
+    { price: 0 }
+  ).price);
 
   console.log({lowestOpenOrder});
 
