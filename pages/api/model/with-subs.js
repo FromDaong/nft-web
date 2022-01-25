@@ -9,7 +9,7 @@ export default async (req, res) => {
   switch (method) {
     case "GET":
       try {
-        const Models = await Model.find({ subscription: { price: { $gt: 0 } }  });
+        const Models = await Model.find().and([{ subscription: { price: { $gt: 0 } } }, { subscription: { $exists: true } }]);
 
         const returnModels = await Models.map((n) => {
           const returnObj = { ...n.toObject() };
