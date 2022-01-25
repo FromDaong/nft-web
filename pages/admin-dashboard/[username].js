@@ -198,7 +198,7 @@ const AdminDashboard = ({ username }) => {
             <h5 className="col-md-6 pb-3">
               <b>Social Profile:</b>
               <br />
-              <a href={data.social_account}>{data.social_account}
+              <a href={data.social_account}>{data.social_account}</a>
             </h5>
             <h5 className="col-md-6 pb-3">
               <b>Email:</b>
