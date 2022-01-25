@@ -167,7 +167,7 @@ const ViewModel = ({
           style={{
             backgroundImage: `url(${modelData.banner_pic})`,
             backgroundSize: "cover !important",
-            backgroundPosition: "center",
+            backgroundPosition: "center !important",
           }}
         ></div>
         <div className="profile-top-container col-md-12">
