@@ -254,7 +254,7 @@ const OpenOrders = ({
 
                   return (
                     <LazyLoad height={400} offset={600}>
-                      <div className="card bg-transparent border-0">
+                      <div className="order-container">
                         <MyNFTItem
                           price={
                             order &&
