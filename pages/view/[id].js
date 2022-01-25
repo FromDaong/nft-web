@@ -209,8 +209,6 @@ const ViewNFT = ({ nftData, image, account }) => {
     { price: 0 }
   ).price);
 
-  console.log({lowestOpenOrder});
-
   const {
     loading: loadingResaleHistory,
     error: errorResaleHistory,
