@@ -201,7 +201,7 @@ const ViewNFT = ({ nftData, image, account }) => {
     nftCost
   );
 
-  const openOrders = useGetOpenOrdersForNft(nftData.id);
+  const openOrders = useGetOpenOrdersForNft(nftData.id) ?? [];
 
   const {
     loading: loadingResaleHistory,
@@ -450,7 +450,7 @@ const ViewNFT = ({ nftData, image, account }) => {
               </div>
               <div className="stat">
               <div className="label">Floor Price</div>
-              <div className="number">{getDisplayBalance(openOrders.reduce((p, c) => (p + +c), 0))} BNB</div>
+              <div className="number">{getDisplayBalance(openOrders.reduce((p, c) => { return (p + +c) }, 0))} BNB</div>
             </div>
               {/* <div className="stat">
               <div className="label">CREATOR SHARE</div>
