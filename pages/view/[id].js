@@ -130,6 +130,8 @@ const ViewNFTWrapper = ({ id }) => {
   const [nftData, setNftData] = useState();
   const { status } = useWallet();
 
+  console.log({nftData})
+
   useEffect(() => {
     (async () => {
       if (res) setNftData(res);
@@ -355,6 +357,7 @@ const ViewNFT = ({ nftData, image, account }) => {
       </div>
     ));
   // Sort with lowest first
+  console.log({openOrders, nftData})
   const openOrdersRender = openOrders.sort((a, b) => new BigNumber(a.price) - new BigNumber(b.price)).map((e) => (
     <Link href={`/marketplace/resale?search=${nftData.name}`} passHref={true}>
       <a>
