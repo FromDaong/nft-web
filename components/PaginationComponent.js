@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Pagination from "react-bootstrap/Pagination";
 
 const PaginationComponent = ({
