@@ -204,8 +204,13 @@ const ViewNFT = ({ nftData, image, account }) => {
   const openOrders = useGetOpenOrdersForNft(nftData.id) ?? [];
   // Get lowest price value in open orders
   const lowestOpenOrder = new BigNumber(openOrders.reduce(
-    (lowest, order) =>
-      new BigNumber(lowest.price).lt(new BigNumber(order.price)) ? lowest : order,
+    (lowest, order, index) =>
+      {
+        const price = new BigNumber(order.price);
+        const lowestPrice = new BigNumber(lowest.price);
+        if(index === 0) return order;
+        return price.lessThan(lowestPrice) ? order : lowest;
+      },
     { price: 0 }
   ).price);
 
@@ -246,6 +251,7 @@ const ViewNFT = ({ nftData, image, account }) => {
 	}
   
   allData = allData.flat()
+  console.log({allData, resaleHistoryData, mintHistoryData, openOrders})
 
   const {
     loading: loadingMintHistory,
@@ -432,10 +438,10 @@ const ViewNFT = ({ nftData, image, account }) => {
                 <div className="label">List Price</div>
                 <div className="number">{getDisplayBalance(nftCost)} BNB</div>
               </div>
-              <div className="stat">
+              {openOrders.length > 0 && <div className="stat">
               <div className="label">Floor Price</div>
-              <div className="number">{openOrders.length > 0 ? getDisplayBalance(lowestOpenOrder) : getDisplayBalance(nftCost)} BNB</div>
-            </div>
+              <div className="number">{getDisplayBalance(lowestOpenOrder)} BNB</div>
+            </div>}
               {/* <div className="stat">
               <div className="label">CREATOR SHARE</div>
               <div className="number">75%</div>
