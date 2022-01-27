@@ -333,7 +333,7 @@ const ViewNFT = ({ nftData, image, account }) => {
     ));
 
   // Sort with lowest first
-  const openOrdersRender = openOrders.sort((a, b) => new BigNumber(a.price) - new BigNumber(b.price)).map((e) => (
+  const openOrdersRender = openOrders.map((e) => (
     <Link href={`/marketplace/resale?search=${nftData.name}`} passHref={true}>
       <a>
         <div className="history-event">
