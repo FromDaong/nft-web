@@ -130,8 +130,6 @@ const ViewNFTWrapper = ({ id }) => {
   const [nftData, setNftData] = useState();
   const { status } = useWallet();
 
-  console.log({nftData})
-
   useEffect(() => {
     (async () => {
       if (res) setNftData(res);
@@ -278,6 +276,8 @@ const ViewNFT = ({ nftData, image, account }) => {
     }
   );
 
+  const loadingHistory = loadingMintHistory && loadingResaleHistory
+
   const onMintNft = async () => {
     if (nftData.subscription_nft) return onMintSubscriberNft();
     if (nftData.old_totw) {
@@ -304,7 +304,6 @@ const ViewNFT = ({ nftData, image, account }) => {
   });
 
   const purchaseHistoryRender =
-    allData &&
     allData.map((e) => (
       <div className="history-event d-flex justify-content-between">
         <div className="d-flex align-items-center">
@@ -495,12 +494,12 @@ const ViewNFT = ({ nftData, image, account }) => {
                     <div className="history-title text-center mt-2">
                       Purchase History
                     </div>
-                    {loadingResaleHistory ? (
+                    {loadingHistory ? (
                       <div className="bio text-center">Loading...</div>
                     ) : (
                       <div className="bio text-center">
                         Total minted:{" "}
-                        {mintHistoryData && mintHistoryData.sales.length}
+                        {allData && allData.length}
                       </div>
                     )}
                     <div className="history-events">
