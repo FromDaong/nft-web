@@ -245,13 +245,6 @@ const ViewNFT = ({ nftData, image, account }) => {
     }
   );
 
-  let allData = []
-	if(resaleHistoryData && mintHistoryData) {
-		allData.push([...resaleHistoryData.sales, ...mintHistoryData.sales])
-	}
-  
-  allData = allData.flat()
-
   const {
     loading: loadingMintHistory,
     error: errorMintHistory,
@@ -281,6 +274,18 @@ const ViewNFT = ({ nftData, image, account }) => {
     }
   );
 
+  let allData = []
+	if(resaleHistoryData && mintHistoryData) {
+		allData.push([...resaleHistoryData.sales, ...mintHistoryData.sales])
+	}
+  
+  allData = allData.flat()
+  // Sort all data by recency
+  allData.sort((a, b) => {
+    const aDate = new Date(a.purchaseDate);
+    const bDate = new Date(b.purchaseDate);
+    return aDate > bDate ? -1 : 1;
+  });
   const loadingHistory = loadingMintHistory && loadingResaleHistory
   console.log({allData, resaleHistoryData, mintHistoryData, openOrders})
 
