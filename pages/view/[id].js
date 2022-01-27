@@ -209,7 +209,7 @@ const ViewNFT = ({ nftData, image, account }) => {
         const price = new BigNumber(order.price);
         const lowestPrice = new BigNumber(lowest.price);
         if(index === 0) return order;
-        return price.lessThan(lowestPrice) ? order : lowest;
+        return price.lt(lowestPrice) ? order : lowest;
       },
     { price: 0 }
   ).price);
