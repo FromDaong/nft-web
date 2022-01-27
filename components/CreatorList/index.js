@@ -34,8 +34,7 @@ const CreatorList = ({ modelData }) => {
         {modelsWithNFTs &&
           modelsWithNFTs.slice(0, 12).map((model, i) => (
             <Link href={`/creator/${model.username}`}>
-              <a>
-                <div className="model-list-item-container col-md-3">
+              <a className="model-list-item-container col-md-3">
                   <div
                     className="pic"
                     style={{ backgroundImage: `url(${model.profile_pic})` }}
@@ -44,7 +43,6 @@ const CreatorList = ({ modelData }) => {
                     <div className="name">{model.username}</div>
                     <div className="nfts">{model.nfts.length} NFTs</div>
                   </div>
-                </div>
               </a>
             </Link>
           ))}
