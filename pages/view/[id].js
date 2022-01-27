@@ -282,8 +282,8 @@ const ViewNFT = ({ nftData, image, account }) => {
   allData = allData.flat()
   // Sort all data by recency
   allData.sort((a, b) => {
-    const aDate = new Date(a.purchaseDate);
-    const bDate = new Date(b.purchaseDate);
+    const aDate = new Number(a.purchaseDate);
+    const bDate = new Number(b.purchaseDate);
     return aDate > bDate ? -1 : 1;
   });
   const loadingHistory = loadingMintHistory && loadingResaleHistory
