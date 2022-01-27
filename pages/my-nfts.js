@@ -158,7 +158,7 @@ const OwnedNfts = ({
           )}
         </div>
       </div>
-      {nftWithBalances.length > 0 ? (
+      {nftWithBalances.slice(startIndex, endIndex).length > 0 ? (
         <div className="">
           <motion.div
             className="d-flex text-left justify-content-center mt-5 w-100 flex-wrap"
@@ -283,7 +283,7 @@ const OpenOrders = ({
               initial="hidden"
               variants={variants}
             >
-              {nftBalances.map((nft) => {
+              {nftBalances.slice(startIndex, endIndex).map((nft) => {
                 if (nft.hasOpenOrder) {
                   const order = openOrders.find(
                     (i) => Number(i.nftId) === nft.id
