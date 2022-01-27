@@ -21,6 +21,7 @@ import Layout from "../components/Layout";
 import ErrorFallback from "../components/Fallback/Error";
 import Loading from "../components/Loading";
 import { usePagination } from "react-use-pagination";
+import PaginationComponent from "../components/PaginationComponent";
 
 const variants = {
   show: {
@@ -184,6 +185,14 @@ const OwnedNfts = ({
               );
             })}
           </motion.div>
+          <PaginationComponent
+            currentPage={currentPage}
+            totalPages={totalPages}
+            setPage={setPage}
+            setPageSize={setPageSize}
+            setNextPage={setNextPage}
+            setPreviousPage={setPreviousPage}
+          />
         </div>
       ) : isLoading ? (
         <Loading custom="Please wait, loading your owned NFTs" />
@@ -213,7 +222,20 @@ const OpenOrders = ({
   serverNftBalances,
   isLoading,
 }) => {
-  const openOrders = useGetOpenOrdersForSeller();
+  const openOrders = useGetOpenOrdersForSeller() ?? [];
+  const {
+      currentPage,
+      totalPages,
+      setPage,
+      setPageSize,
+      setNextPage,
+      setPreviousPage,
+      startIndex,
+      endIndex,
+    } = usePagination({
+      totalItems: openOrders ? openOrders.length + 1 : 0,
+      initialPageSize: 6,
+    });
 
   return (
     <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
@@ -289,6 +311,14 @@ const OpenOrders = ({
               })}
             </motion.div>
           </div>
+          <PaginationComponent
+            currentPage={currentPage}
+            totalPages={totalPages}
+            setPage={setPage}
+            setPageSize={setPageSize}
+            setNextPage={setNextPage}
+            setPreviousPage={setPreviousPage}
+          />
         </div>
       ) : isLoading ? (
         <Loading custom="Please wait, loading data" />
