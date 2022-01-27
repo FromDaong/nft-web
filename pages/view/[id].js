@@ -276,7 +276,7 @@ const ViewNFT = ({ nftData, image, account }) => {
 
   let allData = []
 	if(resaleHistoryData && mintHistoryData) {
-		allData.push([...resaleHistoryData.sales, ...mintHistoryData.sales])
+		allData.push([...resaleHistoryData.sales.map(sale => ({...sale, transactionType: "resale"})), ...mintHistoryData.sales.map(sale => ({...sale, transactionType: "mint"}))])
 	}
   
   allData = allData.flat()
@@ -314,12 +314,12 @@ const ViewNFT = ({ nftData, image, account }) => {
     };
   });
 
-  const purchaseHistoryRender =
+  const purchaseHistoryRender = 
     allData.map((e) => (
       <div className="history-event d-flex justify-content-between">
         <div className="d-flex align-items-center">
           <div className="pic">
-            <Bag size={32} style={{ color: "DA5184" }} />
+            {e.type === "mint" ? <Bag size={32} style={{ color: "DA5184" }} /> : <ShopWindow size={32} style={{ color: "DA5184" }} />}
           </div>
           <div className="details">
             <div className="label">
