@@ -243,7 +243,10 @@ const ViewNFT = ({ nftData, image, account }) => {
   );
 
   let allData = []
-  allData.push([...resaleHistoryData.sales, ...mintHistoryData.sales])
+	if(resaleHistoryData && mintHistoryData) {
+		allData.push([...resaleHistoryData.sales, ...mintHistoryData.sales])
+	}
+  
   allData = allData.flat()
 
   const {
