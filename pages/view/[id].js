@@ -251,7 +251,6 @@ const ViewNFT = ({ nftData, image, account }) => {
 	}
   
   allData = allData.flat()
-  console.log({allData, resaleHistoryData, mintHistoryData, openOrders})
 
   const {
     loading: loadingMintHistory,
@@ -283,6 +282,7 @@ const ViewNFT = ({ nftData, image, account }) => {
   );
 
   const loadingHistory = loadingMintHistory && loadingResaleHistory
+  console.log({allData, resaleHistoryData, mintHistoryData, openOrders})
 
   const onMintNft = async () => {
     if (nftData.subscription_nft) return onMintSubscriberNft();
