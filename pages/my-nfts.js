@@ -20,6 +20,7 @@ import LazyLoad from "react-lazyload";
 import Layout from "../components/Layout";
 import ErrorFallback from "../components/Fallback/Error";
 import Loading from "../components/Loading";
+import { usePagination } from "react-use-pagination";
 
 const variants = {
   show: {
@@ -101,6 +102,20 @@ const OwnedNfts = ({
   isLoading,
 }) => {
   const nftWithBalances = nftBalances.filter((i) => !i.hasOpenOrder);
+  const {
+    currentPage,
+    totalPages,
+    setPage,
+    setPageSize,
+    setNextPage,
+    setPreviousPage,
+    startIndex,
+    endIndex,
+  } = usePagination({
+    totalItems: nftWithBalances ? nftWithBalances.length + 1 : 0,
+    initialPageSize: 6,
+  });
+
   return (
     <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
       <div

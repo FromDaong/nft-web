@@ -32,7 +32,7 @@ import {
 import BigNumber from "bignumber.js";
 import Link from "next/link";
 import useGetIsSubscribed from "../../hooks/useGetIsSubscribed";
-import { gql, useQuery, ApolloConsumer } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 
 const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   const { account } = useWallet();
