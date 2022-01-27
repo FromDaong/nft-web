@@ -11,11 +11,9 @@ import Loading from "../../components/Loading";
 import ErrorFallback from "../../components/Fallback/Error";
 import { useRouter } from "next/dist/client/router";
 
-export default function Index() {
+export default function Index({ modelData, loadingError }) {
   // TODO Get models total items
   // get data for relevant models (startIndex endIndex)
-  const { data: modelData, error: loadingError } =
-    useSWR(`/api/model/with-subs`);
   const [searchFilter, setSearchFilter] = useState("");
   const [persistedPageNumber, setPersistedPageNumber] = useState(0);
   const router = useRouter();
@@ -123,28 +121,30 @@ export default function Index() {
             />
           </div>
           <br />
-          {!filteredArray && !loadingError ? (
-            <Loading />
-          ) : loadingError ? (
-            <ErrorFallback
-              custom={"Failed to load models with subscriptions."}
-            />
-          ) : (
-            <ModelList
-              totwOnly={false}
-              endIndex={endIndex}
-              startIndex={startIndex}
-              modelData={filteredArray || []}
-            />
-          )}
-          <PaginationComponent
-            currentPage={currentPage}
-            totalPages={totalPages}
-            setPage={setPage}
-            setPageSize={setPageSize}
-            setNextPage={setNextPage}
-            setPreviousPage={setPreviousPage}
-          />
+          {!loadingError ? <>
+              {!filteredArray && !loadingError ? (
+                <Loading />
+              ) : loadingError ? (
+                <ErrorFallback
+                  custom={"Failed to load models with subscriptions."}
+                />
+              ) : (
+                <ModelList
+                  totwOnly={false}
+                  endIndex={endIndex}
+                  startIndex={startIndex}
+                  modelData={filteredArray || []}
+                />
+              )}
+              <PaginationComponent
+                currentPage={currentPage}
+                totalPages={totalPages}
+                setPage={setPage}
+                setPageSize={setPageSize}
+                setNextPage={setNextPage}
+                setPreviousPage={setPreviousPage}
+              />
+          </> : <ErrorFallback customTitle={"Failed to load models with subscriptions."} custom={loadingError} />}
         </Layout>
       </motion.main>
     </>
@@ -154,3 +154,23 @@ export default function Index() {
 Index.getInitialProps = async ({ query: { search } }) => {
   return { search };
 };
+
+export const getServerSideProps = async context => {
+  try {
+    const data = await axios.get(`/api/model/with-subs`);
+    const modelData = data.data;
+    return {
+      props: {
+        modelData
+      }
+    };
+  } catch(err) {
+    console.log({err})
+    return {
+      props: {
+        modelData: [],
+        error: "Failed to load models with subscriptions."
+      }
+    }
+  }
+}
