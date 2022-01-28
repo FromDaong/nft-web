@@ -320,7 +320,7 @@ const ViewNFT = ({ nftData, image, account }) => {
       <div className="history-event d-flex justify-content-between">
         <div className="d-flex align-items-center">
           <div className="pic">
-            {e.type === "mint" ? <Bag size={32} style={{ color: "DA5184" }} /> : <ShopWindow size={32} style={{ color: "DA5184" }} />}
+            {e.__typename === "Sale" ? <Bag size={32} style={{ color: "DA5184" }} /> : <ShopWindow size={32} style={{ color: "DA5184" }} />}
           </div>
           <div className="details">
             <div className="label">
