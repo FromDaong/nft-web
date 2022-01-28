@@ -331,7 +331,7 @@ const ViewNFT = ({ nftData, image, account }) => {
               ).toLocaleTimeString()}`}
             </div>
             <div className="event">
-              {e.buyer.substring(0, 6)}...{e.buyer.substr(-5)} {e.type === "mint" ? "purchased" : "bought resale"} for{" "}
+              {e.buyer.substring(0, 6)}...{e.buyer.substr(-5)} {e.typename === "Sale" ? "purchased" : "bought resale"} for{" "}
               <b>{Web3.utils.fromWei(e.cost)}</b>
             </div>
           </div>
