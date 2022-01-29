@@ -1,7 +1,7 @@
 import Hero from "../../components/Hero";
 import Layout from "../../components/Layout";
 import { motion } from "framer-motion";
-import useSWR from "swr";
+import Axios from "axios";
 import PaginationComponent from "../../components/PaginationComponent";
 import ModelList from "../../components/ModelList";
 import { usePagination } from "react-use-pagination";
@@ -10,13 +10,19 @@ import { useState, useEffect } from "react";
 import Loading from "../../components/Loading";
 import ErrorFallback from "../../components/Fallback/Error";
 import { useRouter } from "next/dist/client/router";
+import dbConnect from "../../utils/dbConnect";
+import Model from "../../models/Model";
 
-export default function Index({ modelData, loadingError }) {
+export default function Index(props) {
   // TODO Get models total items
   // get data for relevant models (startIndex endIndex)
   const [searchFilter, setSearchFilter] = useState("");
   const [persistedPageNumber, setPersistedPageNumber] = useState(0);
   const router = useRouter();
+
+  let {returnModels: modelData} = props
+  modelData = JSON.parse(modelData)
+  const loadingError = undefined
 
   const fuse = new Fuse(modelData, {
     keys: ["username", "display_name"],
@@ -121,7 +127,7 @@ export default function Index({ modelData, loadingError }) {
             />
           </div>
           <br />
-          {!loadingError ? <>
+          {!loadingError || !modelData ? <>
               {!filteredArray && !loadingError ? (
                 <Loading />
               ) : loadingError ? (
@@ -151,18 +157,21 @@ export default function Index({ modelData, loadingError }) {
   );
 }
 
-Index.getInitialProps = async ({ query: { search } }) => {
-  return { search };
-};
-
 export const getServerSideProps = async context => {
+  dbConnect();
+
   try {
-    const data = await axios.get(`/api/model/with-subs`);
-    const modelData = data.data;
+    const Models = await Model.find({ subscription: { $exists: true } });
+
+    const returnModels = await Models.map((n) => {
+      const returnObj = { ...n.toObject() };
+      return returnObj;
+    });
+
     return {
       props: {
-        modelData
-      }
+        returnModels: JSON.stringify(returnModels),
+      },
     };
   } catch(err) {
     console.log({err})
