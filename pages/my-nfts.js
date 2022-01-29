@@ -158,7 +158,7 @@ const OwnedNfts = ({
           )}
         </div>
       </div>
-      {nftWithBalances.slice(startIndex, endIndex).length > 0 ? (
+      {nftWithBalances.length > 0 ? (
         <div className="">
           <motion.div
             className="d-flex text-left justify-content-center mt-5 w-100 flex-wrap"
@@ -167,7 +167,7 @@ const OwnedNfts = ({
             initial="hidden"
             variants={variants}
           >
-            {nftWithBalances.map((nft) => {
+            {nftWithBalances.slice(startIndex, endIndex || nftWithBalances.length).map((nft) => {
               return (
                 <LazyLoad height={400} offset={600}>
                   <div className="order-container">
