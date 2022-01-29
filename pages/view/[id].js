@@ -320,7 +320,7 @@ const ViewNFT = ({ nftData, image, account }) => {
       <div className="history-event d-flex justify-content-between">
         <div className="d-flex align-items-center">
           <div className="pic">
-            {e.__typename === "Sale" ? <Bag size={32} style={{ color: "DA5184" }} /> : <ShopWindow size={32} style={{ color: "DA5184" }} />}
+            {e.transactionType === "mint" ? <Bag size={32} style={{ color: "DA5184" }} /> : <ShopWindow size={32} style={{ color: "DA5184" }} />}
           </div>
           <div className="details">
             <div className="label">
@@ -331,7 +331,7 @@ const ViewNFT = ({ nftData, image, account }) => {
               ).toLocaleTimeString()}`}
             </div>
             <div className="event">
-              {e.buyer.substring(0, 6)}...{e.buyer.substr(-5)} {e.typename === "Sale" ? "purchased" : "bought resale"} for{" "}
+              {e.buyer.substring(0, 6)}...{e.buyer.substr(-5)} {e.transactionType === "mint" ? "purchased" : "bought a resale"} for{" "}
               <b>{Web3.utils.fromWei(e.cost)}</b>
             </div>
           </div>
