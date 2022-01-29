@@ -20,9 +20,8 @@ export default function Index(props) {
   const [persistedPageNumber, setPersistedPageNumber] = useState(0);
   const router = useRouter();
 
-  let {returnModels: modelData} = props
+  let {returnModels: modelData, loadingError} = props
   modelData = JSON.parse(modelData)
-  const loadingError = undefined
 
   const fuse = new Fuse(modelData, {
     keys: ["username", "display_name"],
@@ -173,6 +172,7 @@ export const getServerSideProps = async context => {
         returnModels: JSON.stringify(returnModels),
       },
     };
+
   } catch(err) {
     console.log({err})
     return {
