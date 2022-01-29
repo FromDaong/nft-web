@@ -31,6 +31,7 @@ import {
 } from "react-bootstrap-icons";
 import BigNumber from "bignumber.js";
 import Link from "next/link";
+import Dropdown from "react-bootstrap/Dropdown";
 import useGetIsSubscribed from "../../hooks/useGetIsSubscribed";
 import { gql, useQuery } from "@apollo/client";
 
@@ -182,6 +183,7 @@ const ViewNFT = ({ nftData, image, account }) => {
   const totwNftCost = useGetTreatNFTCost(nftData.id);
   const creatorNftCost = getCreatorNftCost(nftData.id);
   const subscriberNftCost = getSubscriberNftCost(nftData.id);
+  const [sortBy, setSortBy] = useState("Recent");
 
   let nftCost = nftData.old_totw ? totwNftCost : creatorNftCost;
   nftCost = nftData.subscription_nft ? subscriberNftCost : nftCost;
@@ -202,6 +204,7 @@ const ViewNFT = ({ nftData, image, account }) => {
   );
 
   const openOrders = useGetOpenOrdersForNft(nftData.id) ?? [];
+  const [finalArray, setFinalArray] = useState([]);
   // Get lowest price value in open orders
   const lowestOpenOrder = new BigNumber(openOrders.reduce(
     (lowest, order, index) =>
@@ -276,7 +279,7 @@ const ViewNFT = ({ nftData, image, account }) => {
 
   let allData = []
 	if(resaleHistoryData && mintHistoryData) {
-		allData.push([...resaleHistoryData.sales, ...mintHistoryData.sales])
+		allData.push([...resaleHistoryData.sales.map(sale => ({...sale, transactionType: "resale"})), ...mintHistoryData.sales.map(sale => ({...sale, transactionType: "mint"}))])
 	}
   
   allData = allData.flat()
@@ -287,7 +290,7 @@ const ViewNFT = ({ nftData, image, account }) => {
     return aDate > bDate ? -1 : 1;
   });
   const loadingHistory = loadingMintHistory && loadingResaleHistory
-  console.log({allData, resaleHistoryData, mintHistoryData, openOrders})
+  console.log({allData, finalArray, openOrders})
 
   const onMintNft = async () => {
     if (nftData.subscription_nft) return onMintSubscriberNft();
@@ -314,12 +317,32 @@ const ViewNFT = ({ nftData, image, account }) => {
     };
   });
 
-  const purchaseHistoryRender =
+  const setSort = (sortBy) => {
+    setSortBy(sortBy);
+  };
+
+  useEffect(() => {
+    const newArray = openOrders;
+    newArray.sort((a, b) => {
+        switch (sortBy) {
+          case "Recent":
+            return Number(a.listDate) - Number(b.listDate);
+          case "Price":
+            return Number(a.price) - Number(b.price);
+          default:
+            return Number(a.listDate) - Number(b.listDate);
+        }
+    })
+    setFinalArray(newArray);
+  }, [openOrders, sortBy]);
+
+
+  const purchaseHistoryRender = 
     allData.map((e) => (
       <div className="history-event d-flex justify-content-between">
         <div className="d-flex align-items-center">
           <div className="pic">
-            <Bag size={32} style={{ color: "DA5184" }} />
+            {e.transactionType === "mint" ? <Bag size={32} style={{ color: "DA5184" }} /> : <ShopWindow size={32} style={{ color: "DA5184" }} />}
           </div>
           <div className="details">
             <div className="label">
@@ -330,7 +353,7 @@ const ViewNFT = ({ nftData, image, account }) => {
               ).toLocaleTimeString()}`}
             </div>
             <div className="event">
-              {e.buyer.substring(0, 6)}...{e.buyer.substr(-5)} purchased for{" "}
+              {e.buyer.substring(0, 6)}...{e.buyer.substr(-5)} {e.transactionType === "mint" ? "purchased" : "bought a resale"} for{" "}
               <b>{Web3.utils.fromWei(e.cost)}</b>
             </div>
           </div>
@@ -344,7 +367,7 @@ const ViewNFT = ({ nftData, image, account }) => {
     ));
 
   // Sort with lowest first
-  const openOrdersRender = openOrders.map((e) => (
+  const openOrdersRender = finalArray.map((e) => (
     <Link href={`/marketplace/resale?search=${nftData.name}`} passHref={true}>
       <a>
         <div className="history-event">
@@ -492,9 +515,30 @@ const ViewNFT = ({ nftData, image, account }) => {
                     <div className="history-title text-center mt-2">
                       Resale Marketplace Listings
                     </div>
-                    <div className="bio text-center">
-                      Total currently listed:{" "}
+                    <div className="bio" style={{display: "flex", justifyContent: "space-between"}}>
+                      <p>
+                        Total currently listed:{" "}
                       {openOrdersRender && openOrdersRender.length}
+                      </p>
+                      <div>
+                        <Dropdown>
+                          <Dropdown.Toggle
+                            variant="transparent"
+                            id="dropdown-basic"
+                            size="lg"
+                          >
+                            {sortBy}
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => setSort("Recent")}>
+                              Most Recent
+                            </Dropdown.Item>
+                            <Dropdown.Item onClick={() => setSort("Price")}>
+                              Price Low to High
+                            </Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </div>
                     </div>
                     {/* <div className="bio">Coming soon...</div> */}
                     <div className="history-events">{openOrdersRender}</div>
