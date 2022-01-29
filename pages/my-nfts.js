@@ -223,6 +223,7 @@ const OpenOrders = ({
   isLoading,
 }) => {
   const openOrders = useGetOpenOrdersForSeller() ?? [];
+  const nftWithOpenOrders = nftBalances.filter((i) => i.hasOpenOrder);
   const {
       currentPage,
       totalPages,
@@ -233,8 +234,8 @@ const OpenOrders = ({
       startIndex,
       endIndex,
     } = usePagination({
-      totalItems: openOrders ? openOrders.length + 1 : 0,
-      initialPageSize: 6,
+      totalItems: nftBalances.length > 0 ? nftBalances.length + 1 : 0,
+      initialPageSize: 6
     });
 
   return (
@@ -273,7 +274,7 @@ const OpenOrders = ({
           )}
         </div>
       </div>
-      {nftBalances.length > 0 && openOrders.length > 0 ? (
+      {nftWithOpenOrders.length > 0 && openOrders.length > 0 ? (
         <div className="container px-4 ">
           <div className="d-flex text-left justify-content-center mt-5">
             <motion.div
@@ -283,7 +284,7 @@ const OpenOrders = ({
               initial="hidden"
               variants={variants}
             >
-              {nftBalances.slice(startIndex, endIndex).map((nft) => {
+              {nftWithOpenOrders.slice(startIndex, endIndex || nftWithOpenOrders.length).map((nft) => {
                 if (nft.hasOpenOrder) {
                   const order = openOrders.find(
                     (i) => Number(i.nftId) === nft.id
