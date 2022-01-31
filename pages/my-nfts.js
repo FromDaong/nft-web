@@ -114,7 +114,7 @@ const OwnedNfts = ({
     endIndex,
   } = usePagination({
     totalItems: nftWithBalances ? nftWithBalances.length + 1 : 0,
-    initialPageSize: 6,
+    initialPageSize: 3,
   });
 
   return (
@@ -158,7 +158,7 @@ const OwnedNfts = ({
           )}
         </div>
       </div>
-      {nftWithBalances.slice(startIndex, endIndex).length > 0 ? (
+      {nftWithBalances.length > 0 ? (
         <div className="">
           <motion.div
             className="d-flex text-left justify-content-center mt-5 w-100 flex-wrap"
@@ -167,23 +167,25 @@ const OwnedNfts = ({
             initial="hidden"
             variants={variants}
           >
-            {nftWithBalances.map((nft) => {
-              return (
-                <LazyLoad height={400} offset={600}>
-                  <div className="order-container">
-                    <MyNFTItem
-                      balance={nft.balance}
-                      isLoading={isLoading}
-                      data={nft}
-                      revealNFTs={revealNFTs}
-                      transferNFTClick={transferNFTClick}
-                      listOrderClick={listOrderClick}
-                      hasOpenOrder={nft.hasOpenOrder}
-                    />
-                  </div>
-                </LazyLoad>
-              );
-            })}
+            {nftWithBalances
+              .slice(startIndex > 0 ? startIndex - 1 : startIndex, endIndex)
+              .map((nft) => {
+                return (
+                  <LazyLoad height={400} offset={600}>
+                    <div className="order-container">
+                      <MyNFTItem
+                        balance={nft.balance}
+                        isLoading={isLoading}
+                        data={nft}
+                        revealNFTs={revealNFTs}
+                        transferNFTClick={transferNFTClick}
+                        listOrderClick={listOrderClick}
+                        hasOpenOrder={nft.hasOpenOrder}
+                      />
+                    </div>
+                  </LazyLoad>
+                );
+              })}
           </motion.div>
           <PaginationComponent
             currentPage={currentPage}
@@ -192,6 +194,7 @@ const OwnedNfts = ({
             setPageSize={setPageSize}
             setNextPage={setNextPage}
             setPreviousPage={setPreviousPage}
+            fixedPageSize
           />
         </div>
       ) : isLoading ? (
@@ -234,8 +237,8 @@ const OpenOrders = ({
     startIndex,
     endIndex,
   } = usePagination({
-    totalItems: nftBalances.length > 0 ? nftBalances.length + 1 : 0,
-    initialPageSize: 6,
+    totalItems: nftWithOpenOrders.length > 0 ? nftWithOpenOrders.length + 1 : 0,
+    initialPageSize: 12,
   });
 
   return (
@@ -276,16 +279,16 @@ const OpenOrders = ({
       </div>
       {nftWithOpenOrders.length > 0 && openOrders.length > 0 ? (
         <div className="container px-4 ">
-          <div className="d-flex text-left justify-content-center mt-5">
+          <div className="d-flex text-left mt-5">
             <motion.div
-              className="d-flex text-left justify-content-center mt-5 w-100 flex-wrap"
+              className="d-flex text-left mt-5 w-100 flex-wrap justify-content-center"
               animate="show"
               exit="hidden"
               initial="hidden"
               variants={variants}
             >
               {nftWithOpenOrders
-                .slice(startIndex, endIndex || nftWithOpenOrders.length)
+                .slice(startIndex > 0 ? startIndex - 1 : startIndex, endIndex)
                 .map((nft) => {
                   if (nft.hasOpenOrder) {
                     const order = openOrders.find(
@@ -314,14 +317,17 @@ const OpenOrders = ({
                 })}
             </motion.div>
           </div>
-          <PaginationComponent
-            currentPage={currentPage}
-            totalPages={totalPages}
-            setPage={setPage}
-            setPageSize={setPageSize}
-            setNextPage={setNextPage}
-            setPreviousPage={setPreviousPage}
-          />
+          {nftWithOpenOrders.length > 0 && (
+            <PaginationComponent
+              currentPage={currentPage}
+              totalPages={totalPages}
+              setPage={setPage}
+              setPageSize={setPageSize}
+              setNextPage={setNextPage}
+              setPreviousPage={setPreviousPage}
+              fixedPageSize
+            />
+          )}
         </div>
       ) : isLoading ? (
         <Loading custom="Please wait, loading data" />
