@@ -32,6 +32,7 @@ const CreateNFT = ({ modelData }) => {
 
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
+  const pinFileToIPFS = async (hash) => {};
 
   const onDrop = (files) => {
     if (files && files.length > 0) {
@@ -50,7 +51,13 @@ const CreateNFT = ({ modelData }) => {
                   "7a7b755c9c067dedb142c2cb9e9c077aebf561b552c440bf67b87331bac32939",
               },
             })
-            .then(function (response) {
+            .then(async function (response) {
+              // Pin by hash here then return cb
+              if (!response.data.IpfsHash) {
+                console.warn("No IPFS hash returned");
+                return;
+              }
+              pinFileToIPFS(response.data.IpfsHash);
               return cb(
                 null,
                 `https://treatdao.mypinata.cloud/ipfs/${response.data.IpfsHash}`

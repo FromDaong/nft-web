@@ -17,8 +17,10 @@ import useGetSubscriptionCost from "../../hooks/useGetSubscriptionCost";
 import useGetIsSubscribed from "../../hooks/useGetIsSubscribed";
 import { Clipboard } from "react-bootstrap-icons";
 import ErrorFallback from "../../components/Fallback/Error";
+import dbConnect from "../../utils/dbConnect";
+import Model from "../../models/Model";
 
-const ViewModelWrapper = ({ username }) => {
+const ViewModelWrapper = ({ username, model }) => {
   const { data: res, error } = useSWR(`/api/model/${username}`);
   const [modelData, setModelData] = useState();
   const [subNFTs, setSubNFTs] = useState();
@@ -26,7 +28,8 @@ const ViewModelWrapper = ({ username }) => {
   const [modelNFTs, setModelNFTs] = useState();
   const [newNFTs, setNewNFTs] = useState();
   const [outOfPrintNFTs, setOutOfPrintNFTs] = useState();
-  const router = useRouter();
+
+  console.log({ model, username });
 
   useEffect(() => {
     (async () => {
@@ -299,8 +302,31 @@ const ViewModel = ({
   );
 };
 
-ViewModelWrapper.getInitialProps = async ({ query: { username } }) => {
-  return { username };
-};
+export async function getStaticProps({ params }) {
+  console.log({ params });
+  return {
+    props: {
+      model: JSON.stringify(await Model.findOne({ username: params.username })),
+      username: params.username,
+    },
+    revalidate: 30,
+  };
+}
+
+export async function getStaticPaths() {
+  dbConnect();
+  const Models = await Model.find();
+
+  const returnModels = await Models.map((n) => {
+    const returnObj = { ...n.toObject() };
+    return returnObj;
+  });
+
+  const paths = returnModels.map((model) => ({
+    params: { username: model.username },
+  }));
+
+  return { paths, fallback: "blocking" };
+}
 
 export default ViewModelWrapper;
