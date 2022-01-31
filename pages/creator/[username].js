@@ -306,7 +306,7 @@ export async function getStaticProps({ params }) {
 
 export async function getStaticPaths() {
   dbConnect();
-  const Models = await Model.find();
+  const Models = await Model.find().limit(50);
 
   const returnModels = await Models.map((n) => {
     const returnObj = { ...n.toObject() };
