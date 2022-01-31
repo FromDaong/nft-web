@@ -14,12 +14,13 @@ import Model from "../models/Model";
 const Creators = ({ models, error }) => {
   // TODO Get models total items
   // get data for relevant models (startIndex endIndex)
+  const modelData = JSON.parse(models);
   const [searchFilter, setSearchFilter] = useState("");
   const [persistedPageNumber, setPersistedPageNumber] = useState(0);
 
   const router = useRouter();
 
-  const fuse = new Fuse(models, {
+  const fuse = new Fuse(modelData, {
     keys: ["username", "display_name"],
     shouldSort: true,
     useExtendedSearch: true,

@@ -22,6 +22,8 @@ import ErrorFallback from "../components/Fallback/Error";
 import Loading from "../components/Loading";
 import { usePagination } from "react-use-pagination";
 import PaginationComponent from "../components/PaginationComponent";
+import axios from "axios";
+import { axiosNode } from "../utils/axios";
 
 const variants = {
   show: {
@@ -38,18 +40,9 @@ const variants = {
   },
 };
 
-const MyNFTsWrapper = () => {
+const MyNFTsWrapper = ({ nftArray, error }) => {
   const { account, status } = useWallet();
-  const { data: res, error } = useSWR(`/api/nft`);
-  const [nftArray, setNftData] = useState();
-
-  useEffect(() => {
-    (async () => {
-      if (res) {
-        setNftData(res);
-      }
-    })();
-  }, [res]);
+  console.log({ nftArray });
 
   if (status !== "connected" || !nftArray) {
     return (
@@ -87,7 +80,7 @@ const MyNFTsWrapper = () => {
       </div>
     );
   } else if (error) {
-    return <ErrorFallback custom="Failed to load my NFT's" />;
+    return <ErrorFallback custom={error.description} />;
   } else {
     return <ViewNFT account={account} nftArray={nftArray} />;
   }
@@ -225,18 +218,18 @@ const OpenOrders = ({
   const openOrders = useGetOpenOrdersForSeller() ?? [];
   const nftWithOpenOrders = nftBalances.filter((i) => i.hasOpenOrder);
   const {
-      currentPage,
-      totalPages,
-      setPage,
-      setPageSize,
-      setNextPage,
-      setPreviousPage,
-      startIndex,
-      endIndex,
-    } = usePagination({
-      totalItems: nftBalances.length > 0 ? nftBalances.length + 1 : 0,
-      initialPageSize: 6
-    });
+    currentPage,
+    totalPages,
+    setPage,
+    setPageSize,
+    setNextPage,
+    setPreviousPage,
+    startIndex,
+    endIndex,
+  } = usePagination({
+    totalItems: nftBalances.length > 0 ? nftBalances.length + 1 : 0,
+    initialPageSize: 6,
+  });
 
   return (
     <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
@@ -284,32 +277,34 @@ const OpenOrders = ({
               initial="hidden"
               variants={variants}
             >
-              {nftWithOpenOrders.slice(startIndex, endIndex || nftWithOpenOrders.length).map((nft) => {
-                if (nft.hasOpenOrder) {
-                  const order = openOrders.find(
-                    (i) => Number(i.nftId) === nft.id
-                  );
+              {nftWithOpenOrders
+                .slice(startIndex, endIndex || nftWithOpenOrders.length)
+                .map((nft) => {
+                  if (nft.hasOpenOrder) {
+                    const order = openOrders.find(
+                      (i) => Number(i.nftId) === nft.id
+                    );
 
-                  return (
-                    <LazyLoad height={400} offset={600}>
-                      <div className="order-container">
-                        <MyNFTItem
-                          price={
-                            order &&
-                            order.price &&
-                            getDisplayBalance(new BigNumber(order.price))
-                          }
-                          balance={order?.quantity}
-                          data={nft}
-                          isLoading={isLoading}
-                          revealNFTs={revealNFTs}
-                          cancelOrderClick={cancelOrderClick}
-                        />
-                      </div>
-                    </LazyLoad>
-                  );
-                }
-              })}
+                    return (
+                      <LazyLoad height={400} offset={600}>
+                        <div className="order-container">
+                          <MyNFTItem
+                            price={
+                              order &&
+                              order.price &&
+                              getDisplayBalance(new BigNumber(order.price))
+                            }
+                            balance={order?.quantity}
+                            data={nft}
+                            isLoading={isLoading}
+                            revealNFTs={revealNFTs}
+                            cancelOrderClick={cancelOrderClick}
+                          />
+                        </div>
+                      </LazyLoad>
+                    );
+                  }
+                })}
             </motion.div>
           </div>
           <PaginationComponent
@@ -343,7 +338,7 @@ const OpenOrders = ({
 const ViewNFT = ({ account, nftArray }) => {
   const [serverNftBalances, setServerNftBalances] = useState(null);
 
-  const maxNftSupply = useGetNftMaxSupply(account);
+  // const maxNftSupply = useGetNftMaxSupply(account);
   const { totalNftBalances: nftBalancesInitial, loading: isLoading } =
     useGetNftBalance(nftArray);
 
@@ -471,6 +466,17 @@ const ViewNFT = ({ account, nftArray }) => {
       </div>
     </Layout>
   );
+};
+
+export const getServerSideProps = async (ctx) => {
+  const nftReq = await axiosNode.get(`/api/nft`);
+  const nftArray = nftReq.data;
+
+  return {
+    props: {
+      nftArray,
+    },
+  };
 };
 
 export default MyNFTsWrapper;
