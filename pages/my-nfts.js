@@ -22,8 +22,6 @@ import ErrorFallback from "../components/Fallback/Error";
 import Loading from "../components/Loading";
 import { usePagination } from "react-use-pagination";
 import PaginationComponent from "../components/PaginationComponent";
-import axios from "axios";
-import { axiosNode } from "../utils/axios";
 
 const variants = {
   show: {
@@ -40,9 +38,18 @@ const variants = {
   },
 };
 
-const MyNFTsWrapper = ({ nftArray, error }) => {
+const MyNFTsWrapper = () => {
   const { account, status } = useWallet();
-  console.log({ nftArray });
+  const { data: res, error } = useSWR(`/api/nft`);
+  const [nftArray, setNftData] = useState();
+
+  useEffect(() => {
+    (async () => {
+      if (res) {
+        setNftData(res);
+      }
+    })();
+  }, [res]);
 
   if (status !== "connected" || !nftArray) {
     return (
@@ -80,7 +87,7 @@ const MyNFTsWrapper = ({ nftArray, error }) => {
       </div>
     );
   } else if (error) {
-    return <ErrorFallback custom={error.description} />;
+    return <ErrorFallback custom="Failed to load my NFT's" />;
   } else {
     return <ViewNFT account={account} nftArray={nftArray} />;
   }
@@ -338,7 +345,7 @@ const OpenOrders = ({
 const ViewNFT = ({ account, nftArray }) => {
   const [serverNftBalances, setServerNftBalances] = useState(null);
 
-  // const maxNftSupply = useGetNftMaxSupply(account);
+  const maxNftSupply = useGetNftMaxSupply(account);
   const { totalNftBalances: nftBalancesInitial, loading: isLoading } =
     useGetNftBalance(nftArray);
 
@@ -466,17 +473,6 @@ const ViewNFT = ({ account, nftArray }) => {
       </div>
     </Layout>
   );
-};
-
-export const getServerSideProps = async (ctx) => {
-  const nftReq = await axiosNode.get(`/api/nft`);
-  const nftArray = nftReq.data;
-
-  return {
-    props: {
-      nftArray,
-    },
-  };
 };
 
 export default MyNFTsWrapper;
