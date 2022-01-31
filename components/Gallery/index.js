@@ -18,7 +18,7 @@ const Gallery = () => {
         <Card.Body>
           <Card.Title>Ona Artist</Card.Title>
           <Card.Text>
-            Curated collection feautiring Ona Artist
+            Curated collection featuring Ona Artist GFE-NFT
           </Card.Text>
         </Card.Body>
       </Card>
