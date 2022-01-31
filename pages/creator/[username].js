@@ -60,7 +60,7 @@ const ViewModelWrapper = ({ username, model, error }) => {
       setSubNFTs(fetchedSubNFTs);
       setOutOfPrintNFTs(outOfPrint);
     })();
-  }, [res]);
+  }, []);
 
   // const setId = modelSetBundles[username];
   // const nftSetPrice = useGetTreatSetCost(setId);
