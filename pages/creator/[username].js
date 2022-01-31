@@ -6,10 +6,6 @@ import useSWR from "swr";
 import Web3 from "web3";
 import Link from "next/link";
 import Layout from "../../components/Layout";
-import { useRouter } from "next/router";
-import { modelSetBundles } from "../../treat/lib/constants";
-import useGetTreatSetCost from "../../hooks/useGetTreatSetCost";
-import useRedeemSet from "../../hooks/useRedeemSet";
 import { useWallet } from "use-wallet";
 import SweetShopNFTs from "../../components/CreatorPage/SweetShopNFTs";
 import SubscriptionNFTs from "../../components/CreatorPage/SubscriptionNFTs";
@@ -20,9 +16,8 @@ import ErrorFallback from "../../components/Fallback/Error";
 import dbConnect from "../../utils/dbConnect";
 import Model from "../../models/Model";
 
-const ViewModelWrapper = ({ username, model }) => {
-  const { data: res, error } = useSWR(`/api/model/${username}`);
-  const [modelData, setModelData] = useState();
+const ViewModelWrapper = ({ username, model, error }) => {
+  const modelData = JSON.parse(model);
   const [subNFTs, setSubNFTs] = useState();
   const [totwNFTs, setTotwNFTs] = useState();
   const [modelNFTs, setModelNFTs] = useState();
@@ -33,41 +28,37 @@ const ViewModelWrapper = ({ username, model }) => {
 
   useEffect(() => {
     (async () => {
-      if (res) {
-        setModelData(res);
+      if (!modelData.nfts || modelData.nfts.length === 0) setModelNFTs([]);
+      const mNfts = await Promise.all(
+        modelData.nfts.map(async (nft) => {
+          const x = await fetch(`/api/nft/${nft.id}`);
+          const j = await x.json();
+          return j;
+        })
+      );
 
-        if (!res.nfts || res.nfts.length === 0) setModelNFTs([]);
-        const mNfts = await Promise.all(
-          res.nfts.map(async (nft) => {
-            const x = await fetch(`/api/nft/${nft.id}`);
-            const j = await x.json();
-            return j;
-          })
-        );
+      const fetchedSubNFTs = await Promise.all(
+        modelData.sub_nfts.map(async (nft) => {
+          const x = await fetch(`/api/nft/${nft.id}`);
 
-        const fetchedSubNFTs = await Promise.all(
-          res.sub_nfts.map(async (nft) => {
-            const x = await fetch(`/api/nft/${nft.id}`);
+          const j = await x.json();
+          return j;
+        })
+      );
 
-            const j = await x.json();
-            return j;
-          })
-        );
+      let newNFTs = mNfts.filter(
+        (nft) => nft.maxSupply > nft.totalSupply && !nft.totw && !nft.old_totw
+      );
+      let outOfPrint = mNfts.filter(
+        (nft) => nft.maxSupply === nft.totalSupply || nft.old_totw
+      );
+      let getTotwNFTs = mNfts.filter((nft) => nft.totw);
 
-        let newNFTs = mNfts.filter(
-          (nft) => nft.maxSupply > nft.totalSupply && !nft.totw && !nft.old_totw
-        );
-        let outOfPrint = mNfts.filter(
-          (nft) => nft.maxSupply === nft.totalSupply || nft.old_totw
-        );
-        let getTotwNFTs = mNfts.filter((nft) => nft.totw);
-
-        setModelNFTs(mNfts);
-        setNewNFTs(newNFTs);
-        setTotwNFTs(getTotwNFTs);
-        setSubNFTs(fetchedSubNFTs);
-        setOutOfPrintNFTs(outOfPrint);
-      }
+      setModelNFTs(mNfts);
+      setNewNFTs(newNFTs);
+      setTotwNFTs(getTotwNFTs);
+      setSubNFTs(fetchedSubNFTs);
+      setOutOfPrintNFTs(outOfPrint);
     })();
   }, [res]);
 
