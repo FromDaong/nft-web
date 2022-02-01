@@ -168,7 +168,7 @@ const OwnedNfts = ({
             variants={variants}
           >
             {nftWithBalances
-              .slice(startIndex > 0 ? startIndex - 1 : startIndex, endIndex + 1)
+              .slice(startIndex > 0 ? startIndex - 1 : startIndex, endIndex)
               .map((nft) => {
                 return (
                   <LazyLoad height={400} offset={600}>
@@ -288,10 +288,7 @@ const OpenOrders = ({
               variants={variants}
             >
               {nftWithOpenOrders
-                .slice(
-                  startIndex > 0 ? startIndex - 1 : startIndex,
-                  endIndex + 1
-                )
+                .slice(startIndex > 0 ? startIndex - 1 : startIndex, endIndex)
                 .map((nft) => {
                   if (nft.hasOpenOrder) {
                     const order = openOrders.find(
