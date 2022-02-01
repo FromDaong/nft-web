@@ -80,8 +80,12 @@ const NFTListItem = ({
               <div className="totw-tag">MY NFT</div>
             ) : (
               <>
-                data.totw && <div className="totw-tag">TOTW</div>
-                data.totm && <div className="totw-tag">TOTM</div>
+                {(data.totw || data.old_totw) && (
+                  <div className="totw-tag">TOTW</div>
+                )}
+                {(data.totm || data.old_totm) && (
+                  <div className="totw-tag">TOTM</div>
+                )}
               </>
             )}
 
