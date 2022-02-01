@@ -159,7 +159,7 @@ const Home = () => {
           </a>
 
           {modelData && !modelResultError ? (
-            modelData.map((m) => m.totw && <TotwListItem modelData={m} />)
+            modelData.map((m) => m.totm && <TotwListItem modelData={m} />)
           ) : (
             <ErrorFallback custom="Failed to load TOTW" />
           )}
