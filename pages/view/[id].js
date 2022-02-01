@@ -41,7 +41,8 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   const [confirmWallet, setConfrimWallet] = useState(false);
   const isSubscribed = useGetIsSubscribed(nftData.model_bnb_address || "");
 
-  const isOldTotw = nftData.old_totw && !nftData.totw;
+  const isOldTotw =
+    (nftData.old_totw && !nftData.totw) || (nftData.old_totm && !nftData.totm);
 
   if (
     remainingNfts.toNumber() < 0 ||
@@ -185,6 +186,7 @@ const ViewNFT = ({ nftData, image, account }) => {
 
   let nftCost = nftData.old_totw ? totwNftCost : creatorNftCost;
   nftCost = nftData.subscription_nft ? subscriberNftCost : nftCost;
+  nftCost = nftData.old_totm ? totwNftCost : nftCost;
 
   const maxNftSupply = useGetNftMaxSupply(nftData.id);
   const mintedNfts = useGetNftTotalSupply(nftData.id);
@@ -264,7 +266,7 @@ const ViewNFT = ({ nftData, image, account }) => {
 
   const onMintNft = async () => {
     if (nftData.subscription_nft) return onMintSubscriberNft();
-    if (nftData.old_totw) {
+    if (nftData.old_totw || nftData.old_totm) {
       return await onMintTotwNft();
     } else {
       return await onMintCreatorNft();
@@ -273,7 +275,7 @@ const ViewNFT = ({ nftData, image, account }) => {
 
   const onMintFreeNft = async () => {
     if (nftData.subscription_nft) return onGetFreeSubscriberTreat();
-    if (nftData.old_totw) {
+    if (nftData.old_totw || nftData.old_totm) {
       return await onGetFreeTreat();
     } else {
       return await onGetFreeCreatorTreat();
@@ -348,24 +350,27 @@ const ViewNFT = ({ nftData, image, account }) => {
       </div>
     ));
 
-  const openOrdersRender = openOrders.sort((a, b) => new BigNumber(b.price) - new BigNumber(a.price)).map((e) => (
-    <Link href={`/marketplace/resale?search=${nftData.name}`} passHref={true}>
-      <a>
-        <div className="history-event">
-          <div className="pic">
-            <ShopWindow size={35} style={{ color: "DA5184" }} />
-          </div>
-          <div className="details">
-            <div className="label">{e.seller}</div>
-            <div className="event">
-              is selling theirs for {getDisplayBalance(new BigNumber(e.price))}
-              BNB
+  const openOrdersRender = openOrders
+    .sort((a, b) => new BigNumber(b.price) - new BigNumber(a.price))
+    .map((e) => (
+      <Link href={`/marketplace/resale?search=${nftData.name}`} passHref={true}>
+        <a>
+          <div className="history-event">
+            <div className="pic">
+              <ShopWindow size={35} style={{ color: "DA5184" }} />
+            </div>
+            <div className="details">
+              <div className="label">{e.seller}</div>
+              <div className="event">
+                is selling theirs for{" "}
+                {getDisplayBalance(new BigNumber(e.price))}
+                BNB
+              </div>
             </div>
           </div>
-        </div>
-      </a>
-    </Link>
-  ));
+        </a>
+      </Link>
+    ));
 
   return (
     <Layout>
@@ -419,6 +424,7 @@ const ViewNFT = ({ nftData, image, account }) => {
                   <div className="edition mb-2">AVAILABLE THIS WEEK ONLY</div>
                 )}
                 {!nftData.old_totw &&
+                  !nftData.old_totm &&
                   nftData.max_supply &&
                   nftData.max_supply < 100000 && (
                     <div className="edition mb-2">

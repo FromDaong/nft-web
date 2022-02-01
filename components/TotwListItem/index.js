@@ -69,7 +69,7 @@ const TotwListItem = ({ modelData }) => {
             {nftData &&
               nftData.nfts &&
               nftData.nfts.map((nft, i) => {
-                if (nft && nft.totw)
+                if (nft && nft.totm)
                   return (
                     <SwiperSlide className="slide" key={nft.id}>
                       <NFTListItem data={nft} disableAnimations purple />

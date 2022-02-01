@@ -52,7 +52,11 @@ const ViewModelWrapper = ({ username }) => {
         );
 
         let newNFTs = mNfts.filter(
-          (nft) => nft.maxSupply > nft.totalSupply && !nft.totw && !nft.old_totw
+          (nft) =>
+            nft.maxSupply > nft.totalSupply &&
+            !nft.totw &&
+            !nft.old_totw &&
+            !nft.old_totm
         );
         let outOfPrint = mNfts.filter(
           (nft) => nft.maxSupply === nft.totalSupply || nft.old_totw
