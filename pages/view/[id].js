@@ -560,7 +560,7 @@ const ViewNFT = ({ nftData, image, account }) => {
                             <Dropdown.Item
                               onClick={() => setSort("Price High to Low")}
                             >
-                              Price Low to High
+                              Price High to Low
                             </Dropdown.Item>
                           </Dropdown.Menu>
                         </Dropdown>
