@@ -14,6 +14,9 @@ const ModelSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please add a Model bio"],
     },
+    totm: {
+      type: Boolean,
+    },
     totw: {
       type: Boolean,
     },

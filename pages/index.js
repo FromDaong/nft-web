@@ -135,11 +135,9 @@ const Home = () => {
         <div className="totw-section-container mt-5">
           <div className="section-title">Treat of the Month</div>
           <div className="desc">
-            TOTW is a curated showcase of creators which are chosen by either
-            TreatDAO or the community.
-            <br />
-            We assist the chosen creators to have a unique set of content
-            exclusive to TreatDAO and only available to purchase for one week.
+            TOTM is a curated showcase of creators. We assist the chosen
+            creators in presenting a unique set of content exclusive to
+            TreatDAO.
           </div>
           <Link href="/magazine">
             <Button variant="info py-2 px-4 mt-3 mb-3">
