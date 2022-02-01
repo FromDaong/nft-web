@@ -80,10 +80,10 @@ const AdminDashboard = () => {
           subtitle={`Approve and reject creator application requests here. Click an application for more info`}
           additionalContent={
             <>
-              <Link href="/admin-dashboard/create-totw-nfts">
+              <Link href="/admin-dashboard/create-totm-nfts">
                 <a>
                   <Button variant="primary w-sm-100 mr-2">
-                    <b>{"Create TOTW NFTs"}</b>
+                    <b>{"Create TOTM NFTs"}</b>
                   </Button>
                 </a>
               </Link>
