@@ -183,7 +183,7 @@ const ViewNFT = ({ nftData, image, account }) => {
   const totwNftCost = useGetTreatNFTCost(nftData.id);
   const creatorNftCost = getCreatorNftCost(nftData.id);
   const subscriberNftCost = getSubscriberNftCost(nftData.id);
-  const [sortBy, setSortBy] = useState("Recent");
+  const [sortBy, setSortBy] = useState("Price Low to High");
 
   let nftCost = nftData.old_totw ? totwNftCost : creatorNftCost;
   nftCost = nftData.subscription_nft ? subscriberNftCost : nftCost;
@@ -333,8 +333,10 @@ const ViewNFT = ({ nftData, image, account }) => {
     switch (sortBy) {
       case "Recent":
         return Number(a.listDate) - Number(b.listDate);
-      case "Price":
+      case "Price Low to High":
         return Number(a.price) - Number(b.price);
+      case "Price High to Low":
+        return Number(b.price) - Number(a.price);
       default:
         return Number(a.listDate) - Number(b.listDate);
     }
@@ -550,7 +552,14 @@ const ViewNFT = ({ nftData, image, account }) => {
                             <Dropdown.Item onClick={() => setSort("Recent")}>
                               Most Recent
                             </Dropdown.Item>
-                            <Dropdown.Item onClick={() => setSort("Price")}>
+                            <Dropdown.Item
+                              onClick={() => setSort("Price Low to High")}
+                            >
+                              Price Low to High
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              onClick={() => setSort("Price High to Low")}
+                            >
                               Price Low to High
                             </Dropdown.Item>
                           </Dropdown.Menu>
