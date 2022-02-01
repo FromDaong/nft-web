@@ -512,7 +512,7 @@ const ViewNFT = ({ nftData, image, account }) => {
                 <Nav.Item>
                   <Nav.Link eventKey="resale">Resale Listings</Nav.Link>
                 </Nav.Item>
-                {+nftData.id > 92 && (
+                {+nftData.id > 0 && (
                   <Nav.Item>
                     <Nav.Link eventKey="purchase_history">
                       Purchase History
