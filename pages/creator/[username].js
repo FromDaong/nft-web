@@ -23,6 +23,7 @@ const ViewModelWrapper = ({ username }) => {
   const [modelData, setModelData] = useState();
   const [subNFTs, setSubNFTs] = useState();
   const [totwNFTs, setTotwNFTs] = useState();
+  const [totmNFTs, setTotmNFTs] = useState();
   const [modelNFTs, setModelNFTs] = useState();
   const [newNFTs, setNewNFTs] = useState();
   const [outOfPrintNFTs, setOutOfPrintNFTs] = useState();
@@ -52,16 +53,24 @@ const ViewModelWrapper = ({ username }) => {
         );
 
         let newNFTs = mNfts.filter(
-          (nft) => nft.maxSupply > nft.totalSupply && !nft.totw && !nft.old_totw
+          (nft) =>
+            nft.maxSupply > nft.totalSupply &&
+            !nft.totw &&
+            !nft.totm &&
+            !nft.old_totw &&
+            !nft.old_totm
         );
         let outOfPrint = mNfts.filter(
-          (nft) => nft.maxSupply === nft.totalSupply || nft.old_totw
+          (nft) =>
+            nft.maxSupply === nft.totalSupply || nft.old_totw || nft.old_totm
         );
         let getTotwNFTs = mNfts.filter((nft) => nft.totw);
+        let getTotmNFTs = mNfts.filter((nft) => nft.totm);
 
         setModelNFTs(mNfts);
         setNewNFTs(newNFTs);
         setTotwNFTs(getTotwNFTs);
+        setTotmNFTs(getTotmNFTs);
         setSubNFTs(fetchedSubNFTs);
         setOutOfPrintNFTs(outOfPrint);
       }
@@ -120,6 +129,7 @@ const ViewModelWrapper = ({ username }) => {
           subNFTs={subNFTs}
           modelNFTs={modelNFTs}
           totwNFTs={totwNFTs}
+          totmNFTs={totmNFTs}
           newNFTs={newNFTs}
           outOfPrintNFTs={outOfPrintNFTs}
           // nftSetPrice={nftSetPrice}
@@ -135,6 +145,7 @@ const ViewModel = ({
   newNFTs,
   subNFTs,
   totwNFTs,
+  totmNFTs,
   outOfPrintNFTs,
   onRedeemSet,
   nftSetPrice,
@@ -149,7 +160,8 @@ const ViewModel = ({
   useEffect(() => {
     if (Number(formattedSubCost) !== 0) setKey("sub");
     if (totwNFTs && totwNFTs.length !== 0) setKey("totw");
-  }, [formattedSubCost, totwNFTs]);
+    if (totmNFTs && totmNFTs.length !== 0) setKey("totm");
+  }, [formattedSubCost, totwNFTs, totmNFTs]);
 
   const formatURL = (str) => {
     if (str) {
@@ -249,6 +261,16 @@ const ViewModel = ({
                 <Tab eventKey="totw" title="TOTW NFTs">
                   <SweetShopNFTs
                     modelNFTs={totwNFTs}
+                    onRedeemSet={onRedeemSet}
+                    modelData={modelData}
+                    nftSetPrice={nftSetPrice}
+                  />
+                </Tab>
+              )}
+              {totmNFTs && totmNFTs.length > 0 && (
+                <Tab eventKey="totm" title="TOTM NFTs">
+                  <SweetShopNFTs
+                    modelNFTs={totmNFTs}
                     onRedeemSet={onRedeemSet}
                     modelData={modelData}
                     nftSetPrice={nftSetPrice}

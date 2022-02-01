@@ -43,6 +43,9 @@ const NFTSchema = new mongoose.Schema(
     model_profile_pic: {
       type: String,
     },
+    totm: {
+      type: Boolean,
+    },
     totw: {
       type: Boolean,
     },
@@ -50,6 +53,9 @@ const NFTSchema = new mongoose.Schema(
       type: Boolean,
     },
     old_totw: {
+      type: Boolean,
+    },
+    old_totm: {
       type: Boolean,
     },
     subscription_nft: {

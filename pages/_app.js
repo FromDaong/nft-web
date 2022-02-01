@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import App from "next/app";
 import Navbar from "../components/nav/HeaderNav";
+import TOTMBanner from "../components/TOTMBanner";
 import V2Banner from "../components/V2Banner";
 import Footer from "../components/Footer";
 import useTokenBalance from "../hooks/useTokenBalance";
@@ -121,6 +122,7 @@ function MyApp({ Component, pageProps }) {
         >
           <TreatProvider>
             <div>
+              <TOTMBanner oldTokenBalance={oldTokenBalance} />
               {oldTokenBalance > 0 && (
                 <V2Banner oldTokenBalance={oldTokenBalance} />
               )}

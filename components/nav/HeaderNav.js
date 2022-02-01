@@ -54,6 +54,9 @@ const HeaderNav = ({ modelData }) => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse className="justify-content-end">
+          <Link href="/magazine" passHref>
+            <Nav.Link>Magazine</Nav.Link>
+          </Link>
           <NavDropdown title="Creators">
             <NavDropdown.Item href="#" className="p-0">
               <Link href="/creators" passHref>
