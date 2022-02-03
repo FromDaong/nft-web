@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const UserSchema = new mongoose.Schema(
   {
@@ -22,6 +23,8 @@ const UserSchema = new mongoose.Schema(
     timestamps: { createdAt: true, updatedAt: false },
   }
 );
+
+UserSchema.plugin(mongoosePaginate);
 
 // ModelSchema.path("discount_codes")
 //   .schema.path("newPrice")

@@ -38,7 +38,7 @@ const PaginationComponentV2 = ({
     items.push(<Pagination.Last onClick={() => setPage(totalPages)} />);
 
   return (
-    <>
+    <div className="flex flex-col">
       {totalDocs > 1 && (
         <div className="d-flex justify-content-center">
           <Pagination>{items}</Pagination>
@@ -47,7 +47,7 @@ const PaginationComponentV2 = ({
       <div className="py-2 text-center">
         Showing {page} of {totalPages} pages with {totalDocs} items.
       </div>
-    </>
+    </div>
   );
 };
 
