@@ -9,22 +9,25 @@ export default async (req, res) => {
   switch (method) {
     case "GET":
       try {
-        const Models = await Model.find();
+        const options = {
+          page: req.query.page ?? 1,
+          limit: 24,
+          collation: {
+            locale: "en",
+          },
+        };
+        const Models = await Model.paginate({}, options);
+        console.log({ Models });
+        // if (model.pending || model.rejected || model.hidden) return undefined;
 
-        const returnModels = await Models.map((n) => {
-          const returnObj = { ...n.toObject() };
-
-          return returnObj;
-        });
-
-        const sortedModels = await returnModels.sort(
+        Models.docs = await Models.docs.sort(
           (a, b) =>
             b.nfts.length +
             b.sub_nfts.length -
             (a.nfts.length + a.sub_nfts.length)
         );
 
-        res.status(200).json(sortedModels);
+        res.status(200).json(Models);
       } catch (error) {
         console.error({ error });
         res.status(400).json({ success: false, error: error });
