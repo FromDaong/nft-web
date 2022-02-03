@@ -96,7 +96,6 @@ const Creators = () => {
   }, [router]);
 
   const navigate = (page) => {
-    console.log(page);
     window.scrollTo(0, 0);
 
     router.push(

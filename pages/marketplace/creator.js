@@ -34,7 +34,7 @@ const Marketplace = ({ search }) => {
   const [persistedPageNumber, setPersistedPageNumber] = useState(0);
   const [filteredArray, setFilteredArray] = useState([]);
   const [finalArray, setFinalArray] = useState([]);
-  const [selectedTags, setSelectedTags] = useState([])
+  const [selectedTags, setSelectedTags] = useState([]);
 
   const { account } = useWallet();
   const router = useRouter();
@@ -56,7 +56,9 @@ const Marketplace = ({ search }) => {
   });
 
   let selectedOptionsStr = "";
-  selectedOptions.forEach((e) => (selectedOptionsStr += `="${e.value.trim()}" `));
+  selectedOptions.forEach(
+    (e) => (selectedOptionsStr += `="${e.value.trim()}" `)
+  );
 
   const {
     currentPage,
@@ -76,67 +78,35 @@ const Marketplace = ({ search }) => {
     setSortBy(sortBy);
   };
 
-  const startNumber = currentPage - 5 > 0 ? currentPage - 5 : 0;
-  const endNumber = currentPage + 5 < totalPages ? currentPage + 5 : totalPages;
-
-  let items = [];
-  if (currentPage !== 0) {
-    items.push(<Pagination.First onClick={() => setPage(0)} />)
-  };
-  if (currentPage !== 0) {
-    items.push(<Pagination.Prev onClick={setPreviousPage} />)
-  };
-
-  for (let number = startNumber; number < endNumber; number++) {
-    items.push(
-      <Pagination.Item
-        key={number}
-        active={number === currentPage}
-        onClick={() => {
-          setPageSize(25);
-          setPage(number);
-        }}
-      >
-        {number + 1}
-      </Pagination.Item>
-    );
-  }
-  if (currentPage !== totalPages - 1) {
-    items.push(<Pagination.Next onClick={setNextPage} />)
-  };
-  if (currentPage !== totalPages - 1) {
-    items.push(<Pagination.Last onClick={() => setPage(totalPages)} />)
-  };
-
   useEffect(() => {
-      updateObArr();
-      forceUpdate();
-  }, [orderBookArray])
+    updateObArr();
+    forceUpdate();
+  }, [orderBookArray]);
 
   useEffect(() => {
     const newArray = filteredArray;
     newArray.sort((a, b) => {
-        switch (sortBy) {
-          case "Relevancy":
-            return Number(a.score) - Number(b.score);
-          case "Price Low to High":
-            const aMaxSupply = Number(a.item.max_supply);
-            const bMaxSupply = Number(b.item.max_supply);
+      switch (sortBy) {
+        case "Relevancy":
+          return Number(a.score) - Number(b.score);
+        case "Price Low to High":
+          const aMaxSupply = Number(a.item.max_supply);
+          const bMaxSupply = Number(b.item.max_supply);
 
-            const aTotalMints = a.item.mints;
-            const bTotalMints = b.item.mints;
+          const aTotalMints = a.item.mints;
+          const bTotalMints = b.item.mints;
 
-            if (a.item.list_price === b.item.list_price) {
-              // Compare mints if price is the same
-              return bMaxSupply - bTotalMints - (aMaxSupply - aTotalMints);
-            }
-            return Number(a.item.list_price) - Number(b.item.list_price);
-          case "Price High to Low":
-            return Number(b.item.list_price) - Number(a.item.list_price);
-          default:
-            return new Date(b.item.createdAt) - new Date(a.item.createdAt);
-        }
-    })
+          if (a.item.list_price === b.item.list_price) {
+            // Compare mints if price is the same
+            return bMaxSupply - bTotalMints - (aMaxSupply - aTotalMints);
+          }
+          return Number(a.item.list_price) - Number(b.item.list_price);
+        case "Price High to Low":
+          return Number(b.item.list_price) - Number(a.item.list_price);
+        default:
+          return new Date(b.item.createdAt) - new Date(a.item.createdAt);
+      }
+    });
     setFinalArray(newArray);
   }, [filteredArray, sortBy]);
 
@@ -164,7 +134,6 @@ const Marketplace = ({ search }) => {
       searchResult = fuse.search({
         $and: [{ tags: selectedOptionsStr }],
       });
-      
 
       // no filtering
     } else {
@@ -172,9 +141,8 @@ const Marketplace = ({ search }) => {
         item: d,
         refIndex: idx,
       }));
-    
     }
-      setFilteredArray(searchResult);
+    setFilteredArray(searchResult);
   }, [searchFilter, selectedOptionsStr, nftDataArray]);
 
   useEffect(() => {
@@ -189,36 +157,36 @@ const Marketplace = ({ search }) => {
       persistedPageNumber ? Number(persistedPageNumber) : 0
     );
 
-    if(tags) {
-        let renamedTags = tags.replaceAll("=", ",");
-        let tagsArray = renamedTags.split(",").reverse();
-        tagsArray.pop();
-        tagsArray = tagsArray.map((tag) => tag.replaceAll('"', ""));
-        tagsArray.map((tag) =>
-          setSelectedOptions((current) => [
-            ...current,
-            {
-              label: tag,
-              value: tag,
-            },
-          ])
-        );
+    if (tags) {
+      let renamedTags = tags.replaceAll("=", ",");
+      let tagsArray = renamedTags.split(",").reverse();
+      tagsArray.pop();
+      tagsArray = tagsArray.map((tag) => tag.replaceAll('"', ""));
+      tagsArray.map((tag) =>
+        setSelectedOptions((current) => [
+          ...current,
+          {
+            label: tag,
+            value: tag,
+          },
+        ])
+      );
     }
   }, []);
 
   useEffect(() => {
-    if (searchFilter || sortBy || currentPage) {
+    if (searchFilter) {
       router.push(
-        `${router.pathname}?${searchFilter && `s=${searchFilter}&`}${
-          currentPage ? `p=${currentPage}&` : ""
-        }${selectedOptionsStr ? `tags=${selectedOptionsStr}&` : ""}${
+        `${router.pathname}?${searchFilter && `s=${searchFilter}&`}p=${
+          router.query.p
+        }&${selectedOptionsStr ? `tags=${selectedOptionsStr}&` : ""}${
           sortBy ? `sort=${sortBy}&` : ""
         }`.trim(),
         undefined,
         { shallow: true }
       );
     }
-  }, [searchFilter, sortBy, currentPage, selectedOptionsStr]);
+  }, [searchFilter, selectedOptionsStr]);
 
   useEffect(() => {
     updateObArr();
@@ -226,18 +194,17 @@ const Marketplace = ({ search }) => {
   }, [searchFilter, orderBookArray, sortBy, showPendingModal]);
 
   useEffect(() => {
-    if(finalArray.length > 0) {
-      if(persistedPageNumber) {
+    if (finalArray.length > 0) {
+      if (persistedPageNumber) {
         setPage(persistedPageNumber);
         setPersistedPageNumber(null);
       }
     }
-
   }, [finalArray]);
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [currentPage])
+    window.scrollTo(0, 0);
+  }, [currentPage]);
 
   return (
     <AnimateSharedLayout>
@@ -393,7 +360,17 @@ const Marketplace = ({ search }) => {
           </motion.div>
 
           <div className="d-flex justify-content-center">
-            <Pagination>{items}</Pagination>
+            <PaginationComponentV2
+              hasNextPage={apiResponseData.hasNextPage}
+              hasPrevPage={apiResponseData.hasPrevPage}
+              totalPages={apiResponseData.totalPages}
+              totalDocs={apiResponseData.totalDocs}
+              page={apiResponseData.page}
+              goNext={() => navigate(Number(apiResponseData.page) + 1)}
+              goPrev={() => navigate(Number(apiResponseData.page) - 1)}
+              loading={loading}
+              setPage={(page) => navigate(Number(page))}
+            />
           </div>
         </div>
       </motion.main>
