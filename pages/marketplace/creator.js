@@ -1,8 +1,6 @@
 import { useWallet } from "use-wallet";
 import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
-import Pagination from "react-bootstrap/Pagination";
-import useSWR from "swr";
 import React, { useState, useEffect, useReducer } from "react";
 import Loading from "../../components/Loading";
 import Link from "next/link";
@@ -42,7 +40,7 @@ const Marketplace = ({ search }) => {
     error: null,
   });
 
-  const { error, orderBookArray } = apiResponseData.docs;
+  const { error, docs: orderBookArray } = apiResponseData;
   const { account } = useWallet();
   const router = useRouter();
 
@@ -140,7 +138,6 @@ const Marketplace = ({ search }) => {
 
   useEffect(() => {
     const queryFilter = router.query.s;
-    const persistedPageNumber = router.query.p;
     const persistedSortBy = router.query.sort;
     const tags = router.query.tags;
     setSearchFilter(queryFilter ?? "");
@@ -199,6 +196,8 @@ const Marketplace = ({ search }) => {
     updateObArr();
     forceUpdate();
   }, [searchFilter, orderBookArray, sortBy, showPendingModal]);
+
+  console.log({ error, finalArray, orderBookArray });
 
   return (
     <AnimateSharedLayout>
@@ -320,7 +319,7 @@ const Marketplace = ({ search }) => {
               },
             }}
           >
-            {finalArray?.length === 0 && !error ? (
+            {loading ? (
               <div
                 style={{ minHeight: 500 }}
                 className="d-flex justify-content-center align-items-center w-100"
