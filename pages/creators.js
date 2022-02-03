@@ -8,15 +8,37 @@ import { usePagination } from "react-use-pagination";
 import Fuse from "fuse.js";
 import ErrorFallback from "../components/Fallback/Error";
 import { useRouter } from "next/dist/client/router";
+import axios from "axios";
 
 const Creators = () => {
   // TODO Get models total items
   // get data for relevant models (startIndex endIndex)
-  const { data: modelData, error } = useSWR(`/api/model`);
+  const [apiResponseData, setApiResponseData] = useState({
+    docs: [],
+    hasNextPage: false,
+    hasPrevPage: false,
+    totalPages: 1,
+    totalDocs: 0,
+    page: 1,
+  });
   const [searchFilter, setSearchFilter] = useState("");
   const [persistedPageNumber, setPersistedPageNumber] = useState(0);
-
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  const modelData = apiResponseData.docs;
+
+  console.log({ apiResponseData, modelData });
+
+  useEffect(() => {
+    setLoading(true);
+    axios.get("/api/model").then((res) => {
+      if (!res.data.error) {
+        setApiResponseData(res.data);
+        setLoading(false);
+      }
+    });
+  }, []);
 
   const fuse = new Fuse(modelData, {
     keys: ["username", "display_name"],
@@ -84,8 +106,8 @@ const Creators = () => {
   }, [filteredArray]);
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [currentPage])
+    window.scrollTo(0, 0);
+  }, [currentPage]);
 
   return (
     <>
@@ -118,7 +140,7 @@ const Creators = () => {
           />
         </div>
         <br />
-        {!error ? (
+        {!loading ? (
           <ModelList
             totwOnly={false}
             endIndex={endIndex}

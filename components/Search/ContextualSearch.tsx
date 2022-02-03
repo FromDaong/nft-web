@@ -3,12 +3,23 @@ import { useState } from "react";
 export default function ContextualSearch(props: ContextualSearchProps) {
   const [value, setValue] = useState("");
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+  };
+
+  const onValueChange = (e) => {
+    const value = e.target.value;
+    setValue(value);
+  };
+
   return (
     <div>
-      <form>
+      <form onSubmit={onSubmit}>
         <div className="input-group relative flex flex-wrap items-stretch w-full mb-4">
           <input
             type="search"
+            onChange={onValueChange}
+            value={value}
             className="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             placeholder={
               props.searchPlaceholder ? props.searchPlaceholder : "Search"
