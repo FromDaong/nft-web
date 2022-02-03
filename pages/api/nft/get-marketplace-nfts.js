@@ -11,13 +11,24 @@ export default async (req, res) => {
   switch (method) {
     case "GET":
       try {
-        const NFTs = await NFT.find({
-          old_totw: { $exists: false },
-          melon_nft: { $exists: false },
-          subscription_nft: { $exists: false },
-        });
+        const options = {
+          page: req.query.p ?? 1,
+          limit: 24,
+          collation: {
+            locale: "en",
+          },
+        };
 
-        const returnNFTs = await NFTs.map((n) => {
+        const NFTs = await NFT.paginate(
+          {
+            old_totw: { $exists: false },
+            melon_nft: { $exists: false },
+            subscription_nft: { $exists: false },
+          },
+          options
+        );
+
+        NFTs.docs = await NFTs.docs.map((n) => {
           const returnObj = { ...n.toObject() };
 
           returnObj.mints = returnObj.mints.length;
@@ -29,7 +40,7 @@ export default async (req, res) => {
           return returnObj;
         });
 
-        res.status(200).json(returnNFTs);
+        res.status(200).json(NFTs);
       } catch (error) {
         console.error({ error });
         res.status(400).json({ success: false, error: error });

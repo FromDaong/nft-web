@@ -11,31 +11,38 @@ import Hero from "../../components/Hero";
 import { Order } from "../../components/CreatorMarketplaceListItem";
 import { motion, AnimateSharedLayout } from "framer-motion";
 import { forceCheck } from "react-lazyload";
-import { usePagination } from "react-use-pagination";
+import axios from "axios";
 import Fuse from "fuse.js";
 import Select from "react-select";
 import { useRouter } from "next/dist/client/router";
 import ErrorFallback from "../../components/Fallback/Error";
+import PaginationComponentV2 from "../../components/Pagination";
 
 // TODO: Fetch NFTs from blockchain
 // database seems to be outdated
 
 const Marketplace = ({ search }) => {
   const [_, forceUpdate] = useReducer((x) => x + 1, 0);
-  const { data: orderBookArray, error } = useSWR(
-    `/api/nft/get-marketplace-nfts`
-  );
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [purchaseOrderData, setPurchaseOrderData] = useState(null);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [nftDataArray, setNftDataArray] = useState([]);
   const [searchFilter, setSearchFilter] = useState(search || "");
   const [sortBy, setSortBy] = useState("Recent");
-  const [persistedPageNumber, setPersistedPageNumber] = useState(0);
   const [filteredArray, setFilteredArray] = useState([]);
   const [finalArray, setFinalArray] = useState([]);
-  const [selectedTags, setSelectedTags] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [apiResponseData, setApiResponseData] = useState({
+    docs: [],
+    hasNextPage: false,
+    hasPrevPage: false,
+    totalPages: 1,
+    totalDocs: 0,
+    page: 1,
+    error: null,
+  });
 
+  const { error, orderBookArray } = apiResponseData.docs;
   const { account } = useWallet();
   const router = useRouter();
 
@@ -59,20 +66,6 @@ const Marketplace = ({ search }) => {
   selectedOptions.forEach(
     (e) => (selectedOptionsStr += `="${e.value.trim()}" `)
   );
-
-  const {
-    currentPage,
-    totalPages,
-    setPage,
-    setPageSize,
-    setNextPage,
-    setPreviousPage,
-    startIndex,
-    endIndex,
-  } = usePagination({
-    totalItems: filteredArray ? filteredArray.length + 1 : 0,
-    initialPageSize: 25,
-  });
 
   const setSort = (sortBy) => {
     setSortBy(sortBy);
@@ -152,10 +145,6 @@ const Marketplace = ({ search }) => {
     const tags = router.query.tags;
     setSearchFilter(queryFilter ?? "");
     setSort(persistedSortBy ?? "Recent");
-    setPage(persistedPageNumber ? Number(persistedPageNumber) : 0);
-    setPersistedPageNumber(
-      persistedPageNumber ? Number(persistedPageNumber) : 0
-    );
 
     if (tags) {
       let renamedTags = tags.replaceAll("=", ",");
@@ -189,22 +178,27 @@ const Marketplace = ({ search }) => {
   }, [searchFilter, selectedOptionsStr]);
 
   useEffect(() => {
+    setLoading(true);
+    axios
+      .get(`/api/nft/get-marketplace-nfts?p=${router.query.p ?? 1}`)
+      .then((res) => setApiResponseData(res.data))
+      .then(() => setLoading(false));
+  }, [router]);
+
+  const navigate = (page) => {
+    window.scrollTo(0, 0);
+
+    router.push(
+      `${router.pathname}?${searchFilter && `s=${searchFilter}&`}p=${page}`,
+      undefined,
+      { shallow: true }
+    );
+  };
+
+  useEffect(() => {
     updateObArr();
     forceUpdate();
   }, [searchFilter, orderBookArray, sortBy, showPendingModal]);
-
-  useEffect(() => {
-    if (finalArray.length > 0) {
-      if (persistedPageNumber) {
-        setPage(persistedPageNumber);
-        setPersistedPageNumber(null);
-      }
-    }
-  }, [finalArray]);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [currentPage]);
 
   return (
     <AnimateSharedLayout>
@@ -338,22 +332,20 @@ const Marketplace = ({ search }) => {
             ) : (
               finalArray.length > 0 && (
                 <>
-                  {finalArray
-                    .slice(startIndex, endIndex || finalArray.length)
-                    .map((o, i) => (
-                      <Order
-                        searchFilter={searchFilter}
-                        soldOut={o.item.mints === Number(o.item.max_supply)}
-                        nftResult={o.item}
-                        index={i}
-                        order={o.item}
-                        account={account}
-                        key={o.refIndex}
-                        setPendingModal={setShowPendingModal}
-                        openCompleteModal={() => setShowCompleteModal(true)}
-                        setPurchaseOrderData={setPurchaseOrderData}
-                      />
-                    ))}
+                  {finalArray.map((o, i) => (
+                    <Order
+                      searchFilter={searchFilter}
+                      soldOut={o.item.mints === Number(o.item.max_supply)}
+                      nftResult={o.item}
+                      index={i}
+                      order={o.item}
+                      account={account}
+                      key={o.refIndex}
+                      setPendingModal={setShowPendingModal}
+                      openCompleteModal={() => setShowCompleteModal(true)}
+                      setPurchaseOrderData={setPurchaseOrderData}
+                    />
+                  ))}
                 </>
               )
             )}
