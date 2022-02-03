@@ -1,45 +1,54 @@
 import React from "react";
 import Pagination from "react-bootstrap/Pagination";
 
-const PaginationComponent = ({
-  currentPage,
+const PaginationComponentV2 = ({
+  page,
   totalPages,
   setPage,
-  setNextPage,
-  setPreviousPage,
+  hasNextPage,
+  hasPrevPage,
+  totalDocs,
+  goNext,
+  goPrev,
+  loading,
 }) => {
-  const startNumber = currentPage - 5 > 0 ? currentPage - 5 : 0;
-  const endNumber = currentPage + 5 < totalPages ? currentPage + 5 : totalPages;
+  const startNumber = page - 5 > 1 ? page - 5 : 1;
+  const endNumber = page + 5 < totalPages ? page + 5 : totalPages;
 
   let items = [];
-  if (currentPage !== 0)
-    items.push(<Pagination.First onClick={() => setPage(0)} />);
-  if (currentPage !== 0)
-    items.push(<Pagination.Prev onClick={setPreviousPage} />);
+  if (hasPrevPage) items.push(<Pagination.First onClick={() => setPage(1)} />);
+  if (hasPrevPage) items.push(<Pagination.Prev onClick={goPrev} />);
 
   for (let number = startNumber; number < endNumber; number++) {
     items.push(
       <Pagination.Item
         key={number}
-        active={number === currentPage}
+        active={number === page}
         onClick={() => {
           setPage(number);
         }}
       >
-        {number + 1}
+        {number}
       </Pagination.Item>
     );
   }
-  if (currentPage !== totalPages - 1)
-    items.push(<Pagination.Next onClick={setNextPage} />);
-  if (currentPage !== totalPages - 1)
+
+  if (hasNextPage) items.push(<Pagination.Next onClick={goNext} />);
+  if (hasNextPage)
     items.push(<Pagination.Last onClick={() => setPage(totalPages)} />);
 
   return (
-    <div className="d-flex justify-content-center">
-      <Pagination>{items}</Pagination>
-    </div>
+    <>
+      {totalDocs > 1 && (
+        <div className="d-flex justify-content-center">
+          <Pagination>{items}</Pagination>
+        </div>
+      )}
+      <div className="py-2">
+        Showing {page} of {totalPages} pages with {totalDocs} items.
+      </div>
+    </>
   );
 };
 
-export default PaginationComponent;
+export default PaginationComponentV2;

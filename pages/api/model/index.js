@@ -10,7 +10,7 @@ export default async (req, res) => {
     case "GET":
       try {
         const options = {
-          page: req.query.page ?? 1,
+          page: req.query.p ?? 1,
           limit: 24,
           collation: {
             locale: "en",

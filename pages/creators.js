@@ -9,6 +9,7 @@ import Fuse from "fuse.js";
 import ErrorFallback from "../components/Fallback/Error";
 import { useRouter } from "next/dist/client/router";
 import axios from "axios";
+import PaginationComponentV2 from "../components/Pagination";
 
 const Creators = () => {
   // TODO Get models total items
@@ -62,41 +63,22 @@ const Creators = () => {
       }));
   }
 
-  const {
-    currentPage,
-    totalPages,
-    setPage,
-    setPageSize,
-    setNextPage,
-    setPreviousPage,
-    startIndex,
-    endIndex,
-  } = usePagination({
-    totalItems: filteredArray ? filteredArray.length + 1 : 0,
-    initialPageSize: 25,
-  });
-
   useEffect(() => {
     const queryFilter = router.query.s;
-    const persistedPageNumber = router.query.p;
-
     setSearchFilter(queryFilter ?? "");
-    setPersistedPageNumber(
-      persistedPageNumber ? Number(persistedPageNumber) : 0
-    );
   }, []);
 
   useEffect(() => {
-    if (searchFilter || currentPage) {
+    if (searchFilter) {
       router.push(
         `${router.pathname}?${searchFilter && `s=${searchFilter}&`}${
-          currentPage && `p=${currentPage}`
+          currentPage && `p=${apiResponseData.page}`
         }`,
         undefined,
         { shallow: true }
       );
     }
-  }, [searchFilter, currentPage]);
+  }, [searchFilter]);
 
   useEffect(() => {
     if (filteredArray && persistedPageNumber) {
@@ -106,8 +88,23 @@ const Creators = () => {
   }, [filteredArray]);
 
   useEffect(() => {
+    setLoading(true);
+    axios
+      .get(`/api/model?p=${router.query.p ?? 1}`)
+      .then((res) => setApiResponseData(res.data))
+      .then(() => setLoading(false));
+  }, [router]);
+
+  const navigate = (page) => {
+    console.log(page);
     window.scrollTo(0, 0);
-  }, [currentPage]);
+
+    router.push(
+      `${router.pathname}?${searchFilter && `s=${searchFilter}&`}p=${page}`,
+      undefined,
+      { shallow: true }
+    );
+  };
 
   return (
     <>
@@ -141,23 +138,23 @@ const Creators = () => {
         </div>
         <br />
         {!loading ? (
-          <ModelList
-            totwOnly={false}
-            endIndex={endIndex}
-            startIndex={startIndex}
-            modelData={filteredArray || []}
-          />
+          <ModelList totwOnly={false} modelData={filteredArray || []} />
         ) : (
           <ErrorFallback custom="Failed to load models" />
         )}
-        <PaginationComponent
-          currentPage={currentPage}
-          totalPages={totalPages}
-          setPage={setPage}
-          setPageSize={setPageSize}
-          setNextPage={setNextPage}
-          setPreviousPage={setPreviousPage}
-        />
+        <div className="flex justify-center py-2">
+          <PaginationComponentV2
+            hasNextPage={apiResponseData.hasNextPage}
+            hasPrevPage={apiResponseData.hasPrevPage}
+            totalPages={apiResponseData.totalPages}
+            totalDocs={apiResponseData.totalDocs}
+            page={apiResponseData.page}
+            goNext={() => navigate(Number(apiResponseData.page) + 1)}
+            goPrev={() => navigate(Number(apiResponseData.page) - 1)}
+            loading={loading}
+            setPage={(page) => navigate(Number(page))}
+          />
+        </div>
       </motion.main>
     </>
   );
