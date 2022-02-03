@@ -39,7 +39,7 @@ const Home = () => {
         setNftData(nftResult);
       }
       if (modelResult) {
-        setModelData(modelResult);
+        setModelData(modelResult.docs);
       }
     })();
   }, [nftResult, modelResult]);
