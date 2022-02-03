@@ -2,9 +2,6 @@ import { useState, useEffect } from "react";
 import Hero from "../components/Hero";
 import ModelList from "../components/ModelList";
 import { motion } from "framer-motion";
-import useSWR from "swr";
-import PaginationComponent from "../components/PaginationComponent";
-import { usePagination } from "react-use-pagination";
 import Fuse from "fuse.js";
 import ErrorFallback from "../components/Fallback/Error";
 import { useRouter } from "next/dist/client/router";
@@ -12,8 +9,6 @@ import axios from "axios";
 import PaginationComponentV2 from "../components/Pagination";
 
 const Creators = () => {
-  // TODO Get models total items
-  // get data for relevant models (startIndex endIndex)
   const [apiResponseData, setApiResponseData] = useState({
     docs: [],
     hasNextPage: false,
@@ -28,18 +23,6 @@ const Creators = () => {
   const router = useRouter();
 
   const modelData = apiResponseData.docs;
-
-  console.log({ apiResponseData, modelData });
-
-  useEffect(() => {
-    setLoading(true);
-    axios.get("/api/model").then((res) => {
-      if (!res.data.error) {
-        setApiResponseData(res.data);
-        setLoading(false);
-      }
-    });
-  }, []);
 
   const fuse = new Fuse(modelData, {
     keys: ["username", "display_name"],
