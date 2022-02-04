@@ -13,7 +13,6 @@ import Hero from "../../components/Hero";
 import tags from "../../utils/tags";
 import { Order } from "../../components/MarketplaceListItem";
 import { motion, AnimateSharedLayout } from "framer-motion";
-import { forceCheck } from "react-lazyload";
 import Link from "next/link";
 import BigNumber from "bignumber.js";
 import axios from "axios";
@@ -21,6 +20,7 @@ import Select from "react-select";
 import ErrorFallback from "../../components/Fallback/Error";
 import { useRouter } from "next/dist/client/router";
 import PaginationComponentV2 from "../../components/Pagination";
+import MyNFTItemSkeleton from "../../components/Skeleton/MyNFTItemSkeleton";
 
 const Marketplace = ({ search }) => {
   const maxId = useGetMaxIdForSale();
@@ -314,8 +314,10 @@ const Marketplace = ({ search }) => {
         <div className="">
           <div className="nft-list row mt-5 full-width justify-content-center">
             {!_renderArray || _renderArray.length === 0 ? (
-              <div className="d-flex justify-content-center align-items-center w-100">
-                <Loading custom="Loading data from the blockchain... Please ensure your wallet is connected." />
+              <div className="grid grid-cols-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full">
+                {new Array(12).fill(0).map((_, i) => (
+                  <MyNFTItemSkeleton key={i} className="col-span-1" />
+                ))}
               </div>
             ) : error ? (
               <ErrorFallback custom="Error loading page" />
