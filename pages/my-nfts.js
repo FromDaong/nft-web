@@ -160,7 +160,7 @@ const OwnedNfts = ({
       </div>
       {nftWithBalances.length > 0 ? (
         <div className="">
-          <motion.div
+          <div
             className="d-flex text-left justify-content-center mt-5 w-100 flex-wrap"
             animate="show"
             exit="hidden"
@@ -186,7 +186,7 @@ const OwnedNfts = ({
                   </LazyLoad>
                 );
               })}
-          </motion.div>
+          </div>
           <PaginationComponent
             currentPage={currentPage}
             totalPages={totalPages}
@@ -280,7 +280,7 @@ const OpenOrders = ({
       {nftWithOpenOrders.length > 0 && openOrders.length > 0 ? (
         <div className="container px-4 ">
           <div className="d-flex text-left mt-5">
-            <motion.div
+            <div
               className="d-flex text-left mt-5 w-100 flex-wrap justify-content-center"
               animate="show"
               exit="hidden"
@@ -315,7 +315,7 @@ const OpenOrders = ({
                     );
                   }
                 })}
-            </motion.div>
+            </div>
           </div>
           {nftWithOpenOrders.length > 0 && (
             <PaginationComponent

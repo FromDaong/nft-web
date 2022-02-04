@@ -131,7 +131,6 @@ const CreateModel = () => {
     }
   };
 
-
   useEffect(() => {
     console.log(res);
     if (res) {
@@ -152,7 +151,6 @@ const CreateModel = () => {
       }
     }
     return setStep("signup");
-    
   }, [res]);
 
   return (
@@ -171,7 +169,7 @@ const CreateModel = () => {
       )}
 
       {(step === "signup" || step === "submitting") && (
-        <motion.div
+        <div
           animate={{ y: 0, opacity: 1 }}
           style={{ y: -100, opacity: 0 }}
           transition={{ delay: 0.25 }}
@@ -341,11 +339,11 @@ const CreateModel = () => {
               </div>
             </Form>
           </div>
-        </motion.div>
+        </div>
       )}
 
       {step === "verify" && (
-        <motion.div
+        <div
           animate={{ y: 0, opacity: 1 }}
           style={{ y: -100, opacity: 0 }}
           transition={{ delay: 0.25 }}
@@ -377,7 +375,7 @@ const CreateModel = () => {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       )}
 
       {step === "loading" && <Loading custom={"Loading..."} />}

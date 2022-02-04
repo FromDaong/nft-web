@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const Hero = ({ title, subtitle, additionalContent, titleClass }) => {
   return (
-    <motion.div
+    <div
       animate={{ y: 0, opacity: 1 }}
       style={{ y: -100, opacity: 0 }}
       transition={{ delay: 0.25 }}
@@ -22,7 +22,7 @@ const Hero = ({ title, subtitle, additionalContent, titleClass }) => {
         {subtitle}
       </p>
       {additionalContent}
-    </motion.div>
+    </div>
   );
 };
 

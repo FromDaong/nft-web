@@ -100,7 +100,7 @@ const Marketplace = ({ search }) => {
           </Button>
         </div>
         <div className="container fluid">
-          <motion.div
+          <div
             layout
             className="nft-list row mt-5 full-width justify-content-center"
             animate="show"
@@ -141,7 +141,7 @@ const Marketplace = ({ search }) => {
                 </div>
               )
             )}
-          </motion.div>
+          </div>
         </div>
       </motion.main>
     </AnimateSharedLayout>

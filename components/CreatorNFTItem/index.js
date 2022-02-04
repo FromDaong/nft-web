@@ -76,7 +76,7 @@ const CreatorNFTItem = ({ data, modelData, balance }) => {
         </Modal.Footer>
       </Modal>
 
-      <motion.div variants={variants}>
+      <div variants={variants}>
         <Link href={`/view/${data.id}`}>
           <a>
             <div className="nft-card" style={{ boxShadow: "none" }}>
@@ -160,7 +160,7 @@ const CreatorNFTItem = ({ data, modelData, balance }) => {
             </div>
           </a>
         </Link>
-      </motion.div>
+      </div>
     </>
   );
 };

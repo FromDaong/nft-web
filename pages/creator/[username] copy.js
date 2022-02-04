@@ -55,8 +55,6 @@ const ViewModelWrapper = ({ username }) => {
     ? useRedeemSet(setId, nftSetPrice)
     : { onRedeemSet: null };
 
-  
-
   if (!modelData || !modelData.username || status !== "connected") {
     return (
       <div
@@ -185,7 +183,7 @@ const ViewModel = ({
             </Button>
           </div> */}
 
-          <motion.div
+          <div
             className="nft-list row mt-5"
             animate={modelNFTs && modelNFTs.length > 0 && "show"}
             exit="hidden"
@@ -210,7 +208,7 @@ const ViewModel = ({
                     <NFTListItem modelData={modelData} data={m} key={m.id} />
                   </div>
                 ))}
-          </motion.div>
+          </div>
         </div>
       </div>
     </div>

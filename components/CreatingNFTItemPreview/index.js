@@ -57,7 +57,7 @@ const CreatingNFTItemPreview = ({
   }, [data]);
 
   return (
-    <motion.div variants={disableAnimations ? {} : variants} layout>
+    <>
       <div className="nft-card m-0">
         <div className="totw-tag-wrapper">
           {isOwner ? (
@@ -165,7 +165,7 @@ const CreatingNFTItemPreview = ({
           </div>
         )}
       </div>
-    </motion.div>
+    </>
   );
 };
 

@@ -112,7 +112,7 @@ const ViewNFT = ({ modelData, account }) => {
   return (
     <Layout>
       <div className="container  my-nft-container">
-        <motion.div
+        <div
           animate={{ y: 0, opacity: 1 }}
           style={{ y: -100, opacity: 0 }}
           transition={{ delay: 0.25 }}
@@ -166,7 +166,7 @@ const ViewNFT = ({ modelData, account }) => {
             }}
             className="mt-4 mt-md-0"
           ></div>
-        </motion.div>
+        </div>
         <Tab.Container id="left-tabs-example" defaultActiveKey="edit-profile">
           <div className="mt-2 row">
             <div className="col-md-3 p-0">
@@ -240,10 +240,10 @@ const ViewNFT = ({ modelData, account }) => {
                 </Tab.Pane>
                 <Tab.Pane eventKey="subscription-settings">
                   <SubscriptionSettings />
-                  <SubSettingsBox/>
+                  <SubSettingsBox />
                 </Tab.Pane>
                 <Tab.Pane eventKey="creator-resources">
-                <CreatorResources/>
+                  <CreatorResources />
                 </Tab.Pane>
                 <Tab.Pane eventKey="referrals">
                   <Referrals

@@ -41,7 +41,7 @@ const SweetShopNFTs = ({ modelData, onRedeemSet, modelNFTs, nftSetPrice }) => {
         </div>
       )}
 
-      <motion.div
+      <div
         className="row m-0 w-100 my-4"
         animate="show"
         exit="hidden"
@@ -77,7 +77,7 @@ const SweetShopNFTs = ({ modelData, onRedeemSet, modelNFTs, nftSetPrice }) => {
         {modelNFTs && modelNFTs.length === 0 && (
           <div className="text-center w-100 mt-5">Empty</div>
         )}
-      </motion.div>
+      </div>
     </>
   );
 };
