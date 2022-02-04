@@ -85,7 +85,7 @@ const NFTListItem = ({
         </Modal.Footer>
       </Modal>
 
-      <motion.div variants={variants}>
+      <div variants={variants}>
         <div className="nft-card" style={{ boxShadow: "none" }}>
           <div className="totw-tag-wrapper">
             {balance > 1 && (
@@ -240,7 +240,7 @@ const NFTListItem = ({
             </div>
           )}
         </div>
-      </motion.div>
+      </div>
     </>
   );
 };

@@ -48,7 +48,7 @@ const Home = () => {
     <Layout>
       <div className="home container">
         <div className="min-height-wrapper">
-          <motion.div
+          <div
             animate={{ x: 0, opacity: 1 }}
             style={{ x: -100, opacity: 0 }}
             className="hero"
@@ -130,7 +130,7 @@ const Home = () => {
                 <img src={"/assets/heroimage.png"} alt="" />
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
         <div className="totw-section-container mt-5">
           <div className="section-title">Treat of the Month</div>

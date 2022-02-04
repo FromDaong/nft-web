@@ -121,7 +121,7 @@ const SubscriptionNFTs = ({
           <Button onClick={revealNFTs}>Reveal Subscription NFTs</Button>
         </div>
       ) : (
-        <motion.div
+        <div
           className="row m-0 w-100 my-4"
           animate="show"
           exit="hidden"
@@ -145,7 +145,7 @@ const SubscriptionNFTs = ({
                   />
                 </div>
               ))}
-        </motion.div>
+        </div>
       )}
     </>
   );

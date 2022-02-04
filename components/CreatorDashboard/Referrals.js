@@ -54,7 +54,7 @@ const CreatedNFTs = ({
       {modelData && modelData.referred && modelData.referred.length > 0 ? (
         <div className="container">
           <div className="d-flex text-left justify-content-center mt-3">
-            <motion.div
+            <div
               className="d-flex w-100 justify-content-center"
               animate="show"
               exit="hidden"
@@ -69,7 +69,7 @@ const CreatedNFTs = ({
                   )
                 );
               })}
-            </motion.div>
+            </div>
           </div>
         </div>
       ) : (

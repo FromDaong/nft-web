@@ -63,7 +63,7 @@ const SubscriptionNFTs = ({
       {nftData && nftData.nfts.length > 0 ? (
         <div className="container">
           <div className="d-flex text-left justify-content-center mt-5">
-            <motion.div
+            <div
               className="row w-100"
               animate="show"
               exit="hidden"
@@ -88,7 +88,7 @@ const SubscriptionNFTs = ({
                   )
                 );
               })}
-            </motion.div>
+            </div>
           </div>
         </div>
       ) : (

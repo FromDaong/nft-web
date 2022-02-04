@@ -301,7 +301,7 @@ const Marketplace = ({ search }) => {
         </div>
         <br />
         <div className="container fluid">
-          <motion.div
+          <div
             layout
             className="nft-list row mt-5 full-width justify-content-center"
             animate="show"
@@ -348,7 +348,7 @@ const Marketplace = ({ search }) => {
                 </>
               )
             )}
-          </motion.div>
+          </div>
 
           <div className="d-flex justify-content-center">
             <PaginationComponentV2

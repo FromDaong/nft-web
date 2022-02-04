@@ -9,17 +9,6 @@ const variants = {
   exit: { opacity: 0, x: 0, y: -100, transition: { when: "afterChildren" } },
 };
 
-const Layout = ({ children }) => (
-  <div>
-    <motion.main
-      initial="hidden"
-      animate="enter"
-      exit="exit"
-      variants={variants}
-    >
-      {children}
-    </motion.main>
-  </div>
-);
+const Layout = ({ children }) => <div>{children}</div>;
 
 export default Layout;
