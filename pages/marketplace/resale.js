@@ -2,7 +2,7 @@ import useSWR from "swr";
 import { useWallet } from "use-wallet";
 import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useMemo } from "react";
 import useGetAllOpenOrders from "../../hooks/useGetAllOpenOrders";
 import useGetMaxIdForSale from "../../hooks/useGetMaxIdForSale";
 import Loading from "../../components/Loading";
@@ -30,9 +30,13 @@ const Marketplace = ({ search }) => {
   const [purchaseOrderData, setPurchaseOrderData] = useState(null);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
-  const [orderBookArray, setOrderBookArray] = useState([]);
+  const [_orderBookArray, setOrderBookArray] = useState([]);
+  const [_renderArray, setRenderArray] = useState([]);
   const [searchFilter, setSearchFilter] = useState(search || "");
   const [sortBy, setSortBy] = useState("Recent");
+  const [jsonBody, setJsonBody] = useState(null);
+  const [orderBookLoaded, setOrderBookLoaded] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [apiResponseData, setApiResponseData] = useState({
     docs: [],
     hasNextPage: false,
@@ -45,17 +49,27 @@ const Marketplace = ({ search }) => {
 
   const [orderBook] = useGetAllOpenOrders(maxId);
   const { account } = useWallet();
-  const [_, forceUpdate] = useReducer((x) => x + 1, 0);
   const router = useRouter();
 
-  const initOrderBookArray = orderBook && orderBook.flat();
-  const { error, docs: orderBookArray } = apiResponseData;
+  const { error, docs: populatedNftData } = apiResponseData;
+  console.log({
+    jsonBody,
+    orderBookLoaded,
+    _orderBookArray,
+    orderBook,
+    populatedNftData,
+  });
 
-  const updateObArr = () => {
-    const ob = initOrderBookArray;
-    if (ob) setOrderBookArray(ob);
-    forceCheck();
-  };
+  useEffect(() => {
+    if (orderBook?.length > 0 && !orderBookLoaded) {
+      const orderBookArray = orderBook.flat();
+      const jsonBody = { nfts: orderBookArray.map((o) => o.nftId) };
+      setJsonBody(jsonBody);
+      setOrderBookArray(orderBookArray);
+      setOrderBookLoaded(true);
+      return;
+    }
+  }, [orderBook]);
 
   useEffect(() => {
     const queryFilter = router.query.s;
@@ -96,19 +110,56 @@ const Marketplace = ({ search }) => {
   }, [searchFilter, sortBy]);
 
   useEffect(() => {
-    updateObArr();
-    forceUpdate();
-  }, [sortBy, router]);
+    console.log("Changed");
+    if (jsonBody && orderBookLoaded) {
+      setLoading(true);
+      axios
+        .post(`/api/nft/get-many-nfts?p=${router.query.p ?? 1}`, {
+          ...jsonBody,
+        })
+        .then((res) => setApiResponseData(res.data))
+        .then(() => setLoading(false));
+    }
+  }, [router, jsonBody, _orderBookArray]);
 
   useEffect(() => {
-    setLoading(true);
-    axios
-      .post(`/api/nft/get-many-nfts?p=${router.query.p ?? 1}`, {
-        ...jsonBody,
-      })
-      .then((res) => setApiResponseData(res.data))
-      .then(() => setLoading(false));
-  }, [router, orderBookArray, jsonBody]);
+    const populatedArray =
+      _orderBookArray &&
+      populatedNftData &&
+      populatedNftData
+        .map((x) => {
+          const nftResult = _orderBookArray?.find(
+            (orderBookNft) => x.nftId === orderBookNft.id
+          );
+          if (!nftResult) return undefined;
+          return { item: { ...x, ...nftResult } };
+        })
+        .filter((e) => e);
+    console.log({ populatedArray });
+    const renderArray = populatedArray?.sort((a, b) => {
+      switch (sortBy) {
+        case "Relevancy":
+          return Number(a.score) - Number(b.score);
+        case "Price Low to High":
+          return (
+            Number(new BigNumber(a.item.price)) -
+            Number(new BigNumber(b.item.price))
+          );
+        case "Price High to Low":
+          return (
+            Number(new BigNumber(b.item.price)) -
+            Number(new BigNumber(a.item.price))
+          );
+        default:
+          return (
+            new Date(+b.item.listDate * 1000) -
+            new Date(+a.item.listDate * 1000)
+          );
+      }
+    });
+
+    setRenderArray(renderArray);
+  }, [_orderBookArray, populatedNftData]);
 
   const navigate = (page) => {
     window.scrollTo(0, 0);
@@ -119,42 +170,6 @@ const Marketplace = ({ search }) => {
       { shallow: true }
     );
   };
-
-  const jsonBody = { nfts: orderBookArray.map((o) => o.nftId) };
-
-  const populatedArray =
-    orderBookArray &&
-    populatedNftData &&
-    populatedNftData
-      .map((x) => {
-        const nftResult = orderBookArray?.find(
-          (orderBookNft) => x.nftId === orderBookNft.id
-        );
-        if (!nftResult) return undefined;
-        return { ...orderBookNft, ...nftResult };
-      })
-      .filter((e) => e);
-
-  const renderArray = populatedArray?.sort((a, b) => {
-    switch (sortBy) {
-      case "Relevancy":
-        return Number(a.score) - Number(b.score);
-      case "Price Low to High":
-        return (
-          Number(new BigNumber(a.item.price)) -
-          Number(new BigNumber(b.item.price))
-        );
-      case "Price High to Low":
-        return (
-          Number(new BigNumber(b.item.price)) -
-          Number(new BigNumber(a.item.price))
-        );
-      default:
-        return (
-          new Date(+b.item.listDate * 1000) - new Date(+a.item.listDate * 1000)
-        );
-    }
-  });
 
   return (
     <AnimateSharedLayout>
@@ -212,7 +227,7 @@ const Marketplace = ({ search }) => {
                 className="totw-secondary-text"
                 style={{ maxWidth: "none", marginTop: -12, fontSize: "0.95em" }}
               >
-                Total: {renderArray ? renderArray.length : "Loading..."}
+                Total: {_renderArray ? _renderArray.length : "Loading..."}
               </p>
               <Link href="/marketplace/creator">
                 <a>
@@ -298,7 +313,7 @@ const Marketplace = ({ search }) => {
         <br />
         <div className="">
           <div className="nft-list row mt-5 full-width justify-content-center">
-            {!renderArray || renderArray.length === 0 ? (
+            {!_renderArray || _renderArray.length === 0 ? (
               <div className="d-flex justify-content-center align-items-center w-100">
                 <Loading custom="Loading data from the blockchain... Please ensure your wallet is connected." />
               </div>
@@ -306,7 +321,7 @@ const Marketplace = ({ search }) => {
               <ErrorFallback custom="Error loading page" />
             ) : (
               <>
-                {renderArray.map((o, i) => (
+                {_renderArray.map((o, i) => (
                   <Order
                     searchFilter={searchFilter}
                     nftResult={o.item}
