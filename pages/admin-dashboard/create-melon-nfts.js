@@ -118,9 +118,7 @@ const CreateNFT = ({ modelData }) => {
         })
       ),
     }),
-    handleChange: (c) => {
-      
-    },
+    handleChange: (c) => {},
     onSubmit: (values) => {
       SubmitToServer();
     },
@@ -154,7 +152,6 @@ const CreateNFT = ({ modelData }) => {
     try {
       setShowPendingModal(true);
       const createNFTResult = await onCreateAndAddMelonNFTs();
-      
 
       if (!createNFTResult) return setShowPendingModal(false);
 
@@ -179,7 +176,6 @@ const CreateNFT = ({ modelData }) => {
       const resJSON = await res.json();
 
       if (resJSON.error && resJSON.error.errors) {
-        
         const ogErrors = Object.assign({}, resJSON.error.errors);
         Object.keys(ogErrors).map((e) => {
           ogErrors[e] = resJSON.error.errors[e].message;
