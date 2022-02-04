@@ -314,7 +314,7 @@ const Marketplace = ({ search }) => {
         <div className="">
           <div className="nft-list row mt-5 full-width justify-content-center">
             {!_renderArray || _renderArray.length === 0 ? (
-              <div className="grid grid-cols-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full">
+              <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full">
                 {new Array(12).fill(0).map((_, i) => (
                   <MyNFTItemSkeleton key={i} className="col-span-1" />
                 ))}
