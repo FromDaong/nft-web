@@ -6,6 +6,9 @@ import BlankModal from "../../components/BlankModal";
 import useListOrder from "../../hooks/useListOrder";
 import useGetMinterIsApprovedForAll from "../../hooks/useGetMinterIsApprovedForAll";
 import useApproveMarketplace from "../../hooks/useApproveMarketplace";
+import BigNumber from "bignumber.js";
+import useGetOpenOrdersForNft from "../../hooks/useGetOpenOrdersForNft";
+import { getDisplayBalance } from "../../utils/formatBalance";
 
 const WalletModal = ({
   show,
@@ -73,6 +76,13 @@ export const ListOrderModalBody = ({
   const maxUnixTimestamp = 2147483647;
   const [listExpires, setListExpires] = useState(maxUnixTimestamp);
 
+  const openOrders = useGetOpenOrdersForNft(data.id) ?? [];
+  const lowestOpenOrder = new BigNumber(openOrders.reduce(
+      (lowest, order) =>
+        lowest.price < order.price ? lowest : order,
+      { price: 0 }
+    ).price);
+
   const cancelOrderFunc = async () => {
     onListOrder(
       data.id,
@@ -100,6 +110,11 @@ export const ListOrderModalBody = ({
         />
         <Form.Text className="text-muted">
           This is the price for someone to buy your NFT
+        </Form.Text>
+      </Form.Group>
+      <Form.Group>
+        <Form.Text className="text-muted">
+          Floor price: {getDisplayBalance(lowestOpenOrder)}
         </Form.Text>
       </Form.Group>
       {data.balance > 1 && (

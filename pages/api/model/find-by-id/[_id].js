@@ -11,14 +11,12 @@ export default async (req, res) => {
 
   switch (method) {
     case "GET":
-      console.log(req.query);
       try {
-        let modelRes = await Model.findById(_id);
+        let modelRes = await Model.findOne({address: _id});
 
         if (!modelRes) return res.status(404);
 
         const returnData = { ...modelRes.toObject() };
-        console.log({ returnData });
         res.status(200).json(returnData);
       } catch (error) {
         console.error({ error });

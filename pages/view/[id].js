@@ -31,8 +31,9 @@ import {
 } from "react-bootstrap-icons";
 import BigNumber from "bignumber.js";
 import Link from "next/link";
+import Dropdown from "react-bootstrap/Dropdown";
 import useGetIsSubscribed from "../../hooks/useGetIsSubscribed";
-import { gql, useQuery, ApolloConsumer } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 
 const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   const { account } = useWallet();
@@ -183,6 +184,7 @@ const ViewNFT = ({ nftData, image, account }) => {
   const totwNftCost = useGetTreatNFTCost(nftData.id);
   const creatorNftCost = getCreatorNftCost(nftData.id);
   const subscriberNftCost = getSubscriberNftCost(nftData.id);
+  const [sortBy, setSortBy] = useState("Price Low to High");
 
   let nftCost = nftData.old_totw ? totwNftCost : creatorNftCost;
   nftCost = nftData.subscription_nft ? subscriberNftCost : nftCost;
@@ -202,7 +204,20 @@ const ViewNFT = ({ nftData, image, account }) => {
     nftData.id,
     nftCost
   );
-  const openOrders = useGetOpenOrdersForNft(nftData.id);
+
+  const openOrders = useGetOpenOrdersForNft(nftData.id) ?? [];
+  // Get lowest price value in open orders
+  const lowestOpenOrder = new BigNumber(
+    openOrders.reduce(
+      (lowest, order, index) => {
+        const price = new BigNumber(order.price);
+        const lowestPrice = new BigNumber(lowest.price);
+        if (index === 0) return order;
+        return price.lt(lowestPrice) ? order : lowest;
+      },
+      { price: 0 }
+    ).price
+  );
 
   const {
     loading: loadingResaleHistory,
@@ -264,6 +279,29 @@ const ViewNFT = ({ nftData, image, account }) => {
     }
   );
 
+  let allData = [];
+  if (resaleHistoryData && mintHistoryData) {
+    allData.push([
+      ...resaleHistoryData.sales.map((sale) => ({
+        ...sale,
+        transactionType: "resale",
+      })),
+      ...mintHistoryData.sales.map((sale) => ({
+        ...sale,
+        transactionType: "mint",
+      })),
+    ]);
+  }
+
+  allData = allData.flat();
+  // Sort all data by recency
+  allData.sort((a, b) => {
+    const aDate = new Number(a.purchaseDate);
+    const bDate = new Number(b.purchaseDate);
+    return aDate > bDate ? -1 : 1;
+  });
+  const loadingHistory = loadingMintHistory && loadingResaleHistory;
+
   const onMintNft = async () => {
     if (nftData.subscription_nft) return onMintSubscriberNft();
     if (nftData.old_totw || nftData.old_totm) {
@@ -289,88 +327,75 @@ const ViewNFT = ({ nftData, image, account }) => {
     };
   });
 
-  const purchaseHistoryRender =
-    mintHistoryData &&
-    mintHistoryData.sales.map((e) => (
-      <div className="history-event d-flex justify-content-between">
-        <div className="d-flex align-items-center">
-          <div className="pic">
+  const setSort = (sortBy) => {
+    setSortBy(sortBy);
+  };
+
+  const sortedArray = openOrders.sort((a, b) => {
+    switch (sortBy) {
+      case "Recent":
+        return Number(a.listDate) - Number(b.listDate);
+      case "Price Low to High":
+        return Number(a.price) - Number(b.price);
+      case "Price High to Low":
+        return Number(b.price) - Number(a.price);
+      default:
+        return Number(a.listDate) - Number(b.listDate);
+    }
+  });
+
+  const purchaseHistoryRender = allData.map((e) => (
+    <div className="history-event d-flex justify-content-between">
+      <div className="d-flex align-items-center">
+        <div className="pic">
+          {e.transactionType === "mint" ? (
             <Bag size={32} style={{ color: "DA5184" }} />
-          </div>
-          <div className="details">
-            <div className="label">
-              {`${new Date(
-                e.purchaseDate * 1000
-              ).toLocaleDateString()} at ${new Date(
-                e.purchaseDate * 1000
-              ).toLocaleTimeString()}`}
-            </div>
-            <div className="event">
-              {e.buyer.substring(0, 6)}...{e.buyer.substr(-5)} purchased for{" "}
-              <b>{Web3.utils.fromWei(e.cost)}</b>
-            </div>
-          </div>
+          ) : (
+            <ShopWindow size={32} style={{ color: "DA5184" }} />
+          )}
         </div>
-        <div>
-          <a href={"https://bscscan.com/tx/" + e.id} target="_blank">
-            <ArrowUpRightSquare size={24} />
-          </a>
+        <div className="details">
+          <div className="label">
+            {`${new Date(
+              e.purchaseDate * 1000
+            ).toLocaleDateString()} at ${new Date(
+              e.purchaseDate * 1000
+            ).toLocaleTimeString()}`}
+          </div>
+          <div className="event">
+            {e.buyer.substring(0, 6)}...{e.buyer.substr(-5)}{" "}
+            {e.transactionType === "mint" ? "purchased" : "bought a resale"} for{" "}
+            <b>{Web3.utils.fromWei(e.cost)}</b>
+          </div>
         </div>
       </div>
-    ));
-
-  const resaleHistoryRender =
-    resaleHistoryData &&
-    resaleHistoryData.sales &&
-    resaleHistoryData.sales.map((e) => (
-      <div className="history-event d-flex justify-content-between">
-        <div className="d-flex align-items-center">
-          <div className="pic">
-            <Bag size={32} style={{ color: "DA5184" }} />
-          </div>
-          <div className="details">
-            <div className="label">
-              {`${new Date(
-                e.purchaseDate * 1000
-              ).toLocaleDateString()} at ${new Date(
-                e.purchaseDate * 1000
-              ).toLocaleTimeString()}`}
-            </div>
-            <div className="event">
-              {e.buyer.substring(0, 6)}...{e.buyer.substr(-5)} purchased for{" "}
-              <b>{Web3.utils.fromWei(e.cost)}</b>
-            </div>
-          </div>
-        </div>
-        <div>
-          <a href={"https://bscscan.com/tx/" + e.id} target="_blank">
-            <ArrowUpRightSquare size={24} />
-          </a>
-        </div>
-      </div>
-    ));
-
-  const openOrdersRender = openOrders
-    .sort((a, b) => new BigNumber(b.price) - new BigNumber(a.price))
-    .map((e) => (
-      <Link href={`/marketplace/resale?search=${nftData.name}`} passHref={true}>
-        <a>
-          <div className="history-event">
-            <div className="pic">
-              <ShopWindow size={35} style={{ color: "DA5184" }} />
-            </div>
-            <div className="details">
-              <div className="label">{e.seller}</div>
-              <div className="event">
-                is selling theirs for{" "}
-                {getDisplayBalance(new BigNumber(e.price))}
-                BNB
-              </div>
-            </div>
-          </div>
+      <div>
+        <a href={"https://bscscan.com/tx/" + e.id} target="_blank">
+          <ArrowUpRightSquare size={24} />
         </a>
-      </Link>
-    ));
+      </div>
+    </div>
+  ));
+
+  // Sort with lowest first
+  const openOrdersRender = sortedArray.map((e) => (
+    <Link href={`/marketplace/resale?search=${nftData.name}`} passHref={true}>
+      <a>
+        <div className="history-event">
+          <div className="pic">
+            <ShopWindow size={35} style={{ color: "DA5184" }} />
+          </div>
+          <div className="details">
+            <div className="label">{e.seller}</div>
+            <div className="event">
+              is selling theirs for {getDisplayBalance(new BigNumber(e.price))}
+              BNB
+            </div>
+          </div>
+        </div>
+      </a>
+    </Link>
+  ));
 
   return (
     <Layout>
@@ -453,6 +478,14 @@ const ViewNFT = ({ nftData, image, account }) => {
                 <div className="label">List Price</div>
                 <div className="number">{getDisplayBalance(nftCost)} BNB</div>
               </div>
+              {openOrders.length > 0 && (
+                <div className="stat">
+                  <div className="label">Floor Price</div>
+                  <div className="number">
+                    {getDisplayBalance(lowestOpenOrder)} BNB
+                  </div>
+                </div>
+              )}
               {/* <div className="stat">
               <div className="label">CREATOR SHARE</div>
               <div className="number">75%</div>
@@ -484,16 +517,13 @@ const ViewNFT = ({ nftData, image, account }) => {
                 <Nav.Item>
                   <Nav.Link eventKey="resale">Resale Listings</Nav.Link>
                 </Nav.Item>
-                {+nftData.id > 92 && (
+                {+nftData.id > 0 && (
                   <Nav.Item>
                     <Nav.Link eventKey="purchase_history">
                       Purchase History
                     </Nav.Link>
                   </Nav.Item>
                 )}
-                <Nav.Item>
-                  <Nav.Link eventKey="resale_history">Resale History</Nav.Link>
-                </Nav.Item>
               </Nav>
               <Tab.Content>
                 <Tab.Pane eventKey="resale" title="Resale Listings">
@@ -501,9 +531,43 @@ const ViewNFT = ({ nftData, image, account }) => {
                     <div className="history-title text-center mt-2">
                       Resale Marketplace Listings
                     </div>
-                    <div className="bio text-center">
-                      Total currently listed:{" "}
-                      {openOrdersRender && openOrdersRender.length}
+                    <div
+                      className="bio"
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <p>
+                        Total currently listed:{" "}
+                        {openOrdersRender && openOrdersRender.length}
+                      </p>
+                      <div>
+                        <Dropdown>
+                          <Dropdown.Toggle
+                            variant="transparent"
+                            id="dropdown-basic"
+                            size="lg"
+                          >
+                            {sortBy}
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => setSort("Recent")}>
+                              Most Recent
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              onClick={() => setSort("Price Low to High")}
+                            >
+                              Price Low to High
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              onClick={() => setSort("Price High to Low")}
+                            >
+                              Price High to Low
+                            </Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </div>
                     </div>
                     {/* <div className="bio">Coming soon...</div> */}
                     <div className="history-events">{openOrdersRender}</div>
@@ -514,33 +578,16 @@ const ViewNFT = ({ nftData, image, account }) => {
                     <div className="history-title text-center mt-2">
                       Purchase History
                     </div>
-                    {loadingResaleHistory ? (
+                    {loadingHistory ? (
                       <div className="bio text-center">Loading...</div>
                     ) : (
                       <div className="bio text-center">
-                        Total minted:{" "}
-                        {mintHistoryData && mintHistoryData.sales.length}
+                        Total minted: {allData && allData.length}
                       </div>
                     )}
                     <div className="history-events">
                       {purchaseHistoryRender}
                     </div>
-                  </div>
-                </Tab.Pane>
-                <Tab.Pane eventKey="resale_history" title="Purchase History">
-                  <div className="history-container">
-                    <div className="history-title text-center">
-                      Resale History
-                    </div>
-                    {loadingResaleHistory ? (
-                      <div className="bio text-center">Loading...</div>
-                    ) : (
-                      <div className="bio text-center">
-                        Total resold:{" "}
-                        {resaleHistoryData && resaleHistoryData.sales.length}
-                      </div>
-                    )}
-                    <div className="history-events">{resaleHistoryRender}</div>
                   </div>
                 </Tab.Pane>
               </Tab.Content>
