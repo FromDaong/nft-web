@@ -1,7 +1,6 @@
 import useSWR from "swr";
 import { useWallet } from "use-wallet";
 import Dropdown from "react-bootstrap/Dropdown";
-import Pagination from "react-bootstrap/Pagination";
 import Button from "react-bootstrap/Button";
 import React, { useState, useEffect, useReducer } from "react";
 import useGetAllOpenOrders from "../../hooks/useGetAllOpenOrders";
@@ -16,180 +15,53 @@ import { Order } from "../../components/MarketplaceListItem";
 import { motion, AnimateSharedLayout } from "framer-motion";
 import { forceCheck } from "react-lazyload";
 import Link from "next/link";
-import { usePagination } from "react-use-pagination";
 import BigNumber from "bignumber.js";
-import Fuse from "fuse.js";
+import axios from "axios";
 import Select from "react-select";
 import ErrorFallback from "../../components/Fallback/Error";
 import { useRouter } from "next/dist/client/router";
+import PaginationComponentV2 from "../../components/Pagination";
 
 const Marketplace = ({ search }) => {
   const maxId = useGetMaxIdForSale();
 
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [cancelOrderData, setCancelOrderData] = useState(null);
-  const [storedArray, setStoredArray] = useState(null);
   const [purchaseOrderData, setPurchaseOrderData] = useState(null);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
   const [orderBookArray, setOrderBookArray] = useState([]);
   const [searchFilter, setSearchFilter] = useState(search || "");
-  const [persistedPageNumber, setPersistedPageNumber] = useState(0);
   const [sortBy, setSortBy] = useState("Recent");
+  const [apiResponseData, setApiResponseData] = useState({
+    docs: [],
+    hasNextPage: false,
+    hasPrevPage: false,
+    totalPages: 1,
+    totalDocs: 0,
+    page: 1,
+    error: null,
+  });
+
   const [orderBook] = useGetAllOpenOrders(maxId);
   const { account } = useWallet();
   const [_, forceUpdate] = useReducer((x) => x + 1, 0);
   const router = useRouter();
 
   const initOrderBookArray = orderBook && orderBook.flat();
+  const { error, docs: orderBookArray } = apiResponseData;
 
   const updateObArr = () => {
-    const ob =
-      initOrderBookArray && initOrderBookArray.length > 0
-        ? initOrderBookArray
-        : storedArray;
-
-    if (ob) setOrderBookArray([]);
+    const ob = initOrderBookArray;
     if (ob) setOrderBookArray(ob);
     forceCheck();
   };
 
   useEffect(() => {
-    (async () => {
-      if (orderBookArray.length === 0) {
-        const storedArrayGrab = await localStorage.getItem("orderBookArray");
-        // await setStoredArray(JSON.parse(storedArrayGrab));
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
-    if (
-      initOrderBookArray &&
-      orderBookArray.length !== initOrderBookArray.length
-    ) {
-      updateObArr();
-      if (initOrderBookArray.length > 1) {
-        localStorage.setItem(
-          "orderBookArray",
-          JSON.stringify(initOrderBookArray)
-        );
-      }
-    }
-  }, [initOrderBookArray]);
-
-  const jsonBody = { nfts: orderBookArray.map((o) => o.nftId) };
-
-  const fetcher = (url) =>
-    fetch(url, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(jsonBody),
-    }).then((a) => a.json());
-
-  const { data: populatedNftData, error } = useSWR(
-    orderBookArray && orderBookArray.length > 0 && jsonBody
-      ? `/api/nft/get-many-nfts`
-      : null,
-    fetcher
-  );
-
-  const populatedArray =
-    orderBookArray &&
-    populatedNftData &&
-    orderBookArray
-      .map((orderBookNft) => {
-        const nftResult = populatedNftData?.find(
-          (x) => x.id === orderBookNft.nftId
-        );
-        if (!nftResult) return undefined;
-        return { ...orderBookNft, ...nftResult };
-      })
-      .filter((e) => e);
-
-  const fuse = new Fuse(populatedArray, {
-    keys: ["name", "description", "model_handle", "tags"],
-    shouldSort: false,
-    useExtendedSearch: true,
-    includeScore: true,
-  });
-
-  let selectedOptionsStr = "";
-  selectedOptions.forEach((e) => (selectedOptionsStr += `="${e.value.trim()}" `));
-
-  let filtered;
-
-  if (searchFilter !== "" && selectedOptionsStr === "") {
-    filtered = fuse.search({
-      $or: [
-        { name: searchFilter },
-        { description: searchFilter },
-        { model_handle: searchFilter },
-      ],
-    });
-  } else if (searchFilter !== "" && selectedOptionsStr !== "") {
-    filtered = fuse.search({
-      $and: [{ tags: selectedOptionsStr }],
-      $or: [{ name: searchFilter }],
-    });
-  } else if (searchFilter == "" && selectedOptionsStr !== "") {
-    filtered = fuse.search({
-      $and: [{ tags: selectedOptionsStr }],
-    });
-  } else if (populatedArray) {
-    filtered = populatedArray.map((d, idx) => ({
-      item: d,
-      refIndex: idx,
-    }));
-  }
-
-  const renderArray = filtered?.sort((a, b) => {
-    switch (sortBy) {
-      case "Relevancy":
-        return Number(a.score) - Number(b.score);
-      case "Price Low to High":
-        return (
-          Number(new BigNumber(a.item.price)) -
-          Number(new BigNumber(b.item.price))
-        );
-      case "Price High to Low":
-        return (
-          Number(new BigNumber(b.item.price)) -
-          Number(new BigNumber(a.item.price))
-        );
-      default:
-        return (
-          new Date(+b.item.listDate * 1000) - new Date(+a.item.listDate * 1000)
-        );
-    }
-  });
-
-  const {
-    currentPage,
-    totalPages,
-    setPage,
-    setPageSize,
-    setNextPage,
-    setPreviousPage,
-    startIndex,
-    endIndex,
-  } = usePagination({
-    totalItems: renderArray ? renderArray.length : 0,
-    initialPageSize: 10,
-  });
-
-  useEffect(() => {
     const queryFilter = router.query.s;
-    const persistedPageNumber = router.query.p;
     const tags = router.query.tags;
 
     setSearchFilter(queryFilter ?? "");
-    setPersistedPageNumber(
-      persistedPageNumber ? Number(persistedPageNumber) : 0
-    );
 
     if (tags) {
       let renamedTags = tags.replaceAll("=", ",");
@@ -209,62 +81,80 @@ const Marketplace = ({ search }) => {
   }, []);
 
   useEffect(() => {
-    if (searchFilter || sortBy || currentPage) {
+    if (searchFilter || sortBy) {
       router.push(
-        `${router.pathname}?${searchFilter && `s=${searchFilter}&`}${
-          currentPage ? `p=${currentPage}&` : ""
-        }${selectedOptionsStr ? `tags=${selectedOptionsStr}&` : ""}${
+        `${router.pathname}?${searchFilter && `s=${searchFilter}&`}p=${
+          router.query.p
+        }&
+        ${/*selectedOptionsStr ? `tags=${selectedOptionsStr}&` : ""*/ ""}${
           sortBy ? `sort=${sortBy}&` : ""
         }`.trim(),
         undefined,
         { shallow: true }
       );
     }
-  }, [searchFilter, sortBy, currentPage, selectedOptionsStr]);
-
-  useEffect(() => {
-    if (renderArray?.length !== 0 && persistedPageNumber) {
-      setPage(persistedPageNumber);
-      setPersistedPageNumber(null);
-    }
-  }, [renderArray]);
-
-  const startNumber = currentPage - 5 > 0 ? currentPage - 5 : 0;
-  const endNumber = currentPage + 5 < totalPages ? currentPage + 5 : totalPages;
-
-  let items = [];
-  if (currentPage !== 0)
-    items.push(<Pagination.First onClick={() => setPage(0)} />);
-  if (currentPage !== 0)
-    items.push(<Pagination.Prev onClick={setPreviousPage} />);
-
-  for (let number = startNumber; number < endNumber; number++) {
-    items.push(
-      <Pagination.Item
-        key={number}
-        active={number === currentPage}
-        onClick={() => {
-          setPageSize(25);
-          setPage(number);
-        }}
-      >
-        {number + 1}
-      </Pagination.Item>
-    );
-  }
-  if (currentPage !== totalPages - 1)
-    items.push(<Pagination.Next onClick={setNextPage} />);
-  if (currentPage !== totalPages - 1)
-    items.push(<Pagination.Last onClick={() => setPage(totalPages)} />);
+  }, [searchFilter, sortBy]);
 
   useEffect(() => {
     updateObArr();
     forceUpdate();
-  }, [sortBy, storedArray, searchFilter]);
+  }, [sortBy, router]);
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [currentPage])
+    setLoading(true);
+    axios
+      .post(`/api/nft/get-many-nfts?p=${router.query.p ?? 1}`, {
+        ...jsonBody,
+      })
+      .then((res) => setApiResponseData(res.data))
+      .then(() => setLoading(false));
+  }, [router, orderBookArray, jsonBody]);
+
+  const navigate = (page) => {
+    window.scrollTo(0, 0);
+
+    router.push(
+      `${router.pathname}?${searchFilter && `s=${searchFilter}&`}p=${page}`,
+      undefined,
+      { shallow: true }
+    );
+  };
+
+  const jsonBody = { nfts: orderBookArray.map((o) => o.nftId) };
+
+  const populatedArray =
+    orderBookArray &&
+    populatedNftData &&
+    populatedNftData
+      .map((x) => {
+        const nftResult = orderBookArray?.find(
+          (orderBookNft) => x.nftId === orderBookNft.id
+        );
+        if (!nftResult) return undefined;
+        return { ...orderBookNft, ...nftResult };
+      })
+      .filter((e) => e);
+
+  const renderArray = populatedArray?.sort((a, b) => {
+    switch (sortBy) {
+      case "Relevancy":
+        return Number(a.score) - Number(b.score);
+      case "Price Low to High":
+        return (
+          Number(new BigNumber(a.item.price)) -
+          Number(new BigNumber(b.item.price))
+        );
+      case "Price High to Low":
+        return (
+          Number(new BigNumber(b.item.price)) -
+          Number(new BigNumber(a.item.price))
+        );
+      default:
+        return (
+          new Date(+b.item.listDate * 1000) - new Date(+a.item.listDate * 1000)
+        );
+    }
+  });
 
   return (
     <AnimateSharedLayout>
@@ -416,7 +306,7 @@ const Marketplace = ({ search }) => {
               <ErrorFallback custom="Error loading page" />
             ) : (
               <>
-                {renderArray.slice(startIndex, endIndex).map((o, i) => (
+                {renderArray.map((o, i) => (
                   <Order
                     searchFilter={searchFilter}
                     nftResult={o.item}
@@ -435,7 +325,17 @@ const Marketplace = ({ search }) => {
           </div>
 
           <div className="d-flex justify-content-center">
-            <Pagination>{items}</Pagination>
+            <PaginationComponentV2
+              hasNextPage={apiResponseData.hasNextPage}
+              hasPrevPage={apiResponseData.hasPrevPage}
+              totalPages={apiResponseData.totalPages}
+              totalDocs={apiResponseData.totalDocs}
+              page={apiResponseData.page}
+              goNext={() => navigate(Number(apiResponseData.page) + 1)}
+              goPrev={() => navigate(Number(apiResponseData.page) - 1)}
+              loading={loading}
+              setPage={(page) => navigate(Number(page))}
+            />
           </div>
         </div>
       </motion.main>
