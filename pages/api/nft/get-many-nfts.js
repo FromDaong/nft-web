@@ -22,7 +22,7 @@ const treatNFTMinter = new web3.eth.Contract(
 
 export default async (req, res) => {
   const {
-    query: { id },
+    query: { id, p },
     method,
   } = req;
 
@@ -30,16 +30,28 @@ export default async (req, res) => {
     case "POST":
       try {
         if (!req.body.nfts) return res.status(200).json([]);
+        console.log(req.body);
+        const options = {
+          page: req.query.p ?? 1,
+          limit: 24,
+          collation: {
+            locale: "en",
+          },
+        };
+        let NFTres = await NFT.paginate(
+          { id: { $in: req.body.nfts } },
+          options
+        );
 
-        let NFTres = await NFT.find({ id: { $in: req.body.nfts } });
+        console.log(NFTres);
 
-        if (!NFTres)
+        if (NFTres.docs.length === 0)
           return res
             .status(400)
             .json({ success: false, error: "nft not found" });
 
-        const returnArray = await Promise.all(
-          NFTres.map(async (nft) => {
+        NFTres.docs = await Promise.all(
+          NFTres.docs.map(async (nft) => {
             const maxSupply = (
               await getNftMaxSupply(treatNFTMinter, id)
             )?.toNumber();
@@ -54,7 +66,7 @@ export default async (req, res) => {
           })
         );
 
-        res.status(200).json(returnArray);
+        res.status(200).json(NFTres);
       } catch (error) {
         res.status(400).json({ success: false, error: error });
       }
