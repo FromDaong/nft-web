@@ -52,6 +52,9 @@ const NFTSchema = new mongoose.Schema(
     old_totw: {
       type: Boolean,
     },
+    old_totm: {
+      type: Boolean,
+    },
     subscription_nft: {
       type: Boolean,
     },

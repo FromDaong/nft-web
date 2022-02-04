@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import toBuffer from "blob-to-buffer";
 import { Form, Button } from "react-bootstrap";
 import { useFormik, FieldArray, FormikProvider } from "formik";
-import useCreateAndAddMelonNFTs from "../../hooks/useCreateAndAddMelonNFTs";
+import useCreateBulkTotwNFTs from "../../hooks/useCreateBulkTotwNFTs";
 import { useRouter } from "next/router";
 import { useWallet } from "use-wallet";
 import Loading from "../../components/Loading";
@@ -15,8 +15,9 @@ import BlankModal from "../../components/BlankModal";
 import { FormControl } from "react-bootstrap";
 import { useEffect } from "react";
 import * as Yup from "yup";
-import useSWR from "swr";
+import Web3 from "web3";
 import axios from "axios";
+import useSWR from "swr";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -29,13 +30,13 @@ const CreateNFT = ({ modelData }) => {
   const [showCompleteModal, setShowCompleteModal] = useState(null);
   const [modelUsername, setModelUsername] = useState("");
 
+  const [maxSupplyArray, setMaxSupplyArray] = useState(null);
+  const [amountsArray, setAmountsArray] = useState(null);
+  const [totwModelData, setTotwModelData] = useState(null);
+
   const { data: bnbPrice } = useSWR(
     `https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT`
   );
-
-  const [maxSupplyArray, setMaxSupplyArray] = useState(null);
-  // const [amountsArray, setAmountsArray] = useState(null);
-  const [totwModelData, setTotwModelData] = useState(null);
 
   const onDrop = (files) => {
     if (files && files.length > 0) {
@@ -64,7 +65,6 @@ const CreateNFT = ({ modelData }) => {
         (err, results) => {
           if (err)
             return console.error("=> IPFS Dropzone: IPFS Upload Error: ", err);
-
           setIpfsFiles(results);
         }
       );
@@ -83,6 +83,7 @@ const CreateNFT = ({ modelData }) => {
     initialValues: {
       nfts: ipfsFiles.map((file) => ({
         name: "",
+        list_price: 1,
         description: "",
         blurhash: false,
         tags: [],
@@ -102,7 +103,7 @@ const CreateNFT = ({ modelData }) => {
         Yup.object().shape({
           id: Yup.number(),
           name: Yup.string().required("Please add a name"),
-          // list_price: Yup.string().required("Please add the NFT list price"),
+          list_price: Yup.string().required("Please add the NFT list price"),
           description: Yup.string().required("Please add an NFT description"),
           external_url: Yup.string().required("Please add a external_url"),
           blurhash: Yup.string(),
@@ -124,11 +125,9 @@ const CreateNFT = ({ modelData }) => {
     },
   });
 
-  const { onCreateAndAddMelonNFTs } = useCreateAndAddMelonNFTs(
+  const { onCreateBulkTotwNFTs } = useCreateBulkTotwNFTs(
     maxSupplyArray,
-    totwModelData
-      ? Array(maxSupplyArray.length).fill(totwModelData.address)
-      : ["0x"]
+    totwModelData ? totwModelData.address : "0x"
   );
 
   const setModelData = async () => {
@@ -140,18 +139,18 @@ const CreateNFT = ({ modelData }) => {
 
   useEffect(() => {
     const maxSupplies = formik.values.nfts.map((n) => n.max_supply);
-    // const amounts = formik.values.nfts.map(
-    //   (n) => n.list_price && Web3.utils.toWei(n.list_price.toString())
-    // );
+    const amounts = formik.values.nfts.map(
+      (n) => n.list_price && Web3.utils.toWei(n.list_price.toString())
+    );
 
     setMaxSupplyArray(maxSupplies);
-    // setAmountsArray(amounts);
+    setAmountsArray(amounts);
   }, [formik.values.nfts]);
 
   const SubmitToServer = async () => {
     try {
       setShowPendingModal(true);
-      const createNFTResult = await onCreateAndAddMelonNFTs();
+      const createNFTResult = await onCreateBulkTotwNFTs();
 
       if (!createNFTResult) return setShowPendingModal(false);
 
@@ -161,7 +160,7 @@ const CreateNFT = ({ modelData }) => {
         blurhash: nftData.blurhash ? nftData.blurhash : null,
       }));
 
-      const res = await fetch(`/api/admin/create-melon-nfts`, {
+      const res = await fetch(`/api/model/create-totm-nfts`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -176,6 +175,7 @@ const CreateNFT = ({ modelData }) => {
       const resJSON = await res.json();
 
       if (resJSON.error && resJSON.error.errors) {
+        console.error(resJSON.error);
         const ogErrors = Object.assign({}, resJSON.error.errors);
         Object.keys(ogErrors).map((e) => {
           ogErrors[e] = resJSON.error.errors[e].message;
@@ -214,7 +214,7 @@ const CreateNFT = ({ modelData }) => {
 
       <div className="container">
         <Hero
-          title="Create $Melon NFTs"
+          title="Create TOTM NFTs"
           subtitle="Complete this form carefully. Make sure you don't leave this page after submitting the creation transaction."
         />
 
@@ -268,7 +268,7 @@ const CreateNFT = ({ modelData }) => {
               formik.values.nfts.length > 0 &&
               formik.values.nfts.map((nft, i) => (
                 <CreatingNFTItem
-                  bnbPrice={bnbPrice}
+                  bnbPrice={bnbPrice.price}
                   formik={formik}
                   modelData={totwModelData}
                   index={i}
@@ -276,7 +276,6 @@ const CreateNFT = ({ modelData }) => {
                   imageUrl={nft.image}
                   handleChange={formik.handleChange}
                   arrayHelpers={arrayHelpers}
-                  disablePrice
                 />
               ))
             }

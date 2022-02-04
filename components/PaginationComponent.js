@@ -1,4 +1,5 @@
-import React from "react";
+import { useRouter } from "next/dist/client/router";
+import React, { useEffect } from "react";
 import Pagination from "react-bootstrap/Pagination";
 
 const PaginationComponent = ({
@@ -8,9 +9,16 @@ const PaginationComponent = ({
   setPageSize,
   setNextPage,
   setPreviousPage,
+  fixedPageSize,
 }) => {
   const startNumber = currentPage - 5 > 0 ? currentPage - 5 : 0;
   const endNumber = currentPage + 5 < totalPages ? currentPage + 5 : totalPages;
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.pathname === "/my-nfts") return;
+    window.scrollTo(0, 0);
+  }, [currentPage]);
 
   let items = [];
   if (currentPage !== 0)
@@ -24,7 +32,9 @@ const PaginationComponent = ({
         key={number}
         active={number === currentPage}
         onClick={() => {
-          setPageSize(25);
+          if (!fixedPageSize) {
+            setPageSize(25);
+          }
           setPage(number);
         }}
       >
