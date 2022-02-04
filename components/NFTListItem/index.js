@@ -7,7 +7,8 @@ import { motion } from "framer-motion";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import Link from "next/link";
-// import useIntersectionObserver from "../../hooks/useIntersection";
+import { InView } from "react-intersection-observer";
+import axios from "axios";
 
 let easing = [0.175, 0.85, 0.42, 0.96];
 
@@ -44,9 +45,10 @@ const NFTListItem = ({
   soldOut,
 }) => {
   const [image, setBase64Image] = useState();
+  const [visible, setVisible] = useState(false);
+  const [model, setModel] = useState({});
 
   const rr = createRef();
-  // const isIntersecting = useIntersectionObserver(rr);
 
   // console.log({ data, isIntersecting });
 
@@ -61,6 +63,15 @@ const NFTListItem = ({
       }
     })();
   }, [data]);
+
+  useEffect(() => {
+    if (visible) {
+      axios
+        .get(`/api/model/find-by-id/${data.model_bnb_address}`)
+        .then((res) => setModel(res.data))
+        .catch((err) => console.error(err));
+    }
+  }, [visible]);
 
   if (!data.attributes) return <div></div>;
 
