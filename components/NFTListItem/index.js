@@ -7,7 +7,8 @@ import { motion } from "framer-motion";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import Link from "next/link";
-// import useIntersectionObserver from "../../hooks/useIntersection";
+import { InView } from "react-intersection-observer";
+import axios from "axios";
 
 let easing = [0.175, 0.85, 0.42, 0.96];
 
@@ -44,9 +45,10 @@ const NFTListItem = ({
   soldOut,
 }) => {
   const [image, setBase64Image] = useState();
+  const [visible, setVisible] = useState(false);
+  const [model, setModel] = useState({});
 
   const rr = createRef();
-  // const isIntersecting = useIntersectionObserver(rr);
 
   // console.log({ data, isIntersecting });
 
@@ -61,6 +63,15 @@ const NFTListItem = ({
       }
     })();
   }, [data]);
+
+  useEffect(() => {
+    if (visible) {
+      axios
+        .get(`/api/model/find-by-id/${data.model_bnb_address}`)
+        .then((res) => setModel(res.data))
+        .catch((err) => console.error(err));
+    }
+  }, [visible]);
 
   if (!data.attributes) return <div></div>;
 
@@ -99,85 +110,94 @@ const NFTListItem = ({
                 )}
             </div>
           </div>
-          <Link href={`/creator/${data.attributes[0].value.replace("@", "")}`}>
-            <a>
-              <div
-                className="profile-pic"
-                style={{ backgroundImage: `url(${data.model_profile_pic})` }}
-              />
-            </a>
-          </Link>
+        </div>
+        <Link href={`/creator/${model.username}`}>
+          <a>
+            <div
+              className="profile-pic"
+              style={{ backgroundImage: `url(${model.profile_pic})` }}
+            />
+          </a>
+        </Link>
 
-          <div
-            className="img-container text-center text-lg-left d-flex justify-content-center align-items-center"
-            style={{
-              background: "black",
-              border: "3px solid #E795B6",
-              borderRadius: 10,
-              minHeight: 300,
-            }}
+        <div
+          className="img-container text-center text-lg-left d-flex justify-content-center align-items-center"
+          style={{
+            background: "black",
+            border: "3px solid #E795B6",
+            borderRadius: 10,
+            minHeight: 300,
+          }}
+        >
+          <Spinner
+            animation="border"
+            role="status"
+            className="mt-5 mb-5"
+            style={{ position: "absolute", margin: "auto", zIndex: 1 }}
+            variant="light"
           >
-            <Spinner
-              animation="border"
-              role="status"
-              className="mt-5 mb-5"
-              style={{ position: "absolute", margin: "auto", zIndex: 1 }}
-              variant="light"
-            >
-              <span className="sr-only">Loading...</span>
-            </Spinner>
-            {data.image ? (
-              <div
-                style={{
-                  background: `url(${data.image})`,
-                  minHeight: 375,
-                  zIndex: 100,
-                }}
-                className="dynamic-image"
-              />
-            ) : (
-              <>
-                {isBlurhashValid(data.blurhash).result ? (
-                  <>
-                    <div className="info-overlay" style={{ zIndex: 100 }}>
-                      <EyeSlash size={32} />
-                      <div>Purchase to View</div>
-                    </div>
-                    <Blurhash
-                      style={{
-                        borderRadius: 8,
-                        overflow: "hidden",
-                        zIndex: 95,
-                      }}
-                      hash={data.blurhash}
-                      width={"100%"}
-                      height={375}
-                      resolutionX={32}
-                      resolutionY={32}
-                      punch={1}
-                    />
-                  </>
-                ) : (
-                  <h3 className="text-center p4">
-                    Please contaact admin. Invalid Blurhash.
-                  </h3>
-                )}
-              </>
+            <span className="sr-only">Loading...</span>
+          </Spinner>
+          {data.image ? (
+            <div
+              style={{
+                background: `url(${data.image})`,
+                minHeight: 375,
+                zIndex: 100,
+              }}
+              className="dynamic-image"
+            />
+          ) : (
+            <>
+              {isBlurhashValid(data.blurhash).result ? (
+                <>
+                  <div className="info-overlay" style={{ zIndex: 100 }}>
+                    <EyeSlash size={32} />
+                    <div>Purchase to View</div>
+                  </div>
+                  <Blurhash
+                    style={{
+                      borderRadius: 8,
+                      overflow: "hidden",
+                      zIndex: 95,
+                    }}
+                    hash={data.blurhash}
+                    width={"100%"}
+                    height={375}
+                    resolutionX={32}
+                    resolutionY={32}
+                    punch={1}
+                  />
+                </>
+              ) : (
+                <h3 className="text-center p4">
+                  Please contaact admin. Invalid Blurhash.
+                </h3>
+              )}
+            </>
+          )}
+        </div>
+        <div className="text-container container">
+          <div className="title-section">
+            <div className="title">{data.name}</div>
+            <div className="s">
+              {owner && <b>Creator: </b>}
+              {data.attributes[0].value}
+            </div>
+            {owner && (
+              <div className="name">
+                <b>Owner: </b>
+                {owner.slice(0, 6) + "..." + owner.slice(-6)}
+              </div>
             )}
           </div>
-          <div className="text-container container">
-            <div className="title-section">
-              <div className="title">{data.name}</div>
-              <div className="s">
-                {owner && <b>Creator: </b>}
-                {data.attributes[0].value}
-              </div>
-              {owner && (
-                <div className="name">
-                  <b>Owner: </b>
-                  {owner.slice(0, 6) + "..." + owner.slice(-6)}
-                </div>
-              )}
+        </div>
+        <div className="text-container container">
+          <div className="title-section">
+            <div className="title">{data.name}</div>
+            <div className="s">
+              {owner && <b>Creator: </b>}
+              {model.username}
             </div>
             {(price || data.list_price) && (
               <div className="stats">

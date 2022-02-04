@@ -31,7 +31,7 @@ export default async (req, res) => {
             .json({ success: false, error: "model not found" });
 
         const returnData = { ...modelRes.toObject() };
-        delete returnData.model_bnb_address;
+        //delete returnData.model_bnb_address;
         if (returnData.blurhash) delete returnData.image;
 
         res.status(200).json(returnData);
