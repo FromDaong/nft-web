@@ -24,28 +24,6 @@ const Creators = () => {
 
   const modelData = apiResponseData.docs;
 
-  const fuse = new Fuse(modelData, {
-    keys: ["username", "display_name"],
-    shouldSort: true,
-    useExtendedSearch: true,
-    includeScore: true,
-  });
-
-  let filteredArray;
-  // yes search + no dropdown
-  if (searchFilter !== "") {
-    filteredArray = fuse.search({
-      $or: [{ username: searchFilter }, { display_name: searchFilter }],
-    });
-  } else {
-    filteredArray =
-      modelData &&
-      modelData.map((d, idx) => ({
-        item: d,
-        refIndex: idx,
-      }));
-  }
-
   useEffect(() => {
     const queryFilter = router.query.s;
     setSearchFilter(queryFilter ?? "");
@@ -62,13 +40,6 @@ const Creators = () => {
       );
     }
   }, [searchFilter]);
-
-  useEffect(() => {
-    if (filteredArray && persistedPageNumber) {
-      setPage(persistedPageNumber);
-      setPersistedPageNumber(null);
-    }
-  }, [filteredArray]);
 
   useEffect(() => {
     setLoading(true);
@@ -120,7 +91,7 @@ const Creators = () => {
         </div>
         <br />
         {!loading ? (
-          <ModelList totwOnly={false} modelData={filteredArray || []} />
+          <ModelList totwOnly={false} modelData={modelData || []} />
         ) : (
           <ErrorFallback custom="Failed to load models" />
         )}
