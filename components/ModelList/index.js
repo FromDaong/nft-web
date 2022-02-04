@@ -13,12 +13,13 @@ import * as Scroll from "react-scroll";
 
 const ModelList = ({ totwOnly = false, modelData, startIndex, endIndex }) => {
   let modelListRender;
+  console.log({ modelData });
 
   if (modelData) {
     const mR = modelData
       // .slice(startIndex, endIndex || modelData.length)
       .map((raw) => {
-        const model = raw.item;
+        const model = raw;
 
         if (totwOnly) {
           if (model && model.totw) {
