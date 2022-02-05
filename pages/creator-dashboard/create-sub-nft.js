@@ -43,6 +43,22 @@ const CreateNFT = ({ modelData }) => {
                   "7a7b755c9c067dedb142c2cb9e9c077aebf561b552c440bf67b87331bac32939",
               },
             })
+            .then(() =>
+              axios.post(
+                "https://api.pinata.cloud/pinning/pinByHash",
+                {
+                  hashToPin: response.data.IpfsHash,
+                },
+                {
+                  headers: {
+                    "Content-Type": `multipart/form-data`,
+                    pinata_api_key: "b949556813c4f284c550",
+                    pinata_secret_api_key:
+                      "7a7b755c9c067dedb142c2cb9e9c077aebf561b552c440bf67b87331bac32939",
+                  },
+                }
+              )
+            )
             .then(function (response) {
               return cb(
                 null,

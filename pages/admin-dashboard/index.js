@@ -56,11 +56,9 @@ const AdminDashboardWrapper = () => {
           subtitle={"You are not permitted to use this dashboard"}
           additionalContent={
             <Link href="/admin-dashboard/login">
-              <a>
-                <Button variant="primary  w-sm-100">
-                  <b>{"Login to Panel"}</b>
-                </Button>
-              </a>
+              <Button variant="primary  w-sm-100">
+                <b>{"Login to Panel"}</b>
+              </Button>
             </Link>
           }
         />
@@ -88,18 +86,14 @@ const AdminDashboard = () => {
                 </a>
               </Link>
               <Link href="/admin-dashboard/create-melon-nfts">
-                <a>
-                  <Button variant="success w-sm-100 mr-2">
-                    <b>{"Create $Melon NFTs"}</b>
-                  </Button>
-                </a>
+                <Button variant="success w-sm-100 mr-2">
+                  <b>{"Create $Melon NFTs"}</b>
+                </Button>
               </Link>
               <Link href="/api/admin/logout">
-                <a>
-                  <Button variant="primary  w-sm-100">
-                    <b>{"Logout"}</b>
-                  </Button>
-                </a>
+                <Button variant="primary  w-sm-100">
+                  <b>{"Logout"}</b>
+                </Button>
               </Link>
             </>
           }
@@ -125,15 +119,13 @@ const AdminDashboard = () => {
               {data &&
                 data.pendingModels.map((m) => (
                   <Link href={`/admin-dashboard/${m.username}`}>
-                    <a>
-                      <tr>
-                        <td className="d-flex align-center justify-content-center">
-                          <img src={m.profile_pic} style={{ maxHeight: 75 }} />
-                        </td>
-                        <td className="text-center">{m.username}</td>
-                        <td className="text-center">{m.address}</td>
-                      </tr>
-                    </a>
+                    <tr>
+                      <td className="d-flex align-center justify-content-center">
+                        <img src={m.profile_pic} style={{ maxHeight: 75 }} />
+                      </td>
+                      <td className="text-center">{m.username}</td>
+                      <td className="text-center">{m.address}</td>
+                    </tr>
                   </Link>
                 ))}
             </tbody>
@@ -154,15 +146,13 @@ const AdminDashboard = () => {
               {data &&
                 data.acceptedModels.map((m) => (
                   <Link href={`/admin-dashboard/${m.username}`}>
-                    <a>
-                      <tr>
-                        <td className="d-flex align-center justify-content-center">
-                          <img src={m.profile_pic} style={{ maxHeight: 75 }} />
-                        </td>
-                        <td className="text-center">{m.username}</td>
-                        <td className="text-center">{m.address}</td>
-                      </tr>
-                    </a>
+                    <tr>
+                      <td className="d-flex align-center justify-content-center">
+                        <img src={m.profile_pic} style={{ maxHeight: 75 }} />
+                      </td>
+                      <td className="text-center">{m.username}</td>
+                      <td className="text-center">{m.address}</td>
+                    </tr>
                   </Link>
                 ))}
             </tbody>
@@ -182,15 +172,13 @@ const AdminDashboard = () => {
               {data &&
                 data.rejectedModels.map((m) => (
                   <Link href={`/admin-dashboard/${m.username}`}>
-                    <a>
-                      <tr>
-                        <td className="d-flex align-center justify-content-center">
-                          <img src={m.profile_pic} style={{ maxHeight: 75 }} />
-                        </td>
-                        <td className="text-center">{m.username}</td>
-                        <td className="text-center">{m.address}</td>
-                      </tr>
-                    </a>
+                    <tr>
+                      <td className="d-flex align-center justify-content-center">
+                        <img src={m.profile_pic} style={{ maxHeight: 75 }} />
+                      </td>
+                      <td className="text-center">{m.username}</td>
+                      <td className="text-center">{m.address}</td>
+                    </tr>
                   </Link>
                 ))}
             </tbody>
