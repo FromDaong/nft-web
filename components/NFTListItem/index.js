@@ -48,8 +48,6 @@ const NFTListItem = ({
 
   const rr = createRef();
 
-  // console.log({ data, isIntersecting });
-
   useEffect(() => {
     (async () => {
       if (data.image) {
@@ -71,11 +69,15 @@ const NFTListItem = ({
     }
   }, [visible]);
 
+  const gotInView = (inView, entry) => {
+    if (inView && !model.username) setVisible(true);
+  };
+
   if (!data.attributes) return <div></div>;
 
   return (
     <Link href={`/view/${data.id}`}>
-      <a className="row m-0 w-100 my-4">
+      <InView as={"a"} onChange={gotInView} className="row m-0 w-100 my-4">
         <div
           ref={rr}
           className={`nft-card ${
@@ -210,7 +212,7 @@ const NFTListItem = ({
             )}
           </div>
         </div>
-      </a>
+      </InView>
     </Link>
   );
 };
