@@ -52,7 +52,11 @@ const CreateNFT = ({ modelData }) => {
               },
             })
             .then(function (response) {
-              return axios
+              return cb(
+                null,
+                `https://treatdao.mypinata.cloud/ipfs/${response.data.IpfsHash}`
+              );
+              /*return axios
                 .post(
                   "https://api.pinata.cloud/pinning/pinByHash",
                   {
@@ -72,7 +76,7 @@ const CreateNFT = ({ modelData }) => {
                     null,
                     `https://treatdao.mypinata.cloud/ipfs/${response.data.IpfsHash}`
                   )
-                );
+                );*/
             });
         },
         (err, results) => {
