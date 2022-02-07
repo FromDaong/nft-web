@@ -184,33 +184,33 @@ const NFTListItem = ({
                 {owner && <b>Creator: </b>}
                 {model.username}
               </div>
-              {(price || data.list_price) && (
-                <div className="stats">
-                  <div className="stat">
-                    <div className="number">{price || data.list_price}</div>
-                    <div className="label">BNB</div>
-                  </div>
-                </div>
-              )}
             </div>
-            {buttonLabel && buttonFunction && (
-              <div className="row">
-                <div className="col-lg-12 mt-3">
-                  <span className="d-inline-block w-100">
-                    <Button
-                      className="w-100"
-                      variant="secondary"
-                      onClick={buttonFunction}
-                    >
-                      <b className="d-flex align-items-center justify-content-center">
-                        {buttonLabel}
-                      </b>
-                    </Button>
-                  </span>
+            {(price || data.list_price) && (
+              <div className="stats">
+                <div className="stat">
+                  <div className="number">{price || data.list_price}</div>
+                  <div className="label">BNB</div>
                 </div>
               </div>
             )}
           </div>
+          {buttonLabel && buttonFunction && (
+            <div className="row">
+              <div className="col-lg-12 mt-3">
+                <span className="d-inline-block w-100">
+                  <Button
+                    className="w-100"
+                    variant="secondary"
+                    onClick={buttonFunction}
+                  >
+                    <b className="d-flex align-items-center justify-content-center">
+                      {buttonLabel}
+                    </b>
+                  </Button>
+                </span>
+              </div>
+            </div>
+          )}
         </div>
       </InView>
     </Link>
