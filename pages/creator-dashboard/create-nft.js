@@ -32,6 +32,7 @@ const CreateNFT = ({ modelData }) => {
 
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
+  const pinFileToIPFS = async (hash) => {};
 
   const onDrop = (files) => {
     if (files && files.length > 0) {

@@ -8,11 +8,13 @@ import { usePagination } from "react-use-pagination";
 import Fuse from "fuse.js";
 import ErrorFallback from "../components/Fallback/Error";
 import { useRouter } from "next/dist/client/router";
+import dbConnect from "../utils/dbConnect";
+import Model from "../models/Model";
 
-const Creators = () => {
+const Creators = ({ models, error }) => {
   // TODO Get models total items
   // get data for relevant models (startIndex endIndex)
-  const { data: modelData, error } = useSWR(`/api/model`);
+  const modelData = JSON.parse(models);
   const [searchFilter, setSearchFilter] = useState("");
   const [persistedPageNumber, setPersistedPageNumber] = useState(0);
 
@@ -84,8 +86,8 @@ const Creators = () => {
   }, [filteredArray]);
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [currentPage])
+    window.scrollTo(0, 0);
+  }, [currentPage]);
 
   return (
     <>
@@ -141,8 +143,31 @@ const Creators = () => {
   );
 };
 
-Creators.getInitialProps = async ({ query: { search } }) => {
-  return { search };
+export const getServerSideProps = async (ctx) => {
+  dbConnect();
+
+  try {
+    const Models = await Model.find();
+
+    const returnModels = await Models.map((n) => {
+      const returnObj = { ...n.toObject() };
+      return returnObj;
+    });
+
+    return {
+      props: {
+        models: JSON.stringify(returnModels),
+      },
+    };
+  } catch (err) {
+    console.log({ err });
+    return {
+      props: {
+        modelData: [],
+        error: "Failed to load models.",
+      },
+    };
+  }
 };
 
 export default Creators;
