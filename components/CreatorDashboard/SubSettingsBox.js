@@ -5,13 +5,11 @@ import { Button, InputGroup, FormControl, Form } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/router";
-import Hero from "../../components/Hero";
 import BlankModal from "../../components/BlankModal";
 import useEditSubscription from "../../hooks/useEditSubscription";
 import useGetSubscriptionCost from "../../hooks/useGetSubscriptionCost";
 import { create } from "ipfs-http-client";
 import { useWallet } from "use-wallet";
-import { GearFill } from "react-bootstrap-icons";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
