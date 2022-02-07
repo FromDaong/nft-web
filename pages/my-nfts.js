@@ -114,7 +114,7 @@ const OwnedNfts = ({
     endIndex,
   } = usePagination({
     totalItems: nftWithBalances ? nftWithBalances.length + 1 : 0,
-    initialPageSize: 3,
+    initialPageSize: 12,
   });
 
   return (

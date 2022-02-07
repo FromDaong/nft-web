@@ -98,18 +98,30 @@ const Home = () => {
                 <div className="stats row mt-5">
                   <div className="col-md-6 stat-container">
                     <div className="big-text">
-                      <CountUp delay={1} duration={2} end={600} />+
+                      <CountUp
+                        delay={1}
+                        duration={2}
+                        end={2000}
+                        separator={","}
+                      />
+                      +
                     </div>
                     <div className="small-text">
-                      NFTs listed by <CountUp delay={1} duration={1} end={80} />
-                      + creators
+                      NFTs listed by{" "}
+                      <CountUp delay={1} duration={1} end={450} />+ creators
                     </div>
                   </div>
                   <div className="col-md-6 stat-container">
                     <div className="big-text">
-                      <CountUp delay={1} duration={2} end={250} />+
+                      <CountUp
+                        delay={1}
+                        duration={2}
+                        end={30000}
+                        separator={","}
+                      />
+                      +
                     </div>
-                    <div className="small-text">BNB in NFT transactions</div>
+                    <div className="small-text">NFTs Sold</div>
                   </div>
                 </div>
               </div>
@@ -119,6 +131,36 @@ const Home = () => {
               </div>
             </div>
           </motion.div>
+        </div>
+        <div className="totw-section-container mt-5">
+          <div className="section-title">Treat of the Month</div>
+          <div className="desc">
+            TOTM is a curated showcase of creators. We assist the chosen
+            creators in presenting a unique set of content exclusive to
+            TreatDAO.
+          </div>
+          <Link href="/magazine">
+            <Button variant="info py-2 px-4 mt-3 mb-3">
+              <b>View Treat Magazine</b>
+            </Button>
+          </Link>
+
+          <a
+            href="https://opensea.io/collection/treatofthemonth"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-4"
+          >
+            <Button variant="py-2 px-4 mt-3 mb-3">
+              <b style={{ color: "#8349CC" }}>View Ethereum Collection</b>
+            </Button>
+          </a>
+
+          {modelData && !modelResultError ? (
+            modelData.map((m) => m.totm && <TotwListItem modelData={m} />)
+          ) : (
+            <ErrorFallback custom="Failed to load TOTW" />
+          )}
         </div>
         <Scroll.Element name="marketplace-list">
           <div className="how-it-works mt-4 mb-5">
@@ -165,6 +207,7 @@ const Home = () => {
               </div>
             </div>
           </div>
+          <br />
           <div className="pink-bg mb-5 mt-4 row d-flex align-items-center marketplace-section">
             <div className="col-md-1"></div>
             <div className="col-md-4">
@@ -215,28 +258,13 @@ const Home = () => {
               </p>
             </div>
           </div>
+          <br />
         </Scroll.Element>
         {!nftResultError ? (
           <SwiperNFTList nftData={nftData} />
         ) : (
           <ErrorFallback custom="Failed to load NFTs" />
         )}
-        <div className="totw-section-container mt-5">
-          <div className="section-title">Treat of the week</div>
-          <div className="desc">
-            TOTW is a curated showcase of creators which are chosen by either
-            TreatDAO or the community.
-            <br />
-            We assist the chosen creators to have a unique set of content
-            exclusive to TreatDAO and only available to purchase for one week.
-          </div>
-
-          {modelData && !modelResultError ? (
-            modelData.map((m) => m.totw && <TotwListItem modelData={m} />)
-          ) : (
-            <ErrorFallback custom="Failed to load TOTW" />
-          )}
-        </div>
         <br />
         <CreatorList modelData={modelData} />
       </div>
