@@ -42,7 +42,8 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   const [confirmWallet, setConfrimWallet] = useState(false);
   const isSubscribed = useGetIsSubscribed(nftData.model_bnb_address || "");
 
-  const isOldTotw = nftData.old_totw && !nftData.totw;
+  const isOldTotw =
+    (nftData.old_totw && !nftData.totw) || (nftData.old_totm && !nftData.totm);
 
   if (
     remainingNfts.toNumber() < 0 ||
@@ -183,10 +184,11 @@ const ViewNFT = ({ nftData, image, account }) => {
   const totwNftCost = useGetTreatNFTCost(nftData.id);
   const creatorNftCost = getCreatorNftCost(nftData.id);
   const subscriberNftCost = getSubscriberNftCost(nftData.id);
-  const [sortBy, setSortBy] = useState("Recent");
+  const [sortBy, setSortBy] = useState("Price Low to High");
 
   let nftCost = nftData.old_totw ? totwNftCost : creatorNftCost;
   nftCost = nftData.subscription_nft ? subscriberNftCost : nftCost;
+  nftCost = nftData.old_totm ? totwNftCost : nftCost;
 
   const maxNftSupply = useGetNftMaxSupply(nftData.id);
   const mintedNfts = useGetNftTotalSupply(nftData.id);
@@ -204,18 +206,18 @@ const ViewNFT = ({ nftData, image, account }) => {
   );
 
   const openOrders = useGetOpenOrdersForNft(nftData.id) ?? [];
-  const [finalArray, setFinalArray] = useState([]);
   // Get lowest price value in open orders
-  const lowestOpenOrder = new BigNumber(openOrders.reduce(
-    (lowest, order, index) =>
-      {
+  const lowestOpenOrder = new BigNumber(
+    openOrders.reduce(
+      (lowest, order, index) => {
         const price = new BigNumber(order.price);
         const lowestPrice = new BigNumber(lowest.price);
-        if(index === 0) return order;
+        if (index === 0) return order;
         return price.lt(lowestPrice) ? order : lowest;
       },
-    { price: 0 }
-  ).price);
+      { price: 0 }
+    ).price
+  );
 
   const {
     loading: loadingResaleHistory,
@@ -277,24 +279,32 @@ const ViewNFT = ({ nftData, image, account }) => {
     }
   );
 
-  let allData = []
-	if(resaleHistoryData && mintHistoryData) {
-		allData.push([...resaleHistoryData.sales.map(sale => ({...sale, transactionType: "resale"})), ...mintHistoryData.sales.map(sale => ({...sale, transactionType: "mint"}))])
-	}
-  
-  allData = allData.flat()
+  let allData = [];
+  if (resaleHistoryData && mintHistoryData) {
+    allData.push([
+      ...resaleHistoryData.sales.map((sale) => ({
+        ...sale,
+        transactionType: "resale",
+      })),
+      ...mintHistoryData.sales.map((sale) => ({
+        ...sale,
+        transactionType: "mint",
+      })),
+    ]);
+  }
+
+  allData = allData.flat();
   // Sort all data by recency
   allData.sort((a, b) => {
     const aDate = new Number(a.purchaseDate);
     const bDate = new Number(b.purchaseDate);
     return aDate > bDate ? -1 : 1;
   });
-  const loadingHistory = loadingMintHistory && loadingResaleHistory
-  console.log({allData, finalArray, openOrders})
+  const loadingHistory = loadingMintHistory && loadingResaleHistory;
 
   const onMintNft = async () => {
     if (nftData.subscription_nft) return onMintSubscriberNft();
-    if (nftData.old_totw) {
+    if (nftData.old_totw || nftData.old_totm) {
       return await onMintTotwNft();
     } else {
       return await onMintCreatorNft();
@@ -303,7 +313,7 @@ const ViewNFT = ({ nftData, image, account }) => {
 
   const onMintFreeNft = async () => {
     if (nftData.subscription_nft) return onGetFreeSubscriberTreat();
-    if (nftData.old_totw) {
+    if (nftData.old_totw || nftData.old_totm) {
       return await onGetFreeTreat();
     } else {
       return await onGetFreeCreatorTreat();
@@ -321,53 +331,54 @@ const ViewNFT = ({ nftData, image, account }) => {
     setSortBy(sortBy);
   };
 
-  useEffect(() => {
-    const newArray = openOrders;
-    newArray.sort((a, b) => {
-        switch (sortBy) {
-          case "Recent":
-            return Number(a.listDate) - Number(b.listDate);
-          case "Price":
-            return Number(a.price) - Number(b.price);
-          default:
-            return Number(a.listDate) - Number(b.listDate);
-        }
-    })
-    setFinalArray(newArray);
-  }, [openOrders, sortBy]);
+  const sortedArray = openOrders.sort((a, b) => {
+    switch (sortBy) {
+      case "Recent":
+        return Number(a.listDate) - Number(b.listDate);
+      case "Price Low to High":
+        return Number(a.price) - Number(b.price);
+      case "Price High to Low":
+        return Number(b.price) - Number(a.price);
+      default:
+        return Number(a.listDate) - Number(b.listDate);
+    }
+  });
 
-
-  const purchaseHistoryRender = 
-    allData.map((e) => (
-      <div className="history-event d-flex justify-content-between">
-        <div className="d-flex align-items-center">
-          <div className="pic">
-            {e.transactionType === "mint" ? <Bag size={32} style={{ color: "DA5184" }} /> : <ShopWindow size={32} style={{ color: "DA5184" }} />}
-          </div>
-          <div className="details">
-            <div className="label">
-              {`${new Date(
-                e.purchaseDate * 1000
-              ).toLocaleDateString()} at ${new Date(
-                e.purchaseDate * 1000
-              ).toLocaleTimeString()}`}
-            </div>
-            <div className="event">
-              {e.buyer.substring(0, 6)}...{e.buyer.substr(-5)} {e.transactionType === "mint" ? "purchased" : "bought a resale"} for{" "}
-              <b>{Web3.utils.fromWei(e.cost)}</b>
-            </div>
-          </div>
+  const purchaseHistoryRender = allData.map((e) => (
+    <div className="history-event d-flex justify-content-between">
+      <div className="d-flex align-items-center">
+        <div className="pic">
+          {e.transactionType === "mint" ? (
+            <Bag size={32} style={{ color: "DA5184" }} />
+          ) : (
+            <ShopWindow size={32} style={{ color: "DA5184" }} />
+          )}
         </div>
-        <div>
-          <a href={"https://bscscan.com/tx/" + e.id} target="_blank">
-            <ArrowUpRightSquare size={24} />
-          </a>
+        <div className="details">
+          <div className="label">
+            {`${new Date(
+              e.purchaseDate * 1000
+            ).toLocaleDateString()} at ${new Date(
+              e.purchaseDate * 1000
+            ).toLocaleTimeString()}`}
+          </div>
+          <div className="event">
+            {e.buyer.substring(0, 6)}...{e.buyer.substr(-5)}{" "}
+            {e.transactionType === "mint" ? "purchased" : "bought a resale"} for{" "}
+            <b>{Web3.utils.fromWei(e.cost)}</b>
+          </div>
         </div>
       </div>
-    ));
+      <div>
+        <a href={"https://bscscan.com/tx/" + e.id} target="_blank">
+          <ArrowUpRightSquare size={24} />
+        </a>
+      </div>
+    </div>
+  ));
 
   // Sort with lowest first
-  const openOrdersRender = finalArray.map((e) => (
+  const openOrdersRender = sortedArray.map((e) => (
     <Link href={`/marketplace/resale?search=${nftData.name}`} passHref={true}>
       <a>
         <div className="history-event">
@@ -438,6 +449,7 @@ const ViewNFT = ({ nftData, image, account }) => {
                   <div className="edition mb-2">AVAILABLE THIS WEEK ONLY</div>
                 )}
                 {!nftData.old_totw &&
+                  !nftData.old_totm &&
                   nftData.max_supply &&
                   nftData.max_supply < 100000 && (
                     <div className="edition mb-2">
@@ -466,10 +478,14 @@ const ViewNFT = ({ nftData, image, account }) => {
                 <div className="label">List Price</div>
                 <div className="number">{getDisplayBalance(nftCost)} BNB</div>
               </div>
-              {openOrders.length > 0 && <div className="stat">
-              <div className="label">Floor Price</div>
-              <div className="number">{getDisplayBalance(lowestOpenOrder)} BNB</div>
-            </div>}
+              {openOrders.length > 0 && (
+                <div className="stat">
+                  <div className="label">Floor Price</div>
+                  <div className="number">
+                    {getDisplayBalance(lowestOpenOrder)} BNB
+                  </div>
+                </div>
+              )}
               {/* <div className="stat">
               <div className="label">CREATOR SHARE</div>
               <div className="number">75%</div>
@@ -501,7 +517,7 @@ const ViewNFT = ({ nftData, image, account }) => {
                 <Nav.Item>
                   <Nav.Link eventKey="resale">Resale Listings</Nav.Link>
                 </Nav.Item>
-                {+nftData.id > 92 && (
+                {+nftData.id > 0 && (
                   <Nav.Item>
                     <Nav.Link eventKey="purchase_history">
                       Purchase History
@@ -515,10 +531,16 @@ const ViewNFT = ({ nftData, image, account }) => {
                     <div className="history-title text-center mt-2">
                       Resale Marketplace Listings
                     </div>
-                    <div className="bio" style={{display: "flex", justifyContent: "space-between"}}>
+                    <div
+                      className="bio"
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
                       <p>
                         Total currently listed:{" "}
-                      {openOrdersRender && openOrdersRender.length}
+                        {openOrdersRender && openOrdersRender.length}
                       </p>
                       <div>
                         <Dropdown>
@@ -533,8 +555,15 @@ const ViewNFT = ({ nftData, image, account }) => {
                             <Dropdown.Item onClick={() => setSort("Recent")}>
                               Most Recent
                             </Dropdown.Item>
-                            <Dropdown.Item onClick={() => setSort("Price")}>
+                            <Dropdown.Item
+                              onClick={() => setSort("Price Low to High")}
+                            >
                               Price Low to High
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                              onClick={() => setSort("Price High to Low")}
+                            >
+                              Price High to Low
                             </Dropdown.Item>
                           </Dropdown.Menu>
                         </Dropdown>
@@ -553,8 +582,7 @@ const ViewNFT = ({ nftData, image, account }) => {
                       <div className="bio text-center">Loading...</div>
                     ) : (
                       <div className="bio text-center">
-                        Total minted:{" "}
-                        {allData && allData.length}
+                        Total minted: {allData && allData.length}
                       </div>
                     )}
                     <div className="history-events">
