@@ -10968,6 +10968,11 @@ mongodb@3.6.10:
   optionalDependencies:
     saslprep "^1.0.0"
 
+mongoose-atlas-search@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/mongoose-atlas-search/-/mongoose-atlas-search-1.0.8.tgz#d05c7724893740c276f083f7dfa699876411328d"
+  integrity sha512-LyYS8frUhP0KSUvDQDGGRZe1gIUU6lBinQau+23f8vAkg6jcFJyXd7fdcqN53qPduJNXzIc0gKJedqqSEvLcSQ==
+
 mongoose-beautiful-unique-validation@^7.1.1:
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/mongoose-beautiful-unique-validation/-/mongoose-beautiful-unique-validation-7.1.1.tgz#50eaf88e395f9b194cd29ad76913cd9ebd515653"
