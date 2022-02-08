@@ -13,7 +13,7 @@ export default async (req, res) => {
 
         const returnModels = await Models.map((n) => {
           const returnObj = { ...n.toObject() };
-
+          delete returnObj.email;
           return returnObj;
         });
 

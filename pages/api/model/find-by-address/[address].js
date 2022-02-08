@@ -30,7 +30,6 @@ export default async (req, res) => {
         if (!modelRes) return res.status(200);
 
         const returnData = { ...modelRes.toObject() };
-        //delete returnData.model_bnb_address;
 
         res.status(200).json(returnData);
       } catch (error) {

@@ -62,6 +62,7 @@ const NFTListItem = ({
 
   useEffect(() => {
     if (visible) {
+      console.log({ data }, 123);
       axios
         .get(`/api/model/find-by-id/${data.model_bnb_address}`)
         .then((res) => setModel(res.data))

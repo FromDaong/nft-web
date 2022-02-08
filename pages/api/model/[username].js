@@ -31,7 +31,7 @@ export default async (req, res) => {
             .json({ success: false, error: "model not found" });
 
         const returnData = { ...modelRes.toObject() };
-        // delete returnData.model_bnb_address;
+        delete returnData.email;
         delete returnData.identity_access_key;
 
         res.status(200).json(returnData);
@@ -75,8 +75,6 @@ export default async (req, res) => {
               description: req.body.subscription_description,
             };
         }
-
-        
 
         model.save();
 
