@@ -111,6 +111,7 @@ atlasPlugin.initialize({
     id: "$_id",
     username: "$username",
     display_name: "$display_name",
+    bio: "$bio",
   },
   searchFunction: (query) => {
     return {
