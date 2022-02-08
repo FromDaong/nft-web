@@ -1,9 +1,7 @@
 import React, { useState, useEffect, createRef } from "react";
-import { generateFromString } from "generate-avatar";
 import { Blurhash } from "react-blurhash";
 import { isBlurhashValid } from "blurhash";
 import { EyeSlash } from "react-bootstrap-icons";
-import { motion } from "framer-motion";
 import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import Link from "next/link";
@@ -110,11 +108,12 @@ const NFTListItem = ({
                 )}
             </div>
           </div>
-          <Link href={`/creator/${data.attributes[0].value.replace("@", "")}`}>
+
+          <Link href={`/creator/${model.username}`}>
             <a>
               <div
                 className="profile-pic"
-                style={{ backgroundImage: `url(${data.model_profile_pic})` }}
+                style={{ backgroundImage: `url(${model.profile_pic})` }}
               />
             </a>
           </Link>
@@ -170,7 +169,7 @@ const NFTListItem = ({
                   </>
                 ) : (
                   <h3 className="text-center p4">
-                    Please contaact admin. Invalid Blurhash.
+                    Please contact admin. Invalid Blurhash.
                   </h3>
                 )}
               </>
@@ -181,41 +180,35 @@ const NFTListItem = ({
               <div className="title">{data.name}</div>
               <div className="s">
                 {owner && <b>Creator: </b>}
-                {data.attributes[0].value}
+                {model.username}
               </div>
-              {owner && (
-                <div className="name">
-                  <b>Owner: </b>
-                  {owner.slice(0, 6) + "..." + owner.slice(-6)}
+              {(price || data.list_price) && (
+                <div className="stats">
+                  <div className="stat">
+                    <div className="number">{price || data.list_price}</div>
+                    <div className="label">BNB</div>
+                  </div>
                 </div>
               )}
             </div>
-            {(price || data.list_price) && (
-              <div className="stats">
-                <div className="stat">
-                  <div className="number">{price || data.list_price}</div>
-                  <div className="label">BNB</div>
+            {buttonLabel && buttonFunction && (
+              <div className="row">
+                <div className="col-lg-12 mt-3">
+                  <span className="d-inline-block w-100">
+                    <Button
+                      className="w-100"
+                      variant="secondary"
+                      onClick={buttonFunction}
+                    >
+                      <b className="d-flex align-items-center justify-content-center">
+                        {buttonLabel}
+                      </b>
+                    </Button>
+                  </span>
                 </div>
               </div>
             )}
           </div>
-          {buttonLabel && buttonFunction && (
-            <div className="row">
-              <div className="col-lg-12 mt-3">
-                <span className="d-inline-block w-100">
-                  <Button
-                    className="w-100"
-                    variant="secondary"
-                    onClick={buttonFunction}
-                  >
-                    <b className="d-flex align-items-center justify-content-center">
-                      {buttonLabel}
-                    </b>
-                  </Button>
-                </span>
-              </div>
-            </div>
-          )}
         </div>
       </a>
     </Link>
