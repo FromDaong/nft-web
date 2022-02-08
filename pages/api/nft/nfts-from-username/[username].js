@@ -23,13 +23,11 @@ export default async (req, res) => {
           modelRes.nfts.map(async (nft) => {
             const n = await NFT.findOne({ id: +nft.id });
             if (!n) {
-              
               return;
             }
             const returnObj = { ...n.toObject() };
 
             returnObj.mints = returnObj.mints.length;
-            delete returnObj.model_bnb_address;
 
             if (returnObj.blurhash) delete returnObj.image;
 
