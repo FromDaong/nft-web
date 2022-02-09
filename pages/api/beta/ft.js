@@ -28,6 +28,9 @@ export default async function FTS(req, res) {
     let data = await Model.aggregatePaginate(aggregate, options);
     return res.json({ data });
   } catch (err) {
-    return res.json({ message: err.message, connection: mongoose.connection });
+    return res.json({
+      message: err.message,
+      connection: JSON.stringify(mongoose.connection),
+    });
   }
 }
