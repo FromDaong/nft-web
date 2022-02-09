@@ -17,7 +17,7 @@ export default async function autocomplete(req, res) {
       {
         $search: {
           autocomplete: {
-            index: "nfts_autocomplete",
+            // index: "nfts_autocomplete",
             query: s,
             path: "name",
             fuzzy: {
@@ -32,7 +32,7 @@ export default async function autocomplete(req, res) {
       {
         $search: {
           autocomplete: {
-            index: "models_autocomplete",
+            //index: "models_autocomplete",
             query: s,
             path: "username",
             fuzzy: {
