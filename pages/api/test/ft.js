@@ -13,12 +13,19 @@ export default async function FTS(req, res) {
   };
 
   try {
-    let data;
-    if (s) {
-      data = await Model.find({ search: s ?? "" });
-    } else {
-      data = await Model.paginate({}, options);
-    }
+    let data = await Model.aggregatePaginate(
+      [
+        {
+          $search: {
+            text: {
+              query: s,
+              path: ["username", "bio", "display_name"],
+            },
+          },
+        },
+      ],
+      options
+    );
 
     return res.json({ data });
   } catch (err) {

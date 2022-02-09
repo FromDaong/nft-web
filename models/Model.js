@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const mongoosePaginate = require("mongoose-paginate-v2");
+var aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 const atlasPlugin = require("mongoose-atlas-search");
 
 const ModelSchema = new mongoose.Schema(
@@ -88,7 +88,7 @@ const ModelSchema = new mongoose.Schema(
   }
 );
 
-ModelSchema.plugin(mongoosePaginate);
+ModelSchema.plugin(aggregatePaginate);
 
 // ModelSchema.path("discount_codes")
 //   .schema.path("newPrice")
@@ -102,26 +102,4 @@ ModelSchema.plugin(mongoosePaginate);
 
 ModelSchema.plugin(require("mongoose-beautiful-unique-validation"));
 const Model = mongoose.models.Model || mongoose.model("Model", ModelSchema);
-
-atlasPlugin.initialize({
-  model: Model,
-  overwriteFind: true,
-  searchKey: "search",
-  addFields: {
-    id: "$_id",
-    username: "$username",
-    display_name: "$display_name",
-    bio: "$bio",
-  },
-  searchFunction: (query) => {
-    return {
-      wildcard: {
-        query: `${query}*`,
-        path: "username",
-        allowAnalyzedField: true,
-      },
-    };
-  },
-});
-
 module.exports = Model;

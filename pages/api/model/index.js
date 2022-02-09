@@ -17,7 +17,6 @@ export default async (req, res) => {
           },
         };
         const Models = await Model.paginate({}, options);
-        console.log({ Models });
         // if (model.pending || model.rejected || model.hidden) return undefined;
 
         Models.docs = await Models.docs.sort(
