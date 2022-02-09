@@ -34,4 +34,4 @@ async function FTS(req, res) {
   }
 }
 
-export default connectDB(FT);
+export default connectDB(FTS);
