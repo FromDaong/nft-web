@@ -10968,6 +10968,11 @@ mongodb@3.6.10:
   optionalDependencies:
     saslprep "^1.0.0"
 
+mongoose-aggregate-paginate-v2@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/mongoose-aggregate-paginate-v2/-/mongoose-aggregate-paginate-v2-1.0.6.tgz#fd2f2564d1bbf52f49a196f0b7b03675913dacca"
+  integrity sha512-UuALu+mjhQa1K9lMQvjLL3vm3iALvNw8PQNIh2gp1b+tO5hUa0NC0Wf6/8QrT9PSJVTihXaD8hQVy3J4e0jO0Q==
+
 mongoose-atlas-search@^1.0.8:
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/mongoose-atlas-search/-/mongoose-atlas-search-1.0.8.tgz#d05c7724893740c276f083f7dfa699876411328d"
