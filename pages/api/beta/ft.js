@@ -1,9 +1,9 @@
 import dbConnect from "../../../utils/dbConnect";
 import Model from "../../../models/Model";
 
-dbConnect();
-
 export default async function FTS(req, res) {
+  await dbConnect();
+
   const s = req.query.s;
   const options = {
     page: req.query.p ?? 1,
@@ -14,7 +14,7 @@ export default async function FTS(req, res) {
   };
 
   try {
-    const aggregate = Model.aggregate([
+    const aggregate = await Model.aggregate([
       {
         $search: {
           text: {
@@ -25,7 +25,7 @@ export default async function FTS(req, res) {
       },
     ]);
 
-    let data = await Model.aggregatePaginate(aggregate, options);
+    // let data = await Model.aggregatePaginate(aggregate, options);
     return res.json({ data });
   } catch (err) {
     return res.json({
