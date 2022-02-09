@@ -13,20 +13,18 @@ export default async function FTS(req, res) {
   };
 
   try {
-    let data = await Model.aggregatePaginate(
-      [
-        {
-          $search: {
-            text: {
-              query: s,
-              path: ["username", "bio", "display_name"],
-            },
+    const aggregate = Model.aggregate([
+      {
+        $search: {
+          text: {
+            query: `${s}*`,
+            path: ["username", "bio", "display_name"],
           },
         },
-      ],
-      options
-    );
+      },
+    ]);
 
+    let data = await Model.aggregatePaginate(aggregate, options);
     return res.json({ data });
   } catch (err) {
     return res.json({ message: err.message });

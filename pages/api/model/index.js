@@ -5,6 +5,7 @@ dbConnect();
 
 export default async (req, res) => {
   const { method } = req;
+  const { s } = req.query;
 
   switch (method) {
     case "GET":
@@ -16,8 +17,25 @@ export default async (req, res) => {
             locale: "en",
           },
         };
-        const Models = await Model.paginate({}, options);
-        // if (model.pending || model.rejected || model.hidden) return undefined;
+
+        let Models;
+
+        if (!s) {
+          Models = await Model.paginate({}, options);
+          // if (model.pending || model.rejected || model.hidden) return undefined;
+        } else {
+          const aggregate = Model.aggregate([
+            {
+              $search: {
+                text: {
+                  query: `${s}*`,
+                  path: ["username", "bio", "display_name"],
+                },
+              },
+            },
+          ]);
+          Models = await Model.aggregatePaginate(aggregate, options);
+        }
 
         Models.docs = await Models.docs.sort(
           (a, b) =>
