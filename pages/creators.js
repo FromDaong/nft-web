@@ -29,10 +29,11 @@ const Creators = () => {
   }, []);
 
   useEffect(() => {
+    const page = router.query.p;
     if (searchFilter) {
       router.push(
         `${router.pathname}?${searchFilter && `s=${searchFilter}`}${
-          router.query.p && `&p=${router.query.p}`
+          page && `&p=${router.query.p}`
         }`,
         undefined,
         { shallow: true }
