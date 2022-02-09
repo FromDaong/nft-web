@@ -9,22 +9,44 @@ export default async (req, res) => {
   switch (method) {
     case "GET":
       try {
-        const Models = await Model.find({ subscription: { $exists: true } });
+        const options = {
+          page: req.query.p ?? 1,
+          limit: 24,
+          collation: {
+            locale: "en",
+          },
+        };
 
-        const returnModels = await Models.map((n) => {
-          const returnObj = { ...n.toObject() };
+        let Models;
 
-          return returnObj;
-        });
+        if (!s) {
+          Models = await Model.paginate(
+            { subscription: { $exists: true } },
+            options
+          );
+          // if (model.pending || model.rejected || model.hidden) return undefined;
+        } else {
+          const aggregate = Model.aggregate([
+            {
+              $search: {
+                text: {
+                  query: `${s}*`,
+                  path: ["username", "bio", "display_name"],
+                },
+              },
+            },
+          ]);
+          Models = await Model.aggregatePaginate(aggregate, options);
+        }
 
-        const sortedModels = await returnModels.sort(
+        Models.docs = await Models.docs.sort(
           (a, b) =>
             b.nfts.length +
             b.sub_nfts.length -
             (a.nfts.length + a.sub_nfts.length)
         );
 
-        res.status(200).json(sortedModels);
+        res.status(200).json(Models);
       } catch (error) {
         console.error({ error });
         res.status(400).json({ success: false, error: error });
