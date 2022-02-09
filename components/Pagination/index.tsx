@@ -44,9 +44,6 @@ const PaginationComponentV2 = ({
           <Pagination>{items}</Pagination>
         </div>
       )}
-      <div className="py-2 text-center">
-        Showing {page} of {totalPages} pages with {totalDocs} items.
-      </div>
     </div>
   );
 };

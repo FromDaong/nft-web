@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import Hero from "../components/Hero";
 import ModelList from "../components/ModelList";
-import { motion } from "framer-motion";
 import Fuse from "fuse.js";
 import ErrorFallback from "../components/Fallback/Error";
 import { useRouter } from "next/dist/client/router";
 import axios from "axios";
 import PaginationComponentV2 from "../components/Pagination";
+import MyNFTItemSkeleton from "../components/Skeleton/MyNFTItemSkeleton";
 
 const Creators = () => {
   const [apiResponseData, setApiResponseData] = useState({
@@ -61,18 +61,7 @@ const Creators = () => {
 
   return (
     <>
-      <motion.main
-        variants={{
-          hidden: { opacity: 0, x: -200, y: 0 },
-          enter: { opacity: 1, x: 0, y: 0 },
-          exit: { opacity: 0, x: 0, y: -100 },
-        }}
-        initial="hidden" // Set the initial state to variants.hidden
-        animate="enter" // Animated state to variants.enter
-        exit="exit" // Exit state (used later) to variants.exit
-        transition={{ type: "linear" }} // Set the transition to linear
-        className=""
-      >
+      <div>
         <Hero
           title={"Our Creators"}
           subtitle={
@@ -93,7 +82,11 @@ const Creators = () => {
         {!loading ? (
           <ModelList totwOnly={false} modelData={modelData || []} />
         ) : (
-          <ErrorFallback custom="Failed to load models" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full container mx-auto">
+            {new Array(12).fill(0).map((_, i) => (
+              <MyNFTItemSkeleton key={i} className="col-span-1" />
+            ))}
+          </div>
         )}
         <div className="flex justify-center py-2">
           <PaginationComponentV2
@@ -108,7 +101,7 @@ const Creators = () => {
             setPage={(page) => navigate(Number(page))}
           />
         </div>
-      </motion.main>
+      </div>
     </>
   );
 };

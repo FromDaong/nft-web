@@ -22,6 +22,7 @@ import ErrorFallback from "../components/Fallback/Error";
 import Loading from "../components/Loading";
 import { usePagination } from "react-use-pagination";
 import PaginationComponent from "../components/PaginationComponent";
+import MyNFTItemSkeleton from "../components/Skeleton/MyNFTItemSkeleton";
 
 const variants = {
   show: {
@@ -198,7 +199,11 @@ const OwnedNfts = ({
           />
         </div>
       ) : isLoading ? (
-        <Loading custom="Please wait, loading your owned NFTs" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full container mx-auto">
+          {new Array(12).fill(0).map((_, i) => (
+            <MyNFTItemSkeleton key={i} className="col-span-1" />
+          ))}
+        </div>
       ) : (
         <div
           className="w-100 text-center font-weight-bold d-flex align-items-center justify-content-center h-100"
@@ -330,7 +335,11 @@ const OpenOrders = ({
           )}
         </div>
       ) : isLoading ? (
-        <Loading custom="Please wait, loading data" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full container mx-auto">
+          {new Array(12).fill(0).map((_, i) => (
+            <MyNFTItemSkeleton key={i} className="col-span-1" />
+          ))}
+        </div>
       ) : (
         <div
           className="w-100 text-center font-weight-bold d-flex align-items-center justify-content-center h-100"
