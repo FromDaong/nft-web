@@ -1,5 +1,6 @@
 import dbConnect from "../../../utils/dbConnect";
 import Model from "../../../models/Model";
+import mongoose from "mongoose";
 dbConnect();
 
 export default async function FTS(req, res) {
@@ -27,6 +28,6 @@ export default async function FTS(req, res) {
     let data = await Model.aggregatePaginate(aggregate, options);
     return res.json({ data });
   } catch (err) {
-    return res.json({ message: err.message });
+    return res.json({ message: err.message, connection: mongoose.connection });
   }
 }
