@@ -1,6 +1,5 @@
 import Hero from "../../components/Hero";
 import Layout from "../../components/Layout";
-import { motion } from "framer-motion";
 import useSWR from "swr";
 import PaginationComponent from "../../components/PaginationComponent";
 import ModelList from "../../components/ModelList";
@@ -10,6 +9,7 @@ import { useState, useEffect } from "react";
 import Loading from "../../components/Loading";
 import ErrorFallback from "../../components/Fallback/Error";
 import { useRouter } from "next/dist/client/router";
+import MyNFTItemSkeleton from "../../components/Skeleton/MyNFTItemSkeleton";
 
 export default function Index() {
   // TODO Get models total items
@@ -86,23 +86,12 @@ export default function Index() {
   }, [filteredArray]);
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [currentPage])
+    window.scrollTo(0, 0);
+  }, [currentPage]);
 
   return (
     <>
-      <motion.main
-        variants={{
-          hidden: { opacity: 0, x: -200, y: 0 },
-          enter: { opacity: 1, x: 0, y: 0 },
-          exit: { opacity: 0, x: 0, y: -100 },
-        }}
-        initial="hidden" // Set the initial state to variants.hidden
-        animate="enter" // Animated state to variants.enter
-        exit="exit" // Exit state (used later) to variants.exit
-        transition={{ type: "linear" }} // Set the transition to linear
-        className=""
-      >
+      <div>
         <Layout>
           <div className="subscriptions">
             <Hero
@@ -124,7 +113,11 @@ export default function Index() {
           </div>
           <br />
           {!filteredArray && !loadingError ? (
-            <Loading />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full container mx-auto">
+              {new Array(12).fill(0).map((_, i) => (
+                <MyNFTItemSkeleton key={i} className="col-span-1" />
+              ))}
+            </div>
           ) : loadingError ? (
             <ErrorFallback
               custom={"Failed to load models with subscriptions."}
@@ -146,7 +139,7 @@ export default function Index() {
             setPreviousPage={setPreviousPage}
           />
         </Layout>
-      </motion.main>
+      </div>
     </>
   );
 }

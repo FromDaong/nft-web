@@ -17,8 +17,9 @@ export default async function autocomplete(req, res) {
       {
         $search: {
           autocomplete: {
+            index: "nfts_autocomplete",
             query: s,
-            path: ["name", "description", "model_handle"],
+            path: "name",
             fuzzy: {
               maxEdits: 2,
               prefixLength: 3,
@@ -31,8 +32,9 @@ export default async function autocomplete(req, res) {
       {
         $search: {
           autocomplete: {
+            index: "models_autocomplete",
             query: s,
-            path: ["username", "bio", "display_name"],
+            path: "username",
             fuzzy: {
               maxEdits: 2,
               prefixLength: 3,

@@ -54,11 +54,7 @@ const Home = () => {
     <Layout>
       <div className="home container">
         <div className="min-height-wrapper">
-          <div
-            animate={{ x: 0, opacity: 1 }}
-            style={{ x: -100, opacity: 0 }}
-            className="hero"
-          >
+          <div className="hero">
             <div className="row align-items-center">
               <div className="col-lg-6 hero-text mt-3">
                 <div className="heading-text">
