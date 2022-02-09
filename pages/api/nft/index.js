@@ -30,6 +30,11 @@ export default async (req, res) => {
                 },
               },
             },
+            {
+              $sort: {
+                score: { $meta: "textScore" },
+              },
+            },
           ]);
           NFTs = await NFT.aggregatePaginate(aggregate, options);
         } else {

@@ -7,6 +7,7 @@ import Layout from "../components/Layout";
 import { motion, useAnimation } from "framer-motion";
 import Link from "next/link";
 import useSWR from "swr";
+import axios from "axios";
 import CountUp from "react-countup";
 import * as Scroll from "react-scroll";
 import { useInView } from "react-intersection-observer";
@@ -19,13 +20,21 @@ import {
 import ErrorFallback from "../components/Fallback/Error";
 
 const Home = () => {
-  const { data: nftResult, error: nftResultError } =
-    useSWR(`/api/nft?limit=20`);
   const { data: modelResult, error: modelResultError } = useSWR(`/api/model`);
-  const [nftData, setNftData] = useState();
+  const [nftData, setNftData] = useState([]);
+  const [nftResultError, setNftResultError] = useState(null);
   const [modelData, setModelData] = useState();
+  const [loading, setLoading] = useState(true);
   const [ref, inView] = useInView();
   const controls = useAnimation();
+
+  useEffect(() => {
+    setLoading(true);
+    axios
+      .get(`/api/nft?limit=20`)
+      .then((res) => setNftData(res.data.docs))
+      .then(() => setLoading(false));
+  }, []);
 
   useEffect(() => {
     if (inView) {
@@ -35,14 +44,11 @@ const Home = () => {
 
   useEffect(() => {
     (async () => {
-      if (nftResult) {
-        setNftData(nftResult);
-      }
       if (modelResult) {
         setModelData(modelResult.docs);
       }
     })();
-  }, [nftResult, modelResult]);
+  }, [modelResult]);
 
   return (
     <Layout>
