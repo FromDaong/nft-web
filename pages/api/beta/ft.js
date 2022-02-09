@@ -26,7 +26,7 @@ export default async function FTS(req, res) {
     ]);
 
     // let data = await Model.aggregatePaginate(aggregate, options);
-    return res.json({ data });
+    return res.json({ aggregate });
   } catch (err) {
     return res.json({
       message: err.message,
