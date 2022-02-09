@@ -29,7 +29,6 @@ async function FTS(req, res) {
   } catch (err) {
     return res.json({
       message: err.message,
-      connection: JSON.stringify(mongoose.connection),
     });
   }
 }
