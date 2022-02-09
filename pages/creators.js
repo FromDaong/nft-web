@@ -18,7 +18,6 @@ const Creators = () => {
     page: 1,
   });
   const [searchFilter, setSearchFilter] = useState("");
-  const [persistedPageNumber, setPersistedPageNumber] = useState(0);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -32,8 +31,8 @@ const Creators = () => {
   useEffect(() => {
     if (searchFilter) {
       router.push(
-        `${router.pathname}?${searchFilter && `s=${searchFilter}&`}${
-          currentPage && `p=${apiResponseData.page}`
+        `${router.pathname}?${searchFilter && `s=${searchFilter}`}${
+          router.query.p && `&p=${router.query.p}`
         }`,
         undefined,
         { shallow: true }
@@ -42,9 +41,14 @@ const Creators = () => {
   }, [searchFilter]);
 
   useEffect(() => {
+    console.log("Route changed");
     setLoading(true);
     axios
-      .get(`/api/model?p=${router.query.p ?? 1}`)
+      .get(
+        `/api/model?p=${router.query.p ?? 1}${
+          searchFilter ? `&s=${router.query.s}` : ""
+        }`
+      )
       .then((res) => setApiResponseData(res.data))
       .then(() => setLoading(false));
   }, [router]);
