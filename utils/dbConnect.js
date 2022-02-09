@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const MONGODB_URI =
-  "mongodb+srv://dev:aMa2E0ArKPJwpmx1@cluster0.amea3.mongodb.net/treat?retryWrites=true&we=majority"; //process.env.MONGO_URL;
+  "mongodb+srv://dev:aMa2E0ArKPJwpmx1@cluster0.amea3.mongodb.net/treat?retryWrites=true"; //process.env.MONGO_URL;
 
 if (!MONGODB_URI) {
   throw new Error(
