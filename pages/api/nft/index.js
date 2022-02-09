@@ -44,7 +44,9 @@ export default async (req, res) => {
         return res.status(200).json(NFTs);
       } catch (error) {
         console.error({ error });
-        res.status(400).json({ success: false, error: error });
+        res
+          .status(400)
+          .json({ success: false, error: error, db: process.env.MONGO_URL });
       }
       break;
     default:
