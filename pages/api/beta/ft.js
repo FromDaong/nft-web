@@ -1,9 +1,8 @@
-import dbConnect from "../../../utils/dbConnect";
+import dbConnect, { connectDB } from "../../../utils/dbConnect";
 import Model from "../../../models/Model";
 import mongoose from "mongoose";
-dbConnect();
 
-export default async function FTS(req, res) {
+async function FTS(req, res) {
   const s = req.query.s;
   const options = {
     page: req.query.p ?? 1,
@@ -34,3 +33,5 @@ export default async function FTS(req, res) {
     });
   }
 }
+
+export default connectDB(FT);
