@@ -7,29 +7,36 @@ dbConnect();
 
 export default async (req, res) => {
   const { method } = req;
+  const { s } = req.query;
 
   switch (method) {
     case "GET":
       try {
-        const NFTs = await NFT.find();
-
-        const returnNFTs = await NFTs.map((n) => {
-          const returnObj = { ...n.toObject() };
-
-          returnObj.mints = returnObj.mints.length;
-          delete returnObj.model_bnb_address;
-
-          if (returnObj.blurhash) delete returnObj.image;
-
-          return returnObj;
-        });
-
-        if (req.query.limit) {
-          const r = returnNFTs.reverse().slice(0, req.query.limit);
-          return res.status(200).json(r);
+        const options = {
+          page: req.query.p ?? 1,
+          limit: 24,
+          collation: {
+            locale: "en",
+          },
+        };
+        let NFTs;
+        if (s) {
+          const aggregate = NFT.aggregate([
+            {
+              $search: {
+                text: {
+                  query: `${s}*`,
+                  path: ["name", "description", "model_handle"],
+                },
+              },
+            },
+          ]);
+          NFTs = await NFT.aggregatePaginate(aggregate, options);
         } else {
-          return res.status(200).json(returnNFTs);
+          NFTs = await NFT.paginate({}, options);
         }
+
+        return res.status(200).json(NFTs);
       } catch (error) {
         console.error({ error });
         res.status(400).json({ success: false, error: error });

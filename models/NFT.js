@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const mongoosePaginate = require("mongoose-paginate-v2");
+const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
+const paginate = require("mongoose-paginate-v2");
 
 const NFTSchema = new mongoose.Schema(
   {
@@ -88,7 +89,8 @@ const NFTSchema = new mongoose.Schema(
   }
 );
 
-NFTSchema.plugin(mongoosePaginate);
+NFTSchema.plugin(paginate);
+NFTSchema.plugin(aggregatePaginate);
 
 // NFTSchema.path("discount_codes")
 //   .schema.path("newPrice")
