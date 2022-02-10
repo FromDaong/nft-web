@@ -90,61 +90,56 @@ function MyApp({ Component, pageProps }) {
   }, [status]);
 
   return (
-    <ChakraProvider>
-      <ApolloProvider client={client}>
-        <IntercomProvider
-          appId={"a3jgejbc"}
-          autoBoot
-          autoBootProps={{ name: account }}
-        >
-          <Head>
-            <title>Treat DAO</title>
-            <meta name="title" content="Treat DAO" />
-            <meta name="image" content="https://i.imgur.com/OEiuwp4.jpg" />
-            <meta
-              property="og:image"
-              content="https://i.imgur.com/OEiuwp4.jpg"
-            />
+    <ApolloProvider client={client}>
+      <IntercomProvider
+        appId={"a3jgejbc"}
+        autoBoot
+        autoBootProps={{ name: account }}
+      >
+        <Head>
+          <title>Treat DAO</title>
+          <meta name="title" content="Treat DAO" />
+          <meta name="image" content="https://i.imgur.com/OEiuwp4.jpg" />
+          <meta property="og:image" content="https://i.imgur.com/OEiuwp4.jpg" />
 
-            <meta
-              name="description"
-              content="Treat is an exclusive platform for creators to sell NFTs. Hold $TREAT to have a say on which creators are chosen & new platform features."
-            />
-          </Head>
-          <SWRConfig
-            value={{
-              fetcher: fetch,
-              onError: (err) => {
-                console.error(err);
-              },
-            }}
-          >
-            <TreatProvider>
-              <div>
-                <TOTMBanner oldTokenBalance={oldTokenBalance} />
-                {oldTokenBalance > 0 && (
-                  <V2Banner oldTokenBalance={oldTokenBalance} />
-                )}
-                <Navbar modelData={modelData} />
-                <Container style={{ minHeight: "75vh" }}>
-                  <AnimatePresence
-                    exitBeforeEnter
-                    onExitComplete={() => window.scrollTo(0, 0)}
-                  >
-                    <Component
-                      {...pageProps}
-                      modelData={modelData}
-                      key={router.route}
-                    />
-                  </AnimatePresence>
-                </Container>
-                <Footer />
-              </div>
-            </TreatProvider>
-          </SWRConfig>
-        </IntercomProvider>
-      </ApolloProvider>
-    </ChakraProvider>
+          <meta
+            name="description"
+            content="Treat is an exclusive platform for creators to sell NFTs. Hold $TREAT to have a say on which creators are chosen & new platform features."
+          />
+        </Head>
+        <SWRConfig
+          value={{
+            fetcher: fetch,
+            onError: (err) => {
+              console.error(err);
+            },
+          }}
+        >
+          <TreatProvider>
+            <div>
+              <TOTMBanner oldTokenBalance={oldTokenBalance} />
+              {oldTokenBalance > 0 && (
+                <V2Banner oldTokenBalance={oldTokenBalance} />
+              )}
+              <Navbar modelData={modelData} />
+              <Container style={{ minHeight: "75vh" }}>
+                <AnimatePresence
+                  exitBeforeEnter
+                  onExitComplete={() => window.scrollTo(0, 0)}
+                >
+                  <Component
+                    {...pageProps}
+                    modelData={modelData}
+                    key={router.route}
+                  />
+                </AnimatePresence>
+              </Container>
+              <Footer />
+            </div>
+          </TreatProvider>
+        </SWRConfig>
+      </IntercomProvider>
+    </ApolloProvider>
   );
 }
 

@@ -6,7 +6,8 @@
     "dev": "PORT=3000 cross-env NODE_OPTIONS=\"--max_old_space_size=4096\" next dev",
     "windows-dev": "SET PORT=3001 cross-env NODE_OPTIONS=\"--max_old_space_size=4096\" & next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "basic-dev": "next dev"
   },
   "dependencies": {
     "@apollo/client": "^3.4.16",
