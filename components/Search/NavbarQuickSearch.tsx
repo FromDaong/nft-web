@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Link from "next/link";
 
 export default function NavbarQuickSearch() {
   const [searchText, setSearchText] = useState("");
@@ -32,6 +33,8 @@ export default function NavbarQuickSearch() {
     e.preventDefault();
   };
 
+  console.log({ results, error });
+
   return (
     <div className="quick-search">
       <form onSubmit={doFetchAutocomplete}>
@@ -42,7 +45,23 @@ export default function NavbarQuickSearch() {
           onChange={onChange}
         />
       </form>
-      <div className="quick-search-results"></div>
+      <div className="quick-search-results">
+        {results.map((doc) => (
+          <Link
+            href={
+              doc.type === "nft"
+                ? `/view/${doc.id}`
+                : `/creator/${doc.username}`
+            }
+          >
+            <a>
+              <div className="quick-search-results-item">
+                <p>{doc.group === "nft" ? doc.name : doc.username}</p>
+              </div>
+            </a>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }
