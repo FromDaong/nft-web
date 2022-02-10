@@ -22,14 +22,9 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import ReactGA from "react-ga";
 import { IntercomProvider, useIntercom } from "react-use-intercom";
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  ApolloConsumer,
-  useQuery,
-  gql,
-} from "@apollo/client";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { ChakraProvider } from "@chakra-ui/react";
+
 import "swiper/scss";
 import "swiper/scss/navigation";
 import "swiper/scss/pagination";
@@ -95,56 +90,61 @@ function MyApp({ Component, pageProps }) {
   }, [status]);
 
   return (
-    <ApolloProvider client={client}>
-      <IntercomProvider
-        appId={"a3jgejbc"}
-        autoBoot
-        autoBootProps={{ name: account }}
-      >
-        <Head>
-          <title>Treat DAO</title>
-          <meta name="title" content="Treat DAO" />
-          <meta name="image" content="https://i.imgur.com/OEiuwp4.jpg" />
-          <meta property="og:image" content="https://i.imgur.com/OEiuwp4.jpg" />
-
-          <meta
-            name="description"
-            content="Treat is an exclusive platform for creators to sell NFTs. Hold $TREAT to have a say on which creators are chosen & new platform features."
-          />
-        </Head>
-        <SWRConfig
-          value={{
-            fetcher: fetch,
-            onError: (err) => {
-              console.error(err);
-            },
-          }}
+    <ChakraProvider>
+      <ApolloProvider client={client}>
+        <IntercomProvider
+          appId={"a3jgejbc"}
+          autoBoot
+          autoBootProps={{ name: account }}
         >
-          <TreatProvider>
-            <div>
-              <TOTMBanner oldTokenBalance={oldTokenBalance} />
-              {oldTokenBalance > 0 && (
-                <V2Banner oldTokenBalance={oldTokenBalance} />
-              )}
-              <Navbar modelData={modelData} />
-              <Container style={{ minHeight: "75vh" }}>
-                <AnimatePresence
-                  exitBeforeEnter
-                  onExitComplete={() => window.scrollTo(0, 0)}
-                >
-                  <Component
-                    {...pageProps}
-                    modelData={modelData}
-                    key={router.route}
-                  />
-                </AnimatePresence>
-              </Container>
-              <Footer />
-            </div>
-          </TreatProvider>
-        </SWRConfig>
-      </IntercomProvider>
-    </ApolloProvider>
+          <Head>
+            <title>Treat DAO</title>
+            <meta name="title" content="Treat DAO" />
+            <meta name="image" content="https://i.imgur.com/OEiuwp4.jpg" />
+            <meta
+              property="og:image"
+              content="https://i.imgur.com/OEiuwp4.jpg"
+            />
+
+            <meta
+              name="description"
+              content="Treat is an exclusive platform for creators to sell NFTs. Hold $TREAT to have a say on which creators are chosen & new platform features."
+            />
+          </Head>
+          <SWRConfig
+            value={{
+              fetcher: fetch,
+              onError: (err) => {
+                console.error(err);
+              },
+            }}
+          >
+            <TreatProvider>
+              <div>
+                <TOTMBanner oldTokenBalance={oldTokenBalance} />
+                {oldTokenBalance > 0 && (
+                  <V2Banner oldTokenBalance={oldTokenBalance} />
+                )}
+                <Navbar modelData={modelData} />
+                <Container style={{ minHeight: "75vh" }}>
+                  <AnimatePresence
+                    exitBeforeEnter
+                    onExitComplete={() => window.scrollTo(0, 0)}
+                  >
+                    <Component
+                      {...pageProps}
+                      modelData={modelData}
+                      key={router.route}
+                    />
+                  </AnimatePresence>
+                </Container>
+                <Footer />
+              </div>
+            </TreatProvider>
+          </SWRConfig>
+        </IntercomProvider>
+      </ApolloProvider>
+    </ChakraProvider>
   );
 }
 

@@ -8,6 +8,7 @@ import WalletModal from "../WalletModal";
 import AgeModal from "../AgeModal";
 import BalanceModal from "../BalanceModal";
 import Link from "next/link";
+import NavbarQuickSearch from "../Search/NavbarQuickSearch";
 
 const HeaderNav = ({ modelData }) => {
   const { status, account, error, reset, chainId } = useWallet();
@@ -54,6 +55,9 @@ const HeaderNav = ({ modelData }) => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse className="justify-content-end">
+          <div className="mr-md-4">
+            <NavbarQuickSearch />
+          </div>
           <Link href="/magazine" passHref>
             <Nav.Link>Magazine</Nav.Link>
           </Link>
