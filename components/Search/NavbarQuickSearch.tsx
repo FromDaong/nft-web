@@ -58,6 +58,7 @@ export default function NavbarQuickSearch() {
               <a>
                 <div className="quick-search-results-item">
                   <p>{doc.group === "nft" ? doc.name : doc.username}</p>
+                  <p className="totm-tag">{doc.type}</p>
                 </div>
               </a>
             </Link>
