@@ -45,23 +45,25 @@ export default function NavbarQuickSearch() {
           onChange={onChange}
         />
       </form>
-      <div className="quick-search-results">
-        {results.map((doc) => (
-          <Link
-            href={
-              doc.type === "nft"
-                ? `/view/${doc.id}`
-                : `/creator/${doc.username}`
-            }
-          >
-            <a>
-              <div className="quick-search-results-item">
-                <p>{doc.group === "nft" ? doc.name : doc.username}</p>
-              </div>
-            </a>
-          </Link>
-        ))}
-      </div>
+      {results && (
+        <div className="quick-search-results">
+          {results.map((doc) => (
+            <Link
+              href={
+                doc.type === "nft"
+                  ? `/view/${doc.id}`
+                  : `/creator/${doc.username}`
+              }
+            >
+              <a>
+                <div className="quick-search-results-item">
+                  <p>{doc.group === "nft" ? doc.name : doc.username}</p>
+                </div>
+              </a>
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

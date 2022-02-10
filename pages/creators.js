@@ -29,12 +29,9 @@ const Creators = () => {
   }, []);
 
   useEffect(() => {
-    const page = router.query.p;
     if (searchFilter) {
       router.push(
-        `${router.pathname}?${searchFilter && `s=${searchFilter}`}${
-          page && `&p=${router.query.p}`
-        }`,
+        `${router.pathname}?${searchFilter && `s=${searchFilter}`}&p=1`,
         undefined,
         { shallow: true }
       );
