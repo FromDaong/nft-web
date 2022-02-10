@@ -42,6 +42,7 @@ export default function NavbarQuickSearch() {
           onChange={onChange}
         />
       </form>
+      <div className="quick-search-results"></div>
     </div>
   );
 }
