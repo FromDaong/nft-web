@@ -1,5 +1,9 @@
 .quick-search {
   position: relative;
+  width: 100%;
+  @media screen and (max-width: 580px) {
+    min-width: 90vw;
+  }
 
   .quick-search-results {
     position: absolute;
@@ -11,6 +15,7 @@
     .quick-search-results-item {
       padding-top: 4px;
       padding-bottom: 4px;
+      z-index: 500;
 
       :hover {
         background-color: #fefefe;
