@@ -45,7 +45,7 @@ export default function NavbarQuickSearch() {
           onChange={onChange}
         />
       </form>
-      {results && (
+      {results.length > 0 && (
         <div className="quick-search-results">
           {results.map((doc) => (
             <Link
