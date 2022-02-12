@@ -59,11 +59,7 @@ const SearchModal = ({ show, handleClose }) => {
 
   return (
     <Modal show={show} onHide={handleClose} centered>
-      <Modal.Header closeButton>
-        <div>
-          <Modal.Title>List NFT on Marketplace</Modal.Title>
-        </div>
-      </Modal.Header>
+      <Modal.Header closeButton></Modal.Header>
       <Modal.Body>
         <div className="quick-search">
           <form onSubmit={doFetchAutocomplete}>
@@ -85,7 +81,7 @@ const SearchModal = ({ show, handleClose }) => {
                     : `/creator/${doc.username}`
                 }
               >
-                <a>
+                <a className="quick-search-results-item w-full">
                   <div className="quick-search-results-item w-full">
                     {doc.group === "nft" ? (
                       <Photograph className="size-2 mr-2" />
