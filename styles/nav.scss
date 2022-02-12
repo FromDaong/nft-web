@@ -1,25 +1,29 @@
 .quick-search {
   position: relative;
   width: 100%;
-  @media screen and (max-width: 580px) {
-    min-width: 90vw;
-  }
+  padding-bottom: 16px;
+}
 
-  .quick-search-results {
-    position: absolute;
-    padding: 8px 16px;
-    background-color: #fff;
-    max-height: 50vh;
-    overflow-y: auto;
+.quick-search-results {
+  padding: 8px 16px;
+  background-color: #fff;
+  max-height: 50vh;
+  overflow-y: auto;
+  width: 100%;
 
-    .quick-search-results-item {
-      padding-top: 4px;
-      padding-bottom: 4px;
-      z-index: 500;
+  .quick-search-results-item {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    width: 100%;
 
-      :hover {
-        background-color: #fefefe;
-      }
+    :hover {
+      background-color: #f7f3f3;
     }
+  }
+  p {
+    margin-bottom: 0;
   }
 }
