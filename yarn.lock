@@ -386,6 +386,11 @@
     "@babel/helper-validator-identifier" "^7.14.8"
     to-fast-properties "^2.0.0"
 
+"@badrap/bar-of-progress@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@badrap/bar-of-progress/-/bar-of-progress-0.1.2.tgz#5d9cf85759e1f77bddcb74398530976d87bb5077"
+  integrity sha512-bCwx/HbgUfJEndzlubJF5FVQrFEcGX4HZsoCfoa+gSq37pjbJBvIyqMBLIGnb5y0ICovIrxJUxvlbmxeic0rSQ==
+
 "@binance-chain/bsc-connector@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@binance-chain/bsc-connector/-/bsc-connector-1.0.0.tgz#5ce6b02af0921c5fb52c10861b7a0b4a958ca57a"

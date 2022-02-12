@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.4.16",
+    "@badrap/bar-of-progress": "^0.1.2",
     "@binance-chain/bsc-connector": "^1.0.0",
     "@binance-chain/bsc-use-wallet": "^0.8.1",
     "@chakra-ui/react": "^1.8.3",

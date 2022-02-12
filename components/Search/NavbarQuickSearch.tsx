@@ -4,11 +4,12 @@ import Link from "next/link";
 import Modal from "react-bootstrap/Modal";
 import Photograph from "../icons/Photograph";
 import ModelIcon from "../icons/Model";
+import { useRouter } from "next/dist/client/router";
 
 export default function NavbarQuickSearch() {
   const [show, setShow] = useState(false);
 
-  const toggleShow = () => {
+  const toggleShow = (val) => {
     setShow(!show);
   };
 
@@ -30,6 +31,7 @@ const SearchModal = ({ show, handleClose }) => {
   const [searchText, setSearchText] = useState("");
   const [results, setResults] = useState([]);
   const [error, setError] = useState(null);
+  const router = useRouter();
 
   const onChange = (e) => {
     const { value } = e.target;
@@ -56,6 +58,10 @@ const SearchModal = ({ show, handleClose }) => {
   const doFetchAutocomplete = (e) => {
     e.preventDefault();
   };
+
+  useEffect(() => {
+    if (show) handleClose();
+  }, [router]);
 
   return (
     <Modal show={show} onHide={handleClose} centered>
