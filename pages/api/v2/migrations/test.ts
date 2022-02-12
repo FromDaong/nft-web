@@ -6,8 +6,6 @@ const cdnclient = new uploadcare.UploadClient({
 
 export default function migrate(req, res) {
   cdnclient
-    .uploadFile(
-      "https://treatdao.mypinata.cloud/ipfs/QmXwqx7sk6FoA1WX9cbXrXWnSJMpnuPYCKH3DNwpGBADiK"
-    )
+    .uploadFile("https://treatdao.com/assets/bg.jpg")
     .then((file) => res.json(file));
 }
