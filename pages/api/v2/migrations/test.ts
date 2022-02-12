@@ -1,9 +1,11 @@
-import UploadClient from "@uploadcare/upload-client";
+import * as uploadcare from "@uploadcare/upload-client";
 
-const uploadcare = new UploadClient({ publicKey: "bd2227cb6c142eeddfc0" });
+const cdnclient = new uploadcare.UploadClient({
+  publicKey: "bd2227cb6c142eeddfc0",
+});
 
 export default function migrate(req, res) {
-  uploadcare
+  cdnclient
     .uploadFile(
       "https://treatdao.mypinata.cloud/ipfs/QmXwqx7sk6FoA1WX9cbXrXWnSJMpnuPYCKH3DNwpGBADiK"
     )
