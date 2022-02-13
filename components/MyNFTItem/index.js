@@ -147,7 +147,9 @@ const NFTListItem = ({
                 <div
                   style={{
                     background: `url(${
-                      webp && data.cdnUrl ? data.cdnUrl : image || data.image
+                      webp && data.cdnUrl
+                        ? `${data.cdnUrl}-/format/webp/`
+                        : image || data.image
                     })`,
                     minHeight: 375,
                     zIndex: 100,
