@@ -23,7 +23,7 @@ const ModelListItem = ({ data, totwOnly = false, disableAnim }) => {
           <div
             className="pic"
             style={{
-              backgroundImage: `url('${data.profilePicCdnUrl}-/quality/smart/-/format/webp/')`,
+              backgroundImage: `url('${data.profilePicCdnUrl}-/quality/lighter/-/format/webp/')`,
             }}
           ></div>
           <div className="details">
