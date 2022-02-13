@@ -38,7 +38,7 @@ const CreatorList = ({ modelData }) => {
                 <div
                   className="pic"
                   style={{
-                    backgroundImage: `url(${model.profile_pic}-/quality/smart/-/format/webp/)`,
+                    backgroundImage: `url(${model.profile_pic}-/quality/lighter/-/format/webp/)`,
                   }}
                 ></div>
                 <div className="creator-text">
