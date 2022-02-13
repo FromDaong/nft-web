@@ -4,7 +4,6 @@ import Button from "react-bootstrap/Button";
 let easing = [0.175, 0.85, 0.42, 0.96];
 
 const ModelListItem = ({ data, totwOnly = false, disableAnim }) => {
-
   useEffect(() => {
     (async () => {
       if (data.image) {
@@ -21,8 +20,12 @@ const ModelListItem = ({ data, totwOnly = false, disableAnim }) => {
     <a href={`/creator/${data.username.replace("@", "")}`}>
       <div className="model-list-item">
         <div className="creator">
-          <div className="pic" style={{ backgroundImage: `url(${data.profile_pic})` }}>
-          </div>
+          <div
+            className="pic"
+            style={{
+              backgroundImage: `url('${data.profilePicCdnUrl}-/format/webp')`,
+            }}
+          ></div>
           <div className="details">
             <div className="label">CREATOR</div>
             <div className="name">{data.username}</div>
