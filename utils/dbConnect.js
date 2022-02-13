@@ -29,9 +29,15 @@ async function dbConnect() {
       bufferCommands: true,
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      return mongoose;
-    });
+    cached.promise = mongoose
+      .connect(
+        //MONGODB_URI
+        "mongodb+srv://dev:aMa2E0ArKPJwpmx1@cluster0.amea3.mongodb.net/treat?retryWrites=true&w=majority",
+        opts
+      )
+      .then((mongoose) => {
+        return mongoose;
+      });
   }
   cached.conn = await cached.promise;
   return cached.conn;
