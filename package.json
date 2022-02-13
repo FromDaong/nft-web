@@ -7,7 +7,8 @@
     "windows-dev": "SET PORT=3001 cross-env NODE_OPTIONS=\"--max_old_space_size=4096\" & next dev",
     "build": "next build",
     "start": "next start",
-    "basic-dev": "next dev"
+    "basic-dev": "next dev",
+    "migrate-nft": "node ./lib/migrate-to-cdn.js"
   },
   "dependencies": {
     "@apollo/client": "^3.4.16",

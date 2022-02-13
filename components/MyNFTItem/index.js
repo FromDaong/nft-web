@@ -63,6 +63,12 @@ const NFTListItem = ({
     })();
   }, [data]);
 
+  const webp = (e) =>
+    document
+      .createElement("canvas")
+      .toDataURL("image/webp")
+      .indexOf("data:image/webp") == 0;
+
   return (
     <>
       <Modal
@@ -140,7 +146,9 @@ const NFTListItem = ({
                 </div>
                 <div
                   style={{
-                    background: `url(${image || data.image})`,
+                    background: `url(${
+                      webp && data.cdnUrl ? data.cdnUrl : image || data.image
+                    })`,
                     minHeight: 375,
                     zIndex: 100,
                   }}
