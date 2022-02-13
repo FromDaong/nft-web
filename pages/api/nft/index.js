@@ -33,7 +33,12 @@ export default async (req, res) => {
           ]);
           NFTs = await NFT.aggregatePaginate(aggregate, options);
         } else {
-          NFTs = await NFT.paginate({}, options);
+          NFTs = await NFT.paginate(
+            {
+              cdnUrl: { $exists: true },
+            },
+            options
+          );
         }
 
         return res.status(200).json(NFTs);
