@@ -28,6 +28,9 @@ const ModelSchema = new mongoose.Schema(
     profile_pic: {
       type: String,
     },
+    profilePicCdnUrl: {
+      type: String,
+    },
     banner_pic: {
       type: String,
       default:
