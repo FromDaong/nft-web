@@ -34,7 +34,7 @@
     "ethers": "^5.4.2",
     "flexsearch": "^0.7.21",
     "formik": "^2.2.9",
-    "framer-motion": "^5",
+    "framer-motion": "^4.1.17",
     "fuse.js": "^6.4.6",
     "generate-avatar": "^1.4.6",
     "graphql": "^15.6.1",
