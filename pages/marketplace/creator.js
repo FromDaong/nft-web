@@ -27,7 +27,6 @@ const Marketplace = ({ search }) => {
   const [nftDataArray, setNftDataArray] = useState([]);
   const [searchFilter, setSearchFilter] = useState(search || "");
   const [sortBy, setSortBy] = useState("Recent");
-  const [filteredArray, setFilteredArray] = useState([]);
   const [finalArray, setFinalArray] = useState([]);
   const [loading, setLoading] = useState(true);
   const [apiResponseData, setApiResponseData] = useState({
@@ -53,18 +52,6 @@ const Marketplace = ({ search }) => {
     forceCheck();
   };
 
-  const fuse = new Fuse(nftDataArray, {
-    keys: ["name", "description", "model_handle", "tags"],
-    shouldSort: false,
-    useExtendedSearch: true,
-    includeScore: true,
-  });
-
-  let selectedOptionsStr = "";
-  selectedOptions.forEach(
-    (e) => (selectedOptionsStr += `="${e.value.trim()}" `)
-  );
-
   const setSort = (sortBy) => {
     setSortBy(sortBy);
   };
@@ -75,7 +62,7 @@ const Marketplace = ({ search }) => {
   }, [orderBookArray]);
 
   useEffect(() => {
-    const newArray = filteredArray;
+    const newArray = nftDataArray.map((nft) => ({ item: nft }));
     newArray.sort((a, b) => {
       switch (sortBy) {
         case "Relevancy":
@@ -99,85 +86,34 @@ const Marketplace = ({ search }) => {
       }
     });
     setFinalArray(newArray);
-  }, [filteredArray, sortBy]);
-
-  useEffect(() => {
-    // yes search + no dropdown
-    let searchResult;
-    if (searchFilter !== "" && selectedOptionsStr === "") {
-      searchResult = fuse.search({
-        $or: [
-          { name: searchFilter },
-          { description: searchFilter },
-          { model_handle: searchFilter },
-        ],
-      });
-
-      // yes search + yes dropdown
-    } else if (searchFilter !== "" && selectedOptionsStr !== "") {
-      searchResult = fuse.search({
-        $and: [{ tags: selectedOptionsStr }],
-        $or: [{ name: searchFilter }],
-      });
-
-      // no search + yes dropdown
-    } else if (searchFilter == "" && selectedOptionsStr !== "") {
-      searchResult = fuse.search({
-        $and: [{ tags: selectedOptionsStr }],
-      });
-
-      // no filtering
-    } else {
-      searchResult = nftDataArray.map((d, idx) => ({
-        item: d,
-        refIndex: idx,
-      }));
-    }
-    setFilteredArray(searchResult);
-  }, [searchFilter, selectedOptionsStr, nftDataArray]);
+  }, [nftDataArray, sortBy]);
 
   useEffect(() => {
     const queryFilter = router.query.s;
-    const persistedSortBy = router.query.sort;
-    const tags = router.query.tags;
+    const sort = router.query.sort;
     setSearchFilter(queryFilter ?? "");
-    setSort(persistedSortBy ?? "Recent");
-
-    if (tags) {
-      let renamedTags = tags.replaceAll("=", ",");
-      let tagsArray = renamedTags.split(",").reverse();
-      tagsArray.pop();
-      tagsArray = tagsArray.map((tag) => tag.replaceAll('"', ""));
-      tagsArray.map((tag) =>
-        setSelectedOptions((current) => [
-          ...current,
-          {
-            label: tag,
-            value: tag,
-          },
-        ])
-      );
-    }
+    setSortBy(sort ?? "Recent");
   }, []);
 
   useEffect(() => {
     if (searchFilter) {
       router.push(
-        `${router.pathname}?${searchFilter && `s=${searchFilter}&`}p=${
-          router.query.p
-        }&${selectedOptionsStr ? `tags=${selectedOptionsStr}&` : ""}${
-          sortBy ? `sort=${sortBy}&` : ""
-        }`.trim(),
+        `${router.pathname}?${searchFilter && `s=${searchFilter}`}&p=1`,
         undefined,
         { shallow: true }
       );
     }
-  }, [searchFilter, selectedOptionsStr]);
+  }, [searchFilter]);
 
   useEffect(() => {
+    console.log("Route changed");
     setLoading(true);
     axios
-      .get(`/api/nft/get-marketplace-nfts?p=${router.query.p ?? 1}`)
+      .get(
+        `/api/nft?p=${router.query.p ?? 1}${
+          searchFilter ? `&s=${router.query.s}` : ""
+        }`
+      )
       .then((res) => setApiResponseData(res.data))
       .then(() => setLoading(false));
   }, [router]);

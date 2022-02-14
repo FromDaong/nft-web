@@ -24,6 +24,7 @@ export default async (req, res) => {
           const aggregate = NFT.aggregate([
             {
               $search: {
+                index: "init",
                 text: {
                   query: `${s}*`,
                   path: ["name", "description", "model_handle"],
