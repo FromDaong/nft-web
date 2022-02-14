@@ -52,13 +52,6 @@ const Marketplace = ({ search }) => {
   const router = useRouter();
 
   const { error, docs: populatedNftData } = apiResponseData;
-  console.log({
-    jsonBody,
-    orderBookLoaded,
-    _orderBookArray,
-    orderBook,
-    populatedNftData,
-  });
 
   useEffect(() => {
     if (orderBook?.length > 0 && !orderBookLoaded) {
@@ -73,54 +66,43 @@ const Marketplace = ({ search }) => {
 
   useEffect(() => {
     const queryFilter = router.query.s;
-    const tags = router.query.tags;
-
     setSearchFilter(queryFilter ?? "");
-
-    if (tags) {
-      let renamedTags = tags.replaceAll("=", ",");
-      let tagsArray = renamedTags.split(",").reverse();
-      tagsArray.pop();
-      tagsArray = tagsArray.map((tag) => tag.replaceAll('"', ""));
-      tagsArray.map((tag) =>
-        setSelectedOptions((current) => [
-          ...current,
-          {
-            label: tag,
-            value: tag,
-          },
-        ])
-      );
-    }
   }, []);
 
   useEffect(() => {
-    if (searchFilter || sortBy) {
-      router.push(
-        `${router.pathname}?${searchFilter && `s=${searchFilter}&`}p=${
-          router.query.p
-        }&
-        ${/*selectedOptionsStr ? `tags=${selectedOptionsStr}&` : ""*/ ""}${
-          sortBy ? `sort=${sortBy}&` : ""
-        }`.trim(),
-        undefined,
-        { shallow: true }
-      );
-    }
-  }, [searchFilter, sortBy]);
+    router.push(
+      `${router.pathname}?${searchFilter && `s=${searchFilter}&`}p=${
+        router.query.p ?? 1
+      }`.trim(),
+      undefined,
+      { shallow: true }
+    );
+  }, [searchFilter]);
 
   useEffect(() => {
-    console.log("Changed");
     if (jsonBody && orderBookLoaded) {
       setLoading(true);
       axios
-        .post(`/api/nft/get-many-nfts?p=${router.query.p ?? 1}`, {
-          ...jsonBody,
-        })
+        .post(
+          `/api/nft/get-many-nfts?p=${router.query.p ?? 1}${
+            searchFilter ? `&s=${router.query.s}` : ""
+          }`,
+          {
+            ...jsonBody,
+          }
+        )
         .then((res) => setApiResponseData(res.data))
         .then(() => setLoading(false));
     }
   }, [router, jsonBody, _orderBookArray]);
+
+  useEffect(() => {
+    router.push(
+      `${router.pathname}?${searchFilter && `s=${searchFilter}`}&p=1`,
+      undefined,
+      { shallow: true }
+    );
+  }, [searchFilter]);
 
   useEffect(() => {
     const populatedArray =
@@ -135,7 +117,7 @@ const Marketplace = ({ search }) => {
           return { item: { ...x, ...nftResult } };
         })
         .filter((e) => e);
-    console.log({ populatedArray });
+
     const renderArray = populatedArray?.sort((a, b) => {
       switch (sortBy) {
         case "Relevancy":
