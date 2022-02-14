@@ -27,6 +27,7 @@ export default async (req, res) => {
           const aggregate = Model.aggregate([
             {
               $search: {
+                index: "init",
                 text: {
                   query: `${s}*`,
                   path: ["username", "bio", "display_name"],
