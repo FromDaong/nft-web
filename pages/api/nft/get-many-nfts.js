@@ -38,11 +38,28 @@ export default async (req, res) => {
             locale: "en",
           },
         };
-        let NFTres = await NFT.paginate(
-          { id: { $in: req.body.nfts } },
-          options
-        );
-
+        let NFTres;
+        if (req.s) {
+          const aggregate = NFT.aggregate([
+            {
+              $search: {
+                index: "init",
+                text: {
+                  query: `${s}*`,
+                  path: ["name", "description", "model_handle"],
+                },
+              },
+            },
+            {
+              $match: {
+                id: { $in: req.body.nfts },
+              },
+            },
+          ]);
+          NFTres = await NFT.aggregatePaginate(aggregate, options);
+        } else {
+          NFTres = await NFT.paginate({ id: { $in: req.body.nfts } }, options);
+        }
         console.log(NFTres);
 
         if (NFTres.docs.length === 0)
