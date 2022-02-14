@@ -93,17 +93,7 @@ const ModelSchema = new mongoose.Schema(
 
 ModelSchema.plugin(aggregatePaginate);
 ModelSchema.plugin(paginate);
-
-// ModelSchema.path("discount_codes")
-//   .schema.path("newPrice")
-//   .set(function (num) {
-//     return num * 100;
-//   });
-
-// ModelSchema.path("price").set(function (num) {
-//   return num * 100;
-// });
-
 ModelSchema.plugin(require("mongoose-beautiful-unique-validation"));
+
 const Model = mongoose.models.Model || mongoose.model("Model", ModelSchema);
 module.exports = Model;

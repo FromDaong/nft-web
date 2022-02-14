@@ -14,12 +14,12 @@ export default async function FTS(req, res) {
   };
 
   try {
-    const aggregate = await Model.aggregate([
+    const aggregate = Model.aggregate([
       {
         $search: {
           text: {
             query: `${s}*`,
-            path: ["username", "bio", "display_name"],
+            path: ["username"],
           },
         },
       },

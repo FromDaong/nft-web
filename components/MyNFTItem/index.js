@@ -45,23 +45,9 @@ const NFTListItem = ({
   price,
   hasOpenOrder,
 }) => {
-  const [image, setBase64Image] = useState();
   const [modalData, setModalData] = useState();
   var base64regex =
     /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
-
-  useEffect(() => {
-    (async () => {
-      if (data.image && data.old_totw) {
-        fetch(data.image)
-          .then((r) => r.text())
-          .then((blob) => {
-            const replacedText = blob.replace(`"`, "").replace(/["']/g, "");
-            setBase64Image(replacedText);
-          });
-      }
-    })();
-  }, [data]);
 
   const webp = (e) =>
     document
@@ -80,7 +66,9 @@ const NFTListItem = ({
         <Modal.Body>
           <div
             className="modal-image"
-            style={{ background: `url(${image || data.image})` }}
+            style={{
+              background: `url(${data.cdnUrl}-/quality/lighter/-/format/webp/)`,
+            }}
           ></div>
           <h4 className="text-center pt-3">{data.description}</h4>
         </Modal.Body>
@@ -117,7 +105,7 @@ const NFTListItem = ({
               minHeight: 300,
             }}
             onClick={() => {
-              if (image) {
+              if (data.image) {
                 setModalData(true);
               } else {
                 revealNFTs();
@@ -146,11 +134,7 @@ const NFTListItem = ({
                 </div>
                 <div
                   style={{
-                    background: `url(${
-                      data.cdnUrl
-                        ? `${data.cdnUrl}-/format/webp/`
-                        : image || data.image
-                    })`,
+                    background: `url(${data.cdnUrl}-/quality/lighter/-/format/webp/)`,
                     minHeight: 375,
                     zIndex: 100,
                   }}
