@@ -29,13 +29,11 @@ const Creators = () => {
   }, []);
 
   useEffect(() => {
-    if (searchFilter) {
-      router.push(
-        `${router.pathname}?${searchFilter && `s=${searchFilter}`}&p=1`,
-        undefined,
-        { shallow: true }
-      );
-    }
+    router.push(
+      `${router.pathname}?${searchFilter && `s=${searchFilter}`}&p=1`,
+      undefined,
+      { shallow: true }
+    );
   }, [searchFilter]);
 
   useEffect(() => {
