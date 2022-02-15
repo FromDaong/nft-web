@@ -11,14 +11,15 @@ import ErrorFallback from "../../components/Fallback/Error";
 import { useRouter } from "next/dist/client/router";
 import MyNFTItemSkeleton from "../../components/Skeleton/MyNFTItemSkeleton";
 
-export default function Index() {
+export default function Index(props) {
   // TODO Get models total items
   // get data for relevant models (startIndex endIndex)
-  const { data: modelData, error: loadingError } =
-    useSWR(`/api/model/with-subs`);
   const [searchFilter, setSearchFilter] = useState("");
   const [persistedPageNumber, setPersistedPageNumber] = useState(0);
   const router = useRouter();
+
+  let { returnModels: modelData, loadingError } = props;
+  modelData = JSON.parse(modelData);
 
   const fuse = new Fuse(modelData, {
     keys: ["username", "display_name"],
@@ -144,6 +145,29 @@ export default function Index() {
   );
 }
 
-Index.getInitialProps = async ({ query: { search } }) => {
-  return { search };
+export const getServerSideProps = async (context) => {
+  dbConnect();
+
+  try {
+    const Models = await Model.find({ subscription: { $exists: true } });
+
+    const returnModels = await Models.map((n) => {
+      const returnObj = { ...n.toObject() };
+      return returnObj;
+    });
+
+    return {
+      props: {
+        returnModels: JSON.stringify(returnModels),
+      },
+    };
+  } catch (err) {
+    console.log({ err });
+    return {
+      props: {
+        modelData: [],
+        error: "Failed to load models with subscriptions.",
+      },
+    };
+  }
 };

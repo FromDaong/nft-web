@@ -106,8 +106,31 @@ const Creators = () => {
   );
 };
 
-Creators.getInitialProps = async ({ query: { search } }) => {
-  return { search };
+export const getServerSideProps = async (ctx) => {
+  dbConnect();
+
+  try {
+    const Models = await Model.find();
+
+    const returnModels = await Models.map((n) => {
+      const returnObj = { ...n.toObject() };
+      return returnObj;
+    });
+
+    return {
+      props: {
+        models: JSON.stringify(returnModels),
+      },
+    };
+  } catch (err) {
+    console.log({ err });
+    return {
+      props: {
+        modelData: [],
+        error: "Failed to load models.",
+      },
+    };
+  }
 };
 
 export default Creators;
