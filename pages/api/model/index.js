@@ -20,18 +20,7 @@ export default async (req, res) => {
 
         let Models;
 
-        if (!s) {
-          Models = await Model.paginate({}, options);
-        } else if (req.query.totm) {
-          Models = await Model.paginate(
-            {
-              totm: {
-                $exists: true,
-              },
-            },
-            options
-          );
-        } else {
+        if (s) {
           const aggregate = Model.aggregate([
             {
               $search: {
@@ -44,6 +33,15 @@ export default async (req, res) => {
             },
           ]);
           Models = await Model.aggregatePaginate(aggregate, options);
+        } else if (req.query.totm) {
+          Models = await Model.paginate(
+            {
+              totm: true,
+            },
+            options
+          );
+        } else {
+          Models = await Model.paginate({}, options);
         }
 
         Models.docs = await Models.docs.sort(
