@@ -28,6 +28,7 @@ const Home = ({
   modelResultError,
   totmError,
 }) => {
+  let modelData = modelsResults;
   return (
     <Layout>
       <div className="home container">
