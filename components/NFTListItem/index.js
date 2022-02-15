@@ -10,26 +10,6 @@ import axios from "axios";
 
 let easing = [0.175, 0.85, 0.42, 0.96];
 
-const variants = {
-  initial: {
-    opacity: 0,
-  },
-  hidden: {
-    opacity: 0,
-    transition: {
-      duration: 0.1,
-      ease: easing,
-    },
-  },
-  show: {
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-      ease: easing,
-    },
-  },
-};
-
 const NFTListItem = ({
   data,
   buttonLabel,
@@ -141,7 +121,7 @@ const NFTListItem = ({
             {data.image ? (
               <div
                 style={{
-                  background: `url(${data.image})`,
+                  background: `url(${data.cdnUrl ? data.cdnUrl : data.image})`,
                   minHeight: 375,
                   zIndex: 100,
                 }}
