@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import Hero from "../components/Hero";
 import ModelList from "../components/ModelList";
-import Fuse from "fuse.js";
 import ErrorFallback from "../components/Fallback/Error";
 import { useRouter } from "next/dist/client/router";
 import axios from "axios";
 import PaginationComponentV2 from "../components/Pagination";
 import MyNFTItemSkeleton from "../components/Skeleton/MyNFTItemSkeleton";
+import dbConnect from "../utils/dbConnect";
 
 const Creators = () => {
   const [apiResponseData, setApiResponseData] = useState({
