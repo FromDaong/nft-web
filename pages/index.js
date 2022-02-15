@@ -28,7 +28,6 @@ const Home = ({
   modelResultError,
   totmError,
 }) => {
-  let modelData = modelsResults;
   return (
     <Layout>
       <div className="home container">
@@ -255,7 +254,7 @@ const Home = ({
 
 export default Home;
 
-export const getServerSideProps = async () => {
+export const getInitialProps = async () => {
   try {
     const totmFetch = await axiosNode.get("/api/model?totm=true");
     let totm = totmFetch.data.docs.length > 0 ? totmFetch.data.docs[0] : null;
@@ -270,26 +269,22 @@ export const getServerSideProps = async () => {
     const modelError = !modelsResults ? true : false;
 
     return {
-      props: {
-        totm,
-        totmError,
-        nftData,
-        nftError,
-        modelsResults,
-        modelError,
-      },
+      totm,
+      totmError,
+      nftData,
+      nftError,
+      modelsResults,
+      modelError,
     };
   } catch (err) {
     console.error(err);
     return {
-      props: {
-        totm: {},
-        totmError: true,
-        nftData: [],
-        nftError: true,
-        modelsResults: [],
-        modelError: true,
-      },
+      totm: {},
+      totmError: true,
+      nftData: [],
+      nftError: true,
+      modelsResults: [],
+      modelError: true,
     };
   }
 };
