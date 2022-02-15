@@ -39,7 +39,7 @@ export default async (req, res) => {
           },
         };
         let NFTres;
-        if (req.s) {
+        if (req.query.s) {
           const aggregate = NFT.aggregate([
             {
               $search: {
