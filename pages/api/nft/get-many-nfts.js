@@ -30,7 +30,6 @@ export default async (req, res) => {
     case "POST":
       try {
         if (!req.body.nfts) return res.status(200).json([]);
-        console.log(req.body);
         const options = {
           page: req.query.p ?? 1,
           limit: 24,
@@ -45,7 +44,7 @@ export default async (req, res) => {
               $search: {
                 index: "init",
                 text: {
-                  query: `${s}*`,
+                  query: `${req.query.s}*`,
                   path: ["name", "description", "model_handle"],
                 },
               },
@@ -60,7 +59,6 @@ export default async (req, res) => {
         } else {
           NFTres = await NFT.paginate({ id: { $in: req.body.nfts } }, options);
         }
-        console.log(NFTres);
 
         if (NFTres.docs.length === 0)
           return res
@@ -76,7 +74,7 @@ export default async (req, res) => {
               await getNftTotalSupply(treatNFTMinter, id)
             )?.toNumber();
 
-            const returnObj = { ...nft.toObject(), maxSupply, totalSupply };
+            const returnObj = { ...nft, maxSupply, totalSupply };
             if (nft.blurhash) delete returnObj.image;
 
             return returnObj;
@@ -85,6 +83,7 @@ export default async (req, res) => {
 
         res.status(200).json(NFTres);
       } catch (error) {
+        console.log(error);
         res.status(400).json({ success: false, error: error });
       }
       break;
