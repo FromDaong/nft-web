@@ -5,7 +5,7 @@ import Modal from "react-bootstrap/Modal";
 import Photograph from "../icons/Photograph";
 import ModelIcon from "../icons/Model";
 import { useRouter } from "next/dist/client/router";
-import Button from "react-bootstrap/esm/Button";
+import Button from "react-bootstrap/Button";
 
 export default function NavbarQuickSearch() {
   const [show, setShow] = useState(false);
