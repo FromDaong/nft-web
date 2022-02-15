@@ -35,6 +35,11 @@ export default async (req, res) => {
                 },
               },
             },
+            {
+              $match: {
+                subscription: { $exists: true },
+              },
+            },
           ]);
           Models = await Model.aggregatePaginate(aggregate, options);
         }
