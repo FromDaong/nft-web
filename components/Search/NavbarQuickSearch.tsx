@@ -5,6 +5,7 @@ import Modal from "react-bootstrap/Modal";
 import Photograph from "../icons/Photograph";
 import ModelIcon from "../icons/Model";
 import { useRouter } from "next/dist/client/router";
+import Button from "react-bootstrap/esm/Button";
 
 export default function NavbarQuickSearch() {
   const [show, setShow] = useState(false);
@@ -16,11 +17,9 @@ export default function NavbarQuickSearch() {
   return (
     <div className="quick-search">
       <form onSubmit={() => {}}>
-        <input
-          placeholder="Search Treat and Creators"
-          className="full-width-search p-2"
-          onClick={toggleShow}
-        />
+        <Button variant="light w-100 py-2" onClick={toggleShow}>
+          <b>Search</b>
+        </Button>
       </form>
       <SearchModal show={show} handleClose={toggleShow} />
     </div>
