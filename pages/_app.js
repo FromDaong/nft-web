@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-// import App from "next/app";
+import React, { useEffect } from "react";
 import Navbar from "../components/nav/HeaderNav";
 import TOTMBanner from "../components/TOTMBanner";
 import V2Banner from "../components/V2Banner";
@@ -15,11 +14,12 @@ import Container from "react-bootstrap/Container";
 import Head from "next/head";
 import { UseWalletProvider } from "use-wallet";
 import bsc from "@binance-chain/bsc-use-wallet";
+import { parseCookies, setCookie, destroyCookie } from "nookies";
 import {
   BscConnector,
   UserRejectedRequestError,
 } from "@binance-chain/bsc-connector";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import ReactGA from "react-ga";
 import { IntercomProvider, useIntercom } from "react-use-intercom";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
@@ -74,7 +74,6 @@ function MyApp({ Component, pageProps }) {
     (async () => {
       window.scrollTo(0, 0);
       if (status === "connected" && !account) connect("injected");
-
       const connectedBefore = localStorage.getItem("connectedBefore");
       if (connectedBefore && status === "disconnected") connect("injected");
 
@@ -101,6 +100,33 @@ function MyApp({ Component, pageProps }) {
       }
     })();
   }, [status]);
+
+  useEffect(() => {
+    if (status === "connected" && !account) {
+      destroyCookie(null, "account");
+    } else if (status === "disconnected" && !account) {
+      destroyCookie(null, "account");
+    } else if (status === "connected" && account) {
+      setCookie(null, "account", account, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: "/",
+      });
+    }
+  }, [status, account]);
+
+  useEffect(() => {
+    // Unmounting component
+    return () => {
+      if (account) {
+        setCookie(null, "account", account, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: "/",
+        });
+      } else {
+        destroyCookie(null, "account");
+      }
+    };
+  }, []);
 
   return (
     <ApolloProvider client={client}>
@@ -157,6 +183,7 @@ function MyApp({ Component, pageProps }) {
 }
 
 function walletWrapper(props) {
+  // Add context wrapper here which has account and status
   return (
     <UseWalletProvider
       chainId={56}
@@ -183,18 +210,5 @@ function walletWrapper(props) {
     </UseWalletProvider>
   );
 }
-
-// Only uncomment this method if you have blocking data requirements for
-// every single page in your application. This disables the ability to
-// perform automatic static optimization, causing every page in your app to
-// be server-side rendered.
-//
-
-// MyApp.getInitialProps = async () => {
-//   const res = await fetch(`/api/brand/get`);
-//   const data = await res.json();
-
-//   return { brand: data };
-// };
 
 export default walletWrapper;
