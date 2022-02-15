@@ -6,7 +6,6 @@ import { useRouter } from "next/dist/client/router";
 import axios from "axios";
 import PaginationComponentV2 from "../components/Pagination";
 import MyNFTItemSkeleton from "../components/Skeleton/MyNFTItemSkeleton";
-import dbConnect from "../utils/dbConnect";
 
 const Creators = () => {
   const [apiResponseData, setApiResponseData] = useState({
@@ -104,33 +103,6 @@ const Creators = () => {
       </div>
     </>
   );
-};
-
-export const getServerSideProps = async (ctx) => {
-  dbConnect();
-
-  try {
-    const Models = await Model.find();
-
-    const returnModels = await Models.map((n) => {
-      const returnObj = { ...n.toObject() };
-      return returnObj;
-    });
-
-    return {
-      props: {
-        models: JSON.stringify(returnModels),
-      },
-    };
-  } catch (err) {
-    console.log({ err });
-    return {
-      props: {
-        modelData: [],
-        error: "Failed to load models.",
-      },
-    };
-  }
 };
 
 export default Creators;
