@@ -8,8 +8,6 @@ import Link from "next/link";
 import { InView } from "react-intersection-observer";
 import axios from "axios";
 
-let easing = [0.175, 0.85, 0.42, 0.96];
-
 const NFTListItem = ({
   data,
   buttonLabel,
@@ -42,6 +40,7 @@ const NFTListItem = ({
 
   useEffect(() => {
     if (visible) {
+      console.log({ data }, 123);
       axios
         .get(`/api/model/find-by-id/${data.model_bnb_address}`)
         .then((res) => setModel(res.data))
@@ -121,7 +120,7 @@ const NFTListItem = ({
             {data.image ? (
               <div
                 style={{
-                  background: `url(${data.cdnUrl ? data.cdnUrl : data.image})`,
+                  background: `url(${data.image})`,
                   minHeight: 375,
                   zIndex: 100,
                 }}
@@ -165,24 +164,32 @@ const NFTListItem = ({
                 {model.username}
               </div>
             </div>
-            {buttonLabel && buttonFunction && (
-              <div className="row">
-                <div className="col-lg-12 mt-3">
-                  <span className="d-inline-block w-100">
-                    <Button
-                      className="w-100"
-                      variant="secondary"
-                      onClick={buttonFunction}
-                    >
-                      <b className="d-flex align-items-center justify-content-center">
-                        {buttonLabel}
-                      </b>
-                    </Button>
-                  </span>
+            {(price || data.list_price) && (
+              <div className="stats">
+                <div className="stat">
+                  <div className="number">{price || data.list_price}</div>
+                  <div className="label">BNB</div>
                 </div>
               </div>
             )}
           </div>
+          {buttonLabel && buttonFunction && (
+            <div className="row">
+              <div className="col-lg-12 mt-3">
+                <span className="d-inline-block w-100">
+                  <Button
+                    className="w-100"
+                    variant="secondary"
+                    onClick={buttonFunction}
+                  >
+                    <b className="d-flex align-items-center justify-content-center">
+                      {buttonLabel}
+                    </b>
+                  </Button>
+                </span>
+              </div>
+            </div>
+          )}
         </div>
       </InView>
     </Link>
