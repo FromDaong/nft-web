@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import TotwListItem from "../components/TotwListItem";
 import CreatorList from "../components/CreatorList";
-import SwiperNFTList from "../components/SwiperNFTList";
 import Layout from "../components/Layout";
 import Link from "next/link";
 import CountUp from "react-countup";
@@ -15,6 +14,11 @@ import {
 } from "react-bootstrap-icons";
 import ErrorFallback from "../components/Fallback/Error";
 import { axiosNode } from "../utils/axios";
+import dynamic from "next/dynamic";
+
+const SwiperNFTList = dynamic(() => import("../components/SwiperNFTList"), {
+  ssr: false,
+});
 
 const Home = ({
   modelsResults,
