@@ -43,6 +43,7 @@ const SearchModal = ({ show, handleClose }) => {
   }, [searchText]);
 
   const fetchAutocomplete = (val) => {
+    if (!val) return setResults([]);
     axios
       .get(`/api/v2/search/autocomplete?s=${val}`)
       .then((res) => {
