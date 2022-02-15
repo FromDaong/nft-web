@@ -2,10 +2,14 @@ import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import TotwListItem from "../components/TotwListItem";
 import CreatorList from "../components/CreatorList";
+import SwiperNFTList from "../components/SwiperNFTList";
 import Layout from "../components/Layout";
+import { motion, useAnimation } from "framer-motion";
 import Link from "next/link";
+import useSWR from "swr";
 import CountUp from "react-countup";
 import * as Scroll from "react-scroll";
+import { useInView } from "react-intersection-observer";
 import {
   PatchCheckFill,
   PlusCircleFill,
@@ -13,27 +17,42 @@ import {
   EaselFill,
 } from "react-bootstrap-icons";
 import ErrorFallback from "../components/Fallback/Error";
-import { axiosNode } from "../utils/axios";
-import dynamic from "next/dynamic";
 
-const SwiperNFTList = dynamic(() => import("../components/SwiperNFTList"), {
-  ssr: false,
-});
+const Home = () => {
+  const { data: nftResult, error: nftResultError } =
+    useSWR(`/api/nft?limit=20`);
+  const { data: modelResult, error: modelResultError } = useSWR(`/api/model`);
+  const [nftData, setNftData] = useState();
+  const [modelData, setModelData] = useState();
+  const [ref, inView] = useInView();
+  const controls = useAnimation();
 
-const Home = ({
-  modelsResults,
-  nftData,
-  totm,
-  nftResultError,
-  modelResultError,
-  totmError,
-}) => {
-  let modelData = modelsResults;
+  useEffect(() => {
+    if (inView) {
+      controls.start("show");
+    }
+  }, [controls, inView]);
+
+  useEffect(() => {
+    (async () => {
+      if (nftResult) {
+        setNftData(nftResult);
+      }
+      if (modelResult) {
+        setModelData(modelResult);
+      }
+    })();
+  }, [nftResult, modelResult]);
+
   return (
     <Layout>
       <div className="home container">
         <div className="min-height-wrapper">
-          <div className="hero">
+          <motion.div
+            animate={{ x: 0, opacity: 1 }}
+            style={{ x: -100, opacity: 0 }}
+            className="hero"
+          >
             <div className="row align-items-center">
               <div className="col-lg-6 hero-text mt-3">
                 <div className="heading-text">
@@ -111,7 +130,7 @@ const Home = ({
                 <img src={"/assets/heroimage.png"} alt="" />
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
         <div className="totw-section-container mt-5">
           <div className="section-title">Treat of the Month</div>
@@ -137,8 +156,8 @@ const Home = ({
             </Button>
           </a>
 
-          {totm && !modelResultError ? (
-            <TotwListItem modelData={totm} />
+          {modelData && !modelResultError ? (
+            <TotwListItem modelData={modelData[0]} />
           ) : (
             <ErrorFallback custom="Failed to load TOTW" />
           )}
@@ -254,38 +273,3 @@ const Home = ({
 };
 
 export default Home;
-
-export const getInitialProps = async () => {
-  try {
-    const totmFetch = await axiosNode.get("/api/model?totm=true");
-    let totm = totmFetch.data.docs.length > 0 ? totmFetch.data.docs[0] : null;
-    const totmError = !totm ? true : false;
-
-    const nftFetch = await axiosNode.get("/api/nft?limit=20");
-    let nftData = nftFetch.data.docs;
-    const nftError = !nftData ? true : false;
-
-    const modelFetch = await axiosNode.get("/api/model");
-    let modelsResults = modelFetch.data.docs;
-    const modelError = !modelsResults ? true : false;
-
-    return {
-      totm,
-      totmError,
-      nftData,
-      nftError,
-      modelsResults,
-      modelError,
-    };
-  } catch (err) {
-    console.error(err);
-    return {
-      totm: {},
-      totmError: true,
-      nftData: [],
-      nftError: true,
-      modelsResults: [],
-      modelError: true,
-    };
-  }
-};
