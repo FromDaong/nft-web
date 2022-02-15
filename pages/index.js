@@ -58,7 +58,7 @@ const Home = () => {
     <Layout>
       <div className="home container">
         <div className="min-height-wrapper">
-          <div>
+          <div className="hero">
             <div className="row align-items-center">
               <div className="col-lg-6 hero-text mt-3">
                 <div className="heading-text">
