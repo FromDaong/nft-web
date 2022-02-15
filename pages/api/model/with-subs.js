@@ -19,7 +19,7 @@ export default async (req, res) => {
 
         let Models;
 
-        if (!s) {
+        if (!req.query.s) {
           Models = await Model.paginate(
             { subscription: { $exists: true } },
             options
