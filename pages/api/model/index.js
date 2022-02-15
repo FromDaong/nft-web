@@ -22,7 +22,15 @@ export default async (req, res) => {
 
         if (!s) {
           Models = await Model.paginate({}, options);
-          // if (model.pending || model.rejected || model.hidden) return undefined;
+        } else if (req.query.totm) {
+          Models = await Model.paginate(
+            {
+              totm: {
+                $exists: true,
+              },
+            },
+            options
+          );
         } else {
           const aggregate = Model.aggregate([
             {
