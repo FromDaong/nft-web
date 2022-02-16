@@ -31,6 +31,9 @@ const ModelSchema = new mongoose.Schema(
     profilePicCdnUrl: {
       type: String,
     },
+    daoProfilePicCdnUrl: {
+      type: String,
+    },
     banner_pic: {
       type: String,
       default:
