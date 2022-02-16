@@ -54,7 +54,7 @@ const NFTSchema = new mongoose.Schema(
     melon_nft: {
       type: Boolean,
     },
-    daoCdnUrl: {
+    cdnUrl: {
       type: String,
     },
     old_totw: {
