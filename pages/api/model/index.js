@@ -37,9 +37,7 @@ export default async (req, res) => {
           Models = await Model.find();
           Models.docs = Models;
           // return only docs with totm
-          Models.docs = Models.docs.filter(
-            (model) => model.totm && model.nfts.length > 0
-          );
+          Models.docs = Models.docs.find((model) => model.totm);
         } else {
           Models = await Model.paginate({}, options);
         }
