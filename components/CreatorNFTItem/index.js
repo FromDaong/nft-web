@@ -92,7 +92,9 @@ const CreatorNFTItem = ({ data, modelData, balance }) => {
                 <a>
                   <div
                     className="profile-pic"
-                    style={{ background: `url(${modelData.profile_pic})` }}
+                    style={{
+                      background: `url(${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/)`,
+                    }}
                   ></div>
                 </a>
               </Link>
