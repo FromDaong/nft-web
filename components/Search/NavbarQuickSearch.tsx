@@ -16,7 +16,10 @@ export default function NavbarQuickSearch() {
 
   return (
     <div className="quick-search">
-      <form onSubmit={() => {}}>
+      <form
+        onSubmit={() => {}}
+        style={{ display: "flex", alignItems: "center" }}
+      >
         <Button variant="light w-100 py-2" onClick={toggleShow}>
           <b>Search</b>
         </Button>
