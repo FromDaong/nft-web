@@ -162,7 +162,7 @@ const Home = () => {
             </Button>
           </a>
 
-          {totm && !modelResultError ? (
+          {totm ? (
             <TotwListItem modelData={totm} />
           ) : (
             <ErrorFallback custom="Failed to load TOTW" />
