@@ -20,12 +20,11 @@ const NFTListItem = ({
   modelData,
   soldOut,
 }) => {
-  const [image, setBase64Image] = useState();
   const [visible, setVisible] = useState(false);
   const [model, setModel] = useState({});
 
   const rr = createRef();
-
+  /*
   useEffect(() => {
     (async () => {
       if (data.image) {
@@ -37,10 +36,10 @@ const NFTListItem = ({
       }
     })();
   }, [data]);
+  */
 
   useEffect(() => {
     if (visible) {
-      console.log({ data }, 123);
       axios
         .get(`/api/model/find-by-id/${data.model_bnb_address}`)
         .then((res) => setModel(res.data))
@@ -94,7 +93,9 @@ const NFTListItem = ({
             <a>
               <div
                 className="profile-pic"
-                style={{ backgroundImage: `url(${model.profile_pic})` }}
+                style={{
+                  backgroundImage: `url(${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/)`,
+                }}
               />
             </a>
           </Link>
@@ -120,7 +121,9 @@ const NFTListItem = ({
             {data.image ? (
               <div
                 style={{
-                  background: `url(${data.image})`,
+                  background: data.daoCdnUrl
+                    ? `url(${data.daoCdnUrl}-/quality/lighter/-/format/webp/)`
+                    : data.image,
                   minHeight: 375,
                   zIndex: 100,
                 }}
