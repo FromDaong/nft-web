@@ -37,7 +37,7 @@ const Home = () => {
 
     axios.get("/api/model?totm=true").then((res) => {
       if (res.data.docs) {
-        setTOTMData(res.data.docs[0]);
+        setTOTMData(res.data);
       }
     });
 
