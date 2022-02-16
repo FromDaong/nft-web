@@ -34,20 +34,12 @@ export default async (req, res) => {
           ]);
           Models = await Model.aggregatePaginate(aggregate, options);
         } else if (req.query.totm) {
-          Models = await Model.find();
-          Models.docs = Models;
+          Models = await Model.find({ totm: true });
           // return only docs with totm
-          Models.docs = Models.docs.find((model) => model.totm);
+          Models = Models.find((model) => model.totm) ?? {};
         } else {
           Models = await Model.paginate({}, options);
         }
-
-        Models.docs = await Models.docs.sort(
-          (a, b) =>
-            b.nfts.length +
-            b.sub_nfts.length -
-            (a.nfts.length + a.sub_nfts.length)
-        );
 
         res.status(200).json(Models);
       } catch (error) {
