@@ -4,18 +4,6 @@ import Button from "react-bootstrap/Button";
 let easing = [0.175, 0.85, 0.42, 0.96];
 
 const ModelListItem = ({ data, totwOnly = false, disableAnim }) => {
-  useEffect(() => {
-    (async () => {
-      if (data.image) {
-        fetch(data.image)
-          .then((r) => r.text())
-          .then((blob) => {
-            setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
-          });
-      }
-    })();
-  }, [data]);
-
   return (
     <a href={`/creator/${data.username.replace("@", "")}`}>
       <div className="model-list-item">
