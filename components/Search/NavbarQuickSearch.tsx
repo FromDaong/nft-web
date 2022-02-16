@@ -65,7 +65,9 @@ const SearchModal = ({ show, handleClose }) => {
 
   return (
     <Modal show={show} onHide={handleClose} centered>
-      <Modal.Header closeButton></Modal.Header>
+      <Modal.Header closeButton>
+        <Modal.Title>Search for anything on TreatDAO</Modal.Title>
+      </Modal.Header>
       <Modal.Body>
         <div className="quick-search">
           <form onSubmit={doFetchAutocomplete}>
