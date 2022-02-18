@@ -63,28 +63,6 @@ const Marketplace = ({ search }) => {
 
   useEffect(() => {
     const newArray = nftDataArray.map((nft) => ({ item: nft }));
-    newArray.sort((a, b) => {
-      switch (sortBy) {
-        case "Relevancy":
-          return Number(a.score) - Number(b.score);
-        case "Price Low to High":
-          const aMaxSupply = Number(a.item.max_supply);
-          const bMaxSupply = Number(b.item.max_supply);
-
-          const aTotalMints = a.item.mints;
-          const bTotalMints = b.item.mints;
-
-          if (a.item.list_price === b.item.list_price) {
-            // Compare mints if price is the same
-            return bMaxSupply - bTotalMints - (aMaxSupply - aTotalMints);
-          }
-          return Number(a.item.list_price) - Number(b.item.list_price);
-        case "Price High to Low":
-          return Number(b.item.list_price) - Number(a.item.list_price);
-        default:
-          return new Date(b.item.createdAt) - new Date(a.item.createdAt);
-      }
-    });
     setFinalArray(newArray);
   }, [nftDataArray, sortBy]);
 
@@ -96,12 +74,20 @@ const Marketplace = ({ search }) => {
   }, []);
 
   useEffect(() => {
+    const sort =
+      sortBy === "Recent"
+        ? "recent"
+        : sortBy === "Price Low to High"
+        ? "asc"
+        : "desc";
     router.push(
-      `${router.pathname}?${searchFilter && `s=${searchFilter}`}&p=1`,
+      `${router.pathname}?${
+        searchFilter && `s=${searchFilter}`
+      }&p=1&sort=${sort}`,
       undefined,
       { shallow: true }
     );
-  }, [searchFilter]);
+  }, [searchFilter, sortBy]);
 
   useEffect(() => {
     console.log("Route changed");
@@ -110,7 +96,7 @@ const Marketplace = ({ search }) => {
       .get(
         `/api/nft?p=${router.query.p ?? 1}${
           searchFilter ? `&s=${router.query.s}` : ""
-        }`
+        }&sort=${router.query.sort ?? "recent"}`
       )
       .then((res) => setApiResponseData(res.data))
       .then(() => setLoading(false));

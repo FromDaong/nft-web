@@ -54,6 +54,17 @@ export default async (req, res) => {
                 id: { $in: req.body.nfts },
               },
             },
+            {
+              $sort: {
+                id: req.query.sort === "recent" ? -1 : 0,
+                price:
+                  req.query.sort === "recent"
+                    ? 0
+                    : req.query.sort === "desc"
+                    ? -1
+                    : 1,
+              },
+            },
           ]);
           NFTres = await NFT.aggregatePaginate(aggregate, options);
         } else {
