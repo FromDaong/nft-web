@@ -86,7 +86,7 @@ const Marketplace = ({ search }) => {
         .post(
           `/api/nft/get-many-nfts?p=${router.query.p ?? 1}${
             searchFilter ? `&s=${router.query.s}` : ""
-          }`,
+          }&sort=${router.query.sort ?? "recent"}`,
           {
             ...jsonBody,
           }
@@ -97,12 +97,20 @@ const Marketplace = ({ search }) => {
   }, [router, jsonBody, _orderBookArray]);
 
   useEffect(() => {
+    const sort =
+      sortBy === "Recent"
+        ? "recent"
+        : sortBy === "Price Low to High"
+        ? "asc"
+        : "desc";
     router.push(
-      `${router.pathname}?${searchFilter && `s=${searchFilter}`}&p=1`,
+      `${router.pathname}?${
+        searchFilter && `s=${searchFilter}`
+      }&p=1&sort=${sort}`,
       undefined,
       { shallow: true }
     );
-  }, [searchFilter]);
+  }, [searchFilter, sortBy]);
 
   useEffect(() => {
     const populatedArray =
