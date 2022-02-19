@@ -48,7 +48,7 @@ const NFTListItem = ({
   const [modalData, setModalData] = useState();
   var base64regex =
     /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
-
+  console.log({ data });
   const webp = (e) =>
     document
       .createElement("canvas")

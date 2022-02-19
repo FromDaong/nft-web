@@ -18,28 +18,17 @@ export default async (req, res) => {
           collation: {
             locale: "en",
           },
-          sort: {},
+          sort: {
+            list_price: -1,
+            id: -1,
+          },
         };
         const sort = req.query.sort;
-        if (sort) {
-          switch (sort) {
-            case "recent":
-              options.sort.id = -1;
-              break;
-            case "desc":
-              options.sort.list_price = -1;
-              break;
-            case "asc":
-              options.sort.list_price = 1;
-              break;
-            default:
-              options.sort.id = -1;
-              break;
-          }
-        } else {
-          options.sort.id = -1;
-        }
+
         let NFTs;
+
+        console.log({ sort, options });
+
         if (s) {
           const aggregate = NFT.aggregate([
             {
