@@ -77,9 +77,6 @@ export default async (req, res) => {
             },
           ]);
           NFTres = await NFT.aggregatePaginate(aggregate, options);
-          NFTres.docs = NFTres.docs.map((doc) => {
-            return doc._doc;
-          });
         } else {
           NFTres = await NFT.paginate({ id: { $in: req.body.nfts } }, options);
         }
@@ -98,12 +95,14 @@ export default async (req, res) => {
               await getNftTotalSupply(treatNFTMinter, id)
             )?.toNumber();
 
-            const returnObj = { ...nft, maxSupply, totalSupply };
+            const returnObj = { ...nft._doc, maxSupply, totalSupply };
             if (nft.blurhash) delete returnObj.image;
 
             return returnObj;
           })
         );
+
+        console.log(NFTres);
 
         res.status(200).json(NFTres);
       } catch (error) {

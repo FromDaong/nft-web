@@ -139,9 +139,16 @@ const Marketplace = ({ search }) => {
 
   const navigate = (page) => {
     window.scrollTo(0, 0);
-
+    const sort =
+      sortBy === "Recent"
+        ? "recent"
+        : sortBy === "Price Low to High"
+        ? "asc"
+        : "desc";
     router.push(
-      `${router.pathname}?${searchFilter && `s=${searchFilter}&`}p=${page}`,
+      `${router.pathname}?${
+        searchFilter && `s=${searchFilter}&`
+      }p=${page}&sort=${sort}`,
       undefined,
       { shallow: true }
     );
