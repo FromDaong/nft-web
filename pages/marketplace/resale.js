@@ -161,6 +161,8 @@ const Marketplace = ({ search }) => {
     );
   };
 
+  console.log(_renderArray);
+
   return (
     <AnimateSharedLayout>
       <BlankModal
@@ -302,20 +304,22 @@ const Marketplace = ({ search }) => {
               <ErrorFallback custom="Error loading page" />
             ) : (
               <>
-                {_renderArray.map((o, i) => (
-                  <Order
-                    searchFilter={searchFilter}
-                    nftResult={o.item}
-                    index={o.refIndex}
-                    order={o.item}
-                    account={account}
-                    key={o.refIndex}
-                    setPendingModal={setShowPendingModal}
-                    openCompleteModal={() => setShowCompleteModal(true)}
-                    setCancelOrderData={setCancelOrderData}
-                    setPurchaseOrderData={setPurchaseOrderData}
-                  />
-                ))}
+                {_renderArray.map((o, i) => {
+                  return (
+                    <Order
+                      searchFilter={searchFilter}
+                      nftResult={{ ...o.item._doc, ...o.item }}
+                      index={o.refIndex}
+                      order={o.item}
+                      account={account}
+                      key={o.refIndex}
+                      setPendingModal={setShowPendingModal}
+                      openCompleteModal={() => setShowCompleteModal(true)}
+                      setCancelOrderData={setCancelOrderData}
+                      setPurchaseOrderData={setPurchaseOrderData}
+                    />
+                  );
+                })}
               </>
             )}
           </div>
