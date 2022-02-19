@@ -70,14 +70,21 @@ const Marketplace = ({ search }) => {
   }, []);
 
   useEffect(() => {
+    const sort =
+      sortBy === "Recent"
+        ? "recent"
+        : sortBy === "Price Low to High"
+        ? "asc"
+        : "desc";
+
     router.push(
-      `${router.pathname}?${searchFilter && `s=${searchFilter}&`}p=${
-        router.query.p ?? 1
+      `${router.pathname}?p=1&sort=${sort}${
+        searchFilter && `&s=${searchFilter}`
       }`.trim(),
       undefined,
       { shallow: true }
     );
-  }, [searchFilter]);
+  }, [searchFilter, sortBy]);
 
   useEffect(() => {
     if (jsonBody && orderBookLoaded) {
@@ -126,28 +133,7 @@ const Marketplace = ({ search }) => {
         })
         .filter((e) => e);
 
-    const renderArray = populatedArray?.sort((a, b) => {
-      switch (sortBy) {
-        case "Relevancy":
-          return Number(a.score) - Number(b.score);
-        case "Price Low to High":
-          return (
-            Number(new BigNumber(a.item.price)) -
-            Number(new BigNumber(b.item.price))
-          );
-        case "Price High to Low":
-          return (
-            Number(new BigNumber(b.item.price)) -
-            Number(new BigNumber(a.item.price))
-          );
-        default:
-          return (
-            new Date(+b.item.listDate * 1000) -
-            new Date(+a.item.listDate * 1000)
-          );
-      }
-    });
-
+    const renderArray = populatedArray;
     setRenderArray(renderArray);
   }, [_orderBookArray, populatedNftData]);
 
