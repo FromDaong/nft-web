@@ -67,7 +67,7 @@ const NFTListItem = ({
           <div
             className="modal-image"
             style={{
-              background: `url(${data.cdnUrl}-/quality/lighter/-/format/webp/)`,
+              background: `url(${data.daoCdnUrl}-/quality/lighter/-/format/webp/)`,
             }}
           ></div>
           <h4 className="text-center pt-3">{data.description}</h4>
@@ -134,7 +134,7 @@ const NFTListItem = ({
                 </div>
                 <div
                   style={{
-                    background: `url(${data.cdnUrl}-/quality/lighter/-/format/webp/)`,
+                    background: `url(${data.daoCdnUrl}-/quality/lighter/-/format/webp/)`,
                     minHeight: 375,
                     zIndex: 100,
                   }}
