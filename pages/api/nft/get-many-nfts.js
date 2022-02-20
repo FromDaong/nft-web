@@ -86,6 +86,7 @@ export default async (req, res) => {
             .status(400)
             .json({ success: false, error: "nft not found" });
 
+        console.log(NFTres.docs);
         NFTres.docs = await Promise.all(
           NFTres.docs.map(async (nft) => {
             const maxSupply = (
@@ -101,8 +102,6 @@ export default async (req, res) => {
             return returnObj;
           })
         );
-
-        console.log(NFTres);
 
         res.status(200).json(NFTres);
       } catch (error) {

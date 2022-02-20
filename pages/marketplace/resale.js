@@ -126,8 +126,9 @@ const Marketplace = ({ search }) => {
       populatedNftData
         .map((x) => {
           const nftResult = _orderBookArray?.find(
-            (orderBookNft) => x.nftId === orderBookNft.id
+            (orderBookNft) => x.id === orderBookNft.nftId
           );
+          console.log({ nftResult, id: x.id });
           if (!nftResult) return undefined;
           return { item: { ...x, ...nftResult } };
         })
@@ -153,8 +154,6 @@ const Marketplace = ({ search }) => {
       { shallow: true }
     );
   };
-
-  console.log(_renderArray);
 
   return (
     <AnimateSharedLayout>
