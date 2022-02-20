@@ -101,7 +101,7 @@ const NFTListItem = ({
                 style={{
                   backgroundImage: model.username
                     ? `url(${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/)`
-                    : data.model_profile_pic,
+                    : `url(${data.model_profile_pic})`,
                 }}
               />
             </a>
