@@ -286,8 +286,15 @@ const Marketplace = ({ search }) => {
         <br />
         <div className="">
           <div className="nft-list row mt-5 full-width justify-content-center">
-            {loading || !_renderArray || _renderArray.length === 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full container mx-auto">
+            {true || loading || !_renderArray || _renderArray.length === 0 ? (
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                }}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 w-full container mx-auto"
+              >
                 {new Array(12).fill(0).map((_, i) => (
                   <MyNFTItemSkeleton key={i} className="col-span-1" />
                 ))}
