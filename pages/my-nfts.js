@@ -118,6 +118,8 @@ const OwnedNfts = ({
     initialPageSize: 12,
   });
 
+  console.log({ nftBalances });
+
   return (
     <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
       <div
@@ -414,6 +416,8 @@ const ViewNFT = ({ account, nftArray }) => {
   if (v1NFTs.length > 0) {
     return <TradeInNFTs v1NFTs={v1NFTs} account={account} />;
   }
+
+  console.log({ nftBalances });
 
   return (
     <Layout>
