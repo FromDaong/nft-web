@@ -201,7 +201,14 @@ const OwnedNfts = ({
           />
         </div>
       ) : isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full container mx-auto">
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full container mx-auto"
+        >
           {new Array(12).fill(0).map((_, i) => (
             <MyNFTItemSkeleton key={i} className="col-span-1" />
           ))}
@@ -337,7 +344,14 @@ const OpenOrders = ({
           )}
         </div>
       ) : isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full container mx-auto">
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            flexWrap: "wrap",
+          }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full container mx-auto"
+        >
           {new Array(12).fill(0).map((_, i) => (
             <MyNFTItemSkeleton key={i} className="col-span-1" />
           ))}
