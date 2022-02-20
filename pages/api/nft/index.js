@@ -12,6 +12,11 @@ export default async (req, res) => {
   switch (method) {
     case "GET":
       try {
+        if (req.query.all) {
+          const NFTs = await NFT.find();
+          return res.status(200).json(NFTs);
+        }
+
         const options = {
           page: req.query.p ?? 1,
           limit: 24,

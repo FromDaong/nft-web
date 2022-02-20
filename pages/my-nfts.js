@@ -41,7 +41,7 @@ const variants = {
 
 const MyNFTsWrapper = () => {
   const { account, status } = useWallet();
-  const { data: res, error } = useSWR(`/api/nft`);
+  const { data: res, error } = useSWR(`/api/nft?all=true`);
   const [nftArray, setNftData] = useState();
 
   useEffect(() => {
@@ -417,7 +417,7 @@ const ViewNFT = ({ account, nftArray }) => {
     return <TradeInNFTs v1NFTs={v1NFTs} account={account} />;
   }
 
-  console.log({ nftBalances });
+  console.log({ nftBalances, nftArray });
 
   return (
     <Layout>
