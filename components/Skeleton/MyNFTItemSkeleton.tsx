@@ -2,7 +2,7 @@ import ContentLoader from "react-content-loader";
 
 export default function MyNFTItemSkeleton(props) {
   return (
-    <div className="col-span-1">
+    <div className="col-span-1" style={{ padding: "8px" }}>
       <ContentLoader
         speed={2}
         height={360}
