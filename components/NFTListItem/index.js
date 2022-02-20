@@ -22,12 +22,12 @@ const NFTListItem = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const [model, setModel] = useState({});
-
+  const [image, setBase64Image] = useState();
   const rr = createRef();
-  /*
+
   useEffect(() => {
     (async () => {
-      if (data.image) {
+      if (data.image && !data.daoCdnUrl) {
         fetch(data.image)
           .then((r) => r.text())
           .then((blob) => {
@@ -36,7 +36,6 @@ const NFTListItem = ({
       }
     })();
   }, [data]);
-  */
 
   useEffect(() => {
     if (visible) {
@@ -123,7 +122,7 @@ const NFTListItem = ({
                 style={{
                   backgroundImage: data.daoCdnUrl
                     ? `url(${data.daoCdnUrl}-/quality/lighter/-/format/webp/)`
-                    : data.image,
+                    : image,
                   minHeight: 375,
                   zIndex: 100,
                 }}
