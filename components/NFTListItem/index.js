@@ -88,12 +88,20 @@ const NFTListItem = ({
             </div>
           </div>
 
-          <Link href={`/creator/${model.username}`}>
+          <Link
+            href={`/creator/${
+              model.username
+                ? model.username
+                : data.attributes[0].value.slice(1, -1)
+            }`}
+          >
             <a>
               <div
                 className="profile-pic"
                 style={{
-                  backgroundImage: `url(${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/)`,
+                  backgroundImage: model
+                    ? `url(${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/)`
+                    : data.model_profile_pic,
                 }}
               />
             </a>
@@ -163,7 +171,9 @@ const NFTListItem = ({
               <div className="title">{data.name}</div>
               <div className="s">
                 {owner && <b>Creator: </b>}
-                {model.username}
+                {model.username
+                  ? model.username
+                  : data.attributes[0].value.slice(1, -1)}
               </div>
             </div>
             {(price || data.list_price) && (
