@@ -286,7 +286,7 @@ const Marketplace = ({ search }) => {
         <br />
         <div className="">
           <div className="nft-list row mt-5 full-width justify-content-center">
-            {true || loading || !_renderArray || _renderArray.length === 0 ? (
+            {loading || !_renderArray || _renderArray.length === 0 ? (
               <div
                 style={{
                   display: "flex",
