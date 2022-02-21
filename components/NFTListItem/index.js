@@ -28,8 +28,8 @@ const NFTListItem = ({
   useEffect(() => {
     (async () => {
       if (data.daoCdnUrl) {
-        fetch(data.daoCdnUrl)
-          .then((r) => r.text())
+        axios
+          .get(data.daoCdnUrl)
           .then((blob) => {
             setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
           })
