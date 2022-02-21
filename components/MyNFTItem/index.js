@@ -6,7 +6,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { Blurhash } from "react-blurhash";
 import { isBlurhashValid } from "blurhash";
-import { motion } from "framer-motion";
+import axios from "axios";
 import { EyeSlash } from "react-bootstrap-icons";
 import Link from "next/link";
 
@@ -51,8 +51,8 @@ const NFTListItem = ({
   useEffect(() => {
     (async () => {
       if (data.daoCdnUrl) {
-        fetch(data.daoCdnUrl)
-          .then((r) => r.text())
+        axios
+          .get(data.daoCdnUrl)
           .then((blob) => {
             setBase64Image(data.daoCdnUrl);
           })
