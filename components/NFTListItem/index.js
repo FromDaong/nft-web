@@ -29,7 +29,7 @@ const NFTListItem = ({
     (async () => {
       if (data.daoCdnUrl) {
         axios
-          .get(data.daoCdnUrl)
+          .get(data.daoCdnUrl + "-/quality/lighter/-/format/webp/")
           .then((blob) => {
             setBase64Image(data.daoCdnUrl + "-/quality/lighter/-/format/webp/");
           })
