@@ -48,28 +48,30 @@ const NFTListItem = ({
   const [modalData, setModalData] = useState();
   const [image, setBase64Image] = useState();
 
-  (async () => {
-    if (data.daoCdnUrl) {
-      fetch(data.daoCdnUrl)
-        .then((r) => r.text())
-        .then((blob) => {
-          setBase64Image(data.daoCdnUrl);
-        })
-        .catch((err) => {
-          fetch(data.image)
-            .then((r) => r.text())
-            .then((blob) => {
-              setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
-            });
-        });
-    } else {
-      fetch(data.image)
-        .then((r) => r.text())
-        .then((blob) => {
-          setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
-        });
-    }
-  })[];
+  useEffect(() => {
+    (async () => {
+      if (data.daoCdnUrl) {
+        fetch(data.daoCdnUrl)
+          .then((r) => r.text())
+          .then((blob) => {
+            setBase64Image(data.daoCdnUrl);
+          })
+          .catch((err) => {
+            fetch(data.image)
+              .then((r) => r.text())
+              .then((blob) => {
+                setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
+              });
+          });
+      } else {
+        fetch(data.image)
+          .then((r) => r.text())
+          .then((blob) => {
+            setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
+          });
+      }
+    })();
+  }, []);
 
   return (
     <>
