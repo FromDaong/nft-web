@@ -46,14 +46,30 @@ const NFTListItem = ({
   hasOpenOrder,
 }) => {
   const [modalData, setModalData] = useState();
-  var base64regex =
-    /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
-  console.log({ data });
-  const webp = (e) =>
-    document
-      .createElement("canvas")
-      .toDataURL("image/webp")
-      .indexOf("data:image/webp") == 0;
+  const [image, setBase64Image] = useState();
+
+  (async () => {
+    if (data.daoCdnUrl) {
+      fetch(data.daoCdnUrl)
+        .then((r) => r.text())
+        .then((blob) => {
+          setBase64Image(data.daoCdnUrl);
+        })
+        .catch((err) => {
+          fetch(data.image)
+            .then((r) => r.text())
+            .then((blob) => {
+              setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
+            });
+        });
+    } else {
+      fetch(data.image)
+        .then((r) => r.text())
+        .then((blob) => {
+          setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
+        });
+    }
+  })();
 
   return (
     <>
@@ -67,7 +83,7 @@ const NFTListItem = ({
           <div
             className="modal-image"
             style={{
-              background: `url(${data.daoCdnUrl}-/quality/lighter/-/format/webp/)`,
+              background: `url(${image})`,
             }}
           ></div>
           <h4 className="text-center pt-3">{data.description}</h4>
@@ -134,9 +150,7 @@ const NFTListItem = ({
                 </div>
                 <div
                   style={{
-                    background: data.daoCdnUrl
-                      ? `url(${data.daoCdnUrl}-/quality/lighter/-/format/webp/)`
-                      : `url(${data.image})`,
+                    background: `url(${image})`,
                     minHeight: 375,
                     zIndex: 100,
                   }}
