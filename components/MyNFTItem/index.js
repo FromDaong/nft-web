@@ -134,7 +134,9 @@ const NFTListItem = ({
                 </div>
                 <div
                   style={{
-                    background: `url(${data.daoCdnUrl}-/quality/lighter/-/format/webp/)`,
+                    background: data.daoCdnUrl
+                      ? `url(${data.daoCdnUrl}-/quality/lighter/-/format/webp/)`
+                      : `url(${data.image})`,
                     minHeight: 375,
                     zIndex: 100,
                   }}
