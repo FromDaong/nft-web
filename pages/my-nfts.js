@@ -19,7 +19,6 @@ import BigNumber from "bignumber.js";
 import LazyLoad from "react-lazyload";
 import Layout from "../components/Layout";
 import ErrorFallback from "../components/Fallback/Error";
-import Loading from "../components/Loading";
 import { usePagination } from "react-use-pagination";
 import PaginationComponent from "../components/PaginationComponent";
 import MyNFTItemSkeleton from "../components/Skeleton/MyNFTItemSkeleton";
@@ -118,8 +117,6 @@ const OwnedNfts = ({
     totalItems: nftWithBalances ? nftWithBalances.length + 1 : 0,
     initialPageSize: 12,
   });
-
-  console.log({ nftBalances });
 
   return (
     <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
