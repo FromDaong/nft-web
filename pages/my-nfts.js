@@ -208,7 +208,7 @@ const OwnedNfts = ({
             flexWrap: "wrap",
             justifyContent: "center",
           }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full container mx-auto"
+          className="full-width"
         >
           {new Array(12).fill(0).map((_, i) => (
             <MyNFTItemSkeleton key={i} className="col-span-1" />
@@ -431,8 +431,6 @@ const ViewNFT = ({ account, nftArray }) => {
   if (v1NFTs.length > 0) {
     return <TradeInNFTs v1NFTs={v1NFTs} account={account} />;
   }
-
-  console.log({ nftBalances, nftArray });
 
   return (
     <Layout>
