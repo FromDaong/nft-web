@@ -31,7 +31,7 @@ const NFTListItem = ({
         axios
           .get(data.daoCdnUrl)
           .then((blob) => {
-            setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
+            setBase64Image(data.daoCdnUrl + "-/quality/lighter/-/format/webp/");
           })
           .catch((err) => {
             fetch(data.image)
