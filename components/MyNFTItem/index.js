@@ -69,7 +69,7 @@ const NFTListItem = ({
           setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
         });
     }
-  })();
+  })[];
 
   return (
     <>
