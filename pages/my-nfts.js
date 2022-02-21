@@ -14,12 +14,11 @@ import useGetNftBalance from "../hooks/useGetNftBalance";
 import { getDisplayBalance } from "../utils/formatBalance";
 import useGetOpenOrdersForSeller from "../hooks/useGetOpenOrdersForSeller";
 import { useWallet } from "use-wallet";
-import useSWR from "swr";
+import axios from "axios";
 import BigNumber from "bignumber.js";
 import LazyLoad from "react-lazyload";
 import Layout from "../components/Layout";
 import ErrorFallback from "../components/Fallback/Error";
-import Loading from "../components/Loading";
 import { usePagination } from "react-use-pagination";
 import PaginationComponent from "../components/PaginationComponent";
 import MyNFTItemSkeleton from "../components/Skeleton/MyNFTItemSkeleton";
@@ -41,16 +40,17 @@ const variants = {
 
 const MyNFTsWrapper = () => {
   const { account, status } = useWallet();
-  const { data: res, error } = useSWR(`/api/nft?all=true`);
+  const { error, setError } = useState();
   const [nftArray, setNftData] = useState();
 
   useEffect(() => {
-    (async () => {
-      if (res) {
-        setNftData(res);
-      }
-    })();
-  }, [res]);
+    axios
+      .get("/api/nft?all=true")
+      .then((resp) => {
+        setNftData(resp.data);
+      })
+      .catch((err) => setError(err));
+  }, []);
 
   if (status !== "connected" || !nftArray) {
     return (
@@ -118,8 +118,6 @@ const OwnedNfts = ({
     initialPageSize: 12,
   });
 
-  console.log({ nftBalances });
-
   return (
     <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
       <div
@@ -171,7 +169,10 @@ const OwnedNfts = ({
             variants={variants}
           >
             {nftWithBalances
-              .slice(startIndex > 0 ? startIndex - 1 : startIndex, endIndex)
+              .slice(
+                startIndex > 0 ? startIndex - 1 : startIndex,
+                startIndex > 0 ? endIndex : endIndex + 1
+              )
               .map((nft) => {
                 return (
                   <LazyLoad height={400} offset={600}>

@@ -27,7 +27,20 @@ const NFTListItem = ({
 
   useEffect(() => {
     (async () => {
-      if (data.image && !data.daoCdnUrl) {
+      if (data.daoCdnUrl) {
+        fetch(data.daoCdnUrl)
+          .then((r) => r.text())
+          .then((blob) => {
+            setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
+          })
+          .catch((err) => {
+            fetch(data.image)
+              .then((r) => r.text())
+              .then((blob) => {
+                setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
+              });
+          });
+      } else {
         fetch(data.image)
           .then((r) => r.text())
           .then((blob) => {
