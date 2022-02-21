@@ -112,12 +112,7 @@ const ViewNFT = ({ modelData, account }) => {
   return (
     <Layout>
       <div className="container  my-nft-container">
-        <div
-          animate={{ y: 0, opacity: 1 }}
-          style={{ y: -100, opacity: 0 }}
-          transition={{ delay: 0.25 }}
-          className="pink-bg d-flex my-5 row justify-content-between"
-        >
+        <div className="pink-bg d-flex my-5 row justify-content-between">
           <div>
             <div
               className="heading-text p-0"
