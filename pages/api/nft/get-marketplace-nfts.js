@@ -25,7 +25,6 @@ export default async (req, res) => {
             old_totm: { $exists: false },
             melon_nft: { $exists: false },
             subscription_nft: { $exists: false },
-            cdnUrl: { $exists: true },
           },
           options
         );

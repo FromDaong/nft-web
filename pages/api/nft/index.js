@@ -57,13 +57,22 @@ export default async (req, res) => {
                   path: ["name", "description", "model_handle"],
                 },
               },
+              $match: {
+                old_totw: { $exists: false },
+                old_totm: { $exists: false },
+                melon_nft: { $exists: false },
+                subscription_nft: { $exists: false },
+              },
             },
           ]);
           NFTs = await NFT.aggregatePaginate(aggregate, options);
         } else {
           NFTs = await NFT.paginate(
             {
-              cdnUrl: { $exists: true },
+              old_totw: { $exists: false },
+              old_totm: { $exists: false },
+              melon_nft: { $exists: false },
+              subscription_nft: { $exists: false },
             },
             options
           );
