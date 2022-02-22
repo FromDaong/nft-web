@@ -95,7 +95,7 @@ const NFTListItem = ({
               minHeight: 300,
             }}
             onClick={() => {
-              if (data.image) {
+              if (image) {
                 setModalData(true);
               } else {
                 revealNFTs();
