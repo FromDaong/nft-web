@@ -103,6 +103,7 @@ const OwnedNfts = ({
   serverNftBalances,
   isLoading,
 }) => {
+  const [currentNFTs, setCurrentNFTs] = useState([]);
   const nftWithBalances = nftBalances.filter((i) => !i.hasOpenOrder);
   const {
     currentPage,
@@ -118,10 +119,13 @@ const OwnedNfts = ({
     initialPageSize: 12,
   });
 
-  const currentNFTs = nftWithBalances.slice(
-    startIndex > 0 ? startIndex - 1 : startIndex,
-    startIndex > 0 ? endIndex : endIndex + 1
-  );
+  useEffect(() => {
+    const current = nftWithBalances.slice(
+      startIndex > 0 ? startIndex - 1 : startIndex,
+      startIndex > 0 ? endIndex : endIndex + 1
+    );
+    setCurrentNFTs(current);
+  }, [startIndex, endIndex]);
 
   return (
     <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
@@ -173,24 +177,21 @@ const OwnedNfts = ({
             initial="hidden"
             variants={variants}
           >
-            {currentNFTs
-              .map((nft) => {
-                return (
-                  <LazyLoad height={400} offset={600}>
-                    <div className="order-container">
-                      <MyNFTItem
-                        balance={nft.balance}
-                        isLoading={isLoading}
-                        data={nft}
-                        revealNFTs={revealNFTs}
-                        transferNFTClick={transferNFTClick}
-                        listOrderClick={listOrderClick}
-                        hasOpenOrder={nft.hasOpenOrder}
-                      />
-                    </div>
-                  </LazyLoad>
-                );
-              })}
+            {currentNFTs.map((nft) => (
+              <LazyLoad key={nft.id} height={400} offset={600}>
+                <div className="order-container">
+                  <MyNFTItem
+                    balance={nft.balance}
+                    isLoading={isLoading}
+                    data={nft}
+                    revealNFTs={revealNFTs}
+                    transferNFTClick={transferNFTClick}
+                    listOrderClick={listOrderClick}
+                    hasOpenOrder={nft.hasOpenOrder}
+                  />
+                </div>
+              </LazyLoad>
+            ))}
           </div>
           <PaginationComponent
             currentPage={currentPage}
