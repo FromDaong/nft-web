@@ -406,7 +406,7 @@ const ViewNFT = ({ account, nftArray }) => {
     setServerNftBalances(null);
   };
 
-  console.log(setServerNftBalances);
+  console.log({ serverNftBalances });
 
   const revealNFTs = async () => {
     if (account && treat) {
