@@ -21,7 +21,7 @@ export const Order = ({
   return (
     <div className="order-container">
       <LazyLoad height={400} offset={600} once>
-        {!!order ? (
+        {order ? (
           <NFTListItem
             data={data}
             soldOut={soldOut}

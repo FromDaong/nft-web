@@ -118,6 +118,11 @@ const OwnedNfts = ({
     initialPageSize: 12,
   });
 
+  const currentNFTs = nftWithBalances.slice(
+    startIndex > 0 ? startIndex - 1 : startIndex,
+    startIndex > 0 ? endIndex : endIndex + 1
+  );
+
   return (
     <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
       <div
@@ -168,11 +173,7 @@ const OwnedNfts = ({
             initial="hidden"
             variants={variants}
           >
-            {nftWithBalances
-              .slice(
-                startIndex > 0 ? startIndex - 1 : startIndex,
-                startIndex > 0 ? endIndex : endIndex + 1
-              )
+            {currentNFTs
               .map((nft) => {
                 return (
                   <LazyLoad height={400} offset={600}>

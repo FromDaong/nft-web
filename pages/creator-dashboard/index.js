@@ -133,7 +133,7 @@ const ViewNFT = ({ modelData, account }) => {
               <a
                 href="https://t.me/TreatContentCreators"
                 target="_blank"
-                className="text-primary"
+                className="text-primary" rel="noreferrer"
               >
                 <small>
                   <b>Join our creator Telegram community</b>

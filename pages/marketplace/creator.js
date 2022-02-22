@@ -263,7 +263,7 @@ const Marketplace = ({ search }) => {
                       account={account}
                       key={o.refIndex}
                       setPendingModal={setShowPendingModal}
-                      openCompleteModal={() => setShowCompleteModal(true)}
+                      openCompleteModal={() => ({})}
                       setPurchaseOrderData={setPurchaseOrderData}
                     />
                   ))}

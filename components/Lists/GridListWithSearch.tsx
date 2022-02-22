@@ -15,5 +15,5 @@ interface GridListProps {
   searchPlaceholder: string;
   render: (props) => ReactNode;
   data: Array<any>;
-  cols?: Number;
+  cols?: number;
 }

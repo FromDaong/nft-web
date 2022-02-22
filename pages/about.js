@@ -126,7 +126,7 @@ const About = () => {
                 </p>
                 <a
                   href="https://pancakeswap.finance/swap?inputCurrency=0x01bd7acb6ff3b6dd5aefa05cf085f2104f3fc53f"
-                  target="_blank"
+                  target="_blank" rel="noreferrer"
                 >
                   <Button variant="primary py-2 px-4 mt-3 w-sm-100">
                     <b>SWAP WITH 1INCH</b>

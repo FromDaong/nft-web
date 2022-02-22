@@ -93,7 +93,7 @@ const Home = () => {
                   <div className="col-md-6 mt-2">
                     <a
                       href="https://pancakeswap.finance/swap?inputCurrency=0x01bd7acb6ff3b6dd5aefa05cf085f2104f3fc53f"
-                      target="_blank"
+                      target="_blank" rel="noreferrer"
                     >
                       <Button variant="light w-100 py-2">
                         <b>Buy $TREAT</b>

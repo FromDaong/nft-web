@@ -15,7 +15,7 @@ const PaginationComponentV2 = ({
   const startNumber = page - 5 > 1 ? page - 5 : 1;
   const endNumber = page + 5 < totalPages ? page + 5 : totalPages;
 
-  let items = [];
+  const items = [];
   if (hasPrevPage) items.push(<Pagination.First onClick={() => setPage(1)} />);
   if (hasPrevPage) items.push(<Pagination.Prev onClick={goPrev} />);
 
