@@ -25,6 +25,8 @@ const NFTListItem = ({
   const [image, setImage] = useState();
 
   useEffect(() => {
+    console.log({ data });
+
     if (!data.image) return;
     axios
       .get(
@@ -43,7 +45,7 @@ const NFTListItem = ({
           console.log("Setting res");
         }
       });
-  }, []);
+  }, [data]);
 
   return (
     <>
