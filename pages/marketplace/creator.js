@@ -69,8 +69,15 @@ const Marketplace = ({ search }) => {
   useEffect(() => {
     const queryFilter = router.query.s;
     const sort = router.query.sort;
+
+    const sortTag =
+      sort === "recent"
+        ? "Recent"
+        : sort === "asc"
+        ? "Price Low to High"
+        : "Price High to Low";
     setSearchFilter(queryFilter ?? "");
-    setSortBy(sort ?? "Recent");
+    setSortBy(sortTag ?? "Recent");
   }, []);
 
   useEffect(() => {

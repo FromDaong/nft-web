@@ -129,7 +129,7 @@ const OwnedNfts = ({
       setCurrentNFTs(current);
     } else {
       const current = nftWithBalances.slice(
-        startIndex > 0 ? startIndex - 1 : startIndex,
+        startIndex,
         startIndex > 0 ? endIndex : endIndex + 1
       );
       setCurrentNFTs(current);
