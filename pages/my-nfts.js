@@ -383,7 +383,7 @@ const ViewNFT = ({ account, nftArray }) => {
   const { totalNftBalances: nftBalancesInitial, loading: isLoading } =
     useGetNftBalance(nftArray);
 
-  const nftBalances = serverNftBalances || nftBalancesInitial;
+  const nftBalances = serverNftBalances ?? nftBalancesInitial;
   const [transferNFTData, setTransferNFTData] = useState(null);
   const [listOrderData, setListOrderData] = useState(null);
   const [cancelOrderData, setCancelOrderData] = useState(null);
@@ -405,6 +405,8 @@ const ViewNFT = ({ account, nftArray }) => {
   const hideNFTs = async () => {
     setServerNftBalances(null);
   };
+
+  console.log(setServerNftBalances);
 
   const revealNFTs = async () => {
     if (account && treat) {
