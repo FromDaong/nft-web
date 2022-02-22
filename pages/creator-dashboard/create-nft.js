@@ -17,6 +17,7 @@ import * as Yup from "yup";
 import Web3 from "web3";
 import axios from "axios";
 import useSWR from "swr";
+import cdnclient from "../../lib/uploadcare";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -194,7 +195,7 @@ const CreateNFT = ({ modelData }) => {
         ...nftData,
         id: createNFTResult.nftIds[i],
         blurhash: nftData.blurhash ? nftData.blurhash : null,
-        daoCdnUrl,
+        daoCdnUrl: cdnUrl,
       }));
 
       setShowPendingModal(true);
@@ -271,7 +272,8 @@ const CreateNFT = ({ modelData }) => {
               <a
                 href="https://help.treatdao.com/en/articles/5761127-how-to-price-your-nfts-to-sell-on-treat"
                 target="_blank"
-                className="text-primary" rel="noreferrer"
+                className="text-primary"
+                rel="noreferrer"
               >
                 <small>
                   <b>

@@ -84,9 +84,9 @@ const Marketplace = ({ search }) => {
     const sort =
       sortBy === "Recent"
         ? "recent"
-        : sortBy === "Price Low to High"
-        ? "asc"
-        : "desc";
+        : sortBy === "Price High to Low"
+        ? "desc"
+        : "asc";
     router.push(
       `${router.pathname}?${
         searchFilter && `s=${searchFilter}`
@@ -114,9 +114,9 @@ const Marketplace = ({ search }) => {
     const sort =
       sortBy === "Recent"
         ? "recent"
-        : sortBy === "Price Low to High"
-        ? "asc"
-        : "desc";
+        : sortBy === "Price High to Low"
+        ? "desc"
+        : "asc";
     router.push(
       `${router.pathname}?${
         searchFilter && `s=${searchFilter}&`
