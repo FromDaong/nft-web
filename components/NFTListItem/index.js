@@ -26,31 +26,6 @@ const NFTListItem = ({
   const rr = createRef();
 
   useEffect(() => {
-    (async () => {
-      if (data.daoCdnUrl) {
-        axios
-          .get(data.daoCdnUrl + "-/quality/lighter/-/format/webp/")
-          .then((blob) => {
-            setBase64Image(data.daoCdnUrl + "-/quality/lighter/-/format/webp/");
-          })
-          .catch((err) => {
-            fetch(data.image)
-              .then((r) => r.text())
-              .then((blob) => {
-                setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
-              });
-          });
-      } else {
-        fetch(data.image)
-          .then((r) => r.text())
-          .then((blob) => {
-            setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
-          });
-      }
-    })();
-  }, [data]);
-
-  useEffect(() => {
     if (visible) {
       axios
         .get(`/api/model/find-by-id/${data.model_bnb_address}`)
