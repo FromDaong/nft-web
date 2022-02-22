@@ -22,6 +22,11 @@ const NFTListItem = ({
   hasOpenOrder,
 }) => {
   const [modalData, setModalData] = useState();
+  const [image, setImage] = useState(data.daoCdnUrl)
+
+  useEffect(() => {
+    axios.get()
+  }, [data])
 
   return (
     <>
@@ -35,7 +40,7 @@ const NFTListItem = ({
           <div
             className="modal-image"
             style={{
-              background: `url()`,
+              background: `/api/v2/utils/images/fetchWithFallback?default=${data.image}&cdn=${data.daoCdnUrl}`,
             }}
           ></div>
           <h4 className="text-center pt-3">{data.description}</h4>
