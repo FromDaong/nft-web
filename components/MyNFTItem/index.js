@@ -22,11 +22,7 @@ const NFTListItem = ({
   hasOpenOrder,
 }) => {
   const [modalData, setModalData] = useState();
-  const [image, setImage] = useState(data.daoCdnUrl)
-
-  useEffect(() => {
-    axios.get()
-  }, [data])
+  const [image, setImage] = useState(data.daoCdnUrl);
 
   return (
     <>
