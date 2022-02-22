@@ -104,6 +104,7 @@ const OwnedNfts = ({
   isLoading,
 }) => {
   const [currentNFTs, setCurrentNFTs] = useState([]);
+
   const nftWithBalances = nftBalances.filter((i) => !i.hasOpenOrder);
   const {
     currentPage,
@@ -120,12 +121,20 @@ const OwnedNfts = ({
   });
 
   useEffect(() => {
-    const current = nftWithBalances.slice(
-      startIndex > 0 ? startIndex - 1 : startIndex,
-      startIndex > 0 ? endIndex : endIndex + 1
-    );
-    setCurrentNFTs(current);
-  }, [startIndex, endIndex]);
+    if (serverNftBalances) {
+      const current = serverNftBalances.slice(
+        startIndex > 0 ? startIndex - 1 : startIndex,
+        startIndex > 0 ? endIndex : endIndex + 1
+      );
+      setCurrentNFTs(current);
+    } else {
+      const current = nftWithBalances.slice(
+        startIndex > 0 ? startIndex - 1 : startIndex,
+        startIndex > 0 ? endIndex : endIndex + 1
+      );
+      setCurrentNFTs(current);
+    }
+  }, [startIndex, endIndex, nftWithBalances, serverNftBalances]);
 
   return (
     <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
@@ -405,8 +414,6 @@ const ViewNFT = ({ account, nftArray }) => {
   const hideNFTs = async () => {
     setServerNftBalances(null);
   };
-
-  console.log({ serverNftBalances });
 
   const revealNFTs = async () => {
     if (account && treat) {
