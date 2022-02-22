@@ -25,21 +25,25 @@ const NFTListItem = ({
   const [image, setImage] = useState();
 
   useEffect(() => {
+    console.log({ data });
     axios
       .get(
         `/api/v2/utils/images/fetchWithFallback?default=${data.image}&cdn=${data.daoCdnUrl}`
       )
-      .then(({ data: res }) => {
-        if (res === data.image) {
+      .then((res) => {
+        if (res.data === data.image) {
           axios
             .get(data.image)
-            .then(({ data }) => setImage(data))
+            .then((res) =>
+              setImage(res.data.replace(`"`, "").replace(/["']/g, ""))
+            )
             .catch((err) => console.log(err));
         } else {
-          setImage(res);
+          setImage(res.data);
+          console.log("Setting res");
         }
       });
-  }, [data]);
+  }, []);
 
   return (
     <>
