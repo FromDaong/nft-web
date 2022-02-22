@@ -29,8 +29,15 @@ const NFTListItem = ({
       .get(
         `/api/v2/utils/images/fetchWithFallback?default=${data.image}&cdn=${data.daoCdnUrl}`
       )
-      .then(({ data }) => {
-        setImage(data);
+      .then(({ data: res }) => {
+        if (res === data.image) {
+          axios
+            .get(data.image)
+            .then(({ data }) => setImage(data))
+            .catch((err) => console.log(err));
+        } else {
+          setImage(data);
+        }
       });
   }, [data]);
 
