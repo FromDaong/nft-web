@@ -25,7 +25,7 @@ const NFTListItem = ({
   const [image, setImage] = useState();
 
   useEffect(() => {
-    console.log({ data });
+    if (!data.image) return;
     axios
       .get(
         `/api/v2/utils/images/fetchWithFallback?default=${data.image}&cdn=${data.daoCdnUrl}`
