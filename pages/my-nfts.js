@@ -38,62 +38,6 @@ const variants = {
   },
 };
 
-const MyNFTsWrapper = () => {
-  const { account, status } = useWallet();
-  const { error, setError } = useState();
-  const [nftArray, setNftData] = useState();
-
-  useEffect(() => {
-    axios
-      .get("/api/nft?all=true")
-      .then((resp) => {
-        setNftData(resp.data);
-      })
-      .catch((err) => setError(err));
-  }, []);
-
-  if (status !== "connected" || !nftArray) {
-    return (
-      <div
-        style={{
-          position: "fixed",
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          top: 0,
-          left: 0,
-          justifyContent: "center",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <h5
-          style={{
-            fontWeight: "bolder",
-            background: "white",
-            borderRadius: 5,
-            padding: 10,
-          }}
-        >
-          Please make sure your wallet on the Binance Smart Chain is connected.
-        </h5>
-        <Spinner
-          animation="border"
-          role="status"
-          size="xl"
-          style={{ marginTop: 5 }}
-        >
-          <span className="sr-only">Loading...</span>
-        </Spinner>
-      </div>
-    );
-  } else if (error) {
-    return <ErrorFallback custom="Failed to load my NFT's" />;
-  } else {
-    return <ViewNFT account={account} nftArray={nftArray} />;
-  }
-};
-
 const OwnedNfts = ({
   hideNFTs,
   revealNFTs,
@@ -388,7 +332,6 @@ const OpenOrders = ({
 const ViewNFT = ({ account, nftArray }) => {
   const [serverNftBalances, setServerNftBalances] = useState(null);
 
-  const maxNftSupply = useGetNftMaxSupply(account);
   const { totalNftBalances: nftBalancesInitial, loading: isLoading } =
     useGetNftBalance(nftArray);
 
@@ -432,7 +375,7 @@ const ViewNFT = ({ account, nftArray }) => {
       const resJSON = await res.json();
 
       if (resJSON.success) {
-        setServerNftBalances(resJSON.results);
+        setServerNftBalances(resJSON.docs);
       }
     }
   };
@@ -516,6 +459,62 @@ const ViewNFT = ({ account, nftArray }) => {
       </div>
     </Layout>
   );
+};
+
+const MyNFTsWrapper = () => {
+  const { account, status } = useWallet();
+  const { error, setError } = useState();
+  const [nftArray, setNftData] = useState({});
+
+  useEffect(() => {
+    axios
+      .get("/api/nft?all=true")
+      .then((resp) => {
+        setNftData(resp.data);
+      })
+      .catch((err) => setError(err));
+  }, []);
+
+  if (status !== "connected" || !nftArray) {
+    return (
+      <div
+        style={{
+          position: "fixed",
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          top: 0,
+          left: 0,
+          justifyContent: "center",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <h5
+          style={{
+            fontWeight: "bolder",
+            background: "white",
+            borderRadius: 5,
+            padding: 10,
+          }}
+        >
+          Please make sure your wallet on the Binance Smart Chain is connected.
+        </h5>
+        <Spinner
+          animation="border"
+          role="status"
+          size="xl"
+          style={{ marginTop: 5 }}
+        >
+          <span className="sr-only">Loading...</span>
+        </Spinner>
+      </div>
+    );
+  } else if (error) {
+    return <ErrorFallback custom="Failed to load my NFT's" />;
+  } else {
+    return <ViewNFT account={account} nftArray={nftArray} />;
+  }
 };
 
 export default MyNFTsWrapper;
