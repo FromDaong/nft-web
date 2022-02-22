@@ -13,7 +13,17 @@ export default async (req, res) => {
     case "GET":
       try {
         if (req.query.all) {
-          const NFTs = await NFT.find();
+          let NFTs = await NFT.find();
+          NFTs = await NFTs.map((n) => {
+            const returnObj = { ...n.toObject() };
+
+            returnObj.mints = returnObj.mints.length;
+            delete returnObj.identity_access_key;
+
+            if (returnObj.blurhash) delete returnObj.image;
+
+            return returnObj;
+          });
           return res.status(200).json(NFTs);
         }
 
@@ -77,7 +87,19 @@ export default async (req, res) => {
             options
           );
         }
+        NFTs.docs = await NFTs.docs.map((n) => {
+          const returnObj = { ...n.toObject() };
 
+          returnObj.mints = returnObj.mints.length;
+          delete returnObj.identity_access_key;
+
+          if (returnObj.blurhash) {
+            delete returnObj.image;
+            delete returnObj.daoCdnUrl;
+          }
+
+          return returnObj;
+        });
         return res.status(200).json(NFTs);
       } catch (error) {
         console.error({ error });
