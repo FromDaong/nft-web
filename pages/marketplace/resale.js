@@ -68,7 +68,11 @@ const Marketplace = ({ search }) => {
     const queryFilter = router.query.s;
     const sort = router.query.sort;
     const sortTag =
-      sort === "recent" ? "Recent" : sort === "asc" ? "Asc" : "Desc";
+      sort === "recent"
+        ? "Recent"
+        : sort === "asc"
+        ? "Price Low to High"
+        : "Price High to Low";
     setSearchFilter(queryFilter ?? "");
     setSortBy(sortTag);
   }, []);
@@ -97,7 +101,7 @@ const Marketplace = ({ search }) => {
         .post(
           `/api/nft/get-many-nfts?p=${router.query.p ?? 1}${
             searchFilter ? `&s=${router.query.s}` : ""
-          }&sort=${router.query.sort ?? "recent"}`,
+          }&sort=${router.query.sort ?? "asc"}`,
           {
             ...jsonBody,
           }
@@ -147,9 +151,9 @@ const Marketplace = ({ search }) => {
     const sort =
       sortBy === "Recent"
         ? "recent"
-        : sortBy === "Price Low to High"
-        ? "asc"
-        : "desc";
+        : sortBy === "Price High to Low"
+        ? "desc"
+        : "asc";
     router.push(
       `${router.pathname}?${
         searchFilter && `s=${searchFilter}&`

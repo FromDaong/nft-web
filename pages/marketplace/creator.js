@@ -73,9 +73,9 @@ const Marketplace = ({ search }) => {
     const sortTag =
       sort === "recent"
         ? "Recent"
-        : sort === "asc"
-        ? "Price Low to High"
-        : "Price High to Low";
+        : sort === "desc"
+        ? "Price High to Low"
+        : "Price Low to High";
     setSearchFilter(queryFilter ?? "");
     setSortBy(sortTag ?? "Recent");
   }, []);
@@ -103,7 +103,7 @@ const Marketplace = ({ search }) => {
       .get(
         `/api/nft?p=${router.query.p ?? 1}${
           searchFilter ? `&s=${router.query.s}` : ""
-        }&sort=${router.query.sort ?? "recent"}`
+        }&sort=${router.query.sort ?? "asc"}`
       )
       .then((res) => setApiResponseData(res.data))
       .then(() => setLoading(false));
