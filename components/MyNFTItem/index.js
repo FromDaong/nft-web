@@ -36,7 +36,7 @@ const NFTListItem = ({
             .then(({ data }) => setImage(data))
             .catch((err) => console.log(err));
         } else {
-          setImage(data);
+          setImage(res);
         }
       });
   }, [data]);
