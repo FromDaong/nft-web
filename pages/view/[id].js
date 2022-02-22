@@ -370,7 +370,7 @@ const ViewNFT = ({ nftData, image, account }) => {
         </div>
       </div>
       <div>
-        <a href={"https://bscscan.com/tx/" + e.id} target="_blank">
+        <a href={"https://bscscan.com/tx/" + e.id} target="_blank" rel="noreferrer">
           <ArrowUpRightSquare size={24} />
         </a>
       </div>

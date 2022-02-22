@@ -299,7 +299,7 @@ const CreateModel = () => {
                               color: "inherit",
                               textDecoration: "underline",
                             }}
-                            target="_blank"
+                            target="_blank" rel="noreferrer"
                           >
                             terms of service.
                           </a>

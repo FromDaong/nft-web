@@ -10,7 +10,7 @@ import { useWallet } from "use-wallet";
 const useGetFreeSubscriberTreat = (
   id: number,
   treatCost: number,
-  useSubscriberMart: boolean = false
+  useSubscriberMart = false
 ) => {
   const { account } = useWallet();
   const treat = useTreat();

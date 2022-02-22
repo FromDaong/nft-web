@@ -198,7 +198,7 @@ const NFTListItem = ({
             </div>
           </div>
 
-          {!!transferNFTClick ? (
+          {transferNFTClick ? (
             <div className="row">
               <div className="col-lg-6 mt-3">
                 <span className="d-inline-block w-100">

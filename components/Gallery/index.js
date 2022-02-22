@@ -12,7 +12,7 @@ const Gallery = () => {
           <Card className="p-2">
             <a
               href="https://issuu.com/treatdao/docs/treatmagazine1.pptx?fr=sYWE5MTQ1Mzk2OTc"
-              target="_blank"
+              target="_blank" rel="noreferrer"
             >
               <Card.Img
                 className="p-2"
