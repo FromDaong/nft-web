@@ -22,32 +22,6 @@ const NFTListItem = ({
   hasOpenOrder,
 }) => {
   const [modalData, setModalData] = useState();
-  const [image, setBase64Image] = useState();
-
-  useEffect(() => {
-    if (data.daoCdnUrl) {
-      axios
-        .get(data.daoCdnUrl + "-/quality/lighter/-/format/webp/")
-        .then((blob) => {
-          setBase64Image(data.daoCdnUrl + "-/quality/lighter/-/format/webp/");
-        })
-        .catch((err) => {
-          fetch(data.image)
-            .then((r) => r.text())
-            .then((blob) => {
-              setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
-            });
-        });
-    } else {
-      fetch(data.image)
-        .then((r) => r.text())
-        .then((blob) => {
-          setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
-        });
-    }
-
-    console.log({ id: data.id, img: data.image });
-  }, [data]);
 
   return (
     <>
@@ -61,7 +35,7 @@ const NFTListItem = ({
           <div
             className="modal-image"
             style={{
-              background: `url(${image})`,
+              background: `url()`,
             }}
           ></div>
           <h4 className="text-center pt-3">{data.description}</h4>
@@ -128,7 +102,7 @@ const NFTListItem = ({
                 </div>
                 <div
                   style={{
-                    background: `url(${data.image})`,
+                    background: `/api/v2/utils/images/fetchWithFallback?default=${data.image}&cdn=${data.daoCdnUrl}`,
                     minHeight: 375,
                     zIndex: 100,
                   }}
