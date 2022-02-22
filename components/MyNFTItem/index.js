@@ -10,30 +10,6 @@ import axios from "axios";
 import { EyeSlash } from "react-bootstrap-icons";
 import Link from "next/link";
 
-let easing = [0.175, 0.85, 0.42, 0.96];
-
-const variants = {
-  initial: {
-    y: 150,
-    opacity: 0,
-  },
-  hidden: {
-    opacity: 0,
-    transition: {
-      duration: 0.1,
-      ease: easing,
-    },
-  },
-  show: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.2,
-      ease: easing,
-    },
-  },
-};
-
 const NFTListItem = ({
   data,
   revealNFTs,
@@ -49,29 +25,29 @@ const NFTListItem = ({
   const [image, setBase64Image] = useState();
 
   useEffect(() => {
-    (async () => {
-      if (data.daoCdnUrl) {
-        axios
-          .get(data.daoCdnUrl + "-/quality/lighter/-/format/webp/")
-          .then((blob) => {
-            setBase64Image(data.daoCdnUrl + "-/quality/lighter/-/format/webp/");
-          })
-          .catch((err) => {
-            fetch(data.image)
-              .then((r) => r.text())
-              .then((blob) => {
-                setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
-              });
-          });
-      } else {
-        fetch(data.image)
-          .then((r) => r.text())
-          .then((blob) => {
-            setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
-          });
-      }
-    })();
-  }, []);
+    if (data.daoCdnUrl) {
+      axios
+        .get(data.daoCdnUrl + "-/quality/lighter/-/format/webp/")
+        .then((blob) => {
+          setBase64Image(data.daoCdnUrl + "-/quality/lighter/-/format/webp/");
+        })
+        .catch((err) => {
+          fetch(data.image)
+            .then((r) => r.text())
+            .then((blob) => {
+              setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
+            });
+        });
+    } else {
+      fetch(data.image)
+        .then((r) => r.text())
+        .then((blob) => {
+          setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
+        });
+    }
+
+    console.log({ id: data.id, img: data.image });
+  }, [data]);
 
   return (
     <>
@@ -97,7 +73,7 @@ const NFTListItem = ({
         </Modal.Footer>
       </Modal>
 
-      <div variants={variants}>
+      <div>
         <div className="nft-card" style={{ boxShadow: "none" }}>
           <div className="totw-tag-wrapper">
             {balance > 1 && (
@@ -152,7 +128,7 @@ const NFTListItem = ({
                 </div>
                 <div
                   style={{
-                    background: `url(${image})`,
+                    background: `url(${data.image})`,
                     minHeight: 375,
                     zIndex: 100,
                   }}
