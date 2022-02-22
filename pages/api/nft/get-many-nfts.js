@@ -97,7 +97,10 @@ export default async (req, res) => {
             )?.toNumber();
 
             const returnObj = { ...nft._doc, maxSupply, totalSupply };
-            if (nft.blurhash) delete returnObj.image;
+            if (nft.blurhash) {
+              delete returnObj.image;
+              delete returnObj.daoCdnUrl;
+            }
 
             return returnObj;
           })
