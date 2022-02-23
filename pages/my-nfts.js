@@ -49,6 +49,7 @@ const OwnedNfts = ({
   signature,
 }) => {
   const { status, account } = useWallet();
+  const [loading, setLoading] = useState(true);
   const { nftData, setNFTData } = useState({
     docs: [],
     hasNextPage: false,
@@ -57,7 +58,6 @@ const OwnedNfts = ({
     totalDocs: 0,
     page: 1,
   });
-  const [loading, setLoading] = useState(true);
   const nftWithBalances = nftBalances.filter((i) => !i.hasOpenOrder);
 
   const fetchNFTS = async (page) => {
@@ -158,19 +158,21 @@ const OwnedNfts = ({
               </LazyLoad>
             ))}
           </div>
-          <div className="flex justify-center py-2">
-            <PaginationComponentV2
-              hasNextPage={nftData.hasNextPage}
-              hasPrevPage={nftData.hasPrevPage}
-              totalPages={nftData.totalPages}
-              totalDocs={nftData.totalDocs}
-              page={nftData.page}
-              goNext={() => navigate(Number(nftData.page) + 1)}
-              goPrev={() => navigate(Number(nftData.page) - 1)}
-              loading={loading}
-              setPage={(page) => navigate(Number(page))}
-            />
-          </div>
+          {nftData.docs > 0 && (
+            <div className="flex justify-center py-2">
+              <PaginationComponentV2
+                hasNextPage={nftData.hasNextPage}
+                hasPrevPage={nftData.hasPrevPage}
+                totalPages={nftData.totalPages}
+                totalDocs={nftData.totalDocs}
+                page={nftData.page}
+                goNext={() => navigate(Number(nftData.page) + 1)}
+                goPrev={() => navigate(Number(nftData.page) - 1)}
+                loading={loading}
+                setPage={(page) => navigate(Number(page))}
+              />
+            </div>
+          )}
         </div>
       ) : isLoading ? (
         <div
@@ -211,9 +213,51 @@ const OpenOrders = ({
   signature,
   isLoading,
 }) => {
+  const { status, account } = useWallet();
+  const [loading, setLoading] = useState(true);
+  const { nftData, setNFTData } = useState({
+    docs: [],
+    hasNextPage: false,
+    hasPrevPage: false,
+    totalPages: 1,
+    totalDocs: 0,
+    page: 1,
+  });
+
   const openOrders = useGetOpenOrdersForSeller() ?? [];
   const nftWithOpenOrders = nftBalances.filter((i) => i.hasOpenOrder);
-  
+
+  const fetchNFTS = async (page) => {
+    setLoading(true);
+    axios
+      .post("/api/v2/nft/getWithBalances", {
+        nfts: nftWithOpenOrders,
+        account: account,
+        page: page ?? 1,
+      })
+      .then((resp) => {
+        setNFTData(resp.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    if (
+      status === "connected" &&
+      nftWithOpenOrders &&
+      nftWithOpenOrders?.length > 0
+    ) {
+      fetchNFTS(nftData.page);
+    }
+  }, [status, account, nftWithOpenOrders, signature]);
+
+  const navigate = (page) => {
+    fetchNFTS(page);
+  };
 
   return (
     <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
@@ -236,9 +280,9 @@ const OpenOrders = ({
               Listed on Re-Sale Marketplace
             </h2>
           </div>
-          {nftBalances.length > 0 && openOrders.length > 0 && (
+          {nftData.docs > 0 && openOrders.length > 0 && (
             <div className="button-container">
-              {serverNftBalances ? (
+              {signature ? (
                 <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
                   <b>{"Hide Contents 🙈"}</b>
                 </Button>
@@ -251,7 +295,7 @@ const OpenOrders = ({
           )}
         </div>
       </div>
-      {nftWithOpenOrders.length > 0 && openOrders.length > 0 ? (
+      {nftData.docs > 0 && openOrders.length > 0 ? (
         <div className="container px-4 ">
           <div className="d-flex text-left mt-5">
             <div
@@ -261,45 +305,45 @@ const OpenOrders = ({
               initial="hidden"
               variants={variants}
             >
-              {nftWithOpenOrders
-                .slice(startIndex > 0 ? startIndex - 1 : startIndex, endIndex)
-                .map((nft) => {
-                  if (nft.hasOpenOrder) {
-                    const order = openOrders.find(
-                      (i) => Number(i.nftId) === nft.id
-                    );
+              {nftData.docs.map((nft) => {
+                if (nft.hasOpenOrder) {
+                  const order = openOrders.find(
+                    (i) => Number(i.nftId) === nft.id
+                  );
 
-                    return (
-                      <LazyLoad height={400} offset={600}>
-                        <div className="order-container">
-                          <MyNFTItem
-                            price={
-                              order &&
-                              order.price &&
-                              getDisplayBalance(new BigNumber(order.price))
-                            }
-                            balance={order?.quantity}
-                            data={nft}
-                            isLoading={isLoading}
-                            revealNFTs={revealNFTs}
-                            cancelOrderClick={cancelOrderClick}
-                          />
-                        </div>
-                      </LazyLoad>
-                    );
-                  }
-                })}
+                  return (
+                    <LazyLoad height={400} offset={600}>
+                      <div className="order-container">
+                        <MyNFTItem
+                          price={
+                            order &&
+                            order.price &&
+                            getDisplayBalance(new BigNumber(order.price))
+                          }
+                          balance={order?.quantity}
+                          data={nft}
+                          isLoading={isLoading}
+                          revealNFTs={revealNFTs}
+                          cancelOrderClick={cancelOrderClick}
+                        />
+                      </div>
+                    </LazyLoad>
+                  );
+                }
+              })}
             </div>
           </div>
-          {nftWithOpenOrders.length > 0 && (
-            <PaginationComponent
-              currentPage={currentPage}
-              totalPages={totalPages}
-              setPage={setPage}
-              setPageSize={setPageSize}
-              setNextPage={setNextPage}
-              setPreviousPage={setPreviousPage}
-              fixedPageSize
+          {nftData.docs > 0 && (
+            <PaginationComponentV2
+              hasNextPage={nftData.hasNextPage}
+              hasPrevPage={nftData.hasPrevPage}
+              totalPages={nftData.totalPages}
+              totalDocs={nftData.totalDocs}
+              page={nftData.page}
+              goNext={() => navigate(Number(nftData.page) + 1)}
+              goPrev={() => navigate(Number(nftData.page) - 1)}
+              loading={loading}
+              setPage={(page) => navigate(Number(page))}
             />
           )}
         </div>
