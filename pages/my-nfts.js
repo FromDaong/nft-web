@@ -49,9 +49,8 @@ const OwnedNfts = ({
 }) => {
   const { status, account } = useWallet();
   const [currentNFTs, setCurrentNFTs] = useState([]);
-
   useEffect(() => {
-    if (status === "connected") {
+    if (status === "connected" && nftBalances && nftBalances?.length > 0) {
       axios
         .post("/api/v2/nft/getWithBalances", {
           nfts: nftBalances,
@@ -61,7 +60,7 @@ const OwnedNfts = ({
           console.log(resp.data);
         });
     }
-  }, [status, account]);
+  }, [status, account, nftBalances]);
 
   const nftWithBalances = nftBalances.filter((i) => !i.hasOpenOrder);
   const {

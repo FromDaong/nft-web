@@ -30,8 +30,11 @@ export default async function getWithBalances(req, res) {
   switch (method) {
     case "POST":
       try {
-        if (!req.body.account) return res.status(401).send("Unauthorized");
-        const { account } = req.body;
+        if (!req.body.account || !req.body.nfts)
+          return res.status(401).send("Unauthorized");
+        const { account, nfts } = req.body;
+
+        const nftids = nfts.map((nft) => nft.id);
 
         const options = {
           page: req.query.p ?? 1,
@@ -42,24 +45,18 @@ export default async function getWithBalances(req, res) {
           sort: {},
         };
 
-        let NFTS = await NFT.find();
+        const NFTS = await NFT.paginate({ id: { $in: nftids } }, options);
 
-        if (NFTS.length === 0)
+        if (NFTS.docs.length === 0)
           return res
             .status(400)
             .json({ success: false, error: "nft not found" });
 
-        console.log("[+] Getting balances for " + NFTS.length + " NFTS");
-        NFTS = await Promise.all(
-          NFTS.map(async (nft) => {
-            console.log(nft.id);
-            const balance = (
-              await getNftBalance(treatNFTMinter, account, id)
-            )?.toNumber();
-            const balanceV1 = (
-              await getNftV1Balance(treatNFTV1Minter, account, id)
-            )?.toNumber();
-
+        console.log("[+] Getting balances for " + NFTS.docs.length + " NFTS");
+        NFTS.docs = await Promise.all(
+          NFTS.docs.map(async (nft) => {
+            const balance = nfts.find((n) => n.id === nft.id)?.balance ?? 0;
+            const balanceV1 = nfts.find((n) => n.id === nft.id)?.balanceV1 ?? 0;
             // Has no balance return undefined
             if (balance === 0 && balanceV1 === 0) return null;
 
@@ -75,12 +72,9 @@ export default async function getWithBalances(req, res) {
         );
 
         // Filter out nulls
-        NFTS = NFTS.filter((e) => e);
-        // Do a find for these NFTs and paginate them in MongoDB
-        const ids = NFTS.map((nft) => nft.id);
-        console.log({ ids });
-        const NFTres = await NFT.paginate({ id: { $in: ids } }, options);
-        res.status(200).json(NFTres);
+        NFTS.docs = NFTS.docs.filter((e) => e);
+
+        res.status(200).json(NFTS);
       } catch (error) {
         console.log(error);
         res.status(400).json({ success: false, error: error });
