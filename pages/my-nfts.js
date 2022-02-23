@@ -50,7 +50,7 @@ const OwnedNfts = ({
 }) => {
   const { status, account } = useWallet();
   const [loading, setLoading] = useState(true);
-  const { nftData, setNFTData } = useState({
+  const [nftData, setNFTData] = useState({
     docs: [],
     hasNextPage: false,
     hasPrevPage: false,
@@ -58,7 +58,7 @@ const OwnedNfts = ({
     totalDocs: 0,
     page: 1,
   });
-  nftData.d
+  
   const nftWithBalances = nftBalances.filter((i) => !i.hasOpenOrder);
 
   const fetchNFTS = async (page) => {
@@ -120,7 +120,7 @@ const OwnedNfts = ({
               My NFTs
             </h2>
           </div>
-          {nftData?.docs.length > 0 && (
+          {nftData.docs.length > 0 && (
             <div className="button-container">
               {signature ? (
                 <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
@@ -135,7 +135,7 @@ const OwnedNfts = ({
           )}
         </div>
       </div>
-      {!loading && nftData?.docs.length > 0 ? (
+      {!loading && nftData.docs.length > 0 ? (
         <div className="">
           <div
             className="d-flex text-left justify-content-center mt-5 w-100 flex-wrap"
@@ -144,7 +144,7 @@ const OwnedNfts = ({
             initial="hidden"
             variants={variants}
           >
-            {nftData?.docs.map((nft) => (
+            {nftData.docs.map((nft) => (
               <LazyLoad key={nft.id} height={400} offset={600}>
                 <div className="order-container">
                   <MyNFTItem
@@ -160,7 +160,7 @@ const OwnedNfts = ({
               </LazyLoad>
             ))}
           </div>
-          {nftData?.docs > 0 && (
+          {nftData.docs > 0 && (
             <div className="flex justify-center py-2">
               <PaginationComponentV2
                 hasNextPage={nftData.hasNextPage}
@@ -216,7 +216,7 @@ const OpenOrders = ({
 }) => {
   const { status, account } = useWallet();
   const [loading, setLoading] = useState(true);
-  const { nftData, setNFTData } = useState({
+  const [nftData, setNFTData] = useState({
     docs: [],
     hasNextPage: false,
     hasPrevPage: false,
@@ -282,7 +282,7 @@ const OpenOrders = ({
               Listed on Re-Sale Marketplace
             </h2>
           </div>
-          {nftData?.docs > 0 && openOrders.length > 0 && (
+          {nftData.docs > 0 && openOrders.length > 0 && (
             <div className="button-container">
               {signature ? (
                 <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
@@ -297,7 +297,7 @@ const OpenOrders = ({
           )}
         </div>
       </div>
-      {!loading && nftData?.docs > 0 && openOrders.length > 0 ? (
+      {!loading && nftData.docs > 0 && openOrders.length > 0 ? (
         <div className="container px-4 ">
           <div className="d-flex text-left mt-5">
             <div
@@ -307,7 +307,7 @@ const OpenOrders = ({
               initial="hidden"
               variants={variants}
             >
-              {nftData?.docs.map((nft) => {
+              {nftData.docs.map((nft) => {
                 if (nft.hasOpenOrder) {
                   const order = openOrders.find(
                     (i) => Number(i.nftId) === nft.id
@@ -335,7 +335,7 @@ const OpenOrders = ({
               })}
             </div>
           </div>
-          {nftData?.docs > 0 && (
+          {nftData.docs > 0 && (
             <PaginationComponentV2
               hasNextPage={nftData.hasNextPage}
               hasPrevPage={nftData.hasPrevPage}
