@@ -8,7 +8,7 @@ import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";
 import bsc from "@binance-chain/bsc-use-wallet";
 
-const useGetCreatorNftCost = (id: number, useCreatorMart: boolean = false) => {
+const useGetCreatorNftCost = (id: number, useCreatorMart = false) => {
   const [theNftCost, setTheNftCost] = useState(new BigNumber(0))
   const { account } = useWallet();
   const treat = useTreat();

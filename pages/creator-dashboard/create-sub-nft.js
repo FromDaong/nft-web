@@ -213,7 +213,7 @@ const CreateNFT = ({ modelData }) => {
               <a
                 href="https://help.treatdao.com/en/articles/5761127-how-to-price-your-nfts-to-sell-on-treat"
                 target="_blank"
-                className="text-primary"
+                className="text-primary" rel="noreferrer"
               >
                 <small>
                   <b>

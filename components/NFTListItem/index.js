@@ -8,28 +8,6 @@ import Link from "next/link";
 import { InView } from "react-intersection-observer";
 import axios from "axios";
 
-let easing = [0.175, 0.85, 0.42, 0.96];
-
-const variants = {
-  initial: {
-    opacity: 0,
-  },
-  hidden: {
-    opacity: 0,
-    transition: {
-      duration: 0.1,
-      ease: easing,
-    },
-  },
-  show: {
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-      ease: easing,
-    },
-  },
-};
-
 const NFTListItem = ({
   data,
   buttonLabel,
@@ -42,27 +20,13 @@ const NFTListItem = ({
   modelData,
   soldOut,
 }) => {
-  const [image, setBase64Image] = useState();
   const [visible, setVisible] = useState(false);
   const [model, setModel] = useState({});
-
+  const [image, setBase64Image] = useState();
   const rr = createRef();
 
   useEffect(() => {
-    (async () => {
-      if (data.image) {
-        fetch(data.image)
-          .then((r) => r.text())
-          .then((blob) => {
-            setBase64Image(blob.replace(`"`, "").replace(/["']/g, ""));
-          });
-      }
-    })();
-  }, [data]);
-
-  useEffect(() => {
     if (visible) {
-      console.log({ data }, 123);
       axios
         .get(`/api/model/find-by-id/${data.model_bnb_address}`)
         .then((res) => setModel(res.data))
@@ -112,11 +76,21 @@ const NFTListItem = ({
             </div>
           </div>
 
-          <Link href={`/creator/${model.username}`}>
+          <Link
+            href={`/creator/${
+              model.username
+                ? model.username
+                : data.attributes[0].value.slice(1, -1)
+            }`}
+          >
             <a>
               <div
                 className="profile-pic"
-                style={{ backgroundImage: `url(${model.profile_pic})` }}
+                style={{
+                  backgroundImage: model.username
+                    ? `url(${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/)`
+                    : `url(${data.model_profile_pic})`,
+                }}
               />
             </a>
           </Link>
@@ -142,7 +116,9 @@ const NFTListItem = ({
             {data.image ? (
               <div
                 style={{
-                  background: `url(${data.image})`,
+                  backgroundImage: data.daoCdnUrl
+                    ? `url(${data.daoCdnUrl}-/quality/lightest/-/format/webp/)`
+                    : `url(${data.image})`,
                   minHeight: 375,
                   zIndex: 100,
                 }}
@@ -183,7 +159,9 @@ const NFTListItem = ({
               <div className="title">{data.name}</div>
               <div className="s">
                 {owner && <b>Creator: </b>}
-                {model.username}
+                {model.username
+                  ? model.username
+                  : data.attributes[0].value.slice(1, -1)}
               </div>
             </div>
             {(price || data.list_price) && (

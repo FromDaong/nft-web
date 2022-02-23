@@ -6,7 +6,7 @@ import SwiperNFTList from "../components/SwiperNFTList";
 import Layout from "../components/Layout";
 import { motion, useAnimation } from "framer-motion";
 import Link from "next/link";
-import useSWR from "swr";
+import axios from "axios";
 import CountUp from "react-countup";
 import * as Scroll from "react-scroll";
 import { useInView } from "react-intersection-observer";
@@ -19,13 +19,34 @@ import {
 import ErrorFallback from "../components/Fallback/Error";
 
 const Home = () => {
-  const { data: nftResult, error: nftResultError } =
-    useSWR(`/api/nft?limit=20`);
-  const { data: modelResult, error: modelResultError } = useSWR(`/api/model`);
   const [nftData, setNftData] = useState();
   const [modelData, setModelData] = useState();
+  const [totm, setTOTMData] = useState();
+  const [modelResultError, setModelResultError] = useState(false);
+  const [totmResultError, setTOTMResultError] = useState(false);
+  const [nftResultError, setNFTResultError] = useState(false);
   const [ref, inView] = useInView();
   const controls = useAnimation();
+
+  useEffect(() => {
+    axios.get("/api/nft?limit=20").then((res) => {
+      if (res.data.docs) {
+        setNftData(res.data.docs);
+      }
+    });
+
+    axios.get("/api/model?totm=true").then((res) => {
+      if (res.data) {
+        setTOTMData(res.data);
+      }
+    });
+
+    axios.get("/api/model").then((res) => {
+      if (res.data.docs) {
+        setModelData(res.data.docs);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (inView) {
@@ -33,26 +54,11 @@ const Home = () => {
     }
   }, [controls, inView]);
 
-  useEffect(() => {
-    (async () => {
-      if (nftResult) {
-        setNftData(nftResult);
-      }
-      if (modelResult) {
-        setModelData(modelResult);
-      }
-    })();
-  }, [nftResult, modelResult]);
-
   return (
     <Layout>
       <div className="home container">
         <div className="min-height-wrapper">
-          <motion.div
-            animate={{ x: 0, opacity: 1 }}
-            style={{ x: -100, opacity: 0 }}
-            className="hero"
-          >
+          <div className="hero">
             <div className="row align-items-center">
               <div className="col-lg-6 hero-text mt-3">
                 <div className="heading-text">
@@ -87,7 +93,7 @@ const Home = () => {
                   <div className="col-md-6 mt-2">
                     <a
                       href="https://pancakeswap.finance/swap?inputCurrency=0x01bd7acb6ff3b6dd5aefa05cf085f2104f3fc53f"
-                      target="_blank"
+                      target="_blank" rel="noreferrer"
                     >
                       <Button variant="light w-100 py-2">
                         <b>Buy $TREAT</b>
@@ -130,7 +136,7 @@ const Home = () => {
                 <img src={"/assets/heroimage.png"} alt="" />
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
         <div className="totw-section-container mt-5">
           <div className="section-title">Treat of the Month</div>
@@ -156,8 +162,8 @@ const Home = () => {
             </Button>
           </a>
 
-          {modelData && !modelResultError ? (
-            modelData.map((m) => m.totm && <TotwListItem modelData={m} />)
+          {totm ? (
+            <TotwListItem modelData={totm} />
           ) : (
             <ErrorFallback custom="Failed to load TOTW" />
           )}

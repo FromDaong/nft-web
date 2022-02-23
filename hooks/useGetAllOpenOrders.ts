@@ -49,8 +49,8 @@ const useGetAllOpenOrders = (maxId: number) => {
 
       const singleArray = [].concat(...orders);
 
-      let ids = singleArray.map((o) => o.nftId);
-      let filtered = singleArray.filter(
+      const ids = singleArray.map((o) => o.nftId);
+      const filtered = singleArray.filter(
         ({ id }, index) => !ids.includes(id, index + 1)
       );
 

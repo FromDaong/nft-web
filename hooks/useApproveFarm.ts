@@ -4,7 +4,7 @@ import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";
 import { approveTreatStaking, approveTreatPancakeLPStaking, getMasterMelonFarmerContract } from "../treat/utils";
 
-const useApproveFarm = (lpContract: Contract, pid: Number) => {
+const useApproveFarm = (lpContract: Contract, pid: number) => {
   const { account } = useWallet();
   const treat = useTreat();
   const masterMelonFarmerContract = getMasterMelonFarmerContract(treat)

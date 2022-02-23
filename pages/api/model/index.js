@@ -5,26 +5,43 @@ dbConnect();
 
 export default async (req, res) => {
   const { method } = req;
+  const { s } = req.query;
 
   switch (method) {
     case "GET":
       try {
-        const Models = await Model.find();
+        const options = {
+          page: req.query.p ?? 1,
+          limit: 24,
+          collation: {
+            locale: "en",
+          },
+        };
 
-        const returnModels = await Models.map((n) => {
-          const returnObj = { ...n.toObject() };
-          delete returnObj.email;
-          return returnObj;
-        });
+        let Models;
 
-        const sortedModels = await returnModels.sort(
-          (a, b) =>
-            b.nfts.length +
-            b.sub_nfts.length -
-            (a.nfts.length + a.sub_nfts.length)
-        );
+        if (s) {
+          const aggregate = Model.aggregate([
+            {
+              $search: {
+                index: "init",
+                text: {
+                  query: `${s}*`,
+                  path: ["username", "bio", "display_name"],
+                },
+              },
+            },
+          ]);
+          Models = await Model.aggregatePaginate(aggregate, options);
+        } else if (req.query.totm) {
+          Models = await Model.find({ totm: true });
+          // return only docs with totm
+          Models = Models.find((model) => model.totm) ?? {};
+        } else {
+          Models = await Model.paginate({}, options);
+        }
 
-        res.status(200).json(sortedModels);
+        res.status(200).json(Models);
       } catch (error) {
         console.error({ error });
         res.status(400).json({ success: false, error: error });
