@@ -33,7 +33,7 @@ export default async function getWithBalances(req, res) {
           return res.status(200).json({
             docs: [],
           });
-        const { nfts, signature, page } = req.body;
+        const { nfts, signature, page, account } = req.body;
         const options = {
           page: page ?? 1,
           limit: 12,
@@ -50,7 +50,10 @@ export default async function getWithBalances(req, res) {
           openOrders = await getOpenOrdersForSeller(treatMarketplace, signer);
         }
 
-        const nftids = nfts.map((nft) => nft.id);
+        const nftids = nfts.map((nft) => {
+          if (nft.nftId) return nft.nftId;
+          return nft.id;
+        });
 
         const NFTS = await NFT.paginate({ id: { $in: nftids } }, options);
 
@@ -72,17 +75,30 @@ export default async function getWithBalances(req, res) {
               const bigNumberBalance = new BigNumber(balance);
               numberBalance = bigNumberBalance.toNumber();
             } else {
-              numberBalance = nfts.find((n) => n.id === nft.id)?.balance ?? 0;
+              numberBalance =
+                nfts.find((n) => {
+                  if (nft.id) return n.id === nft.id;
+                  return (n.nftId = nft.id);
+                })?.balance ?? 0;
             }
 
-            const balanceV1 = nfts.find((n) => n.id === nft.id)?.balanceV1 ?? 0;
+            const balanceV1 =
+              nfts.find((n) => {
+                if (nft.id) return n.id === nft.id;
+                return (n.nftId = nft.id);
+              })?.balanceV1 ?? 0;
 
             if (openOrders) {
               hasOpenOrder = openOrders.find((o) => o === id);
             }
 
             // Has no balance return undefined
-            if (numberBalance === 0 && balanceV1 === 0 && !hasOpenOrder) {
+            if (
+              numberBalance === 0 &&
+              balanceV1 === 0 &&
+              !hasOpenOrder &&
+              !account
+            ) {
               return null;
             }
 

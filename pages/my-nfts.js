@@ -70,7 +70,7 @@ const OwnedNfts = ({
     axios
       .post("/api/v2/nft/getWithBalances", {
         nfts: nftWithBalances,
-        account: account,
+        // account: account,
         page: router.query.owned_nfts_page ?? 1,
         signature,
       })
@@ -101,10 +101,10 @@ const OwnedNfts = ({
   }, [signature]);
 
   useEffect(() => {
-    if (router.query.owned_nfts_page && nftWithBalances.length > 0) {
+    if (router.query.owned_nfts_page) {
       fetchNFTS(nftData.owned_nfts_page);
     }
-  }, [router, nftWithBalances]);
+  }, [router]);
 
   const navigate = (page) => {
     router.push(`${router.pathname}?owned_nfts_page=${page}`, undefined, {
@@ -252,7 +252,7 @@ const OpenOrders = ({
     setLoading(true);
     axios
       .post("/api/v2/nft/getWithBalances", {
-        nfts: nftWithOpenOrders,
+        nfts: openOrders,
         account: account,
         page: router.query.open_orders_page ?? 1,
         signature,
@@ -274,7 +274,6 @@ const OpenOrders = ({
       nftWithOpenOrders?.length > 0 &&
       !doneInitialFetch
     ) {
-      console.log({ nftWithOpenOrders });
       fetchNFTS(nftData.page).then(() => setDoneInitialFetch(true));
     }
   }, [status, account, nftWithOpenOrders]);
@@ -294,6 +293,8 @@ const OpenOrders = ({
       shallow: true,
     });
   };
+
+  console.log({ openOrders, nftData });
 
   return (
     <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
@@ -316,7 +317,7 @@ const OpenOrders = ({
               Listed on Re-Sale Marketplace
             </h2>
           </div>
-          {nftData.docs > 0 && openOrders.length > 0 && (
+          {nftData.docs.length > 0 && openOrders.length > 0 && (
             <div className="button-container">
               {signature ? (
                 <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
@@ -331,7 +332,7 @@ const OpenOrders = ({
           )}
         </div>
       </div>
-      {nftData.docs > 0 && openOrders.length > 0 ? (
+      {nftData.docs > 0 ? (
         <div className="container px-4 ">
           <div className="d-flex text-left mt-5">
             <div
