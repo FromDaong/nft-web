@@ -50,6 +50,8 @@ const OwnedNfts = ({
 }) => {
   const { status, account } = useWallet();
   const [loading, setLoading] = useState(true);
+  const [doneInitialFetch, setDoneInitialFetch] = useState(false);
+
   const [nftData, setNFTData] = useState({
     docs: [],
     hasNextPage: false,
@@ -58,7 +60,7 @@ const OwnedNfts = ({
     totalDocs: 0,
     page: 1,
   });
-  
+
   const nftWithBalances = nftBalances.filter((i) => !i.hasOpenOrder);
 
   const fetchNFTS = async (page) => {
@@ -84,9 +86,10 @@ const OwnedNfts = ({
     if (
       status === "connected" &&
       nftWithBalances &&
-      nftWithBalances?.length > 0
+      nftWithBalances?.length > 0 &&
+      !doneInitialFetch
     ) {
-      fetchNFTS(nftData.page);
+      fetchNFTS(nftData.page).then(() => setDoneInitialFetch(true));
     }
   }, [status, account, nftWithBalances, signature]);
 
@@ -216,6 +219,7 @@ const OpenOrders = ({
 }) => {
   const { status, account } = useWallet();
   const [loading, setLoading] = useState(true);
+  const [doneInitialFetch, setDoneInitialFetch] = useState(false);
   const [nftData, setNFTData] = useState({
     docs: [],
     hasNextPage: false,
@@ -251,9 +255,10 @@ const OpenOrders = ({
     if (
       status === "connected" &&
       nftWithOpenOrders &&
-      nftWithOpenOrders?.length > 0
+      nftWithOpenOrders?.length > 0 &&
+      !doneInitialFetch
     ) {
-      fetchNFTS(nftData.page);
+      fetchNFTS(nftData.page).then(() => setDoneInitialFetch(true));
     }
   }, [status, account, nftWithOpenOrders, signature]);
 
