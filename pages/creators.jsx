@@ -1,7 +1,7 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { useState, useEffect } from "react";
 import Hero from "../components/Hero";
 import ModelList from "../components/ModelList";
-import ErrorFallback from "../components/Fallback/Error";
 import { useRouter } from "next/dist/client/router";
 import axios from "axios";
 import PaginationComponentV2 from "../components/Pagination";
