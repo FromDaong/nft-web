@@ -47,7 +47,21 @@ const OwnedNfts = ({
   serverNftBalances,
   isLoading,
 }) => {
+  const { status, account } = useWallet();
   const [currentNFTs, setCurrentNFTs] = useState([]);
+
+  useEffect(() => {
+    if (status === "connected") {
+      axios
+        .post("/api/v2/nft/getWithBalances", {
+          nfts: nftBalances,
+          account: account,
+        })
+        .then((resp) => {
+          console.log(resp.data);
+        });
+    }
+  }, [status, account]);
 
   const nftWithBalances = nftBalances.filter((i) => !i.hasOpenOrder);
   const {
@@ -341,6 +355,8 @@ const ViewNFT = ({ account, nftArray }) => {
   const [cancelOrderData, setCancelOrderData] = useState(null);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
+
+  // TODO: We want to fetch only NFTs with balance from the server and paginate those
 
   const transferNFTClick = (x) => {
     setTransferNFTData(x);
