@@ -343,45 +343,45 @@ const OpenOrders = ({
               variants={variants}
             >
               {nftData.docs.map((nft) => {
-                if (nft.hasOpenOrder) {
-                  const order = openOrders.find(
-                    (i) => Number(i.nftId) === nft.id
-                  );
+                const order = openOrders.find(
+                  (i) => Number(i.nftId) === nft.id
+                );
 
-                  return (
-                    <LazyLoad height={400} offset={600}>
-                      <div className="order-container">
-                        <MyNFTItem
-                          price={
-                            order &&
-                            order.price &&
-                            getDisplayBalance(new BigNumber(order.price))
-                          }
-                          balance={order?.quantity}
-                          data={nft}
-                          isLoading={isLoading}
-                          revealNFTs={revealNFTs}
-                          cancelOrderClick={cancelOrderClick}
-                        />
-                      </div>
-                    </LazyLoad>
-                  );
-                }
+                return (
+                  <LazyLoad key={nft.id} height={400} offset={600}>
+                    <div className="order-container">
+                      <MyNFTItem
+                        price={
+                          order &&
+                          order.price &&
+                          getDisplayBalance(new BigNumber(order.price))
+                        }
+                        balance={order?.quantity}
+                        data={nft}
+                        isLoading={isLoading}
+                        revealNFTs={revealNFTs}
+                        cancelOrderClick={cancelOrderClick}
+                      />
+                    </div>
+                  </LazyLoad>
+                );
               })}
             </div>
           </div>
           {nftData.docs.length > 0 && (
-            <PaginationComponentV2
-              hasNextPage={nftData.hasNextPage}
-              hasPrevPage={nftData.hasPrevPage}
-              totalPages={nftData.totalPages}
-              totalDocs={nftData.totalDocs}
-              page={nftData.page}
-              goNext={() => navigate(Number(nftData.page) + 1)}
-              goPrev={() => navigate(Number(nftData.page) - 1)}
-              loading={loading}
-              setPage={(page) => navigate(Number(page))}
-            />
+            <div className="flex justify-center py-2">
+              <PaginationComponentV2
+                hasNextPage={nftData.hasNextPage}
+                hasPrevPage={nftData.hasPrevPage}
+                totalPages={nftData.totalPages}
+                totalDocs={nftData.totalDocs}
+                page={nftData.page}
+                goNext={() => navigate(Number(nftData.page) + 1)}
+                goPrev={() => navigate(Number(nftData.page) - 1)}
+                loading={loading}
+                setPage={(page) => navigate(Number(page))}
+              />
+            </div>
           )}
         </div>
       ) : loading ? (
