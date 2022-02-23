@@ -45,15 +45,13 @@ export default async function getWithBalances(req, res) {
         };
 
         let signer;
+        let openOrders;
         if (signature) {
           signer = web3.eth.accounts.recover("Reveal Contents", signature);
+          openOrders = await getOpenOrdersForSeller(treatMarketplace, signer);
         }
 
         const nftids = nfts.map((nft) => nft.id);
-        const openOrders = await getOpenOrdersForSeller(
-          treatMarketplace,
-          signer
-        );
 
         const NFTS = await NFT.paginate({ id: { $in: nftids } }, options);
 
@@ -65,16 +63,24 @@ export default async function getWithBalances(req, res) {
         console.log("[+] Getting balances for " + NFTS.docs.length + " NFTS");
         NFTS.docs = await Promise.all(
           NFTS.docs.map(async (nft) => {
-            const balance = await treatNFTMinter.methods
-              .balanceOf(signer, nft.id)
-              .call();
+            let hasOpenOrder;
+            let numberBalance;
 
-            const bigNumberBalance = new BigNumber(balance);
-            const numberBalance = bigNumberBalance.toNumber();
+            if (signer) {
+              const balance = await treatNFTMinter.methods
+                .balanceOf(signer, nft.id)
+                .call();
+              const bigNumberBalance = new BigNumber(balance);
+              numberBalance = bigNumberBalance.toNumber();
+            } else {
+              numberBalance = nfts.find((n) => n.id === nft.id)?.balance ?? 0;
+            }
+
             const balanceV1 = nfts.find((n) => n.id === nft.id)?.balanceV1 ?? 0;
 
-            const hasOpenOrder =
-              !!openOrders && !!openOrders.find((o) => o === id);
+            if (openOrders) {
+              hasOpenOrder = openOrders.find((o) => o === id);
+            }
 
             // Has no balance return undefined
             if (numberBalance === 0 && balanceV1 === 0 && !hasOpenOrder) {
