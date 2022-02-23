@@ -332,7 +332,7 @@ const OpenOrders = ({
           )}
         </div>
       </div>
-      {nftData.length.docs > 0 ? (
+      {nftData.docs.length > 0 ? (
         <div className="container px-4 ">
           <div className="d-flex text-left mt-5">
             <div
