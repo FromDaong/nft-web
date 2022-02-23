@@ -89,21 +89,22 @@ const OwnedNfts = ({
       status === "connected" &&
       nftWithBalances &&
       nftWithBalances?.length > 0 &&
-      !doneInitialFetch
+      !doneInitialFetch &&
+      !isLoading
     ) {
       fetchNFTS(nftData.page).then(() => setDoneInitialFetch(true));
     }
-  }, [status, account, nftWithBalances]);
+  }, [status, account, nftWithBalances, isLoading]);
 
   useEffect(() => {
     fetchNFTS(nftData.page);
   }, [signature]);
 
   useEffect(() => {
-    if (router.query.owned_nfts_page) {
+    if (router.query.owned_nfts_page && nftWithBalances.length > 0) {
       fetchNFTS(nftData.owned_nfts_page);
     }
-  }, [router]);
+  }, [router, nftWithBalances]);
 
   const navigate = (page) => {
     router.push(`${router.pathname}?owned_nfts_page=${page}`, undefined, {
@@ -152,7 +153,7 @@ const OwnedNfts = ({
           )}
         </div>
       </div>
-      {!loading && nftData.docs.length > 0 ? (
+      {nftData.docs.length > 0 ? (
         <div className="">
           <div
             className="d-flex text-left justify-content-center mt-5 w-100 flex-wrap"
@@ -193,7 +194,7 @@ const OwnedNfts = ({
             </div>
           )}
         </div>
-      ) : loading ? (
+      ) : loading || isLoading ? (
         <div
           style={{
             display: "flex",
@@ -247,13 +248,13 @@ const OpenOrders = ({
   const nftWithOpenOrders = nftBalances.filter((i) => i.hasOpenOrder);
   const router = useRouter();
 
-  const fetchNFTS = async (page) => {
+  const fetchNFTS = async () => {
     setLoading(true);
     axios
       .post("/api/v2/nft/getWithBalances", {
         nfts: nftWithOpenOrders,
         account: account,
-        page: page ?? 1,
+        page: router.query.open_orders_page ?? 1,
         signature,
       })
       .then((resp) => {
@@ -273,6 +274,7 @@ const OpenOrders = ({
       nftWithOpenOrders?.length > 0 &&
       !doneInitialFetch
     ) {
+      console.log({ nftWithOpenOrders });
       fetchNFTS(nftData.page).then(() => setDoneInitialFetch(true));
     }
   }, [status, account, nftWithOpenOrders]);
@@ -329,7 +331,7 @@ const OpenOrders = ({
           )}
         </div>
       </div>
-      {!loading && nftData.docs > 0 && openOrders.length > 0 ? (
+      {nftData.docs > 0 && openOrders.length > 0 ? (
         <div className="container px-4 ">
           <div className="d-flex text-left mt-5">
             <div
@@ -424,6 +426,8 @@ const ViewNFT = ({ account, nftArray }) => {
   const [showCompleteModal, setShowCompleteModal] = useState(null);
 
   // TODO: We want to fetch only NFTs with balance from the server and paginate those
+
+  console.log({ nftBalances, nftArray, isLoading });
 
   const transferNFTClick = (x) => {
     setTransferNFTData(x);
