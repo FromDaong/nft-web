@@ -22,9 +22,8 @@ const treatMarketplace = new web3.eth.Contract(
 
 export default async function getWithBalances(req, res) {
   const {
-    query: { id, p },
+    query: { id },
     method,
-    body,
   } = req;
 
   switch (method) {
@@ -34,9 +33,9 @@ export default async function getWithBalances(req, res) {
           return res.status(200).json({
             docs: [],
           });
-        const { nfts, signature } = req.body;
+        const { nfts, signature, page } = req.body;
         const options = {
-          page: p ?? 1,
+          page: page ?? 1,
           limit: 12,
           collation: {
             locale: "en",

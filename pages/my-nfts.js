@@ -23,6 +23,7 @@ import { usePagination } from "react-use-pagination";
 import PaginationComponent from "../components/PaginationComponent";
 import MyNFTItemSkeleton from "../components/Skeleton/MyNFTItemSkeleton";
 import PaginationComponentV2 from "../components/Pagination";
+import { useRouter } from "next/router";
 
 const variants = {
   show: {
@@ -62,6 +63,7 @@ const OwnedNfts = ({
   });
 
   const nftWithBalances = nftBalances.filter((i) => !i.hasOpenOrder);
+  const router = useRouter();
 
   const fetchNFTS = async (page) => {
     setLoading(true);
@@ -97,8 +99,16 @@ const OwnedNfts = ({
     fetchNFTS(nftData.page);
   }, [signature]);
 
+  useEffect(() => {
+    if (router.query.owned_nfts_page) {
+      fetchNFTS(nftData.owned_nfts_page);
+    }
+  }, [router]);
+
   const navigate = (page) => {
-    fetchNFTS(page);
+    router.push(`${router.pathname}?owned_nfts_page=${page}`, undefined, {
+      shallow: true,
+    });
   };
 
   return (
@@ -235,6 +245,7 @@ const OpenOrders = ({
 
   const openOrders = useGetOpenOrdersForSeller() ?? [];
   const nftWithOpenOrders = nftBalances.filter((i) => i.hasOpenOrder);
+  const router = useRouter();
 
   const fetchNFTS = async (page) => {
     setLoading(true);
@@ -270,8 +281,16 @@ const OpenOrders = ({
     fetchNFTS(nftData.page);
   }, [signature]);
 
+  useEffect(() => {
+    if (router.query.open_orders_page) {
+      fetchNFTS(nftData.open_orders_page);
+    }
+  }, [router]);
+
   const navigate = (page) => {
-    fetchNFTS(page);
+    router.push(`${router.pathname}?open_orders_page=${page}`, undefined, {
+      shallow: true,
+    });
   };
 
   return (
