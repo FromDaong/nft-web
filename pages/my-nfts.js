@@ -91,7 +91,11 @@ const OwnedNfts = ({
     ) {
       fetchNFTS(nftData.page).then(() => setDoneInitialFetch(true));
     }
-  }, [status, account, nftWithBalances, signature]);
+  }, [status, account, nftWithBalances]);
+
+  useEffect(() => {
+    fetchNFTS(nftData.page);
+  }, [signature]);
 
   const navigate = (page) => {
     fetchNFTS(page);
@@ -260,7 +264,11 @@ const OpenOrders = ({
     ) {
       fetchNFTS(nftData.page).then(() => setDoneInitialFetch(true));
     }
-  }, [status, account, nftWithOpenOrders, signature]);
+  }, [status, account, nftWithOpenOrders]);
+
+  useEffect(() => {
+    fetchNFTS(nftData.page);
+  }, [signature]);
 
   const navigate = (page) => {
     fetchNFTS(page);
