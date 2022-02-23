@@ -45,8 +45,8 @@ const OwnedNfts = ({
   nftBalances,
   transferNFTClick,
   listOrderClick,
-  serverNftBalances,
   isLoading,
+  signature,
 }) => {
   const { status, account } = useWallet();
   const { nftData, setNFTData } = useState({
@@ -84,9 +84,9 @@ const OwnedNfts = ({
       nftWithBalances &&
       nftWithBalances?.length > 0
     ) {
-      fetchNFTS(1);
+      fetchNFTS(nftData.page);
     }
-  }, [status, account, nftWithBalances]);
+  }, [status, account, nftWithBalances, signature]);
 
   const navigate = (page) => {
     fetchNFTS(page);
@@ -118,9 +118,9 @@ const OwnedNfts = ({
               My NFTs
             </h2>
           </div>
-          {nftWithBalances.length > 0 && (
+          {nftData.docs.length > 0 && (
             <div className="button-container">
-              {serverNftBalances ? (
+              {signature ? (
                 <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
                   <b>{"Hide Contents 🙈"}</b>
                 </Button>
@@ -208,24 +208,12 @@ const OpenOrders = ({
   nftBalances,
   transferNFTClick,
   cancelOrderClick,
-  serverNftBalances,
+  signature,
   isLoading,
 }) => {
   const openOrders = useGetOpenOrdersForSeller() ?? [];
   const nftWithOpenOrders = nftBalances.filter((i) => i.hasOpenOrder);
-  const {
-    currentPage,
-    totalPages,
-    setPage,
-    setPageSize,
-    setNextPage,
-    setPreviousPage,
-    startIndex,
-    endIndex,
-  } = usePagination({
-    totalItems: nftWithOpenOrders.length > 0 ? nftWithOpenOrders.length + 1 : 0,
-    initialPageSize: 12,
-  });
+  
 
   return (
     <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
@@ -346,12 +334,11 @@ const OpenOrders = ({
 };
 
 const ViewNFT = ({ account, nftArray }) => {
-  const [serverNftBalances, setServerNftBalances] = useState(null);
-
+  const [signature, setSignature] = useState(null);
   const { totalNftBalances: nftBalancesInitial, loading: isLoading } =
     useGetNftBalance(nftArray);
 
-  const nftBalances = serverNftBalances ?? nftBalancesInitial;
+  const nftBalances = nftBalancesInitial;
   const [transferNFTData, setTransferNFTData] = useState(null);
   const [listOrderData, setListOrderData] = useState(null);
   const [cancelOrderData, setCancelOrderData] = useState(null);
@@ -373,28 +360,13 @@ const ViewNFT = ({ account, nftArray }) => {
   };
 
   const hideNFTs = async () => {
-    setServerNftBalances(null);
+    setSignature(null);
   };
 
   const revealNFTs = async () => {
     if (account && treat) {
       const signature = await treat.signMessage(account, "Reveal Contents");
-
-      const nftIds = nftBalances.map((n) => n.id);
-
-      const res = await fetch(`/api/nft/view-nfts`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ nft_ids: nftIds, signature }),
-      });
-      const resJSON = await res.json();
-
-      if (resJSON.success) {
-        setServerNftBalances(resJSON.docs);
-      }
+      setSignature(signature);
     }
   };
 
@@ -460,7 +432,7 @@ const ViewNFT = ({ account, nftArray }) => {
             nftBalances={nftBalances}
             revealNFTs={revealNFTs}
             isLoading={isLoading}
-            serverNftBalances={serverNftBalances}
+            signature={signature}
           />
         </div>
         <div className="mt-2">
@@ -471,7 +443,7 @@ const ViewNFT = ({ account, nftArray }) => {
             nftBalances={nftBalances}
             revealNFTs={revealNFTs}
             isLoading={isLoading}
-            serverNftBalances={serverNftBalances}
+            signature={signature}
           />
         </div>
       </div>
