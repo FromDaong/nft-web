@@ -37,7 +37,7 @@ export default async function getWithBalances(req, res) {
         const { nfts, signature } = req.body;
         const options = {
           page: p ?? 1,
-          limit: 24,
+          limit: 12,
           collation: {
             locale: "en",
           },
