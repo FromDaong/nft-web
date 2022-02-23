@@ -1,5 +1,5 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import Spinner from "react-bootstrap/Spinner";
 import MyNFTItem from "../components/MyNFTItem";
 import TransferNFTModal from "../components/TransferNFTModal";
@@ -22,6 +22,7 @@ import ErrorFallback from "../components/Fallback/Error";
 import { usePagination } from "react-use-pagination";
 import PaginationComponent from "../components/PaginationComponent";
 import MyNFTItemSkeleton from "../components/Skeleton/MyNFTItemSkeleton";
+import PaginationComponentV2 from "../components/Pagination";
 
 const variants = {
   show: {
@@ -48,50 +49,48 @@ const OwnedNfts = ({
   isLoading,
 }) => {
   const { status, account } = useWallet();
-  const [currentNFTs, setCurrentNFTs] = useState([]);
-  useEffect(() => {
-    if (status === "connected" && nftBalances && nftBalances?.length > 0) {
-      axios
-        .post("/api/v2/nft/getWithBalances", {
-          nfts: nftBalances,
-          account: account,
-        })
-        .then((resp) => {
-          console.log(resp.data);
-        });
-    }
-  }, [status, account, nftBalances]);
-
-  const nftWithBalances = nftBalances.filter((i) => !i.hasOpenOrder);
-  const {
-    currentPage,
-    totalPages,
-    setPage,
-    setPageSize,
-    setNextPage,
-    setPreviousPage,
-    startIndex,
-    endIndex,
-  } = usePagination({
-    totalItems: nftWithBalances ? nftWithBalances.length + 1 : 0,
-    initialPageSize: 12,
+  const { nftData, setNFTData } = useState({
+    docs: [],
+    hasNextPage: false,
+    hasPrevPage: false,
+    totalPages: 1,
+    totalDocs: 0,
+    page: 1,
   });
+  const [loading, setLoading] = useState(true);
+  const nftWithBalances = nftBalances.filter((i) => !i.hasOpenOrder);
+
+  const fetchNFTS = async (page) => {
+    setLoading(true);
+    axios
+      .post("/api/v2/nft/getWithBalances", {
+        nfts: nftWithBalances,
+        account: account,
+        page: page ?? 1,
+      })
+      .then((resp) => {
+        setNFTData(resp.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
-    if (serverNftBalances) {
-      const current = serverNftBalances.slice(
-        startIndex > 0 ? startIndex - 1 : startIndex,
-        startIndex > 0 ? endIndex : endIndex + 1
-      );
-      setCurrentNFTs(current);
-    } else {
-      const current = nftWithBalances.slice(
-        startIndex,
-        startIndex > 0 ? endIndex : endIndex + 1
-      );
-      setCurrentNFTs(current);
+    if (
+      status === "connected" &&
+      nftWithBalances &&
+      nftWithBalances?.length > 0
+    ) {
+      fetchNFTS(1);
     }
-  }, [startIndex, endIndex, nftWithBalances, serverNftBalances]);
+  }, [status, account, nftWithBalances]);
+
+  const navigate = (page) => {
+    fetchNFTS(page);
+  };
 
   return (
     <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
@@ -134,7 +133,7 @@ const OwnedNfts = ({
           )}
         </div>
       </div>
-      {nftWithBalances.length > 0 ? (
+      {nftData.docs.length > 0 ? (
         <div className="">
           <div
             className="d-flex text-left justify-content-center mt-5 w-100 flex-wrap"
@@ -143,7 +142,7 @@ const OwnedNfts = ({
             initial="hidden"
             variants={variants}
           >
-            {currentNFTs.map((nft) => (
+            {nftData.docs.map((nft) => (
               <LazyLoad key={nft.id} height={400} offset={600}>
                 <div className="order-container">
                   <MyNFTItem
@@ -159,15 +158,19 @@ const OwnedNfts = ({
               </LazyLoad>
             ))}
           </div>
-          <PaginationComponent
-            currentPage={currentPage}
-            totalPages={totalPages}
-            setPage={setPage}
-            setPageSize={setPageSize}
-            setNextPage={setNextPage}
-            setPreviousPage={setPreviousPage}
-            fixedPageSize
-          />
+          <div className="flex justify-center py-2">
+            <PaginationComponentV2
+              hasNextPage={nftData.hasNextPage}
+              hasPrevPage={nftData.hasPrevPage}
+              totalPages={nftData.totalPages}
+              totalDocs={nftData.totalDocs}
+              page={nftData.page}
+              goNext={() => navigate(Number(nftData.page) + 1)}
+              goPrev={() => navigate(Number(nftData.page) - 1)}
+              loading={loading}
+              setPage={(page) => navigate(Number(page))}
+            />
+          </div>
         </div>
       ) : isLoading ? (
         <div

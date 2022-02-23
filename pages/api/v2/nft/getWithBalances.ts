@@ -1,25 +1,5 @@
 import Web3 from "web3";
 import NFT from "../../../../models/NFT";
-import { getNftBalance } from "../../../../treat/utils";
-import { getNftV1Balance } from "../../../../treat/utils";
-import TreatNFTMinterAbi from "../../../../treat/lib/abi/treatnftminter.json";
-import TreatNFTMinterV1Abi from "../../../../treat/lib/abi/treatnftminterv1.json";
-import { contractAddresses } from "../../../../treat/lib/constants";
-import { getOpenOrdersForSeller } from "../../../../treat/utils";
-
-const web3 = new Web3(
-  "https://divine-restless-feather.bsc.quiknode.pro/f9ead03ddd05508e4fe1f6952eea26ac035c8408/"
-);
-
-const treatNFTMinter = new web3.eth.Contract(
-  TreatNFTMinterAbi,
-  contractAddresses.treatNFTMinter[56]
-);
-
-const treatNFTV1Minter = new web3.eth.Contract(
-  TreatNFTMinterV1Abi,
-  contractAddresses.treatNFTMinter[56]
-);
 
 export default async function getWithBalances(req, res) {
   const {
@@ -30,9 +10,11 @@ export default async function getWithBalances(req, res) {
   switch (method) {
     case "POST":
       try {
-        if (!req.body.account || !req.body.nfts)
-          return res.status(401).send("Unauthorized");
-        const { account, nfts } = req.body;
+        if (!req.body.nfts)
+          return res.status(200).json({
+            docs: [],
+          });
+        const { nfts, reveal } = req.body;
 
         const nftids = nfts.map((nft) => nft.id);
 
@@ -62,7 +44,7 @@ export default async function getWithBalances(req, res) {
 
             const returnObj = { ...nft._doc, balance, balanceV1 };
 
-            if (nft.blurhash) {
+            if (nft.blurhash && !reveal) {
               delete returnObj.image;
               delete returnObj.daoCdnUrl;
             }
