@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGO_URL;
+const MONGODB_URI =
+  "mongodb+srv://vercel:JQc7KIP793qFXFC5@treatcluster.9uuso.mongodb.net/treat?retryWrites=true&w=majority"; // process.env.MONGO_URL;
 
 if (!MONGODB_URI) {
   throw new Error(
