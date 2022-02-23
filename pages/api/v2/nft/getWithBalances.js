@@ -68,11 +68,6 @@ export default async function getWithBalances(req, res) {
             let hasOpenOrder;
             let numberBalance;
 
-            let base = {};
-            if (account) {
-              base = nfts.find((n) => n.nftId === nft.id);
-            }
-
             if (signer) {
               const balance = await treatNFTMinter.methods
                 .balanceOf(signer, nft.id)
@@ -109,7 +104,6 @@ export default async function getWithBalances(req, res) {
 
             const returnObj = {
               ...nft._doc,
-              ...base,
               balance: numberBalance,
               balanceV1,
               hasOpenOrder,
@@ -126,7 +120,7 @@ export default async function getWithBalances(req, res) {
 
         // Filter out nulls
         NFTS.docs = NFTS.docs.filter((e) => e);
-        console.log(NFTS);
+
         res.status(200).json(NFTS);
       } catch (error) {
         console.log(error);
