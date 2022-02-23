@@ -67,6 +67,7 @@ const OwnedNfts = ({
         nfts: nftWithBalances,
         account: account,
         page: page ?? 1,
+        signature,
       })
       .then((resp) => {
         setNFTData(resp.data);
@@ -133,7 +134,7 @@ const OwnedNfts = ({
           )}
         </div>
       </div>
-      {nftData.docs.length > 0 ? (
+      {!loading && nftData.docs.length > 0 ? (
         <div className="">
           <div
             className="d-flex text-left justify-content-center mt-5 w-100 flex-wrap"
@@ -174,7 +175,7 @@ const OwnedNfts = ({
             </div>
           )}
         </div>
-      ) : isLoading ? (
+      ) : isLoading || loading ? (
         <div
           style={{
             display: "flex",
@@ -208,7 +209,6 @@ const OpenOrders = ({
   hideNFTs,
   revealNFTs,
   nftBalances,
-  transferNFTClick,
   cancelOrderClick,
   signature,
   isLoading,
@@ -234,6 +234,7 @@ const OpenOrders = ({
         nfts: nftWithOpenOrders,
         account: account,
         page: page ?? 1,
+        signature,
       })
       .then((resp) => {
         setNFTData(resp.data);
@@ -295,7 +296,7 @@ const OpenOrders = ({
           )}
         </div>
       </div>
-      {nftData.docs > 0 && openOrders.length > 0 ? (
+      {!loading && nftData.docs > 0 && openOrders.length > 0 ? (
         <div className="container px-4 ">
           <div className="d-flex text-left mt-5">
             <div
@@ -347,7 +348,7 @@ const OpenOrders = ({
             />
           )}
         </div>
-      ) : isLoading ? (
+      ) : isLoading || loading ? (
         <div
           style={{
             display: "flex",
