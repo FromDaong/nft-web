@@ -24,6 +24,7 @@ export default async function getWithBalances(req, res) {
   const {
     query: { id, p },
     method,
+    body,
   } = req;
 
   switch (method) {
@@ -35,7 +36,7 @@ export default async function getWithBalances(req, res) {
           });
         const { nfts, signature } = req.body;
         const options = {
-          page: req.query.p ?? 1,
+          page: p ?? 1,
           limit: 24,
           collation: {
             locale: "en",
@@ -107,7 +108,7 @@ export default async function getWithBalances(req, res) {
       break;
 
     default:
-      res.status(400).json({ success: false });
+      res.status(400).json({ success: false, message: "Method requires POST" });
       break;
   }
 }
