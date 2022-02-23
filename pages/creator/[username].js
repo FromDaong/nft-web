@@ -242,7 +242,7 @@ const ViewModel = ({
             <a
               className="link"
               href={formatURL(modelData.social_account)}
-              target="_blank"
+              target="_blank" rel="noreferrer"
             >
               {formatURL(modelData.social_account)}
             </a>

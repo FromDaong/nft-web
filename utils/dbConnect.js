@@ -1,29 +1,40 @@
 import mongoose from "mongoose";
 
-const connection = {};
+const MONGODB_URI = process.env.MONGO_URL;
+
+if (!MONGODB_URI) {
+  throw new Error(
+    "Please define the MONGODB_URI environment variable inside .env.local"
+  );
+}
+
+/**
+ * Global is used here to maintain a cached connection across hot reloads
+ * in development. This prevents connections growing exponentially
+ * during API Route usage.
+ */
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
 
 async function dbConnect() {
-  if (connection.isConnected) {
-    return;
+  if (cached.conn) {
+    return cached.conn;
   }
 
-  // test
-  const db = await mongoose.connect(process.env.MONGO_URL, {
-    // const db = await mongoose.connect(
-    //   "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false",
-    //   {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+  if (!cached.promise) {
+    const opts = {
+      bufferCommands: true,
+    };
+
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+      return mongoose;
+    });
   }
-  );
-
-  //
-  // const db = await mongoose.connect("mongodb://localhost:27017/treat", {
-  //   useNewUrlParser: true,
-  //   useUnifiedTopology: true,
-  // });
-
-  connection.isConnected = db.connections[0].readyState;
+  cached.conn = await cached.promise;
+  return cached.conn;
 }
 
 export default dbConnect;

@@ -174,7 +174,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
                 className="w-100 py-2"
                 onClick={() =>
                   actionWithModal(
-                    !!formattedV1StakedAmount ? onV1Unstake : onUnstake,
+                    formattedV1StakedAmount ? onV1Unstake : onUnstake,
                     unstakeAmount
                   )
                 }

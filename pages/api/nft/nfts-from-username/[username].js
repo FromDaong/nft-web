@@ -29,8 +29,10 @@ export default async (req, res) => {
 
             returnObj.mints = returnObj.mints.length;
 
-            if (returnObj.blurhash) delete returnObj.image;
-
+            if (returnObj.blurhash) {
+              delete returnObj.image;
+              delete returnObj.daoCdnUrl;
+            }
             return returnObj;
           })
         );

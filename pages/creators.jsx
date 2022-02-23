@@ -1,108 +1,66 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { useState, useEffect } from "react";
 import Hero from "../components/Hero";
 import ModelList from "../components/ModelList";
-import { motion } from "framer-motion";
-import useSWR from "swr";
-import PaginationComponent from "../components/PaginationComponent";
-import { usePagination } from "react-use-pagination";
-import Fuse from "fuse.js";
-import ErrorFallback from "../components/Fallback/Error";
 import { useRouter } from "next/dist/client/router";
-import dbConnect from "../utils/dbConnect";
-import Model from "../models/Model";
+import axios from "axios";
+import PaginationComponentV2 from "../components/Pagination";
+import MyNFTItemSkeleton from "../components/Skeleton/MyNFTItemSkeleton";
 
-const Creators = ({ models, error }) => {
-  // TODO Get models total items
-  // get data for relevant models (startIndex endIndex)
-  const modelData = JSON.parse(models);
+const Creators = () => {
+  const [apiResponseData, setApiResponseData] = useState({
+    docs: [],
+    hasNextPage: false,
+    hasPrevPage: false,
+    totalPages: 1,
+    totalDocs: 0,
+    page: 1,
+  });
   const [searchFilter, setSearchFilter] = useState("");
-  const [persistedPageNumber, setPersistedPageNumber] = useState(0);
-
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  const fuse = new Fuse(modelData, {
-    keys: ["username", "display_name"],
-    shouldSort: true,
-    useExtendedSearch: true,
-    includeScore: true,
-  });
-
-  let filteredArray;
-  // yes search + no dropdown
-  if (searchFilter !== "") {
-    filteredArray = fuse.search({
-      $or: [{ username: searchFilter }, { display_name: searchFilter }],
-    });
-  } else {
-    filteredArray =
-      modelData &&
-      modelData.map((d, idx) => ({
-        item: d,
-        refIndex: idx,
-      }));
-  }
-
-  const {
-    currentPage,
-    totalPages,
-    setPage,
-    setPageSize,
-    setNextPage,
-    setPreviousPage,
-    startIndex,
-    endIndex,
-  } = usePagination({
-    totalItems: filteredArray ? filteredArray.length + 1 : 0,
-    initialPageSize: 25,
-  });
+  const modelData = apiResponseData.docs;
 
   useEffect(() => {
     const queryFilter = router.query.s;
-    const persistedPageNumber = router.query.p;
-
     setSearchFilter(queryFilter ?? "");
-    setPersistedPageNumber(
-      persistedPageNumber ? Number(persistedPageNumber) : 0
-    );
   }, []);
 
   useEffect(() => {
-    if (searchFilter || currentPage) {
-      router.push(
-        `${router.pathname}?${searchFilter && `s=${searchFilter}&`}${
-          currentPage && `p=${currentPage}`
-        }`,
-        undefined,
-        { shallow: true }
-      );
-    }
-  }, [searchFilter, currentPage]);
+    router.push(
+      `${router.pathname}?${searchFilter && `s=${searchFilter}`}&p=1`,
+      undefined,
+      { shallow: true }
+    );
+  }, [searchFilter]);
 
   useEffect(() => {
-    if (filteredArray && persistedPageNumber) {
-      setPage(persistedPageNumber);
-      setPersistedPageNumber(null);
-    }
-  }, [filteredArray]);
+    console.log("Route changed");
+    setLoading(true);
+    axios
+      .get(
+        `/api/model?p=${router.query.p ?? 1}${
+          searchFilter ? `&s=${router.query.s}` : ""
+        }`
+      )
+      .then((res) => setApiResponseData(res.data))
+      .then(() => setLoading(false));
+  }, [router]);
 
-  useEffect(() => {
+  const navigate = (page) => {
     window.scrollTo(0, 0);
-  }, [currentPage]);
+
+    router.push(
+      `${router.pathname}?${searchFilter && `s=${searchFilter}&`}p=${page}`,
+      undefined,
+      { shallow: true }
+    );
+  };
 
   return (
     <>
-      <motion.main
-        variants={{
-          hidden: { opacity: 0, x: -200, y: 0 },
-          enter: { opacity: 1, x: 0, y: 0 },
-          exit: { opacity: 0, x: 0, y: -100 },
-        }}
-        initial="hidden" // Set the initial state to variants.hidden
-        animate="enter" // Animated state to variants.enter
-        exit="exit" // Exit state (used later) to variants.exit
-        transition={{ type: "linear" }} // Set the transition to linear
-        className=""
-      >
+      <div>
         <Hero
           title={"Our Creators"}
           subtitle={
@@ -120,54 +78,31 @@ const Creators = ({ models, error }) => {
           />
         </div>
         <br />
-        {!error ? (
-          <ModelList
-            totwOnly={false}
-            endIndex={endIndex}
-            startIndex={startIndex}
-            modelData={filteredArray || []}
-          />
+        {!loading ? (
+          <ModelList totwOnly={false} modelData={modelData || []} />
         ) : (
-          <ErrorFallback custom="Failed to load models" />
+          <div className="full-width">
+            {new Array(12).fill(0).map((_, i) => (
+              <MyNFTItemSkeleton key={i} className="col-span-1" />
+            ))}
+          </div>
         )}
-        <PaginationComponent
-          currentPage={currentPage}
-          totalPages={totalPages}
-          setPage={setPage}
-          setPageSize={setPageSize}
-          setNextPage={setNextPage}
-          setPreviousPage={setPreviousPage}
-        />
-      </motion.main>
+        <div className="flex justify-center py-2">
+          <PaginationComponentV2
+            hasNextPage={apiResponseData.hasNextPage}
+            hasPrevPage={apiResponseData.hasPrevPage}
+            totalPages={apiResponseData.totalPages}
+            totalDocs={apiResponseData.totalDocs}
+            page={apiResponseData.page}
+            goNext={() => navigate(Number(apiResponseData.page) + 1)}
+            goPrev={() => navigate(Number(apiResponseData.page) - 1)}
+            loading={loading}
+            setPage={(page) => navigate(Number(page))}
+          />
+        </div>
+      </div>
     </>
   );
-};
-
-export const getServerSideProps = async (ctx) => {
-  dbConnect();
-
-  try {
-    const Models = await Model.find();
-
-    const returnModels = await Models.map((n) => {
-      const returnObj = { ...n.toObject() };
-      return returnObj;
-    });
-
-    return {
-      props: {
-        models: JSON.stringify(returnModels),
-      },
-    };
-  } catch (err) {
-    console.log({ err });
-    return {
-      props: {
-        modelData: [],
-        error: "Failed to load models.",
-      },
-    };
-  }
 };
 
 export default Creators;

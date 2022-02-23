@@ -21,12 +21,26 @@ import {
 } from "@binance-chain/bsc-connector";
 import { AnimatePresence } from "framer-motion";
 import ReactGA from "react-ga";
-import { IntercomProvider } from "react-use-intercom";
+import { IntercomProvider, useIntercom } from "react-use-intercom";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+
+import { Router } from "next/dist/client/router";
+import ProgressBar from "@badrap/bar-of-progress";
 
 import "swiper/scss";
 import "swiper/scss/navigation";
 import "swiper/scss/pagination";
+
+const progress = new ProgressBar({
+  size: 3,
+  color: "#805ad5",
+  className: "bar-of-progress",
+  delay: 100,
+});
+
+Router.events.on("routeChangeStart", progress.start);
+Router.events.on("routeChangeComplete", progress.finish);
+Router.events.on("routeChangeError", progress.finish);
 
 function MyApp({ Component, pageProps }) {
   const oldTokenBalance = useTokenBalance(

@@ -23,7 +23,7 @@ const TradeInNFTs = ({ v1NFTs, account }) => {
   };
 
   return (
-    <motion.div
+    <div
       animate={{ y: 0, opacity: 1 }}
       style={{ y: -100, opacity: 0 }}
       transition={{ delay: 0.25 }}
@@ -62,7 +62,7 @@ const TradeInNFTs = ({ v1NFTs, account }) => {
       <Button size="lg" onClick={tradeInClick}>
         Trade in my Treat NFTs
       </Button>
-    </motion.div>
+    </div>
   );
 };
 

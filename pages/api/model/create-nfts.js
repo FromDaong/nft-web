@@ -52,6 +52,7 @@ export default withSession(async (req, res) => {
                 model_bnb_address: nft.model_bnb_address,
                 blurhash: nft.blurhash,
                 model_profile_pic: nft.model_profile_pic,
+                daoCdnUrl: nft.daoCdnUrl,
                 attributes: [
                   {
                     trait_type: "Model",
@@ -86,8 +87,6 @@ export default withSession(async (req, res) => {
             });
           })
         );
-
-        
 
         res.status(200).json({ success: true, newNFTs });
       } catch (error) {

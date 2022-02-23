@@ -6,33 +6,9 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { Blurhash } from "react-blurhash";
 import { isBlurhashValid } from "blurhash";
-import { motion } from "framer-motion";
+import axios from "axios";
 import { EyeSlash } from "react-bootstrap-icons";
 import Link from "next/link";
-
-let easing = [0.175, 0.85, 0.42, 0.96];
-
-const variants = {
-  initial: {
-    y: 150,
-    opacity: 0,
-  },
-  hidden: {
-    opacity: 0,
-    transition: {
-      duration: 0.1,
-      ease: easing,
-    },
-  },
-  show: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.2,
-      ease: easing,
-    },
-  },
-};
 
 const NFTListItem = ({
   data,
@@ -45,22 +21,28 @@ const NFTListItem = ({
   price,
   hasOpenOrder,
 }) => {
-  const [image, setBase64Image] = useState();
   const [modalData, setModalData] = useState();
-  var base64regex =
-    /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
+  const [image, setImage] = useState();
 
   useEffect(() => {
-    (async () => {
-      if (data.image && data.old_totw) {
-        fetch(data.image)
-          .then((r) => r.text())
-          .then((blob) => {
-            const replacedText = blob.replace(`"`, "").replace(/["']/g, "");
-            setBase64Image(replacedText);
-          });
-      }
-    })();
+    if (!data.image) return;
+    axios
+      .get(
+        `/api/v2/utils/images/fetchWithFallback?default=${data.image}&cdn=${data.daoCdnUrl}`
+      )
+      .then((res) => {
+        if (res.data === data.image) {
+          axios
+            .get(data.image)
+            .then((res) =>
+              setImage(res.data.replace(`"`, "").replace(/["']/g, ""))
+            )
+            .catch((err) => console.log(err));
+        } else {
+          setImage(res.data);
+          console.log("Setting res");
+        }
+      });
   }, [data]);
 
   return (
@@ -74,7 +56,9 @@ const NFTListItem = ({
         <Modal.Body>
           <div
             className="modal-image"
-            style={{ background: `url(${image || data.image})` }}
+            style={{
+              background: `url(${image})`,
+            }}
           ></div>
           <h4 className="text-center pt-3">{data.description}</h4>
         </Modal.Body>
@@ -85,7 +69,7 @@ const NFTListItem = ({
         </Modal.Footer>
       </Modal>
 
-      <motion.div variants={variants}>
+      <div>
         <div className="nft-card" style={{ boxShadow: "none" }}>
           <div className="totw-tag-wrapper">
             {balance > 1 && (
@@ -140,7 +124,7 @@ const NFTListItem = ({
                 </div>
                 <div
                   style={{
-                    background: `url(${image || data.image})`,
+                    background: `url(${image})`,
                     minHeight: 375,
                     zIndex: 100,
                   }}
@@ -186,7 +170,7 @@ const NFTListItem = ({
             </div>
           </div>
 
-          {!!transferNFTClick ? (
+          {transferNFTClick ? (
             <div className="row">
               <div className="col-lg-6 mt-3">
                 <span className="d-inline-block w-100">
@@ -240,7 +224,7 @@ const NFTListItem = ({
             </div>
           )}
         </div>
-      </motion.div>
+      </div>
     </>
   );
 };

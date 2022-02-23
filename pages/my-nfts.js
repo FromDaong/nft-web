@@ -1,5 +1,5 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import Spinner from "react-bootstrap/Spinner";
 import MyNFTItem from "../components/MyNFTItem";
 import TransferNFTModal from "../components/TransferNFTModal";
@@ -14,14 +14,16 @@ import useGetNftBalance from "../hooks/useGetNftBalance";
 import { getDisplayBalance } from "../utils/formatBalance";
 import useGetOpenOrdersForSeller from "../hooks/useGetOpenOrdersForSeller";
 import { useWallet } from "use-wallet";
-import useSWR from "swr";
+import axios from "axios";
 import BigNumber from "bignumber.js";
 import LazyLoad from "react-lazyload";
 import Layout from "../components/Layout";
 import ErrorFallback from "../components/Fallback/Error";
-import Loading from "../components/Loading";
 import { usePagination } from "react-use-pagination";
 import PaginationComponent from "../components/PaginationComponent";
+import MyNFTItemSkeleton from "../components/Skeleton/MyNFTItemSkeleton";
+import PaginationComponentV2 from "../components/Pagination";
+import { useRouter } from "next/router";
 
 const variants = {
   show: {
@@ -38,84 +40,77 @@ const variants = {
   },
 };
 
-const MyNFTsWrapper = () => {
-  const { account, status } = useWallet();
-  const { data: res, error } = useSWR(`/api/nft`);
-  const [nftArray, setNftData] = useState();
-
-  useEffect(() => {
-    (async () => {
-      if (res) {
-        setNftData(res);
-      }
-    })();
-  }, [res]);
-
-  if (status !== "connected" || !nftArray) {
-    return (
-      <div
-        style={{
-          position: "fixed",
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          top: 0,
-          left: 0,
-          justifyContent: "center",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <h5
-          style={{
-            fontWeight: "bolder",
-            background: "white",
-            borderRadius: 5,
-            padding: 10,
-          }}
-        >
-          Please make sure your wallet on the Binance Smart Chain is connected.
-        </h5>
-        <Spinner
-          animation="border"
-          role="status"
-          size="xl"
-          style={{ marginTop: 5 }}
-        >
-          <span className="sr-only">Loading...</span>
-        </Spinner>
-      </div>
-    );
-  } else if (error) {
-    return <ErrorFallback custom="Failed to load my NFT's" />;
-  } else {
-    return <ViewNFT account={account} nftArray={nftArray} />;
-  }
-};
-
 const OwnedNfts = ({
   hideNFTs,
   revealNFTs,
   nftBalances,
   transferNFTClick,
   listOrderClick,
-  serverNftBalances,
   isLoading,
+  signature,
 }) => {
-  const nftWithBalances = nftBalances.filter((i) => !i.hasOpenOrder);
-  const {
-    currentPage,
-    totalPages,
-    setPage,
-    setPageSize,
-    setNextPage,
-    setPreviousPage,
-    startIndex,
-    endIndex,
-  } = usePagination({
-    totalItems: nftWithBalances ? nftWithBalances.length + 1 : 0,
-    initialPageSize: 12,
+  const { status, account } = useWallet();
+  const [loading, setLoading] = useState(true);
+  const [doneInitialFetch, setDoneInitialFetch] = useState(false);
+
+  const [nftData, setNFTData] = useState({
+    docs: [],
+    hasNextPage: false,
+    hasPrevPage: false,
+    totalPages: 1,
+    totalDocs: 0,
+    page: 1,
   });
+
+  const nftWithBalances = nftBalances.filter((i) => !i.hasOpenOrder);
+  const router = useRouter();
+
+  const fetchNFTS = async (page) => {
+    setLoading(true);
+    axios
+      .post("/api/v2/nft/getWithBalances", {
+        nfts: nftWithBalances,
+        // account: account,
+        page: router.query.owned_nfts_page ?? 1,
+        signature,
+      })
+      .then((resp) => {
+        setNFTData(resp.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    if (
+      status === "connected" &&
+      nftWithBalances &&
+      nftWithBalances?.length > 0 &&
+      !doneInitialFetch &&
+      !isLoading
+    ) {
+      fetchNFTS(nftData.page).then(() => setDoneInitialFetch(true));
+    }
+  }, [status, account, nftWithBalances, isLoading]);
+
+  useEffect(() => {
+    fetchNFTS(nftData.page);
+  }, [signature]);
+
+  useEffect(() => {
+    if (router.query.owned_nfts_page) {
+      fetchNFTS(nftData.owned_nfts_page);
+    }
+  }, [router]);
+
+  const navigate = (page) => {
+    router.push(`${router.pathname}?owned_nfts_page=${page}`, undefined, {
+      shallow: true,
+    });
+  };
 
   return (
     <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
@@ -143,9 +138,9 @@ const OwnedNfts = ({
               My NFTs
             </h2>
           </div>
-          {nftWithBalances.length > 0 && (
+          {nftData.docs.length > 0 && (
             <div className="button-container">
-              {serverNftBalances ? (
+              {signature ? (
                 <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
                   <b>{"Hide Contents 🙈"}</b>
                 </Button>
@@ -158,47 +153,60 @@ const OwnedNfts = ({
           )}
         </div>
       </div>
-      {nftWithBalances.length > 0 ? (
+      {nftData.docs.length > 0 ? (
         <div className="">
-          <motion.div
+          <div
             className="d-flex text-left justify-content-center mt-5 w-100 flex-wrap"
             animate="show"
             exit="hidden"
             initial="hidden"
             variants={variants}
           >
-            {nftWithBalances
-              .slice(startIndex > 0 ? startIndex - 1 : startIndex, endIndex)
-              .map((nft) => {
-                return (
-                  <LazyLoad height={400} offset={600}>
-                    <div className="order-container">
-                      <MyNFTItem
-                        balance={nft.balance}
-                        isLoading={isLoading}
-                        data={nft}
-                        revealNFTs={revealNFTs}
-                        transferNFTClick={transferNFTClick}
-                        listOrderClick={listOrderClick}
-                        hasOpenOrder={nft.hasOpenOrder}
-                      />
-                    </div>
-                  </LazyLoad>
-                );
-              })}
-          </motion.div>
-          <PaginationComponent
-            currentPage={currentPage}
-            totalPages={totalPages}
-            setPage={setPage}
-            setPageSize={setPageSize}
-            setNextPage={setNextPage}
-            setPreviousPage={setPreviousPage}
-            fixedPageSize
-          />
+            {nftData.docs.map((nft) => (
+              <LazyLoad key={nft.id} height={400} offset={600}>
+                <div className="order-container">
+                  <MyNFTItem
+                    balance={nft.balance}
+                    isLoading={isLoading}
+                    data={nft}
+                    revealNFTs={revealNFTs}
+                    transferNFTClick={transferNFTClick}
+                    listOrderClick={listOrderClick}
+                    hasOpenOrder={nft.hasOpenOrder}
+                  />
+                </div>
+              </LazyLoad>
+            ))}
+          </div>
+          {nftData.docs.length > 0 && (
+            <div className="flex justify-center py-2">
+              <PaginationComponentV2
+                hasNextPage={nftData.hasNextPage}
+                hasPrevPage={nftData.hasPrevPage}
+                totalPages={nftData.totalPages}
+                totalDocs={nftData.totalDocs}
+                page={nftData.page}
+                goNext={() => navigate(Number(nftData.page) + 1)}
+                goPrev={() => navigate(Number(nftData.page) - 1)}
+                loading={loading}
+                setPage={(page) => navigate(Number(page))}
+              />
+            </div>
+          )}
         </div>
-      ) : isLoading ? (
-        <Loading custom="Please wait, loading your owned NFTs" />
+      ) : loading || isLoading ? (
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
+          className="full-width"
+        >
+          {new Array(12).fill(0).map((_, i) => (
+            <MyNFTItemSkeleton key={i} className="col-span-1" />
+          ))}
+        </div>
       ) : (
         <div
           className="w-100 text-center font-weight-bold d-flex align-items-center justify-content-center h-100"
@@ -220,26 +228,73 @@ const OpenOrders = ({
   hideNFTs,
   revealNFTs,
   nftBalances,
-  transferNFTClick,
   cancelOrderClick,
-  serverNftBalances,
+  signature,
   isLoading,
 }) => {
+  const { status, account } = useWallet();
+  const [loading, setLoading] = useState(true);
+  const [doneInitialFetch, setDoneInitialFetch] = useState(false);
+  const [nftData, setNFTData] = useState({
+    docs: [],
+    hasNextPage: false,
+    hasPrevPage: false,
+    totalPages: 1,
+    totalDocs: 0,
+    page: 1,
+  });
+
   const openOrders = useGetOpenOrdersForSeller() ?? [];
   const nftWithOpenOrders = nftBalances.filter((i) => i.hasOpenOrder);
-  const {
-    currentPage,
-    totalPages,
-    setPage,
-    setPageSize,
-    setNextPage,
-    setPreviousPage,
-    startIndex,
-    endIndex,
-  } = usePagination({
-    totalItems: nftWithOpenOrders.length > 0 ? nftWithOpenOrders.length + 1 : 0,
-    initialPageSize: 12,
-  });
+  const router = useRouter();
+
+  const fetchNFTS = async () => {
+    setLoading(true);
+    axios
+      .post("/api/v2/nft/getWithBalances", {
+        nfts: openOrders,
+        account: account,
+        page: router.query.open_orders_page ?? 1,
+        signature,
+      })
+      .then((resp) => {
+        setNFTData(resp.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    if (
+      status === "connected" &&
+      nftWithOpenOrders &&
+      nftWithOpenOrders?.length > 0 &&
+      !doneInitialFetch
+    ) {
+      fetchNFTS(nftData.page).then(() => setDoneInitialFetch(true));
+    }
+  }, [status, account, nftWithOpenOrders]);
+
+  useEffect(() => {
+    fetchNFTS(nftData.page);
+  }, [signature]);
+
+  useEffect(() => {
+    if (router.query.open_orders_page) {
+      fetchNFTS(nftData.open_orders_page);
+    }
+  }, [router]);
+
+  const navigate = (page) => {
+    router.push(`${router.pathname}?open_orders_page=${page}`, undefined, {
+      shallow: true,
+    });
+  };
+
+  console.log({ openOrders, nftData });
 
   return (
     <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
@@ -262,9 +317,9 @@ const OpenOrders = ({
               Listed on Re-Sale Marketplace
             </h2>
           </div>
-          {nftBalances.length > 0 && openOrders.length > 0 && (
+          {nftData.docs.length > 0 && openOrders.length > 0 && (
             <div className="button-container">
-              {serverNftBalances ? (
+              {signature ? (
                 <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
                   <b>{"Hide Contents 🙈"}</b>
                 </Button>
@@ -277,60 +332,71 @@ const OpenOrders = ({
           )}
         </div>
       </div>
-      {nftWithOpenOrders.length > 0 && openOrders.length > 0 ? (
+      {nftData.docs.length > 0 ? (
         <div className="container px-4 ">
           <div className="d-flex text-left mt-5">
-            <motion.div
+            <div
               className="d-flex text-left mt-5 w-100 flex-wrap justify-content-center"
               animate="show"
               exit="hidden"
               initial="hidden"
               variants={variants}
             >
-              {nftWithOpenOrders
-                .slice(startIndex > 0 ? startIndex - 1 : startIndex, endIndex)
-                .map((nft) => {
-                  if (nft.hasOpenOrder) {
-                    const order = openOrders.find(
-                      (i) => Number(i.nftId) === nft.id
-                    );
+              {nftData.docs.map((nft) => {
+                const order = openOrders.find(
+                  (i) => Number(i.nftId) === nft.id
+                );
 
-                    return (
-                      <LazyLoad height={400} offset={600}>
-                        <div className="order-container">
-                          <MyNFTItem
-                            price={
-                              order &&
-                              order.price &&
-                              getDisplayBalance(new BigNumber(order.price))
-                            }
-                            balance={order?.quantity}
-                            data={nft}
-                            isLoading={isLoading}
-                            revealNFTs={revealNFTs}
-                            cancelOrderClick={cancelOrderClick}
-                          />
-                        </div>
-                      </LazyLoad>
-                    );
-                  }
-                })}
-            </motion.div>
+                return (
+                  <LazyLoad key={nft.id} height={400} offset={600}>
+                    <div className="order-container">
+                      <MyNFTItem
+                        price={
+                          order &&
+                          order.price &&
+                          getDisplayBalance(new BigNumber(order.price))
+                        }
+                        balance={order?.quantity}
+                        data={nft}
+                        isLoading={isLoading}
+                        revealNFTs={revealNFTs}
+                        cancelOrderClick={cancelOrderClick}
+                      />
+                    </div>
+                  </LazyLoad>
+                );
+              })}
+            </div>
           </div>
-          {nftWithOpenOrders.length > 0 && (
-            <PaginationComponent
-              currentPage={currentPage}
-              totalPages={totalPages}
-              setPage={setPage}
-              setPageSize={setPageSize}
-              setNextPage={setNextPage}
-              setPreviousPage={setPreviousPage}
-              fixedPageSize
-            />
+          {nftData.docs.length > 0 && (
+            <div className="flex justify-center py-2">
+              <PaginationComponentV2
+                hasNextPage={nftData.hasNextPage}
+                hasPrevPage={nftData.hasPrevPage}
+                totalPages={nftData.totalPages}
+                totalDocs={nftData.totalDocs}
+                page={nftData.page}
+                goNext={() => navigate(Number(nftData.page) + 1)}
+                goPrev={() => navigate(Number(nftData.page) - 1)}
+                loading={loading}
+                setPage={(page) => navigate(Number(page))}
+              />
+            </div>
           )}
         </div>
-      ) : isLoading ? (
-        <Loading custom="Please wait, loading data" />
+      ) : loading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            flexWrap: "wrap",
+          }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 w-full container mx-auto"
+        >
+          {new Array(12).fill(0).map((_, i) => (
+            <MyNFTItemSkeleton key={i} className="col-span-1" />
+          ))}
+        </div>
       ) : (
         <div
           className="w-100 text-center font-weight-bold d-flex align-items-center justify-content-center h-100"
@@ -349,18 +415,20 @@ const OpenOrders = ({
 };
 
 const ViewNFT = ({ account, nftArray }) => {
-  const [serverNftBalances, setServerNftBalances] = useState(null);
-
-  const maxNftSupply = useGetNftMaxSupply(account);
+  const [signature, setSignature] = useState(null);
   const { totalNftBalances: nftBalancesInitial, loading: isLoading } =
     useGetNftBalance(nftArray);
 
-  const nftBalances = serverNftBalances || nftBalancesInitial;
+  const nftBalances = nftBalancesInitial;
   const [transferNFTData, setTransferNFTData] = useState(null);
   const [listOrderData, setListOrderData] = useState(null);
   const [cancelOrderData, setCancelOrderData] = useState(null);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
+
+  // TODO: We want to fetch only NFTs with balance from the server and paginate those
+
+  console.log({ nftBalances, nftArray, isLoading });
 
   const transferNFTClick = (x) => {
     setTransferNFTData(x);
@@ -375,28 +443,13 @@ const ViewNFT = ({ account, nftArray }) => {
   };
 
   const hideNFTs = async () => {
-    setServerNftBalances(null);
+    setSignature(null);
   };
 
   const revealNFTs = async () => {
     if (account && treat) {
       const signature = await treat.signMessage(account, "Reveal Contents");
-
-      const nftIds = nftBalances.map((n) => n.id);
-
-      const res = await fetch(`/api/nft/view-nfts`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ nft_ids: nftIds, signature }),
-      });
-      const resJSON = await res.json();
-
-      if (resJSON.success) {
-        setServerNftBalances(resJSON.results);
-      }
+      setSignature(signature);
     }
   };
 
@@ -462,7 +515,7 @@ const ViewNFT = ({ account, nftArray }) => {
             nftBalances={nftBalances}
             revealNFTs={revealNFTs}
             isLoading={isLoading}
-            serverNftBalances={serverNftBalances}
+            signature={signature}
           />
         </div>
         <div className="mt-2">
@@ -473,12 +526,68 @@ const ViewNFT = ({ account, nftArray }) => {
             nftBalances={nftBalances}
             revealNFTs={revealNFTs}
             isLoading={isLoading}
-            serverNftBalances={serverNftBalances}
+            signature={signature}
           />
         </div>
       </div>
     </Layout>
   );
+};
+
+const MyNFTsWrapper = () => {
+  const { account, status } = useWallet();
+  const { error, setError } = useState();
+  const [nftArray, setNftData] = useState({});
+
+  useEffect(() => {
+    axios
+      .get("/api/nft?all=true")
+      .then((resp) => {
+        setNftData(resp.data);
+      })
+      .catch((err) => setError(err));
+  }, []);
+
+  if (status !== "connected" || !nftArray) {
+    return (
+      <div
+        style={{
+          position: "fixed",
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          top: 0,
+          left: 0,
+          justifyContent: "center",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <h5
+          style={{
+            fontWeight: "bolder",
+            background: "white",
+            borderRadius: 5,
+            padding: 10,
+          }}
+        >
+          Please make sure your wallet on the Binance Smart Chain is connected.
+        </h5>
+        <Spinner
+          animation="border"
+          role="status"
+          size="xl"
+          style={{ marginTop: 5 }}
+        >
+          <span className="sr-only">Loading...</span>
+        </Spinner>
+      </div>
+    );
+  } else if (error) {
+    return <ErrorFallback custom="Failed to load my NFT's" />;
+  } else {
+    return <ViewNFT account={account} nftArray={nftArray} />;
+  }
 };
 
 export default MyNFTsWrapper;

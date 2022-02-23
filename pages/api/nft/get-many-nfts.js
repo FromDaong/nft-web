@@ -22,7 +22,7 @@ const treatNFTMinter = new web3.eth.Contract(
 
 export default async (req, res) => {
   const {
-    query: { id },
+    query: { id, p },
     method,
   } = req;
 
@@ -30,16 +30,65 @@ export default async (req, res) => {
     case "POST":
       try {
         if (!req.body.nfts) return res.status(200).json([]);
+        const options = {
+          page: req.query.p ?? 1,
+          limit: 24,
+          collation: {
+            locale: "en",
+          },
+          sort: {},
+        };
+        let NFTres;
+        const { sort } = req.query;
+        if (sort) {
+          switch (sort) {
+            case "recent":
+              options.sort.id = -1;
+              break;
+            case "desc":
+              options.sort.list_price = -1;
+              break;
+            case "asc":
+              options.sort.list_price = 1;
+              break;
+            default:
+              options.sort.id = -1;
+              break;
+          }
+        } else {
+          options.sort.id = -1;
+        }
 
-        let NFTres = await NFT.find({ id: { $in: req.body.nfts } });
+        if (req.query.s) {
+          const aggregate = NFT.aggregate([
+            {
+              $search: {
+                index: "init",
+                text: {
+                  query: `${req.query.s}*`,
+                  path: ["name", "description", "model_handle"],
+                },
+              },
+            },
+            {
+              $match: {
+                id: { $in: req.body.nfts },
+              },
+            },
+          ]);
+          NFTres = await NFT.aggregatePaginate(aggregate, options);
+        } else {
+          NFTres = await NFT.paginate({ id: { $in: req.body.nfts } }, options);
+        }
 
-        if (!NFTres)
+        if (NFTres.docs.length === 0)
           return res
             .status(400)
             .json({ success: false, error: "nft not found" });
 
-        const returnArray = await Promise.all(
-          NFTres.map(async (nft) => {
+        console.log(NFTres.docs);
+        NFTres.docs = await Promise.all(
+          NFTres.docs.map(async (nft) => {
             const maxSupply = (
               await getNftMaxSupply(treatNFTMinter, id)
             )?.toNumber();
@@ -47,15 +96,19 @@ export default async (req, res) => {
               await getNftTotalSupply(treatNFTMinter, id)
             )?.toNumber();
 
-            const returnObj = { ...nft.toObject(), maxSupply, totalSupply };
-            if (nft.blurhash) delete returnObj.image;
+            const returnObj = { ...nft._doc, maxSupply, totalSupply };
+            if (nft.blurhash) {
+              delete returnObj.image;
+              delete returnObj.daoCdnUrl;
+            }
 
             return returnObj;
           })
         );
 
-        res.status(200).json(returnArray);
+        res.status(200).json(NFTres);
       } catch (error) {
+        console.log(error);
         res.status(400).json({ success: false, error: error });
       }
       break;

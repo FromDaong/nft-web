@@ -12,16 +12,15 @@ import * as Scroll from "react-scroll";
  */
 
 const ModelList = ({ totwOnly = false, modelData, startIndex, endIndex }) => {
-
   let modelListRender;
+  console.log({ modelData });
 
   if (modelData) {
     const mR = modelData
-      .slice(startIndex, endIndex || modelData.length)
+      // .slice(startIndex, endIndex || modelData.length)
       .map((raw) => {
-        const model = raw.item;
+        const model = raw;
 
-        if (model.pending || model.rejected || model.hidden) return undefined;
         if (totwOnly) {
           if (model && model.totw) {
             return (
@@ -44,11 +43,7 @@ const ModelList = ({ totwOnly = false, modelData, startIndex, endIndex }) => {
       })
       .filter((e) => e);
 
-    modelListRender = (
-      <div className="row">
-        {mR}
-      </div>
-    );
+    modelListRender = <div className="row">{mR}</div>;
   } else {
     modelListRender = (
       <div className="w-100 d-flex justify-content-center align-items-center">

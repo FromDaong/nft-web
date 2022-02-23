@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
+const paginate = require("mongoose-paginate-v2");
 
 const ModelSchema = new mongoose.Schema(
   {
@@ -24,6 +26,12 @@ const ModelSchema = new mongoose.Schema(
       type: Date,
     },
     profile_pic: {
+      type: String,
+    },
+    profilePicCdnUrl: {
+      type: String,
+    },
+    daoProfilePicCdnUrl: {
       type: String,
     },
     banner_pic: {
@@ -86,16 +94,9 @@ const ModelSchema = new mongoose.Schema(
   }
 );
 
-// ModelSchema.path("discount_codes")
-//   .schema.path("newPrice")
-//   .set(function (num) {
-//     return num * 100;
-//   });
-
-// ModelSchema.path("price").set(function (num) {
-//   return num * 100;
-// });
-
+ModelSchema.plugin(aggregatePaginate);
+ModelSchema.plugin(paginate);
 ModelSchema.plugin(require("mongoose-beautiful-unique-validation"));
 
-module.exports = mongoose.models.Model || mongoose.model("Model", ModelSchema);
+const Model = mongoose.models.Model || mongoose.model("Model", ModelSchema);
+module.exports = Model;

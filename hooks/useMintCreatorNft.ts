@@ -9,7 +9,7 @@ import bsc from "@binance-chain/bsc-use-wallet";
 const useMintCreatorNft = (
   id: number,
   treatCost: number,
-  useCreatorMart: boolean = false
+  useCreatorMart = false
 ) => {
   const { account } = useWallet();
   const treat = useTreat();

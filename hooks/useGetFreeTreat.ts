@@ -9,7 +9,7 @@ import bsc from "@binance-chain/bsc-use-wallet";
 const useGetFreeTreat = (
   id: number,
   treatCost: number,
-  useFreeTreats: boolean = false
+  useFreeTreats = false
 ) => {
   const { account } = useWallet();
   const treat = useTreat();

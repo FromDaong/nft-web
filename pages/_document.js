@@ -6,6 +6,12 @@ class MyDocument extends Document {
     return { ...initialProps };
   }
 
+  webp = (e) =>
+    document
+      .createElement("canvas")
+      .toDataURL("image/webp")
+      .indexOf("data:image/webp") == 0;
+
   render() {
     return (
       <Html>
@@ -20,17 +26,30 @@ class MyDocument extends Document {
             }}
           />
         </Head>
-        <body>
+        <body
+          style={{
+            backgroundImage: `url(${
+              this.webp
+                ? "https://ucarecdn.com/bd659922-683b-46c1-b32e-0ac53e7f54db/-/format/webp/"
+                : "/assets/bg.jpg"
+            })`,
+          }}
+        >
           <Main />
           <NextScript />
-          <noscript>
-            <iframe
-              src="https://www.googletagmanager.com/ns.html?id=GTM-5MVFCZ9"
-              height="0"
-              width="0"
-              style="display:none;visibility:hidden"
-            ></iframe>
-          </noscript>
+          {false && (
+            <noscript>
+              <iframe
+                src="https://www.googletagmanager.com/ns.html?id=GTM-5MVFCZ9"
+                height="0"
+                width="0"
+                style={{
+                  display: "none",
+                  visibility: "hidden",
+                }}
+              ></iframe>
+            </noscript>
+          )}
         </body>
       </Html>
     );

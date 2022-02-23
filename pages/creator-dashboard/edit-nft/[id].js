@@ -100,7 +100,7 @@ const CreateNFT = ({ modelData, id }) => {
         address: modelData.address,
       };
 
-      if (!!!bodyObj.blurhash) delete bodyObj.blurhash;
+      if (!bodyObj.blurhash) delete bodyObj.blurhash;
 
       const res = await fetch(`/api/model/edit-nft`, {
         method: "POST",
