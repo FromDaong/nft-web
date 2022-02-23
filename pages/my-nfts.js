@@ -167,7 +167,7 @@ const OwnedNfts = ({
               </LazyLoad>
             ))}
           </div>
-          {nftData.docs > 0 && (
+          {nftData.docs.length > 0 && (
             <div className="flex justify-center py-2">
               <PaginationComponentV2
                 hasNextPage={nftData.hasNextPage}
@@ -348,7 +348,7 @@ const OpenOrders = ({
               })}
             </div>
           </div>
-          {nftData.docs > 0 && (
+          {nftData.docs.length > 0 && (
             <PaginationComponentV2
               hasNextPage={nftData.hasNextPage}
               hasPrevPage={nftData.hasPrevPage}
