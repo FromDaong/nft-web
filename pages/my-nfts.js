@@ -179,7 +179,7 @@ const OwnedNfts = ({
             </div>
           )}
         </div>
-      ) : isLoading || loading ? (
+      ) : loading ? (
         <div
           style={{
             display: "flex",
@@ -354,7 +354,7 @@ const OpenOrders = ({
             />
           )}
         </div>
-      ) : isLoading || loading ? (
+      ) : loading ? (
         <div
           style={{
             display: "flex",
