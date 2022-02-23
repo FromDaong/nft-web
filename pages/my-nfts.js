@@ -71,7 +71,7 @@ const OwnedNfts = ({
       .post("/api/v2/nft/getWithBalances", {
         nfts: nftWithBalances,
         account: account,
-        page: page ?? 1,
+        page: router.query.owned_nfts_page ?? 1,
         signature,
       })
       .then((resp) => {
