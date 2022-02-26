@@ -81,6 +81,7 @@ const Marketplace = ({ search }) => {
   }, []);
 
   useEffect(() => {
+    const tags = btoa(selectedOptions.map((option) => option.value));
     const sort =
       sortBy === "Recent"
         ? "recent"
@@ -94,7 +95,7 @@ const Marketplace = ({ search }) => {
       undefined,
       { shallow: true }
     );
-  }, [searchFilter, sortBy]);
+  }, [searchFilter, sortBy, selectedOptions]);
 
   useEffect(() => {
     console.log("Route changed");
