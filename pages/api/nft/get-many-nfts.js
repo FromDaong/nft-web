@@ -1,12 +1,10 @@
 import dbConnect from "../../../utils/dbConnect";
-import { mapNftBody } from "./mappers";
 import NFT from "../../../models/NFT";
 import Web3 from "web3";
-import { getBalanceNumber } from "../../../utils/formatBalance";
 import TreatNFTMinterAbi from "../../../treat/lib/abi/treatnftminter.json";
-import TreatMarketplaceAbi from "../../../treat/lib/abi/treatMarketplace.json";
 import { getNftMaxSupply, getNftTotalSupply } from "../../../treat/utils";
 import { contractAddresses } from "../../../treat/lib/constants";
+import * as atob from "atob";
 
 dbConnect();
 
