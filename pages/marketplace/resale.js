@@ -67,6 +67,8 @@ const Marketplace = ({ search }) => {
   useEffect(() => {
     const queryFilter = router.query.s;
     const sort = router.query.sort;
+    const tags = router.query.tags;
+
     const sortTag =
       sort === "recent"
         ? "Recent"
@@ -75,24 +77,24 @@ const Marketplace = ({ search }) => {
         : "Price High to Low";
     setSearchFilter(queryFilter ?? "");
     setSortBy(sortTag);
+    try {
+      const tagsArray = tags
+        ? atob(tags)
+            .split(",")
+            .map((tag) => ({
+              value: tag,
+              label: tag.charAt(0).toUpperCase() + tag.slice(1),
+            }))
+        : [];
+      setSelectedOptions(tagsArray);
+    } catch (err) {
+      console.log(err);
+    }
   }, []);
 
   useEffect(() => {
-    const sort =
-      sortBy === "Recent"
-        ? "recent"
-        : sortBy === "Price High to Low"
-        ? "desc"
-        : "asc";
-
-    router.push(
-      `${router.pathname}?p=1&sort=${sort}${
-        searchFilter && `&s=${searchFilter}`
-      }`.trim(),
-      undefined,
-      { shallow: true }
-    );
-  }, [searchFilter, sortBy]);
+    navigate(1);
+  }, [searchFilter, sortBy, selectedOptions]);
 
   useEffect(() => {
     if (jsonBody && orderBookLoaded) {
@@ -101,7 +103,9 @@ const Marketplace = ({ search }) => {
         .post(
           `/api/nft/get-many-nfts?p=${router.query.p ?? 1}${
             searchFilter ? `&s=${router.query.s}` : ""
-          }&sort=${router.query.sort ?? "asc"}`,
+          }&sort=${router.query.sort ?? "asc"}${
+            router.query.tags ? `&tags=${router.query.tags}` : ""
+          }`,
           {
             ...jsonBody,
           }
@@ -110,22 +114,6 @@ const Marketplace = ({ search }) => {
         .then(() => setLoading(false));
     }
   }, [router, jsonBody, _orderBookArray]);
-
-  useEffect(() => {
-    const sort =
-      sortBy === "Recent"
-        ? "recent"
-        : sortBy === "Price High to Low"
-        ? "desc"
-        : "asc";
-    router.push(
-      `${router.pathname}?${
-        searchFilter && `s=${searchFilter}`
-      }&p=1&sort=${sort}`,
-      undefined,
-      { shallow: true }
-    );
-  }, [searchFilter, sortBy]);
 
   useEffect(() => {
     const populatedArray =
@@ -148,6 +136,8 @@ const Marketplace = ({ search }) => {
 
   const navigate = (page) => {
     window.scrollTo(0, 0);
+    const tags = btoa(selectedOptions.map((option) => option.value));
+
     const sort =
       sortBy === "Recent"
         ? "recent"
@@ -156,8 +146,8 @@ const Marketplace = ({ search }) => {
         : "asc";
     router.push(
       `${router.pathname}?${
-        searchFilter && `s=${searchFilter}&`
-      }p=${page}&sort=${sort}`,
+        searchFilter && `s=${searchFilter}`
+      }&p=${page}&sort=${sort}${tags.length > 0 ? `&tags=${tags}` : ""}`,
       undefined,
       { shallow: true }
     );
