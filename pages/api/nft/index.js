@@ -1,8 +1,6 @@
 import dbConnect from "../../../utils/dbConnect";
 import NFT from "../../../models/NFT";
 // import User from "../../../../models/User";
-import withSession from "../../../lib/session";
-
 dbConnect();
 
 export default async (req, res) => {
@@ -37,7 +35,12 @@ export default async (req, res) => {
           },
           sort: {},
         };
-        const sort = req.query.sort;
+        const { tags, sort } = req.query;
+        let filterTags = [];
+
+        if (tags) {
+          filterTags = atob(tags).split(",");
+        }
 
         let NFTs;
         if (sort) {
@@ -60,35 +63,53 @@ export default async (req, res) => {
         }
 
         if (s) {
-          const aggregate = NFT.aggregate([
-            {
-              $search: {
-                index: "init",
-                text: {
-                  query: `${s}*`,
-                  path: ["name", "description", "model_handle"],
-                },
-              },
-              $match: {
-                old_totw: { $exists: false },
-                old_totm: { $exists: false },
-                melon_nft: { $exists: false },
-                subscription_nft: { $exists: false },
+          let search = {
+            $search: {
+              index: "init",
+              text: {
+                query: `${s}*`,
+                path: ["name", "description", "model_handle"],
               },
             },
-          ]);
-          NFTs = await NFT.aggregatePaginate(aggregate, options);
-        } else {
-          NFTs = await NFT.paginate(
-            {
+          };
+          let match = {
+            $match: {
               old_totw: { $exists: false },
               old_totm: { $exists: false },
               melon_nft: { $exists: false },
               subscription_nft: { $exists: false },
             },
-            options
-          );
+          };
+          // Only add the search filter if there is a search tags
+          if (filterTags.length > 0) {
+            match.$match.tags = {
+              $in: filterTags,
+            };
+          }
+          let aggregateArr = [
+            {
+              ...search,
+              ...match,
+            },
+          ];
+          const aggregate = NFT.aggregate(aggregateArr);
+          NFTs = await NFT.aggregatePaginate(aggregate, options);
+        } else {
+          const query = {
+            old_totw: { $exists: false },
+            old_totm: { $exists: false },
+            melon_nft: { $exists: false },
+            subscription_nft: { $exists: false },
+          };
+
+          if (filterTags.length > 0) {
+            query.tags = {
+              $in: filterTags,
+            };
+          }
+          NFTs = await NFT.paginate(query, options);
         }
+
         NFTs.docs = await NFTs.docs.map((n) => {
           const returnObj = { ...n.toObject() };
 
