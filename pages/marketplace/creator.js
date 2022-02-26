@@ -87,6 +87,7 @@ const Marketplace = ({ search }) => {
   useEffect(() => {
     const queryFilter = router.query.s;
     const sort = router.query.sort;
+    const tags = router.query.tags;
 
     const sortTag =
       sort === "asc"
@@ -96,6 +97,20 @@ const Marketplace = ({ search }) => {
         : "Recent";
     setSearchFilter(queryFilter ?? "");
     setSortBy(sortTag ?? "Recent");
+
+    try {
+      const tagsArray = tags
+        ? atob(tags)
+            .split(",")
+            .map((tag) => ({
+              value: tag,
+              label: tag.charAt(0).toUpperCase() + tag.slice(1),
+            }))
+        : [];
+      setSelectedOptions(tagsArray);
+    } catch (err) {
+      console.log(err);
+    }
   }, []);
 
   useEffect(() => {
@@ -109,7 +124,7 @@ const Marketplace = ({ search }) => {
         `/api/nft?p=${router.query.p ?? 1}${
           searchFilter ? `&s=${router.query.s}` : ""
         }&sort=${router.query.sort ?? "asc"}${
-          router.query.tags.length > 0 ? `&tags=${router.query.tags}` : ""
+          router.query.tags ? `&tags=${router.query.tags}` : ""
         }`
       )
       .then((res) => setApiResponseData(res.data))
