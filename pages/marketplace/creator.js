@@ -66,6 +66,24 @@ const Marketplace = ({ search }) => {
     setFinalArray(newArray);
   }, [nftDataArray, sortBy]);
 
+  const navigate = (page) => {
+    window.scrollTo(0, 0);
+    const tags = btoa(selectedOptions.map((option) => option.value));
+    const sort =
+      sortBy === "Recent"
+        ? "recent"
+        : sortBy === "Price High to Low"
+        ? "desc"
+        : "asc";
+    router.push(
+      `${router.pathname}?${
+        searchFilter && `s=${searchFilter}`
+      }&p=${page}&sort=${sort}${tags.length > 0 ? `&tags=${tags}` : ""}`,
+      undefined,
+      { shallow: true }
+    );
+  };
+
   useEffect(() => {
     const queryFilter = router.query.s;
     const sort = router.query.sort;
@@ -81,51 +99,22 @@ const Marketplace = ({ search }) => {
   }, []);
 
   useEffect(() => {
-    const tags = btoa(selectedOptions.map((option) => option.value));
-    const sort =
-      sortBy === "Recent"
-        ? "recent"
-        : sortBy === "Price High to Low"
-        ? "desc"
-        : "asc";
-    router.push(
-      `${router.pathname}?${
-        searchFilter && `s=${searchFilter}`
-      }&p=1&sort=${sort}`,
-      undefined,
-      { shallow: true }
-    );
+    navigate(1);
   }, [searchFilter, sortBy, selectedOptions]);
 
   useEffect(() => {
-    console.log("Route changed");
     setLoading(true);
     axios
       .get(
         `/api/nft?p=${router.query.p ?? 1}${
           searchFilter ? `&s=${router.query.s}` : ""
-        }&sort=${router.query.sort ?? "asc"}`
+        }&sort=${router.query.sort ?? "asc"}${
+          router.query.tags.length > 0 ? `&tags=${router.query.tags}` : ""
+        }`
       )
       .then((res) => setApiResponseData(res.data))
       .then(() => setLoading(false));
   }, [router]);
-
-  const navigate = (page) => {
-    window.scrollTo(0, 0);
-    const sort =
-      sortBy === "Recent"
-        ? "recent"
-        : sortBy === "Price High to Low"
-        ? "desc"
-        : "asc";
-    router.push(
-      `${router.pathname}?${
-        searchFilter && `s=${searchFilter}&`
-      }p=${page}&sort=${sort}`,
-      undefined,
-      { shallow: true }
-    );
-  };
 
   useEffect(() => {
     updateObArr();
