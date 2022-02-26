@@ -22,7 +22,7 @@ import PaginationComponentV2 from "../../components/Pagination";
 const Marketplace = ({ search }) => {
   const [_, forceUpdate] = useReducer((x) => x + 1, 0);
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [purchaseOrderData, setPurchaseOrderData] = useState(null);
+  const [, setPurchaseOrderData] = useState(null);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [nftDataArray, setNftDataArray] = useState([]);
   const [searchFilter, setSearchFilter] = useState(search || "");
@@ -71,11 +71,11 @@ const Marketplace = ({ search }) => {
     const sort = router.query.sort;
 
     const sortTag =
-      sort === "recent"
-        ? "Recent"
+      sort === "asc"
+        ? "Price Low to High"
         : sort === "desc"
         ? "Price High to Low"
-        : "Price Low to High";
+        : "Recent";
     setSearchFilter(queryFilter ?? "");
     setSortBy(sortTag ?? "Recent");
   }, []);
