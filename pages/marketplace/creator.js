@@ -22,7 +22,7 @@ import PaginationComponentV2 from "../../components/Pagination";
 const Marketplace = ({ search }) => {
   const [_, forceUpdate] = useReducer((x) => x + 1, 0);
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [purchaseOrderData, setPurchaseOrderData] = useState(null);
+  const [, setPurchaseOrderData] = useState(null);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [nftDataArray, setNftDataArray] = useState([]);
   const [searchFilter, setSearchFilter] = useState(search || "");
@@ -66,21 +66,9 @@ const Marketplace = ({ search }) => {
     setFinalArray(newArray);
   }, [nftDataArray, sortBy]);
 
-  useEffect(() => {
-    const queryFilter = router.query.s;
-    const sort = router.query.sort;
-
-    const sortTag =
-      sort === "recent"
-        ? "Recent"
-        : sort === "desc"
-        ? "Price High to Low"
-        : "Price Low to High";
-    setSearchFilter(queryFilter ?? "");
-    setSortBy(sortTag ?? "Recent");
-  }, []);
-
-  useEffect(() => {
+  const navigate = (page) => {
+    window.scrollTo(0, 0);
+    const tags = btoa(selectedOptions.map((option) => option.value));
     const sort =
       sortBy === "Recent"
         ? "recent"
@@ -90,41 +78,58 @@ const Marketplace = ({ search }) => {
     router.push(
       `${router.pathname}?${
         searchFilter && `s=${searchFilter}`
-      }&p=1&sort=${sort}`,
+      }&p=${page}&sort=${sort}${tags.length > 0 ? `&tags=${tags}` : ""}`,
       undefined,
       { shallow: true }
     );
-  }, [searchFilter, sortBy]);
+  };
 
   useEffect(() => {
-    console.log("Route changed");
+    const queryFilter = router.query.s;
+    const sort = router.query.sort;
+    const tags = router.query.tags;
+
+    const sortTag =
+      sort === "asc"
+        ? "Price Low to High"
+        : sort === "desc"
+        ? "Price High to Low"
+        : "Recent";
+    setSearchFilter(queryFilter ?? "");
+    setSortBy(sortTag ?? "Recent");
+
+    try {
+      const tagsArray = tags
+        ? atob(tags)
+            .split(",")
+            .map((tag) => ({
+              value: tag,
+              label: tag.charAt(0).toUpperCase() + tag.slice(1),
+            }))
+        : [];
+      setSelectedOptions(tagsArray);
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
+  useEffect(() => {
+    navigate(1);
+  }, [searchFilter, sortBy, selectedOptions]);
+
+  useEffect(() => {
     setLoading(true);
     axios
       .get(
         `/api/nft?p=${router.query.p ?? 1}${
           searchFilter ? `&s=${router.query.s}` : ""
-        }&sort=${router.query.sort ?? "asc"}`
+        }&sort=${router.query.sort ?? "asc"}${
+          router.query.tags ? `&tags=${router.query.tags}` : ""
+        }`
       )
       .then((res) => setApiResponseData(res.data))
       .then(() => setLoading(false));
   }, [router]);
-
-  const navigate = (page) => {
-    window.scrollTo(0, 0);
-    const sort =
-      sortBy === "Recent"
-        ? "recent"
-        : sortBy === "Price High to Low"
-        ? "desc"
-        : "asc";
-    router.push(
-      `${router.pathname}?${
-        searchFilter && `s=${searchFilter}&`
-      }p=${page}&sort=${sort}`,
-      undefined,
-      { shallow: true }
-    );
-  };
 
   useEffect(() => {
     updateObArr();
