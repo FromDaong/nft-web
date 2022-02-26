@@ -1,7 +1,6 @@
 import dbConnect from "../../../utils/dbConnect";
 import { mapNftBody } from "./mappers";
 import NFT from "../../../models/NFT";
-import Model from "../../../models/Model";
 import Web3 from "web3";
 import { getBalanceNumber } from "../../../utils/formatBalance";
 import TreatNFTMinterAbi from "../../../treat/lib/abi/treatnftminter.json";
@@ -39,7 +38,12 @@ export default async (req, res) => {
           sort: {},
         };
         let NFTres;
-        const { sort } = req.query;
+        const { sort, tags } = req.query;
+        let filterTags = [];
+        if (tags) {
+          filterTags = atob(tags).split(",");
+        }
+
         if (sort) {
           switch (sort) {
             case "recent":
@@ -60,25 +64,40 @@ export default async (req, res) => {
         }
 
         if (req.query.s) {
-          const aggregate = NFT.aggregate([
-            {
-              $search: {
-                index: "init",
-                text: {
-                  query: `${req.query.s}*`,
-                  path: ["name", "description", "model_handle"],
-                },
+          const search = {
+            $search: {
+              index: "init",
+              text: {
+                query: `${req.query.s}*`,
+                path: ["name", "description", "model_handle"],
               },
             },
-            {
-              $match: {
-                id: { $in: req.body.nfts },
-              },
+          };
+
+          const match = {
+            $match: {
+              id: { $in: req.body.nfts },
             },
-          ]);
+          };
+
+          if (filterTags.length > 0) {
+            match.$match.tags = { $in: filterTags };
+          }
+
+          const aggregateArr = [
+            {
+              ...search,
+              ...match,
+            },
+          ];
+          const aggregate = NFT.aggregate(aggregateArr);
           NFTres = await NFT.aggregatePaginate(aggregate, options);
         } else {
-          NFTres = await NFT.paginate({ id: { $in: req.body.nfts } }, options);
+          const query = { id: { $in: req.body.nfts } };
+          if (filterTags.length > 0) {
+            query.tags = { $in: filterTags };
+          }
+          NFTres = await NFT.paginate(query, options);
         }
 
         if (NFTres.docs.length === 0)
@@ -86,7 +105,6 @@ export default async (req, res) => {
             .status(400)
             .json({ success: false, error: "nft not found" });
 
-        console.log(NFTres.docs);
         NFTres.docs = await Promise.all(
           NFTres.docs.map(async (nft) => {
             const maxSupply = (
