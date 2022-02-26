@@ -1,5 +1,7 @@
 import dbConnect from "../../../utils/dbConnect";
 import NFT from "../../../models/NFT";
+import * as atob from "atob";
+
 // import User from "../../../../models/User";
 dbConnect();
 
