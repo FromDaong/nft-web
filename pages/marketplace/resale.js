@@ -114,6 +114,7 @@ const Marketplace = ({ search }) => {
         .then(() => setLoading(false));
     }
   }, [router, jsonBody, _orderBookArray]);
+  console.log({ jsonBody, loading });
 
   useEffect(() => {
     const populatedArray =
