@@ -62,33 +62,24 @@ export default async (req, res) => {
         }
 
         if (req.query.s) {
-          const search = {
-            $search: {
-              index: "init",
-              text: {
-                query: `${req.query.s}*`,
-                path: ["name", "description", "model_handle"],
+          const agg = [
+            {
+              $search: {
+                index: "init",
+                text: {
+                  query: `${req.query.s}*`,
+                  path: ["name", "description", "model_handle"],
+                },
               },
             },
-          };
-
-          const match = {
-            $match: {
-              id: { $in: req.body.nfts },
-            },
-          };
-
-          if (filterTags.length > 0) {
-            match.$match.tags = { $in: filterTags };
-          }
-
-          const aggregateArr = [
             {
-              ...search,
-              ...match,
+              $match: {
+                id: { $in: req.body.nfts },
+                ...(filterTags.length > 0 && { tags: { $in: filterTags } }),
+              },
             },
           ];
-          const aggregate = NFT.aggregate(aggregateArr);
+          const aggregate = NFT.aggregate(agg);
           NFTres = await NFT.aggregatePaginate(aggregate, options);
         } else {
           const query = { id: { $in: req.body.nfts } };
@@ -102,7 +93,7 @@ export default async (req, res) => {
           return res
             .status(400)
             .json({ success: false, error: "nft not found" });
-
+        console.log(NFTres.docs);
         NFTres.docs = await Promise.all(
           NFTres.docs.map(async (nft) => {
             const maxSupply = (
@@ -112,7 +103,7 @@ export default async (req, res) => {
               await getNftTotalSupply(treatNFTMinter, id)
             )?.toNumber();
 
-            const returnObj = { ...nft._doc, maxSupply, totalSupply };
+            const returnObj = { ...nft, maxSupply, totalSupply };
             if (nft.blurhash) {
               delete returnObj.image;
               delete returnObj.daoCdnUrl;
