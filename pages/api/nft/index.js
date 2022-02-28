@@ -85,7 +85,6 @@ export default async (req, res) => {
               },
             },
           ];
-          console.log({ agg: agg[1].$match });
           const aggregate = NFT.aggregate(agg);
           NFTs = await NFT.aggregatePaginate(aggregate, options);
         } else {
@@ -104,10 +103,8 @@ export default async (req, res) => {
           NFTs = await NFT.paginate(query, options);
         }
 
-        console.log({ NFTs });
-
         NFTs.docs = await NFTs.docs.map((n) => {
-          const returnObj = { ...n };
+          const returnObj = n;
 
           returnObj.mints = returnObj.mints?.length;
           delete returnObj.identity_access_key;
