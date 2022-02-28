@@ -136,8 +136,6 @@ const Marketplace = ({ search }) => {
     forceUpdate();
   }, [searchFilter, orderBookArray, sortBy, showPendingModal]);
 
-  console.log({ error, finalArray, orderBookArray });
-
   return (
     <AnimateSharedLayout>
       <div
@@ -263,24 +261,22 @@ const Marketplace = ({ search }) => {
             ) : error ? (
               <ErrorFallback custom={"Failed to load NFTs"} />
             ) : (
-              finalArray.length > 0 && (
-                <>
-                  {finalArray.map((o, i) => (
-                    <Order
-                      searchFilter={searchFilter}
-                      soldOut={o.item.mints === Number(o.item.max_supply)}
-                      nftResult={o.item}
-                      index={i}
-                      order={o.item}
-                      account={account}
-                      key={o.refIndex}
-                      setPendingModal={setShowPendingModal}
-                      openCompleteModal={() => ({})}
-                      setPurchaseOrderData={setPurchaseOrderData}
-                    />
-                  ))}
-                </>
-              )
+              <>
+                {finalArray.map((o, i) => (
+                  <Order
+                    searchFilter={searchFilter}
+                    soldOut={o.item.mints === Number(o.item.max_supply)}
+                    nftResult={o.item}
+                    index={i}
+                    order={o.item}
+                    account={account}
+                    key={o.refIndex}
+                    setPendingModal={setShowPendingModal}
+                    openCompleteModal={() => ({})}
+                    setPurchaseOrderData={setPurchaseOrderData}
+                  />
+                ))}
+              </>
             )}
           </div>
 
