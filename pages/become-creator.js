@@ -17,7 +17,6 @@ import { create } from "ipfs-http-client";
 import { useWallet } from "use-wallet";
 
 import dynamic from "next/dynamic";
-import { motion } from "framer-motion";
 
 const VerifyButton = dynamic(() => import("@passbase/button/react"), {
   ssr: false,
@@ -169,12 +168,7 @@ const CreateModel = () => {
       )}
 
       {(step === "signup" || step === "submitting") && (
-        <div
-          animate={{ y: 0, opacity: 1 }}
-          style={{ y: -100, opacity: 0 }}
-          transition={{ delay: 0.25 }}
-          className="pink-bg mb-5"
-        >
+        <div className="pink-bg mb-5">
           <Hero
             title="Become a Creator"
             subtitle="Complete the form below to apply to become a creator. Creators are able to mint NFTs on TreatDAO!"
@@ -299,7 +293,8 @@ const CreateModel = () => {
                               color: "inherit",
                               textDecoration: "underline",
                             }}
-                            target="_blank" rel="noreferrer"
+                            target="_blank"
+                            rel="noreferrer"
                           >
                             terms of service.
                           </a>
