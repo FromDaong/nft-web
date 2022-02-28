@@ -109,6 +109,8 @@ export default async (req, res) => {
               delete returnObj.daoCdnUrl;
             }
 
+            console.log({ returnObj });
+
             return returnObj;
           })
         );
