@@ -34,11 +34,16 @@ const Gallery = () => {
       {Array.from({ length: 1 }).map((_, idx) => (
         <Col>
           <Card>
-            <Card.Img
-              className="p-2"
-              variant="top"
-              src={"/assets/KristinCover.png"}
-            />
+            <a
+              href="https://issuu.com/treatdao/docs/totm_2_kristin_elise?fr=sNTUyZTQ2MTQ0MjQ"
+              target="_blank"
+            >
+              <Card.Img
+                className="p-2"
+                variant="top"
+                src={"/assets/KristinCover.png"}
+              />
+            </a>
             <Card.Body>
               <Card.Title>March: KristinElise</Card.Title>
               <Card.Text>Curated collection featuring Kristin Elise</Card.Text>
