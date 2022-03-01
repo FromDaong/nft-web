@@ -12,7 +12,8 @@ const Gallery = () => {
           <Card className="p-2">
             <a
               href="https://issuu.com/treatdao/docs/treatmagazine1.pptx?fr=sYWE5MTQ1Mzk2OTc"
-              target="_blank" rel="noreferrer"
+              target="_blank"
+              rel="noreferrer"
             >
               <Card.Img
                 className="p-2"
@@ -36,11 +37,11 @@ const Gallery = () => {
             <Card.Img
               className="p-2"
               variant="top"
-              src={"/assets/suneTotm.png"}
+              src={"/assets/KristinCover.png"}
             />
             <Card.Body>
-              <Card.Title>March Edition</Card.Title>
-              <Card.Text>Coming Soon</Card.Text>
+              <Card.Title>March: KristinElise</Card.Title>
+              <Card.Text>Curated collection featuring Kristin Elise</Card.Text>
             </Card.Body>
           </Card>
         </Col>
