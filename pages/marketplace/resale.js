@@ -72,9 +72,9 @@ const Marketplace = ({ search }) => {
     const sortTag =
       sort === "recent"
         ? "Recent"
-        : sort === "asc"
-        ? "Price Low to High"
-        : "Price High to Low";
+        : sort === "desc"
+        ? "Price High to Low"
+        : "Price Low to High";
     setSearchFilter(queryFilter ?? "");
     setSortBy(sortTag);
     try {
@@ -121,16 +121,15 @@ const Marketplace = ({ search }) => {
       populatedNftData &&
       populatedNftData
         .map((x) => {
-          const nftResult = _orderBookArray?.find(
+          const nftResult = _orderBookArray.find(
             (orderBookNft) => x.id === orderBookNft.nftId
           );
-          console.log({ nftResult, id: x.id });
           if (!nftResult) return undefined;
           return { item: { ...x, ...nftResult } };
         })
         .filter((e) => e);
 
-    const renderArray = populatedArray;
+    const renderArray = populatedArray ?? [];
     setRenderArray(renderArray);
   }, [_orderBookArray, populatedNftData]);
 
@@ -284,22 +283,7 @@ const Marketplace = ({ search }) => {
         <br />
         <div className="">
           <div className="nft-list row mt-5 full-width justify-content-center">
-            {loading || !_renderArray || _renderArray.length === 0 ? (
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  justifyContent: "center",
-                }}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 w-full container mx-auto"
-              >
-                {new Array(12).fill(0).map((_, i) => (
-                  <MyNFTItemSkeleton key={i} className="col-span-1" />
-                ))}
-              </div>
-            ) : error ? (
-              <ErrorFallback custom="Error loading page" />
-            ) : (
+            {!loading ? (
               <>
                 {_renderArray.map((o, i) => {
                   return (
@@ -318,6 +302,21 @@ const Marketplace = ({ search }) => {
                   );
                 })}
               </>
+            ) : loading || !_renderArray ? (
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                }}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 w-full container mx-auto"
+              >
+                {new Array(12).fill(0).map((_, i) => (
+                  <MyNFTItemSkeleton key={i} className="col-span-1" />
+                ))}
+              </div>
+            ) : (
+              <ErrorFallback custom="Error loading page" />
             )}
           </div>
 

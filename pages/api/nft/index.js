@@ -65,36 +65,28 @@ export default async (req, res) => {
         }
 
         if (s) {
-          let search = {
-            $search: {
-              index: "init",
-              text: {
-                query: `${s}*`,
-                path: ["name", "description", "model_handle"],
+          const agg = [
+            {
+              $search: {
+                index: "init",
+                wildcard: {
+                  query: `${s}*`,
+                  path: ["name", "description", "model_handle"],
+                  allowAnalyzedField: true,
+                },
               },
             },
-          };
-          let match = {
-            $match: {
-              old_totw: { $exists: false },
-              old_totm: { $exists: false },
-              melon_nft: { $exists: false },
-              subscription_nft: { $exists: false },
-            },
-          };
-          // Only add the search filter if there is a search tags
-          if (filterTags.length > 0) {
-            match.$match.tags = {
-              $in: filterTags,
-            };
-          }
-          let aggregateArr = [
             {
-              ...search,
-              ...match,
+              $match: {
+                old_totw: { $exists: false },
+                old_totm: { $exists: false },
+                melon_nft: { $exists: false },
+                subscription_nft: { $exists: false },
+                ...(filterTags.length > 0 && { tags: { $in: filterTags } }),
+              },
             },
           ];
-          const aggregate = NFT.aggregate(aggregateArr);
+          const aggregate = NFT.aggregate(agg);
           NFTs = await NFT.aggregatePaginate(aggregate, options);
         } else {
           const query = {
@@ -113,9 +105,9 @@ export default async (req, res) => {
         }
 
         NFTs.docs = await NFTs.docs.map((n) => {
-          const returnObj = { ...n.toObject() };
+          const returnObj = n;
 
-          returnObj.mints = returnObj.mints.length;
+          returnObj.mints = returnObj.mints?.length;
           delete returnObj.identity_access_key;
 
           if (returnObj.blurhash) {
