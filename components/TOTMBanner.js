@@ -17,7 +17,7 @@ const V2Banner = ({ oldTokenBalance }) => {
           height: 60,
         }}
       >
-        {"We have released the first Treat of the Month + Magazine edition! "}
+        {"Our March edition Treat of the Month + Magazine is out now!"}
         <Link href="/magazine">
           <Button variant="light ml-3">
             <b>{"View Magazine"}</b>
