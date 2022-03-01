@@ -75,10 +75,7 @@ export default async (req, res) => {
             },
             {
               $match: {
-                old_totw: { $exists: false },
-                old_totm: { $exists: false },
-                melon_nft: { $exists: false },
-                subscription_nft: { $exists: false },
+                id: { $in: req.body.nfts },
                 ...(filterTags.length > 0 && { tags: { $in: filterTags } }),
               },
             },

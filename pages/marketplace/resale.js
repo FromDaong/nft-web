@@ -116,23 +116,20 @@ const Marketplace = ({ search }) => {
   }, [router, jsonBody, _orderBookArray]);
 
   useEffect(() => {
-    console.log({ populatedNftData, _orderBookArray });
     const populatedArray =
       _orderBookArray &&
       populatedNftData &&
       populatedNftData
         .map((x) => {
-          const nftResult = _orderBookArray?.find(
+          const nftResult = _orderBookArray.find(
             (orderBookNft) => x.id === orderBookNft.nftId
           );
-          console.log({ x });
-          console.log({ nftResult, id: x.id });
           if (!nftResult) return undefined;
           return { item: { ...x, ...nftResult } };
         })
         .filter((e) => e);
 
-    const renderArray = populatedArray;
+    const renderArray = populatedArray ?? [];
     setRenderArray(renderArray);
   }, [_orderBookArray, populatedNftData]);
 
