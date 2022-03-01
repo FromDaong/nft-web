@@ -62,12 +62,12 @@ export default async (req, res) => {
         }
 
         if (req.query.s) {
-          const agg = [
+          const aggregate = NFT.aggregate([
             {
               $search: {
                 index: "init",
                 text: {
-                  query: `${req.query.s}*`,
+                  query: `*${req.query.s}*`,
                   path: ["name", "description", "model_handle"],
                 },
               },
@@ -75,11 +75,9 @@ export default async (req, res) => {
             {
               $match: {
                 id: { $in: req.body.nfts },
-                ...(filterTags.length > 0 && { tags: { $in: filterTags } }),
               },
             },
-          ];
-          const aggregate = NFT.aggregate(agg);
+          ]);
           NFTres = await NFT.aggregatePaginate(aggregate, options);
         } else {
           const query = { id: { $in: req.body.nfts } };
@@ -103,13 +101,15 @@ export default async (req, res) => {
               await getNftTotalSupply(treatNFTMinter, id)
             )?.toNumber();
 
-            const returnObj = { ...nft, maxSupply, totalSupply };
+            const returnObj = {
+              ...(nft.toObject ? nft.toObject() : nft),
+              maxSupply,
+              totalSupply,
+            };
             if (nft.blurhash) {
               delete returnObj.image;
               delete returnObj.daoCdnUrl;
             }
-
-            console.log({ returnObj });
 
             return returnObj;
           })
