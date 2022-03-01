@@ -116,6 +116,7 @@ const Marketplace = ({ search }) => {
   }, [router, jsonBody, _orderBookArray]);
 
   useEffect(() => {
+    console.log({ populatedNftData, _orderBookArray });
     const populatedArray =
       _orderBookArray &&
       populatedNftData &&
@@ -124,6 +125,7 @@ const Marketplace = ({ search }) => {
           const nftResult = _orderBookArray?.find(
             (orderBookNft) => x.id === orderBookNft.nftId
           );
+          console.log({ x });
           console.log({ nftResult, id: x.id });
           if (!nftResult) return undefined;
           return { item: { ...x, ...nftResult } };
@@ -152,8 +154,6 @@ const Marketplace = ({ search }) => {
       { shallow: true }
     );
   };
-
-  console.log({ loading, jsonBody, orderBook });
 
   return (
     <AnimateSharedLayout>
@@ -286,7 +286,7 @@ const Marketplace = ({ search }) => {
         <br />
         <div className="">
           <div className="nft-list row mt-5 full-width justify-content-center">
-            {_renderArray && !loading ? (
+            {!loading ? (
               <>
                 {_renderArray.map((o, i) => {
                   return (
