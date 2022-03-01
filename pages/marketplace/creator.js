@@ -136,8 +136,6 @@ const Marketplace = ({ search }) => {
     forceUpdate();
   }, [searchFilter, orderBookArray, sortBy, showPendingModal]);
 
-  console.log({ error, finalArray, orderBookArray });
-
   return (
     <AnimateSharedLayout>
       <div
