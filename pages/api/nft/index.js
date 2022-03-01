@@ -105,7 +105,7 @@ export default async (req, res) => {
         }
 
         NFTs.docs = await NFTs.docs.map((n) => {
-          const returnObj = n;
+          const returnObj = { ...(n.toObject ? n.toObject() : n) };
 
           returnObj.mints = returnObj.mints?.length;
           delete returnObj.identity_access_key;
