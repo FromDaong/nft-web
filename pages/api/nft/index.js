@@ -69,9 +69,10 @@ export default async (req, res) => {
             {
               $search: {
                 index: "init",
-                text: {
+                wildcard: {
                   query: `${s}*`,
                   path: ["name", "description", "model_handle"],
+                  allowAnalyzedField: true,
                 },
               },
             },

@@ -19,7 +19,7 @@ const treatNFTMinter = new web3.eth.Contract(
 
 export default async (req, res) => {
   const {
-    query: { id, p },
+    query: { id, s },
     method,
   } = req;
 
@@ -61,24 +61,30 @@ export default async (req, res) => {
           options.sort.id = -1;
         }
 
-        if (req.query.s) {
+        if (s) {
           const aggregate = NFT.aggregate([
             {
               $search: {
                 index: "init",
-                text: {
-                  query: `*${req.query.s}*`,
+                wildcard: {
+                  query: `${s}*`,
                   path: ["name", "description", "model_handle"],
+                  allowAnalyzedField: true,
                 },
               },
             },
             {
               $match: {
-                id: { $in: req.body.nfts },
+                old_totw: { $exists: false },
+                old_totm: { $exists: false },
+                melon_nft: { $exists: false },
+                subscription_nft: { $exists: false },
+                ...(filterTags.length > 0 && { tags: { $in: filterTags } }),
               },
             },
           ]);
           NFTres = await NFT.aggregatePaginate(aggregate, options);
+          console.log(NFTres);
         } else {
           const query = { id: { $in: req.body.nfts } };
           if (filterTags.length > 0) {
@@ -89,7 +95,7 @@ export default async (req, res) => {
 
         if (NFTres.docs.length === 0)
           return res
-            .status(400)
+            .status(200)
             .json({ success: false, error: "nft not found" });
         console.log(NFTres.docs);
         NFTres.docs = await Promise.all(
