@@ -110,7 +110,6 @@ export default async (req, res) => {
           returnObj.mints = returnObj.mints?.length;
           delete returnObj.identity_access_key;
           if (returnObj.blurhash) {
-            console.log("Deleting keys");
             delete returnObj.image;
             delete returnObj.daoCdnUrl;
           }
