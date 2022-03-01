@@ -54,7 +54,7 @@ export default async (req, res) => {
               options.sort.list_price = 1;
               break;
             default:
-              options.sort.id = -1;
+              options.sort.list_price = -1;
               break;
           }
         } else {

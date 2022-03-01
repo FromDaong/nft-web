@@ -72,9 +72,9 @@ const Marketplace = ({ search }) => {
     const sortTag =
       sort === "recent"
         ? "Recent"
-        : sort === "asc"
-        ? "Price Low to High"
-        : "Price High to Low";
+        : sort === "desc"
+        ? "Price High to Low"
+        : "Price Low to High";
     setSearchFilter(queryFilter ?? "");
     setSortBy(sortTag);
     try {
