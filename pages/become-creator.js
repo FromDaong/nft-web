@@ -15,7 +15,7 @@ import Hero from "../components/Hero";
 import Loading from "../components/Loading";
 import { create } from "ipfs-http-client";
 import { useWallet } from "use-wallet";
-
+import Axios from "axios";
 import dynamic from "next/dynamic";
 
 const VerifyButton = dynamic(() => import("@passbase/button/react"), {
@@ -29,7 +29,16 @@ const CreateModel = () => {
   const [success, setSuccess] = useState(false);
   const [step, setStep] = useState("loading");
   const { account } = useWallet();
-  const { data: res } = useSWR(`/api/model/find-by-address/${account}`);
+  const { res, setRes } = useState(null);
+
+  useEffect(() => {
+    Axios.get(`/api/model/find-by-address/${account}`)
+      .then((res) => {
+        setRes(res.data);
+        setStep("");
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -131,7 +140,6 @@ const CreateModel = () => {
   };
 
   useEffect(() => {
-    console.log(res);
     if (res) {
       if (res.rejected) {
         return setStep("rejected");
@@ -151,6 +159,8 @@ const CreateModel = () => {
     }
     return setStep("signup");
   }, [res]);
+
+  console.log({ step, res });
 
   return (
     <div className="no-position" style={{ maxWidth: 800, margin: "auto" }}>
@@ -338,12 +348,7 @@ const CreateModel = () => {
       )}
 
       {step === "verify" && (
-        <div
-          animate={{ y: 0, opacity: 1 }}
-          style={{ y: -100, opacity: 0 }}
-          transition={{ delay: 0.25 }}
-          className="pink-bg mb-5"
-        >
+        <div className="pink-bg mb-5">
           <Hero
             title="Verfiy your identity"
             subtitle="Verfiy your identity to complete your creator application. Creators are able to mint NFTs on TreatDAO!"
