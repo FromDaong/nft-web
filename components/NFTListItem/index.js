@@ -113,7 +113,7 @@ const NFTListItem = ({
             >
               <span className="sr-only">Loading...</span>
             </Spinner>
-            {!data.blurhash ? (
+            {data.image || data.cdnUrl ? (
               <div
                 style={{
                   backgroundImage: data.daoCdnUrl
