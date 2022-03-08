@@ -50,7 +50,10 @@ export default async (req, res) => {
           totalSupply,
         };
 
-        if (returnData.blurhash) delete returnData.image;
+        if (returnData.blurhash) {
+          delete returnData.image;
+          delete returnData.cdnUrl;
+        }
 
         res.status(200).json(returnData);
       } catch (error) {
