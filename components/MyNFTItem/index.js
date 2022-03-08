@@ -9,6 +9,8 @@ import { isBlurhashValid } from "blurhash";
 import axios from "axios";
 import { EyeSlash } from "react-bootstrap-icons";
 import Link from "next/link";
+import { useNFTItemData } from "../../lib/imagecdn";
+import InView from "react-intersection-observer";
 
 const NFTListItem = ({
   data,
@@ -22,29 +24,14 @@ const NFTListItem = ({
   hasOpenOrder,
 }) => {
   const [modalData, setModalData] = useState();
-  const [image, setImage] = useState();
+  const { ref, gotInView, model, image } = useNFTItemData(data);
 
-  useEffect(() => {
-    if (!data.image) return;
-    axios
-      .get(
-        `/api/v2/utils/images/fetchWithFallback?default=${data.image}&cdn=${data.daoCdnUrl}`
-      )
-      .then((res) => {
-        if (res.data === data.image) {
-          axios
-            .get(data.image)
-            .then((res) =>
-              setImage(res.data.replace(`"`, "").replace(/["']/g, ""))
-            )
-            .catch((err) => console.log(err));
-        } else {
-          setImage(res.data);
-          console.log("Setting res");
-        }
-      });
-  }, [data]);
-
+  const bgImage = data.daoCdnUrl
+    ? `url(${data.daoCdnUrl}-/quality/lightest/-/format/webp/)`
+    : `url(${data.image})`;
+  const profilePic = model.username
+    ? `url(${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/)`
+    : `url(${data.model_profile_pic})`;
   return (
     <>
       <Modal
@@ -69,8 +56,8 @@ const NFTListItem = ({
         </Modal.Footer>
       </Modal>
 
-      <div>
-        <div className="nft-card" style={{ boxShadow: "none" }}>
+      <InView as={"a"} onChange={gotInView} className="row m-0 w-100 my-4">
+        <div ref={ref} className="nft-card" style={{ boxShadow: "none" }}>
           <div className="totw-tag-wrapper">
             {balance > 1 && (
               <div className="quantity-wrapper totw-tag">
@@ -82,7 +69,7 @@ const NFTListItem = ({
             <a>
               <div
                 className="profile-pic"
-                style={{ backgroundImage: `url(${data.model_profile_pic})` }}
+                style={{ backgroundImage: `url(${profilePic})` }}
               />
             </a>
           </Link>
@@ -124,7 +111,7 @@ const NFTListItem = ({
                 </div>
                 <div
                   style={{
-                    background: `url(${image})`,
+                    backgroundImage: `url('/api/v2/utils/images/fetchWithFallback?default=${data.image}')`,
                     minHeight: 375,
                     zIndex: 100,
                   }}
@@ -224,7 +211,7 @@ const NFTListItem = ({
             </div>
           )}
         </div>
-      </div>
+      </InView>
     </>
   );
 };
