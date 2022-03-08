@@ -6,7 +6,7 @@ import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 import Link from "next/link";
 import { InView } from "react-intersection-observer";
-import axios from "axios";
+import { useNFTItemData } from "../../lib/imagecdn";
 
 const NFTListItem = ({
   data,
@@ -15,36 +15,17 @@ const NFTListItem = ({
   isOwner,
   price,
   owner,
-  quantity,
-  disableAnimations,
-  modelData,
   soldOut,
 }) => {
-  const [visible, setVisible] = useState(false);
-  const [model, setModel] = useState({});
-  const [image, setBase64Image] = useState();
-  const rr = createRef();
-
-  useEffect(() => {
-    if (visible) {
-      axios
-        .get(`/api/model/find-by-id/${data.model_bnb_address}`)
-        .then((res) => setModel(res.data))
-        .catch((err) => console.error(err));
-    }
-  }, [visible]);
-
-  const gotInView = (inView, entry) => {
-    if (inView && !model.username) setVisible(true);
-  };
-
+  const { ref, gotInView, model, image } = useNFTItemData(data);
+  console.log({ image });
   if (!data.attributes) return <div></div>;
 
   return (
     <Link href={`/view/${data.id}`}>
       <InView as={"a"} onChange={gotInView} className="row m-0 w-100 my-4">
         <div
-          ref={rr}
+          ref={ref}
           className={`nft-card ${
             (data.totw || data.totm || data.old_totw || data.old_totm) &&
             "purple"
@@ -116,9 +97,7 @@ const NFTListItem = ({
             {data.image || data.cdnUrl ? (
               <div
                 style={{
-                  backgroundImage: data.daoCdnUrl
-                    ? `url(${data.daoCdnUrl}-/quality/lightest/-/format/webp/)`
-                    : `url(${data.image})`,
+                  backgroundImage: `url('/api/v2/utils/images/fetchWithFallback?default=${data.image}')`,
                   minHeight: 375,
                   zIndex: 100,
                 }}
