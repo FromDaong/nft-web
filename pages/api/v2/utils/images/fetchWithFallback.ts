@@ -17,10 +17,10 @@ export default async function fetchWithFallback(req, res) {
       return res.send(image);
     } else {
       const cdnurl = `${req.query.default}-/quality/lighter/-/format/webp/`;
+      console.log(cdnurl);
       const image_data = await axios.get(cdnurl);
-      const image = image_data.data;
       res.setHeader("Content-Type", "image/webp");
-      return res.send(image);
+      return res.send(image_data);
     }
   } catch (err) {
     const response = await axios.get(req.query.default, {
