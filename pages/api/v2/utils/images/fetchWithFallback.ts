@@ -57,7 +57,7 @@ export default async function fetchWithFallback(req, res) {
       const blob = response.data.replace(`"`, "").replace(/["']/g, "");
       const image = await sharp(Buffer.from(blob))
         .resize(500)
-        .toFormat("webp", { nearLossless: true, quality: 50 })
+        .toFormat("webp", { nearLossless: true, quality: 50, alphaQuality: 80 })
         .toBuffer();
       res.setHeader("Content-Type", "image/webp");
       return res.send(image);
