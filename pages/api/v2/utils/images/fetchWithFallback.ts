@@ -45,9 +45,14 @@ export default async function fetchWithFallback(req, res) {
   } else {
     try {
       const cdnurl = `${req.query.default}-/quality/lighter/-/format/webp/`;
-      const image_data = await axios.get(cdnurl);
+      const image_data = await fetch(cdnurl);
+      const img = await image_data.arrayBuffer();
+      const finalImage = await sharp(Buffer.from(img))
+        .resize(500)
+        .toFormat("webp", { nearLossless: true, quality: 50, alphaQuality: 80 })
+        .toBuffer();
       res.setHeader("Content-Type", "image/webp");
-      return res.send(image_data);
+      return res.send(Buffer.from(finalImage));
     } catch (err) {
       console.log({ err });
       const response = await axios.get(req.query.default, {
