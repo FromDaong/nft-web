@@ -26,12 +26,9 @@ const NFTListItem = ({
   const [modalData, setModalData] = useState();
   const { ref, gotInView, model, image } = useNFTItemData(data);
 
-  const bgImage = data.daoCdnUrl
-    ? `url(${data.daoCdnUrl}-/quality/lightest/-/format/webp/)`
-    : `url(${data.image})`;
-  const profilePic = model.username
-    ? `url(${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/)`
-    : `url(${data.model_profile_pic})`;
+  const profilePic = model
+    ? `url('${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/')`
+    : `url('${data.model_profile_pic}')`;
   return (
     <>
       <Modal
@@ -69,7 +66,7 @@ const NFTListItem = ({
             <a>
               <div
                 className="profile-pic"
-                style={{ backgroundImage: `url(${profilePic})` }}
+                style={{ backgroundImage: profilePic }}
               />
             </a>
           </Link>
