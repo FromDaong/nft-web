@@ -17,8 +17,7 @@ const NFTListItem = ({
   owner,
   soldOut,
 }) => {
-  const { ref, gotInView, model, image } = useNFTItemData(data);
-  console.log({ image });
+  const { ref, gotInView, model } = useNFTItemData(data);
   if (!data.attributes) return <div></div>;
 
   return (
@@ -59,18 +58,16 @@ const NFTListItem = ({
 
           <Link
             href={`/creator/${
-              model.username
-                ? model.username
-                : data.attributes[0].value.slice(1, -1)
+              model ? model.username : data.attributes[0].value.slice(1, -1)
             }`}
           >
             <a>
               <div
                 className="profile-pic"
                 style={{
-                  backgroundImage: model.username
-                    ? `url(${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/)`
-                    : `url(${data.model_profile_pic})`,
+                  backgroundImage: model
+                    ? `url('${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/')`
+                    : `url('${data.model_profile_pic}')`,
                 }}
               />
             </a>
@@ -138,9 +135,7 @@ const NFTListItem = ({
               <div className="title">{data.name}</div>
               <div className="s">
                 {owner && <b>Creator: </b>}
-                {model.username
-                  ? model.username
-                  : data.attributes[0].value.slice(1, -1)}
+                {model ? model.username : data.attributes[0].value.slice(1, -1)}
               </div>
             </div>
             {(price || data.list_price) && (
