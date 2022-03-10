@@ -94,7 +94,7 @@ const NFTListItem = ({
             >
               <span className="sr-only">Loading...</span>
             </Spinner>
-            {data.image || data.cdnUrl ? (
+            {data.image ? (
               <div
                 style={{
                   backgroundImage: `url('/api/v2/utils/images/fetchWithFallback?default=${data.image}')`,
