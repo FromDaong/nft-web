@@ -67,7 +67,7 @@ const WalletModal = ({ show, handleClose, data }) => {
           </div>
           <div className="col-md-6">
             <Button
-              colorScheme="pink"
+              variant="primary w-100"
               className="mb-2 w-100"
               onClick={() => null}
             >

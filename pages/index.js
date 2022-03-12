@@ -84,7 +84,7 @@ const Home = () => {
                       offset={50}
                       duration={1000}
                     >
-                      <Button colorScheme="pink">
+                      <Button variant="primary w-100">
                         <b>View Marketplaces</b>
                       </Button>
                     </Scroll.Link>

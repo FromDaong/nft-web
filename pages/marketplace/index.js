@@ -47,7 +47,7 @@ const Home = () => {
             <div className="buttons">
               <Link href="/marketplace/creator">
                 <a>
-                  <Button colorScheme="pink" style={{ maxWidth: 250 }}>
+                  <Button variant="primary w-100" style={{ maxWidth: 250 }}>
                     <b>THE SWEET SHOP</b>
                   </Button>
                 </a>

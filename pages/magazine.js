@@ -20,7 +20,7 @@ const Totm = () => {
                 rel="noopener noreferrer"
               >
                 <a>
-                  <Button colorScheme="pink">
+                  <Button variant="primary w-100">
                     <b>{"Visit the Ethereum Collection"}</b>
                   </Button>
                 </a>

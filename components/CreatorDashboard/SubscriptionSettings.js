@@ -141,7 +141,7 @@ const EditProfile = ({}) => {
                 subscriptions.
               </small>
             </div>
-            <Button colorScheme="pink" onClick={setSubscriptionPrice}>
+            <Button variant="primary w-100" onClick={setSubscriptionPrice}>
               Update Subscription Price
             </Button>
 

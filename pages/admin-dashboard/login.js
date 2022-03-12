@@ -64,7 +64,7 @@ const CreateNFT = () => {
           subtitle={"Welcome back, Sir / Madame."}
           additionalContent={
             <Link href="/admin-dashboard">
-              <Button colorScheme="pink">
+              <Button variant="primary w-100">
                 <b>{"Back to admin panel"}</b>
               </Button>
             </Link>
@@ -95,7 +95,7 @@ const CreateNFT = () => {
             />
           </div>
           <Button
-            colorScheme="pink"
+            variant="primary w-100"
             onClick={formik.handleSubmit}
             type="submit"
           >

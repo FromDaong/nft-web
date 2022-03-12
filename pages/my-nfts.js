@@ -64,7 +64,7 @@ const OwnedNfts = ({
                   <b>{"Hide Contents 🙈"}</b>
                 </Button>
               ) : (
-                <Button colorScheme="pink" onClick={revealNFTs}>
+                <Button variant="primary w-100" onClick={revealNFTs}>
                   <b>{"Reveal Contents 👀"}</b>
                 </Button>
               )}
@@ -182,7 +182,7 @@ const OpenOrders = ({
                   <b>{"Hide Contents 🙈"}</b>
                 </Button>
               ) : (
-                <Button colorScheme="pink" onClick={revealNFTs}>
+                <Button variant="primary w-100" onClick={revealNFTs}>
                   <b>{"Reveal Contents 👀"}</b>
                 </Button>
               )}

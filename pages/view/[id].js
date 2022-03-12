@@ -64,7 +64,7 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   return (
     <Button
       mt={3}
-      colorScheme="pink"
+      variant="primary w-100"
       isFullWidth
       style={{ borderRadius: 7 }}
       disabled={
