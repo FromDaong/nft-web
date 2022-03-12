@@ -4,7 +4,7 @@ import { useWallet } from "use-wallet";
 import { getMasterMelonFarmerContract, getPendingMelons } from "../treat/utils";
 
 const useGetPendingMelons = (pid: number) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const [pendingMelons, setPendingMelons] = useState(null);
   const masterMelonFarmerContract = getMasterMelonFarmerContract(treat);

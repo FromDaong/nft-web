@@ -4,7 +4,7 @@ import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";
 
 const useGetIsGiveAwayNft = () => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const creatorMartContract = getCreatorMartContract(treat);
 

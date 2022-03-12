@@ -151,7 +151,7 @@ const ViewModel = ({
   nftSetPrice,
 }) => {
   const [copied, setCopied] = useState(false);
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const subscriptionCost = useGetSubscriptionCost(modelData.address || "");
   const isSubscribed = useGetIsSubscribed(modelData.address || "");
   const formattedSubCost = Web3.utils.fromWei(subscriptionCost.toString());

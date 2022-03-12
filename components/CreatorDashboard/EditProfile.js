@@ -8,15 +8,15 @@ import { useRouter } from "next/router";
 import Hero from "../../components/Hero";
 import Loading from "../../components/Loading";
 import { create } from "ipfs-http-client";
-import { useWallet } from "use-wallet";
 import { PencilFill } from "react-bootstrap-icons";
 import axios from "axios";
+import { useMoralis } from "react-moralis";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
 const EditProfile = ({}) => {
   const router = useRouter();
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const { data: res } = useSWR(`/api/model/find-by-address/${account}`);
   const [success, setSuccess] = useState(false);
   const [disabled, setDisabled] = useState(false);

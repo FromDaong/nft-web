@@ -11,7 +11,7 @@ const useMintSubscriberNft = (
   treatCost: number,
   useSubscriberMart = false
 ) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const subscriberMartContract = useSubscriberMart
     ? getSubscriberMartContract(treat)

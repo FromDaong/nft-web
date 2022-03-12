@@ -2,8 +2,8 @@ import React from "react";
 import { motion } from "framer-motion";
 import CreatorNFTItem from "../CreatorNFTItem";
 import { Button } from "react-bootstrap";
-import { useWallet } from "use-wallet";
 import { PiggyBankFill, Clipboard } from "react-bootstrap-icons";
+import { useMoralis } from "react-moralis";
 
 const CreatedNFTs = ({
   transferNFTClick,
@@ -12,7 +12,7 @@ const CreatedNFTs = ({
   nftData,
   modelData,
 }) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
 
   return (
     <div className="white-tp-bg" style={{ minHeight: 400 }}>

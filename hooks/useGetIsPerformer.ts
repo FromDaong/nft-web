@@ -1,10 +1,13 @@
-import { isPerformerForMinter, getTreatNFTMinterContract } from "../treat/utils";
+import {
+  isPerformerForMinter,
+  getTreatNFTMinterContract,
+} from "../treat/utils";
 import { useCallback } from "react";
 import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";
 
 const useGetIsPerformer = (modelAddress: string) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const treatNftMinterContract = getTreatNFTMinterContract(treat);
 

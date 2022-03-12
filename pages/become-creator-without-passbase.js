@@ -21,7 +21,7 @@ const client = create("https://ipfs.infura.io:5001/api/v0");
 const CreateModel = () => {
   const router = useRouter();
   const [success, setSuccess] = useState(false);
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const { data: res } = useSWR(`/api/model/find-by-address/${account}`);
 
   const formik = useFormik({

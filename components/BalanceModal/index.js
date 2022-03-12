@@ -1,13 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
-import { useWallet } from "use-wallet";
 import useTokenBalance from "../../hooks/useTokenBalance";
-import {
-  getBalanceNumber,
-  getDisplayBalance,
-  getFullDisplayBalance,
-} from "../../utils/formatBalance";
+import { getDisplayBalance } from "../../utils/formatBalance";
 
 // import blur from "/assets/blur.png";
 // import "./index.scss";
@@ -16,13 +11,6 @@ const BalanceModal = ({ show, handleClose }) => {
   const myBalance = useTokenBalance(
     "0x01bd7acb6fF3B6Dd5aefA05CF085F2104f3fC53F"
   );
-
-  const { connect } = useWallet();
-
-  const connectToWallet = (provider) => {
-    localStorage.setItem("connectedBefore", true);
-    connect(provider);
-  };
 
   return (
     <>

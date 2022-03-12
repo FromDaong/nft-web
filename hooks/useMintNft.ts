@@ -6,12 +6,8 @@ import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";
 import bsc from "@binance-chain/bsc-use-wallet";
 
-const useMintNft = (
-  id: number,
-  treatCost: number,
-  useTreatMart = false
-) => {
-  const { account } = useWallet();
+const useMintNft = (id: number, treatCost: number, useTreatMart = false) => {
+  const { account } = useMoralis();
   const treat = useTreat();
   const treatMartContract = useTreatMart
     ? getTreatMartContract(treat)

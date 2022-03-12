@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
+import { useMoralis } from "react-moralis";
 import { useWallet } from "use-wallet";
 import { Treat } from "../../treat";
 
@@ -17,6 +18,7 @@ declare global {
 }
 
 const TreatProvider: React.FC = ({ children }) => {
+  const { Moralis } = useMoralis();
   const { ethereum } = useWallet();
   const [treat, setTreat] = useState<any>();
 
@@ -24,12 +26,12 @@ const TreatProvider: React.FC = ({ children }) => {
     // @ts-ignore
     window.treat = treat;
     // @ts-ignore
-    window.eth = ethereum;
+    window.eth = ethereum; //Moralis.web3;
   }
 
   useEffect(() => {
-    if (ethereum) {
-      const chainId = Number(ethereum.chainId);
+    if (Moralis) {
+      const chainId = Number(Moralis.web3.network.chainId);
       const treatLib = new Treat(ethereum, chainId, false, {
         defaultAccount: ethereum.selectedAddress,
         defaultConfirmations: 1,

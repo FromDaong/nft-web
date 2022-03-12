@@ -45,7 +45,7 @@ const WalletModal = ({ show, handleClose }) => {
         </Modal.Header>
         <Modal.Body>
           <Button
-            colorScheme={"pink"}
+            variant="primary"
             className="mb-2 w-100"
             onClick={() => smartConnectWithMoralis()}
           >

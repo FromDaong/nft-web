@@ -8,7 +8,7 @@ import {
 } from "../treat/utils";
 
 const useGetStakedAmount = (pid: number, v1: boolean) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const [stakedAmount, setStakedAmount] = useState(null);
   const masterMelonFarmerContract = getMasterMelonFarmerContract(treat);

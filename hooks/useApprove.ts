@@ -6,7 +6,7 @@ import { approve, getTreatMartContract } from "../treat/utils";
 import useTreat from "./useTreat";
 
 const useApprove = (treatMart: Contract) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const treatMartContract = getTreatMartContract(treat);
 

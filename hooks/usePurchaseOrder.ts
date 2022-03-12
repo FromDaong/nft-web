@@ -14,7 +14,7 @@ const usePurchaseOrder = (
   price: number,
   seller: string
 ) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
 
   const treatMarketplaceContract = getTreatMarketplaceContract(treat);

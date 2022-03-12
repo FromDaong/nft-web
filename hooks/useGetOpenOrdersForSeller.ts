@@ -11,7 +11,7 @@ const useGetOpenOrdersForSeller = (seller: string = null) => {
   const [orders, setOrders] = useState([]);
 
   if (seller === null) {
-    const { account } = useWallet();
+    const { account } = useMoralis();
     seller = account;
   }
 

@@ -10,7 +10,7 @@ import bsc from "@binance-chain/bsc-use-wallet";
 
 const useGetTreatNFTCost = (id: number, useTreatMart = false) => {
   const [theNftCost, setTheNftCost] = useState(new BigNumber(0));
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const treatMartContract = useTreatMart
     ? getTreatMartContract(treat)

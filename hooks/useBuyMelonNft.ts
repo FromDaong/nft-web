@@ -7,7 +7,7 @@ import { useWallet } from "use-wallet";
 import bsc from "@binance-chain/bsc-use-wallet";
 
 const useBuyMelonNft = () => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const melonMartContract = getMelonMartContract(treat);
 

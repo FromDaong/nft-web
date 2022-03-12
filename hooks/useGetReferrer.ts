@@ -5,7 +5,7 @@ import { useWallet } from "use-wallet";
 
 const useGetReferrer = (modelAddress: string) => {
   const [ref, setRef] = useState(null);
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const treatNftMinterContract = getTreatNFTMinterContract(treat);
 
