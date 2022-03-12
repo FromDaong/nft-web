@@ -1,9 +1,9 @@
-import React, { useState, useEffect, createRef } from "react";
+import React from "react";
 import { Blurhash } from "react-blurhash";
 import { isBlurhashValid } from "blurhash";
 import { EyeSlash } from "react-bootstrap-icons";
 import Spinner from "react-bootstrap/Spinner";
-import Button from "react-bootstrap/Button";
+import { Button } from "@chakra-ui/react";
 import Link from "next/link";
 import { InView } from "react-intersection-observer";
 import { useNFTItemData } from "../../lib/imagecdn";
@@ -18,6 +18,12 @@ const NFTListItem = ({
   soldOut,
 }) => {
   const { ref, gotInView, model } = useNFTItemData(data);
+  const hasImageUrl = !!(data.image || data.cdnUrl);
+  const isTOTMorOldTOTW =
+    data.totw || data.totm || data.old_totw || data.old_totm;
+  const modelProfilePic = model
+    ? `url(${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/)`
+    : `url(${data.model_profile_pic})`;
   if (!data.attributes) return <div></div>;
 
   return (
@@ -25,10 +31,9 @@ const NFTListItem = ({
       <InView as={"a"} onChange={gotInView} className="row m-0 w-100 my-4">
         <div
           ref={ref}
-          className={`nft-card ${
-            (data.totw || data.totm || data.old_totw || data.old_totm) &&
-            "purple"
-          } ${soldOut ? "opacity-half" : ""}`}
+          className={`nft-card ${isTOTMorOldTOTW && "purple"} ${
+            soldOut ? "opacity-half" : ""
+          }`}
           style={{ width: "100%" }}
         >
           <div className="totw-tag-wrapper">
@@ -47,7 +52,7 @@ const NFTListItem = ({
 
             <div className="quantity-wrapper totw-tag">
               {false &&
-                // TODO: Show this when graph is fixed
+                // TODO: Show this when graph is moralis is integrated
                 Number(data.max_supply) - data.mints < 10 && (
                   <div className="quantity-wrapper totw-tag">
                     {Number(data.max_supply) - data.mints} of 10 left
@@ -65,9 +70,7 @@ const NFTListItem = ({
               <div
                 className="profile-pic"
                 style={{
-                  backgroundImage: model
-                    ? `url('${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/')`
-                    : `url('${data.model_profile_pic}')`,
+                  backgroundImage: modelProfilePic,
                 }}
               />
             </a>

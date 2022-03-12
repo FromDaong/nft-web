@@ -14,9 +14,9 @@ import { useRouter } from "next/router";
 import Hero from "../components/Hero";
 import Loading from "../components/Loading";
 import { create } from "ipfs-http-client";
-import { useWallet } from "use-wallet";
 import Axios from "axios";
 import dynamic from "next/dynamic";
+import { useMoralis } from "react-moralis";
 
 const VerifyButton = dynamic(() => import("@passbase/button/react"), {
   ssr: false,
@@ -28,7 +28,7 @@ const CreateModel = () => {
   const router = useRouter();
   const [success, setSuccess] = useState(false);
   const [step, setStep] = useState("loading");
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const { res, setRes } = useState(null);
 
   useEffect(() => {
@@ -319,7 +319,7 @@ const CreateModel = () => {
 
                 {step === "signup" && (
                   <Button
-                    variant="primary w-100"
+                    colorScheme="pink"
                     onClick={formik.handleSubmit}
                     type="submit"
                   >
@@ -328,7 +328,7 @@ const CreateModel = () => {
                 )}
 
                 {step === "submitting" && (
-                  <Button variant="primary w-100 disabled" onClick={null}>
+                  <Button colorScheme="pink" disabled onClick={null}>
                     Submitting...
                   </Button>
                 )}
@@ -384,9 +384,9 @@ const CreateModel = () => {
 };
 
 const CreateModelWrapper = (props) => {
-  const { account, status } = useWallet();
+  const { isAuthenticated } = useMoralis();
 
-  if (status !== "connected") {
+  if (!isAuthenticated) {
     return <Loading />;
   } else {
     return <CreateModel {...props} />;

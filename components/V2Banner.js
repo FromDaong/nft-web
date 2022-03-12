@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import hasApprovedV1ForV2 from "../hooks/hasApprovedV1ForV2";
 import approveV1ForV2 from "../hooks/approveV1ForV2";
 import swapV1ForV2 from "../hooks/swapV1ForV2";
@@ -12,7 +12,6 @@ const V2Banner = ({ oldTokenBalance }) => {
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
   const hasApproved = hasApprovedV1ForV2();
-
 
   const approveContract = () => {
     setShowPendingModal(true);
@@ -80,7 +79,8 @@ const V2Banner = ({ oldTokenBalance }) => {
         )}
         <a
           href="https://docs.google.com/gview?url=https://github.com/TreatDAO/litepaper/raw/main/TreatPaperFinal.pdf&embedded=true"
-          target="_blank" rel="noreferrer"
+          target="_blank"
+          rel="noreferrer"
         >
           <Button variant="outline ml-3">
             <b className="text-white" style={{ textDecoration: "underline" }}>

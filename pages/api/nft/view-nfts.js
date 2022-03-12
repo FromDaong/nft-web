@@ -38,15 +38,11 @@ export default async (req, res) => {
           signer
         );
 
-        
-
         let results = await Promise.all(
           nft_ids.map(async (id) => {
             const balance = await treatNFTMinter.methods
               .balanceOf(signer, id)
               .call();
-
-            
 
             const bigNumberBalance = new BigNumber(balance);
             const numberBalance = bigNumberBalance.toNumber();

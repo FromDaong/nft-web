@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form } from "react-bootstrap";
-import Button from "react-bootstrap/Button";
+import { Button } from "@chakra-ui/react";
 import Modal from "react-bootstrap/Modal";
 import { useWallet } from "use-wallet";
 import useTransferNfts from "../../hooks/useTransferNfts";
@@ -67,7 +67,7 @@ const WalletModal = ({ show, handleClose, data }) => {
           </div>
           <div className="col-md-6">
             <Button
-              variant="primary"
+              colorScheme="pink"
               className="mb-2 w-100"
               onClick={() => null}
             >

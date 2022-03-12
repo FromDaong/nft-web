@@ -1,7 +1,6 @@
 import useSWR from "swr";
-import { useWallet } from "use-wallet";
 import Dropdown from "react-bootstrap/Dropdown";
-import Button from "react-bootstrap/Button";
+import { Button } from "@chakra-ui/react";
 import React, { useState, useEffect, useReducer, useMemo } from "react";
 import useGetAllOpenOrders from "../../hooks/useGetAllOpenOrders";
 import useGetMaxIdForSale from "../../hooks/useGetMaxIdForSale";
@@ -21,6 +20,7 @@ import ErrorFallback from "../../components/Fallback/Error";
 import { useRouter } from "next/dist/client/router";
 import PaginationComponentV2 from "../../components/Pagination";
 import MyNFTItemSkeleton from "../../components/Skeleton/MyNFTItemSkeleton";
+import { useMoralis } from "react-moralis";
 
 const Marketplace = ({ search }) => {
   const maxId = useGetMaxIdForSale();
@@ -48,7 +48,7 @@ const Marketplace = ({ search }) => {
   });
 
   const [orderBook] = useGetAllOpenOrders(maxId);
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const router = useRouter();
 
   const { error, docs: populatedNftData } = apiResponseData;
@@ -201,7 +201,7 @@ const Marketplace = ({ search }) => {
               </p>
               <Link href="/marketplace/creator">
                 <a>
-                  <Button variant="primary w-sm-100">
+                  <Button colorScheme="pink">
                     <b>{"Go to The Sweet Shop"}</b>
                   </Button>
                 </a>

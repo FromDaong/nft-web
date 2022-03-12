@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import NFTListItem from "../NFTListItem";
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import useSubscribe from "../../hooks/useSubscribe";
 import BlankModal from "../../components/BlankModal";
 

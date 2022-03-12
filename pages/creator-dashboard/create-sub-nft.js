@@ -4,7 +4,6 @@ import { Form, Button } from "react-bootstrap";
 import { useFormik, FieldArray, FormikProvider } from "formik";
 import useCreateAndAddSubscriberNFTs from "../../hooks/useCreateAndAddSubscriberNFTs";
 import { useRouter } from "next/router";
-import { useWallet } from "use-wallet";
 import Loading from "../../components/Loading";
 import Hero from "../../components/Hero";
 import CreatingNFTItem from "../../components/CreatingNFTItem";
@@ -17,6 +16,7 @@ import * as Yup from "yup";
 import Web3 from "web3";
 import axios from "axios";
 import useSWR from "swr";
+import { useMoralis } from "react-moralis";
 
 const CreateNFT = ({ modelData }) => {
   const [ipfsFiles, setIpfsFiles] = useState([]);
@@ -213,7 +213,8 @@ const CreateNFT = ({ modelData }) => {
               <a
                 href="https://help.treatdao.com/en/articles/5761127-how-to-price-your-nfts-to-sell-on-treat"
                 target="_blank"
-                className="text-primary" rel="noreferrer"
+                className="text-primary"
+                rel="noreferrer"
               >
                 <small>
                   <b>
@@ -273,7 +274,8 @@ const CreateNFT = ({ modelData }) => {
             <div className="col-md-6  mt-2 text-center">
               <Button
                 type="submit"
-                variant="primary py-2 w-100"
+                colorScheme="pink"
+                py={2}
                 disabled={ipfsFiles.length === 0}
               >
                 <b>CREATE NFTs</b>
@@ -287,9 +289,9 @@ const CreateNFT = ({ modelData }) => {
 };
 
 const CreateNFTWrapper = (props) => {
-  const { account, status } = useWallet();
+  const { isAuthenticated } = useMoralis();
 
-  if (status !== "connected" || !props.modelData) {
+  if (!isAuthenticated || !props.modelData) {
     return <Loading />;
   } else {
     return <CreateNFT {...props} />;

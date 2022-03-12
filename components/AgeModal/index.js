@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import Button from "react-bootstrap/Button";
+import { Button } from "@chakra-ui/react";
 import Modal from "react-bootstrap/Modal";
 
 // import blur from "/assets/blur.png";
 // import "./index.scss";
 
-const AgeModal = ({ show, handleClose, account }) => {
+const AgeModal = ({ show, handleClose }) => {
   const ageVerified = () => {
     localStorage.setItem("ageVerified", true);
     handleClose();

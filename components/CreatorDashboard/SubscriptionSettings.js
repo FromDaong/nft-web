@@ -113,7 +113,6 @@ const EditProfile = ({}) => {
           borderRadius: 8,
         }}
       >
-         
         <div>
           <h2
             className="heading-text-primary pt-1"
@@ -142,12 +141,10 @@ const EditProfile = ({}) => {
                 subscriptions.
               </small>
             </div>
-            <Button variant="primary w-100 mb-3" onClick={setSubscriptionPrice}>
+            <Button colorScheme="pink" onClick={setSubscriptionPrice}>
               Update Subscription Price
             </Button>
-            
-          
-            
+
             {Object.keys(formik.errors).length > 0 && (
               <Form.Control.Feedback type="invalid" className="d-block">
                 {Object.keys(formik.errors).map((e) => (
@@ -160,9 +157,6 @@ const EditProfile = ({}) => {
         </Form>
       </div>
     </div>
-
-
-  
   );
 };
 

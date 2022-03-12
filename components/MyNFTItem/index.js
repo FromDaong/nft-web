@@ -3,10 +3,9 @@ import Spinner from "react-bootstrap/Spinner";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
+import { Button } from "@chakra-ui/react";
 import { Blurhash } from "react-blurhash";
 import { isBlurhashValid } from "blurhash";
-import axios from "axios";
 import { EyeSlash } from "react-bootstrap-icons";
 import Link from "next/link";
 import { useNFTItemData } from "../../lib/imagecdn";
@@ -24,11 +23,15 @@ const NFTListItem = ({
   hasOpenOrder,
 }) => {
   const [modalData, setModalData] = useState();
-  const { ref, gotInView, model, image } = useNFTItemData(data);
+  const { ref, gotInView, model } = useNFTItemData(data);
 
+  const bgImage = data.daoCdnUrl
+    ? `url('${data.daoCdnUrl}-/quality/lightest/-/format/webp/')`
+    : `url('${data.image}')`;
   const profilePic = model
     ? `url('${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/')`
     : `url('${data.model_profile_pic}')`;
+
   return (
     <>
       <Modal
@@ -41,7 +44,7 @@ const NFTListItem = ({
           <div
             className="modal-image"
             style={{
-              background: `url(${image})`,
+              background: `url(${bgImage})`,
             }}
           ></div>
           <h4 className="text-center pt-3">{data.description}</h4>
@@ -79,7 +82,7 @@ const NFTListItem = ({
               minHeight: 300,
             }}
             onClick={() => {
-              if (image) {
+              if (bgImage) {
                 setModalData(true);
               } else {
                 revealNFTs();
@@ -169,7 +172,7 @@ const NFTListItem = ({
                     <span>
                       <Button
                         className="w-100"
-                        variant="secondary"
+                        colorScheme="gray"
                         disabled={hasOpenOrder}
                         style={hasOpenOrder ? { pointerEvents: "none" } : {}}
                         onClick={() => listOrderClick({ ...data, balance })}
@@ -184,7 +187,7 @@ const NFTListItem = ({
                 <span className="d-inline-block w-100">
                   <Button
                     className="w-100"
-                    variant="secondary"
+                    colorScheme="gray"
                     onClick={() => transferNFTClick(data)}
                   >
                     <b>Transfer</b>
@@ -198,7 +201,7 @@ const NFTListItem = ({
                 <span className="d-inline-block w-100">
                   <Button
                     className="w-100"
-                    variant="secondary"
+                    colorScheme="gray"
                     onClick={() => cancelOrderClick(data)}
                   >
                     <b>Remove Your Listing</b>

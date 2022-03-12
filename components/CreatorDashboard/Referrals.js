@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import CreatorNFTItem from "../CreatorNFTItem";
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import { useWallet } from "use-wallet";
 import { PiggyBankFill, Clipboard } from "react-bootstrap-icons";
 
@@ -37,7 +37,7 @@ const CreatedNFTs = ({
         </div>
 
         <Button
-          variant="primary  w-100"
+          colorScheme="pink"
           style={{ maxWidth: 250 }}
           onClick={() => {
             navigator.clipboard.writeText(

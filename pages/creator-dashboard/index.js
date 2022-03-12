@@ -9,7 +9,6 @@ import CreatorResources from "../../components/CreatorDashboard/CreatorResources
 import Referrals from "../../components/CreatorDashboard/Referrals";
 import { Nav, Tab } from "react-bootstrap";
 import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
-import { useWallet } from "use-wallet";
 import Link from "next/link";
 import useSWR from "swr";
 import Layout from "../../components/Layout";
@@ -23,6 +22,7 @@ import {
 } from "react-bootstrap-icons";
 import SubscriptionNFTs from "../../components/CreatorDashboard/SubscriptionNFTs";
 import ErrorFallback from "../../components/Fallback/Error";
+import { useMoralis } from "react-moralis";
 
 const variants = {
   show: {
@@ -40,9 +40,9 @@ const variants = {
 };
 
 const CreatorDashboardWrapper = ({ modelData }) => {
-  const { account, status } = useWallet();
+  const { account, isAuthenticated } = useMoralis();
 
-  if (status !== "connected" || !modelData) {
+  if (!isAuthenticated || !modelData) {
     return (
       <div
         style={{
@@ -133,7 +133,8 @@ const ViewNFT = ({ modelData, account }) => {
               <a
                 href="https://t.me/TreatContentCreators"
                 target="_blank"
-                className="text-primary" rel="noreferrer"
+                className="text-primary"
+                rel="noreferrer"
               >
                 <small>
                   <b>Join our creator Telegram community</b>
@@ -142,7 +143,7 @@ const ViewNFT = ({ modelData, account }) => {
             </p>
             <Link href={`/creator/${modelData.username}`}>
               <a>
-                <Button variant="primary  w-sm-100">
+                <Button colorScheme="pink">
                   <b>{"Go to My Creator Profile"}</b>
                 </Button>
               </a>

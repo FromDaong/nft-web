@@ -1,20 +1,19 @@
-import { useWallet } from "use-wallet";
 import Dropdown from "react-bootstrap/Dropdown";
-import Button from "react-bootstrap/Button";
+import { Button } from "@chakra-ui/react";
 import React, { useState, useEffect, useReducer } from "react";
 import Loading from "../../components/Loading";
 import Link from "next/link";
 import tags from "../../utils/tags";
 import Hero from "../../components/Hero";
 import { Order } from "../../components/CreatorMarketplaceListItem";
-import { motion, AnimateSharedLayout } from "framer-motion";
+import { AnimateSharedLayout } from "framer-motion";
 import { forceCheck } from "react-lazyload";
 import axios from "axios";
-import Fuse from "fuse.js";
 import Select from "react-select";
 import { useRouter } from "next/dist/client/router";
 import ErrorFallback from "../../components/Fallback/Error";
 import PaginationComponentV2 from "../../components/Pagination";
+import { useMoralis } from "react-moralis";
 
 // TODO: Fetch NFTs from blockchain
 // database seems to be outdated
@@ -40,7 +39,7 @@ const Marketplace = ({ search }) => {
   });
 
   const { error, docs: orderBookArray } = apiResponseData;
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const router = useRouter();
 
   const updateObArr = () => {
@@ -151,7 +150,7 @@ const Marketplace = ({ search }) => {
           additionalContent={
             <Link href="/marketplace/resale">
               <a>
-                <Button variant="primary  w-sm-100">
+                <Button colorScheme="pink">
                   <b>{"Go to Resale Marketplace"}</b>
                 </Button>
               </a>

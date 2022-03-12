@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import Table from "react-bootstrap/Table";
-import Button from "react-bootstrap/Button";
+import { Button } from "@chakra-ui/react";
 import { useWallet } from "use-wallet";
 import useSWR from "swr";
 import Link from "next/link";
@@ -56,7 +56,7 @@ const AdminDashboardWrapper = () => {
           subtitle={"You are not permitted to use this dashboard"}
           additionalContent={
             <Link href="/admin-dashboard/login">
-              <Button variant="primary  w-sm-100">
+              <Button colorScheme="pink">
                 <b>{"Login to Panel"}</b>
               </Button>
             </Link>
@@ -80,7 +80,7 @@ const AdminDashboard = () => {
             <>
               <Link href="/admin-dashboard/create-totm-nfts">
                 <a>
-                  <Button variant="primary w-sm-100 mr-2">
+                  <Button colorScheme="pink" mr={2}>
                     <b>{"Create TOTM NFTs"}</b>
                   </Button>
                 </a>
@@ -91,7 +91,7 @@ const AdminDashboard = () => {
                 </Button>
               </Link>
               <Link href="/api/admin/logout">
-                <Button variant="primary  w-sm-100">
+                <Button colorScheme="pink">
                   <b>{"Logout"}</b>
                 </Button>
               </Link>

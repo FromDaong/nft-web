@@ -4,7 +4,6 @@ import { Form, Button } from "react-bootstrap";
 import { useFormik, FieldArray, FormikProvider } from "formik";
 import useCreateAndAddNFTs from "../../hooks/useCreateAndAddNFTs";
 import { useRouter } from "next/router";
-import { useWallet } from "use-wallet";
 import Loading from "../../components/Loading";
 import Hero from "../../components/Hero";
 import CreatingNFTItem from "../../components/CreatingNFTItem";
@@ -18,6 +17,7 @@ import Web3 from "web3";
 import axios from "axios";
 import useSWR from "swr";
 import cdnclient from "../../lib/uploadcare";
+import { useMoralis } from "react-moralis";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -332,7 +332,8 @@ const CreateNFT = ({ modelData }) => {
             <div className="col-md-6  mt-2 text-center">
               <Button
                 type="submit"
-                variant="primary py-2 w-100"
+                py={2}
+                colorScheme="pink"
                 disabled={ipfsFiles.length === 0}
               >
                 <b>CREATE NFTs</b>
@@ -346,9 +347,9 @@ const CreateNFT = ({ modelData }) => {
 };
 
 const CreateNFTWrapper = (props) => {
-  const { account, status } = useWallet();
+  const { isAuthenticated } = useMoralis();
 
-  if (status !== "connected" || !props.modelData) {
+  if (!isAuthenticated || !props.modelData) {
     return <Loading />;
   } else {
     return <CreateNFT {...props} />;

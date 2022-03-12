@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import Button from "react-bootstrap/Button";
+import { Button } from "@chakra-ui/react";
 import TotwListItem from "../components/TotwListItem";
 import CreatorList from "../components/CreatorList";
 import SwiperNFTList from "../components/SwiperNFTList";
 import Layout from "../components/Layout";
 import { motion, useAnimation } from "framer-motion";
 import Link from "next/link";
-import axios from "axios";
+import Axios from "axios";
 import CountUp from "react-countup";
 import * as Scroll from "react-scroll";
 import { useInView } from "react-intersection-observer";
@@ -22,26 +22,25 @@ const Home = () => {
   const [nftData, setNftData] = useState();
   const [modelData, setModelData] = useState();
   const [totm, setTOTMData] = useState();
-  const [modelResultError, setModelResultError] = useState(false);
-  const [totmResultError, setTOTMResultError] = useState(false);
   const [nftResultError, setNFTResultError] = useState(false);
   const [ref, inView] = useInView();
+
   const controls = useAnimation();
 
   useEffect(() => {
-    axios.get("/api/nft?limit=20").then((res) => {
+    Axios.get("/api/nft?limit=20").then((res) => {
       if (res.data.docs) {
         setNftData(res.data.docs);
       }
     });
 
-    axios.get("/api/model?totm=true").then((res) => {
+    Axios.get("/api/model?totm=true").then((res) => {
       if (res.data) {
         setTOTMData(res.data);
       }
     });
 
-    axios.get("/api/model").then((res) => {
+    Axios.get("/api/model").then((res) => {
       if (res.data.docs) {
         setModelData(res.data.docs);
       }
@@ -85,7 +84,7 @@ const Home = () => {
                       offset={50}
                       duration={1000}
                     >
-                      <Button variant="primary w-100 py-2">
+                      <Button colorScheme="pink">
                         <b>View Marketplaces</b>
                       </Button>
                     </Scroll.Link>
@@ -93,9 +92,11 @@ const Home = () => {
                   <div className="col-md-6 mt-2">
                     <a
                       href="https://pancakeswap.finance/swap?inputCurrency=0x01bd7acb6ff3b6dd5aefa05cf085f2104f3fc53f"
-                      target="_blank" rel="noreferrer"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="w-full"
                     >
-                      <Button variant="light w-100 py-2">
+                      <Button backgroundColor={"white"} color="black">
                         <b>Buy $TREAT</b>
                       </Button>
                     </a>
@@ -146,7 +147,7 @@ const Home = () => {
             TreatDAO.
           </div>
           <Link href="/magazine">
-            <Button variant="info py-2 px-4 mt-3 mb-3">
+            <Button colorScheme={"purple"}>
               <b>View Treat Magazine</b>
             </Button>
           </Link>

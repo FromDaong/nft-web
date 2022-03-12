@@ -102,14 +102,10 @@ const EditProfile = ({}) => {
         handleClose={() => setShowCompleteModal(false)}
         account={account}
       />
-      
 
       <div className="col-sm-12 pt-3 mt-3">
         <Form onSubmit={formik.handleSubmit}>
           <div className="pb-4">
-            
-            
-          
             <div className="pb-3">
               <label>Subscription description</label>
               <FormControl
@@ -124,7 +120,7 @@ const EditProfile = ({}) => {
               </small>
             </div>
             <Button
-              variant="primary w-100 mb-3"
+              colorScheme="pink"
               onClick={formik.handleSubmit}
               type="submit"
             >
@@ -142,9 +138,6 @@ const EditProfile = ({}) => {
         </Form>
       </div>
     </div>
-
-
-  
   );
 };
 
