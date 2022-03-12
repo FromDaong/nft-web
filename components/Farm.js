@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { InputGroup, FormControl, Button } from "react-bootstrap";
+import { Button, FormControl, InputGroup } from "react-bootstrap";
+import { getBalanceNumber, getDisplayBalance } from "../utils/formatBalance";
+
 import BlankModal from "../components/BlankModal";
-import { getDisplayBalance, getBalanceNumber } from "../utils/formatBalance";
-import useGetPendingMelons from "../hooks/useGetPendingMelons";
 import hasApprovedContract from "../hooks/hasApprovedContract";
 import useApproveContract from "../hooks/approveContract";
+import useGetPendingMelons from "../hooks/useGetPendingMelons";
 import useGetStakedAmount from "../hooks/useGetStakedAmount";
-import useStakeFarms from "../hooks/useStakeFarms";
 import useHarvestFarms from "../hooks/useHarvestFarm";
+import useStakeFarms from "../hooks/useStakeFarms";
+import { useState } from "react";
 import useUnstakeFarms from "../hooks/useUnstakeFarms";
-import BigNumber from "bignumber.js";
 
 const Farm = ({ contract, treatBal, title, pid }) => {
   const hasApproved = contract && hasApprovedContract(pid);

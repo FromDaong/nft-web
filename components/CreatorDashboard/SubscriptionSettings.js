@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from "react";
-import useSWR from "swr";
-import Web3 from "web3";
-import { Button, InputGroup, FormControl, Form } from "react-bootstrap";
-import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useRouter } from "next/router";
-import Hero from "../../components/Hero";
-import BlankModal from "../../components/BlankModal";
-import useEditSubscription from "../../hooks/useEditSubscription";
-import useGetSubscriptionCost from "../../hooks/useGetSubscriptionCost";
-import { create } from "ipfs-http-client";
-import { GearFill } from "react-bootstrap-icons";
-import { useMoralis } from "react-moralis";
 
-const client = create("https://ipfs.infura.io:5001/api/v0");
+import { Button, Form, FormControl } from "react-bootstrap";
+
+import BlankModal from "../../components/BlankModal";
+import { GearFill } from "react-bootstrap-icons";
+import Web3 from "web3";
+import useEditSubscription from "../../hooks/useEditSubscription";
+import { useFormik } from "formik";
+import useGetSubscriptionCost from "../../hooks/useGetSubscriptionCost";
+import { useMoralis } from "react-moralis";
+import { useRouter } from "next/router";
+import useSWR from "swr";
+import { useState } from "react";
 
 const EditProfile = ({}) => {
   const [showPendingModal, setShowPendingModal] = useState(null);

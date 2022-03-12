@@ -1,10 +1,11 @@
-import { useMoralis } from "react-moralis";
-import { useCallback } from "react";
 import {
   approveMarketplace,
   getTreatMarketplaceAddress,
   getTreatNFTMinterContract,
 } from "../treat/utils";
+
+import { useCallback } from "react";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
 
 const useApproveMarketplace = () => {

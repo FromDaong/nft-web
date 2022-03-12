@@ -1,11 +1,11 @@
-import React from "react";
-import { Button } from "react-bootstrap";
 import SwiperCore, {
-  Pagination,
+  Autoplay,
   EffectCoverflow,
   Navigation,
-  Autoplay,
+  Pagination,
 } from "swiper";
+
+import { Button } from "react-bootstrap";
 import Link from "next/link";
 
 SwiperCore.use([Pagination, EffectCoverflow, Navigation, Autoplay]);

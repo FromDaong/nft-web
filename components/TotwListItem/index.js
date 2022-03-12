@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { Button } from "react-bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
+
+import { Button } from "react-bootstrap";
 import LazyLoad from "react-lazyload";
-import NFTListItem from "../NFTListItem";
-import useSWR from "swr";
 import Link from "next/link";
+import NFTListItem from "../NFTListItem";
 import { getDisplayBalance } from "../../utils/formatBalance";
 import useGetTreatSetCost from "../../hooks/useGetTreatSetCost";
 import useRedeemSet from "../../hooks/useRedeemSet";
+import useSWR from "swr";
 
 const TotwListItem = ({ modelData }) => {
   const { data: nftData } = useSWR(

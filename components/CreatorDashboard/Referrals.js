@@ -1,8 +1,6 @@
-import React from "react";
-import { motion } from "framer-motion";
-import CreatorNFTItem from "../CreatorNFTItem";
+import { Clipboard, PiggyBankFill } from "react-bootstrap-icons";
+
 import { Button } from "react-bootstrap";
-import { PiggyBankFill, Clipboard } from "react-bootstrap-icons";
 import { useMoralis } from "react-moralis";
 
 const CreatedNFTs = ({

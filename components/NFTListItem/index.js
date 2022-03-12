@@ -1,11 +1,10 @@
-import React from "react";
 import { Blurhash } from "react-blurhash";
-import { isBlurhashValid } from "blurhash";
-import { EyeSlash } from "react-bootstrap-icons";
-import Spinner from "react-bootstrap/Spinner";
 import { Button } from "react-bootstrap";
-import Link from "next/link";
+import { EyeSlash } from "react-bootstrap-icons";
 import { InView } from "react-intersection-observer";
+import Link from "next/link";
+import Spinner from "react-bootstrap/Spinner";
+import { isBlurhashValid } from "blurhash";
 import { useNFTItemData } from "../../lib/imagecdn";
 
 const NFTListItem = ({
@@ -18,7 +17,6 @@ const NFTListItem = ({
   soldOut,
 }) => {
   const { ref, gotInView, model } = useNFTItemData(data);
-  const hasImageUrl = !!(data.image || data.cdnUrl);
   const isTOTMorOldTOTW =
     data.totw || data.totm || data.old_totw || data.old_totm;
   const modelProfilePic = model

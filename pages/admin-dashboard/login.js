@@ -1,10 +1,12 @@
-import React, { useState } from "react";
-import { Button, InputGroup, FormControl, Form } from "react-bootstrap";
-import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useRouter } from "next/router";
+
+import { Button, Form, FormControl } from "react-bootstrap";
+
 import Hero from "../../components/Hero";
 import Link from "next/link";
+import { useFormik } from "formik";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 const CreateNFT = () => {
   const router = useRouter();

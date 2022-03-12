@@ -1,26 +1,24 @@
-import useSWR from "swr";
-import Dropdown from "react-bootstrap/Dropdown";
+import { useEffect, useState } from "react";
+
+import { AnimateSharedLayout } from "framer-motion";
+import BlankModal from "../../components/BlankModal";
 import { Button } from "react-bootstrap";
-import React, { useState, useEffect, useReducer, useMemo } from "react";
+import CancelOrderModal from "../../components/CancelOrderModal";
+import Dropdown from "react-bootstrap/Dropdown";
+import ErrorFallback from "../../components/Fallback/Error";
+import Hero from "../../components/Hero";
+import Link from "next/link";
+import MyNFTItemSkeleton from "../../components/Skeleton/MyNFTItemSkeleton";
+import { Order } from "../../components/MarketplaceListItem";
+import PaginationComponentV2 from "../../components/Pagination";
+import PurchaseOrderModal from "../../components/PurchaseOrderModal";
+import Select from "react-select";
+import axios from "axios";
+import tags from "../../utils/tags";
 import useGetAllOpenOrders from "../../hooks/useGetAllOpenOrders";
 import useGetMaxIdForSale from "../../hooks/useGetMaxIdForSale";
-import Loading from "../../components/Loading";
-import BlankModal from "../../components/BlankModal";
-import CancelOrderModal from "../../components/CancelOrderModal";
-import PurchaseOrderModal from "../../components/PurchaseOrderModal";
-import Hero from "../../components/Hero";
-import tags from "../../utils/tags";
-import { Order } from "../../components/MarketplaceListItem";
-import { motion, AnimateSharedLayout } from "framer-motion";
-import Link from "next/link";
-import BigNumber from "bignumber.js";
-import axios from "axios";
-import Select from "react-select";
-import ErrorFallback from "../../components/Fallback/Error";
-import { useRouter } from "next/dist/client/router";
-import PaginationComponentV2 from "../../components/Pagination";
-import MyNFTItemSkeleton from "../../components/Skeleton/MyNFTItemSkeleton";
 import { useMoralis } from "react-moralis";
+import { useRouter } from "next/dist/client/router";
 
 const Marketplace = ({ search }) => {
   const maxId = useGetMaxIdForSale();

@@ -1,13 +1,13 @@
-import { useMoralis } from "react-moralis";
-import { useCallback } from "react";
-import { useWallet } from "use-wallet";
 import {
-  approveTreatStaking,
   approveTreatPancakeLPStaking,
+  approveTreatStaking,
+  getMasterMelonFarmerContract,
   getTreat2Contract,
   getTreatPancakeLPContract,
-  getMasterMelonFarmerContract,
 } from "../treat/utils";
+
+import { useCallback } from "react";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
 
 const useApproveContract = (pid) => {

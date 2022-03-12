@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from "react";
-import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import { Button } from "react-bootstrap";
-import Nav from "react-bootstrap/Nav";
-import WalletModal from "../WalletModal";
+import { useEffect, useState } from "react";
+
 import AgeModal from "../AgeModal";
 import BalanceModal from "../BalanceModal";
+import { Button } from "react-bootstrap";
 import Link from "next/link";
+import Nav from "react-bootstrap/Nav";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import Navbar from "react-bootstrap/Navbar";
 import NavbarQuickSearch from "../Search/NavbarQuickSearch";
+import WalletModal from "../WalletModal";
+import { destroyCookie } from "nookies";
 import { useMoralis } from "react-moralis";
 import { useRouter } from "next/router";
-import { destroyCookie } from "nookies";
 
 const HeaderNav = ({ modelData }) => {
   const [walletModalShow, setWalletModalShow] = useState(false);

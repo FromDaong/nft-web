@@ -1,7 +1,8 @@
 import React, { createContext, useEffect, useState } from "react";
+
+import { Treat } from "../../treat";
 import { useMoralis } from "react-moralis";
 import { useWallet } from "use-wallet";
-import { Treat } from "../../treat";
 
 export interface TreatContext {
   treat?: typeof Treat;

@@ -1,6 +1,7 @@
+import { cancelOrder, getTreatMarketplaceContract } from "../treat/utils";
+
 import { useCallback } from "react";
-import { useWallet } from "use-wallet";
-import { getTreatMarketplaceContract, cancelOrder } from "../treat/utils";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
 
 const useCancelOrder = (nftId: number) => {

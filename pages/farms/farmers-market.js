@@ -1,19 +1,19 @@
+import { AnimateSharedLayout, motion } from "framer-motion";
+
+import BlankModal from "../../components/BlankModal";
 import { Button } from "react-bootstrap";
-import useSWR from "swr";
-import React, { useState, useEffect, useReducer } from "react";
+import ErrorFallback from "../../components/Fallback/Error";
+import Hero from "../../components/Hero";
+import Link from "next/link";
 import Loading from "../../components/Loading";
 import NFTListItem from "../../components/NFTListItem";
-import BlankModal from "../../components/BlankModal";
-import Link from "next/link";
-import useBuyMelonNft from "../../hooks/useBuyMelonNft";
-import Hero from "../../components/Hero";
-import useTokenBalance from "../../hooks/useTokenBalance";
 import { contractAddresses } from "../../treat/lib/constants.js";
 import { getDisplayBalance } from "../../utils/formatBalance";
-import { motion, AnimateSharedLayout } from "framer-motion";
-import { forceCheck } from "react-lazyload";
-import ErrorFallback from "../../components/Fallback/Error";
+import useBuyMelonNft from "../../hooks/useBuyMelonNft";
 import { useMoralis } from "react-moralis";
+import useSWR from "swr";
+import { useState } from "react";
+import useTokenBalance from "../../hooks/useTokenBalance";
 
 const Marketplace = ({ search }) => {
   const { chainId } = useMoralis();

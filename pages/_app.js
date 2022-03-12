@@ -1,37 +1,38 @@
-import React, { useEffect, useState, useLayoutEffect } from "react";
-import { ConnectionRejectedError, useWallet } from "use-wallet";
-import Head from "next/head";
-import { UseWalletProvider } from "use-wallet";
-import bsc from "@binance-chain/bsc-use-wallet";
-import { setCookie, destroyCookie } from "nookies";
-import {
-  BscConnector,
-  UserRejectedRequestError,
-} from "@binance-chain/bsc-connector";
-import ReactGA from "react-ga";
-import { IntercomProvider } from "react-use-intercom";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-import { MoralisProvider, useMoralis } from "react-moralis";
-import { Router } from "next/dist/client/router";
-import ProgressBar from "@badrap/bar-of-progress";
-import Container from "react-bootstrap/Container";
-import Axios from "axios";
-import useSWR, { SWRConfig } from "swr";
-import { getJWT } from "../utils/axios";
-import Navbar from "../components/nav/HeaderNav";
-import TOTMBanner from "../components/TOTMBanner";
-import V2Banner from "../components/V2Banner";
-import Footer from "../components/Footer";
-import useTokenBalance from "../hooks/useTokenBalance";
-import fetch from "../lib/fetchJson";
-import { useRouter } from "next/router";
-import TreatProvider from "../contexts/TreatProvider";
-
 import "../styles/index.scss";
 import "swiper/scss";
 import "swiper/scss/navigation";
 import "swiper/scss/pagination";
+
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import {
+  BscConnector,
+  UserRejectedRequestError,
+} from "@binance-chain/bsc-connector";
+import { ConnectionRejectedError, useWallet } from "use-wallet";
+import { MoralisProvider, useMoralis } from "react-moralis";
+import { destroyCookie, setCookie } from "nookies";
+import { useEffect, useState } from "react";
+import useSWR, { SWRConfig } from "swr";
+
+import Axios from "axios";
 import { ChakraProvider } from "@chakra-ui/react";
+import Container from "react-bootstrap/Container";
+import Footer from "../components/Footer";
+import Head from "next/head";
+import { IntercomProvider } from "react-use-intercom";
+import Navbar from "../components/nav/HeaderNav";
+import ProgressBar from "@badrap/bar-of-progress";
+import ReactGA from "react-ga";
+import { Router } from "next/dist/client/router";
+import TOTMBanner from "../components/TOTMBanner";
+import TreatProvider from "../contexts/TreatProvider";
+import { UseWalletProvider } from "use-wallet";
+import V2Banner from "../components/V2Banner";
+import bsc from "@binance-chain/bsc-use-wallet";
+import fetch from "../lib/fetchJson";
+import { getJWT } from "../utils/axios";
+import { useRouter } from "next/router";
+import useTokenBalance from "../hooks/useTokenBalance";
 
 const progress = new ProgressBar({
   size: 3,
@@ -59,7 +60,7 @@ function MyApp({ Component, pageProps }) {
     account && `/api/model/find-by-address/${account}`
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     enableWeb3();
   }, []);
 
@@ -70,7 +71,7 @@ function MyApp({ Component, pageProps }) {
     ReactGA.pageview(window.location.pathname + window.location.search);
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     Axios.interceptors.response.use(
       (response) => {
         return response;

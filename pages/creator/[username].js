@@ -1,22 +1,19 @@
-import React, { useState, useEffect } from "react";
-import Spinner from "react-bootstrap/Spinner";
+import { Tab, Tabs } from "react-bootstrap";
+import { useEffect, useState } from "react";
+
 import { Button } from "react-bootstrap";
-import { Tabs, Tab } from "react-bootstrap";
-import useSWR from "swr";
-import Web3 from "web3";
-import Link from "next/link";
-import Layout from "../../components/Layout";
-import { useRouter } from "next/router";
-import { modelSetBundles } from "../../treat/lib/constants";
-import useGetTreatSetCost from "../../hooks/useGetTreatSetCost";
-import useRedeemSet from "../../hooks/useRedeemSet";
-import { useWallet } from "use-wallet";
-import SweetShopNFTs from "../../components/CreatorPage/SweetShopNFTs";
-import SubscriptionNFTs from "../../components/CreatorPage/SubscriptionNFTs";
-import useGetSubscriptionCost from "../../hooks/useGetSubscriptionCost";
-import useGetIsSubscribed from "../../hooks/useGetIsSubscribed";
 import { Clipboard } from "react-bootstrap-icons";
 import ErrorFallback from "../../components/Fallback/Error";
+import Layout from "../../components/Layout";
+import Link from "next/link";
+import Spinner from "react-bootstrap/Spinner";
+import SubscriptionNFTs from "../../components/CreatorPage/SubscriptionNFTs";
+import SweetShopNFTs from "../../components/CreatorPage/SweetShopNFTs";
+import Web3 from "web3";
+import useGetIsSubscribed from "../../hooks/useGetIsSubscribed";
+import useGetSubscriptionCost from "../../hooks/useGetSubscriptionCost";
+import { useRouter } from "next/router";
+import useSWR from "swr";
 
 const ViewModelWrapper = ({ username }) => {
   const { data: res, error } = useSWR(`/api/model/${username}`);

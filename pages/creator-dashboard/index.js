@@ -1,28 +1,27 @@
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Spinner, Button } from "react-bootstrap";
-import EditProfile from "../../components/CreatorDashboard/EditProfile";
-import CreatedNFTs from "../../components/CreatorDashboard/CreatedNFTs";
-import SubscriptionSettings from "../../components/CreatorDashboard/SubscriptionSettings";
-import SubSettingsBox from "../../components/CreatorDashboard/SubSettingsBox";
-import CreatorResources from "../../components/CreatorDashboard/CreatorResources";
-import Referrals from "../../components/CreatorDashboard/Referrals";
-import { Nav, Tab } from "react-bootstrap";
-import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
-import Link from "next/link";
-import useSWR from "swr";
-import Layout from "../../components/Layout";
+import { Button, Spinner } from "react-bootstrap";
 import {
   CameraFill,
-  PatchCheckFill,
   GearFill,
-  PiggyBankFill,
   InfoCircleFill,
+  PatchCheckFill,
   PencilFill,
+  PiggyBankFill,
 } from "react-bootstrap-icons";
-import SubscriptionNFTs from "../../components/CreatorDashboard/SubscriptionNFTs";
+import { Nav, Tab } from "react-bootstrap";
+
+import CreatedNFTs from "../../components/CreatorDashboard/CreatedNFTs";
+import CreatorResources from "../../components/CreatorDashboard/CreatorResources";
+import EditProfile from "../../components/CreatorDashboard/EditProfile";
 import ErrorFallback from "../../components/Fallback/Error";
+import Layout from "../../components/Layout";
+import Link from "next/link";
+import Referrals from "../../components/CreatorDashboard/Referrals";
+import SubSettingsBox from "../../components/CreatorDashboard/SubSettingsBox";
+import SubscriptionNFTs from "../../components/CreatorDashboard/SubscriptionNFTs";
+import SubscriptionSettings from "../../components/CreatorDashboard/SubscriptionSettings";
 import { useMoralis } from "react-moralis";
+import useSWR from "swr";
+import { useState } from "react";
 
 const variants = {
   show: {

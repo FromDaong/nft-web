@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import { useMoralis } from "react-moralis";

@@ -1,12 +1,13 @@
-import { useCallback } from "react";
-import { Contract } from "ethers";
-import useTreat from "./useTreat";
-import { useMoralis } from "react-moralis";
 import {
-  approveTreatStaking,
   approveTreatPancakeLPStaking,
+  approveTreatStaking,
   getMasterMelonFarmerContract,
 } from "../treat/utils";
+
+import { Contract } from "ethers";
+import { useCallback } from "react";
+import { useMoralis } from "react-moralis";
+import useTreat from "./useTreat";
 
 const useApproveFarm = (lpContract: Contract, pid: number) => {
   const { account } = useMoralis();

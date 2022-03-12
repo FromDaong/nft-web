@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Form } from "react-bootstrap";
 import { Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
+import { useState } from "react";
 import useTransferNfts from "../../hooks/useTransferNfts";
 
 const WalletModal = ({ show, handleClose, data }) => {

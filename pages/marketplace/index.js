@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import * as Scroll from "react-scroll";
+
 import { Button } from "react-bootstrap";
 import Layout from "../../components/Layout";
 import Link from "next/link";
-import * as Scroll from "react-scroll";
 
 const Home = () => {
   return (
