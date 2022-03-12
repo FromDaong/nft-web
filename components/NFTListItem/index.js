@@ -3,7 +3,7 @@ import { Blurhash } from "react-blurhash";
 import { isBlurhashValid } from "blurhash";
 import { EyeSlash } from "react-bootstrap-icons";
 import Spinner from "react-bootstrap/Spinner";
-import { Button } from "@chakra-ui/react";
+import { Button } from "react-bootstrap";
 import Link from "next/link";
 import { InView } from "react-intersection-observer";
 import { useNFTItemData } from "../../lib/imagecdn";

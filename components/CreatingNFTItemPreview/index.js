@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Button } from "@chakra-ui/react";
+import { Button } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import Link from "next/link";
 

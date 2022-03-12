@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
-import { Button } from "@chakra-ui/react";
+import { Button } from "react-bootstrap";
 import { Tabs, Tab } from "react-bootstrap";
 import useSWR from "swr";
 import Web3 from "web3";
