@@ -1,5 +1,4 @@
-import { useWallet } from "use-wallet";
-import Button from "react-bootstrap/Button";
+import { Button } from "@chakra-ui/react";
 import useSWR from "swr";
 import React, { useState, useEffect, useReducer } from "react";
 import Loading from "../../components/Loading";
@@ -14,19 +13,18 @@ import { getDisplayBalance } from "../../utils/formatBalance";
 import { motion, AnimateSharedLayout } from "framer-motion";
 import { forceCheck } from "react-lazyload";
 import ErrorFallback from "../../components/Fallback/Error";
+import { useMoralis } from "react-moralis";
 
 const Marketplace = ({ search }) => {
-  const { chainId } = useWallet();
+  const { chainId } = useMoralis();
   const treatBal = useTokenBalance(contractAddresses.treat2[chainId]);
   const melonBal = getDisplayBalance(
-    useTokenBalance(contractAddresses.melon[chainId])
+    useTokenBalance(contractAddresses.melon[56])
   );
   const { data: orderBookArray, error } = useSWR(`/api/nft/get-melon-nfts`);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
-  const [nftDataArray, setNftDataArray] = useState([]);
   const { onBuyMelonNft } = useBuyMelonNft();
-  const { account } = useWallet();
 
   const actionWithModal = (action, param) => {
     setShowPendingModal(true);
@@ -79,7 +77,7 @@ const Marketplace = ({ search }) => {
               <div>
                 <Link href="/farms">
                   <a>
-                    <Button variant="primary w-sm-100 m-2">
+                    <Button colorScheme="pink">
                       <b>{"Go to Farming Dashboard"}</b>
                     </Button>
                   </a>

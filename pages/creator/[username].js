@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
-import Button from "react-bootstrap/Button";
+import { Button } from "@chakra-ui/react";
 import { Tabs, Tab } from "react-bootstrap";
 import useSWR from "swr";
 import Web3 from "web3";
@@ -207,7 +207,9 @@ const ViewModel = ({
             )}
             <div>
               <Button
-                className="px-4"
+                px={4}
+                rounded="full"
+                colorScheme={"pink"}
                 style={{ marginTop: 15, width: "100%", borderRadius: 25 }}
                 onClick={() => {
                   navigator.clipboard.writeText(

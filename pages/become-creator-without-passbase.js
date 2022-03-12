@@ -89,7 +89,6 @@ const CreateModel = () => {
     });
   };
 
-
   if (success || (res && res.pending))
     return (
       <Hero
@@ -196,7 +195,7 @@ const CreateModel = () => {
               />
             </div>
             <Button
-              variant="primary w-100"
+              colorScheme="pink"
               onClick={formik.handleSubmit}
               type="submit"
             >

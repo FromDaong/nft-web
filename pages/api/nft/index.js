@@ -22,7 +22,7 @@ const sanitize_nft_data = (nft_data) => {
   return returnObj;
 };
 
-export default async (req, res) => {
+const nft = async (req, res) => {
   const { method } = req;
   const { s } = req.query;
 
@@ -124,3 +124,5 @@ export default async (req, res) => {
       break;
   }
 };
+
+export default nft;

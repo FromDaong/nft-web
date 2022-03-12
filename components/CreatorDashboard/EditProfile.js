@@ -220,7 +220,7 @@ const EditProfile = ({}) => {
               />
             </div>
             <Button
-              variant="primary w-100"
+              colorScheme="pink"
               onClick={formik.handleSubmit}
               disabled={disabled}
               type="submit"

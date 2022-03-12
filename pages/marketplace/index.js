@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Button from "react-bootstrap/Button";
+import { Button } from "@chakra-ui/react";
 import Layout from "../../components/Layout";
 import Link from "next/link";
 import * as Scroll from "react-scroll";
@@ -47,10 +47,7 @@ const Home = () => {
             <div className="buttons">
               <Link href="/marketplace/creator">
                 <a>
-                  <Button
-                    variant="primary mt-3 py-2 w-100"
-                    style={{ maxWidth: 250 }}
-                  >
+                  <Button colorScheme="pink" style={{ maxWidth: 250 }}>
                     <b>THE SWEET SHOP</b>
                   </Button>
                 </a>

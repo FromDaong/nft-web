@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import CreatorNFTItem from "../CreatorNFTItem";
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import Link from "next/link";
 import { PatchCheckFill, PlusCircle } from "react-bootstrap-icons";
 
@@ -51,7 +51,7 @@ const SubscriptionNFTs = ({
 
         <Link href="/creator-dashboard/create-sub-nft">
           <a>
-            <Button variant="primary  w-100" style={{ maxWidth: 250 }}>
+            <Button colorScheme="pink" style={{ maxWidth: 250 }}>
               <b>
                 <PlusCircle className="pb-1 mr-2" size={24} />
                 {"CREATE NEW NFTs"}

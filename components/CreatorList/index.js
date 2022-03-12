@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "react-bootstrap/Button";
+import { Button } from "@chakra-ui/react";
 import SwiperCore, {
   Pagination,
   EffectCoverflow,
@@ -23,7 +23,7 @@ const CreatorList = ({ modelData }) => {
         <div className="button">
           <Link href="/creators">
             <a>
-              <Button variant="primary py-2 px-4">
+              <Button colorScheme="pink" rounded="full">
                 <b>View All</b>
               </Button>
             </a>

@@ -4,7 +4,6 @@ import { Contracts } from "./lib/contracts.js";
 import { EVM } from "./lib/evm.js";
 import Web3 from "web3";
 import { contractAddresses } from "./lib/constants";
-import EthCrypto from "eth-crypto";
 
 export class Treat {
   constructor(provider, networkId, testing, options) {

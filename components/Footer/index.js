@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import Button from "react-bootstrap/Button";
+import { Button } from "@chakra-ui/react";
 import Nav from "react-bootstrap/Nav";
 import { useWallet } from "use-wallet";
 import WalletModal from "../WalletModal";
@@ -38,7 +38,8 @@ const Footer = () => {
                 <a
                   className=""
                   href="https://docs.google.com/gview?url=https://github.com/TreatDAO/litepaper/raw/main/TreatPaperFinal.pdf&embedded=true"
-                  target="_blank" rel="noreferrer"
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   Litepaper
                 </a>
@@ -47,7 +48,8 @@ const Footer = () => {
                 <a
                   className=""
                   href="https://pancakeswap.finance/swap?inputCurrency=0x01bd7acb6ff3b6dd5aefa05cf085f2104f3fc53f"
-                  target="_blank" rel="noreferrer"
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   Swap Tokens
                 </a>
@@ -60,7 +62,8 @@ const Footer = () => {
               <li>
                 <a
                   href="https://www.coingecko.com/en/coins/treatdao-v2"
-                  target="_blank" rel="noreferrer"
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   CoinGecko
                 </a>
@@ -68,7 +71,8 @@ const Footer = () => {
               <li>
                 <a
                   href="https://coinmarketcap.com/en/currencies/treat-dao-new/"
-                  target="_blank" rel="noreferrer"
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   CoinMarketCap
                 </a>
@@ -79,27 +83,47 @@ const Footer = () => {
             <h5>Social Media</h5>
             <ul className="list-unstyled text-small">
               <li>
-                <a href="https://t.me/TreatDAO" target="_blank" rel="noreferrer">
+                <a
+                  href="https://t.me/TreatDAO"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Telegram
                 </a>
               </li>
               <li>
-                <a href="https://twitter.com/treatdao" target="_blank" rel="noreferrer">
+                <a
+                  href="https://twitter.com/treatdao"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Twitter
                 </a>
               </li>
               <li>
-                <a href="https://www.instagram.com/treat_dao/" target="_blank" rel="noreferrer">
+                <a
+                  href="https://www.instagram.com/treat_dao/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Instagram
                 </a>
               </li>
               <li>
-                <a href="https://www.tiktok.com/@treatdao" target="_blank" rel="noreferrer">
+                <a
+                  href="https://www.tiktok.com/@treatdao"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   TikTok
                 </a>
               </li>
               <li>
-                <a href="https://treatdao.medium.com/" target="_blank" rel="noreferrer">
+                <a
+                  href="https://treatdao.medium.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Medium
                 </a>
               </li>
@@ -109,14 +133,19 @@ const Footer = () => {
             <h5>Resources</h5>
             <ul className="list-unstyled text-small">
               <li>
-                <a href="https://help.treatdao.com/" target="_blank" rel="noreferrer">
+                <a
+                  href="https://help.treatdao.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Help Center
                 </a>
               </li>
               <li>
                 <a
                   href="https://www.bonfire.com/store/treatdao-merch/"
-                  target="_blank" rel="noreferrer"
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   Merch Store
                 </a>

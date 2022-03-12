@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "react-bootstrap/Button";
+import { Button } from "@chakra-ui/react";
 import Modal from "react-bootstrap/Modal";
 import useCancelOrder from "../../hooks/useCancelOrder";
 import useGetResaleOrder from "../../hooks/useGetResaleOrder";
@@ -75,7 +75,7 @@ export const CancelOrderModalBody = ({
         </div>
         <div className="col-md-6">
           <Button
-            variant="primary"
+            colorScheme="pink"
             className="mb-2 w-100"
             onClick={() => handleClose()}
           >

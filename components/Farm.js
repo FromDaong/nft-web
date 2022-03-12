@@ -29,8 +29,6 @@ const Farm = ({ contract, treatBal, title, pid }) => {
   const formattedV1StakedAmount =
     v1StakedAmount && getBalanceNumber(v1StakedAmount);
 
-  
-
   const approveContract = () => {
     setShowPendingModal(true);
     onApprove()
@@ -54,7 +52,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
   };
 
   const approveButton = (
-    <Button variant="primary" className="w-100 py-2" onClick={approveContract}>
+    <Button colorScheme="pink" className="w-100 py-2" onClick={approveContract}>
       <b>Approve Contract</b>
     </Button>
   );
@@ -107,7 +105,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
                     value={stakeAmount}
                   />
                   <Button
-                    variant="primary"
+                    colorScheme="pink"
                     className="px-4 py-2"
                     onClick={(e) => setStakeAmount(getBalanceNumber(treatBal))}
                   >
@@ -120,7 +118,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
                   approveButton
                 ) : (
                   <Button
-                    variant="primary"
+                    colorScheme="pink"
                     className="w-100 py-2"
                     onClick={() => actionWithModal(onStake, stakeAmount)}
                   >
@@ -153,7 +151,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
                 value={unstakeAmount}
               />
               <Button
-                variant="primary"
+                colorScheme="pink"
                 className="px-4 py-2"
                 onClick={() =>
                   setUnstakeAmount(
@@ -170,7 +168,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
               approveButton
             ) : (
               <Button
-                variant="primary"
+                colorScheme="pink"
                 className="w-100 py-2"
                 onClick={() =>
                   actionWithModal(

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import Table from "react-bootstrap/Table";
-import Button from "react-bootstrap/Button";
+import { Button } from "@chakra-ui/react";
 import { useWallet } from "use-wallet";
 import useSWR from "swr";
 import Link from "next/link";
@@ -61,11 +61,9 @@ const AdminDashboardWrapper = ({ username }) => {
           subtitle={"You are not permitted to use this dashboard"}
           additionalContent={
             <Link href="/admin-dashboard/login">
-              
-                <Button variant="primary  w-sm-100">
-                  <b>{"Login to Panel"}</b>
-                </Button>
-              
+              <Button variant="primary  w-sm-100">
+                <b>{"Login to Panel"}</b>
+              </Button>
             </Link>
           }
         />
@@ -96,11 +94,9 @@ const AdminDashboard = ({ username }) => {
         title={`Loading: ${username}'s application...`}
         additionalContent={
           <Link href="/admin-dashboard">
-            
-              <Button variant="primary  w-sm-100">
-                <b>{"Back to admin panel"}</b>
-              </Button>
-            
+            <Button variant="primary  w-sm-100">
+              <b>{"Back to admin panel"}</b>
+            </Button>
           </Link>
         }
       />
@@ -160,9 +156,9 @@ const AdminDashboard = ({ username }) => {
           subtitle={`Be super careful when approving and rejecting creators`}
           additionalContent={
             <Link href="/admin-dashboard">
-                <Button variant="primary  w-sm-100">
-                  <b>{"Back to admin panel"}</b>
-                </Button>
+              <Button variant="primary  w-sm-100">
+                <b>{"Back to admin panel"}</b>
+              </Button>
             </Link>
           }
         />

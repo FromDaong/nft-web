@@ -3,7 +3,6 @@ import { Form, Button } from "react-bootstrap";
 import { useFormik, FieldArray, FormikProvider } from "formik";
 import useAddCreatorNFTs from "../../../hooks/useAddCreatorNft";
 import { useRouter } from "next/router";
-import { useWallet } from "use-wallet";
 import Loading from "../../../components/Loading";
 import Hero from "../../../components/Hero";
 import EditingNFTItem from "../../../components/EditingNFTItem";
@@ -11,6 +10,7 @@ import { create } from "ipfs-http-client";
 import BlankModal from "../../../components/BlankModal";
 import * as Yup from "yup";
 import Web3 from "web3";
+import { useMoralis } from "react-moralis";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
@@ -186,9 +186,9 @@ const CreateNFT = ({ modelData, id }) => {
 };
 
 const CreateNFTWrapper = (props) => {
-  const { account, status } = useWallet();
+  const { isAuthenticated } = useMoralis();
 
-  if (status !== "connected" || !props.modelData) {
+  if (!isAuthenticated || !props.modelData) {
     return <Loading />;
   } else {
     return <CreateNFT {...props} />;

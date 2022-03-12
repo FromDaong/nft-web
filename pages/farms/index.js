@@ -4,7 +4,6 @@ import Farm from "../../components/Farm";
 import Loading from "../../components/Loading";
 import useTokenBalance from "../../hooks/useTokenBalance";
 import { motion } from "framer-motion";
-import { useWallet } from "use-wallet";
 import { getDisplayBalance } from "../../utils/formatBalance";
 import {
   getMasterMelonFarmerContract,
@@ -12,16 +11,17 @@ import {
 } from "../../treat/utils";
 import useTreat from "../../hooks/useTreat";
 import { contractAddresses } from "../../treat/lib/constants.js";
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 
 import Link from "next/link";
+import { useMoralis } from "react-moralis";
 
 const Farms = () => {
-  const { chainId } = useWallet();
+  const { chainId } = useMoralis();
   const treatBal = useTokenBalance(contractAddresses.treat2[chainId]);
   const treatLpBal = useTokenBalance(contractAddresses.treatPancakeLP[chainId]);
   const melonBal = getDisplayBalance(
-    useTokenBalance(contractAddresses.melon[chainId])
+    useTokenBalance(contractAddresses.melon[56])
   );
   const treat = useTreat();
   const masterMelonFarmerContract = getMasterMelonFarmerContract(treat);
@@ -83,9 +83,9 @@ const Farms = () => {
 };
 
 const FarmsWrapper = (props) => {
-  const { account, status } = useWallet();
+  const { isAuthenticated } = useMoralis();
 
-  if (status !== "connected") {
+  if (!isAuthenticated) {
     return <Loading />;
   } else {
     return <Farms {...props} />;

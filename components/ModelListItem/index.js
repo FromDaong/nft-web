@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Button from "react-bootstrap/Button";
+import { Button } from "@chakra-ui/react";
 
 let easing = [0.175, 0.85, 0.42, 0.96];
 
@@ -20,7 +20,7 @@ const ModelListItem = ({ data, totwOnly = false, disableAnim }) => {
           </div>
         </div>
         <div className="button pt-4 pt-md-0 ">
-          <Button variant="primary py-2 px-5 mr-3 w-sm-100">
+          <Button colorScheme="pink">
             <b>VIEW CREATOR</b>
           </Button>
         </div>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form } from "react-bootstrap";
-import Button from "react-bootstrap/Button";
+import { Button } from "@chakra-ui/react";
 import Modal from "react-bootstrap/Modal";
 import BlankModal from "../../components/BlankModal";
 import useListOrder from "../../hooks/useListOrder";
@@ -21,7 +21,6 @@ const WalletModal = ({
   const { onApprove } = useApproveMarketplace();
 
   if (!data) return <div></div>;
-
 
   if (!isApprovedForAll) {
     return (
@@ -77,11 +76,12 @@ export const ListOrderModalBody = ({
   const [listExpires, setListExpires] = useState(maxUnixTimestamp);
 
   const openOrders = useGetOpenOrdersForNft(data.id) ?? [];
-  const lowestOpenOrder = new BigNumber(openOrders.reduce(
-      (lowest, order) =>
-        lowest.price < order.price ? lowest : order,
+  const lowestOpenOrder = new BigNumber(
+    openOrders.reduce(
+      (lowest, order) => (lowest.price < order.price ? lowest : order),
       { price: 0 }
-    ).price);
+    ).price
+  );
 
   const cancelOrderFunc = async () => {
     onListOrder(
@@ -145,7 +145,11 @@ export const ListOrderModalBody = ({
           </Button>
         </div>
         <div className="col-md-6">
-          <Button variant="primary" className="mb-2 w-100" onClick={() => null}>
+          <Button
+            colorScheme="pink"
+            className="mb-2 w-100"
+            onClick={() => null}
+          >
             Cancel
           </Button>
         </div>
