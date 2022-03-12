@@ -4,19 +4,18 @@ import { getTreatMarketplaceContract, cancelOrder } from "../treat/utils";
 import useTreat from "./useTreat";
 
 const useCancelOrder = (nftId: number) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
 
   const treatMarketplaceContract = getTreatMarketplaceContract(treat);
 
   const handleCancelOrder = useCallback(async () => {
-    
     const txHash = await cancelOrder(treatMarketplaceContract, nftId, account);
 
-    return txHash; 
-  }, [account, nftId])
+    return txHash;
+  }, [account, nftId]);
 
-  return { onCancelOrder : handleCancelOrder };
+  return { onCancelOrder: handleCancelOrder };
 };
 
 export default useCancelOrder;

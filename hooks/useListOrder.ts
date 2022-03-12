@@ -4,7 +4,7 @@ import { getTreatMarketplaceContract, listOrder } from "../treat/utils";
 import useTreat from "./useTreat";
 
 const useListOrder = () => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
 
   const treatMarketplaceContract = getTreatMarketplaceContract(treat);

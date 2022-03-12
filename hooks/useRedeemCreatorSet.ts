@@ -4,7 +4,7 @@ import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";
 
 const useRedeemCreatorSet = (id: number, treatCost: number) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const creatorMartContract = getCreatorMartContract(treat);
 

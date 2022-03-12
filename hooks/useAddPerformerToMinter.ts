@@ -1,12 +1,16 @@
-import { addPerformerToMinter, getMinterPermissionHelperContract } from "../treat/utils";
+import {
+  addPerformerToMinter,
+  getMinterPermissionHelperContract,
+} from "../treat/utils";
 import { useCallback } from "react";
 import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";
 
 const useAddPerformerToMinter = (modelAddress: string) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
-  const minterPermissionHelperContract = getMinterPermissionHelperContract(treat);
+  const minterPermissionHelperContract =
+    getMinterPermissionHelperContract(treat);
 
   const handleAddPerformerToMinter = useCallback(async () => {
     const txHash = await addPerformerToMinter(

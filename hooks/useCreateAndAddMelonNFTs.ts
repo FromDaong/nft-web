@@ -7,7 +7,7 @@ const useCreateAndAddMelonNFTs = (
   maxSupplys: Array<number>,
   creators: Array<string>
 ) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const melonMartContract = getMelonMartContract(treat);
 

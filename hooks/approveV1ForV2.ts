@@ -8,7 +8,7 @@ import {
 import useTreat from "./useTreat";
 
 const approveV1ForV2 = () => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const treatContract = getTreatContract(treat);
   const treatV1ForV2Contract = getTreatV1ForV2Contract(treat);
@@ -20,7 +20,7 @@ const approveV1ForV2 = () => {
         treatV1ForV2Contract,
         account
       );
-      
+
       return tx;
     } catch (e) {
       console.error("errhandleApprove1for2 ", e);

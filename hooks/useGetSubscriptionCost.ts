@@ -7,7 +7,7 @@ import { getBalanceNumber } from "../utils/formatBalance";
 
 const useGetSubscriptionCost = (address: string) => {
   const [subscriptionCost, setSubscriptionCost] = useState(new BigNumber(0));
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const subscriptionContract = getTreatSubscriptionContract(treat);
 

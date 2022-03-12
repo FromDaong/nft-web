@@ -11,7 +11,7 @@ const useGetFreeTreat = (
   treatCost: number,
   useFreeTreats = false
 ) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const treatMartContract = useFreeTreats
     ? getTreatMartContract(treat)

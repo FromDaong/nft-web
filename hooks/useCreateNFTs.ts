@@ -4,7 +4,7 @@ import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";
 
 const useCreateNFTs = (maxSupplys: Array<number>) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const creatorMinterHelperContract = getCreatorMinterHelperContract(treat);
 

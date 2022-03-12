@@ -1,23 +1,33 @@
-import { useCallback } from 'react'
-import { ethers, Contract } from 'ethers'
+import { useCallback } from "react";
+import { ethers, Contract } from "ethers";
 import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";
-import { approveTreatStaking, approveTreatPancakeLPStaking, getMasterMelonFarmerContract } from "../treat/utils";
+import {
+  approveTreatStaking,
+  approveTreatPancakeLPStaking,
+  getMasterMelonFarmerContract,
+} from "../treat/utils";
 
 const useApproveFarm = (lpContract: Contract, pid: number) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
-  const masterMelonFarmerContract = getMasterMelonFarmerContract(treat)
+  const masterMelonFarmerContract = getMasterMelonFarmerContract(treat);
 
   const handleApproveFarm = useCallback(async () => {
     try {
       if (pid == 0) {
-        const tx = await approveTreatStaking(masterMelonFarmerContract, account);
-        
+        const tx = await approveTreatStaking(
+          masterMelonFarmerContract,
+          account
+        );
+
         return tx;
       } else {
-        const tx = await approveTreatPancakeLPStaking(masterMelonFarmerContract, account);
-        
+        const tx = await approveTreatPancakeLPStaking(
+          masterMelonFarmerContract,
+          account
+        );
+
         return tx;
       }
     } catch (e) {
@@ -29,4 +39,4 @@ const useApproveFarm = (lpContract: Contract, pid: number) => {
   return { onApproveFarm: handleApproveFarm };
 };
 
-export default useApproveFarm
+export default useApproveFarm;

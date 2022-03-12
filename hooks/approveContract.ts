@@ -1,3 +1,4 @@
+import { useMoralis } from "react-moralis";
 import { useCallback } from "react";
 import { useWallet } from "use-wallet";
 import {
@@ -10,7 +11,7 @@ import {
 import useTreat from "./useTreat";
 
 const useApproveContract = (pid) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const treatContract = getTreat2Contract(treat);
   const treatLpContract = getTreatPancakeLPContract(treat);

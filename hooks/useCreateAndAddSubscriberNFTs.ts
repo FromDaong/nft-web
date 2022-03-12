@@ -11,7 +11,7 @@ const useCreateAndAddSubscriberNFTs = (
   amounts: Array<number>,
   hexData: string
 ) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const subscriberMartContract = getSubscriberMartContract(treat);
 

@@ -5,7 +5,7 @@ import { getTreatNFTMinterContract, transferNfts } from "../treat/utils";
 import useTreat from "./useTreat";
 
 const useTransferNfts = () => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const treatMinterContract = getTreatNFTMinterContract(treat);
 

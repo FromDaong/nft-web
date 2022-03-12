@@ -8,7 +8,7 @@ import useTreat from "./useTreat";
 import { useWallet } from "use-wallet";
 
 const hasApprovedV1ForV2 = () => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const treatContract = getTreatContract(treat);
   const [hasApprovedState, setHasApprovedState] = useState(false);

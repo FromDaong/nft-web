@@ -10,7 +10,7 @@ const useCreateBulkTotwNFTs = (
   maxSupplys: Array<number>,
   creatorAddress: string
 ) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const totwMinterHelperContract = getTotwMinterHelperContract(treat);
 

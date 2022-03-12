@@ -8,7 +8,7 @@ const useCreateAndAddNFTs = (
   amounts: Array<number>,
   hexData: string
 ) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const [currentTxHash, setTxHash] = useState(null);
   const [returnData, setReturnData] = useState(null);

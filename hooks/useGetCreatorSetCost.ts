@@ -10,7 +10,7 @@ import bsc from "@binance-chain/bsc-use-wallet";
 
 const useGetCreatorSetCost = (id: number) => {
   const [nftSetCost, setNftSetCost] = useState(new BigNumber(0));
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const creatorMartContract = getCreatorMartContract(treat);
 

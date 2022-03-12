@@ -4,7 +4,7 @@ import { useWallet } from "use-wallet";
 import { getMasterMelonFarmerContract, harvestFarm } from "../treat/utils";
 
 const useHarvestFarm = (farmPid: number) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const masterMelonFarmerContract = getMasterMelonFarmerContract(treat);
 

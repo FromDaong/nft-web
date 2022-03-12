@@ -7,17 +7,18 @@ import { useWallet } from "use-wallet";
 import WalletModal from "../WalletModal";
 import BalanceModal from "../BalanceModal";
 import Link from "next/link";
+import { useMoralis } from "react-moralis";
 
 const Footer = () => {
-  const { status, account, error, reset } = useWallet();
+  const { isAuthenticated } = useMoralis();
   const [walletModalShow, setWalletModalShow] = useState(false);
   const [balanceModalShow, setBalanceModalShow] = useState(false);
 
   useEffect(() => {
-    if (status === "connected") {
+    if (isAuthenticated) {
       setWalletModalShow(false);
     }
-  }, [status]);
+  }, [isAuthenticated]);
 
   return (
     <footer className="py-5 border-top footer">

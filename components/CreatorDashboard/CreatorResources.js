@@ -10,17 +10,17 @@ import BlankModal from "../../components/BlankModal";
 import useEditSubscription from "../../hooks/useEditSubscription";
 import useGetSubscriptionCost from "../../hooks/useGetSubscriptionCost";
 import { create } from "ipfs-http-client";
-import { useWallet } from "use-wallet";
 import { InfoCircleFill } from "react-bootstrap-icons";
 import { ListGroup } from "react-bootstrap";
+import { useMoralis } from "react-moralis";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
-const EditProfile = ({}) => {
+const EditProfile = () => {
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
   const router = useRouter();
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const subscriptionCost = useGetSubscriptionCost(account);
   const { data: res } = useSWR(`/api/model/find-by-address/${account}`);
 

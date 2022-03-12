@@ -10,7 +10,7 @@ import {
 import useTreat from "./useTreat";
 
 const useApproveMarketplace = () => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const treatNftMinterContract = getTreatNFTMinterContract(treat);
   const treatMarketplaceAddress = getTreatMarketplaceAddress(treat);
