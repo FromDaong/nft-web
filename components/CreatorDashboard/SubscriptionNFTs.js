@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import CreatorNFTItem from "../CreatorNFTItem";
-import { Button } from "@chakra-ui/react";
+import { Button } from "react-bootstrap";
 import Link from "next/link";
 import { PatchCheckFill, PlusCircle } from "react-bootstrap-icons";
 

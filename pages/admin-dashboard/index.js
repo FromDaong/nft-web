@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import Table from "react-bootstrap/Table";
-import { Button } from "@chakra-ui/react";
+import { Button } from "react-bootstrap";
 import { useWallet } from "use-wallet";
 import useSWR from "swr";
 import Link from "next/link";

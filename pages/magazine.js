@@ -2,7 +2,7 @@ import React from "react";
 import Hero from "../components/Hero";
 import Gallery from "../components/Gallery";
 import Link from "next/link";
-import { Button } from "@chakra-ui/react";
+import { Button } from "react-bootstrap";
 
 const Totm = () => {
   return (

@@ -7,7 +7,7 @@ import ListOrderModal from "../components/ListOrderModal";
 import BlankModal from "../components/BlankModal";
 import CancelOrderModal from "../components/CancelOrderModal";
 import Hero from "../components/Hero";
-import { Button } from "@chakra-ui/react";
+import { Button } from "react-bootstrap";
 import { getDisplayBalance } from "../utils/formatBalance";
 import { useMoralis } from "react-moralis";
 import Axios from "axios";

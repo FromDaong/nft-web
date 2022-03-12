@@ -1,5 +1,5 @@
 import Dropdown from "react-bootstrap/Dropdown";
-import { Button } from "@chakra-ui/react";
+import { Button } from "react-bootstrap";
 import React, { useState, useEffect, useReducer } from "react";
 import Loading from "../../components/Loading";
 import Link from "next/link";

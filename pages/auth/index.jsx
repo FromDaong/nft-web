@@ -1,5 +1,5 @@
 import { useMoralis } from "react-moralis";
-import { Button } from "@chakra-ui/react";
+import { Button } from "react-bootstrap";
 
 export default function Auth() {
   const { authenticate } = useMoralis();

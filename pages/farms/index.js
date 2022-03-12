@@ -11,7 +11,7 @@ import {
 } from "../../treat/utils";
 import useTreat from "../../hooks/useTreat";
 import { contractAddresses } from "../../treat/lib/constants.js";
-import { Button } from "@chakra-ui/react";
+import { Button } from "react-bootstrap";
 
 import Link from "next/link";
 import { useMoralis } from "react-moralis";

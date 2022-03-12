@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "@chakra-ui/react";
+import { Button } from "react-bootstrap";
 import { generateFromString } from "generate-avatar";
 import { Blurhash } from "react-blurhash";
 import { EyeSlash } from "react-bootstrap-icons";

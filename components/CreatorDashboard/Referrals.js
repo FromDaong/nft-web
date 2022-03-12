@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import CreatorNFTItem from "../CreatorNFTItem";
-import { Button } from "@chakra-ui/react";
+import { Button } from "react-bootstrap";
 import { useWallet } from "use-wallet";
 import { PiggyBankFill, Clipboard } from "react-bootstrap-icons";
 

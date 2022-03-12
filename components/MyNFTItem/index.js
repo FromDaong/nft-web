@@ -3,7 +3,7 @@ import Spinner from "react-bootstrap/Spinner";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import Modal from "react-bootstrap/Modal";
-import { Button } from "@chakra-ui/react";
+import { Button } from "react-bootstrap";
 import { Blurhash } from "react-blurhash";
 import { isBlurhashValid } from "blurhash";
 import { EyeSlash } from "react-bootstrap-icons";

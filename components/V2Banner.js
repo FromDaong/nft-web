@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "@chakra-ui/react";
+import { Button } from "react-bootstrap";
 import hasApprovedV1ForV2 from "../hooks/hasApprovedV1ForV2";
 import approveV1ForV2 from "../hooks/approveV1ForV2";
 import swapV1ForV2 from "../hooks/swapV1ForV2";

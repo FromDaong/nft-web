@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import { Button } from "@chakra-ui/react";
+import { Button } from "react-bootstrap";
 import Nav from "react-bootstrap/Nav";
 import { useWallet } from "use-wallet";
 import WalletModal from "../WalletModal";

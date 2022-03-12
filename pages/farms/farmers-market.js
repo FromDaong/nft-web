@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Button } from "react-bootstrap";
 import useSWR from "swr";
 import React, { useState, useEffect, useReducer } from "react";
 import Loading from "../../components/Loading";
