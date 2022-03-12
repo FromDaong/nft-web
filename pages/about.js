@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import Layout from "../components/Layout";
 // import HeroLogo from "/assets/hero-logo.png";

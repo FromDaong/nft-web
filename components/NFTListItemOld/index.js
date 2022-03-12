@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import Spinner from "react-bootstrap/Spinner";
-import { Button } from "react-bootstrap";
-import { generateFromString } from "generate-avatar";
+import { useEffect, useState } from "react";
+
 import { Blurhash } from "react-blurhash";
+import { Button } from "react-bootstrap";
 import { EyeSlash } from "react-bootstrap-icons";
+import { generateFromString } from "generate-avatar";
 
 // import blur from "/assets/blur.png";
 // import "./index.scss";

@@ -1,24 +1,21 @@
-import React, { useEffect, useState } from "react";
-import useSWR from "swr";
-import toBuffer from "blob-to-buffer";
-import { Button, InputGroup, FormControl, Form } from "react-bootstrap";
-import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useRouter } from "next/router";
+
+import { Button, Form, FormControl } from "react-bootstrap";
+
 import Hero from "../../components/Hero";
-import Loading from "../../components/Loading";
-import { create } from "ipfs-http-client";
 import { PencilFill } from "react-bootstrap-icons";
 import axios from "axios";
+import { useFormik } from "formik";
 import { useMoralis } from "react-moralis";
-
-const client = create("https://ipfs.infura.io:5001/api/v0");
+import { useRouter } from "next/router";
+import useSWR from "swr";
+import { useState } from "react";
 
 const EditProfile = ({}) => {
   const router = useRouter();
   const { account } = useMoralis();
   const { data: res } = useSWR(`/api/model/find-by-address/${account}`);
-  const [success, setSuccess] = useState(false);
+  const [success] = useState(false);
   const [disabled, setDisabled] = useState(false);
 
   const formik = useFormik({

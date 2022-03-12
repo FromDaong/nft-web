@@ -2,9 +2,10 @@ import {
   addPerformerToMinter,
   getMinterPermissionHelperContract,
 } from "../treat/utils";
+
 import { useCallback } from "react";
-import useTreat from "./useTreat";
 import { useMoralis } from "react-moralis";
+import useTreat from "./useTreat";
 
 const useAddPerformerToMinter = (modelAddress: string) => {
   const { account } = useMoralis();

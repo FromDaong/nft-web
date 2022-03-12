@@ -1,8 +1,6 @@
-import React from "react";
-import Hero from "../components/Hero";
-import Gallery from "../components/Gallery";
-import Link from "next/link";
 import { Button } from "react-bootstrap";
+import Gallery from "../components/Gallery";
+import Hero from "../components/Hero";
 
 const Totm = () => {
   return (

@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from "react";
-import useSWR from "swr";
-import toBuffer from "blob-to-buffer";
-import { Button, InputGroup, FormControl, Form } from "react-bootstrap";
-import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useRouter } from "next/router";
+
+import { Button, Form, FormControl } from "react-bootstrap";
+
 import Hero from "../components/Hero";
 import Loading from "../components/Loading";
 import { create } from "ipfs-http-client";
-import { useWallet } from "use-wallet";
 // import VerifyButton from "@passbase/button/react";
 import dynamic from "next/dynamic";
+import toBuffer from "blob-to-buffer";
+import { useFormik } from "formik";
+import { useRouter } from "next/router";
+import useSWR from "swr";
+import { useState } from "react";
+import { useWallet } from "use-wallet";
 
 const VerifyButton = dynamic(() => import("@passbase/button/react"), {
   ssr: false,

@@ -1,7 +1,8 @@
-import { getCreatorMartContract, createAndAddNFTs } from "../treat/utils";
 import { useCallback, useState } from "react";
+
+import { getCreatorMartContract } from "../treat/utils";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
 
 const useCreateAndAddNFTs = (
   maxSupplys: Array<number>,

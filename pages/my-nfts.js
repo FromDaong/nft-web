@@ -1,23 +1,24 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from "react";
-import Spinner from "react-bootstrap/Spinner";
-import MyNFTItem from "../components/MyNFTItem";
-import TransferNFTModal from "../components/TransferNFTModal";
-import ListOrderModal from "../components/ListOrderModal";
-import BlankModal from "../components/BlankModal";
-import CancelOrderModal from "../components/CancelOrderModal";
-import Hero from "../components/Hero";
-import { Button } from "react-bootstrap";
-import { getDisplayBalance } from "../utils/formatBalance";
-import { useMoralis } from "react-moralis";
+import { useEffect, useState } from "react";
+
 import Axios from "axios";
 import BigNumber from "bignumber.js";
-import LazyLoad from "react-lazyload";
-import Layout from "../components/Layout";
+import BlankModal from "../components/BlankModal";
+import { Button } from "react-bootstrap";
+import CancelOrderModal from "../components/CancelOrderModal";
 import ErrorFallback from "../components/Fallback/Error";
+import Hero from "../components/Hero";
+import Layout from "../components/Layout";
+import LazyLoad from "react-lazyload";
+import ListOrderModal from "../components/ListOrderModal";
+import MyNFTItem from "../components/MyNFTItem";
 import MyNFTItemSkeleton from "../components/Skeleton/MyNFTItemSkeleton";
 import PaginationComponentV2 from "../components/Pagination";
+import Spinner from "react-bootstrap/Spinner";
+import TransferNFTModal from "../components/TransferNFTModal";
 import { enforceAuth } from "../lib/server/getServerSideProps";
+import { getDisplayBalance } from "../utils/formatBalance";
+import { useMoralis } from "react-moralis";
 
 const OwnedNfts = ({
   hideNFTs,

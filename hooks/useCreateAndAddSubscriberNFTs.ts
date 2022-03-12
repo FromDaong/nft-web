@@ -1,10 +1,11 @@
 import {
-  getSubscriberMartContract,
   createAndAddSubscriberNFTs,
+  getSubscriberMartContract,
 } from "../treat/utils";
+
 import { useCallback } from "react";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
 
 const useCreateAndAddSubscriberNFTs = (
   maxSupplys: Array<number>,

@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import Spinner from "react-bootstrap/Spinner";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
-import Modal from "react-bootstrap/Modal";
-import { Button } from "react-bootstrap";
 import { Blurhash } from "react-blurhash";
-import { isBlurhashValid } from "blurhash";
+import { Button } from "react-bootstrap";
 import { EyeSlash } from "react-bootstrap-icons";
-import Link from "next/link";
-import { useNFTItemData } from "../../lib/imagecdn";
 import InView from "react-intersection-observer";
+import Link from "next/link";
+import Modal from "react-bootstrap/Modal";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Spinner from "react-bootstrap/Spinner";
+import Tooltip from "react-bootstrap/Tooltip";
+import { isBlurhashValid } from "blurhash";
+import { useNFTItemData } from "../../lib/imagecdn";
+import { useState } from "react";
 
 const NFTListItem = ({
   data,

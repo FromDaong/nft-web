@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 
 let easing = [0.175, 0.85, 0.42, 0.96];

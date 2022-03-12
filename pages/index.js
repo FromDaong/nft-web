@@ -1,22 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { Button } from "react-bootstrap";
-import TotwListItem from "../components/TotwListItem";
-import CreatorList from "../components/CreatorList";
-import SwiperNFTList from "../components/SwiperNFTList";
-import Layout from "../components/Layout";
-import { motion, useAnimation } from "framer-motion";
-import Link from "next/link";
-import Axios from "axios";
-import CountUp from "react-countup";
 import * as Scroll from "react-scroll";
-import { useInView } from "react-intersection-observer";
+
 import {
+  EaselFill,
   PatchCheckFill,
   PlusCircleFill,
   ShopWindow,
-  EaselFill,
 } from "react-bootstrap-icons";
+import { useEffect, useState } from "react";
+
+import Axios from "axios";
+import { Button } from "react-bootstrap";
+import CountUp from "react-countup";
+import CreatorList from "../components/CreatorList";
 import ErrorFallback from "../components/Fallback/Error";
+import Layout from "../components/Layout";
+import Link from "next/link";
+import SwiperNFTList from "../components/SwiperNFTList";
+import TotwListItem from "../components/TotwListItem";
+import { useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 
 const Home = () => {
   const [nftData, setNftData] = useState();

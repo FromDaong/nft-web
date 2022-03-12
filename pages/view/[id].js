@@ -1,40 +1,40 @@
-import React, { useState, useEffect } from "react";
-import Spinner from "react-bootstrap/Spinner";
-import { Button } from "react-bootstrap";
-import Badge from "react-bootstrap/Badge";
+import {
+  ArrowUpRightSquare,
+  Bag,
+  EyeSlash,
+  ShopWindow,
+} from "react-bootstrap-icons";
 import { Nav, Tab } from "react-bootstrap";
+import { gql, useQuery } from "@apollo/client";
+import { useEffect, useState } from "react";
+
+import Axios from "axios";
+import Badge from "react-bootstrap/Badge";
+import BigNumber from "bignumber.js";
+import { Blurhash } from "react-blurhash";
+import { Button } from "react-bootstrap";
+import Dropdown from "react-bootstrap/Dropdown";
+import ErrorFallback from "../../components/Fallback/Error";
+import Layout from "../../components/Layout";
+import Link from "next/link";
+import NFTPurchaseModal from "../../components/NFTPurchaseModal";
+import Spinner from "react-bootstrap/Spinner";
 import Web3 from "web3";
-import useSWR from "swr";
-import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
-import useGetFreeTreat from "../../hooks/useGetFreeTreat";
-import useGetFreeSubscriberTreat from "../../hooks/useGetFreeSubscriberTreat";
-import useGetFreeCreatorTreat from "../../hooks/useGetFreeCreatorTreat";
-import useGetNftTotalSupply from "../../hooks/useGetNftTotalSupply";
-import useGetTreatNFTCost from "../../hooks/useGetTreatNftCost";
-import getSubscriberNftCost from "../../hooks/useGetSubscriberNftCost";
+import { generateFromString } from "generate-avatar";
 import getCreatorNftCost from "../../hooks/useGetCreatorNftCost";
+import { getDisplayBalance } from "../../utils/formatBalance";
+import getSubscriberNftCost from "../../hooks/useGetSubscriberNftCost";
+import useGetFreeCreatorTreat from "../../hooks/useGetFreeCreatorTreat";
+import useGetFreeSubscriberTreat from "../../hooks/useGetFreeSubscriberTreat";
+import useGetFreeTreat from "../../hooks/useGetFreeTreat";
+import useGetIsSubscribed from "../../hooks/useGetIsSubscribed";
+import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
+import useGetNftTotalSupply from "../../hooks/useGetNftTotalSupply";
 import useGetOpenOrdersForNft from "../../hooks/useGetOpenOrdersForNft";
+import useGetTreatNFTCost from "../../hooks/useGetTreatNftCost";
 import useMintCreatorNft from "../../hooks/useMintCreatorNft";
 import useMintNft from "../../hooks/useMintNft";
 import useMintSubcriberNft from "../../hooks/useMintSubscriberNft";
-import { getDisplayBalance } from "../../utils/formatBalance";
-import { generateFromString } from "generate-avatar";
-import { Blurhash } from "react-blurhash";
-import NFTPurchaseModal from "../../components/NFTPurchaseModal";
-import Layout from "../../components/Layout";
-import {
-  EyeSlash,
-  Bag,
-  ShopWindow,
-  ArrowUpRightSquare,
-} from "react-bootstrap-icons";
-import BigNumber from "bignumber.js";
-import Link from "next/link";
-import Dropdown from "react-bootstrap/Dropdown";
-import useGetIsSubscribed from "../../hooks/useGetIsSubscribed";
-import { gql, useQuery } from "@apollo/client";
-import Axios from "axios";
-import ErrorFallback from "../../components/Fallback/Error";
 import { useMoralis } from "react-moralis";
 
 const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {

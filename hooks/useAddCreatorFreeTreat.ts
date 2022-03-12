@@ -1,7 +1,8 @@
-import { getCreatorMartContract, addCreatorFreeTreat } from "../treat/utils";
+import { addCreatorFreeTreat, getCreatorMartContract } from "../treat/utils";
+
 import { useCallback } from "react";
-import useTreat from "./useTreat";
 import { useMoralis } from "react-moralis";
+import useTreat from "./useTreat";
 
 const useAddCreatorFreeTreat = (ids: Array<number>) => {
   const { account } = useMoralis();

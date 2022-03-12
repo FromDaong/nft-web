@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { Button } from "react-bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, {
-  EffectCoverflow,
-  Navigation,
-  FreeMode,
   Autoplay,
+  EffectCoverflow,
+  FreeMode,
+  Navigation,
 } from "swiper";
-import NFTListItem from "../NFTListItem";
+
+import { Button } from "react-bootstrap";
 import LazyLoad from "react-lazyload";
 import Link from "next/link";
+import NFTListItem from "../NFTListItem";
 
 SwiperCore.use([EffectCoverflow, Navigation, Autoplay, FreeMode]);
 

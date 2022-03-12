@@ -1,19 +1,20 @@
-import Dropdown from "react-bootstrap/Dropdown";
-import { Button } from "react-bootstrap";
-import React, { useState, useEffect, useReducer } from "react";
-import Loading from "../../components/Loading";
-import Link from "next/link";
-import tags from "../../utils/tags";
-import Hero from "../../components/Hero";
-import { Order } from "../../components/CreatorMarketplaceListItem";
+import { useEffect, useReducer, useState } from "react";
+
 import { AnimateSharedLayout } from "framer-motion";
-import { forceCheck } from "react-lazyload";
-import axios from "axios";
-import Select from "react-select";
-import { useRouter } from "next/dist/client/router";
+import { Button } from "react-bootstrap";
+import Dropdown from "react-bootstrap/Dropdown";
 import ErrorFallback from "../../components/Fallback/Error";
+import Hero from "../../components/Hero";
+import Link from "next/link";
+import Loading from "../../components/Loading";
+import { Order } from "../../components/CreatorMarketplaceListItem";
 import PaginationComponentV2 from "../../components/Pagination";
+import Select from "react-select";
+import axios from "axios";
+import { forceCheck } from "react-lazyload";
+import tags from "../../utils/tags";
 import { useMoralis } from "react-moralis";
+import { useRouter } from "next/dist/client/router";
 
 // TODO: Fetch NFTs from blockchain
 // database seems to be outdated

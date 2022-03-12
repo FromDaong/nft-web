@@ -1,12 +1,5 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import Link from "next/link";
-import Photograph from "../icons/Photograph";
-import ModelIcon from "../icons/Model";
-import { useRouter } from "next/dist/client/router";
 import {
   Button,
-  Heading,
   Input,
   Modal,
   ModalBody,
@@ -16,6 +9,13 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+
+import Link from "next/link";
+import ModelIcon from "../icons/Model";
+import Photograph from "../icons/Photograph";
+import axios from "axios";
+import { useRouter } from "next/dist/client/router";
 
 export default function NavbarQuickSearch() {
   const { isOpen, onOpen, onClose } = useDisclosure();

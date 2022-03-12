@@ -1,8 +1,7 @@
-import React from "react";
 import { Button } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
-import useTokenBalance from "../../hooks/useTokenBalance";
 import { getDisplayBalance } from "../../utils/formatBalance";
+import useTokenBalance from "../../hooks/useTokenBalance";
 
 // import blur from "/assets/blur.png";
 // import "./index.scss";

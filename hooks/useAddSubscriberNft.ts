@@ -1,7 +1,8 @@
-import { getSubscriberMartContract, addSubscriberNft } from "../treat/utils";
+import { addSubscriberNft, getSubscriberMartContract } from "../treat/utils";
+
 import { useCallback } from "react";
-import useTreat from "./useTreat";
 import { useMoralis } from "react-moralis";
+import useTreat from "./useTreat";
 
 const useAddSubscriberNFTs = (ids: Array<number>, amounts: Array<number>) => {
   const { account } = useMoralis();
