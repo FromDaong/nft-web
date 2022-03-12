@@ -17,12 +17,7 @@ const V2Banner = ({ oldTokenBalance }) => {
       >
         {"Our March edition Treat of the Month + Magazine is out now!"}
         <Link href="/magazine">
-          <Button
-            backgroundColor={"white"}
-            color="black"
-            ml={2}
-            variant="solid"
-          >
+          <Button variant="light py-2 ml-2">
             <b>{"View Magazine"}</b>
           </Button>
         </Link>
