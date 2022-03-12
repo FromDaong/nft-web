@@ -77,7 +77,7 @@ const Marketplace = ({ search }) => {
               <div>
                 <Link href="/farms">
                   <a>
-                    <Button colorScheme="pink">
+                    <Button variant="primary w-100">
                       <b>{"Go to Farming Dashboard"}</b>
                     </Button>
                   </a>

@@ -20,7 +20,7 @@ const ModelListItem = ({ data, totwOnly = false, disableAnim }) => {
           </div>
         </div>
         <div className="button pt-4 pt-md-0 ">
-          <Button colorScheme="pink">
+          <Button variant="primary w-100">
             <b>VIEW CREATOR</b>
           </Button>
         </div>

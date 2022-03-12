@@ -319,7 +319,7 @@ const CreateModel = () => {
 
                 {step === "signup" && (
                   <Button
-                    colorScheme="pink"
+                    variant="primary w-100"
                     onClick={formik.handleSubmit}
                     type="submit"
                   >
@@ -328,7 +328,7 @@ const CreateModel = () => {
                 )}
 
                 {step === "submitting" && (
-                  <Button colorScheme="pink" disabled onClick={null}>
+                  <Button variant="primary w-100" disabled onClick={null}>
                     Submitting...
                   </Button>
                 )}

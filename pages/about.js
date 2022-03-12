@@ -116,7 +116,7 @@ const About = () => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <Button colorScheme="pink">
+                  <Button variant="primary w-100">
                     <b>SWAP WITH 1INCH</b>
                   </Button>
                 </a>

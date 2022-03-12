@@ -274,7 +274,7 @@ const CreateNFT = ({ modelData }) => {
             <div className="col-md-6  mt-2 text-center">
               <Button
                 type="submit"
-                colorScheme="pink"
+                variant="primary w-100"
                 py={2}
                 disabled={ipfsFiles.length === 0}
               >

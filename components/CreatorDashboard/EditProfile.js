@@ -21,7 +21,6 @@ const EditProfile = ({}) => {
   const [success, setSuccess] = useState(false);
   const [disabled, setDisabled] = useState(false);
 
-
   const formik = useFormik({
     initialValues: res,
     validateOnChange: false,
@@ -220,7 +219,7 @@ const EditProfile = ({}) => {
               />
             </div>
             <Button
-              colorScheme="pink"
+              variant="primary w-100"
               onClick={formik.handleSubmit}
               disabled={disabled}
               type="submit"

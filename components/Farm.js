@@ -52,7 +52,11 @@ const Farm = ({ contract, treatBal, title, pid }) => {
   };
 
   const approveButton = (
-    <Button colorScheme="pink" className="w-100 py-2" onClick={approveContract}>
+    <Button
+      variant="primary w-100"
+      className="w-100 py-2"
+      onClick={approveContract}
+    >
       <b>Approve Contract</b>
     </Button>
   );
@@ -105,7 +109,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
                     value={stakeAmount}
                   />
                   <Button
-                    colorScheme="pink"
+                    variant="primary w-100"
                     className="px-4 py-2"
                     onClick={(e) => setStakeAmount(getBalanceNumber(treatBal))}
                   >
@@ -118,7 +122,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
                   approveButton
                 ) : (
                   <Button
-                    colorScheme="pink"
+                    variant="primary w-100"
                     className="w-100 py-2"
                     onClick={() => actionWithModal(onStake, stakeAmount)}
                   >
@@ -151,7 +155,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
                 value={unstakeAmount}
               />
               <Button
-                colorScheme="pink"
+                variant="primary w-100"
                 className="px-4 py-2"
                 onClick={() =>
                   setUnstakeAmount(
@@ -168,7 +172,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
               approveButton
             ) : (
               <Button
-                colorScheme="pink"
+                variant="primary w-100"
                 className="w-100 py-2"
                 onClick={() =>
                   actionWithModal(

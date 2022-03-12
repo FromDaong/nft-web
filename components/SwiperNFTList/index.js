@@ -22,7 +22,7 @@ const SwiperNFTList = ({ nftData }) => {
           <div className="button">
             <Link href="/marketplace/creator">
               <a>
-                <Button colorScheme="pink" rounded="full">
+                <Button variant="primary w-100" rounded="full">
                   <b>View All</b>
                 </Button>
               </a>

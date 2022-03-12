@@ -172,7 +172,7 @@ const NFTListItem = ({
                     <span>
                       <Button
                         className="w-100"
-                        colorScheme="gray"
+                        variant="secondary"
                         disabled={hasOpenOrder}
                         style={hasOpenOrder ? { pointerEvents: "none" } : {}}
                         onClick={() => listOrderClick({ ...data, balance })}
@@ -187,7 +187,7 @@ const NFTListItem = ({
                 <span className="d-inline-block w-100">
                   <Button
                     className="w-100"
-                    colorScheme="gray"
+                    variant="secondary"
                     onClick={() => transferNFTClick(data)}
                   >
                     <b>Transfer</b>
@@ -201,7 +201,7 @@ const NFTListItem = ({
                 <span className="d-inline-block w-100">
                   <Button
                     className="w-100"
-                    colorScheme="gray"
+                    variant="secondary"
                     onClick={() => cancelOrderClick(data)}
                   >
                     <b>Remove Your Listing</b>
