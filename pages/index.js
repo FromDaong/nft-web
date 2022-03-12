@@ -96,7 +96,7 @@ const Home = () => {
                       rel="noreferrer"
                       className="w-full"
                     >
-                      <Button backgroundColor={"white"} color="black">
+                      <Button variant="light w-100 py-2">
                         <b>Buy $TREAT</b>
                       </Button>
                     </a>
