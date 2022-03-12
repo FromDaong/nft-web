@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Button } from "react-bootstrap";
 import Link from "next/link";
-import BlankModal from "./BlankModal";
-import Web3 from "web3";
 
 const V2Banner = ({ oldTokenBalance }) => {
   return (
