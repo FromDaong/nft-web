@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useWallet } from "use-wallet";
+import { useMoralis } from "react-moralis";
 import { provider } from "web3-core";
 import { Contract } from "web3-eth-contract";
 import { approve, getTreatMartContract } from "../treat/utils";

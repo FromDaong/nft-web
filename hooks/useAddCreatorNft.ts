@@ -1,7 +1,7 @@
+import { useMoralis } from "react-moralis";
 import { getCreatorMartContract, addCreatorNft } from "../treat/utils";
 import { useCallback } from "react";
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
 
 const useAddCreatorNFTs = (ids: Array<number>, amounts: Array<number>) => {
   const { account } = useMoralis();

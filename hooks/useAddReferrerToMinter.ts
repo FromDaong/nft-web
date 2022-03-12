@@ -1,7 +1,7 @@
 import { addReferrerToMinter, getTreatNFTMinterContract } from "../treat/utils";
 import { useCallback } from "react";
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
+import { useMoralis } from "react-moralis";
 
 const useAddReferrerToMinter = (modelAddress: string, refAddress: string) => {
   const { account } = useMoralis();
