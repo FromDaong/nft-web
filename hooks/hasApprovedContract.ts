@@ -7,7 +7,7 @@ import {
 } from "../treat/utils";
 import { useCallback, useEffect, useState } from "react";
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
+import { useMoralis } from "react-moralis";
 
 const hasWalletApprovedContract = (pid) => {
   const { account } = useMoralis();

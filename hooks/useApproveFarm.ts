@@ -1,7 +1,7 @@
 import { useCallback } from "react";
-import { ethers, Contract } from "ethers";
+import { Contract } from "ethers";
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
+import { useMoralis } from "react-moralis";
 import {
   approveTreatStaking,
   approveTreatPancakeLPStaking,
