@@ -4,10 +4,6 @@ import "swiper/scss/navigation";
 import "swiper/scss/pagination";
 
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-import {
-  BscConnector,
-  UserRejectedRequestError,
-} from "@binance-chain/bsc-connector";
 import { MoralisProvider, useMoralis } from "react-moralis";
 import { destroyCookie, setCookie } from "nookies";
 import { useEffect, useState } from "react";
@@ -26,7 +22,6 @@ import { Router } from "next/dist/client/router";
 import TOTMBanner from "../components/TOTMBanner";
 import TreatProvider from "../contexts/TreatProvider";
 import V2Banner from "../components/V2Banner";
-import bsc from "@binance-chain/bsc-use-wallet";
 import fetch from "../lib/fetchJson";
 import { getJWT } from "../utils/axios";
 import { useRouter } from "next/router";
@@ -75,8 +70,6 @@ function MyApp({ Component, pageProps }) {
       },
       function (error) {
         const originalRequest = error.config;
-        console.log("Got an error");
-
         if (
           error.response.status === 401 &&
           originalRequest.url.includes("refresh")
@@ -91,7 +84,6 @@ function MyApp({ Component, pageProps }) {
           // After that retry the original request
           return logout()
             .then(() => {
-              console.log("Requesting auth");
               if (!requestedAuth) {
                 setRequestedAuth(true);
                 return authenticate()
@@ -138,13 +130,10 @@ function MyApp({ Component, pageProps }) {
       getJWT(user).then(() => {
         if (router.pathname === "/auth") {
           const { redirectTo } = router.query;
-          console.log("Got path match");
           console.log(redirectTo);
           if (redirectTo) {
-            console.log("Redirecting to redirect");
             router.push(redirectTo);
           } else {
-            console.log("Pushing to home");
             router.push("/");
           }
         }
