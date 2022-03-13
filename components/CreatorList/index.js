@@ -33,21 +33,23 @@ const CreatorList = ({ modelData }) => {
       </div>
       <div className="model-display-section row">
         {modelsWithNFTs &&
-          modelsWithNFTs.slice(0, 12).map((model) => (
-            <Link key={model.username} href={`/creator/${model.username}`}>
-              <a className="model-list-item-container col-md-3">
-                <div className="pic">
-                  <GumletImage
-                    src={`/api/v2/utils/image/fetchWithFallback?default=${model.profile_pic}-/quality/lighter/-/format/webp/`}
-                  />
-                </div>
-                <div className="creator-text">
-                  <div className="name">{model.username}</div>
-                  <div className="nfts">{model.nfts.length} NFTs</div>
-                </div>
-              </a>
-            </Link>
-          ))}
+          modelsWithNFTs.slice(0, 12).map((model) => {
+            const profilePic = model.profilePicCdnUrl ?? model.profile_pic;
+            const profilePicUrl = `/api/v2/utils/images/fetchWithFallback?default=${profilePic}`;
+            return (
+              <Link key={model.username} href={`/creator/${model.username}`}>
+                <a className="model-list-item-container col-md-3">
+                  <div className="pic">
+                    <GumletImage src={profilePicUrl} />
+                  </div>
+                  <div className="creator-text">
+                    <div className="name">{model.username}</div>
+                    <div className="nfts">{model.nfts.length} NFTs</div>
+                  </div>
+                </a>
+              </Link>
+            );
+          })}
       </div>
     </div>
   );
