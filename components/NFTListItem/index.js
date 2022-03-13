@@ -19,9 +19,9 @@ const NFTListItem = ({
   const { ref, gotInView, model } = useNFTItemData(data);
   const isTOTMorOldTOTW =
     data.totw || data.totm || data.old_totw || data.old_totm;
-  const modelProfilePic = model
-    ? `url(${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/)`
-    : `url(${data.model_profile_pic})`;
+  const profile_pic = model
+    ? `url('/api/v2/utils/fetchWithFallback?default=${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/')`
+    : `url('/api/v2/utils/fetchWithFallback?default=${data.model_profile_pic}')`;
   if (!data.attributes) return <div></div>;
 
   return (
@@ -68,7 +68,7 @@ const NFTListItem = ({
               <div
                 className="profile-pic"
                 style={{
-                  backgroundImage: modelProfilePic,
+                  backgroundImage: profile_pic,
                 }}
               />
             </a>
