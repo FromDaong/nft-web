@@ -41,3 +41,14 @@
   max-width: 700px;
   transform: translateX(46%);
 }
+
+.creator-pic {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border: 2px solid #e06693;
+  border-radius: 100%;
+  img {
+    border-radius: 100%;
+  }
+}
