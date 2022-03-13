@@ -23,14 +23,18 @@ const NFTListItem = ({
   hasOpenOrder,
 }) => {
   const [modalData, setModalData] = useState();
+  const [loadHighRes] = useState(false);
   const { ref, gotInView, model } = useNFTItemData(data);
 
-  const bgImage = data.daoCdnUrl
-    ? `url('${data.daoCdnUrl}-/quality/lightest/-/format/webp/')`
-    : `url('${data.image}')`;
+  const bgImage = loadHighRes
+    ? data.daoCdnUrl
+      ? `url('${data.daoCdnUrl}-/quality/lightest/-/format/webp/')`
+      : `url('${data.image}')`
+    : `url('/api/v2/utils/images/fetchWithFallback?default=${data.image}')`;
+
   const profilePic = model
-    ? `url('${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/')`
-    : `url('${data.model_profile_pic}')`;
+    ? `url('/api/v2/utils/fetchWithFallback?default=${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/')`
+    : `url('/api/v2/utils/fetchWithFallback?default=${data.model_profile_pic}')`;
 
   return (
     <>
