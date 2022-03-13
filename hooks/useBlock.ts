@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import Web3 from "web3";
 import { useMoralis } from "react-moralis";
-// import debounce from 'debounce'
 
 const useBlock = () => {
   const [block, setBlock] = useState(0);
@@ -10,7 +9,7 @@ const useBlock = () => {
 
   useEffect(() => {
     if (!provider) return;
-    const web3 = new Web3(provider as provider);
+    const web3 = new Web3(provider as any);
 
     const interval = setInterval(async () => {
       const latestBlockNumber = await web3.eth.getBlockNumber();
