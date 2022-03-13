@@ -8,7 +8,6 @@ import {
   BscConnector,
   UserRejectedRequestError,
 } from "@binance-chain/bsc-connector";
-import { ConnectionRejectedError, useWallet } from "use-wallet";
 import { MoralisProvider, useMoralis } from "react-moralis";
 import { destroyCookie, setCookie } from "nookies";
 import { useEffect, useState } from "react";
@@ -26,7 +25,6 @@ import ReactGA from "react-ga";
 import { Router } from "next/dist/client/router";
 import TOTMBanner from "../components/TOTMBanner";
 import TreatProvider from "../contexts/TreatProvider";
-import { UseWalletProvider } from "use-wallet";
 import V2Banner from "../components/V2Banner";
 import bsc from "@binance-chain/bsc-use-wallet";
 import fetch from "../lib/fetchJson";
@@ -51,8 +49,7 @@ function MyApp({ Component, pageProps }) {
     "0xac0c7d9b063ed2c0946982ddb378e03886c064e6"
   );
   const [requestedAuth, setRequestedAuth] = useState(false);
-  const { status, account, connect } = useWallet();
-  const { authenticate, logout, enableWeb3, user, isAuthenticated } =
+  const { authenticate, logout, enableWeb3, user, isAuthenticated, account } =
     useMoralis();
   const router = useRouter();
 
@@ -167,14 +164,10 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     (async () => {
       window.scrollTo(0, 0);
-      if (status === "connected" && !account) connect("injected");
-      const connectedBefore = localStorage.getItem("connectedBefore");
-      if (connectedBefore && status === "disconnected") connect("injected");
-
       let tx = localStorage.getItem("tx");
       tx = JSON.parse(tx);
 
-      if (tx && status === "connected" && account) {
+      if (tx && isAuthenticated && account) {
         try {
           const res = await fetch(`/api/nft/${tx.nftId}`, {
             method: "PUT",
@@ -193,20 +186,20 @@ function MyApp({ Component, pageProps }) {
         }
       }
     })();
-  }, [status]);
+  }, [isAuthenticated]);
 
   useEffect(() => {
-    if (status === "connected" && !account) {
+    if (isAuthenticated && !account) {
       destroyCookie(null, "account");
-    } else if (status === "disconnected" && !account) {
+    } else if (!isAuthenticated && !account) {
       destroyCookie(null, "account");
-    } else if (status === "connected" && account) {
+    } else if (isAuthenticated && account) {
       setCookie(null, "account", account, {
         maxAge: 30 * 24 * 60 * 60,
         path: "/",
       });
     }
-  }, [status, account]);
+  }, [isAuthenticated, account]);
 
   useEffect(() => {
     // Unmounting component
@@ -280,29 +273,7 @@ function walletWrapper(props) {
       appId={"WZSAZ8e1qSzKZ0U7xRErmhoiYraqhoIyU0CCQ2bJ"}
       serverUrl={"https://ee15wkl2kmkl.usemoralis.com:2053/server"}
     >
-      <UseWalletProvider
-        chainId={56}
-        connectors={{
-          bsc,
-          bsw: {
-            web3ReactConnector() {
-              return new BscConnector({ supportedChainIds: [56] });
-            },
-            handleActivationError(err) {
-              if (err instanceof UserRejectedRequestError) {
-                return new ConnectionRejectedError();
-              }
-            },
-          },
-          walletconnect: {
-            rpcUrl:
-              "https://divine-restless-feather.bsc.quiknode.pro/f9ead03ddd05508e4fe1f6952eea26ac035c8408/",
-            chainId: 56,
-          },
-        }}
-      >
-        <MyApp {...props} />
-      </UseWalletProvider>
+      <MyApp {...props} />
     </MoralisProvider>
   );
 }
