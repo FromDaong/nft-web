@@ -34,8 +34,8 @@ const NFTListItem = ({
     : `/api/v2/utils/images/fetchWithFallback?default=${data.image}`;
 
   const profilePic = model
-    ? `/api/v2/utils/fetchWithFallback?default=${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/`
-    : `/api/v2/utils/fetchWithFallback?default=${data.model_profile_pic}`;
+    ? `/api/v2/utils/images/fetchWithFallback?default=${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/`
+    : `/api/v2/utils/images/fetchWithFallback?default=${data.model_profile_pic}`;
 
   return (
     <>
