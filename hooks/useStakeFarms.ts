@@ -1,7 +1,8 @@
-import { useCallback } from "react";
-import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
 import { getMasterMelonFarmerContract, stakeFarm } from "../treat/utils";
+
+import { useCallback } from "react";
+import { useMoralis } from "react-moralis";
+import useTreat from "./useTreat";
 
 const useStakeFarms = (pid: number) => {
   const { account } = useMoralis();

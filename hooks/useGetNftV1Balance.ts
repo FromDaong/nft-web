@@ -1,21 +1,25 @@
+import { getNftV1Balance, getTreatNFTMinterV1Contract } from "../treat/utils";
+import { useCallback, useEffect, useState } from "react";
+
 import BigNumber from "bignumber.js";
-import React, { useCallback, useEffect, useState } from "react";
-import { useWallet } from "use-wallet";
-import bsc from "@binance-chain/bsc-use-wallet";
-import { getTreatNFTMinterV1Contract, getNftV1Balance } from "../treat/utils";
 import useBlock from "./useBlock";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
 
 const useGetNftV1Balance = (nftArray) => {
   const [totalNftBalances, setBalance] = useState([]);
-  const { account }: { account: string } = useWallet();
+  const { account }: { account: string } = useMoralis();
   const treat = useTreat();
   const treatNFTMinterV1Contract = getTreatNFTMinterV1Contract(treat);
   const block = useBlock();
 
   const fetchBalance = useCallback(
     async (id) => {
-      const balance = await getNftV1Balance(treatNFTMinterV1Contract, account, id);
+      const balance = await getNftV1Balance(
+        treatNFTMinterV1Contract,
+        account,
+        id
+      );
       // @ts-ignore
       setBalance(new BigNumber(balance));
     },

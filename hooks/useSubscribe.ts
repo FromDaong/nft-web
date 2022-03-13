@@ -1,7 +1,8 @@
+import { getTreatSubscriptionContract, subscribeTo } from "../treat/utils";
+
 import BigNumber from "bignumber.js";
 import { useCallback } from "react";
-import { useWallet } from "use-wallet";
-import { getTreatSubscriptionContract, subscribeTo } from "../treat/utils";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
 
 const useSubscribe = (

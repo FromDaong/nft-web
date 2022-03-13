@@ -1,7 +1,8 @@
 import { getCreatorMartContract, redeemCreatorSet } from "../treat/utils";
+
 import { useCallback } from "react";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
 
 const useRedeemCreatorSet = (id: number, treatCost: number) => {
   const { account } = useMoralis();

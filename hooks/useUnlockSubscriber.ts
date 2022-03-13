@@ -1,7 +1,8 @@
 import { getTreatSubscriptionContract, unlockSub } from "../treat/utils";
+
 import { useCallback } from "react";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
 
 const useUnlockSubscriber = (subAddress: string) => {
   const { account } = useMoralis();

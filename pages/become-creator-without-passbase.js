@@ -9,10 +9,10 @@ import { create } from "ipfs-http-client";
 import dynamic from "next/dynamic";
 import toBuffer from "blob-to-buffer";
 import { useFormik } from "formik";
+import { useMoralis } from "react-moralis";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import { useState } from "react";
-import { useWallet } from "use-wallet";
 
 const VerifyButton = dynamic(() => import("@passbase/button/react"), {
   ssr: false,
@@ -219,9 +219,9 @@ const CreateModel = () => {
 };
 
 const CreateModelWrapper = (props) => {
-  const { account, status } = useWallet();
+  const { isAuthenticated } = useMoralis();
 
-  if (status !== "connected") {
+  if (isAuthenticated) {
     return <Loading />;
   } else {
     return <CreateModel {...props} />;

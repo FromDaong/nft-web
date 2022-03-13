@@ -1,7 +1,8 @@
 import { getTreatSubscriptionContract, isSubscribed } from "../treat/utils";
 import { useCallback, useEffect, useState } from "react";
+
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
 
 const useGetIsSubscribed = (creatorAddress: string) => {
   const { account } = useMoralis();

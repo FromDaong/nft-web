@@ -1,10 +1,8 @@
 import { getCreatorMartContract, mintCreatorNft } from "../treat/utils";
 
-import { Contract } from "web3-eth-contract";
 import { useCallback } from "react";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
-import bsc from "@binance-chain/bsc-use-wallet";
 
 const useMintCreatorNft = (
   id: number,

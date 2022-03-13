@@ -4,15 +4,15 @@ import Layout from "../../components/Layout";
 import Link from "next/link";
 import Spinner from "react-bootstrap/Spinner";
 import Table from "react-bootstrap/Table";
+import { useMoralis } from "react-moralis";
 import useSWR from "swr";
-import { useWallet } from "use-wallet";
 
 const AdminDashboardWrapper = () => {
-  const { account, status } = useWallet();
+  const { isAuthenticated } = useMoralis();
 
   const { data } = useSWR(`/api/admin/is-authed`);
 
-  if (status !== "connected" || !data) {
+  if (isAuthenticated || !data) {
     return (
       <div
         style={{
@@ -117,7 +117,10 @@ const AdminDashboard = () => {
             <tbody>
               {data &&
                 data.pendingModels.map((m) => (
-                  <Link href={`/admin-dashboard/${m.username}`}>
+                  <Link
+                    key={m.username}
+                    href={`/admin-dashboard/${m.username}`}
+                  >
                     <tr>
                       <td className="d-flex align-center justify-content-center">
                         <img src={m.profile_pic} style={{ maxHeight: 75 }} />
@@ -144,7 +147,10 @@ const AdminDashboard = () => {
             <tbody>
               {data &&
                 data.acceptedModels.map((m) => (
-                  <Link href={`/admin-dashboard/${m.username}`}>
+                  <Link
+                    key={m.username}
+                    href={`/admin-dashboard/${m.username}`}
+                  >
                     <tr>
                       <td className="d-flex align-center justify-content-center">
                         <img src={m.profile_pic} style={{ maxHeight: 75 }} />
@@ -170,7 +176,10 @@ const AdminDashboard = () => {
             <tbody>
               {data &&
                 data.rejectedModels.map((m) => (
-                  <Link href={`/admin-dashboard/${m.username}`}>
+                  <Link
+                    key={m.username}
+                    href={`/admin-dashboard/${m.username}`}
+                  >
                     <tr>
                       <td className="d-flex align-center justify-content-center">
                         <img src={m.profile_pic} style={{ maxHeight: 75 }} />

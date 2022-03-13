@@ -1,7 +1,8 @@
-import { isAdminForMinter, getTreatNFTMinterContract } from "../treat/utils";
+import { getTreatNFTMinterContract, isAdminForMinter } from "../treat/utils";
+
 import { useCallback } from "react";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
 
 const useGetIsNftAdmin = () => {
   const { account } = useMoralis();
