@@ -1,6 +1,7 @@
 import { Blurhash } from "react-blurhash";
 import { Button } from "react-bootstrap";
 import { EyeSlash } from "react-bootstrap-icons";
+import GumletImage from "../Image/GumletImage";
 import InView from "react-intersection-observer";
 import Link from "next/link";
 import Modal from "react-bootstrap/Modal";
@@ -95,32 +96,31 @@ const NFTListItem = ({
           >
             {data.image || isLoading ? (
               <>
-                <div
-                  style={{
-                    position: "absolute",
-                    width: "100%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Spinner
-                    animation="border"
-                    role="status"
-                    className="mt-5 mb-5"
-                    variant="light"
+                {isLoading ? (
+                  <div
+                    style={{
+                      position: "absolute",
+                      width: "100%",
+                      minHeight: "375px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
                   >
-                    <span className="sr-only">Loading...</span>
-                  </Spinner>
-                </div>
-                <div
-                  style={{
-                    backgroundImage: `url('https://treatdao.b-cdn.net/api/v2/utils/images/fetchWithFallback?default=${data.image}')`,
-                    minHeight: 375,
-                    zIndex: 100,
-                  }}
-                  className="dynamic-image"
-                />
+                    <Spinner
+                      animation="border"
+                      role="status"
+                      className="mt-5 mb-5"
+                      variant="light"
+                    >
+                      <span className="sr-only">Loading...</span>
+                    </Spinner>
+                  </div>
+                ) : (
+                  <GumletImage
+                    src={`/api/v2/utils/images/fetchWithFallback?default=${data.image}`}
+                  />
+                )}
               </>
             ) : (
               <>

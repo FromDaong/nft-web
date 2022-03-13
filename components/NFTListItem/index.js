@@ -1,6 +1,7 @@
 import { Blurhash } from "react-blurhash";
 import { Button } from "react-bootstrap";
 import { EyeSlash } from "react-bootstrap-icons";
+import GumletImage from "../Image/GumletImage";
 import { InView } from "react-intersection-observer";
 import Link from "next/link";
 import Spinner from "react-bootstrap/Spinner";
@@ -95,12 +96,15 @@ const NFTListItem = ({
             {data.image ? (
               <div
                 style={{
-                  backgroundImage: `url('https://treatdao.b-cdn.net/api/v2/utils/images/fetchWithFallback?default=${data.image}')`,
                   minHeight: 375,
                   zIndex: 100,
                 }}
                 className="dynamic-image"
-              />
+              >
+                <GumletImage
+                  src={`/api/v2/utils/images/fetchWithFallback?default=${data.image}`}
+                />
+              </div>
             ) : (
               <>
                 {isBlurhashValid(data.blurhash).result ? (
