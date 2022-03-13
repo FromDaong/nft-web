@@ -44,17 +44,12 @@ function MyApp({ Component, pageProps }) {
     "0xac0c7d9b063ed2c0946982ddb378e03886c064e6"
   );
   const [requestedAuth, setRequestedAuth] = useState(false);
-  const { authenticate, logout, enableWeb3, user, isAuthenticated, account } =
-    useMoralis();
+  const { authenticate, logout, user, isAuthenticated, account } = useMoralis();
   const router = useRouter();
 
   const { data: modelData } = useSWR(
     account && `/api/model/find-by-address/${account}`
   );
-
-  useEffect(() => {
-    enableWeb3();
-  }, []);
 
   useEffect(() => {
     ReactGA.initialize("UA-207897573-1");
