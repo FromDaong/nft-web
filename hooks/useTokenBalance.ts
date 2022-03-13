@@ -3,23 +3,23 @@ import { useCallback, useEffect, useState } from "react";
 import BigNumber from "bignumber.js";
 import { getBalance } from "../utils/erc20";
 import useBlock from "./useBlock";
-import { useWallet } from "use-wallet";
+import { useMoralis } from "react-moralis";
 
 const useTokenBalance = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0));
-  const { account, ethereum } = useWallet();
+  const { account, provider } = useMoralis();
   const block = useBlock();
 
   const fetchBalance = useCallback(async () => {
-    const balance = await getBalance(ethereum, tokenAddress, account);
+    const balance = await getBalance(provider as any, tokenAddress, account);
     setBalance(new BigNumber(balance));
-  }, [account, ethereum, tokenAddress]);
+  }, [account, provider, tokenAddress]);
 
   useEffect(() => {
-    if (account && ethereum) {
+    if (account && provider) {
       fetchBalance();
     }
-  }, [account, ethereum, setBalance, block, tokenAddress]);
+  }, [account, provider, setBalance, block, tokenAddress]);
 
   return balance;
 };

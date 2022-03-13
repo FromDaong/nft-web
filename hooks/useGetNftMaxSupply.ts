@@ -1,16 +1,13 @@
-import BigNumber from "bignumber.js";
+import { getNftMaxSupply, getTreatNFTMinterContract } from "../treat/utils";
 import { useCallback, useEffect, useState } from "react";
-//import { useWallet } from 'use-wallet'
-import { getTreatNFTMinterContract, getNftMaxSupply } from "../treat/utils";
-import useBlock from "./useBlock";
+
+import BigNumber from "bignumber.js";
 import useTreat from "./useTreat";
 
 const useGetNftMaxSupply = (id: number) => {
   const [maxSupply, setMaxSupply] = useState(new BigNumber(0));
-  //const { account }: { account: string } = useWallet()
   const treat = useTreat();
   const treatNFTMinterContract = getTreatNFTMinterContract(treat);
-  const block = useBlock();
 
   const fetchBalance = useCallback(async () => {
     const maxSupply = await getNftMaxSupply(treatNFTMinterContract, id);

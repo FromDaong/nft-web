@@ -1,10 +1,11 @@
-import { useCallback } from "react";
-import { useWallet } from "use-wallet";
 import {
   approveTreatOneForTwo,
   getTreatContract,
   getTreatV1ForV2Contract,
 } from "../treat/utils";
+
+import { useCallback } from "react";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
 
 const approveV1ForV2 = () => {
