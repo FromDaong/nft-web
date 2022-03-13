@@ -1,7 +1,7 @@
 import Image from "next/image";
 
-const gumletLoader = ({ src, width, quality }) => {
-  return `https://treatdao.gumlet.io/${src}?q=${quality || 75}`;
+const gumletLoader = ({ src }) => {
+  return `https://treatdao.gumlet.io${src}`;
 };
 
 const GumletImage = (props) => {

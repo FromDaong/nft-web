@@ -29,13 +29,13 @@ const NFTListItem = ({
 
   const bgImage = loadHighRes
     ? data.daoCdnUrl
-      ? `url('/${data.daoCdnUrl}-/quality/lightest/-/format/webp/')`
-      : `url('/${data.image}')`
-    : `url('/api/v2/utils/images/fetchWithFallback?default=${data.image}')`;
+      ? `/${data.daoCdnUrl}-/quality/lightest/-/format/webp/`
+      : `/${data.image}`
+    : `/api/v2/utils/images/fetchWithFallback?default=${data.image}`;
 
   const profilePic = model
-    ? `url('/api/v2/utils/fetchWithFallback?default=${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/')`
-    : `url('/api/v2/utils/fetchWithFallback?default=${data.model_profile_pic}')`;
+    ? `/api/v2/utils/fetchWithFallback?default=${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/`
+    : `/api/v2/utils/fetchWithFallback?default=${data.model_profile_pic}`;
 
   return (
     <>
