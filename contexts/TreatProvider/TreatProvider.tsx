@@ -18,7 +18,14 @@ declare global {
 }
 
 const TreatProvider: React.FC = ({ children }) => {
-  const { Moralis, chainId: _chainId, provider } = useMoralis();
+  const {
+    Moralis,
+    chainId: _chainId,
+    provider,
+    account,
+    enableWeb3,
+    isWeb3Enabled,
+  } = useMoralis();
   const [treat, setTreat] = useState<any>();
 
   if (typeof window !== "undefined") {
@@ -29,7 +36,11 @@ const TreatProvider: React.FC = ({ children }) => {
   }
 
   useEffect(() => {
-    if (Moralis) {
+    enableWeb3();
+  }, []);
+
+  useEffect(() => {
+    if (isWeb3Enabled && provider) {
       const chainId = Number(_chainId);
       const treatLib = new Treat(provider, chainId, false, {
         defaultAccount: (provider as any).selectedAddress,
@@ -44,7 +55,7 @@ const TreatProvider: React.FC = ({ children }) => {
       setTreat(treatLib);
       window.treatsauce = treatLib;
     }
-  }, [provider]);
+  }, [provider, isWeb3Enabled]);
 
   return <Context.Provider value={{ treat }}>{children}</Context.Provider>;
 };
