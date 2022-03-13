@@ -21,8 +21,8 @@ const NFTListItem = ({
   const isTOTMorOldTOTW =
     data.totw || data.totm || data.old_totw || data.old_totm;
   const profilePic = model
-    ? `url('/api/v2/utils/images/fetchWithFallback?default=${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/')`
-    : `url('/api/v2/utils/images/fetchWithFallback?default=${data.model_profile_pic}')`;
+    ? `/api/v2/utils/images/fetchWithFallback?default=${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/`
+    : `/api/v2/utils/images/fetchWithFallback?default=${data.model_profile_pic}`;
   if (!data.attributes) return <div></div>;
 
   return (
