@@ -20,9 +20,9 @@ const NFTListItem = ({
   const { ref, gotInView, model } = useNFTItemData(data);
   const isTOTMorOldTOTW =
     data.totw || data.totm || data.old_totw || data.old_totm;
-  const profile_pic = model
-    ? `url('https://treatdao.b-cdn.net/api/v2/utils/images/fetchWithFallback?default=${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/')`
-    : `url('https://treatdao.b-cdn.net/api/v2/utils/images/fetchWithFallback?default=${data.model_profile_pic}')`;
+  const profilePic = model
+    ? `url('/api/v2/utils/images/fetchWithFallback?default=${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/')`
+    : `url('/api/v2/utils/images/fetchWithFallback?default=${data.model_profile_pic}')`;
   if (!data.attributes) return <div></div>;
 
   return (
@@ -66,12 +66,9 @@ const NFTListItem = ({
             }`}
           >
             <a>
-              <div
-                className="profile-pic"
-                style={{
-                  backgroundImage: profile_pic,
-                }}
-              />
+              <div className="profile-pic">
+                <GumletImage src={profilePic} />
+              </div>
             </a>
           </Link>
 

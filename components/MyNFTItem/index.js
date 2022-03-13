@@ -29,13 +29,13 @@ const NFTListItem = ({
 
   const bgImage = loadHighRes
     ? data.daoCdnUrl
-      ? `url('https://treatdao.b-cdn.net/${data.daoCdnUrl}-/quality/lightest/-/format/webp/')`
-      : `url('https://treatdao.b-cdn.net/${data.image}')`
-    : `url('https://treatdao.b-cdn.net/api/v2/utils/images/fetchWithFallback?default=${data.image}')`;
+      ? `url('/${data.daoCdnUrl}-/quality/lightest/-/format/webp/')`
+      : `url('/${data.image}')`
+    : `url('/api/v2/utils/images/fetchWithFallback?default=${data.image}')`;
 
   const profilePic = model
-    ? `url('https://treatdao.b-cdn.net/api/v2/utils/fetchWithFallback?default=${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/')`
-    : `url('https://treatdao.b-cdn.net/api/v2/utils/fetchWithFallback?default=${data.model_profile_pic}')`;
+    ? `url('/api/v2/utils/fetchWithFallback?default=${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/')`
+    : `url('/api/v2/utils/fetchWithFallback?default=${data.model_profile_pic}')`;
 
   return (
     <>
@@ -69,10 +69,9 @@ const NFTListItem = ({
           </div>
           <Link href={`/creator/${data.attributes[0].value.replace("@", "")}`}>
             <a>
-              <div
-                className="profile-pic"
-                style={{ backgroundImage: profilePic }}
-              />
+              <div className="profile-pic">
+                <GumletImage src={profilePic} />
+              </div>
             </a>
           </Link>
           <div
