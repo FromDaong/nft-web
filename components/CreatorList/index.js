@@ -39,7 +39,7 @@ const CreatorList = ({ modelData }) => {
             return (
               <Link key={model.username} href={`/creator/${model.username}`}>
                 <a className="model-list-item-container col-md-3">
-                  <div className="pic">
+                  <div className="creator-pic">
                     <GumletImage src={profilePicUrl} />
                   </div>
                   <div className="creator-text">
