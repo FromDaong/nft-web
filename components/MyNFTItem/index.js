@@ -28,13 +28,13 @@ const NFTListItem = ({
 
   const bgImage = loadHighRes
     ? data.daoCdnUrl
-      ? `url('${data.daoCdnUrl}-/quality/lightest/-/format/webp/')`
-      : `url('${data.image}')`
-    : `url('/api/v2/utils/images/fetchWithFallback?default=${data.image}')`;
+      ? `url('https://treatdao.b-cdn.net/${data.daoCdnUrl}-/quality/lightest/-/format/webp/')`
+      : `url('https://treatdao.b-cdn.net/${data.image}')`
+    : `url('https://treatdao.b-cdn.net/api/v2/utils/images/fetchWithFallback?default=${data.image}')`;
 
   const profilePic = model
-    ? `url('/api/v2/utils/fetchWithFallback?default=${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/')`
-    : `url('/api/v2/utils/fetchWithFallback?default=${data.model_profile_pic}')`;
+    ? `url('https://treatdao.b-cdn.net/api/v2/utils/fetchWithFallback?default=${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/')`
+    : `url('https://treatdao.b-cdn.net/api/v2/utils/fetchWithFallback?default=${data.model_profile_pic}')`;
 
   return (
     <>
@@ -115,7 +115,7 @@ const NFTListItem = ({
                 </div>
                 <div
                   style={{
-                    backgroundImage: `url('/api/v2/utils/images/fetchWithFallback?default=${data.image}')`,
+                    backgroundImage: `url('https://treatdao.b-cdn.net/api/v2/utils/images/fetchWithFallback?default=${data.image}')`,
                     minHeight: 375,
                     zIndex: 100,
                   }}
