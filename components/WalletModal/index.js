@@ -52,17 +52,13 @@ const WalletModal = ({ show, handleClose }) => {
           </Button>
           <br />
           <Button
-            colorScheme={"purple"}
+            variant="info"
             className="mb-2 w-100"
             onClick={() => smartConnectWithMoralis("walletconnect")}
           >
             Connect via WalletConnect
           </Button>
-          <Button
-            colorScheme={"yellow"}
-            className="w-100"
-            onClick={web3authConnect}
-          >
+          <Button variant="warning" className="w-100" onClick={web3authConnect}>
             Connect via Web3Auth
           </Button>
         </Modal.Body>
