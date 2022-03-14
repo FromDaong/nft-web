@@ -23,21 +23,6 @@ import { useMoralis } from "react-moralis";
 import useSWR from "swr";
 import { useState } from "react";
 
-const variants = {
-  show: {
-    transition: { staggerChildren: 0.25 },
-    when: "afterChildren",
-    opacity: 1,
-  },
-  hidden: {
-    transition: {
-      staggerChildren: 0.02,
-      staggerDirection: -1,
-      when: "afterChildren",
-    },
-  },
-};
-
 const CreatorDashboardWrapper = ({ modelData }) => {
   const { account, isAuthenticated } = useMoralis();
 
@@ -101,11 +86,11 @@ const ViewNFT = ({ modelData, account }) => {
   );
 
   const transferNFTClick = (x) => {
-    setTransferNFTData(x);
+    //setTransferNFTData(x);
   };
 
   const hideNFTs = async () => {
-    setServerNftBalances(null);
+    //setServerNftBalances(null);
   };
 
   return (
@@ -142,7 +127,7 @@ const ViewNFT = ({ modelData, account }) => {
             </p>
             <Link href={`/creator/${modelData.username}`}>
               <a>
-                <Button variant="primary w-100">
+                <Button variant="primary w-sm-100">
                   <b>{"Go to My Creator Profile"}</b>
                 </Button>
               </a>
