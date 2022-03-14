@@ -19,11 +19,7 @@ import axios from "axios";
 import { useRouter } from "next/dist/client/router";
 
 export default function NavbarQuickSearch() {
-  return (
-    <ChakraProvider>
-      <NavbarQuickSearchWrapper />
-    </ChakraProvider>
-  );
+  return <div></div>;
 }
 
 const NavbarQuickSearchWrapper = () => {
