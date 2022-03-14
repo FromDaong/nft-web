@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
+import { ChakraProvider } from "@chakra-ui/react";
 import Link from "next/link";
 import ModelIcon from "../icons/Model";
 import Photograph from "../icons/Photograph";
@@ -18,6 +19,14 @@ import axios from "axios";
 import { useRouter } from "next/dist/client/router";
 
 export default function NavbarQuickSearch() {
+  return (
+    <ChakraProvider>
+      <NavbarQuickSearchWrapper />
+    </ChakraProvider>
+  );
+}
+
+const NavbarQuickSearchWrapper = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -33,12 +42,12 @@ export default function NavbarQuickSearch() {
       <SearchModal isOpen={isOpen} onClose={onClose} />
     </div>
   );
-}
+};
 
 const SearchModal = ({ isOpen, onClose }) => {
   const [searchText, setSearchText] = useState("");
   const [results, setResults] = useState([]);
-  const [error, setError] = useState(null);
+  const [, setError] = useState(null);
   const router = useRouter();
 
   const onChange = (e) => {
