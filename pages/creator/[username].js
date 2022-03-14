@@ -12,6 +12,7 @@ import SweetShopNFTs from "../../components/CreatorPage/SweetShopNFTs";
 import Web3 from "web3";
 import useGetIsSubscribed from "../../hooks/useGetIsSubscribed";
 import useGetSubscriptionCost from "../../hooks/useGetSubscriptionCost";
+import { useMoralis } from "react-moralis";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 
