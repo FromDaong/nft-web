@@ -32,7 +32,7 @@ export default async function fetchWithFallback(req, res) {
     }
   } else {
     try {
-      const cdnurl = `${req.query.default}-/quality/lighter/-/format/webp/`;
+      const cdnurl = `${req.query.default}`;
       const image_data = await fetch(cdnurl);
       const img = await image_data.arrayBuffer();
       res.setHeader("Content-Type", "image/webp");
