@@ -9,7 +9,7 @@ import * as atob from "atob";
 dbConnect();
 
 const web3 = new Web3(
-  "https://divine-restless-feather.bsc.quiknode.pro/f9ead03ddd05508e4fe1f6952eea26ac035c8408/"
+  "https://speedy-nodes-nyc.moralis.io/0e4b710bbd818e9709fe0ef5/bsc/mainnet"
 );
 
 const treatNFTMinter = new web3.eth.Contract(
