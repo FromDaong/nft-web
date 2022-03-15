@@ -1,7 +1,7 @@
+import React, { useEffect, useState } from "react";
 import { Tab, Tabs } from "react-bootstrap";
-import { useEffect, useState } from "react";
 
-import { Button } from "react-bootstrap";
+import Button from "react-bootstrap/Button";
 import { Clipboard } from "react-bootstrap-icons";
 import ErrorFallback from "../../components/Fallback/Error";
 import Layout from "../../components/Layout";
@@ -148,6 +148,7 @@ const ViewModel = ({
   onRedeemSet,
   nftSetPrice,
 }) => {
+  console.log({ newNFTs, subNFTs, totwNFTs, totmNFTs, outOfPrintNFTs });
   const [copied, setCopied] = useState(false);
   const { account } = useMoralis();
   const subscriptionCost = useGetSubscriptionCost(modelData.address || "");

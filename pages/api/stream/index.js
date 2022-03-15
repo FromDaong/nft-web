@@ -10,7 +10,7 @@ import Web3 from "web3";
 dbConnect();
 
 const web3 = new Web3(
-  "https://divine-restless-feather.bsc.quiknode.pro/f9ead03ddd05508e4fe1f6952eea26ac035c8408/"
+  "https://speedy-nodes-nyc.moralis.io/0e4b710bbd818e9709fe0ef5/bsc/mainnet"
 );
 
 function wait(time) {
@@ -37,9 +37,8 @@ export default withSession(async (req, res) => {
     case "POST":
       try {
         if (req.body.status !== "confirmed") return res.status(200);
-        
+
         await wait(5000);
-        
 
         const logs = await web3.eth.getPastLogs({
           address: contractAddresses.creatorMart[56],
@@ -57,20 +56,16 @@ export default withSession(async (req, res) => {
         const logDataArray = log.data
           .substring(2, log.data.length)
           .match(/.{1,64}/g);
-        
 
         const numberOfNFTs = Web3.utils.hexToNumber("0x" + logDataArray[4]);
-        
 
         const nftIDs = [...Array(numberOfNFTs).keys()].map((i) =>
           web3.utils.hexToNumber("0x" + logDataArray[5 + i])
         );
-        
 
         const pendingNFTs = await PendingNFT.find({
           tx_hash: log.transactionHash,
         });
-        
 
         await pendingNFTs.forEach(async (n, i) => {
           try {
@@ -93,16 +88,13 @@ export default withSession(async (req, res) => {
               }
             );
 
-            
             return newNFT;
           } catch (e) {
             console.error({ e });
           }
         });
-        
 
         res.status(200).json({ success: true });
-        
       } catch (error) {
         console.error({ error });
         res.status(200).json({ success: false, error: error });
