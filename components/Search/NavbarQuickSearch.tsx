@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import { ChakraProvider } from "@chakra-ui/react";
 import Link from "next/link";
 import ModelIcon from "../icons/Model";
 import Photograph from "../icons/Photograph";

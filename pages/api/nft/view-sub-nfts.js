@@ -11,7 +11,7 @@ import {
 } from "../../../treat/utils";
 
 const web3 = new Web3(
-  "https://speedy-nodes-nyc.moralis.io/0e4b710bbd818e9709fe0ef5/bsc/mainnet"
+  "https://speedy-nodes-nyc.moralis.io/0e4b710bbd818e9709fe0ef5/bsc/mainnet
 );
 
 const treatNFTMinter = new web3.eth.Contract(
