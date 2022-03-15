@@ -1,15 +1,15 @@
-import dbConnect from "../../../utils/dbConnect";
-import PendingNFT from "../../../models/PendingNFT";
 import Model from "../../../models/Model";
-import withSession from "../../../lib/session";
-import { contractAddresses } from "../../../treat/lib/constants";
+import PendingNFT from "../../../models/PendingNFT";
 import TreatNFTMinterAbi from "../../../treat/lib/abi/treatnftminter.json";
 import Web3 from "web3";
+import { contractAddresses } from "../../../treat/lib/constants";
+import dbConnect from "../../../utils/dbConnect";
+import withSession from "../../../lib/session";
 
 dbConnect();
 
 const web3 = new Web3(
-  "https://speedy-nodes-nyc.moralis.io/0e4b710bbd818e9709fe0ef5/bsc/mainnet
+  "https://speedy-nodes-nyc.moralis.io/0e4b710bbd818e9709fe0ef5/bsc/mainnet"
 );
 
 const treatNFTMinter = new web3.eth.Contract(
