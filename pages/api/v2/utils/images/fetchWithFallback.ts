@@ -22,7 +22,7 @@ export default async function fetchWithFallback(req, res) {
       const response = await axios.get(req.query.default, {
         responseType: "arraybuffer",
       });
-      return res.send(Buffer.from(response.data));
+      return res.send(response.data);
     } catch (err) {
       console.log({ err });
       const response = await axios.get(req.query.default);
@@ -43,9 +43,9 @@ export default async function fetchWithFallback(req, res) {
         responseType: "arraybuffer",
       });
 
-      const blob = response.data.replace(`"`, "").replace(/["']/g, "");
+      const blob = dataURLtoFile(response.data);
       res.setHeader("Content-Type", "image/webp");
-      return res.send(Buffer.from(blob));
+      return res.send(blob);
     }
   }
 }

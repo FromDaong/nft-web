@@ -31,7 +31,9 @@ const OwnedNfts = ({
   navigate,
   error,
 }) => {
-  console.log({ isLoading });
+  if (error) {
+    return <ErrorFallback custom="Failed to load my NFT's" />;
+  }
   return (
     <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
       <div
@@ -155,6 +157,9 @@ const OpenOrders = ({
   navigate,
   error,
 }) => {
+  if (error) {
+    return <ErrorFallback custom="Failed to load Resale NFT's" />;
+  }
   return (
     <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
       <div style={{ background: "#FFFDF2" }}>
@@ -314,11 +319,7 @@ const ViewNFT = ({
     return <TradeInNFTs v1NFTs={v1NFTs} account={account} />;
   }
   */
-  console.log({
-    account,
-    isOpenOrdersLoading,
-    isOwnedLoading,
-  });
+
   return (
     <Layout>
       <div className="container  my-nft-container">
@@ -523,8 +524,6 @@ const MyNFTsWrapper = () => {
         </Spinner>
       </div>
     );
-  } else if (ownedNFTError || resaleNFTError) {
-    return <ErrorFallback custom="Failed to load my NFT's" />;
   } else {
     return (
       <ViewNFT
