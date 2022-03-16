@@ -39,7 +39,7 @@ export default withSession(async (req, res) => {
 
         const newNFTs = await Promise.all(
           req.body.nfts.map((nft) => {
-            return new Promise((resolve, reject) => {
+            return new Promise(async (resolve, reject) => {
               const nftBody = {
                 id: Number(nft.id),
                 list_price: nft.list_price,
