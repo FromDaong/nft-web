@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Axios from "axios";
 import BigNumber from "bignumber.js";
 import BlankModal from "../components/BlankModal";
-import { Button } from "react-bootstrap";
 import CancelOrderModal from "../components/CancelOrderModal";
 import ErrorFallback from "../components/Fallback/Error";
 import Hero from "../components/Hero";
@@ -21,13 +20,10 @@ import { getDisplayBalance } from "../utils/formatBalance";
 import { useMoralis } from "react-moralis";
 
 const OwnedNfts = ({
-  hideNFTs,
-  revealNFTs,
   ownedNFTData,
   transferNFTClick,
   listOrderClick,
   isLoading,
-  signature,
   navigate,
   error,
 }) => {
@@ -77,7 +73,6 @@ const OwnedNfts = ({
                     balance={nft.balance}
                     isLoading={isLoading}
                     data={nft}
-                    revealNFTs={revealNFTs}
                     transferNFTClick={transferNFTClick}
                     listOrderClick={listOrderClick}
                     hasOpenOrder={nft.hasOpenOrder}
@@ -135,11 +130,8 @@ const OwnedNfts = ({
 };
 
 const OpenOrders = ({
-  hideNFTs,
-  revealNFTs,
   resaleNFTData,
   cancelOrderClick,
-  signature,
   isLoading,
   navigate,
   error,
@@ -192,7 +184,6 @@ const OpenOrders = ({
                         balance={nft.quantity}
                         data={nft}
                         isLoading={isLoading}
-                        revealNFTs={revealNFTs}
                         cancelOrderClick={cancelOrderClick}
                       />
                     </div>
@@ -262,9 +253,6 @@ const ViewNFT = ({
   ownedNFTDataError,
   resaleNFTDataError,
   navigate,
-  hideNFTs,
-  revealNFTs,
-  signature,
 }) => {
   const [transferNFTData, setTransferNFTData] = useState(null);
   const [listOrderData, setListOrderData] = useState(null);
@@ -344,26 +332,21 @@ const ViewNFT = ({
         </div> */}
         <div className="mt-2">
           <OwnedNfts
-            hideNFTs={hideNFTs}
             listOrderClick={listOrderClick}
             transferNFTClick={transferNFTClick}
             ownedNFTData={ownedNFTData}
-            revealNFTs={revealNFTs}
             isLoading={isOwnedLoading}
-            signature={signature}
             navigate={navigate}
             error={ownedNFTDataError}
           />
         </div>
         <div className="mt-2">
           <OpenOrders
-            hideNFTs={hideNFTs}
             cancelOrderClick={cancelOrderClick}
             transferNFTClick={transferNFTClick}
             resaleNFTData={resaleNFTData}
             revealNFTs={resaleNFTData}
             isLoading={isOpenOrdersLoading}
-            signature={signature}
             navigate={navigate}
             error={resaleNFTDataError}
           />
@@ -374,7 +357,7 @@ const ViewNFT = ({
 };
 
 const MyNFTsWrapper = () => {
-  const { isAuthenticated, account, web3 } = useMoralis();
+  const { isAuthenticated, account } = useMoralis();
   const [ownedNFTData, setOwnedNFTData] = useState({
     docs: [],
     hasNextPage: false,
@@ -395,25 +378,12 @@ const MyNFTsWrapper = () => {
   });
   const [ownedNFTError, setOwnedNFTError] = useState(null);
   const [resaleNFTError, setResaleNFTError] = useState(null);
-  const [signature, setSignature] = useState(null);
-
-  const hideNFTs = async () => {
-    setSignature(null);
-  };
-
-  const revealNFTs = async () => {
-    if (account) {
-      const signer = web3.getSigner();
-      const signature = await signer.signMessage("Reveal Contents");
-      setSignature(signature);
-    }
-  };
 
   useEffect(() => {
     setOwnedNFTData({ ...ownedNFTData, loading: true });
     setResaleNFTData({ ...resaleNFTData, loading: true });
     if (isAuthenticated) {
-      Axios.post(`/api/v2/nft/my_nfts?page=${ownedNFTData.page}`, { signature })
+      Axios.post(`/api/v2/nft/my_nfts?page=${ownedNFTData.page}`)
         .then((res) => {
           setOwnedNFTData({ ...res.data, loading: false });
         })
@@ -423,9 +393,7 @@ const MyNFTsWrapper = () => {
           setOwnedNFTData({ ...ownedNFTData, loading: false });
         });
 
-      Axios.post(`/api/v2/nft/my_resale_nfts?page=${resaleNFTData.page}`, {
-        signature,
-      })
+      Axios.post(`/api/v2/nft/my_resale_nfts?page=${resaleNFTData.page}`)
         .then((res) => {
           setResaleNFTData({ ...res.data, loading: false });
         })
@@ -435,12 +403,12 @@ const MyNFTsWrapper = () => {
           setResaleNFTData({ ...resaleNFTData, loading: false });
         });
     }
-  }, [isAuthenticated, signature]);
+  }, [isAuthenticated]);
 
   const navigate = (key, page) => {
     if (key === "owned") {
       setOwnedNFTData({ ...ownedNFTData, loading: true, page });
-      Axios.post(`/api/v2/nft/my_nfts?page=${page}`, { signature })
+      Axios.post(`/api/v2/nft/my_nfts?page=${page}`)
         .then((res) => {
           setOwnedNFTData({ ...res.data, loading: false });
         })
@@ -451,7 +419,7 @@ const MyNFTsWrapper = () => {
         });
     } else {
       setResaleNFTData({ ...resaleNFTData, loading: true, page });
-      Axios.post(`/api/v2/nft/my_resale_nfts?page=${page}`, { signature })
+      Axios.post(`/api/v2/nft/my_resale_nfts?page=${page}`)
         .then((res) => {
           setResaleNFTData({ ...res.data, loading: false });
         })
@@ -509,9 +477,6 @@ const MyNFTsWrapper = () => {
         resaleNFTData={resaleNFTData}
         resaleNFTDataError={resaleNFTError}
         ownedNFTDataError={ownedNFTError}
-        hideNFTs={hideNFTs}
-        revealNFTs={revealNFTs}
-        signature={signature}
       />
     );
   }
