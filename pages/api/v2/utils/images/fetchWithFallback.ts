@@ -1,5 +1,6 @@
 import axios from "axios";
 const atob = require("atob");
+const sharp = require("sharp");
 
 function dataURLtoFile(dataurl) {
   const arr = dataurl.split(",");
@@ -22,30 +23,48 @@ export default async function fetchWithFallback(req, res) {
       const response = await axios.get(req.query.default, {
         responseType: "arraybuffer",
       });
-      return res.send(response.data);
+      const image = await sharp(Buffer.from(response.data))
+        .resize(500)
+        .toFormat("webp", { nearLossless: true, quality: 50 })
+        .toBuffer();
+      res.setHeader("Content-Type", "image/webp");
+      return res.send(image);
     } catch (err) {
       console.log({ err });
       const response = await axios.get(req.query.default);
 
       const blob = dataURLtoFile(response.data); //response.data.replace(`"`, "").replace(/["']/g, "");
-      return res.send(blob);
+      const image = await sharp(blob)
+        .resize(500)
+        .toFormat("webp", { nearLossless: true, quality: 50 })
+        .toBuffer();
+      res.setHeader("Content-Type", "image/webp");
+      return res.send(image);
     }
   } else {
     try {
-      const cdnurl = `${req.query.default}`;
+      const cdnurl = `${req.query.default}-/quality/lighter/-/format/webp/`;
       const image_data = await fetch(cdnurl);
       const img = await image_data.arrayBuffer();
+      const finalImage = await sharp(Buffer.from(img))
+        .resize(500)
+        .toFormat("webp", { nearLossless: true, quality: 50, alphaQuality: 80 })
+        .toBuffer();
       res.setHeader("Content-Type", "image/webp");
-      return res.send(Buffer.from(img));
+      return res.send(Buffer.from(finalImage));
     } catch (err) {
       console.log({ err });
       const response = await axios.get(req.query.default, {
         responseType: "arraybuffer",
       });
 
-      const blob = dataURLtoFile(response.data);
+      const blob = response.data.replace(`"`, "").replace(/["']/g, "");
+      const image = await sharp(Buffer.from(blob))
+        .resize(500)
+        .toFormat("webp", { nearLossless: true, quality: 50, alphaQuality: 80 })
+        .toBuffer();
       res.setHeader("Content-Type", "image/webp");
-      return res.send(blob);
+      return res.send(image);
     }
   }
 }
