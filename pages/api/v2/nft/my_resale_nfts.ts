@@ -1,9 +1,10 @@
-import { web3Node, ethers } from "../../../../utils/moralis";
-import dbConnect from "../../../../utils/dbConnect";
-import { withJWTAuth } from "../../../../utils/server-utils";
+import { ethers, web3Node } from "../../../../utils/moralis";
+
 import NFT from "../../../../models/NFT";
 import TreatMarketplaceAbi from "../../../../treat/lib/abi/treatMarketplace.json";
 import Web3 from "web3";
+import dbConnect from "../../../../utils/dbConnect";
+import { withJWTAuth } from "../../../../utils/server-utils";
 
 const web3 = new Web3(
   "https://divine-restless-feather.bsc.quiknode.pro/f9ead03ddd05508e4fe1f6952eea26ac035c8408/"
@@ -14,29 +15,7 @@ dbConnect();
 const myNFTs = async (req, res) => {
   const { session } = req;
   const { ethAddress } = session;
-  let body = null;
-  let signature = null;
-  if (req.method === "POST") {
-    body = req.body;
-    signature = body.signature;
 
-    if (signature) {
-      try {
-        const signer = web3.eth.accounts.recover("Reveal Contents", signature);
-        const address = session.ethAddress.toUpperCase();
-        if (signer.toUpperCase() !== address) {
-          return res.status(403).json({
-            error: "Invalid signature",
-          });
-        }
-      } catch (err) {
-        console.log({ err });
-        return res.status(403).json({
-          error: "Invalid signature",
-        });
-      }
-    }
-  }
   const options = {
     page: req.query.page ?? 1,
     limit: 12,
@@ -84,10 +63,6 @@ const myNFTs = async (req, res) => {
       if (returnObj.cdnUrl) {
         returnObj.image = returnObj.cdnUrl;
         delete returnObj.cdnUrl;
-      }
-
-      if (returnObj.blurhash && !signature) {
-        delete returnObj.image;
       }
 
       // Removing this to minimize total payload, get only what we need.
