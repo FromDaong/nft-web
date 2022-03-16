@@ -26,7 +26,7 @@ const WalletModal = ({ show, handleClose }) => {
       provider: "web3Auth",
       chainId: "0x38",
       clientId:
-        "BPe6vuRLN_FFW_BWpH6pIKoktC0w7F6epw1vC4SNo-T2WaGXmPhJbZ2viFg29XVwt_U-nRog5dJ4ugiG0Zju35s",
+        "BMUF4XcCUy62JfBjwO5Rb1DcYlhEIDf66aifsTtJPTQCat2tlFC3_eijeO9q-AcHGL-HsiMf4qxRjzkXmOC_dEs",
       signingMessage: "Sign with your wallet to continue",
     });
   };
