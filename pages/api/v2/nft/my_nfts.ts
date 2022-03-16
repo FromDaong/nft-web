@@ -1,39 +1,12 @@
 import MoralisInstance from "../../../../utils/moralis";
+import NFT from "../../../../models/NFT";
 import dbConnect from "../../../../utils/dbConnect";
 import { withJWTAuth } from "../../../../utils/server-utils";
-import NFT from "../../../../models/NFT";
-import Web3 from "web3";
 
 dbConnect();
 
-const web3 = new Web3(
-  "https://divine-restless-feather.bsc.quiknode.pro/f9ead03ddd05508e4fe1f6952eea26ac035c8408/"
-);
-
 const myNFTs = async (req, res) => {
   const { session } = req;
-  let body = null;
-  let signature = null;
-  if (req.method === "POST") {
-    body = req.body;
-    signature = body.signature;
-
-    if (signature) {
-      try {
-        const signer = web3.eth.accounts.recover("Reveal Contents", signature);
-        const address = session.ethAddress.toUpperCase();
-        if (signer.toUpperCase() !== address) {
-          return res.status(403).json({
-            error: "Invalid signature",
-          });
-        }
-      } catch (err) {
-        return res.status(403).json({
-          error: "Invalid signature",
-        });
-      }
-    }
-  }
 
   const options = {
     page: req.query.page ?? 1,
@@ -79,10 +52,6 @@ const myNFTs = async (req, res) => {
         // Removing this to minimize total payload, get only what we need.
         delete returnObj.description;
         delete returnObj.mints;
-
-        if (returnObj.blurhash && !signature) {
-          delete returnObj.image;
-        }
 
         return returnObj;
       }
