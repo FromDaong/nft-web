@@ -60,19 +60,6 @@ const OwnedNfts = ({
               My NFTs
             </h2>
           </div>
-          {ownedNFTData.docs.length > 0 && (
-            <div className="button-container">
-              {signature ? (
-                <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
-                  <b>{"Hide Contents 🙈"}</b>
-                </Button>
-              ) : (
-                <Button variant="primary w-100" onClick={revealNFTs}>
-                  <b>{"Reveal Contents 👀"}</b>
-                </Button>
-              )}
-            </div>
-          )}
         </div>
       </div>
       {ownedNFTData.docs.length && !isLoading > 0 ? (
@@ -181,19 +168,6 @@ const OpenOrders = ({
               Listed on Re-Sale Marketplace
             </h2>
           </div>
-          {resaleNFTData.docs.length > 0 && (
-            <div className="button-container">
-              {signature ? (
-                <Button variant="secondary  w-sm-100" onClick={hideNFTs}>
-                  <b>{"Hide Contents 🙈"}</b>
-                </Button>
-              ) : (
-                <Button variant="primary w-100" onClick={revealNFTs}>
-                  <b>{"Reveal Contents 👀"}</b>
-                </Button>
-              )}
-            </div>
-          )}
         </div>
       </div>
       {resaleNFTData.docs.length > 0 && !isLoading ? (
