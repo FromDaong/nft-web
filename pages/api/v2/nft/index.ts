@@ -103,6 +103,7 @@ export default async function all_nfts(req, res) {
         },
       ];
       const aggregate = NFT.aggregate(agg);
+      // @ts-ignore
       NFTs = await NFT.aggregatePaginate(aggregate, options);
     } else {
       const query = {
@@ -121,7 +122,7 @@ export default async function all_nfts(req, res) {
       } else {
         delete query.tags;
       }
-
+      // @ts-ignore
       NFTs = await NFT.paginate(query, options);
     }
 
