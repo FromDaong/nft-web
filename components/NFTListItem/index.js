@@ -140,7 +140,8 @@ const NFTListItem = ({
                 {model ? model.username : data.attributes[0].value.slice(1, -1)}
               </div>
             </div>
-            {(price || data.list_price) && (
+            {(typeof price !== "undefined" ||
+              typeof data.list_price !== "undefined") && (
               <div className="stats">
                 <div className="stat">
                   <div className="number">{price || data.list_price}</div>

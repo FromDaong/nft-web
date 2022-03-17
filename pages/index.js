@@ -149,7 +149,7 @@ const Home = () => {
             TreatDAO.
           </div>
           <Link href="/magazine">
-            <Button colorScheme={"purple"}>
+            <Button className="purple-button">
               <b>View Treat Magazine</b>
             </Button>
           </Link>
