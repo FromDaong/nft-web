@@ -52,3 +52,12 @@
     border-radius: 100%;
   }
 }
+
+.purple-button {
+  background: #7736c8;
+  border-color: #7736c8;
+  &:hover {
+    border-color: #7736c8;
+    background: #7736c8;
+  }
+}
