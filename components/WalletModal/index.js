@@ -1,9 +1,10 @@
-import { Button } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
+
 import Modal from "react-bootstrap/Modal";
 import { useMoralis } from "react-moralis";
 
 const WalletModal = ({ show, handleClose }) => {
-  const { authenticate } = useMoralis();
+  const { authenticate, isAuthenticating } = useMoralis();
 
   const smartConnectWithMoralis = async (wallet) => {
     if (wallet === "walletconnect") {
@@ -48,7 +49,16 @@ const WalletModal = ({ show, handleClose }) => {
             className="mb-2 w-100"
             onClick={() => smartConnectWithMoralis()}
           >
-            Connect via MetaMask
+            {isAuthenticating ? (
+              <Spinner
+                animation="border"
+                role="status"
+                size="xl"
+                style={{ marginTop: 5 }}
+              />
+            ) : (
+              "Connect via MetaMask"
+            )}
           </Button>
           <br />
           <Button
@@ -56,10 +66,28 @@ const WalletModal = ({ show, handleClose }) => {
             className="mb-2 w-100"
             onClick={() => smartConnectWithMoralis("walletconnect")}
           >
-            Connect via WalletConnect
+            {isAuthenticating ? (
+              <Spinner
+                animation="border"
+                role="status"
+                size="xl"
+                style={{ marginTop: 5 }}
+              />
+            ) : (
+              "Connect via WalletConnect"
+            )}
           </Button>
           <Button variant="warning" className="w-100" onClick={web3authConnect}>
-            Connect via Web3Auth
+            {isAuthenticating ? (
+              <Spinner
+                animation="border"
+                role="status"
+                size="xl"
+                style={{ marginTop: 5 }}
+              />
+            ) : (
+              "Connect via Web3Auth"
+            )}
           </Button>
         </Modal.Body>
       </Modal>
