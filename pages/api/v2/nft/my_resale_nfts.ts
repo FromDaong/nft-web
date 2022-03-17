@@ -2,13 +2,8 @@ import { ethers, web3Node } from "../../../../utils/moralis";
 
 import NFT from "../../../../models/NFT";
 import TreatMarketplaceAbi from "../../../../treat/lib/abi/treatMarketplace.json";
-import Web3 from "web3";
 import dbConnect from "../../../../utils/dbConnect";
 import { withJWTAuth } from "../../../../utils/server-utils";
-
-const web3 = new Web3(
-  "https://divine-restless-feather.bsc.quiknode.pro/f9ead03ddd05508e4fe1f6952eea26ac035c8408/"
-);
 
 dbConnect();
 
