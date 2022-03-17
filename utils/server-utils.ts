@@ -1,18 +1,9 @@
+import { destroyCookie, setCookie } from "nookies";
+
 import jwt from "jsonwebtoken";
 import { parseCookies } from "nookies";
-import Web3 from "web3";
-import { setCookie, destroyCookie } from "nookies";
-
-const web3 = new Web3(
-  "https://divine-restless-feather.bsc.quiknode.pro/f9ead03ddd05508e4fe1f6952eea26ac035c8408/"
-);
 
 const JWT_KEY = process.env.NEXT_APP_JWT_KEY;
-
-export const isValidSignature = ({ signature, message, address }) => {
-  const signer = web3.eth.accounts.recover(message, signature);
-  return signer.toUpperCase() === address.toUpperCase();
-};
 
 export const setNextCookie = (res, name, data, maxAge?) => {
   setCookie({ res }, name, data, {
