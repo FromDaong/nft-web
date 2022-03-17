@@ -21,7 +21,6 @@ const myNFTs = async (req, res) => {
     address: session.ethAddress,
     token_address: process.env.TREAT_MINTER_ADDRESS,
     chain: "bsc",
-    limit: 1000,
   });
 
   const nftids = owned_nfts.result.map((nft) => Number(nft.token_id));

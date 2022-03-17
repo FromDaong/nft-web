@@ -1,18 +1,15 @@
-import dbConnect from "../../../../utils/dbConnect";
-import { mapNftBody } from "../../nft/mappers";
-import NFT from "../../../../models/NFT";
-import Model from "../../../../models/Model";
-import Web3 from "web3";
-import { getBalanceNumber } from "../../../../utils/formatBalance";
-import TreatNFTMinterAbi from "../../../../treat/lib/abi/treatnftminter.json";
-import TreatMarketplaceAbi from "../../../../treat/lib/abi/treatMarketplace.json";
 import { getNftMaxSupply, getNftTotalSupply } from "../../../../treat/utils";
+
+import NFT from "../../../../models/NFT";
+import TreatNFTMinterAbi from "../../../../treat/lib/abi/treatnftminter.json";
+import Web3 from "web3";
 import { contractAddresses } from "../../../../treat/lib/constants";
+import dbConnect from "../../../../utils/dbConnect";
 
 dbConnect();
 
 const web3 = new Web3(
-  "https://divine-restless-feather.bsc.quiknode.pro/f9ead03ddd05508e4fe1f6952eea26ac035c8408/"
+  "https://speedy-nodes-nyc.moralis.io/0e4b710bbd818e9709fe0ef5/bsc/mainnet"
 );
 
 const treatNFTMinter = new web3.eth.Contract(
