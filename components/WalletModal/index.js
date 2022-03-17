@@ -53,7 +53,7 @@ const WalletModal = ({ show, handleClose }) => {
               <Spinner
                 animation="border"
                 role="status"
-                size="xl"
+                size="md"
                 style={{ marginTop: 5 }}
               />
             ) : (
@@ -70,7 +70,7 @@ const WalletModal = ({ show, handleClose }) => {
               <Spinner
                 animation="border"
                 role="status"
-                size="xl"
+                size="md"
                 style={{ marginTop: 5 }}
               />
             ) : (
@@ -82,7 +82,7 @@ const WalletModal = ({ show, handleClose }) => {
               <Spinner
                 animation="border"
                 role="status"
-                size="xl"
+                size="md"
                 style={{ marginTop: 5 }}
               />
             ) : (
