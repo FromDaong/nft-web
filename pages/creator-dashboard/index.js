@@ -1,48 +1,32 @@
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Spinner, Button } from "react-bootstrap";
-import EditProfile from "../../components/CreatorDashboard/EditProfile";
-import CreatedNFTs from "../../components/CreatorDashboard/CreatedNFTs";
-import SubscriptionSettings from "../../components/CreatorDashboard/SubscriptionSettings";
-import SubSettingsBox from "../../components/CreatorDashboard/SubSettingsBox";
-import CreatorResources from "../../components/CreatorDashboard/CreatorResources";
-import Referrals from "../../components/CreatorDashboard/Referrals";
-import { Nav, Tab } from "react-bootstrap";
-import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
-import { useWallet } from "use-wallet";
-import Link from "next/link";
-import useSWR from "swr";
-import Layout from "../../components/Layout";
+import { Button, Spinner } from "react-bootstrap";
 import {
   CameraFill,
-  PatchCheckFill,
   GearFill,
-  PiggyBankFill,
   InfoCircleFill,
+  PatchCheckFill,
   PencilFill,
+  PiggyBankFill,
 } from "react-bootstrap-icons";
-import SubscriptionNFTs from "../../components/CreatorDashboard/SubscriptionNFTs";
-import ErrorFallback from "../../components/Fallback/Error";
+import { Nav, Tab } from "react-bootstrap";
 
-const variants = {
-  show: {
-    transition: { staggerChildren: 0.25 },
-    when: "afterChildren",
-    opacity: 1,
-  },
-  hidden: {
-    transition: {
-      staggerChildren: 0.02,
-      staggerDirection: -1,
-      when: "afterChildren",
-    },
-  },
-};
+import CreatedNFTs from "../../components/CreatorDashboard/CreatedNFTs";
+import CreatorResources from "../../components/CreatorDashboard/CreatorResources";
+import EditProfile from "../../components/CreatorDashboard/EditProfile";
+import ErrorFallback from "../../components/Fallback/Error";
+import Layout from "../../components/Layout";
+import Link from "next/link";
+import Referrals from "../../components/CreatorDashboard/Referrals";
+import SubSettingsBox from "../../components/CreatorDashboard/SubSettingsBox";
+import SubscriptionNFTs from "../../components/CreatorDashboard/SubscriptionNFTs";
+import SubscriptionSettings from "../../components/CreatorDashboard/SubscriptionSettings";
+import { useMoralis } from "react-moralis";
+import useSWR from "swr";
+import { useState } from "react";
 
 const CreatorDashboardWrapper = ({ modelData }) => {
-  const { account, status } = useWallet();
+  const { account, isAuthenticated } = useMoralis();
 
-  if (status !== "connected" || !modelData) {
+  if (!isAuthenticated || !modelData) {
     return (
       <div
         style={{
@@ -102,11 +86,11 @@ const ViewNFT = ({ modelData, account }) => {
   );
 
   const transferNFTClick = (x) => {
-    setTransferNFTData(x);
+    //setTransferNFTData(x);
   };
 
   const hideNFTs = async () => {
-    setServerNftBalances(null);
+    //setServerNftBalances(null);
   };
 
   return (
@@ -133,7 +117,8 @@ const ViewNFT = ({ modelData, account }) => {
               <a
                 href="https://t.me/TreatContentCreators"
                 target="_blank"
-                className="text-primary" rel="noreferrer"
+                className="text-primary"
+                rel="noreferrer"
               >
                 <small>
                   <b>Join our creator Telegram community</b>
@@ -142,7 +127,7 @@ const ViewNFT = ({ modelData, account }) => {
             </p>
             <Link href={`/creator/${modelData.username}`}>
               <a>
-                <Button variant="primary  w-sm-100">
+                <Button variant="primary w-sm-100">
                   <b>{"Go to My Creator Profile"}</b>
                 </Button>
               </a>

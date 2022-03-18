@@ -1,7 +1,8 @@
+import { getTreatSubscriptionContract, subscribeTo } from "../treat/utils";
+
 import BigNumber from "bignumber.js";
 import { useCallback } from "react";
-import { useWallet } from "use-wallet";
-import { getTreatSubscriptionContract, subscribeTo } from "../treat/utils";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
 
 const useSubscribe = (
@@ -9,12 +10,14 @@ const useSubscribe = (
   totalSubUnits: number,
   subPrice: number
 ) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
 
   const treatSubscriptionContract = getTreatSubscriptionContract(treat);
 
-  const totalPrice = new BigNumber(totalSubUnits).multipliedBy(new BigNumber(subPrice));
+  const totalPrice = new BigNumber(totalSubUnits).multipliedBy(
+    new BigNumber(subPrice)
+  );
 
   const handleSubscribe = useCallback(async () => {
     const txHash = await subscribeTo(
@@ -26,7 +29,13 @@ const useSubscribe = (
     );
 
     return txHash;
-  }, [account, creatorAddress, totalPrice, totalSubUnits, treatSubscriptionContract]);
+  }, [
+    account,
+    creatorAddress,
+    totalPrice,
+    totalSubUnits,
+    treatSubscriptionContract,
+  ]);
 
   return { onSubscribe: handleSubscribe };
 };

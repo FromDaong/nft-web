@@ -1,67 +1,35 @@
-import React, { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import { useWallet } from "use-wallet";
+import { Button, Spinner } from "react-bootstrap";
 
-const AlertModal = ({ show, handleClose }) => {
-  return (
-    <>
-      <Modal show={show} onHide={handleClose} centered>
-        <div>
-          <Modal.Body>
-            Note: BSC Wallet does not support signing, so you won't be able to
-            reveal NFTs using it.
-            <br />
-            You can transfer NFTs to a supported wallet (MetaMask or Trust
-            Wallet) from the My NFTs page.
-          </Modal.Body>
-          <Button onClick={handleClose}>Connect</Button>
-        </div>
-      </Modal>
-    </>
-  );
-};
+import Modal from "react-bootstrap/Modal";
+import { useMoralis } from "react-moralis";
 
 const WalletModal = ({ show, handleClose }) => {
-  const { connect, error } = useWallet();
-  const [bscModalShow, setBscModalShow] = useState(false);
+  const { authenticate, isAuthenticating } = useMoralis();
 
-  const connectToWallet = (provider) => {
-    connect(provider);
-    localStorage.setItem("connectedBefore", true);
+  const smartConnectWithMoralis = async (wallet) => {
+    if (wallet === "walletconnect") {
+      authenticate({
+        provider: "walletconnect",
+        chainId: 56,
+        signingMessage: "Sign with your wallet to continue",
+      });
+    } else {
+      authenticate({
+        provider: "metamask",
+        chainId: 56,
+        signingMessage: "Sign with your wallet to continue",
+      });
+    }
   };
 
-  const smartConnectToMetamask = async () => {
-    if (error && error.name === "ChainUnsupportedError") {
-      const provider = window.ethereum;
-      if (provider) {
-        try {
-          await provider.request({
-            method: "wallet_addEthereumChain",
-            params: [
-              {
-                chainId: `0x38`,
-                chainName: "Binance Smart Chain",
-                nativeCurrency: {
-                  name: "BNB",
-                  symbol: "BNB",
-                  decimals: 18,
-                },
-                // rpcUrls: ["https://data-seed-prebsc-1-s1.binance.org:8545/"],
-                rpcUrls: ["https://bsc-dataseed2.defibit.io"],
-                blockExplorerUrls: ["https://bscscan.com"],
-                // rpcUrls: ["https://data-seed-prebsc-1-s1.binance.org:8545/"],
-                // blockExplorerUrls: ["https://testnet.bscscan.com"],
-              },
-            ],
-          });
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    }
-
-    connectToWallet();
+  const web3authConnect = () => {
+    authenticate({
+      provider: "web3Auth",
+      chainId: "0x38",
+      clientId:
+        "BMUF4XcCUy62JfBjwO5Rb1DcYlhEIDf66aifsTtJPTQCat2tlFC3_eijeO9q-AcHGL-HsiMf4qxRjzkXmOC_dEs",
+      signingMessage: "Sign with your wallet to continue",
+    });
   };
 
   return (
@@ -69,7 +37,7 @@ const WalletModal = ({ show, handleClose }) => {
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
           <div>
-            <Modal.Title>Connect to Wallet</Modal.Title>
+            <Modal.Title>Connect your Wallet</Modal.Title>
             <p className="mb-0 mt-1">
               Please ensure your wallet is connected to the Binance Smart Chain.
             </p>
@@ -77,43 +45,52 @@ const WalletModal = ({ show, handleClose }) => {
         </Modal.Header>
         <Modal.Body>
           <Button
+            variant="primary"
             className="mb-2 w-100"
-            onClick={() => smartConnectToMetamask()}
+            onClick={() => smartConnectWithMoralis()}
           >
-            Connect via MetaMask
+            {isAuthenticating ? (
+              <Spinner
+                animation="border"
+                role="status"
+                size="md"
+                style={{ marginTop: 5 }}
+              />
+            ) : (
+              "Connect via MetaMask"
+            )}
           </Button>
           <br />
           <Button
             variant="info"
             className="mb-2 w-100"
-            onClick={() => connectToWallet("walletconnect")}
+            onClick={() => smartConnectWithMoralis("walletconnect")}
           >
-            Connect via WalletConnect
+            {isAuthenticating ? (
+              <Spinner
+                animation="border"
+                role="status"
+                size="md"
+                style={{ marginTop: 5 }}
+              />
+            ) : (
+              "Connect via WalletConnect"
+            )}
           </Button>
-          <Button
-            variant="warning"
-            className="w-100"
-            onClick={() => {
-              handleClose();
-              setBscModalShow(true);
-            }}
-          >
-            Connect via Binance Chain Wallet
+          <Button variant="warning" className="w-100" onClick={web3authConnect}>
+            {isAuthenticating ? (
+              <Spinner
+                animation="border"
+                role="status"
+                size="md"
+                style={{ marginTop: 5 }}
+              />
+            ) : (
+              "Connect via Web3Auth"
+            )}
           </Button>
         </Modal.Body>
-        {/* <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Cancel
-          </Button>
-        </Modal.Footer> */}
       </Modal>
-      <AlertModal
-        show={bscModalShow}
-        handleClose={() => {
-          setBscModalShow(false);
-          connectToWallet("bsw");
-        }}
-      />
     </>
   );
 };

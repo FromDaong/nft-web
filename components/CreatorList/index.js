@@ -1,11 +1,12 @@
-import React from "react";
-import Button from "react-bootstrap/Button";
 import SwiperCore, {
-  Pagination,
+  Autoplay,
   EffectCoverflow,
   Navigation,
-  Autoplay,
+  Pagination,
 } from "swiper";
+
+import { Button } from "react-bootstrap";
+import GumletImage from "../Image/GumletImage";
 import Link from "next/link";
 
 SwiperCore.use([Pagination, EffectCoverflow, Navigation, Autoplay]);
@@ -23,7 +24,7 @@ const CreatorList = ({ modelData }) => {
         <div className="button">
           <Link href="/creators">
             <a>
-              <Button variant="primary py-2 px-4">
+              <Button variant="primary w-100" rounded="full">
                 <b>View All</b>
               </Button>
             </a>
@@ -32,22 +33,23 @@ const CreatorList = ({ modelData }) => {
       </div>
       <div className="model-display-section row">
         {modelsWithNFTs &&
-          modelsWithNFTs.slice(0, 12).map((model, i) => (
-            <Link href={`/creator/${model.username}`}>
-              <a className="model-list-item-container col-md-3">
-                <div
-                  className="pic"
-                  style={{
-                    backgroundImage: `url(${model.profile_pic}-/quality/lighter/-/format/webp/)`,
-                  }}
-                ></div>
-                <div className="creator-text">
-                  <div className="name">{model.username}</div>
-                  <div className="nfts">{model.nfts.length} NFTs</div>
-                </div>
-              </a>
-            </Link>
-          ))}
+          modelsWithNFTs.slice(0, 12).map((model) => {
+            const profilePic = model.profilePicCdnUrl ?? model.profile_pic;
+            const profilePicUrl = `/api/v2/utils/images/fetchWithFallback?default=${profilePic}`;
+            return (
+              <Link key={model.username} href={`/creator/${model.username}`}>
+                <a className="model-list-item-container col-md-3">
+                  <div className="creator-pic">
+                    <GumletImage src={profilePicUrl} />
+                  </div>
+                  <div className="creator-text">
+                    <div className="name">{model.username}</div>
+                    <div className="nfts">{model.nfts.length} NFTs</div>
+                  </div>
+                </a>
+              </Link>
+            );
+          })}
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import Model from "../../../models/Model";
 
 dbConnect();
 
-export default async (req, res) => {
+const model = async (req, res) => {
   const { method } = req;
   const { s } = req.query;
 
@@ -52,3 +52,5 @@ export default async (req, res) => {
       break;
   }
 };
+
+export default model;

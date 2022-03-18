@@ -1,13 +1,10 @@
-import React, { useState } from "react";
+import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
-import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { useWallet } from "use-wallet";
+import { useState } from "react";
 import useTransferNfts from "../../hooks/useTransferNfts";
 
 const WalletModal = ({ show, handleClose, data }) => {
-  const { connect, error } = useWallet();
-
   const { onTransferNfts } = useTransferNfts();
   const [toAddress, setToAddress] = useState("");
   const [transferAmount, setTransferAmount] = useState(0);
@@ -67,7 +64,7 @@ const WalletModal = ({ show, handleClose, data }) => {
           </div>
           <div className="col-md-6">
             <Button
-              variant="primary"
+              variant="primary w-100"
               className="mb-2 w-100"
               onClick={() => null}
             >

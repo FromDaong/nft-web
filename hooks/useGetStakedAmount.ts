@@ -1,14 +1,15 @@
-import { useCallback, useEffect, useState } from "react";
-import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
 import {
   getMasterMelonFarmerContract,
-  getV1MasterMelonFarmerContract,
   getStaked,
+  getV1MasterMelonFarmerContract,
 } from "../treat/utils";
+import { useCallback, useEffect, useState } from "react";
+
+import { useMoralis } from "react-moralis";
+import useTreat from "./useTreat";
 
 const useGetStakedAmount = (pid: number, v1: boolean) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const [stakedAmount, setStakedAmount] = useState(null);
   const masterMelonFarmerContract = getMasterMelonFarmerContract(treat);

@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from "react";
-import useSWR from "swr";
-import toBuffer from "blob-to-buffer";
-import { Button, InputGroup, FormControl, Form } from "react-bootstrap";
-import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useRouter } from "next/router";
+
+import { Button, Form, FormControl } from "react-bootstrap";
+
 import Hero from "../components/Hero";
 import Loading from "../components/Loading";
 import { create } from "ipfs-http-client";
-import { useWallet } from "use-wallet";
 // import VerifyButton from "@passbase/button/react";
 import dynamic from "next/dynamic";
+import toBuffer from "blob-to-buffer";
+import { useFormik } from "formik";
+import { useMoralis } from "react-moralis";
+import { useRouter } from "next/router";
+import useSWR from "swr";
+import { useState } from "react";
 
 const VerifyButton = dynamic(() => import("@passbase/button/react"), {
   ssr: false,
@@ -21,7 +23,7 @@ const client = create("https://ipfs.infura.io:5001/api/v0");
 const CreateModel = () => {
   const router = useRouter();
   const [success, setSuccess] = useState(false);
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const { data: res } = useSWR(`/api/model/find-by-address/${account}`);
 
   const formik = useFormik({
@@ -88,7 +90,6 @@ const CreateModel = () => {
       });
     });
   };
-
 
   if (success || (res && res.pending))
     return (
@@ -218,9 +219,9 @@ const CreateModel = () => {
 };
 
 const CreateModelWrapper = (props) => {
-  const { account, status } = useWallet();
+  const { isAuthenticated } = useMoralis();
 
-  if (status !== "connected") {
+  if (isAuthenticated) {
     return <Loading />;
   } else {
     return <CreateModel {...props} />;

@@ -1,10 +1,11 @@
 import { getTreatMartContract, redeemSet } from "../treat/utils";
+
 import { useCallback } from "react";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
 
 const useRedeemSet = (id: number, treatCost: number) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const treatMartContract = getTreatMartContract(treat);
 

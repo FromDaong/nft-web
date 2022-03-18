@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { Button, InputGroup, FormControl, Form } from "react-bootstrap";
-import { useFormik } from "formik";
 import * as Yup from "yup";
+
+import { Button, Form, FormControl } from "react-bootstrap";
+
+import { useFormik } from "formik";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 const CreateModel = () => {
   const router = useRouter();
@@ -126,6 +128,7 @@ const CreateModel = () => {
             variant="primary w-100"
             onClick={formik.handleSubmit}
             type="submit"
+            w={100}
           >
             Create Model
           </Button>

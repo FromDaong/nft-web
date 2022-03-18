@@ -1,10 +1,12 @@
-import React, { useState } from "react";
-import { Button, InputGroup, FormControl, Form } from "react-bootstrap";
-import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useRouter } from "next/router";
+
+import { Button, Form, FormControl } from "react-bootstrap";
+
 import Hero from "../../components/Hero";
 import Link from "next/link";
+import { useFormik } from "formik";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 const CreateNFT = () => {
   const router = useRouter();
@@ -64,11 +66,9 @@ const CreateNFT = () => {
           subtitle={"Welcome back, Sir / Madame."}
           additionalContent={
             <Link href="/admin-dashboard">
-              
-                <Button variant="primary  w-sm-100">
-                  <b>{"Back to admin panel"}</b>
-                </Button>
-              
+              <Button variant="primary w-100">
+                <b>{"Back to admin panel"}</b>
+              </Button>
             </Link>
           }
         />
@@ -96,7 +96,11 @@ const CreateNFT = () => {
               onChange={formik.handleChange}
             />
           </div>
-          <Button variant="primary" onClick={formik.handleSubmit} type="submit">
+          <Button
+            variant="primary w-100"
+            onClick={formik.handleSubmit}
+            type="submit"
+          >
             <b>Login</b>
           </Button>
           <Form.Control.Feedback

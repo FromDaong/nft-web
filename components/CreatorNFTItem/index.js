@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
+import { Button } from "react-bootstrap";
 import { Blurhash } from "react-blurhash";
 import { isBlurhashValid } from "blurhash";
 import { motion } from "framer-motion";

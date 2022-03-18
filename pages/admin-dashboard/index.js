@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from "react";
+import { Button } from "react-bootstrap";
+import Hero from "../../components/Hero";
+import Layout from "../../components/Layout";
+import Link from "next/link";
 import Spinner from "react-bootstrap/Spinner";
 import Table from "react-bootstrap/Table";
-import Button from "react-bootstrap/Button";
-import { useWallet } from "use-wallet";
+import { useMoralis } from "react-moralis";
 import useSWR from "swr";
-import Link from "next/link";
-import Layout from "../../components/Layout";
-import Hero from "../../components/Hero";
 
 const AdminDashboardWrapper = () => {
-  const { account, status } = useWallet();
+  const { isAuthenticated } = useMoralis();
 
   const { data } = useSWR(`/api/admin/is-authed`);
 
-  if (status !== "connected" || !data) {
+  if (isAuthenticated || !data) {
     return (
       <div
         style={{
@@ -56,7 +55,7 @@ const AdminDashboardWrapper = () => {
           subtitle={"You are not permitted to use this dashboard"}
           additionalContent={
             <Link href="/admin-dashboard/login">
-              <Button variant="primary  w-sm-100">
+              <Button variant="primary w-100">
                 <b>{"Login to Panel"}</b>
               </Button>
             </Link>
@@ -80,7 +79,7 @@ const AdminDashboard = () => {
             <>
               <Link href="/admin-dashboard/create-totm-nfts">
                 <a>
-                  <Button variant="primary w-sm-100 mr-2">
+                  <Button variant="primary w-100" mr={2}>
                     <b>{"Create TOTM NFTs"}</b>
                   </Button>
                 </a>
@@ -91,7 +90,7 @@ const AdminDashboard = () => {
                 </Button>
               </Link>
               <Link href="/api/admin/logout">
-                <Button variant="primary  w-sm-100">
+                <Button variant="primary w-100">
                   <b>{"Logout"}</b>
                 </Button>
               </Link>
@@ -118,7 +117,10 @@ const AdminDashboard = () => {
             <tbody>
               {data &&
                 data.pendingModels.map((m) => (
-                  <Link href={`/admin-dashboard/${m.username}`}>
+                  <Link
+                    key={m.username}
+                    href={`/admin-dashboard/${m.username}`}
+                  >
                     <tr>
                       <td className="d-flex align-center justify-content-center">
                         <img src={m.profile_pic} style={{ maxHeight: 75 }} />
@@ -145,7 +147,10 @@ const AdminDashboard = () => {
             <tbody>
               {data &&
                 data.acceptedModels.map((m) => (
-                  <Link href={`/admin-dashboard/${m.username}`}>
+                  <Link
+                    key={m.username}
+                    href={`/admin-dashboard/${m.username}`}
+                  >
                     <tr>
                       <td className="d-flex align-center justify-content-center">
                         <img src={m.profile_pic} style={{ maxHeight: 75 }} />
@@ -171,7 +176,10 @@ const AdminDashboard = () => {
             <tbody>
               {data &&
                 data.rejectedModels.map((m) => (
-                  <Link href={`/admin-dashboard/${m.username}`}>
+                  <Link
+                    key={m.username}
+                    href={`/admin-dashboard/${m.username}`}
+                  >
                     <tr>
                       <td className="d-flex align-center justify-content-center">
                         <img src={m.profile_pic} style={{ maxHeight: 75 }} />

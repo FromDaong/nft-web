@@ -1,12 +1,12 @@
-import React, { useState, useEffect, createRef } from "react";
 import { Blurhash } from "react-blurhash";
-import { isBlurhashValid } from "blurhash";
+import { Button } from "react-bootstrap";
 import { EyeSlash } from "react-bootstrap-icons";
-import Spinner from "react-bootstrap/Spinner";
-import Button from "react-bootstrap/Button";
-import Link from "next/link";
+import GumletImage from "../Image/GumletImage";
 import { InView } from "react-intersection-observer";
-import axios from "axios";
+import Link from "next/link";
+import Spinner from "react-bootstrap/Spinner";
+import { isBlurhashValid } from "blurhash";
+import { useNFTItemData } from "../../lib/imagecdn";
 
 const NFTListItem = ({
   data,
@@ -15,40 +15,24 @@ const NFTListItem = ({
   isOwner,
   price,
   owner,
-  quantity,
-  disableAnimations,
-  modelData,
   soldOut,
 }) => {
-  const [visible, setVisible] = useState(false);
-  const [model, setModel] = useState({});
-  const [image, setBase64Image] = useState();
-  const rr = createRef();
-
-  useEffect(() => {
-    if (visible) {
-      axios
-        .get(`/api/model/find-by-id/${data.model_bnb_address}`)
-        .then((res) => setModel(res.data))
-        .catch((err) => console.error(err));
-    }
-  }, [visible]);
-
-  const gotInView = (inView, entry) => {
-    if (inView && !model.username) setVisible(true);
-  };
-
+  const { ref, gotInView, model } = useNFTItemData(data);
+  const isTOTMorOldTOTW =
+    data.totw || data.totm || data.old_totw || data.old_totm;
+  const profilePic = model
+    ? `/api/v2/utils/images/fetchWithFallback?default=${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/`
+    : `/api/v2/utils/images/fetchWithFallback?default=${data.model_profile_pic}`;
   if (!data.attributes) return <div></div>;
 
   return (
     <Link href={`/view/${data.id}`}>
       <InView as={"a"} onChange={gotInView} className="row m-0 w-100 my-4">
         <div
-          ref={rr}
-          className={`nft-card ${
-            (data.totw || data.totm || data.old_totw || data.old_totm) &&
-            "purple"
-          } ${soldOut ? "opacity-half" : ""}`}
+          ref={ref}
+          className={`nft-card ${isTOTMorOldTOTW && "purple"} ${
+            soldOut ? "opacity-half" : ""
+          }`}
           style={{ width: "100%" }}
         >
           <div className="totw-tag-wrapper">
@@ -67,7 +51,7 @@ const NFTListItem = ({
 
             <div className="quantity-wrapper totw-tag">
               {false &&
-                // TODO: Show this when graph is fixed
+                // TODO: Show this when graph is moralis is integrated
                 Number(data.max_supply) - data.mints < 10 && (
                   <div className="quantity-wrapper totw-tag">
                     {Number(data.max_supply) - data.mints} of 10 left
@@ -78,20 +62,13 @@ const NFTListItem = ({
 
           <Link
             href={`/creator/${
-              model.username
-                ? model.username
-                : data.attributes[0].value.slice(1, -1)
+              model ? model.username : data.attributes[0].value.slice(1, -1)
             }`}
           >
             <a>
-              <div
-                className="profile-pic"
-                style={{
-                  backgroundImage: model.username
-                    ? `url(${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/)`
-                    : `url(${data.model_profile_pic})`,
-                }}
-              />
+              <div className="profile-pic">
+                <GumletImage src={profilePic} />
+              </div>
             </a>
           </Link>
 
@@ -113,17 +90,18 @@ const NFTListItem = ({
             >
               <span className="sr-only">Loading...</span>
             </Spinner>
-            {data.image || data.cdnUrl ? (
+            {data.image ? (
               <div
                 style={{
-                  backgroundImage: data.daoCdnUrl
-                    ? `url(${data.daoCdnUrl}-/quality/lightest/-/format/webp/)`
-                    : `url(${data.image})`,
                   minHeight: 375,
                   zIndex: 100,
                 }}
                 className="dynamic-image"
-              />
+              >
+                <GumletImage
+                  src={`/api/v2/utils/images/fetchWithFallback?default=${data.image}`}
+                />
+              </div>
             ) : (
               <>
                 {isBlurhashValid(data.blurhash).result ? (
@@ -159,12 +137,11 @@ const NFTListItem = ({
               <div className="title">{data.name}</div>
               <div className="s">
                 {owner && <b>Creator: </b>}
-                {model.username
-                  ? model.username
-                  : data.attributes[0].value.slice(1, -1)}
+                {model ? model.username : data.attributes[0].value.slice(1, -1)}
               </div>
             </div>
-            {(price || data.list_price) && (
+            {(typeof price !== "undefined" ||
+              typeof data.list_price !== "undefined") && (
               <div className="stats">
                 <div className="stat">
                   <div className="number">{price || data.list_price}</div>

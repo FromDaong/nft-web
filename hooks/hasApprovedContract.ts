@@ -1,16 +1,17 @@
 import {
-  hasApprovedTreatStaking,
-  hasApprovedTreatPancakeLPStaking,
+  getMasterMelonFarmerContract,
   getTreat2Contract,
   getTreatPancakeLPContract,
-  getMasterMelonFarmerContract,
+  hasApprovedTreatPancakeLPStaking,
+  hasApprovedTreatStaking,
 } from "../treat/utils";
 import { useCallback, useEffect, useState } from "react";
+
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
 
 const hasWalletApprovedContract = (pid) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const treatContract = getTreat2Contract(treat);
   const treatLpContract = getTreatPancakeLPContract(treat);

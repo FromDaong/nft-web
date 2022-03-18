@@ -1,36 +1,52 @@
-import React, { useState, useEffect } from "react";
-import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import Button from "react-bootstrap/Button";
-import Nav from "react-bootstrap/Nav";
-import { useWallet } from "use-wallet";
-import WalletModal from "../WalletModal";
+import { useEffect, useState } from "react";
+
 import AgeModal from "../AgeModal";
 import BalanceModal from "../BalanceModal";
+import { Button } from "react-bootstrap";
 import Link from "next/link";
+import Nav from "react-bootstrap/Nav";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import Navbar from "react-bootstrap/Navbar";
 import NavbarQuickSearch from "../Search/NavbarQuickSearch";
+import WalletModal from "../WalletModal";
+import { destroyCookie } from "nookies";
+import { useMoralis } from "react-moralis";
+import { useRouter } from "next/router";
 
 const HeaderNav = ({ modelData }) => {
-  const { status, account, error, reset, chainId } = useWallet();
   const [walletModalShow, setWalletModalShow] = useState(false);
   const [balanceModalShow, setBalanceModalShow] = useState(false);
   const [ageModalShow, setAgeModalShow] = useState(false);
+  const { isAuthenticated, chainId, user, enableWeb3, logout } = useMoralis();
+  const router = useRouter();
+
+  const signOut = () => {
+    localStorage.removeItem("connectedBefore");
+    logout();
+    destroyCookie(null, "token");
+    destroyCookie(null, "refreshToken");
+    router.reload();
+  };
+
+  useEffect(() => {
+    enableWeb3();
+  }, [enableWeb3]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setWalletModalShow(false);
+    }
+  }, [isAuthenticated]);
 
   useEffect(() => {
     (async () => {
       const verified = await localStorage.getItem("ageVerified");
       if (!verified) setAgeModalShow(true);
     })();
-  });
-
-  useEffect(() => {
-    if (status === "connected") {
-      setWalletModalShow(false);
-    }
-  }, [status]);
+  }, []);
 
   return (
-    <Navbar expand="lg" className="mb-4" sticky="top" className="main-nav">
+    <Navbar expand="lg" sticky="top" className="mb-4 main-nav">
       <WalletModal
         show={walletModalShow}
         handleClose={() => setWalletModalShow(false)}
@@ -38,12 +54,10 @@ const HeaderNav = ({ modelData }) => {
       <BalanceModal
         show={balanceModalShow}
         handleClose={() => setBalanceModalShow(false)}
-        account={account}
       />
       <AgeModal
         show={ageModalShow}
         handleClose={() => setAgeModalShow(false)}
-        account={account}
       />
       <div className="container">
         <Navbar.Brand>
@@ -74,7 +88,7 @@ const HeaderNav = ({ modelData }) => {
             </NavDropdown.Item>
           </NavDropdown>
 
-          {account && !account.pending && !account.rejected && (
+          {user && !user.pending && !user.rejected && (
             <>
               <NavDropdown title="Marketplaces">
                 <NavDropdown.Item href="#action/3.1" className="p-0">
@@ -97,7 +111,7 @@ const HeaderNav = ({ modelData }) => {
                 </NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.1" className="p-0">
                   <Link href="/farms/farmers-market" passHref>
-                    <Nav.Link>Farmers' Market</Nav.Link>
+                    <Nav.Link>Farmers&#39; Market</Nav.Link>
                   </Link>
                 </NavDropdown.Item>
               </NavDropdown>
@@ -119,7 +133,7 @@ const HeaderNav = ({ modelData }) => {
             </>
           )}
 
-          {!account && (
+          {!user && (
             <>
               <Link href="/about" passHref>
                 <Nav.Link>About</Nav.Link>
@@ -130,9 +144,9 @@ const HeaderNav = ({ modelData }) => {
             </>
           )}
 
-          {!account ? (
+          {!isAuthenticated ? (
             <Button
-              variant="primary px-4 ml-md-4"
+              colorScheme={"pink"}
               onClick={() => setWalletModalShow(true)}
             >
               <b>Connect Wallet</b>
@@ -141,11 +155,13 @@ const HeaderNav = ({ modelData }) => {
             <div className="ml-md-4">
               <NavDropdown
                 title={
-                  chainId === 56
-                    ? `${account.substring(0, 6)}...${account.substr(-5)}`
+                  chainId === "0x38"
+                    ? `${user.get("ethAddress").substring(0, 6)}...${user
+                        .get("ethAddress")
+                        .substr(-5)}`
                     : "Switch Chain to BSC"
                 }
-                disabled={chainId !== 56 && chainId !== 97}
+                disabled={chainId !== "0x38" && chainId !== "0x61"}
                 id="basic-nav-dropdown"
               >
                 <Link href="/my-nfts" passHref>
@@ -167,13 +183,7 @@ const HeaderNav = ({ modelData }) => {
                     <NavDropdown.Item>Creator Dashboard</NavDropdown.Item>
                   </Link>
                 )}
-                <NavDropdown.Item
-                  style={{ borderRadius: 8 }}
-                  onClick={() => {
-                    localStorage.removeItem("connectedBefore");
-                    reset();
-                  }}
-                >
+                <NavDropdown.Item style={{ borderRadius: 8 }} onClick={signOut}>
                   Disconnect
                 </NavDropdown.Item>
               </NavDropdown>

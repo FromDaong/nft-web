@@ -1,13 +1,14 @@
 import {
-  removePerformerFromMinter,
   getTreatNFTMinterContract,
+  removePerformerFromMinter,
 } from "../treat/utils";
+
 import { useCallback } from "react";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
 
 const useRemovePerformerFromMinter = (modelAddress: string) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const treatNftMinterContract = getTreatNFTMinterContract(treat);
 

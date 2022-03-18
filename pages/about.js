@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import Button from "react-bootstrap/Button";
+import { Button } from "react-bootstrap";
 import Layout from "../components/Layout";
 // import HeroLogo from "/assets/hero-logo.png";
 
@@ -13,19 +12,6 @@ const About = () => {
               <div className="heading-text">
                 Maybe it’s time to treat yourself... 💋
               </div>
-
-              {/* <div className="buttons row pt-4">
-          <div className="col-md-6  mt-2">
-            <Button variant="primary py-2 w-100">
-              <b>BROWSE NFTs</b>
-            </Button>
-          </div>
-          <div className="col-md-6 mt-2">
-            <Button variant="light w-100 py-2 text-primary">
-              <b>INDULGE IN A $TREAT</b>
-            </Button>
-          </div>
-        </div> */}
             </div>
             <div className="col-lg-1"></div>
             <div className="col-lg-5 hero-logo-container mt-5">
@@ -126,9 +112,10 @@ const About = () => {
                 </p>
                 <a
                   href="https://pancakeswap.finance/swap?inputCurrency=0x01bd7acb6ff3b6dd5aefa05cf085f2104f3fc53f"
-                  target="_blank" rel="noreferrer"
+                  target="_blank"
+                  rel="noreferrer"
                 >
-                  <Button variant="primary py-2 px-4 mt-3 w-sm-100">
+                  <Button variant="primary w-100">
                     <b>SWAP WITH 1INCH</b>
                   </Button>
                 </a>

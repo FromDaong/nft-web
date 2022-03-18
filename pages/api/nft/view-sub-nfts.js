@@ -1,14 +1,15 @@
-import dbConnect from "../../../utils/dbConnect";
-import NFT from "../../../models/NFT";
+import {
+  getTreatSubscriptionContract,
+  isSubscribed,
+} from "../../../treat/utils";
+
 import BigNumber from "bignumber.js";
-import Web3 from "web3";
+import NFT from "../../../models/NFT";
 import TreatNFTMinterAbi from "../../../treat/lib/abi/treatnftminter.json";
 import TreatSubscriptionsAbi from "../../../treat/lib/abi/treatsubscriptions.json";
+import Web3 from "web3";
 import { contractAddresses } from "../../../treat/lib/constants";
-import {
-  isSubscribed,
-  getTreatSubscriptionContract,
-} from "../../../treat/utils";
+import dbConnect from "../../../utils/dbConnect";
 
 const web3 = new Web3(
   "https://speedy-nodes-nyc.moralis.io/0e4b710bbd818e9709fe0ef5/bsc/mainnet"

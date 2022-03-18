@@ -1,10 +1,11 @@
 import { getTreatSubscriptionContract, lockSub } from "../treat/utils";
+
 import { useCallback } from "react";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
 
 const useLockSubscriber = (subAddress: string) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const treatSubscriptionContract = getTreatSubscriptionContract(treat);
 

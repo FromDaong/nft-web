@@ -1,35 +1,30 @@
-import React, { useEffect } from "react";
-import Navbar from "../components/nav/HeaderNav";
-import TOTMBanner from "../components/TOTMBanner";
-import V2Banner from "../components/V2Banner";
-import Footer from "../components/Footer";
-import useTokenBalance from "../hooks/useTokenBalance";
 import "../styles/index.scss";
-import useSWR, { SWRConfig } from "swr";
-import fetch from "../lib/fetchJson";
-import { useRouter } from "next/router";
-import TreatProvider from "../contexts/TreatProvider";
-import { useWallet } from "use-wallet";
-import Container from "react-bootstrap/Container";
-import Head from "next/head";
-import { UseWalletProvider } from "use-wallet";
-import bsc from "@binance-chain/bsc-use-wallet";
-import { parseCookies, setCookie, destroyCookie } from "nookies";
-import {
-  BscConnector,
-  UserRejectedRequestError,
-} from "@binance-chain/bsc-connector";
-import { AnimatePresence } from "framer-motion";
-import ReactGA from "react-ga";
-import { IntercomProvider, useIntercom } from "react-use-intercom";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-
-import { Router } from "next/dist/client/router";
-import ProgressBar from "@badrap/bar-of-progress";
-
 import "swiper/scss";
 import "swiper/scss/navigation";
 import "swiper/scss/pagination";
+
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { MoralisProvider, useMoralis } from "react-moralis";
+import { destroyCookie, setCookie } from "nookies";
+import { useEffect, useState } from "react";
+import useSWR, { SWRConfig } from "swr";
+
+import Axios from "axios";
+import Container from "react-bootstrap/Container";
+import Footer from "../components/Footer";
+import Head from "next/head";
+import { IntercomProvider } from "react-use-intercom";
+import Navbar from "../components/nav/HeaderNav";
+import ProgressBar from "@badrap/bar-of-progress";
+import ReactGA from "react-ga";
+import { Router } from "next/dist/client/router";
+import TOTMBanner from "../components/TOTMBanner";
+import TreatProvider from "../contexts/TreatProvider";
+import V2Banner from "../components/V2Banner";
+import fetch from "../lib/fetchJson";
+import { getJWT } from "../utils/axios";
+import { useRouter } from "next/router";
+import useTokenBalance from "../hooks/useTokenBalance";
 
 const progress = new ProgressBar({
   size: 3,
@@ -37,14 +32,22 @@ const progress = new ProgressBar({
   className: "bar-of-progress",
   delay: 100,
 });
-
 Router.events.on("routeChangeStart", progress.start);
 Router.events.on("routeChangeComplete", progress.finish);
 Router.events.on("routeChangeError", progress.finish);
 
+Axios.defaults.withCredentials = true;
+
 function MyApp({ Component, pageProps }) {
   const oldTokenBalance = useTokenBalance(
     "0xac0c7d9b063ed2c0946982ddb378e03886c064e6"
+  );
+  const [requestedAuth, setRequestedAuth] = useState(false);
+  const { authenticate, logout, user, isAuthenticated, account } = useMoralis();
+  const router = useRouter();
+
+  const { data: modelData } = useSWR(
+    account && `/api/model/find-by-address/${account}`
   );
 
   useEffect(() => {
@@ -54,15 +57,86 @@ function MyApp({ Component, pageProps }) {
     ReactGA.pageview(window.location.pathname + window.location.search);
   }, []);
 
-  const { status, account, connect } = useWallet();
-  const router = useRouter();
+  useEffect(() => {
+    Axios.interceptors.response.use(
+      (response) => {
+        return response;
+      },
+      function (error) {
+        const originalRequest = error.config;
+        if (
+          error.response.status === 401 &&
+          originalRequest.url.includes("refresh")
+        ) {
+          return Promise.reject(error);
+        }
 
-  const { data: modelData } = useSWR(
-    account && `/api/model/find-by-address/${account}`
-  );
+        if (error.response.status === 401 && !originalRequest._retry) {
+          originalRequest._retry = true;
+          // This means the refreshToken is not valid too, or has expired whatever
+          // Let's log out moralis and show metamask login again to redo auth.
+          // After that retry the original request
+          return logout()
+            .then(() => {
+              if (!requestedAuth) {
+                setRequestedAuth(true);
+                return authenticate()
+                  .then((parsedUser) => {
+                    setRequestedAuth(false);
+                    return parsedUser;
+                  })
+                  .catch(() => {
+                    setRequestedAuth(false);
+                    throw {
+                      error: "METAMASK_AUTH_CANCELLED",
+                      message: "Metamask authentication cancelled",
+                    };
+                  });
+              } else {
+                if (isAuthenticated) {
+                  return user;
+                }
+              }
+            })
+            .then((thisUser) => {
+              if (thisUser || user) {
+                return getJWT(thisUser || user);
+              } else {
+                throw {
+                  error: "USER_NOT_AUTH",
+                  message: "User is not authenticated",
+                };
+              }
+            })
+            .then(() => router.reload())
+            .catch((err) => {
+              console.log({ err });
+              return Promise.reject(err);
+            });
+        }
+        return Promise.reject(error);
+      }
+    );
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      getJWT(user).then(() => {
+        if (router.pathname === "/auth") {
+          const { redirectTo } = router.query;
+          console.log(redirectTo);
+          if (redirectTo) {
+            router.push(redirectTo);
+          } else {
+            router.push("/");
+          }
+        }
+      });
+    }
+  }, [isAuthenticated, user]);
 
   if (process.env.NEXT_PUBLIC_STOP) {
-    return <PublicStop />;
+    return <>Supposed to be Public Stop</>;
   }
 
   const client = new ApolloClient({
@@ -73,14 +147,10 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     (async () => {
       window.scrollTo(0, 0);
-      if (status === "connected" && !account) connect("injected");
-      const connectedBefore = localStorage.getItem("connectedBefore");
-      if (connectedBefore && status === "disconnected") connect("injected");
-
       let tx = localStorage.getItem("tx");
       tx = JSON.parse(tx);
 
-      if (tx && status === "connected" && account) {
+      if (tx && isAuthenticated && account) {
         try {
           const res = await fetch(`/api/nft/${tx.nftId}`, {
             method: "PUT",
@@ -99,20 +169,20 @@ function MyApp({ Component, pageProps }) {
         }
       }
     })();
-  }, [status]);
+  }, [isAuthenticated]);
 
   useEffect(() => {
-    if (status === "connected" && !account) {
+    if (isAuthenticated && !account) {
       destroyCookie(null, "account");
-    } else if (status === "disconnected" && !account) {
+    } else if (!isAuthenticated && !account) {
       destroyCookie(null, "account");
-    } else if (status === "connected" && account) {
+    } else if (isAuthenticated && account) {
       setCookie(null, "account", account, {
         maxAge: 30 * 24 * 60 * 60,
         path: "/",
       });
     }
-  }, [status, account]);
+  }, [isAuthenticated, account]);
 
   useEffect(() => {
     // Unmounting component
@@ -162,16 +232,11 @@ function MyApp({ Component, pageProps }) {
               )}
               <Navbar modelData={modelData} />
               <Container style={{ minHeight: "75vh" }}>
-                <AnimatePresence
-                  exitBeforeEnter
-                  onExitComplete={() => window.scrollTo(0, 0)}
-                >
-                  <Component
-                    {...pageProps}
-                    modelData={modelData}
-                    key={router.route}
-                  />
-                </AnimatePresence>
+                <Component
+                  {...pageProps}
+                  modelData={modelData}
+                  key={router.route}
+                />
               </Container>
               <Footer />
             </div>
@@ -185,29 +250,12 @@ function MyApp({ Component, pageProps }) {
 function walletWrapper(props) {
   // Add context wrapper here which has account and status
   return (
-    <UseWalletProvider
-      chainId={56}
-      connectors={{
-        bsc,
-        bsw: {
-          web3ReactConnector() {
-            return new BscConnector({ supportedChainIds: [56] });
-          },
-          handleActivationError(err) {
-            if (err instanceof UserRejectedRequestError) {
-              return new ConnectionRejectedError();
-            }
-          },
-        },
-        walletconnect: {
-          rpcUrl:
-            "https://speedy-nodes-nyc.moralis.io/0e4b710bbd818e9709fe0ef5/bsc/mainnet",
-          chainId: 56,
-        },
-      }}
+    <MoralisProvider
+      appId={"WZSAZ8e1qSzKZ0U7xRErmhoiYraqhoIyU0CCQ2bJ"}
+      serverUrl={"https://ee15wkl2kmkl.usemoralis.com:2053/server"}
     >
       <MyApp {...props} />
-    </UseWalletProvider>
+    </MoralisProvider>
   );
 }
 

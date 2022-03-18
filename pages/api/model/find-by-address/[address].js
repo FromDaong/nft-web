@@ -1,7 +1,7 @@
-import dbConnect from "../../../../utils/dbConnect";
 import Model from "../../../../models/Model";
-import Web3 from "web3";
 import TreatNFTMinterAbi from "../../../../treat/lib/abi/treatnftminter.json";
+import Web3 from "web3";
+import dbConnect from "../../../../utils/dbConnect";
 
 dbConnect();
 

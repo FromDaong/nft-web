@@ -3,7 +3,7 @@ import Spinner from "react-bootstrap/Spinner";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
+import { Button } from "react-bootstrap";
 import { Blurhash } from "react-blurhash";
 
 const NFTListItem = ({

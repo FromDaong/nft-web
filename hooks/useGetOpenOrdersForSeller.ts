@@ -1,17 +1,18 @@
-import { useEffect, useState } from "react";
-import { useWallet } from "use-wallet";
 import {
-  getTreatMarketplaceContract,
   getOpenOrdersForSeller,
   getResaleOrder,
+  getTreatMarketplaceContract,
 } from "../treat/utils";
+import { useEffect, useState } from "react";
+
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
 
 const useGetOpenOrdersForSeller = (seller: string = null) => {
   const [orders, setOrders] = useState([]);
 
   if (seller === null) {
-    const { account } = useWallet();
+    const { account } = useMoralis();
     seller = account;
   }
 

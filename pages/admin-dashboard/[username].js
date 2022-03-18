@@ -1,24 +1,23 @@
-import React, { useState, useEffect } from "react";
-import Spinner from "react-bootstrap/Spinner";
-import Table from "react-bootstrap/Table";
-import Button from "react-bootstrap/Button";
-import { useWallet } from "use-wallet";
-import useSWR from "swr";
-import Link from "next/link";
-import Layout from "../../components/Layout";
 import BlankModal from "../../components/BlankModal";
-import useAddPerformerToMinter from "../../hooks/useAddPerformerToMinter";
-import useGetReferrer from "../../hooks/useGetReferrer";
-import useAddReferrerToMinter from "../../hooks/useAddReferrerToMinter";
-import useRemovePerformerFromMinter from "../../hooks/useRemovePerformerFromMinter";
+import { Button } from "react-bootstrap";
 import Hero from "../../components/Hero";
+import Layout from "../../components/Layout";
+import Link from "next/link";
+import Spinner from "react-bootstrap/Spinner";
+import useAddPerformerToMinter from "../../hooks/useAddPerformerToMinter";
+import useAddReferrerToMinter from "../../hooks/useAddReferrerToMinter";
+import useGetReferrer from "../../hooks/useGetReferrer";
+import { useMoralis } from "react-moralis";
+import useRemovePerformerFromMinter from "../../hooks/useRemovePerformerFromMinter";
+import useSWR from "swr";
+import { useState } from "react";
 
 const AdminDashboardWrapper = ({ username }) => {
-  const { account, status } = useWallet();
+  const { isAuthenticated } = useMoralis();
 
   const { data } = useSWR(`/api/admin/is-authed`);
 
-  if (status !== "connected" || !data) {
+  if (isAuthenticated || !data) {
     return (
       <div
         style={{
@@ -61,11 +60,9 @@ const AdminDashboardWrapper = ({ username }) => {
           subtitle={"You are not permitted to use this dashboard"}
           additionalContent={
             <Link href="/admin-dashboard/login">
-              
-                <Button variant="primary  w-sm-100">
-                  <b>{"Login to Panel"}</b>
-                </Button>
-              
+              <Button variant="primary  w-sm-100">
+                <b>{"Login to Panel"}</b>
+              </Button>
             </Link>
           }
         />
@@ -96,11 +93,9 @@ const AdminDashboard = ({ username }) => {
         title={`Loading: ${username}'s application...`}
         additionalContent={
           <Link href="/admin-dashboard">
-            
-              <Button variant="primary  w-sm-100">
-                <b>{"Back to admin panel"}</b>
-              </Button>
-            
+            <Button variant="primary  w-sm-100">
+              <b>{"Back to admin panel"}</b>
+            </Button>
           </Link>
         }
       />
@@ -160,9 +155,9 @@ const AdminDashboard = ({ username }) => {
           subtitle={`Be super careful when approving and rejecting creators`}
           additionalContent={
             <Link href="/admin-dashboard">
-                <Button variant="primary  w-sm-100">
-                  <b>{"Back to admin panel"}</b>
-                </Button>
+              <Button variant="primary  w-sm-100">
+                <b>{"Back to admin panel"}</b>
+              </Button>
             </Link>
           }
         />

@@ -1,25 +1,14 @@
-import BigNumber from "bignumber.js";
-import React, { useCallback, useEffect, useState } from "react";
-import { useWallet } from "use-wallet";
-import bsc from "@binance-chain/bsc-use-wallet";
-import { getTreatNFTMinterContract, getNftCreator } from "../treat/utils";
-import useBlock from "./useBlock";
+import { getNftCreator, getTreatNFTMinterContract } from "../treat/utils";
+import { useEffect, useState } from "react";
+
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
 
 const useGetNftCreator = (nftArray) => {
   const [nftCreatorAddress, setNftCreatorAddress] = useState([]);
-  const { account }: { account: string } = useWallet();
+  const { account }: { account: string } = useMoralis();
   const treat = useTreat();
   const treatNFTMinterContract = getTreatNFTMinterContract(treat);
-  const block = useBlock();
-
-  const fetchBalance = useCallback(
-    async (id) => {
-      const nftCreatorAddress = await getNftCreator(treatNFTMinterContract, id);
-      setNftCreatorAddress(nftCreatorAddress);
-    },
-    [account, treat]
-  );
 
   useEffect(() => {
     (async () => {

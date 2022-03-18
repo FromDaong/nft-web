@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import Button from "react-bootstrap/Button";
+import * as Scroll from "react-scroll";
+
+import { Button } from "react-bootstrap";
 import Layout from "../../components/Layout";
 import Link from "next/link";
-import * as Scroll from "react-scroll";
 
 const Home = () => {
   return (
@@ -47,10 +47,7 @@ const Home = () => {
             <div className="buttons">
               <Link href="/marketplace/creator">
                 <a>
-                  <Button
-                    variant="primary mt-3 py-2 w-100"
-                    style={{ maxWidth: 250 }}
-                  >
+                  <Button variant="primary w-100" style={{ maxWidth: 250 }}>
                     <b>THE SWEET SHOP</b>
                   </Button>
                 </a>

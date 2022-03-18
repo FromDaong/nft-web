@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+
+import Button from "react-bootstrap/Button";
 import Link from "next/link";
 import Modal from "react-bootstrap/Modal";
-import Photograph from "../icons/Photograph";
 import ModelIcon from "../icons/Model";
+import Photograph from "../icons/Photograph";
+import axios from "axios";
 import { useRouter } from "next/dist/client/router";
-import Button from "react-bootstrap/Button";
 
 export default function NavbarQuickSearch() {
   const [show, setShow] = useState(false);
@@ -86,6 +87,7 @@ const SearchModal = ({ show, handleClose }) => {
           <div className="quick-search-results w-full">
             {results.map((doc) => (
               <Link
+                key={doc.id ?? doc.username}
                 href={
                   doc.group === "nft"
                     ? `/view/${doc.id}`

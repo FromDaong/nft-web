@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import Link from "next/link";
-import BlankModal from "./BlankModal";
-import Web3 from "web3";
+import React from "react";
 
 const V2Banner = ({ oldTokenBalance }) => {
   return (
@@ -19,7 +17,7 @@ const V2Banner = ({ oldTokenBalance }) => {
       >
         {"Our March edition Treat of the Month + Magazine is out now!"}
         <Link href="/magazine">
-          <Button variant="light ml-3">
+          <Button variant="light py-2 ml-2">
             <b>{"View Magazine"}</b>
           </Button>
         </Link>

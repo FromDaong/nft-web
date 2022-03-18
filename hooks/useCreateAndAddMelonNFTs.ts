@@ -1,13 +1,14 @@
-import { getMelonMartContract, createAndAddMelonNFTs } from "../treat/utils";
+import { createAndAddMelonNFTs, getMelonMartContract } from "../treat/utils";
+
 import { useCallback } from "react";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
 
 const useCreateAndAddMelonNFTs = (
   maxSupplys: Array<number>,
   creators: Array<string>
 ) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const melonMartContract = getMelonMartContract(treat);
 

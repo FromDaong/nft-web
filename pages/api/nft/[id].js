@@ -1,13 +1,14 @@
-import dbConnect from "../../../utils/dbConnect";
-import { mapNftBody } from "./mappers";
-import NFT from "../../../models/NFT";
-import Model from "../../../models/Model";
-import Web3 from "web3";
-import { getBalanceNumber } from "../../../utils/formatBalance";
-import TreatNFTMinterAbi from "../../../treat/lib/abi/treatnftminter.json";
-import TreatMarketplaceAbi from "../../../treat/lib/abi/treatMarketplace.json";
 import { getNftMaxSupply, getNftTotalSupply } from "../../../treat/utils";
+
+import Model from "../../../models/Model";
+import NFT from "../../../models/NFT";
+import TreatMarketplaceAbi from "../../../treat/lib/abi/treatMarketplace.json";
+import TreatNFTMinterAbi from "../../../treat/lib/abi/treatnftminter.json";
+import Web3 from "web3";
 import { contractAddresses } from "../../../treat/lib/constants";
+import dbConnect from "../../../utils/dbConnect";
+import { getBalanceNumber } from "../../../utils/formatBalance";
+import { mapNftBody } from "./mappers";
 
 dbConnect();
 

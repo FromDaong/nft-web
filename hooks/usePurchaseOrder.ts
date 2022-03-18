@@ -1,11 +1,7 @@
-import BigNumber from "bignumber.js";
+import { getTreatMarketplaceContract, purchaseOrder } from "../treat/utils";
+
 import { useCallback } from "react";
-import { useWallet } from "use-wallet";
-import {
-  getTreatMarketplaceContract,
-  listOrder,
-  purchaseOrder,
-} from "../treat/utils";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
 
 const usePurchaseOrder = (
@@ -14,12 +10,10 @@ const usePurchaseOrder = (
   price: number,
   seller: string
 ) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
 
   const treatMarketplaceContract = getTreatMarketplaceContract(treat);
-
-  const totalPrice = new BigNumber(quantity).multipliedBy(new BigNumber(price));
 
   const handlePurchaseOrder = useCallback(async () => {
     const txHash = await purchaseOrder(

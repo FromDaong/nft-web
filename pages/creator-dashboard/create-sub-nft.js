@@ -1,22 +1,22 @@
-import React, { useState } from "react";
-import toBuffer from "blob-to-buffer";
-import { Form, Button } from "react-bootstrap";
-import { useFormik, FieldArray, FormikProvider } from "formik";
-import useCreateAndAddSubscriberNFTs from "../../hooks/useCreateAndAddSubscriberNFTs";
-import { useRouter } from "next/router";
-import { useWallet } from "use-wallet";
-import Loading from "../../components/Loading";
-import Hero from "../../components/Hero";
-import CreatingNFTItem from "../../components/CreatingNFTItem";
-import { useDropzone } from "react-dropzone";
-import { create } from "ipfs-http-client";
-import async from "async";
-import BlankModal from "../../components/BlankModal";
-import { useEffect } from "react";
 import * as Yup from "yup";
+
+import { Button, Form } from "react-bootstrap";
+import { FieldArray, FormikProvider, useFormik } from "formik";
+
+import BlankModal from "../../components/BlankModal";
+import CreatingNFTItem from "../../components/CreatingNFTItem";
+import Hero from "../../components/Hero";
+import Loading from "../../components/Loading";
 import Web3 from "web3";
+import async from "async";
 import axios from "axios";
+import useCreateAndAddSubscriberNFTs from "../../hooks/useCreateAndAddSubscriberNFTs";
+import { useDropzone } from "react-dropzone";
+import { useEffect } from "react";
+import { useMoralis } from "react-moralis";
+import { useRouter } from "next/router";
 import useSWR from "swr";
+import { useState } from "react";
 
 const CreateNFT = ({ modelData }) => {
   const [ipfsFiles, setIpfsFiles] = useState([]);
@@ -213,7 +213,8 @@ const CreateNFT = ({ modelData }) => {
               <a
                 href="https://help.treatdao.com/en/articles/5761127-how-to-price-your-nfts-to-sell-on-treat"
                 target="_blank"
-                className="text-primary" rel="noreferrer"
+                className="text-primary"
+                rel="noreferrer"
               >
                 <small>
                   <b>
@@ -273,7 +274,8 @@ const CreateNFT = ({ modelData }) => {
             <div className="col-md-6  mt-2 text-center">
               <Button
                 type="submit"
-                variant="primary py-2 w-100"
+                variant="primary w-100"
+                py={2}
                 disabled={ipfsFiles.length === 0}
               >
                 <b>CREATE NFTs</b>
@@ -287,9 +289,9 @@ const CreateNFT = ({ modelData }) => {
 };
 
 const CreateNFTWrapper = (props) => {
-  const { account, status } = useWallet();
+  const { isAuthenticated } = useMoralis();
 
-  if (status !== "connected" || !props.modelData) {
+  if (!isAuthenticated || !props.modelData) {
     return <Loading />;
   } else {
     return <CreateNFT {...props} />;

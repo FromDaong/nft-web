@@ -1,11 +1,10 @@
 import { getCreatorReferrer, getTreatNFTMinterContract } from "../treat/utils";
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
+
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
 
 const useGetReferrer = (modelAddress: string) => {
   const [ref, setRef] = useState(null);
-  const { account } = useWallet();
   const treat = useTreat();
   const treatNftMinterContract = getTreatNFTMinterContract(treat);
 

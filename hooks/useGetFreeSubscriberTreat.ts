@@ -4,15 +4,15 @@ import {
 } from "../treat/utils";
 
 import { useCallback } from "react";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
 
 const useGetFreeSubscriberTreat = (
   id: number,
   treatCost: number,
   useSubscriberMart = false
 ) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const subscriberMartContract = useSubscriberMart
     ? getSubscriberMartContract(treat)

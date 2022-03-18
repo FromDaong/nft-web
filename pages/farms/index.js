@@ -1,27 +1,22 @@
-import React from "react";
-import Hero from "../../components/Hero";
-import Farm from "../../components/Farm";
-import Loading from "../../components/Loading";
-import useTokenBalance from "../../hooks/useTokenBalance";
-import { motion } from "framer-motion";
-import { useWallet } from "use-wallet";
-import { getDisplayBalance } from "../../utils/formatBalance";
-import {
-  getMasterMelonFarmerContract,
-  getPendingMelons,
-} from "../../treat/utils";
-import useTreat from "../../hooks/useTreat";
-import { contractAddresses } from "../../treat/lib/constants.js";
 import { Button } from "react-bootstrap";
-
+import Farm from "../../components/Farm";
+import Hero from "../../components/Hero";
 import Link from "next/link";
+import Loading from "../../components/Loading";
+import { contractAddresses } from "../../treat/lib/constants.js";
+import { getDisplayBalance } from "../../utils/formatBalance";
+import { getMasterMelonFarmerContract } from "../../treat/utils";
+import { motion } from "framer-motion";
+import { useMoralis } from "react-moralis";
+import useTokenBalance from "../../hooks/useTokenBalance";
+import useTreat from "../../hooks/useTreat";
 
 const Farms = () => {
-  const { chainId } = useWallet();
+  const { chainId } = useMoralis();
   const treatBal = useTokenBalance(contractAddresses.treat2[chainId]);
   const treatLpBal = useTokenBalance(contractAddresses.treatPancakeLP[chainId]);
   const melonBal = getDisplayBalance(
-    useTokenBalance(contractAddresses.melon[chainId])
+    useTokenBalance(contractAddresses.melon[56])
   );
   const treat = useTreat();
   const masterMelonFarmerContract = getMasterMelonFarmerContract(treat);
@@ -83,9 +78,9 @@ const Farms = () => {
 };
 
 const FarmsWrapper = (props) => {
-  const { account, status } = useWallet();
+  const { isAuthenticated } = useMoralis();
 
-  if (status !== "connected") {
+  if (!isAuthenticated) {
     return <Loading />;
   } else {
     return <Farms {...props} />;

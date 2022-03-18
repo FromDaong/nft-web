@@ -1,13 +1,14 @@
 import {
-  getSubscriberMartContract,
   addSubscriberFreeTreat,
+  getSubscriberMartContract,
 } from "../treat/utils";
+
 import { useCallback } from "react";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
 
 const useAddSubscriberFreeTreat = (ids: Array<number>) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const subscriberMartContract = getSubscriberMartContract(treat);
 

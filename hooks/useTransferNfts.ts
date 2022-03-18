@@ -1,11 +1,11 @@
-import { useCallback } from "react";
-import { useWallet } from "use-wallet";
-import { provider } from "web3-core";
 import { getTreatNFTMinterContract, transferNfts } from "../treat/utils";
+
+import { useCallback } from "react";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
 
 const useTransferNfts = () => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const treatMinterContract = getTreatNFTMinterContract(treat);
 
