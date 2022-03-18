@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Button from "react-bootstrap/Button";
+import { Button } from "react-bootstrap";
 // import HeroLogo from "/assets/hero-logo.png";
 
 const About = () => {

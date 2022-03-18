@@ -1,10 +1,11 @@
 import { getTreatV1ForV2Contract, tradeInV1ForV2 } from "../treat/utils";
+
 import { useCallback } from "react";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
 
 const swapV1ForV2 = (amount: number) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const treatTradeInV1ForV2Contract = getTreatV1ForV2Contract(treat);
 

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import Spinner from "react-bootstrap/Spinner";
-import Button from "react-bootstrap/Button";
-import { generateFromString } from "generate-avatar";
+import { useEffect, useState } from "react";
+
 import { Blurhash } from "react-blurhash";
+import { Button } from "react-bootstrap";
 import { EyeSlash } from "react-bootstrap-icons";
+import { generateFromString } from "generate-avatar";
 
 // import blur from "/assets/blur.png";
 // import "./index.scss";
@@ -76,7 +76,7 @@ const NFTListItem = ({ data }) => {
                 </div>
               </div>
               <div className="button pt-4 pt-md-0 ">
-                <Button variant="primary py-2 px-5 mr-3 w-sm-100">
+                <Button variant="primary w-100">
                   <b>VIEW NFT</b>
                 </Button>
               </div>

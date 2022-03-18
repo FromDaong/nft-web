@@ -10,14 +10,11 @@ import Spinner from "react-bootstrap/Spinner";
 import SubscriptionNFTs from "../../components/CreatorPage/SubscriptionNFTs";
 import SweetShopNFTs from "../../components/CreatorPage/SweetShopNFTs";
 import Web3 from "web3";
-import { modelSetBundles } from "../../treat/lib/constants";
 import useGetIsSubscribed from "../../hooks/useGetIsSubscribed";
 import useGetSubscriptionCost from "../../hooks/useGetSubscriptionCost";
-import useGetTreatSetCost from "../../hooks/useGetTreatSetCost";
-import useRedeemSet from "../../hooks/useRedeemSet";
+import { useMoralis } from "react-moralis";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import { useWallet } from "use-wallet";
 
 const ViewModelWrapper = ({ username }) => {
   const { data: res, error } = useSWR(`/api/model/${username}`);
@@ -153,7 +150,7 @@ const ViewModel = ({
 }) => {
   console.log({ newNFTs, subNFTs, totwNFTs, totmNFTs, outOfPrintNFTs });
   const [copied, setCopied] = useState(false);
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const subscriptionCost = useGetSubscriptionCost(modelData.address || "");
   const isSubscribed = useGetIsSubscribed(modelData.address || "");
   const formattedSubCost = Web3.utils.fromWei(subscriptionCost.toString());
@@ -209,7 +206,9 @@ const ViewModel = ({
             )}
             <div>
               <Button
-                className="px-4"
+                px={4}
+                rounded="full"
+                colorScheme={"pink"}
                 style={{ marginTop: 15, width: "100%", borderRadius: 25 }}
                 onClick={() => {
                   navigator.clipboard.writeText(

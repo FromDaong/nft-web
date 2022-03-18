@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 import { useCallback, useEffect, useState } from "react";
-import { useWallet } from "use-wallet";
+import { useMoralis } from "react-moralis";
 import {
   getTreatNFTMinterContract,
   getTreatMarketplaceContract,
@@ -13,7 +13,7 @@ import useTreat from "./useTreat";
 
 const useGetNftBalance = (nftArray) => {
   const [totalNftBalances, setBalance] = useState([]);
-  const { account }: { account: string } = useWallet();
+  const { account }: { account: string } = useMoralis();
   const treat = useTreat();
   const treatNFTMinterContract = getTreatNFTMinterContract(treat);
   const treatMarketplaceContract = getTreatMarketplaceContract(treat);
@@ -21,18 +21,10 @@ const useGetNftBalance = (nftArray) => {
   const [loading, setLoading] = useState(false);
   const block = useBlock();
 
-  // const fetchBalance = useCallback(
-  //   async (id) => {
-  //     const balance = await getNftBalance(treatNFTMinterContract, account, id);
-  //     // @ts-ignore
-  //     setBalance(new BigNumber(balance));
-  //   },
-  //   [account, treat]
-  // );
-
   useEffect(() => {
     (async () => {
       setLoading(true);
+      // Get open orders
       const listedOrders = await getOpenOrdersForSeller(
         treatMarketplaceContract,
         account
@@ -46,7 +38,7 @@ const useGetNftBalance = (nftArray) => {
               account,
               nft.id
             );
-
+            // Get balance of NFTs
             const balance = await getNftBalance(
               treatNFTMinterContract,
               account,

@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from "react";
-import useSWR from "swr";
-import Web3 from "web3";
-import { Button, InputGroup, FormControl, Form } from "react-bootstrap";
-import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useRouter } from "next/router";
-import BlankModal from "../../components/BlankModal";
-import useEditSubscription from "../../hooks/useEditSubscription";
-import useGetSubscriptionCost from "../../hooks/useGetSubscriptionCost";
-import { create } from "ipfs-http-client";
-import { useWallet } from "use-wallet";
 
-const client = create("https://ipfs.infura.io:5001/api/v0");
+import { Button, Form, FormControl } from "react-bootstrap";
+
+import BlankModal from "../../components/BlankModal";
+import Web3 from "web3";
+import useEditSubscription from "../../hooks/useEditSubscription";
+import { useFormik } from "formik";
+import useGetSubscriptionCost from "../../hooks/useGetSubscriptionCost";
+import { useMoralis } from "react-moralis";
+import { useRouter } from "next/router";
+import useSWR from "swr";
+import { useState } from "react";
 
 const EditProfile = ({}) => {
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
   const router = useRouter();
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const subscriptionCost = useGetSubscriptionCost(account);
   const { data: res } = useSWR(`/api/model/find-by-address/${account}`);
 
@@ -102,14 +101,10 @@ const EditProfile = ({}) => {
         handleClose={() => setShowCompleteModal(false)}
         account={account}
       />
-      
 
       <div className="col-sm-12 pt-3 mt-3">
         <Form onSubmit={formik.handleSubmit}>
           <div className="pb-4">
-            
-            
-          
             <div className="pb-3">
               <label>Subscription description</label>
               <FormControl
@@ -124,7 +119,7 @@ const EditProfile = ({}) => {
               </small>
             </div>
             <Button
-              variant="primary w-100 mb-3"
+              variant="primary w-100"
               onClick={formik.handleSubmit}
               type="submit"
             >
@@ -142,9 +137,6 @@ const EditProfile = ({}) => {
         </Form>
       </div>
     </div>
-
-
-  
   );
 };
 

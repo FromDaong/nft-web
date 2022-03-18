@@ -1,42 +1,44 @@
-import React, { useState, useEffect } from "react";
-import Spinner from "react-bootstrap/Spinner";
-import Button from "react-bootstrap/Button";
-import Badge from "react-bootstrap/Badge";
+import {
+  ArrowUpRightSquare,
+  Bag,
+  EyeSlash,
+  ShopWindow,
+} from "react-bootstrap-icons";
 import { Nav, Tab } from "react-bootstrap";
+import { gql, useQuery } from "@apollo/client";
+import { useEffect, useState } from "react";
+
+import Axios from "axios";
+import Badge from "react-bootstrap/Badge";
+import BigNumber from "bignumber.js";
+import { Blurhash } from "react-blurhash";
+import { Button } from "react-bootstrap";
+import Dropdown from "react-bootstrap/Dropdown";
+import ErrorFallback from "../../components/Fallback/Error";
+import Layout from "../../components/Layout";
+import Link from "next/link";
+import NFTPurchaseModal from "../../components/NFTPurchaseModal";
+import Spinner from "react-bootstrap/Spinner";
 import Web3 from "web3";
-import useSWR from "swr";
-import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
-import useGetFreeTreat from "../../hooks/useGetFreeTreat";
-import useGetFreeSubscriberTreat from "../../hooks/useGetFreeSubscriberTreat";
-import useGetFreeCreatorTreat from "../../hooks/useGetFreeCreatorTreat";
-import useGetNftTotalSupply from "../../hooks/useGetNftTotalSupply";
-import useGetTreatNFTCost from "../../hooks/useGetTreatNftCost";
-import getSubscriberNftCost from "../../hooks/useGetSubscriberNftCost";
+import { generateFromString } from "generate-avatar";
 import getCreatorNftCost from "../../hooks/useGetCreatorNftCost";
+import { getDisplayBalance } from "../../utils/formatBalance";
+import getSubscriberNftCost from "../../hooks/useGetSubscriberNftCost";
+import useGetFreeCreatorTreat from "../../hooks/useGetFreeCreatorTreat";
+import useGetFreeSubscriberTreat from "../../hooks/useGetFreeSubscriberTreat";
+import useGetFreeTreat from "../../hooks/useGetFreeTreat";
+import useGetIsSubscribed from "../../hooks/useGetIsSubscribed";
+import useGetNftMaxSupply from "../../hooks/useGetNftMaxSupply";
+import useGetNftTotalSupply from "../../hooks/useGetNftTotalSupply";
 import useGetOpenOrdersForNft from "../../hooks/useGetOpenOrdersForNft";
+import useGetTreatNFTCost from "../../hooks/useGetTreatNftCost";
 import useMintCreatorNft from "../../hooks/useMintCreatorNft";
 import useMintNft from "../../hooks/useMintNft";
 import useMintSubcriberNft from "../../hooks/useMintSubscriberNft";
-import { useWallet } from "use-wallet";
-import { getDisplayBalance } from "../../utils/formatBalance";
-import { generateFromString } from "generate-avatar";
-import { Blurhash } from "react-blurhash";
-import NFTPurchaseModal from "../../components/NFTPurchaseModal";
-import Layout from "../../components/Layout";
-import {
-  EyeSlash,
-  Bag,
-  ShopWindow,
-  ArrowUpRightSquare,
-} from "react-bootstrap-icons";
-import BigNumber from "bignumber.js";
-import Link from "next/link";
-import Dropdown from "react-bootstrap/Dropdown";
-import useGetIsSubscribed from "../../hooks/useGetIsSubscribed";
-import { gql, useQuery } from "@apollo/client";
+import { useMoralis } from "react-moralis";
 
 const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
 
   const [disabled, setDisabled] = useState(false);
   const [confirmWallet, setConfrimWallet] = useState(false);
@@ -61,7 +63,9 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
 
   return (
     <Button
-      variant="primary w-100 mt-3 py-3"
+      mt={3}
+      variant="primary w-100"
+      isFullWidth
       style={{ borderRadius: 7 }}
       disabled={
         disabled ||
@@ -128,17 +132,18 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
 };
 
 const ViewNFTWrapper = ({ id }) => {
-  const { data: res, error } = useSWR(`/api/nft/${id}`);
+  const [error, setErr] = useState(null);
   const [nftData, setNftData] = useState();
-  const { status } = useWallet();
 
   useEffect(() => {
-    (async () => {
-      if (res) setNftData(res);
-    })();
-  }, [res]);
+    Axios.get(`/api/v2/nft/${id}`)
+      .then((res) => {
+        setNftData(res.data);
+      })
+      .catch((err) => setErr(err));
+  }, []);
 
-  if (!nftData || !nftData.id || status !== "connected") {
+  if (!nftData) {
     return (
       <div
         style={{
@@ -174,13 +179,13 @@ const ViewNFTWrapper = ({ id }) => {
       </div>
     );
   } else if (error) {
-    return <Error custom="Could not load NFT" />;
+    return <ErrorFallback custom="Could not load NFT" />;
   } else {
     return <ViewNFT nftData={nftData} />;
   }
 };
 
-const ViewNFT = ({ nftData, image, account }) => {
+const ViewNFT = ({ nftData, account }) => {
   const totwNftCost = useGetTreatNFTCost(nftData.id);
   const creatorNftCost = getCreatorNftCost(nftData.id);
   const subscriberNftCost = getSubscriberNftCost(nftData.id);
@@ -345,7 +350,10 @@ const ViewNFT = ({ nftData, image, account }) => {
   });
 
   const purchaseHistoryRender = allData.map((e) => (
-    <div className="history-event d-flex justify-content-between">
+    <div
+      key={e.purchaseDate}
+      className="history-event d-flex justify-content-between"
+    >
       <div className="d-flex align-items-center">
         <div className="pic">
           {e.transactionType === "mint" ? (
@@ -370,7 +378,11 @@ const ViewNFT = ({ nftData, image, account }) => {
         </div>
       </div>
       <div>
-        <a href={"https://bscscan.com/tx/" + e.id} target="_blank" rel="noreferrer">
+        <a
+          href={"https://bscscan.com/tx/" + e.id}
+          target="_blank"
+          rel="noreferrer"
+        >
           <ArrowUpRightSquare size={24} />
         </a>
       </div>
@@ -379,7 +391,11 @@ const ViewNFT = ({ nftData, image, account }) => {
 
   // Sort with lowest first
   const openOrdersRender = sortedArray.map((e) => (
-    <Link href={`/marketplace/resale?search=${nftData.name}`} passHref={true}>
+    <Link
+      key={nftData.name}
+      href={`/marketplace/resale?search=${nftData.name}`}
+      passHref={true}
+    >
       <a>
         <div className="history-event">
           <div className="pic">

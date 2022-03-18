@@ -1,10 +1,10 @@
-import dbConnect from "../../../utils/dbConnect";
-import PendingNFT from "../../../models/PendingNFT";
 import Model from "../../../models/Model";
-import withSession from "../../../lib/session";
-import { contractAddresses } from "../../../treat/lib/constants";
+import PendingNFT from "../../../models/PendingNFT";
 import TreatNFTMinterAbi from "../../../treat/lib/abi/treatnftminter.json";
 import Web3 from "web3";
+import { contractAddresses } from "../../../treat/lib/constants";
+import dbConnect from "../../../utils/dbConnect";
+import withSession from "../../../lib/session";
 
 dbConnect();
 

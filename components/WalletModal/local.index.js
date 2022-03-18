@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import Button from "react-bootstrap/Button";
+import { Button } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
-import { useWallet } from "use-wallet";
+import { useMoralis } from "react-moralis";
+import { useState } from "react";
 
 const AlertModal = ({ show, handleClose }) => {
   return (
@@ -23,7 +23,7 @@ const AlertModal = ({ show, handleClose }) => {
 };
 
 const WalletModal = ({ show, handleClose }) => {
-  const { connect, error } = useWallet();
+  const { connect, error } = useMoralis();
   const [bscModalShow, setBscModalShow] = useState(false);
 
   const connectToWallet = (provider) => {

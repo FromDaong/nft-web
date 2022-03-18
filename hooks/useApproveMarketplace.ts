@@ -1,16 +1,15 @@
-import { useCallback } from "react";
-import { useWallet } from "use-wallet";
-import { provider } from "web3-core";
-import { Contract } from "web3-eth-contract";
 import {
   approveMarketplace,
   getTreatMarketplaceAddress,
   getTreatNFTMinterContract,
 } from "../treat/utils";
+
+import { useCallback } from "react";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
 
 const useApproveMarketplace = () => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const treatNftMinterContract = getTreatNFTMinterContract(treat);
   const treatMarketplaceAddress = getTreatMarketplaceAddress(treat);

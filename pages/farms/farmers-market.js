@@ -1,32 +1,30 @@
-import { useWallet } from "use-wallet";
-import Button from "react-bootstrap/Button";
-import useSWR from "swr";
-import React, { useState, useEffect, useReducer } from "react";
+import { AnimateSharedLayout, motion } from "framer-motion";
+
+import BlankModal from "../../components/BlankModal";
+import { Button } from "react-bootstrap";
+import ErrorFallback from "../../components/Fallback/Error";
+import Hero from "../../components/Hero";
+import Link from "next/link";
 import Loading from "../../components/Loading";
 import NFTListItem from "../../components/NFTListItem";
-import BlankModal from "../../components/BlankModal";
-import Link from "next/link";
-import useBuyMelonNft from "../../hooks/useBuyMelonNft";
-import Hero from "../../components/Hero";
-import useTokenBalance from "../../hooks/useTokenBalance";
 import { contractAddresses } from "../../treat/lib/constants.js";
 import { getDisplayBalance } from "../../utils/formatBalance";
-import { motion, AnimateSharedLayout } from "framer-motion";
-import { forceCheck } from "react-lazyload";
-import ErrorFallback from "../../components/Fallback/Error";
+import useBuyMelonNft from "../../hooks/useBuyMelonNft";
+import { useMoralis } from "react-moralis";
+import useSWR from "swr";
+import { useState } from "react";
+import useTokenBalance from "../../hooks/useTokenBalance";
 
 const Marketplace = ({ search }) => {
-  const { chainId } = useWallet();
+  const { chainId } = useMoralis();
   const treatBal = useTokenBalance(contractAddresses.treat2[chainId]);
   const melonBal = getDisplayBalance(
-    useTokenBalance(contractAddresses.melon[chainId])
+    useTokenBalance(contractAddresses.melon[56])
   );
   const { data: orderBookArray, error } = useSWR(`/api/nft/get-melon-nfts`);
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
-  const [nftDataArray, setNftDataArray] = useState([]);
   const { onBuyMelonNft } = useBuyMelonNft();
-  const { account } = useWallet();
 
   const actionWithModal = (action, param) => {
     setShowPendingModal(true);
@@ -79,7 +77,7 @@ const Marketplace = ({ search }) => {
               <div>
                 <Link href="/farms">
                   <a>
-                    <Button variant="primary w-sm-100 m-2">
+                    <Button variant="primary w-100">
                       <b>{"Go to Farming Dashboard"}</b>
                     </Button>
                   </a>

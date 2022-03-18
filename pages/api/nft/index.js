@@ -1,11 +1,29 @@
-import dbConnect from "../../../utils/dbConnect";
-import NFT from "../../../models/NFT";
 import * as atob from "atob";
+
+import NFT from "../../../models/NFT";
+import dbConnect from "../../../utils/dbConnect";
 
 // import User from "../../../../models/User";
 dbConnect();
 
-export default async (req, res) => {
+const sanitize_nft_data = (nft_data) => {
+  const returnObj = { ...(nft_data.toObject ? nft_data.toObject() : nft_data) };
+
+  returnObj.mints = returnObj.mints.length;
+  delete returnObj.identity_access_key;
+
+  if (returnObj.blurhash) {
+    delete returnObj.image;
+    delete returnObj.daoCdnUrl;
+  }
+
+  if (returnObj.daoCdnUrl) {
+    returnObj.image = returnObj.daoCdnUrl;
+  }
+  return returnObj;
+};
+
+const nft = async (req, res) => {
   const { method } = req;
   const { s } = req.query;
 
@@ -14,18 +32,7 @@ export default async (req, res) => {
       try {
         if (req.query.all) {
           let NFTs = await NFT.find();
-          NFTs = await NFTs.map((n) => {
-            const returnObj = { ...n.toObject() };
-
-            returnObj.mints = returnObj.mints.length;
-            delete returnObj.identity_access_key;
-
-            if (returnObj.blurhash) {
-              delete returnObj.image;
-              delete returnObj.daoCdnUrl;
-            }
-            return returnObj;
-          });
+          NFTs = await NFTs.map((n) => sanitize_nft_data(n));
           return res.status(200).json(NFTs);
         }
 
@@ -104,18 +111,7 @@ export default async (req, res) => {
           NFTs = await NFT.paginate(query, options);
         }
 
-        NFTs.docs = await NFTs.docs.map((n) => {
-          const returnObj = { ...(n.toObject ? n.toObject() : n) };
-
-          returnObj.mints = returnObj.mints?.length;
-          delete returnObj.identity_access_key;
-          if (returnObj.blurhash) {
-            delete returnObj.image;
-            delete returnObj.daoCdnUrl;
-          }
-
-          return returnObj;
-        });
+        NFTs.docs = await NFTs.docs.map((n) => sanitize_nft_data(n));
         return res.status(200).json(NFTs);
       } catch (error) {
         console.error({ error });
@@ -129,3 +125,5 @@ export default async (req, res) => {
       break;
   }
 };
+
+export default nft;

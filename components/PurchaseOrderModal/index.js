@@ -1,11 +1,9 @@
-import React from "react";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import usePurchaseOrder from "../../hooks/usePurchaseOrder";
-import useGetResaleOrder from "../../hooks/useGetResaleOrder";
-import useGetRemainingOrderBalance from "../../hooks/useGetRemainingOrderBalance";
-import { getDisplayBalance } from "../../utils/formatBalance";
 import BigNumber from "bignumber.js";
+import { Button } from "react-bootstrap";
+import Modal from "react-bootstrap/Modal";
+import { getDisplayBalance } from "../../utils/formatBalance";
+import useGetRemainingOrderBalance from "../../hooks/useGetRemainingOrderBalance";
+import usePurchaseOrder from "../../hooks/usePurchaseOrder";
 
 const PurchaseOrderModal = ({
   account,
@@ -84,7 +82,7 @@ export const PurchaseOrderModalBody = ({
         </div>
         <div className="col-md-6">
           <Button
-            variant="primary"
+            variant="primary w-100"
             className="mb-2 w-100"
             onClick={() => handleClose()}
           >

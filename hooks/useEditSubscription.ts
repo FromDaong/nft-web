@@ -1,10 +1,11 @@
-import { getTreatSubscriptionContract, editSub } from "../treat/utils";
+import { editSub, getTreatSubscriptionContract } from "../treat/utils";
+
 import { useCallback } from "react";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
 
 const useEditSubscription = (amount: number) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const treatSubscriptionContract = getTreatSubscriptionContract(treat);
 

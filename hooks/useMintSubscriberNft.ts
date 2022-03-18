@@ -1,17 +1,15 @@
 import { getSubscriberMartContract, mintSubNft } from "../treat/utils";
 
-import { Contract } from "web3-eth-contract";
 import { useCallback } from "react";
+import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
-import bsc from "@binance-chain/bsc-use-wallet";
 
 const useMintSubscriberNft = (
   id: number,
   treatCost: number,
   useSubscriberMart = false
 ) => {
-  const { account } = useWallet();
+  const { account } = useMoralis();
   const treat = useTreat();
   const subscriberMartContract = useSubscriberMart
     ? getSubscriberMartContract(treat)

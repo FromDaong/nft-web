@@ -1,8 +1,8 @@
-import Web3 from "web3";
 import BigNumber from "bignumber.js";
 import NFT from "../../../../models/NFT";
-import TreatNFTMinterAbi from "../../../../treat/lib/abi/treatnftminter.json";
 import TreatMarketplaceAbi from "../../../../treat/lib/abi/treatMarketplace.json";
+import TreatNFTMinterAbi from "../../../../treat/lib/abi/treatnftminter.json";
+import Web3 from "web3";
 import { contractAddresses } from "../../../../treat/lib/constants";
 import { getOpenOrdersForSeller } from "../../../../treat/utils";
 

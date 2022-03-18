@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
-import Spinner from "react-bootstrap/Spinner";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
 import { Blurhash } from "react-blurhash";
-import { isBlurhashValid } from "blurhash";
-import axios from "axios";
+import { Button } from "react-bootstrap";
 import { EyeSlash } from "react-bootstrap-icons";
+import GumletImage from "../Image/GumletImage";
+import InView from "react-intersection-observer";
 import Link from "next/link";
+import Modal from "react-bootstrap/Modal";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Spinner from "react-bootstrap/Spinner";
+import Tooltip from "react-bootstrap/Tooltip";
+import { isBlurhashValid } from "blurhash";
+import { useNFTItemData } from "../../lib/imagecdn";
+import { useState } from "react";
 
 const NFTListItem = ({
   data,
@@ -22,28 +24,13 @@ const NFTListItem = ({
   hasOpenOrder,
 }) => {
   const [modalData, setModalData] = useState();
-  const [image, setImage] = useState();
+  const { ref, gotInView, model } = useNFTItemData(data);
 
-  useEffect(() => {
-    if (!data.image) return;
-    axios
-      .get(
-        `/api/v2/utils/images/fetchWithFallback?default=${data.image}&cdn=${data.daoCdnUrl}`
-      )
-      .then((res) => {
-        if (res.data === data.image) {
-          axios
-            .get(data.image)
-            .then((res) =>
-              setImage(res.data.replace(`"`, "").replace(/["']/g, ""))
-            )
-            .catch((err) => console.log(err));
-        } else {
-          setImage(res.data);
-          console.log("Setting res");
-        }
-      });
-  }, [data]);
+  const bgImage = `/api/v2/utils/images/fetchWithFallback?default=${data.image}`;
+
+  const profilePic = model
+    ? `/api/v2/utils/images/fetchWithFallback?default=${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/`
+    : `/api/v2/utils/images/fetchWithFallback?default=${data.model_profile_pic}`;
 
   return (
     <>
@@ -54,12 +41,9 @@ const NFTListItem = ({
         aria-labelledby="example-modal-sizes-title-lg"
       >
         <Modal.Body>
-          <div
-            className="modal-image"
-            style={{
-              background: `url(${image})`,
-            }}
-          ></div>
+          <GumletImage
+            src={`/api/v2/utils/images/fetchWithFallback?default=${data.image}`}
+          />
           <h4 className="text-center pt-3">{data.description}</h4>
         </Modal.Body>
         <Modal.Footer>
@@ -69,8 +53,8 @@ const NFTListItem = ({
         </Modal.Footer>
       </Modal>
 
-      <div>
-        <div className="nft-card" style={{ boxShadow: "none" }}>
+      <InView as={"a"} onChange={gotInView} className="row m-0 w-100 my-4">
+        <div ref={ref} className="nft-card" style={{ boxShadow: "none" }}>
           <div className="totw-tag-wrapper">
             {balance > 1 && (
               <div className="quantity-wrapper totw-tag">
@@ -80,10 +64,9 @@ const NFTListItem = ({
           </div>
           <Link href={`/creator/${data.attributes[0].value.replace("@", "")}`}>
             <a>
-              <div
-                className="profile-pic"
-                style={{ backgroundImage: `url(${data.model_profile_pic})` }}
-              />
+              <div className="profile-pic">
+                <GumletImage src={profilePic} />
+              </div>
             </a>
           </Link>
           <div
@@ -95,7 +78,7 @@ const NFTListItem = ({
               minHeight: 300,
             }}
             onClick={() => {
-              if (image) {
+              if (bgImage) {
                 setModalData(true);
               } else {
                 revealNFTs();
@@ -104,32 +87,31 @@ const NFTListItem = ({
           >
             {data.image || isLoading ? (
               <>
-                <div
-                  style={{
-                    position: "absolute",
-                    width: "100%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Spinner
-                    animation="border"
-                    role="status"
-                    className="mt-5 mb-5"
-                    variant="light"
+                {isLoading ? (
+                  <div
+                    style={{
+                      position: "absolute",
+                      width: "100%",
+                      minHeight: "375px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
                   >
-                    <span className="sr-only">Loading...</span>
-                  </Spinner>
-                </div>
-                <div
-                  style={{
-                    background: `url(${image})`,
-                    minHeight: 375,
-                    zIndex: 100,
-                  }}
-                  className="dynamic-image"
-                />
+                    <Spinner
+                      animation="border"
+                      role="status"
+                      className="mt-5 mb-5"
+                      variant="light"
+                    >
+                      <span className="sr-only">Loading...</span>
+                    </Spinner>
+                  </div>
+                ) : (
+                  <GumletImage
+                    src={`/api/v2/utils/images/fetchWithFallback?default=${data.image}`}
+                  />
+                )}
               </>
             ) : (
               <>
@@ -224,7 +206,7 @@ const NFTListItem = ({
             </div>
           )}
         </div>
-      </div>
+      </InView>
     </>
   );
 };

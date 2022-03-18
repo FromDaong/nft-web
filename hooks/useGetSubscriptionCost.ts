@@ -1,13 +1,11 @@
-import BigNumber from "bignumber.js";
-import { getTreatSubscriptionContract, getSubCost } from "../treat/utils";
+import { getSubCost, getTreatSubscriptionContract } from "../treat/utils";
 import { useCallback, useEffect, useState } from "react";
+
+import BigNumber from "bignumber.js";
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
-import { getBalanceNumber } from "../utils/formatBalance";
 
 const useGetSubscriptionCost = (address: string) => {
   const [subscriptionCost, setSubscriptionCost] = useState(new BigNumber(0));
-  const { account } = useWallet();
   const treat = useTreat();
   const subscriptionContract = getTreatSubscriptionContract(treat);
 

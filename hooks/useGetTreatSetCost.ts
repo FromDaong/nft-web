@@ -1,16 +1,11 @@
-import BigNumber from "bignumber.js";
-import { getTreatMartContract, getSetPrice } from "../treat/utils";
-
-import { Contract } from "web3-eth-contract";
+import { getSetPrice, getTreatMartContract } from "../treat/utils";
 import { useCallback, useEffect, useState } from "react";
-import useBlock from "./useBlock";
+
+import BigNumber from "bignumber.js";
 import useTreat from "./useTreat";
-import { useWallet } from "use-wallet";
-import bsc from "@binance-chain/bsc-use-wallet";
 
 const useGetTreatSetCost = (id: number) => {
   const [nftSetCost, setNftSetCost] = useState(new BigNumber(0));
-  const { account } = useWallet();
   const treat = useTreat();
   const treatMartContract = getTreatMartContract(treat);
 

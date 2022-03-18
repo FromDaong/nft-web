@@ -1,20 +1,17 @@
-import { useCallback, useEffect, useState } from "react";
-
-import { useWallet } from "use-wallet";
-import { provider } from "web3-core";
-
-import useBlock from "./useBlock";
-
-import { getIsApprovedForAll } from "../utils/erc1155";
-import useTreat from "./useTreat";
 import {
   getTreatMarketplaceAddress,
   getTreatNFTMinterContract,
 } from "../treat/utils";
+import { useCallback, useEffect, useState } from "react";
+
+import { getIsApprovedForAll } from "../utils/erc1155";
+import useBlock from "./useBlock";
+import { useMoralis } from "react-moralis";
+import useTreat from "./useTreat";
 
 const useGetMinterIsApprovedForAll = (tokenAddress: string) => {
   const [allowance, setAllowance] = useState(false);
-  const { account, ethereum } = useWallet();
+  const { account, provider: ethereum } = useMoralis();
   const block = useBlock();
 
   const treat = useTreat();

@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import Button from "react-bootstrap/Button";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, {
-  EffectCoverflow,
-  Navigation,
-  FreeMode,
   Autoplay,
+  EffectCoverflow,
+  FreeMode,
+  Navigation,
 } from "swiper";
-import NFTListItem from "../NFTListItem";
+
+import { Button } from "react-bootstrap";
 import LazyLoad from "react-lazyload";
 import Link from "next/link";
+import NFTListItem from "../NFTListItem";
 
 SwiperCore.use([EffectCoverflow, Navigation, Autoplay, FreeMode]);
 
@@ -22,7 +22,7 @@ const SwiperNFTList = ({ nftData }) => {
           <div className="button">
             <Link href="/marketplace/creator">
               <a>
-                <Button variant="primary py-2 px-4">
+                <Button variant="primary w-100" rounded="full">
                   <b>View All</b>
                 </Button>
               </a>
