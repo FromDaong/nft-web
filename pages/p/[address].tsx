@@ -82,6 +82,7 @@ export default function UserProfile(props) {
                   {owned_nfts.docs.length > 0 ? (
                     <>
                       {owned_nfts.docs.map((doc) => (
+                        // @ts-ignore
                         <NFTListItem
                           key={doc._id}
                           data={doc}
