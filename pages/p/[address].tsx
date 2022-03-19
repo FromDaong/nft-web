@@ -1,18 +1,85 @@
+import { Button, Tab, Tabs } from "react-bootstrap";
+
 import Layout from "../../components/Layout";
+import Link from "next/link";
 import MoralisInstance from "../../utils/moralis";
 import NFT from "../../models/NFT";
 import { NextPageContext } from "next";
 import Profile from "../../models/Profile";
 import dbConnect from "../../utils/dbConnect";
 import { useRouter } from "next/dist/client/router";
+import { useState } from "react";
 
 export default function UserProfile(props) {
+  const [key, setKey] = useState("owned");
+
   const router = useRouter();
-  const { address } = router;
-  console.log({ props, address });
+  const { address } = router.query;
+  const { profile } = props;
+  const owned_nfts = JSON.parse(props.owned_nfts);
+
   return (
     <Layout>
-      <div className="container"></div>
+      <div className="container">
+        <div className="view-model white-tp-bg">
+          <div
+            className="banner"
+            style={{
+              backgroundImage: `url(${profile.banner_pic})`,
+            }}
+          ></div>
+          <div className="profile-top-container col-md-12">
+            <div
+              style={{ backgroundImage: `url(${profile.profile_pic})` }}
+              className="profile-pic"
+            />
+            <div className="buttons">
+              {address === profile.address && (
+                <div className="mr-2">
+                  <Link href="/creator-dashboard">
+                    <a>
+                      <Button
+                        className="px-4"
+                        style={{
+                          marginTop: 15,
+                          width: "100%",
+                          borderRadius: 25,
+                          display: "inline-block",
+                        }}
+                      >
+                        Edit Profile
+                      </Button>
+                    </a>
+                  </Link>
+                </div>
+              )}
+              <div></div>
+            </div>
+          </div>
+
+          <div className="profile-info">
+            <div className="col-md-12">
+              <div className="name">
+                {profile.display_name || profile.username || address}
+              </div>
+              <div className="username">@{profile.username || address}</div>
+              <p className="bio">{profile.bio}</p>
+            </div>
+            <div className="tabs-container">
+              <Tabs
+                id="controlled-tab-example"
+                activeKey={key}
+                onSelect={(k) => setKey(k)}
+                className="mb-3"
+                mountOnEnter
+              >
+                <Tab eventKey="owned" title="Owned NFTs"></Tab>
+                <Tab eventKey="resale" title="Listed on Resale NFTs"></Tab>
+              </Tabs>
+            </div>
+          </div>
+        </div>
+      </div>
     </Layout>
   );
 }
@@ -30,7 +97,6 @@ export const getServerSideProps = async (ctx: NextPageContext) => {
       },
       sort: {},
     };
-    console.log({ address });
 
     const profile = await Profile.findOne({ address });
     const ownedNFTs = await MoralisInstance.Web3API.account.getNFTsForContract({
@@ -73,12 +139,11 @@ export const getServerSideProps = async (ctx: NextPageContext) => {
         return undefined;
       })
     );
-    console.log({ nftsWithMetadata, ownedNFTsIds, ownedNFTs });
 
     return {
       props: {
-        ...profile,
-        owned_nfts: nftsWithMetadata,
+        profile: { ...profile },
+        owned_nfts: JSON.stringify(nftsWithMetadata),
       },
     };
   } catch (err) {

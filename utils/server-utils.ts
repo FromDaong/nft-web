@@ -2,11 +2,12 @@ import { destroyCookie, setCookie } from "nookies";
 
 import jwt from "jsonwebtoken";
 import { parseCookies } from "nookies";
+import { web3 } from "./moralis";
 
 const JWT_KEY = process.env.NEXT_APP_JWT_KEY;
-// TODO: validate signature
-export const isValidSignature = ({ message, signature, address }) => {
-  return true;
+export const isValidSignature = ({ signature, message, address }) => {
+  const signer = web3.eth.accounts.recover(message, signature);
+  return signer.toUpperCase() === address.toUpperCase();
 };
 
 export const setNextCookie = (res, name, data, maxAge?) => {
