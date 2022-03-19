@@ -91,7 +91,7 @@ export const getServerSideProps = async (ctx: NextPageContext) => {
     console.log({ err });
     return {
       props: {
-        error: err,
+        error: JSON.stringify(err),
       },
     };
   }
