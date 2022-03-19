@@ -4,20 +4,25 @@ import Layout from "../../components/Layout";
 import Link from "next/link";
 import MoralisInstance from "../../utils/moralis";
 import NFT from "../../models/NFT";
+import NFTListItem from "../../components/NFTListItem";
 import { NextPageContext } from "next";
+import PaginationComponentV2 from "../../components/Pagination";
 import Profile from "../../models/Profile";
 import dbConnect from "../../utils/dbConnect";
+import { useMoralis } from "react-moralis";
 import { useRouter } from "next/dist/client/router";
 import { useState } from "react";
 
 export default function UserProfile(props) {
   const [key, setKey] = useState("owned");
-
+  const [loadingOwnedNFTs, setOwnedNFTs] = useState(false);
   const router = useRouter();
   const { address } = router.query;
   const { profile } = props;
   const owned_nfts = JSON.parse(props.owned_nfts);
+  const { account } = useMoralis();
 
+  const navigateOwnedNFTs = (page) => {};
   return (
     <Layout>
       <div className="container">
@@ -73,7 +78,36 @@ export default function UserProfile(props) {
                 className="mb-3"
                 mountOnEnter
               >
-                <Tab eventKey="owned" title="Owned NFTs"></Tab>
+                <Tab eventKey="owned" title="Owned NFTs">
+                  {owned_nfts.docs.length > 0 ? (
+                    <>
+                      {owned_nfts.docs.map((doc) => (
+                        <NFTListItem
+                          key={doc._id}
+                          data={doc}
+                          isOwner={account === address}
+                        />
+                      ))}
+                      <PaginationComponentV2
+                        hasNextPage={owned_nfts.hasNextPage}
+                        hasPrevPage={owned_nfts.hasPrevPage}
+                        totalPages={owned_nfts.totalPages}
+                        totalDocs={owned_nfts.totalDocs}
+                        page={owned_nfts.page}
+                        goNext={() =>
+                          navigateOwnedNFTs(Number(owned_nfts.page) + 1)
+                        }
+                        goPrev={() =>
+                          navigateOwnedNFTs(Number(owned_nfts.page) - 1)
+                        }
+                        loading={loadingOwnedNFTs}
+                        setPage={(page) => navigateOwnedNFTs(Number(page))}
+                      />
+                    </>
+                  ) : (
+                    <p>User has nowned nfts</p>
+                  )}
+                </Tab>
                 <Tab eventKey="resale" title="Listed on Resale NFTs"></Tab>
               </Tabs>
             </div>
