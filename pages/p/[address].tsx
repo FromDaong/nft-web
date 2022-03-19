@@ -73,6 +73,8 @@ export const getServerSideProps = async (ctx: NextPageContext) => {
       })
     );
 
+    console.log({ nftsWithMetadata, ownedNFTsIds });
+
     if (profile) {
       return {
         props: {
