@@ -12,7 +12,7 @@ export default function UserProfile(props) {
   console.log({ props, address });
   return (
     <Layout>
-      <div className="container">{props.toString()}</div>
+      <div className="container"></div>
     </Layout>
   );
 }
@@ -20,7 +20,7 @@ export default function UserProfile(props) {
 export const getServerSideProps = async (ctx: NextPageContext) => {
   try {
     await dbConnect();
-    const address = ctx.query.query as any;
+    const address = ctx.query.address as any;
     const page = ctx.query.p as any;
     const options = {
       page: page ?? 1,
@@ -30,6 +30,7 @@ export const getServerSideProps = async (ctx: NextPageContext) => {
       },
       sort: {},
     };
+    console.log({ address });
 
     const profile = await Profile.findOne({ address });
     const ownedNFTs = await MoralisInstance.Web3API.account.getNFTsForContract({
@@ -40,7 +41,7 @@ export const getServerSideProps = async (ctx: NextPageContext) => {
     const ownedNFTsIds = await ownedNFTs.result.map((nft) => nft.token_id);
 
     // @ts-ignore
-    const nftsWithMetadata = NFT.paginate(
+    const nftsWithMetadata = await NFT.paginate(
       {
         id: { $in: ownedNFTsIds },
       },
@@ -72,24 +73,14 @@ export const getServerSideProps = async (ctx: NextPageContext) => {
         return undefined;
       })
     );
+    console.log({ nftsWithMetadata, ownedNFTsIds, ownedNFTs });
 
-    console.log({ nftsWithMetadata, ownedNFTsIds });
-
-    if (profile) {
-      return {
-        props: {
-          ...profile,
-          data: nftsWithMetadata,
-          ownedNFTsIds,
-        },
-      };
-    } else {
-      return {
-        props: {
-          error: "No profile exists for that wallet",
-        },
-      };
-    }
+    return {
+      props: {
+        ...profile,
+        owned_nfts: nftsWithMetadata,
+      },
+    };
   } catch (err) {
     console.log({ err });
     return {
