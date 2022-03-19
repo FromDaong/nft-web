@@ -80,6 +80,7 @@ export const getServerSideProps = async (ctx: NextPageContext) => {
         props: {
           ...profile,
           data: nftsWithMetadata,
+          ownedNFTsIds,
         },
       };
     } else {

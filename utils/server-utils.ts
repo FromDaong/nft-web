@@ -4,6 +4,10 @@ import jwt from "jsonwebtoken";
 import { parseCookies } from "nookies";
 
 const JWT_KEY = process.env.NEXT_APP_JWT_KEY;
+// TODO: validate signature
+export const isValidSignature = ({ message, signature, address }) => {
+  return true;
+};
 
 export const setNextCookie = (res, name, data, maxAge?) => {
   setCookie({ res }, name, data, {
