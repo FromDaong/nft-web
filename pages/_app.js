@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import useSWR, { SWRConfig } from "swr";
 
 import Axios from "axios";
+import { ChakraProvider } from "@chakra-ui/react";
 import Container from "react-bootstrap/Container";
 import Footer from "../components/Footer";
 import Head from "next/head";
@@ -225,7 +226,7 @@ function MyApp({ Component, pageProps }) {
           }}
         >
           <TreatProvider>
-            <div>
+            <ChakraProvider>
               <TOTMBanner oldTokenBalance={oldTokenBalance} />
               {oldTokenBalance > 0 && (
                 <V2Banner oldTokenBalance={oldTokenBalance} />
@@ -239,7 +240,7 @@ function MyApp({ Component, pageProps }) {
                 />
               </Container>
               <Footer />
-            </div>
+            </ChakraProvider>
           </TreatProvider>
         </SWRConfig>
       </IntercomProvider>
