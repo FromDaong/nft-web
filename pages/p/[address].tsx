@@ -1,16 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import Axios from "axios";
 import { Button } from "react-bootstrap";
 import Layout from "../../components/Layout";
 import Link from "next/link";
-import MoralisInstance from "../../utils/moralis";
-import NFT from "../../models/NFT";
 import NFTListItem from "../../components/NFTListItem";
-import { NextPageContext } from "next";
 import PaginationComponentV2 from "../../components/Pagination";
-import Profile from "../../models/Profile";
-import dbConnect from "../../utils/dbConnect";
 import { useMoralis } from "react-moralis";
 import { useRouter } from "next/dist/client/router";
 
@@ -36,10 +31,10 @@ export default function UserProfile() {
   const { account } = useMoralis();
   const router = useRouter();
   const { address } = router.query;
-  console.log({ address });
 
-  const fetchOwnedNFTs = useCallback(() => {
+  useEffect(() => {
     setLoadingOwnedNFTs(true);
+    console.log({ address });
     if (address) {
       Axios.get(`/api/v2/profile/${address}`)
         .then((res) => {
@@ -55,10 +50,6 @@ export default function UserProfile() {
         });
     }
   }, [address]);
-
-  useEffect(() => {
-    fetchOwnedNFTs();
-  }, []);
 
   const navigateOwnedNFTs = (p) => {};
 
