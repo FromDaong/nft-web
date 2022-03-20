@@ -1,5 +1,5 @@
-import React from "react";
 import Pagination from "react-bootstrap/Pagination";
+import React from "react";
 
 const PaginationComponentV2 = ({
   page,
@@ -38,12 +38,14 @@ const PaginationComponentV2 = ({
     items.push(<Pagination.Last onClick={() => setPage(totalPages)} />);
 
   return (
-    <div className="flex flex-col">
-      {totalDocs > 1 && (
-        <div className="d-flex justify-content-center">
-          <Pagination>{items}</Pagination>
-        </div>
-      )}
+    <div style={{ display: "block", width: "100%" }}>
+      <div className="flex flex-col">
+        {totalDocs > 1 && (
+          <div className="d-flex justify-content-center">
+            <Pagination>{items}</Pagination>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
