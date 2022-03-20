@@ -21,6 +21,7 @@ export default function UserProfile(props) {
     hasPrevPage: false,
     hasNextPage: false,
     page: 1,
+    loaded: false,
   });
   const router = useRouter();
   const { address } = router.query;
@@ -33,9 +34,10 @@ export default function UserProfile(props) {
   const navigateOwnedNFTs = (page) => {};
 
   useEffect(() => {
-    console.log({ props });
-    if (props.owned_nfts) {
-      setOwnedNFTs(JSON.parse(props.owned_nfts));
+    if (props.owned_nfts && !owned_nfts.loaded) {
+      console.log({ props });
+
+      setOwnedNFTs({ ...JSON.parse(props.owned_nfts), loaded: true });
     }
   }, [props]);
   return (
@@ -85,52 +87,42 @@ export default function UserProfile(props) {
               <div className="username">@{profile.username || address}</div>
               <p className="bio">{profile.bio}</p>
             </div>
-            <div className="tabs-container">
-              <Tabs
-                id="controlled-tab-example"
-                activeKey={key}
-                onSelect={(k) => setKey(k)}
-                className="mb-3"
-                mountOnEnter
-              >
-                <Tab eventKey="owned" title="Owned NFTs">
-                  {owned_nfts.docs.length > 0 ? (
-                    <>
-                      {owned_nfts.docs.map((doc) => (
-                        // @ts-ignore
-                        <div key={doc._id} className="profile-nfts-container">
-                          <NFTListItem
-                            data={doc}
-                            isOwner={account === address}
-                            buttonLabel={undefined}
-                            buttonFunction={undefined}
-                            price={undefined}
-                            owner={address}
-                            soldOut={undefined}
-                          />
-                        </div>
-                      ))}
-                      <PaginationComponentV2
-                        hasNextPage={owned_nfts.hasNextPage}
-                        hasPrevPage={owned_nfts.hasPrevPage}
-                        totalPages={owned_nfts.totalPages}
-                        totalDocs={owned_nfts.totalDocs}
-                        page={owned_nfts.page}
-                        goNext={() =>
-                          navigateOwnedNFTs(Number(owned_nfts.page) + 1)
-                        }
-                        goPrev={() =>
-                          navigateOwnedNFTs(Number(owned_nfts.page) - 1)
-                        }
-                        loading={loadingOwnedNFTs}
-                        setPage={(page) => navigateOwnedNFTs(Number(page))}
+            <div className="profile-nfts-container">
+              {owned_nfts.docs.length > 0 ? (
+                <>
+                  {owned_nfts.docs.map((doc) => (
+                    // @ts-ignore
+                    <div key={doc._id}>
+                      <NFTListItem
+                        data={doc}
+                        isOwner={account === address}
+                        buttonLabel={undefined}
+                        buttonFunction={undefined}
+                        price={undefined}
+                        owner={address}
+                        soldOut={undefined}
                       />
-                    </>
-                  ) : (
-                    <p>User has no owned nfts</p>
-                  )}
-                </Tab>
-              </Tabs>
+                    </div>
+                  ))}
+                  <PaginationComponentV2
+                    hasNextPage={owned_nfts.hasNextPage}
+                    hasPrevPage={owned_nfts.hasPrevPage}
+                    totalPages={owned_nfts.totalPages}
+                    totalDocs={owned_nfts.totalDocs}
+                    page={owned_nfts.page}
+                    goNext={() =>
+                      navigateOwnedNFTs(Number(owned_nfts.page) + 1)
+                    }
+                    goPrev={() =>
+                      navigateOwnedNFTs(Number(owned_nfts.page) - 1)
+                    }
+                    loading={loadingOwnedNFTs}
+                    setPage={(page) => navigateOwnedNFTs(Number(page))}
+                  />
+                </>
+              ) : (
+                <p>User has no owned nfts</p>
+              )}
             </div>
           </div>
         </div>

@@ -18,15 +18,17 @@ const NFTListItem = ({
   soldOut,
 }) => {
   console.log("Re-Rendered");
-  const { ref, gotInView, model } = useNFTItemData(data);
+  const { ref, gotInView, model } = {
+    model: null,
+    gotInView: () => null,
+    ref: null,
+  }; //useNFTItemData(data);
   const isTOTMorOldTOTW =
     data.totw || data.totm || data.old_totw || data.old_totm;
   const profilePic = model
     ? `/api/v2/utils/images/fetchWithFallback?default=${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/`
     : `/api/v2/utils/images/fetchWithFallback?default=${data.model_profile_pic}`;
   if (!data.attributes) return <div></div>;
-
-  console.log({ isTOTMorOldTOTW, data });
 
   return (
     <Link href={`/view/${data.id}`}>
