@@ -1,59 +1,22 @@
-import { useEffect, useState } from "react";
-
-import Axios from "axios";
 import { Button } from "react-bootstrap";
 import Layout from "../../components/Layout";
-import LazyLoad from "react-lazyload";
 import Link from "next/link";
+import MoralisInstance from "../../utils/moralis";
+import NFT from "../../models/NFT";
 import PaginationComponentV2 from "../../components/Pagination";
+import Profile from "../../models/Profile";
 import TwNFTListItem from "../../components/NFTListItem/TwNFTListItem";
-import { useMoralis } from "react-moralis";
+import dbConnect from "../../utils/dbConnect";
 import { useRouter } from "next/dist/client/router";
+import { useState } from "react";
 
-export default function UserProfile() {
-  const [profile, setProfile] = useState({
-    address: "",
-    banner_pic: "",
-    profile_pic: "",
-    username: "",
-    display_name: "",
-    bio: "",
-  });
-  const [owned_nfts, setOwnedNfts] = useState({
-    docs: [],
-    page: 1,
-    totalPages: 0,
-    hasNextPage: false,
-    hasPrevPage: false,
-    totalDocs: 0,
-  });
-
+export default function UserProfile(props) {
   const [loadingOwnedNFTs, setLoadingOwnedNFTs] = useState(false);
+
   const router = useRouter();
   const { address } = router.query;
-
-  useEffect(() => {
-    setLoadingOwnedNFTs(true);
-    console.log({ address });
-    if (address) {
-      Axios.get(`/api/v2/profile/`)
-        .then((res) => {
-          if (!res.data.err) {
-            setProfile(res.data.profile);
-            setOwnedNfts(res.data.owned_nfts);
-            setLoadingOwnedNFTs(false);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          setLoadingOwnedNFTs(false);
-        });
-    }
-  }, [address]);
-
-  useEffect(() => {
-    console.log({ owned_nfts });
-  }, [owned_nfts]);
+  const owned_nfts = JSON.parse(props.owned_nfts);
+  const { profile } = props;
 
   const navigateOwnedNFTs = (p) => {};
 
@@ -139,3 +102,76 @@ export default function UserProfile() {
     </Layout>
   );
 }
+
+export const getServerSideProps = async (ctx) => {
+  await dbConnect();
+  try {
+    const address = ctx.query.address as any;
+    const page = ctx.query.p as any;
+    const options = {
+      page: page ?? 1,
+      limit: 12,
+      collation: {
+        locale: "en",
+      },
+      sort: {},
+    };
+
+    const profile = await Profile.findOne({ address });
+    const ownedNFTs = await MoralisInstance.Web3API.account.getNFTsForContract({
+      address,
+      token_address: process.env.TREAT_MINTER_ADDRESS,
+      chain: "bsc",
+    });
+    const ownedNFTsIds = await ownedNFTs.result.map((nft) => nft.token_id);
+
+    // @ts-ignore
+    const nftsWithMetadata = await NFT.paginate(
+      {
+        id: { $in: ownedNFTsIds },
+      },
+      options
+    );
+
+    nftsWithMetadata.docs = await Promise.all(
+      nftsWithMetadata.docs.map((data) => {
+        const nft_data = ownedNFTs.result.find(
+          (owned_nft) => Number(owned_nft.token_id) === data.id
+        );
+        if (nft_data) {
+          const returnObj = {
+            ...nft_data,
+            ...data.toObject(),
+          };
+
+          if (returnObj.cdnUrl) {
+            returnObj.image = returnObj.cdnUrl;
+            delete returnObj.cdnUrl;
+          }
+
+          // Removing this to minimize total payload, get only what we need.
+          delete returnObj.description;
+          delete returnObj.mints;
+
+          return returnObj;
+        }
+        return undefined;
+      })
+    );
+
+    return {
+      props: {
+        profile: { ...profile },
+        owned_nfts: JSON.stringify(nftsWithMetadata),
+        address,
+      },
+    };
+  } catch (err) {
+    console.log({ err });
+    return {
+      props: {
+        err,
+      },
+    };
+  }
+};
