@@ -96,7 +96,7 @@ export default function UserProfile(props) {
                 <Tab eventKey="owned" title="Owned NFTs">
                   {owned_nfts.docs.length > 0 ? (
                     <>
-                      {owned_nfts.docs.slice(0, 1).map((doc) => (
+                      {owned_nfts.docs.map((doc) => (
                         // @ts-ignore
                         <div key={doc._id} className="profile-nfts-container">
                           <NFTListItem
@@ -127,7 +127,7 @@ export default function UserProfile(props) {
                       />
                     </>
                   ) : (
-                    <p>User has nowned nfts</p>
+                    <p>User has no owned nfts</p>
                   )}
                 </Tab>
               </Tabs>
