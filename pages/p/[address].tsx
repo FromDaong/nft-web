@@ -1,4 +1,5 @@
 import { Button, Tab, Tabs } from "react-bootstrap";
+import { useEffect, useState } from "react";
 
 import Layout from "../../components/Layout";
 import Link from "next/link";
@@ -11,18 +12,32 @@ import Profile from "../../models/Profile";
 import dbConnect from "../../utils/dbConnect";
 import { useMoralis } from "react-moralis";
 import { useRouter } from "next/dist/client/router";
-import { useState } from "react";
 
 export default function UserProfile(props) {
   const [key, setKey] = useState("owned");
-  const [loadingOwnedNFTs, setOwnedNFTs] = useState(false);
+  const [loadingOwnedNFTs, setOwnedNFTsLoading] = useState(false);
+  const [owned_nfts, setOwnedNFTs] = useState<any>({
+    docs: [],
+    hasPrevPage: false,
+    hasNextPage: false,
+    page: 1,
+  });
   const router = useRouter();
   const { address } = router.query;
-  const { profile } = props;
-  const owned_nfts = JSON.parse(props.owned_nfts);
+  const profile = props.profile ?? {};
+
   const { account } = useMoralis();
 
+  const fetchOwnedNFTs = () => {};
+
   const navigateOwnedNFTs = (page) => {};
+
+  useEffect(() => {
+    console.log({ props });
+    if (props.owned_nfts) {
+      setOwnedNFTs(JSON.parse(props.owned_nfts));
+    }
+  }, [props]);
   return (
     <Layout>
       <div className="container">
@@ -81,7 +96,7 @@ export default function UserProfile(props) {
                 <Tab eventKey="owned" title="Owned NFTs">
                   {owned_nfts.docs.length > 0 ? (
                     <>
-                      {owned_nfts.docs.map((doc) => (
+                      {owned_nfts.docs.slice(0, 1).map((doc) => (
                         // @ts-ignore
                         <div key={doc._id} className="profile-nfts-container">
                           <NFTListItem
