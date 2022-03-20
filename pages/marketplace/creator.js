@@ -236,20 +236,6 @@ const Marketplace = ({ search }) => {
           <div
             layout
             className="nft-list row mt-5 full-width justify-content-center"
-            animate="show"
-            exit="hidden"
-            initial="hidden"
-            variants={{
-              show: { opacity: 1 },
-              hidden: {
-                transition: {
-                  staggerChildren: 0.02,
-                  staggerDirection: -1,
-                  when: "afterChildren",
-                  opacity: 0,
-                },
-              },
-            }}
           >
             {loading ? (
               <div

@@ -4,7 +4,7 @@ import Axios from "axios";
 import { Button } from "react-bootstrap";
 import Layout from "../../components/Layout";
 import Link from "next/link";
-import NFTListItem from "../../components/NFTListItem";
+import { Order } from "../../components/CreatorMarketplaceListItem";
 import PaginationComponentV2 from "../../components/Pagination";
 import { useMoralis } from "react-moralis";
 import { useRouter } from "next/dist/client/router";
@@ -36,7 +36,7 @@ export default function UserProfile() {
     setLoadingOwnedNFTs(true);
     console.log({ address });
     if (address) {
-      Axios.get(`/api/v2/profile/${address}`)
+      Axios.get(`/api/v2/profile/`)
         .then((res) => {
           if (!res.data.err) {
             setProfile(res.data.profile);
@@ -100,22 +100,21 @@ export default function UserProfile() {
               <div className="username">@{profile.username || address}</div>
               <p className="bio">{profile.bio}</p>
             </div>
-            <div className="order-container">
+            <div
+              layout
+              className="nft-list row mt-5 full-width justify-content-center"
+            >
               {owned_nfts.docs.length > 0 ? (
                 <>
-                  {owned_nfts.docs.map((doc) => (
+                  {owned_nfts.docs.map((doc, i) => (
                     // @ts-ignore
-                    <div key={doc._id}>
-                      <NFTListItem
-                        data={doc}
-                        isOwner={account === address}
-                        buttonLabel={undefined}
-                        buttonFunction={undefined}
-                        price={undefined}
-                        owner={address}
-                        soldOut={undefined}
-                      />
-                    </div>
+                    <Order
+                      soldOut={doc.mints === Number(doc.max_supply)}
+                      order={doc}
+                      account={account}
+                      key={doc._id}
+                      setPurchaseOrderData={() => null}
+                    />
                   ))}
                   <PaginationComponentV2
                     hasNextPage={owned_nfts.hasNextPage}
