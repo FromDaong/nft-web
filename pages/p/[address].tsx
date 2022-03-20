@@ -51,6 +51,10 @@ export default function UserProfile() {
     }
   }, [address]);
 
+  useEffect(() => {
+    console.log({ owned_nfts });
+  }, [owned_nfts]);
+
   const navigateOwnedNFTs = (p) => {};
 
   return (
@@ -100,13 +104,10 @@ export default function UserProfile() {
               <div className="username">@{profile.username || address}</div>
               <p className="bio">{profile.bio}</p>
             </div>
-            <div
-              layout
-              className="nft-list row mt-5 full-width justify-content-center"
-            >
+            <div className="nft-list row mt-5 full-width justify-content-center">
               {owned_nfts.docs.length > 0 ? (
                 <>
-                  {owned_nfts.docs.map((doc, i) => (
+                  {owned_nfts.docs.map((doc) => (
                     // @ts-ignore
                     <Order
                       soldOut={doc.mints === Number(doc.max_supply)}

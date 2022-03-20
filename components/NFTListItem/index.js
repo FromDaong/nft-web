@@ -1,10 +1,11 @@
+import React, { useEffect } from "react";
+
 import { Blurhash } from "react-blurhash";
 import { Button } from "react-bootstrap";
 import { EyeSlash } from "react-bootstrap-icons";
 import GumletImage from "../Image/GumletImage";
 import { InView } from "react-intersection-observer";
 import Link from "next/link";
-import React from "react";
 import Spinner from "react-bootstrap/Spinner";
 import { isBlurhashValid } from "blurhash";
 import { useNFTItemData } from "../../lib/imagecdn";
@@ -18,7 +19,10 @@ const NFTListItem = ({
   owner,
   soldOut,
 }) => {
-  console.log("Re-Rendered");
+  useEffect(() => {
+    console.log("Data has changed " + data._id);
+  }, [data]);
+
   const { ref, gotInView, model } = useNFTItemData(data);
   const isTOTMorOldTOTW =
     data.totw || data.totm || data.old_totw || data.old_totm;
