@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 
 import Axios from "axios";
 import { Button } from "react-bootstrap";
-import GumletImage from "../../components/Image/GumletImage";
 import Layout from "../../components/Layout";
 import LazyLoad from "react-lazyload";
 import Link from "next/link";
 import PaginationComponentV2 from "../../components/Pagination";
+import TwNFTListItem from "../../components/NFTListItem/TwNFTListItem";
 import { useMoralis } from "react-moralis";
 import { useRouter } from "next/dist/client/router";
 
@@ -29,7 +29,6 @@ export default function UserProfile() {
   });
 
   const [loadingOwnedNFTs, setLoadingOwnedNFTs] = useState(false);
-  const { account } = useMoralis();
   const router = useRouter();
   const { address } = router.query;
 
@@ -105,53 +104,13 @@ export default function UserProfile() {
               <div className="username">@{profile.username || address}</div>
               <p className="bio">{profile.bio}</p>
             </div>
-            <div className="grid grid-cols-3 gap-8">
+            <div className="grid grid-cols-3 gap-8 p-4">
               {owned_nfts.docs.length > 0 ? (
                 <>
                   {owned_nfts.docs.map((doc) => {
-                    const profilePic = `/api/v2/utils/images/fetchWithFallback?default=${doc.model_profile_pic}`;
                     return (
                       // @ts-ignore
-                      <div key={doc.id} className="p-4 col-span-1">
-                        <LazyLoad height={400} offset={600}>
-                          <div className="p-2 w-full flex items-center justify-center">
-                            <Link
-                              href={`/creator/${doc.attributes[0].value.slice(
-                                1,
-                                -1
-                              )}`}
-                            >
-                              <a>
-                                <img
-                                  className="w-16 h-16 rounded-full object-cover"
-                                  src={profilePic}
-                                />
-                              </a>
-                            </Link>
-                          </div>
-                          <div className="p-2 w-full flex items-center justify-center">
-                            <img
-                              className="rounded-md w-full h-96 object-cover"
-                              src={`/api/v2/utils/images/fetchWithFallback?default=${doc.image}`}
-                            />
-                          </div>
-                          <div className="p-2 bg-pink-400 flex justify-between">
-                            <div className="block">
-                              <p className="pb-2">{doc.name}</p>
-                              {account === address && (
-                                <span className="font-bold">Creator: </span>
-                              )}
-                              {doc.attributes[0].value.slice(1, -1)}
-                            </div>
-                            {typeof doc.list_price !== "undefined" && (
-                              <div className="block">
-                                <p className="pb-2">{doc.list_price}</p>
-                                <p className="font-bold">BNB</p>
-                              </div>
-                            )}
-                          </div>
-                        </LazyLoad>
-                      </div>
+                      <TwNFTListItem doc={doc} key={doc.id} />
                     );
                   })}
                   <PaginationComponentV2
