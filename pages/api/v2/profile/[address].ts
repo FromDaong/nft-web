@@ -67,7 +67,7 @@ export default async function profile(
 
     return res.status(200).json({
       profile: { ...profile },
-      owned_nfts: JSON.stringify(nftsWithMetadata),
+      owned_nfts: nftsWithMetadata,
       address,
     });
   } catch (err) {
