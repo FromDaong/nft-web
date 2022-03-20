@@ -83,11 +83,17 @@ export default function UserProfile(props) {
                     <>
                       {owned_nfts.docs.map((doc) => (
                         // @ts-ignore
-                        <NFTListItem
-                          key={doc._id}
-                          data={doc}
-                          isOwner={account === address}
-                        />
+                        <div key={doc._id} className="profile-nfts-container">
+                          <NFTListItem
+                            data={doc}
+                            isOwner={account === address}
+                            buttonLabel={undefined}
+                            buttonFunction={undefined}
+                            price={undefined}
+                            owner={address}
+                            soldOut={undefined}
+                          />
+                        </div>
                       ))}
                       <PaginationComponentV2
                         hasNextPage={owned_nfts.hasNextPage}
@@ -109,7 +115,6 @@ export default function UserProfile(props) {
                     <p>User has nowned nfts</p>
                   )}
                 </Tab>
-                <Tab eventKey="resale" title="Listed on Resale NFTs"></Tab>
               </Tabs>
             </div>
           </div>
