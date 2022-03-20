@@ -87,7 +87,7 @@ export default function UserProfile(props) {
               <div className="username">@{profile.username || address}</div>
               <p className="bio">{profile.bio}</p>
             </div>
-            <div className="profile-nfts-container">
+            <div className="order-container">
               {owned_nfts.docs.length > 0 ? (
                 <>
                   {owned_nfts.docs.map((doc) => (
