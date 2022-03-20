@@ -1,4 +1,4 @@
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import Gallery from "../components/Gallery";
 import Hero from "../components/Hero";
 
@@ -18,7 +18,7 @@ const Totm = () => {
                 rel="noopener noreferrer"
               >
                 <a>
-                  <Button variant="primary w-100">
+                  <Button className="bg-primary text-white">
                     <b>{"Visit the Ethereum Collection"}</b>
                   </Button>
                 </a>

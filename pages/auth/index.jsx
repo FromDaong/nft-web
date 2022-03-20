@@ -22,8 +22,9 @@ export default function Auth() {
   };
 
   return (
-    <div className="auth-container">
+    <div className="flex flex-col space-y-4">
       <Button
+        isFullWidth
         isLoading={isAuthenticating}
         className="bg-primary text-white font-bold"
         onClick={() => smartConnectWithMoralis()}
@@ -32,6 +33,7 @@ export default function Auth() {
       </Button>
       <br />
       <Button
+        isFullWidth
         colorScheme="purple"
         isLoading={isAuthenticating}
         className="font-bold"
@@ -40,6 +42,7 @@ export default function Auth() {
         Connect via WalletConnect
       </Button>
       <Button
+        isFullWidth
         isLoading={isAuthenticating}
         colorScheme="yellow"
         className="font-bold"

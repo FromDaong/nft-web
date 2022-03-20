@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import Button from "react-bootstrap/Button";
+import { Button } from "@chakra-ui/react";
 import Link from "next/link";
 import Modal from "react-bootstrap/Modal";
 import ModelIcon from "../icons/Model";
@@ -11,17 +11,17 @@ import { useRouter } from "next/dist/client/router";
 export default function NavbarQuickSearch() {
   const [show, setShow] = useState(false);
 
-  const toggleShow = (val) => {
+  const toggleShow = () => {
     setShow(!show);
   };
 
   return (
     <div className="quick-search">
       <form
-        onSubmit={() => {}}
+        onSubmit={() => null}
         style={{ display: "flex", alignItems: "center" }}
       >
-        <Button variant="light w-100 py-2" onClick={toggleShow}>
+        <Button bgColor="white" color="gray.800" onClick={toggleShow}>
           <b>Search</b>
         </Button>
       </form>

@@ -76,7 +76,7 @@ const NFTListItem = ({ data }) => {
                 </div>
               </div>
               <div className="button pt-4 pt-md-0 ">
-                <Button variant="primary w-100">
+                <Button className="bg-primary text-white font-bold">
                   <b>VIEW NFT</b>
                 </Button>
               </div>
