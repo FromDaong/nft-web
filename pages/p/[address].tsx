@@ -1,6 +1,7 @@
-import { Button, Tab, Tabs } from "react-bootstrap";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
+import Axios from "axios";
+import { Button } from "react-bootstrap";
 import Layout from "../../components/Layout";
 import Link from "next/link";
 import MoralisInstance from "../../utils/moralis";
@@ -13,33 +14,51 @@ import dbConnect from "../../utils/dbConnect";
 import { useMoralis } from "react-moralis";
 import { useRouter } from "next/dist/client/router";
 
-export default function UserProfile(props) {
-  const [key, setKey] = useState("owned");
-  const [loadingOwnedNFTs, setOwnedNFTsLoading] = useState(false);
-  const [owned_nfts, setOwnedNFTs] = useState<any>({
-    docs: [],
-    hasPrevPage: false,
-    hasNextPage: false,
-    page: 1,
-    loaded: false,
+export default function UserProfile() {
+  const [profile, setProfile] = useState({
+    address: "",
+    banner_pic: "",
+    profile_pic: "",
+    username: "",
+    display_name: "",
+    bio: "",
   });
+  const [owned_nfts, setOwnedNfts] = useState({
+    docs: [],
+    page: 1,
+    totalPages: 0,
+    hasNextPage: false,
+    hasPrevPage: false,
+    totalDocs: 0,
+  });
+
+  const [loadingOwnedNFTs, setLoadingOwnedNFTs] = useState(false);
+  const { account } = useMoralis();
   const router = useRouter();
   const { address } = router.query;
-  const profile = props.profile ?? {};
 
-  const { account } = useMoralis();
-
-  const fetchOwnedNFTs = () => {};
-
-  const navigateOwnedNFTs = (page) => {};
+  const fetchOwnedNFTs = useCallback(() => {
+    setLoadingOwnedNFTs(true);
+    Axios.get(`/api/v2/profile/${address}`)
+      .then((res) => {
+        if (!res.data.err) {
+          setProfile(res.data.profile);
+          setOwnedNfts(res.data.owned_nfts);
+          setLoadingOwnedNFTs(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoadingOwnedNFTs(false);
+      });
+  }, [address]);
 
   useEffect(() => {
-    if (props.owned_nfts && !owned_nfts.loaded) {
-      console.log({ props });
+    fetchOwnedNFTs();
+  }, []);
 
-      setOwnedNFTs({ ...JSON.parse(props.owned_nfts), loaded: true });
-    }
-  }, [props]);
+  const navigateOwnedNFTs = (p) => {};
+
   return (
     <Layout>
       <div className="container">
@@ -130,75 +149,3 @@ export default function UserProfile(props) {
     </Layout>
   );
 }
-
-export const getServerSideProps = async (ctx: NextPageContext) => {
-  try {
-    await dbConnect();
-    const address = ctx.query.address as any;
-    const page = ctx.query.p as any;
-    const options = {
-      page: page ?? 1,
-      limit: 12,
-      collation: {
-        locale: "en",
-      },
-      sort: {},
-    };
-
-    const profile = await Profile.findOne({ address });
-    const ownedNFTs = await MoralisInstance.Web3API.account.getNFTsForContract({
-      address,
-      token_address: process.env.TREAT_MINTER_ADDRESS,
-      chain: "bsc",
-    });
-    const ownedNFTsIds = await ownedNFTs.result.map((nft) => nft.token_id);
-
-    // @ts-ignore
-    const nftsWithMetadata = await NFT.paginate(
-      {
-        id: { $in: ownedNFTsIds },
-      },
-      options
-    );
-
-    nftsWithMetadata.docs = await Promise.all(
-      nftsWithMetadata.docs.map((data) => {
-        const nft_data = ownedNFTs.result.find(
-          (owned_nft) => Number(owned_nft.token_id) === data.id
-        );
-        if (nft_data) {
-          const returnObj = {
-            ...nft_data,
-            ...data.toObject(),
-          };
-
-          if (returnObj.cdnUrl) {
-            returnObj.image = returnObj.cdnUrl;
-            delete returnObj.cdnUrl;
-          }
-
-          // Removing this to minimize total payload, get only what we need.
-          delete returnObj.description;
-          delete returnObj.mints;
-
-          return returnObj;
-        }
-        return undefined;
-      })
-    );
-
-    return {
-      props: {
-        profile: { ...profile },
-        owned_nfts: JSON.stringify(nftsWithMetadata),
-      },
-    };
-  } catch (err) {
-    console.log({ err });
-    return {
-      props: {
-        error: JSON.stringify(err),
-      },
-    };
-  }
-};
