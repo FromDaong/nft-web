@@ -1,6 +1,5 @@
 import { Button } from "@chakra-ui/react";
 import Modal from "react-bootstrap/Modal";
-import { Spinner } from "react-bootstrap";
 import { useMoralis } from "react-moralis";
 
 const WalletModal = ({ show, handleClose }) => {
