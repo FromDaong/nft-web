@@ -1,6 +1,6 @@
-import { Button, Spinner } from "react-bootstrap";
-
+import { Button } from "@chakra-ui/react";
 import Modal from "react-bootstrap/Modal";
+import { Spinner } from "react-bootstrap";
 import { useMoralis } from "react-moralis";
 
 const WalletModal = ({ show, handleClose }) => {
@@ -45,49 +45,27 @@ const WalletModal = ({ show, handleClose }) => {
         </Modal.Header>
         <Modal.Body>
           <Button
-            variant="primary"
-            className="mb-2 w-100"
+            isLoading={isAuthenticating}
+            className="bg-primary text-white font-bold mb-2 w-100"
             onClick={() => smartConnectWithMoralis()}
           >
-            {isAuthenticating ? (
-              <Spinner
-                animation="border"
-                role="status"
-                size="md"
-                style={{ marginTop: 5 }}
-              />
-            ) : (
-              "Connect via MetaMask"
-            )}
+            Connect via MetaMask
           </Button>
           <br />
           <Button
-            variant="info"
-            className="mb-2 w-100"
+            colorScheme="purple"
+            className="mb-2"
+            isLoading={isAuthenticating}
             onClick={() => smartConnectWithMoralis("walletconnect")}
           >
-            {isAuthenticating ? (
-              <Spinner
-                animation="border"
-                role="status"
-                size="md"
-                style={{ marginTop: 5 }}
-              />
-            ) : (
-              "Connect via WalletConnect"
-            )}
+            Connect via WalletConnect
           </Button>
-          <Button variant="warning" className="w-100" onClick={web3authConnect}>
-            {isAuthenticating ? (
-              <Spinner
-                animation="border"
-                role="status"
-                size="md"
-                style={{ marginTop: 5 }}
-              />
-            ) : (
-              "Connect via Web3Auth"
-            )}
+          <Button
+            isLoading={isAuthenticating}
+            colorScheme="yellow"
+            onClick={web3authConnect}
+          >
+            Connect via Web3Auth
           </Button>
         </Modal.Body>
       </Modal>

@@ -24,7 +24,10 @@ const CreatorList = ({ modelData }) => {
         <div className="button">
           <Link href="/creators">
             <a>
-              <Button className="bg-primary text-white" rounded="full">
+              <Button
+                className="bg-primary text-white font-bold"
+                rounded="full"
+              >
                 View All
               </Button>
             </a>
