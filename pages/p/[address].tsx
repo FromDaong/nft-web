@@ -36,21 +36,24 @@ export default function UserProfile() {
   const { account } = useMoralis();
   const router = useRouter();
   const { address } = router.query;
+  console.log({ address });
 
   const fetchOwnedNFTs = useCallback(() => {
     setLoadingOwnedNFTs(true);
-    Axios.get(`/api/v2/profile/${address}`)
-      .then((res) => {
-        if (!res.data.err) {
-          setProfile(res.data.profile);
-          setOwnedNfts(res.data.owned_nfts);
+    if (address) {
+      Axios.get(`/api/v2/profile/${address}`)
+        .then((res) => {
+          if (!res.data.err) {
+            setProfile(res.data.profile);
+            setOwnedNfts(res.data.owned_nfts);
+            setLoadingOwnedNFTs(false);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
           setLoadingOwnedNFTs(false);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoadingOwnedNFTs(false);
-      });
+        });
+    }
   }, [address]);
 
   useEffect(() => {
