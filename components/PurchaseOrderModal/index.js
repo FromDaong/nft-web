@@ -82,7 +82,7 @@ export const PurchaseOrderModalBody = ({
         </div>
         <div className="col-md-6">
           <Button
-            variant="primary w-100"
+            className="bg-primary text-white font-bold"
             className="mb-2 w-100"
             onClick={() => handleClose()}
           >

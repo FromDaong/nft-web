@@ -55,7 +55,7 @@ const AdminDashboardWrapper = () => {
           subtitle={"You are not permitted to use this dashboard"}
           additionalContent={
             <Link href="/admin-dashboard/login">
-              <Button variant="primary w-100">
+              <Button className="bg-primary text-white font-bold">
                 <b>{"Login to Panel"}</b>
               </Button>
             </Link>
@@ -79,7 +79,7 @@ const AdminDashboard = () => {
             <>
               <Link href="/admin-dashboard/create-totm-nfts">
                 <a>
-                  <Button variant="primary w-100" mr={2}>
+                  <Button className="bg-primary text-white font-bold" mr={2}>
                     <b>{"Create TOTM NFTs"}</b>
                   </Button>
                 </a>
@@ -90,7 +90,7 @@ const AdminDashboard = () => {
                 </Button>
               </Link>
               <Link href="/api/admin/logout">
-                <Button variant="primary w-100">
+                <Button className="bg-primary text-white font-bold">
                   <b>{"Logout"}</b>
                 </Button>
               </Link>

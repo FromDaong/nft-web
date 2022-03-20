@@ -12,7 +12,7 @@ import Axios from "axios";
 import Badge from "react-bootstrap/Badge";
 import BigNumber from "bignumber.js";
 import { Blurhash } from "react-blurhash";
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import Dropdown from "react-bootstrap/Dropdown";
 import ErrorFallback from "../../components/Fallback/Error";
 import Layout from "../../components/Layout";
@@ -64,7 +64,7 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   return (
     <Button
       mt={3}
-      variant="primary w-100"
+      className="bg-primary text-white font-bold"
       isFullWidth
       style={{ borderRadius: 7 }}
       disabled={

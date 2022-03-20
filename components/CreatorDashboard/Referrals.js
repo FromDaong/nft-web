@@ -35,7 +35,7 @@ const CreatedNFTs = ({
         </div>
 
         <Button
-          variant="primary w-100"
+          className="bg-primary text-white font-bold"
           style={{ maxWidth: 250 }}
           onClick={() => {
             navigator.clipboard.writeText(

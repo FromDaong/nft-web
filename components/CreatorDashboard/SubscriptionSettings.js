@@ -139,7 +139,10 @@ const EditProfile = ({}) => {
                 subscriptions.
               </small>
             </div>
-            <Button variant="primary w-100" onClick={setSubscriptionPrice}>
+            <Button
+              className="bg-primary text-white font-bold"
+              onClick={setSubscriptionPrice}
+            >
               Update Subscription Price
             </Button>
 

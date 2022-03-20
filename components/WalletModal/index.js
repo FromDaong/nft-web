@@ -42,16 +42,17 @@ const WalletModal = ({ show, handleClose }) => {
             </p>
           </div>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="flex flex-col">
           <Button
+            isFullWidth
             isLoading={isAuthenticating}
-            className="bg-primary text-white font-bold mb-2 w-100"
+            className="bg-primary text-white font-bold mb-2"
             onClick={() => smartConnectWithMoralis()}
           >
             Connect via MetaMask
           </Button>
-          <br />
           <Button
+            isFullWidth
             colorScheme="purple"
             className="mb-2"
             isLoading={isAuthenticating}
@@ -60,6 +61,7 @@ const WalletModal = ({ show, handleClose }) => {
             Connect via WalletConnect
           </Button>
           <Button
+            isFullWidth
             isLoading={isAuthenticating}
             colorScheme="yellow"
             onClick={web3authConnect}

@@ -51,7 +51,10 @@ const CreatedNFTs = ({
 
         <Link href="/creator-dashboard/create-nft">
           <a>
-            <Button variant="primary w-100" style={{ maxWidth: 250 }}>
+            <Button
+              className="bg-primary text-white font-bold"
+              style={{ maxWidth: 250 }}
+            >
               <b>
                 <PlusCircle className="pb-1 mr-2" size={24} />
                 {"CREATE NEW NFTs"}

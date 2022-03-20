@@ -47,7 +47,10 @@ const Home = () => {
             <div className="buttons">
               <Link href="/marketplace/creator">
                 <a>
-                  <Button variant="primary w-100" style={{ maxWidth: 250 }}>
+                  <Button
+                    className="bg-primary text-white font-bold"
+                    style={{ maxWidth: 250 }}
+                  >
                     <b>THE SWEET SHOP</b>
                   </Button>
                 </a>
