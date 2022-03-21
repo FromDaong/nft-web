@@ -1,6 +1,7 @@
 import {
   Button,
   Heading,
+  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -80,12 +81,13 @@ const SearchModal = ({ isOpen, onClose }) => {
           <Heading fontSize={"xl"}>Search for anything on TreatDAO</Heading>
           <ModalCloseButton />
         </ModalHeader>
-        <ModalBody>
+        <ModalBody className="pb-4">
           <div className="quick-search">
             <form onSubmit={doFetchAutocomplete}>
-              <input
+              <Input
                 placeholder="Search Treat and Creators"
                 className="full-width-search p-2 w-full"
+                variant={"filled"}
                 value={searchText}
                 onChange={onChange}
               />
