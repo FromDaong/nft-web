@@ -53,7 +53,7 @@ const WalletModal = ({ show, handleClose }) => {
           </Button>
           <Button
             isFullWidth
-            colorScheme="purple"
+            colorScheme="secondary"
             className="mb-2"
             isLoading={isAuthenticating}
             onClick={() => smartConnectWithMoralis("walletconnect")}
