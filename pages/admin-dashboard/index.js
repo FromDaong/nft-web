@@ -1,5 +1,4 @@
-import { Button } from "react-bootstrap";
-import Hero from "../../components/Hero";
+import {Button} from "@chakra-ui/react"import Hero from "../../components/Hero";
 import Layout from "../../components/Layout";
 import Link from "next/link";
 import Spinner from "react-bootstrap/Spinner";

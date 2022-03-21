@@ -1,5 +1,4 @@
-import { Button } from "react-bootstrap";
-import GumletImage from "../../components/Image/GumletImage";
+import {Button} from "@chakra-ui/react"import GumletImage from "../../components/Image/GumletImage";
 
 const ModelListItem = ({ data }) => {
   const profilePic = data.profilePicCdnUrl ?? data.profile_pic;

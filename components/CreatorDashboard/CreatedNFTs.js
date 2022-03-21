@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import CreatorNFTItem from "../../components/CreatorNFTItem";
-import { Button } from "react-bootstrap";
-import Link from "next/link";
 import { CameraFill, PlusCircle } from "react-bootstrap-icons";
+import React, { useEffect, useState } from "react";
+
+import {Button} from "@chakra-ui/react"import CreatorNFTItem from "../../components/CreatorNFTItem";
+import Link from "next/link";
+import { motion } from "framer-motion";
 
 const variants = {
   show: {

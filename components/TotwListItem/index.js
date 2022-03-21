@@ -1,7 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { Button } from "react-bootstrap";
-import LazyLoad from "react-lazyload";
+import {Button} from "@chakra-ui/react"import LazyLoad from "react-lazyload";
 import Link from "next/link";
 import NFTListItem from "../NFTListItem";
 import { getDisplayBalance } from "../../utils/formatBalance";
