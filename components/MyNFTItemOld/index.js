@@ -104,7 +104,7 @@ const NFTListItem = ({
                   <span className="d-inline-block w-100">
                     <Button
                       className="w-100"
-                      variant="secondary"
+                      colorScheme={"gray"}
                       onClick={() => listOrderClick(data)}
                     >
                       <b>RESELL</b>
@@ -116,7 +116,7 @@ const NFTListItem = ({
                 <span className="d-inline-block w-100">
                   <Button
                     className="w-100"
-                    variant="secondary"
+                    colorScheme={"gray"}
                     onClick={() => transferNFTClick(data)}
                   >
                     <b>TRANSFER</b>
@@ -125,33 +125,6 @@ const NFTListItem = ({
               </div>
             </div>
           )}
-          {/* <div className="row">
-            <div className="col-lg-6 mt-3">
-              {!!listOrderClick ? (
-                <span className="d-inline-block w-100">
-                  <Button
-                    className="w-100"
-                    variant="secondary"
-                    onClick={() => listOrderClick(data)}
-                  >
-                    <b>RESELL</b>
-                  </Button>
-                </span>
-              ) : cancelOrderClick ? (
-                <span className="d-inline-block w-100">
-                  <Button
-                    className="w-100"
-                    variant="secondary"
-                    onClick={() => cancelOrderClick(data)}
-                  >
-                    <b>CANCEL ORDER</b>
-                  </Button>
-                </span>
-              ) : (
-                <span></span>
-              )}
-            </div>
-          </div> */}
         </div>
       </div>
     </div>
