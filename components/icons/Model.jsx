@@ -1,5 +1,3 @@
-import UserIcon from "./users.svg";
-
 export default function ModelIcon(props) {
-  return <UserIcon {...props} />;
+  return <img src="/assets/nfts.svg" className="h-4 w-4" {...props} />;
 }
