@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import useSWR, { SWRConfig } from "swr";
 
 import Axios from "axios";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import Container from "react-bootstrap/Container";
 import Footer from "../components/Footer";
 import Head from "next/head";
@@ -36,6 +36,23 @@ const progress = new ProgressBar({
 Router.events.on("routeChangeStart", progress.start);
 Router.events.on("routeChangeComplete", progress.finish);
 Router.events.on("routeChangeError", progress.finish);
+
+const theme = extendTheme({
+    "colors": {
+      "purple": {
+        "50": "#F1EBFA",
+        "100": "#D9C7F0",
+        "200": "#C1A3E6",
+        "300": "#A87EDC",
+        "400": "#905AD3",
+        "500": "#7736C9",
+        "600": "#602BA1",
+        "700": "#482178",
+        "800": "#301650",
+        "900": "#180B28"
+    }
+  }
+});
 
 Axios.defaults.withCredentials = true;
 
@@ -226,7 +243,7 @@ function MyApp({ Component, pageProps }) {
           }}
         >
           <TreatProvider>
-            <ChakraProvider>
+            <ChakraProvider theme={theme}>
               <TOTMBanner oldTokenBalance={oldTokenBalance} />
               {oldTokenBalance > 0 && (
                 <V2Banner oldTokenBalance={oldTokenBalance} />
