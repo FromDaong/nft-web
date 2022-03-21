@@ -67,3 +67,14 @@
   display: flex;
   flex-wrap: wrap;
 }
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: initial !important;
+}
