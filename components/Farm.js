@@ -198,7 +198,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
               </div>
               <div className="button-container">
                 <Button
-                  variant="info"
+                  colorScheme="secondary"
                   className="w-100 py-2"
                   onClick={() => actionWithModal(onReward, stakeAmount)}
                 >

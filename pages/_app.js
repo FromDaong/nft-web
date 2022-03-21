@@ -4,13 +4,13 @@ import "swiper/scss/navigation";
 import "swiper/scss/pagination";
 
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { MoralisProvider, useMoralis } from "react-moralis";
 import { destroyCookie, setCookie } from "nookies";
 import { useEffect, useState } from "react";
 import useSWR, { SWRConfig } from "swr";
 
 import Axios from "axios";
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import Container from "react-bootstrap/Container";
 import Footer from "../components/Footer";
 import Head from "next/head";
@@ -38,20 +38,20 @@ Router.events.on("routeChangeComplete", progress.finish);
 Router.events.on("routeChangeError", progress.finish);
 
 const theme = extendTheme({
-    "colors": {
-      "purple": {
-        "50": "#F1EBFA",
-        "100": "#D9C7F0",
-        "200": "#C1A3E6",
-        "300": "#A87EDC",
-        "400": "#905AD3",
-        "500": "#7736C9",
-        "600": "#602BA1",
-        "700": "#482178",
-        "800": "#301650",
-        "900": "#180B28"
-    }
-  }
+  colors: {
+    purple: {
+      50: "#F1EBFA",
+      100: "#D9C7F0",
+      200: "#C1A3E6",
+      300: "#A87EDC",
+      400: "#905AD3",
+      500: "#7736C9",
+      600: "#602BA1",
+      700: "#482178",
+      800: "#301650",
+      900: "#180B28",
+    },
+  },
 });
 
 Axios.defaults.withCredentials = true;

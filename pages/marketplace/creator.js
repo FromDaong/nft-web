@@ -151,7 +151,7 @@ const Marketplace = ({ search }) => {
           additionalContent={
             <Link href="/marketplace/resale">
               <a>
-                <Button variant="primary w-sm-100">
+                <Button className="bg-primary text-white px-8">
                   <b>{"Go to Resale Marketplace"}</b>
                 </Button>
               </a>
