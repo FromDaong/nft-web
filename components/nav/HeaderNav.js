@@ -149,7 +149,7 @@ const HeaderNav = ({ modelData }) => {
               className="bg-primary text-white"
               onClick={() => setWalletModalShow(true)}
             >
-              <b>Connect Wallet</b>
+              <b>Sign in</b>
             </Button>
           ) : (
             <div className="ml-md-4">
