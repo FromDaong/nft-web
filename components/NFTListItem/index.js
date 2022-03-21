@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 
 import { Blurhash } from "react-blurhash";
-import {Button} from "@chakra-ui/react"import { EyeSlash } from "react-bootstrap-icons";
+import { Button } from "@chakra-ui/react";
+import { EyeSlash } from "react-bootstrap-icons";
 import GumletImage from "../Image/GumletImage";
 import { InView } from "react-intersection-observer";
 import Link from "next/link";

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import NFTListItem from "../NFTListItem";
-import {Button} from "@chakra-ui/react"import useSubscribe from "../../hooks/useSubscribe";
 import BlankModal from "../../components/BlankModal";
+import { Button } from "@chakra-ui/react";
+import NFTListItem from "../NFTListItem";
+import { useState } from "react";
+import useSubscribe from "../../hooks/useSubscribe";
 
 const variants = {
   show: {

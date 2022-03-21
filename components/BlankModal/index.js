@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import {Button} from "@chakra-ui/react"import Modal from "react-bootstrap/Modal";
+import { Button } from "@chakra-ui/react";
+import Modal from "react-bootstrap/Modal";
 import { useRouter } from "next/router";
 
 // import blur from "/assets/blur.png";
