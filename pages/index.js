@@ -143,13 +143,13 @@ const Home = () => {
         </div>
         <div className="totw-section-container mt-5">
           <div className="section-title">Treat of the Month</div>
-          <div className="desc">
+          <div className="desc mb-2">
             TOTM is a curated showcase of creators. We assist the chosen
             creators in presenting a unique set of content exclusive to
             TreatDAO.
           </div>
           <Link href="/magazine">
-            <Button colorScheme={"purple"}>
+            <Button colorScheme="purple">
               <b>View Treat Magazine</b>
             </Button>
           </Link>
@@ -160,7 +160,7 @@ const Home = () => {
             rel="noopener noreferrer"
             className="ml-4"
           >
-            <Button colorScheme="purple" variant="link">
+            <Button colorScheme="brand" variant="link">
               <b style={{ color: "#8349CC" }}>View Ethereum Collection</b>
             </Button>
           </a>
