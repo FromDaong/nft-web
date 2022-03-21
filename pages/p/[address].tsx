@@ -1,5 +1,4 @@
-import { Button } from "react-bootstrap";
-import Layout from "../../components/Layout";
+import {Button} from "@chakra-ui/react"import Layout from "../../components/Layout";
 import Link from "next/link";
 import MoralisInstance from "../../utils/moralis";
 import NFT from "../../models/NFT";

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import NFTListItem from "../NFTListItem";
-import { Button } from "react-bootstrap";
-import LazyLoad from "react-lazyload";
+import {Button} from "@chakra-ui/react"import LazyLoad from "react-lazyload";
 import { getDisplayBalance } from "../../utils/formatBalance";
 
 const variants = {

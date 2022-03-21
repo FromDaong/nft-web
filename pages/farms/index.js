@@ -1,5 +1,4 @@
-import { Button } from "react-bootstrap";
-import Farm from "../../components/Farm";
+import {Button} from "@chakra-ui/react"import Farm from "../../components/Farm";
 import Hero from "../../components/Hero";
 import Link from "next/link";
 import Loading from "../../components/Loading";

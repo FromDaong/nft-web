@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Button } from "react-bootstrap";
-import Spinner from "react-bootstrap/Spinner";
+import {Button} from "@chakra-ui/react"import Spinner from "react-bootstrap/Spinner";
 import Link from "next/link";
 
 let easing = [0.175, 0.85, 0.42, 0.96];

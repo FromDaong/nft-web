@@ -1,5 +1,4 @@
-import { Button } from "react-bootstrap";
-import Modal from "react-bootstrap/Modal";
+import {Button} from "@chakra-ui/react"import Modal from "react-bootstrap/Modal";
 import { getDisplayBalance } from "../../utils/formatBalance";
 import useTokenBalance from "../../hooks/useTokenBalance";
 

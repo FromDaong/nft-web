@@ -1,8 +1,7 @@
 import { AnimateSharedLayout, motion } from "framer-motion";
 
 import BlankModal from "../../components/BlankModal";
-import { Button } from "react-bootstrap";
-import ErrorFallback from "../../components/Fallback/Error";
+import {Button} from "@chakra-ui/react"import ErrorFallback from "../../components/Fallback/Error";
 import Hero from "../../components/Hero";
 import Link from "next/link";
 import Loading from "../../components/Loading";

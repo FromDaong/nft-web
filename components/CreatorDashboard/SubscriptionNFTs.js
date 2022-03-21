@@ -1,7 +1,6 @@
 import { PatchCheckFill, PlusCircle } from "react-bootstrap-icons";
 
-import { Button } from "react-bootstrap";
-import CreatorNFTItem from "../CreatorNFTItem";
+import {Button} from "@chakra-ui/react"import CreatorNFTItem from "../CreatorNFTItem";
 import Link from "next/link";
 
 const variants = {
