@@ -36,7 +36,11 @@ const TotwListItem = ({ modelData }) => {
             </a>
           </Link>
           <div className="button">
-            <Button rounded="full" colorScheme={"purple"} onClick={onRedeemSet}>
+            <Button
+              rounded="full"
+              colorScheme={"secondary"}
+              onClick={onRedeemSet}
+            >
               <b>Purchase Set {getDisplayBalance(nftSetPrice)} BNB</b>
             </Button>
           </div>
