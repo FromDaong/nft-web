@@ -6,6 +6,7 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalHeader,
+  ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -73,6 +74,7 @@ const SearchModal = ({ isOpen, onClose }) => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <ModalOverlay />
       <ModalContent>
         <ModalHeader>
           <Heading fontSize={"xl"}>Search for anything on TreatDAO</Heading>
