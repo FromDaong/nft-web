@@ -4,13 +4,13 @@ import "swiper/scss/navigation";
 import "swiper/scss/pagination";
 
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { MoralisProvider, useMoralis } from "react-moralis";
 import { destroyCookie, setCookie } from "nookies";
 import { useEffect, useState } from "react";
 import useSWR, { SWRConfig } from "swr";
 
 import Axios from "axios";
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import Container from "react-bootstrap/Container";
 import Footer from "../components/Footer";
 import Head from "next/head";

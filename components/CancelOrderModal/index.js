@@ -64,7 +64,7 @@ export const CancelOrderModalBody = ({
       <div className="row">
         <div className="col-md-6">
           <Button
-            variant="info"
+            colorScheme="secondary"
             type="submit"
             className="w-100"
             onClick={async () => cancelOrderFunc()}

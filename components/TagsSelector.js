@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import ToggleButton from "react-bootstrap/ToggleButton";
 
 const TagsSelector = ({ selectedTags, setSelectedTags }) => {
@@ -52,12 +53,11 @@ const TagsSelector = ({ selectedTags, setSelectedTags }) => {
     <div className="tags-container">
       {tags.map((tag) => (
         <ToggleButton
-          className="mb-2 mr-2"
+          className="border-2 border-primary mb-2 mr-2"
           type="checkbox"
-          variant="outline-primary"
-          className="toggle-button"
           checked={selectedTags.indexOf(tag) > -1}
           value="1"
+          key={tag}
           onChange={(e) => setChecked(e.currentTarget.checked, tag)}
         >
           {tag}
