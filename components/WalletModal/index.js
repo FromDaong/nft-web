@@ -36,7 +36,7 @@ const WalletModal = ({ show, handleClose }) => {
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton>
           <div>
-            <Modal.Title>Connect your Wallet</Modal.Title>
+            <Modal.Title>Sign in your Wallet</Modal.Title>
             <p className="mb-0 mt-1">
               Please ensure your wallet is connected to the Binance Smart Chain.
             </p>
@@ -49,7 +49,7 @@ const WalletModal = ({ show, handleClose }) => {
             className="bg-primary text-white font-bold mb-2"
             onClick={() => smartConnectWithMoralis()}
           >
-            Connect via MetaMask
+            Sign in via MetaMask
           </Button>
           <Button
             isFullWidth
@@ -58,7 +58,7 @@ const WalletModal = ({ show, handleClose }) => {
             isLoading={isAuthenticating}
             onClick={() => smartConnectWithMoralis("walletconnect")}
           >
-            Connect via WalletConnect
+            Sign in via WalletConnect
           </Button>
           <Button
             isFullWidth
@@ -66,7 +66,7 @@ const WalletModal = ({ show, handleClose }) => {
             colorScheme="yellow"
             onClick={web3authConnect}
           >
-            Connect via Web3Auth
+            Sign in via Web3Auth
           </Button>
         </Modal.Body>
       </Modal>
