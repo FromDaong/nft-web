@@ -1,19 +1,23 @@
+import {
+  Button,
+  Heading,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import { Button } from "@chakra-ui/react";
 import Link from "next/link";
-import Modal from "react-bootstrap/Modal";
 import ModelIcon from "../icons/Model";
 import Photograph from "../icons/Photograph";
 import axios from "axios";
 import { useRouter } from "next/dist/client/router";
 
 export default function NavbarQuickSearch() {
-  const [show, setShow] = useState(false);
-
-  const toggleShow = () => {
-    setShow(!show);
-  };
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   return (
     <div className="quick-search">
@@ -21,16 +25,16 @@ export default function NavbarQuickSearch() {
         onSubmit={() => null}
         style={{ display: "flex", alignItems: "center" }}
       >
-        <Button bgColor="white" color="gray.800" onClick={toggleShow}>
+        <Button bgColor="white" color="gray.800" onClick={onOpen}>
           <b>Search</b>
         </Button>
       </form>
-      <SearchModal show={show} handleClose={toggleShow} />
+      <SearchModal isOpen={isOpen} onClose={onClose} />
     </div>
   );
 }
 
-const SearchModal = ({ show, handleClose }) => {
+const SearchModal = ({ isOpen, onClose }) => {
   const [searchText, setSearchText] = useState("");
   const [results, setResults] = useState([]);
   const [error, setError] = useState(null);
@@ -64,51 +68,54 @@ const SearchModal = ({ show, handleClose }) => {
   };
 
   useEffect(() => {
-    if (show) handleClose();
+    if (isOpen) onClose();
   }, [router]);
 
   return (
-    <Modal show={show} onHide={handleClose} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Search for anything on TreatDAO</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <div className="quick-search">
-          <form onSubmit={doFetchAutocomplete}>
-            <input
-              placeholder="Search Treat and Creators"
-              className="full-width-search p-2 w-full"
-              value={searchText}
-              onChange={onChange}
-            />
-          </form>
-        </div>
-        {results.length > 0 && (
-          <div className="quick-search-results w-full">
-            {results.map((doc) => (
-              <Link
-                key={doc.id ?? doc.username}
-                href={
-                  doc.group === "nft"
-                    ? `/view/${doc.id}`
-                    : `/creator/${doc.username}`
-                }
-              >
-                <a className="quick-search-results-item w-full">
-                  <div className="quick-search-results-item w-full">
-                    {doc.group === "nft" ? (
-                      <Photograph className="size-2 mr-2" />
-                    ) : (
-                      <ModelIcon className="size-2 mr-2" />
-                    )}
-                    <p>{doc.group === "nft" ? doc.name : doc.username}</p>
-                  </div>
-                </a>
-              </Link>
-            ))}
+    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <ModalContent>
+        <ModalHeader>
+          <Heading fontSize={"xl"}>Search for anything on TreatDAO</Heading>
+          <ModalCloseButton />
+        </ModalHeader>
+        <ModalBody>
+          <div className="quick-search">
+            <form onSubmit={doFetchAutocomplete}>
+              <input
+                placeholder="Search Treat and Creators"
+                className="full-width-search p-2 w-full"
+                value={searchText}
+                onChange={onChange}
+              />
+            </form>
           </div>
-        )}
-      </Modal.Body>
+          {results.length > 0 && (
+            <div className="quick-search-results w-full">
+              {results.map((doc) => (
+                <Link
+                  key={doc.id ?? doc.username}
+                  href={
+                    doc.group === "nft"
+                      ? `/view/${doc.id}`
+                      : `/creator/${doc.username}`
+                  }
+                >
+                  <a className="quick-search-results-item w-full">
+                    <div className="quick-search-results-item w-full">
+                      {doc.group === "nft" ? (
+                        <Photograph className="size-2 mr-2" />
+                      ) : (
+                        <ModelIcon className="size-2 mr-2" />
+                      )}
+                      <p>{doc.group === "nft" ? doc.name : doc.username}</p>
+                    </div>
+                  </a>
+                </Link>
+              ))}
+            </div>
+          )}
+        </ModalBody>
+      </ModalContent>
     </Modal>
   );
 };
