@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from "react";
-import Spinner from "react-bootstrap/Spinner";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
+import React, { useEffect, useState } from "react";
+
+import { Blurhash } from "react-blurhash";
+import { Button } from "@chakra-ui/react";
 import Modal from "react-bootstrap/Modal";
-import {Button} from "@chakra-ui/react"import { Blurhash } from "react-blurhash";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Spinner from "react-bootstrap/Spinner";
+import Tooltip from "react-bootstrap/Tooltip";
 
 const NFTListItem = ({
   data,
   revealNFTs,
   transferNFTClick,
   listOrderClick,
-  cancelOrderClick,
 }) => {
   const [image, setBase64Image] = useState();
   const [modalData, setModalData] = useState();

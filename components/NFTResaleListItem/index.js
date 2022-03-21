@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
-import {Button} from "@chakra-ui/react"import { generateFromString } from "generate-avatar";
+import React, { useEffect, useState } from "react";
+
 import { Blurhash } from "react-blurhash";
+import { Button } from "@chakra-ui/react";
 import { EyeSlash } from "react-bootstrap-icons";
+import { generateFromString } from "generate-avatar";
 import useGetOpenOrdersForNft from "../../hooks/useGetOpenOrdersForNft";
 
 const NFTResaleListItem = ({ data }) => {

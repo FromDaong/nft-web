@@ -1,7 +1,8 @@
 import { useEffect, useReducer, useState } from "react";
 
 import { AnimateSharedLayout } from "framer-motion";
-import {Button} from "@chakra-ui/react"import Dropdown from "react-bootstrap/Dropdown";
+import { Button } from "@chakra-ui/react";
+import Dropdown from "react-bootstrap/Dropdown";
 import ErrorFallback from "../../components/Fallback/Error";
 import Hero from "../../components/Hero";
 import Link from "next/link";

@@ -1,6 +1,7 @@
 import * as Scroll from "react-scroll";
 
-import {Button} from "@chakra-ui/react"import Layout from "../../components/Layout";
+import { Button } from "@chakra-ui/react";
+import Layout from "../../components/Layout";
 import Link from "next/link";
 
 const Home = () => {

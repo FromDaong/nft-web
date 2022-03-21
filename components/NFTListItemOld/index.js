@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 
 import { Blurhash } from "react-blurhash";
-import {Button} from "@chakra-ui/react"import { EyeSlash } from "react-bootstrap-icons";
+import { Button } from "@chakra-ui/react";
+import { EyeSlash } from "react-bootstrap-icons";
 import { generateFromString } from "generate-avatar";
 
 // import blur from "/assets/blur.png";

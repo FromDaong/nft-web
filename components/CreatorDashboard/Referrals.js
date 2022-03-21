@@ -1,6 +1,7 @@
 import { Clipboard, PiggyBankFill } from "react-bootstrap-icons";
 
-import {Button} from "@chakra-ui/react"import { useMoralis } from "react-moralis";
+import { Button } from "@chakra-ui/react";
+import { useMoralis } from "react-moralis";
 
 const CreatedNFTs = ({
   transferNFTClick,

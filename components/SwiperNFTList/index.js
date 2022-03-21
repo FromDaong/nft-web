@@ -6,7 +6,8 @@ import SwiperCore, {
   Navigation,
 } from "swiper";
 
-import {Button} from "@chakra-ui/react"import LazyLoad from "react-lazyload";
+import { Button } from "@chakra-ui/react";
+import LazyLoad from "react-lazyload";
 import Link from "next/link";
 import NFTListItem from "../NFTListItem";
 
