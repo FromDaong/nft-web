@@ -22,13 +22,17 @@ const AgeModal = ({ show, handleClose }) => {
           </p>
           <div className="row">
             <div className="col-md-6">
-              <Button className="mb-2 w-100" onClick={() => ageVerified()}>
+              <Button
+                colorScheme={"primary"}
+                className="mb-2 w-100"
+                onClick={() => ageVerified()}
+              >
                 I'm over 18
               </Button>
             </div>
             <div className="col-md-6">
               <a href="https://fortnite.com/">
-                <Button variant={"secondary"} className="mb-2 w-100">
+                <Button colorScheme={"secondary"} className="mb-2 w-100">
                   Take me away!
                 </Button>
               </a>
