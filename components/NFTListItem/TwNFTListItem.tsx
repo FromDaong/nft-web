@@ -13,18 +13,21 @@ export default function TwNFTListItem({ doc }: { doc: any }) {
   return (
     <div className="p-2 rounded-xl col-span-1 border-3 border-primary">
       <LazyLoad height={400} offset={600}>
-        <div className="space-y-4">
-          <div className="p-2 w-full flex items-center justify-center">
+        <div className="space-y-4 pt-12">
+          <div className="w-full rounded-xl flex items-center justify-center h-96 border-2 border-primary2 bg-black relative">
             <Link href={`/creator/${doc.attributes[0].value.slice(1, -1)}`}>
-              <a>
+              <a
+                style={{
+                  transform: "translateY(-50%)",
+                }}
+                className="absolute rounded-full border-2 border-primary2 top-0"
+              >
                 <img
                   className="w-16 h-16 rounded-full object-cover"
                   src={profilePic}
                 />
               </a>
             </Link>
-          </div>
-          <div className="w-full rounded-xl flex items-center justify-center h-96 border-2 border-primary2 bg-black">
             <img
               className="rounded-xl w-full h-full object-cover border-2 border-primary2"
               src={`/api/v2/utils/images/fetchWithFallback?default=${doc.image}`}

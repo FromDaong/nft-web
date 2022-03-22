@@ -29,7 +29,6 @@ const myNFTs = async (req, res) => {
   const open_orders =
     (await marketplace_contract.getOpenOrdersForSeller(ethAddress)) ?? [];
   const open_order_ids = open_orders.map((order) => order.toNumber());
-  console.log({ open_order_ids });
   // @ts-ignore
   const open_orders_metadata = await NFT.paginate(
     {

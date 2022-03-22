@@ -170,7 +170,7 @@ export const getServerSideProps = async (ctx) => {
     console.log({ err });
     return {
       props: {
-        err,
+        error: JSON.stringify(err),
       },
     };
   }
