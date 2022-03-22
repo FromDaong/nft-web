@@ -50,7 +50,7 @@ export default function TwNFTListItem({ doc }: { doc: any }) {
                         overflow: "hidden",
                         zIndex: 95,
                       }}
-                      hash={data.blurhash}
+                      hash={doc.blurhash}
                       width={"100%"}
                       height={375}
                       resolutionX={32}
