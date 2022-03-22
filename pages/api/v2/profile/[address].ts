@@ -55,6 +55,10 @@ export default async function profile(
             delete returnObj.cdnUrl;
           }
 
+          if (returnObj.blurhash) {
+            delete returnObj.image;
+          }
+
           // Removing this to minimize total payload, get only what we need.
           delete returnObj.description;
           delete returnObj.mints;
