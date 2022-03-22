@@ -5,6 +5,7 @@ import NFT from "../../../../models/NFT";
 import dbConnect from "../../../../utils/dbConnect";
 
 dbConnect();
+const { TREAT_MINT_OWNER_ADDRESS, TREAT_MINTER_ADDRESS } = process.env;
 
 const sanitize_nft_data = (nft_data) => {
   const returnObj = { ...(nft_data.toObject ? nft_data.toObject() : nft_data) };
@@ -27,6 +28,8 @@ export default async function all_nfts(req, res) {
   const { s, p, tags, sort, all } = req.query;
   let filterTags = [];
   let NFTs;
+
+  console.log({ TREAT_MINT_OWNER_ADDRESS, TREAT_MINTER_ADDRESS });
 
   if (tags) {
     filterTags = atob(tags).split(",");
@@ -63,12 +66,13 @@ export default async function all_nfts(req, res) {
     options.sort.id = -1;
   }
 
-  const owned_nfts = await MoralisInstance.Web3API.account.getNFTsForContract({
-    address: process.env.TREAT_MINTER_ADDRESS,
-    token_address: process.env.TREAT_MINTER_ADDRESS,
+  const all_nfts = await MoralisInstance.Web3API.account.getNFTsForContract({
+    address: "0xE965D19FD021355fc85f4Cdcc856C018274cACF8",
+    token_address: TREAT_MINTER_ADDRESS,
     chain: "bsc",
   });
-  const nftids = owned_nfts.result.map((nft) => Number(nft.token_id));
+  console.log({ owned_nfts: all_nfts });
+  const nftids = all_nfts.result.map((nft) => Number(nft.token_id));
 
   try {
     if (all) {
