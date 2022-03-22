@@ -1,5 +1,8 @@
+import { Blurhash } from "react-blurhash";
+import { EyeSlash } from "react-bootstrap-icons";
 import LazyLoad from "react-lazyload";
 import Link from "next/link";
+import { isBlurhashValid } from "blurhash";
 import { useMoralis } from "react-moralis";
 import { useRouter } from "next/dist/client/router";
 
@@ -28,10 +31,40 @@ export default function TwNFTListItem({ doc }: { doc: any }) {
                 />
               </a>
             </Link>
-            <img
-              className="rounded-xl w-full h-full object-cover border-2 border-primary2"
-              src={`/api/v2/utils/images/fetchWithFallback?default=${doc.image}`}
-            />
+            {doc.image ? (
+              <img
+                className="rounded-xl w-full h-full object-cover border-2 border-primary2"
+                src={`/api/v2/utils/images/fetchWithFallback?default=${doc.image}`}
+              />
+            ) : (
+              <>
+                {isBlurhashValid(doc.blurhash).result ? (
+                  <>
+                    <div className="info-overlay" style={{ zIndex: 100 }}>
+                      <EyeSlash size={32} />
+                      <div>Purchase to View</div>
+                    </div>
+                    <Blurhash
+                      style={{
+                        borderRadius: 8,
+                        overflow: "hidden",
+                        zIndex: 95,
+                      }}
+                      hash={data.blurhash}
+                      width={"100%"}
+                      height={375}
+                      resolutionX={32}
+                      resolutionY={32}
+                      punch={1}
+                    />
+                  </>
+                ) : (
+                  <h3 className="text-center p4">
+                    Please contact admin. Invalid Blurhash.
+                  </h3>
+                )}
+              </>
+            )}
           </div>
           <div className="p-2 text-white bg-primary rounded-lg flex justify-between w-full">
             <div className="block pr-3">
