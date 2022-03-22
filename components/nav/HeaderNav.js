@@ -17,7 +17,8 @@ const HeaderNav = ({ modelData }) => {
   const [walletModalShow, setWalletModalShow] = useState(false);
   const [balanceModalShow, setBalanceModalShow] = useState(false);
   const [ageModalShow, setAgeModalShow] = useState(false);
-  const { isAuthenticated, chainId, user, enableWeb3, logout } = useMoralis();
+  const { isAuthenticated, chainId, user, enableWeb3, logout, account } =
+    useMoralis();
   const router = useRouter();
 
   const signOut = () => {
@@ -183,6 +184,11 @@ const HeaderNav = ({ modelData }) => {
                     <NavDropdown.Item>Creator Dashboard</NavDropdown.Item>
                   </Link>
                 )}
+                <NavDropdown.Item>
+                  <Link href={`/p/${account}`}>
+                    <a>My Profile</a>
+                  </Link>
+                </NavDropdown.Item>
                 <NavDropdown.Item style={{ borderRadius: 8 }} onClick={signOut}>
                   Disconnect
                 </NavDropdown.Item>
