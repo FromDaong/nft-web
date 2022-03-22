@@ -149,6 +149,10 @@ export const getServerSideProps = async (ctx) => {
             delete returnObj.cdnUrl;
           }
 
+          if (returnObj.blurhash) {
+            delete returnObj.blurhash;
+          }
+
           // Removing this to minimize total payload, get only what we need.
           delete returnObj.description;
           delete returnObj.mints;
