@@ -121,7 +121,7 @@ const Marketplace = ({ search }) => {
     setLoading(true);
     axios
       .get(
-        `/api/nft?p=${router.query.p ?? 1}${
+        `/api/v2/nft?p=${router.query.p ?? 1}${
           searchFilter ? `&s=${router.query.s}` : ""
         }&sort=${router.query.sort ?? "asc"}${
           router.query.tags ? `&tags=${router.query.tags}` : ""
