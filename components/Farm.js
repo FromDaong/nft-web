@@ -1,7 +1,8 @@
-import { Button, FormControl, InputGroup } from "react-bootstrap";
+import { FormControl, InputGroup } from "react-bootstrap";
 import { getBalanceNumber, getDisplayBalance } from "../utils/formatBalance";
 
 import BlankModal from "../components/BlankModal";
+import { Button } from "@chakra-ui/react";
 import hasApprovedContract from "../hooks/hasApprovedContract";
 import useApproveContract from "../hooks/approveContract";
 import useGetPendingMelons from "../hooks/useGetPendingMelons";
@@ -53,8 +54,8 @@ const Farm = ({ contract, treatBal, title, pid }) => {
 
   const approveButton = (
     <Button
-      variant="primary w-100"
-      className="w-100 py-2"
+      className="bg-primary text-white font-bold"
+      isFullWidth
       onClick={approveContract}
     >
       <b>Approve Contract</b>
@@ -109,8 +110,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
                     value={stakeAmount}
                   />
                   <Button
-                    variant="primary w-100"
-                    className="px-4 py-2"
+                    className="bg-primary text-white font-bold"
                     onClick={(e) => setStakeAmount(getBalanceNumber(treatBal))}
                   >
                     <b>Max</b>
@@ -122,8 +122,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
                   approveButton
                 ) : (
                   <Button
-                    variant="primary w-100"
-                    className="w-100 py-2"
+                    className="bg-primary text-white font-bold"
                     onClick={() => actionWithModal(onStake, stakeAmount)}
                   >
                     <b>Stake</b>
@@ -155,8 +154,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
                 value={unstakeAmount}
               />
               <Button
-                variant="primary w-100"
-                className="px-4 py-2"
+                className="bg-primary text-white font-bold"
                 onClick={() =>
                   setUnstakeAmount(
                     formattedV1StakedAmount || getBalanceNumber(stakedAmount)
@@ -172,8 +170,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
               approveButton
             ) : (
               <Button
-                variant="primary w-100"
-                className="w-100 py-2"
+                className="bg-primary text-white font-bold"
                 onClick={() =>
                   actionWithModal(
                     formattedV1StakedAmount ? onV1Unstake : onUnstake,
@@ -198,7 +195,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
               </div>
               <div className="button-container">
                 <Button
-                  variant="info"
+                  colorScheme="secondary"
                   className="w-100 py-2"
                   onClick={() => actionWithModal(onReward, stakeAmount)}
                 >

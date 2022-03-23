@@ -1,33 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Button } from "react-bootstrap";
-import Spinner from "react-bootstrap/Spinner";
+import { useEffect, useState } from "react";
+
+import { Button } from "@chakra-ui/react";
 import Link from "next/link";
-
-let easing = [0.175, 0.85, 0.42, 0.96];
-
-const variants = {
-  initial: {
-    y: 150,
-    opacity: 0,
-  },
-  hidden: {
-    opacity: 0,
-    y: 150,
-    transition: {
-      duration: 0.1,
-      ease: easing,
-    },
-  },
-  show: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-      ease: easing,
-    },
-  },
-};
+import Spinner from "react-bootstrap/Spinner";
 
 const CreatingNFTItemPreview = ({
   data,
@@ -39,7 +14,6 @@ const CreatingNFTItemPreview = ({
   name,
   owner,
   quantity,
-  disableAnimations,
   modelData,
 }) => {
   const [image, setBase64Image] = useState();

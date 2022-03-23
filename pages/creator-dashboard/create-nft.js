@@ -334,7 +334,7 @@ const CreateNFT = ({ modelData }) => {
               <Button
                 type="submit"
                 py={2}
-                variant="primary w-100"
+                className="bg-primary text-white font-bold"
                 disabled={ipfsFiles.length === 0}
               >
                 <b>CREATE NFTs</b>

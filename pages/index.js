@@ -9,7 +9,7 @@ import {
 import { useEffect, useState } from "react";
 
 import Axios from "axios";
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import CountUp from "react-countup";
 import CreatorList from "../components/CreatorList";
 import ErrorFallback from "../components/Fallback/Error";
@@ -86,8 +86,8 @@ const Home = () => {
                       offset={50}
                       duration={1000}
                     >
-                      <Button variant="primary w-100">
-                        <b>View Marketplaces</b>
+                      <Button className="bg-primary text-white w-100">
+                        View Marketplaces
                       </Button>
                     </Scroll.Link>
                   </div>
@@ -98,7 +98,7 @@ const Home = () => {
                       rel="noreferrer"
                       className="w-full"
                     >
-                      <Button variant="light w-100 py-2">
+                      <Button bgColor="white" color="gray.900" px={12}>
                         <b>Buy $TREAT</b>
                       </Button>
                     </a>
@@ -143,13 +143,13 @@ const Home = () => {
         </div>
         <div className="totw-section-container mt-5">
           <div className="section-title">Treat of the Month</div>
-          <div className="desc">
+          <div className="desc mb-2">
             TOTM is a curated showcase of creators. We assist the chosen
             creators in presenting a unique set of content exclusive to
             TreatDAO.
           </div>
           <Link href="/magazine">
-            <Button className="purple-button">
+            <Button colorScheme="secondary">
               <b>View Treat Magazine</b>
             </Button>
           </Link>
@@ -160,7 +160,7 @@ const Home = () => {
             rel="noopener noreferrer"
             className="ml-4"
           >
-            <Button variant="py-2 px-4 mt-3 mb-3">
+            <Button colorScheme="brand" variant="link">
               <b style={{ color: "#8349CC" }}>View Ethereum Collection</b>
             </Button>
           </a>

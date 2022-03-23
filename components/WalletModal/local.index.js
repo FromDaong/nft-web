@@ -1,4 +1,4 @@
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import Modal from "react-bootstrap/Modal";
 import { useMoralis } from "react-moralis";
 import { useState } from "react";

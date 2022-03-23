@@ -1,8 +1,8 @@
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import Link from "next/link";
 import React from "react";
 
-const V2Banner = ({ oldTokenBalance }) => {
+const V2Banner = () => {
   return (
     <>
       <div
@@ -17,8 +17,8 @@ const V2Banner = ({ oldTokenBalance }) => {
       >
         {"Our March edition Treat of the Month + Magazine is out now!"}
         <Link href="/magazine">
-          <Button variant="light py-2 ml-2">
-            <b>{"View Magazine"}</b>
+          <Button className="ml-2" bgColor="white" color="gray.900">
+            View Magazine
           </Button>
         </Link>
         {/* <a

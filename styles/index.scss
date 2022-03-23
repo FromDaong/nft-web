@@ -13,11 +13,11 @@
 @import "./resale.css";
 @import "./nftCard.scss";
 @import "./nav.scss";
-/*
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-*/
+
 .w-full {
   width: 100%;
 }
@@ -60,4 +60,29 @@
     border-color: #7736c8;
     background: #7736c8;
   }
+}
+
+.profile-nfts-container {
+  padding: 24px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: initial !important;
+}
+
+.rounded-xl {
+  border-radius: 0.6rem !important;
+}
+
+.border-3 {
+  border-width: 3px;
 }

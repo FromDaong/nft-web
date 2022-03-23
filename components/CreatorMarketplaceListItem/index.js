@@ -1,15 +1,12 @@
-import useSWR from "swr";
 import BigNumber from "bignumber.js";
+import LazyLoad from "react-lazyload";
+import NFTListItem from "../NFTListItem";
 import Spinner from "react-bootstrap/Spinner";
 import { getDisplayBalance } from "../../utils/formatBalance";
-import NFTListItem from "../NFTListItem";
-import { Trash, CartFill } from "react-bootstrap-icons";
-import LazyLoad from "react-lazyload";
 
 export const Order = ({
   order,
   account,
-  searchFilter,
   setCancelOrderData,
   setPurchaseOrderData,
   soldOut,

@@ -125,7 +125,7 @@ const CreateModel = () => {
             />
           </div>
           <Button
-            variant="primary w-100"
+            className="bg-primary text-white font-bold"
             onClick={formik.handleSubmit}
             type="submit"
             w={100}

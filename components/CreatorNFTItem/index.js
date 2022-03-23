@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
-import Modal from "react-bootstrap/Modal";
-import { Button } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+
 import { Blurhash } from "react-blurhash";
+import { Button } from "@chakra-ui/react";
+import Link from "next/link";
+import Modal from "react-bootstrap/Modal";
 import { isBlurhashValid } from "blurhash";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { useRouter } from "next/router";
 
 let easing = [0.175, 0.85, 0.42, 0.96];

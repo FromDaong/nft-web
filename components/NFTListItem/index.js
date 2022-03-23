@@ -1,5 +1,7 @@
+import React, { useEffect } from "react";
+
 import { Blurhash } from "react-blurhash";
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import { EyeSlash } from "react-bootstrap-icons";
 import GumletImage from "../Image/GumletImage";
 import { InView } from "react-intersection-observer";
@@ -17,6 +19,10 @@ const NFTListItem = ({
   owner,
   soldOut,
 }) => {
+  useEffect(() => {
+    console.log("Data has changed " + data._id);
+  }, [data]);
+
   const { ref, gotInView, model } = useNFTItemData(data);
   const isTOTMorOldTOTW =
     data.totw || data.totm || data.old_totw || data.old_totm;
@@ -173,4 +179,4 @@ const NFTListItem = ({
   );
 };
 
-export default NFTListItem;
+export default React.memo(NFTListItem);

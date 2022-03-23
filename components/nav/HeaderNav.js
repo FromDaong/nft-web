@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import AgeModal from "../AgeModal";
 import BalanceModal from "../BalanceModal";
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import Link from "next/link";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -17,7 +17,8 @@ const HeaderNav = ({ modelData }) => {
   const [walletModalShow, setWalletModalShow] = useState(false);
   const [balanceModalShow, setBalanceModalShow] = useState(false);
   const [ageModalShow, setAgeModalShow] = useState(false);
-  const { isAuthenticated, chainId, user, enableWeb3, logout } = useMoralis();
+  const { isAuthenticated, chainId, user, enableWeb3, logout, account } =
+    useMoralis();
   const router = useRouter();
 
   const signOut = () => {
@@ -146,10 +147,10 @@ const HeaderNav = ({ modelData }) => {
 
           {!isAuthenticated ? (
             <Button
-              colorScheme={"pink"}
+              className="bg-primary text-white"
               onClick={() => setWalletModalShow(true)}
             >
-              <b>Connect Wallet</b>
+              <b>Sign in</b>
             </Button>
           ) : (
             <div className="ml-md-4">
@@ -183,6 +184,11 @@ const HeaderNav = ({ modelData }) => {
                     <NavDropdown.Item>Creator Dashboard</NavDropdown.Item>
                   </Link>
                 )}
+                <NavDropdown.Item>
+                  <Link href={`/p/${account}`}>
+                    <a>My Profile</a>
+                  </Link>
+                </NavDropdown.Item>
                 <NavDropdown.Item style={{ borderRadius: 8 }} onClick={signOut}>
                   Disconnect
                 </NavDropdown.Item>

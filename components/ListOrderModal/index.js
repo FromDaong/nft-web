@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 import BlankModal from "../../components/BlankModal";
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import { Form } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import { getDisplayBalance } from "../../utils/formatBalance";
@@ -146,7 +146,7 @@ export const ListOrderModalBody = ({
         </div>
         <div className="col-md-6">
           <Button
-            variant="primary w-100"
+            className="bg-primary text-white font-bold"
             className="mb-2 w-100"
             onClick={() => null}
           >

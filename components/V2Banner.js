@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
-import hasApprovedV1ForV2 from "../hooks/hasApprovedV1ForV2";
-import approveV1ForV2 from "../hooks/approveV1ForV2";
-import swapV1ForV2 from "../hooks/swapV1ForV2";
+
 import BlankModal from "../components/BlankModal";
+import { Button } from "@chakra-ui/react";
 import Web3 from "web3";
+import approveV1ForV2 from "../hooks/approveV1ForV2";
+import hasApprovedV1ForV2 from "../hooks/hasApprovedV1ForV2";
+import swapV1ForV2 from "../hooks/swapV1ForV2";
 
 const V2Banner = ({ oldTokenBalance }) => {
   const { onTradeInV1ForV2 } = swapV1ForV2(oldTokenBalance.toString());
