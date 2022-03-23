@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useState } from "react";
 
 import { AnimateSharedLayout } from "framer-motion";
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import Dropdown from "react-bootstrap/Dropdown";
 import ErrorFallback from "../../components/Fallback/Error";
 import Hero from "../../components/Hero";
@@ -151,7 +151,7 @@ const Marketplace = ({ search }) => {
           additionalContent={
             <Link href="/marketplace/resale">
               <a>
-                <Button variant="primary w-sm-100">
+                <Button colorScheme="primary">
                   <b>{"Go to Resale Marketplace"}</b>
                 </Button>
               </a>
@@ -236,20 +236,6 @@ const Marketplace = ({ search }) => {
           <div
             layout
             className="nft-list row mt-5 full-width justify-content-center"
-            animate="show"
-            exit="hidden"
-            initial="hidden"
-            variants={{
-              show: { opacity: 1 },
-              hidden: {
-                transition: {
-                  staggerChildren: 0.02,
-                  staggerDirection: -1,
-                  when: "afterChildren",
-                  opacity: 0,
-                },
-              },
-            }}
           >
             {loading ? (
               <div

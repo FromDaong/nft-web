@@ -1,4 +1,4 @@
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import Farm from "../../components/Farm";
 import Hero from "../../components/Hero";
 import Link from "next/link";
@@ -50,7 +50,7 @@ const Farms = () => {
             </div>
             <Link href="/farms/farmers-market">
               <a>
-                <Button variant="success">
+                <Button colorScheme="green">
                   <b>Go to Farmers' 🍈 Market</b>
                 </Button>
               </a>

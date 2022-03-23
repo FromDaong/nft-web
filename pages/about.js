@@ -1,4 +1,4 @@
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import Layout from "../components/Layout";
 // import HeroLogo from "/assets/hero-logo.png";
 
@@ -115,7 +115,7 @@ const About = () => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <Button variant="primary w-100">
+                  <Button className="bg-primary text-white font-bold mt-4">
                     <b>SWAP WITH 1INCH</b>
                   </Button>
                 </a>

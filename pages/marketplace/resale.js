@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { AnimateSharedLayout } from "framer-motion";
 import BlankModal from "../../components/BlankModal";
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import CancelOrderModal from "../../components/CancelOrderModal";
 import Dropdown from "react-bootstrap/Dropdown";
 import ErrorFallback from "../../components/Fallback/Error";

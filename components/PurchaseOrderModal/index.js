@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import Modal from "react-bootstrap/Modal";
 import { getDisplayBalance } from "../../utils/formatBalance";
 import useGetRemainingOrderBalance from "../../hooks/useGetRemainingOrderBalance";
@@ -82,7 +82,7 @@ export const PurchaseOrderModalBody = ({
         </div>
         <div className="col-md-6">
           <Button
-            variant="primary w-100"
+            className="bg-primary text-white font-bold"
             className="mb-2 w-100"
             onClick={() => handleClose()}
           >

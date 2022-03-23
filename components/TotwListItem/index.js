@@ -1,6 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import LazyLoad from "react-lazyload";
 import Link from "next/link";
 import NFTListItem from "../NFTListItem";
@@ -36,7 +36,11 @@ const TotwListItem = ({ modelData }) => {
             </a>
           </Link>
           <div className="button">
-            <Button rounded="full" colorScheme={"purple"} onClick={onRedeemSet}>
+            <Button
+              rounded="full"
+              colorScheme={"secondary"}
+              onClick={onRedeemSet}
+            >
               <b>Purchase Set {getDisplayBalance(nftSetPrice)} BNB</b>
             </Button>
           </div>

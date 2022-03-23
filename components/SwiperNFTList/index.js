@@ -6,7 +6,7 @@ import SwiperCore, {
   Navigation,
 } from "swiper";
 
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import LazyLoad from "react-lazyload";
 import Link from "next/link";
 import NFTListItem from "../NFTListItem";
@@ -22,8 +22,11 @@ const SwiperNFTList = ({ nftData }) => {
           <div className="button">
             <Link href="/marketplace/creator">
               <a>
-                <Button variant="primary w-100" rounded="full">
-                  <b>View All</b>
+                <Button
+                  className="bg-primary text-white font-bold"
+                  rounded="full"
+                >
+                  View All
                 </Button>
               </a>
             </Link>

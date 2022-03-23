@@ -1,6 +1,6 @@
 import { Clipboard, PiggyBankFill } from "react-bootstrap-icons";
 
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import { useMoralis } from "react-moralis";
 
 const CreatedNFTs = ({
@@ -35,7 +35,7 @@ const CreatedNFTs = ({
         </div>
 
         <Button
-          variant="primary w-100"
+          className="bg-primary text-white font-bold"
           style={{ maxWidth: 250 }}
           onClick={() => {
             navigator.clipboard.writeText(

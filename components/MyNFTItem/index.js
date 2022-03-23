@@ -1,5 +1,5 @@
 import { Blurhash } from "react-blurhash";
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import { EyeSlash } from "react-bootstrap-icons";
 import GumletImage from "../Image/GumletImage";
 import InView from "react-intersection-observer";
@@ -166,8 +166,7 @@ const NFTListItem = ({
                   >
                     <span>
                       <Button
-                        className="w-100"
-                        variant="secondary"
+                        colorScheme="gray"
                         disabled={hasOpenOrder}
                         style={hasOpenOrder ? { pointerEvents: "none" } : {}}
                         onClick={() => listOrderClick({ ...data, balance })}
@@ -181,8 +180,7 @@ const NFTListItem = ({
               <div className="col-lg-6 mt-3">
                 <span className="d-inline-block w-100">
                   <Button
-                    className="w-100"
-                    variant="secondary"
+                    colorScheme="gray"
                     onClick={() => transferNFTClick(data)}
                   >
                     <b>Transfer</b>
@@ -196,7 +194,7 @@ const NFTListItem = ({
                 <span className="d-inline-block w-100">
                   <Button
                     className="w-100"
-                    variant="secondary"
+                    colorScheme="gray"
                     onClick={() => cancelOrderClick(data)}
                   >
                     <b>Remove Your Listing</b>

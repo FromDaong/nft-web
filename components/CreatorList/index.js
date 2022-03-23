@@ -5,7 +5,7 @@ import SwiperCore, {
   Pagination,
 } from "swiper";
 
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import GumletImage from "../Image/GumletImage";
 import Link from "next/link";
 
@@ -24,8 +24,11 @@ const CreatorList = ({ modelData }) => {
         <div className="button">
           <Link href="/creators">
             <a>
-              <Button variant="primary w-100" rounded="full">
-                <b>View All</b>
+              <Button
+                className="bg-primary text-white font-bold"
+                rounded="full"
+              >
+                View All
               </Button>
             </a>
           </Link>

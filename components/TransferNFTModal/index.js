@@ -1,4 +1,4 @@
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import { Form } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import { useState } from "react";
@@ -64,7 +64,7 @@ const WalletModal = ({ show, handleClose, data }) => {
           </div>
           <div className="col-md-6">
             <Button
-              variant="primary w-100"
+              className="bg-primary text-white font-bold"
               className="mb-2 w-100"
               onClick={() => null}
             >

@@ -1,8 +1,8 @@
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import { useMoralis } from "react-moralis";
 
 export default function Auth() {
-  const { authenticate } = useMoralis();
+  const { authenticate, isAuthenticating } = useMoralis();
 
   const smartConnectWithMoralis = async (wallet) => {
     if (wallet === "walletconnect") {
@@ -22,19 +22,32 @@ export default function Auth() {
   };
 
   return (
-    <div className="auth-container">
-      <Button className=" w-100" onClick={() => smartConnectWithMoralis()}>
+    <div className="flex flex-col space-y-4">
+      <Button
+        isFullWidth
+        isLoading={isAuthenticating}
+        className="bg-primary text-white font-bold"
+        onClick={() => smartConnectWithMoralis()}
+      >
         Connect via MetaMask
       </Button>
       <br />
       <Button
-        variant="info"
-        className="mb-4 w-100"
+        isFullWidth
+        colorScheme="purple"
+        isLoading={isAuthenticating}
+        className="font-bold"
         onClick={() => smartConnectWithMoralis("walletconnect")}
       >
         Connect via WalletConnect
       </Button>
-      <Button variant="warning" className="w-100" onClick={web3authConnect}>
+      <Button
+        isFullWidth
+        isLoading={isAuthenticating}
+        colorScheme="yellow"
+        className="font-bold"
+        onClick={web3authConnect}
+      >
         Connect via Web3Auth
       </Button>
     </div>

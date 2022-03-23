@@ -1,4 +1,4 @@
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import Modal from "react-bootstrap/Modal";
 import useCancelOrder from "../../hooks/useCancelOrder";
 import useGetRemainingOrderBalance from "../../hooks/useGetRemainingOrderBalance";
@@ -64,7 +64,7 @@ export const CancelOrderModalBody = ({
       <div className="row">
         <div className="col-md-6">
           <Button
-            variant="info"
+            colorScheme="secondary"
             type="submit"
             className="w-100"
             onClick={async () => cancelOrderFunc()}
@@ -74,7 +74,7 @@ export const CancelOrderModalBody = ({
         </div>
         <div className="col-md-6">
           <Button
-            variant="primary w-100"
+            className="bg-primary text-white font-bold"
             className="mb-2 w-100"
             onClick={() => handleClose()}
           >

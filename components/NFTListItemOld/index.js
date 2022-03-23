@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { Blurhash } from "react-blurhash";
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import { EyeSlash } from "react-bootstrap-icons";
 import { generateFromString } from "generate-avatar";
 
@@ -76,7 +76,7 @@ const NFTListItem = ({ data }) => {
                 </div>
               </div>
               <div className="button pt-4 pt-md-0 ">
-                <Button variant="primary w-100">
+                <Button className="bg-primary text-white font-bold">
                   <b>VIEW NFT</b>
                 </Button>
               </div>

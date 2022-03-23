@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { Button } from "react-bootstrap";
-import useRedeemV1forV2 from "../../hooks/useRedeemV1forV2";
 import BlankModal from "../../components/BlankModal";
+import { Button } from "@chakra-ui/react";
+import useRedeemV1forV2 from "../../hooks/useRedeemV1forV2";
+import { useState } from "react";
 
 const TradeInNFTs = ({ v1NFTs, account }) => {
   const [showPendingModal, setShowPendingModal] = useState(null);

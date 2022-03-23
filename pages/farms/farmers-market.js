@@ -1,7 +1,7 @@
 import { AnimateSharedLayout, motion } from "framer-motion";
 
 import BlankModal from "../../components/BlankModal";
-import { Button } from "react-bootstrap";
+import { Button } from "@chakra-ui/react";
 import ErrorFallback from "../../components/Fallback/Error";
 import Hero from "../../components/Hero";
 import Link from "next/link";
@@ -77,7 +77,7 @@ const Marketplace = ({ search }) => {
               <div>
                 <Link href="/farms">
                   <a>
-                    <Button variant="primary w-100">
+                    <Button className="bg-primary text-white font-bold">
                       <b>{"Go to Farming Dashboard"}</b>
                     </Button>
                   </a>
