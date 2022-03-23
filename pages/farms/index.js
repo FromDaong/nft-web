@@ -50,7 +50,7 @@ const Farms = () => {
             </div>
             <Link href="/farms/farmers-market">
               <a>
-                <Button variant="success">
+                <Button colorScheme="green">
                   <b>Go to Farmers' 🍈 Market</b>
                 </Button>
               </a>
