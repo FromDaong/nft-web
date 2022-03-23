@@ -1,7 +1,8 @@
-import { Button, FormControl, InputGroup } from "react-bootstrap";
+import { FormControl, InputGroup } from "react-bootstrap";
 import { getBalanceNumber, getDisplayBalance } from "../utils/formatBalance";
 
 import BlankModal from "../components/BlankModal";
+import { Button } from "@chakra-ui/react";
 import hasApprovedContract from "../hooks/hasApprovedContract";
 import useApproveContract from "../hooks/approveContract";
 import useGetPendingMelons from "../hooks/useGetPendingMelons";
@@ -54,7 +55,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
   const approveButton = (
     <Button
       className="bg-primary text-white font-bold"
-      className="w-100 py-2"
+      isFullWidth
       onClick={approveContract}
     >
       <b>Approve Contract</b>
@@ -110,7 +111,6 @@ const Farm = ({ contract, treatBal, title, pid }) => {
                   />
                   <Button
                     className="bg-primary text-white font-bold"
-                    className="px-4 py-2"
                     onClick={(e) => setStakeAmount(getBalanceNumber(treatBal))}
                   >
                     <b>Max</b>
@@ -123,7 +123,6 @@ const Farm = ({ contract, treatBal, title, pid }) => {
                 ) : (
                   <Button
                     className="bg-primary text-white font-bold"
-                    className="w-100 py-2"
                     onClick={() => actionWithModal(onStake, stakeAmount)}
                   >
                     <b>Stake</b>
@@ -156,7 +155,6 @@ const Farm = ({ contract, treatBal, title, pid }) => {
               />
               <Button
                 className="bg-primary text-white font-bold"
-                className="px-4 py-2"
                 onClick={() =>
                   setUnstakeAmount(
                     formattedV1StakedAmount || getBalanceNumber(stakedAmount)
@@ -173,7 +171,6 @@ const Farm = ({ contract, treatBal, title, pid }) => {
             ) : (
               <Button
                 className="bg-primary text-white font-bold"
-                className="w-100 py-2"
                 onClick={() =>
                   actionWithModal(
                     formattedV1StakedAmount ? onV1Unstake : onUnstake,
