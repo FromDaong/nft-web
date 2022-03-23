@@ -208,7 +208,7 @@ const ViewModel = ({
               <Button
                 px={4}
                 rounded="full"
-                colorScheme={"pink"}
+                colorScheme={"primary"}
                 style={{ marginTop: 15, width: "100%", borderRadius: 25 }}
                 onClick={() => {
                   navigator.clipboard.writeText(

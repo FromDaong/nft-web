@@ -199,7 +199,7 @@ const Marketplace = ({ search }) => {
               </p>
               <Link href="/marketplace/creator">
                 <a>
-                  <Button variant="primary w-sm-100">
+                  <Button colorScheme="primary" className="w-sm-100">
                     <b>{"Go to The Sweet Shop"}</b>
                   </Button>
                 </a>
