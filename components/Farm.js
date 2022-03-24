@@ -102,7 +102,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
                 <b>{getDisplayBalance(treatBal)}</b> {title}
               </div>
               <div className="input-container">
-                <InputGroup className="mb-3">
+                <InputGroup className="mb-3 space-x-2">
                   <FormControl
                     placeholder="Amount"
                     type="number"
@@ -147,7 +147,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
             {title}
           </div>
           <div className="input-container">
-            <InputGroup className="mb-3">
+            <InputGroup className="mb-3 space-x-2">
               <FormControl
                 placeholder="Amount"
                 type="number"
