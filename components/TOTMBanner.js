@@ -6,13 +6,12 @@ const V2Banner = () => {
   return (
     <>
       <div
-        className="alert-bar py-1 d-flex justify-content-center align-items-center"
+        className="alert-bar py-2 flex flex-col lg:flex-row items-center justify-center"
         style={{
           color: "white",
           textAlign: "center",
           fontWeight: "bolder",
           background: "#DA5184",
-          height: 60,
         }}
       >
         {"Our March edition Treat of the Month + Magazine is out now!"}
