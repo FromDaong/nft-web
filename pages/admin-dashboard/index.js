@@ -12,7 +12,9 @@ const AdminDashboardWrapper = () => {
 
   const { data } = useSWR(`/api/admin/is-authed`);
 
-  if (isAuthenticated || !data) {
+  console.log({ isAuthenticated, data });
+
+  if (!isAuthenticated || !data) {
     return (
       <div
         style={{
