@@ -150,7 +150,7 @@ export const getServerSideProps = async (ctx) => {
           }
 
           if (returnObj.blurhash) {
-            delete returnObj.blurhash;
+            delete returnObj.image;
           }
 
           // Removing this to minimize total payload, get only what we need.
