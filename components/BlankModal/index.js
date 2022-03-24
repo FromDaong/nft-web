@@ -42,7 +42,7 @@ const BlankModal = ({
         </Modal.Body>
         <Modal.Footer>
           {!noButton && (
-            <Button onClick={buttonAction || reload}>
+            <Button onClick={buttonAction || reload} colorScheme="primary">
               {buttonLabel || "Finish"}
             </Button>
           )}
