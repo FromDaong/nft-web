@@ -76,7 +76,7 @@ export default function TwNFTListItem({ doc }: { doc: any }) {
             </div>
             {typeof doc.list_price !== "undefined" && (
               <div className="block">
-                <p className="pb-2 font-bold">{doc.list_price}</p>
+                <p className="pb-2 font-bold text-left">{doc.list_price}</p>
                 <p className="font-bold">BNB</p>
               </div>
             )}

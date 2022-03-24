@@ -324,22 +324,24 @@ const CreateNFT = ({ modelData }) => {
               ))
             }
           />
-          <div className="buttons row pt-4">
-            <div className="col-md-6 mt-2 text-center">
-              <Button variant="light w-100 py-2" onClick={() => router.back()}>
-                <b>BACK TO DASHBOARD</b>
-              </Button>
-            </div>
-            <div className="col-md-6  mt-2 text-center">
-              <Button
-                type="submit"
-                py={2}
-                className="bg-primary text-white font-bold"
-                disabled={ipfsFiles.length === 0}
-              >
-                <b>CREATE NFTs</b>
-              </Button>
-            </div>
+          <div className="buttons flex justify-between md:space-x-8 md:space-y-0 flex-col md:flex-row space-y-4 pt-4">
+            <Button
+              variant="text-gray-900 w-100 py-2"
+              bgColor="white"
+              isFullWidth
+              onClick={() => router.back()}
+            >
+              <b>BACK TO DASHBOARD</b>
+            </Button>
+            <Button
+              type="submit"
+              py={2}
+              colorScheme={"primary"}
+              isFullWidth
+              disabled={ipfsFiles.length === 0}
+            >
+              <b>CREATE NFTs</b>
+            </Button>
           </div>
         </Form>
       </div>
