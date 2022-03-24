@@ -23,7 +23,7 @@ export default function TwNFTListItem({ doc }: { doc: any }) {
                 style={{
                   transform: "translateY(-50%)",
                 }}
-                className="absolute rounded-full border-2 border-primary2 top-0"
+                className="absolute rounded-full border-2 border-primary2 top-0 z-10"
               >
                 <img
                   className="w-16 h-16 rounded-full object-cover"
