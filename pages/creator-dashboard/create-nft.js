@@ -28,7 +28,6 @@ const CreateNFT = ({ modelData }) => {
   const [ipfsFiles, setIpfsFiles] = useState([]);
   const router = useRouter();
   const [success, setSuccess] = useState(false);
-  const [cdnUrl, setCdnUrl] = useState("");
   const [sentWithoutIds, setSentWithoutIds] = useState(false);
   const [sentWithIds, setSentWithIds] = useState(false);
   const { data: bnbPrice, error: bnbError } = useSWR(
@@ -56,10 +55,6 @@ const CreateNFT = ({ modelData }) => {
               },
             })
             .then(async function (response) {
-              const file = await cdnclient.uploadFile(
-                `https://treatdao.mypinata.cloud/ipfs/${response.data.IpfsHash}`
-              );
-              setCdnUrl(file.cdnUrl);
               return cb(
                 null,
                 `https://treatdao.mypinata.cloud/ipfs/${response.data.IpfsHash}`
@@ -198,7 +193,6 @@ const CreateNFT = ({ modelData }) => {
         ...nftData,
         id: createNFTResult.nftIds[i],
         blurhash: nftData.blurhash ? nftData.blurhash : null,
-        daoCdnUrl: cdnUrl,
       }));
 
       setShowPendingModal(true);
