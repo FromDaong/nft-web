@@ -12,8 +12,6 @@ import Loading from "../../components/Loading";
 import Web3 from "web3";
 import async from "async";
 import axios from "axios";
-import cdnclient from "../../lib/uploadcare";
-import { create } from "ipfs-http-client";
 import useCreateAndAddNFTs from "../../hooks/useCreateAndAddNFTs";
 import { useDropzone } from "react-dropzone";
 import { useEffect } from "react";
@@ -22,12 +20,9 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import { useState } from "react";
 
-const client = create("https://ipfs.infura.io:5001/api/v0");
-
 const CreateNFT = ({ modelData }) => {
   const [ipfsFiles, setIpfsFiles] = useState([]);
   const router = useRouter();
-  const [success, setSuccess] = useState(false);
   const [sentWithoutIds, setSentWithoutIds] = useState(false);
   const [sentWithIds, setSentWithIds] = useState(false);
   const { data: bnbPrice, error: bnbError } = useSWR(
