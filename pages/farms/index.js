@@ -20,6 +20,7 @@ const Farms = () => {
   );
   const treat = useTreat();
   const masterMelonFarmerContract = getMasterMelonFarmerContract(treat);
+  console.log({ treatBal, treatLpBal, melonBal, chainId });
 
   return (
     <>
@@ -56,21 +57,25 @@ const Farms = () => {
               </a>
             </Link>
           </div>
-          <Farm
-            title={"$Treat"}
-            pid={0}
-            contract={masterMelonFarmerContract}
-            treatBal={treatBal}
-          />
+          {masterMelonFarmerContract && (
+            <Farm
+              title={"$Treat"}
+              pid={0}
+              contract={masterMelonFarmerContract}
+              treatBal={treatBal}
+            />
+          )}
           <br />
           <br />
           <br />
-          <Farm
-            title={"$Treat/BNB"}
-            pid={1}
-            contract={masterMelonFarmerContract}
-            treatBal={treatLpBal}
-          />
+          {masterMelonFarmerContract && (
+            <Farm
+              title={"$Treat/BNB"}
+              pid={1}
+              contract={masterMelonFarmerContract}
+              treatBal={treatLpBal}
+            />
+          )}
         </div>
       </motion.main>
     </>

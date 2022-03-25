@@ -1,4 +1,5 @@
-import { Button } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
+
 import Layout from "../../components/Layout";
 import Link from "next/link";
 import MoralisInstance from "../../utils/moralis";
@@ -76,21 +77,23 @@ export default function UserProfile(props) {
                       <TwNFTListItem doc={doc} key={doc.id} />
                     );
                   })}
-                  <PaginationComponentV2
-                    hasNextPage={owned_nfts.hasNextPage}
-                    hasPrevPage={owned_nfts.hasPrevPage}
-                    totalPages={owned_nfts.totalPages}
-                    totalDocs={owned_nfts.totalDocs}
-                    page={owned_nfts.page}
-                    goNext={() =>
-                      navigateOwnedNFTs(Number(owned_nfts.page) + 1)
-                    }
-                    goPrev={() =>
-                      navigateOwnedNFTs(Number(owned_nfts.page) - 1)
-                    }
-                    loading={loadingOwnedNFTs}
-                    setPage={(page) => navigateOwnedNFTs(Number(page))}
-                  />
+                  <Flex w={"100%"} justifyContent="center">
+                    <PaginationComponentV2
+                      hasNextPage={owned_nfts.hasNextPage}
+                      hasPrevPage={owned_nfts.hasPrevPage}
+                      totalPages={owned_nfts.totalPages}
+                      totalDocs={owned_nfts.totalDocs}
+                      page={owned_nfts.page}
+                      goNext={() =>
+                        navigateOwnedNFTs(Number(owned_nfts.page) + 1)
+                      }
+                      goPrev={() =>
+                        navigateOwnedNFTs(Number(owned_nfts.page) - 1)
+                      }
+                      loading={loadingOwnedNFTs}
+                      setPage={(page) => navigateOwnedNFTs(Number(page))}
+                    />
+                  </Flex>
                 </>
               ) : (
                 <p>User has no owned nfts</p>
@@ -150,7 +153,7 @@ export const getServerSideProps = async (ctx) => {
           }
 
           if (returnObj.blurhash) {
-            delete returnObj.blurhash;
+            delete returnObj.image;
           }
 
           // Removing this to minimize total payload, get only what we need.

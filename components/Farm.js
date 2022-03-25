@@ -13,6 +13,7 @@ import { useState } from "react";
 import useUnstakeFarms from "../hooks/useUnstakeFarms";
 
 const Farm = ({ contract, treatBal, title, pid }) => {
+  console.log({ contract });
   const hasApproved = contract && hasApprovedContract(pid);
   const { onReward } = contract && useHarvestFarms(pid);
   const { onApprove } = contract && useApproveContract(pid);
@@ -101,7 +102,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
                 <b>{getDisplayBalance(treatBal)}</b> {title}
               </div>
               <div className="input-container">
-                <InputGroup className="mb-3">
+                <InputGroup className="mb-3 space-x-2">
                   <FormControl
                     placeholder="Amount"
                     type="number"
@@ -124,6 +125,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
                   <Button
                     className="bg-primary text-white font-bold"
                     onClick={() => actionWithModal(onStake, stakeAmount)}
+                    isFullWidth
                   >
                     <b>Stake</b>
                   </Button>
@@ -145,7 +147,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
             {title}
           </div>
           <div className="input-container">
-            <InputGroup className="mb-3">
+            <InputGroup className="mb-3 space-x-2">
               <FormControl
                 placeholder="Amount"
                 type="number"
@@ -171,6 +173,7 @@ const Farm = ({ contract, treatBal, title, pid }) => {
             ) : (
               <Button
                 className="bg-primary text-white font-bold"
+                isFullWidth
                 onClick={() =>
                   actionWithModal(
                     formattedV1StakedAmount ? onV1Unstake : onUnstake,

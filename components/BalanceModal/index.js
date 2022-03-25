@@ -27,13 +27,15 @@ const BalanceModal = ({ show, handleClose }) => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <Button className="mb-2 w-100">Exchange $TREAT</Button>
+                <Button className="w-100" colorScheme="primary">
+                  Exchange $TREAT
+                </Button>
               </a>
             </div>
             <div className="col-md-6">
               <Button
-                variant={"secondary"}
-                className="mb-2 w-100"
+                className="text-white font-bold w-100"
+                bgColor={"gray.600"}
                 onClick={() => handleClose()}
               >
                 Close

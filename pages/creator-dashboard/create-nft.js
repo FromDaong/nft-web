@@ -1,17 +1,17 @@
 import * as Yup from "yup";
 
-import { Button, Form } from "react-bootstrap";
 import { FieldArray, FormikProvider, useFormik } from "formik";
 
 import BlankModal from "../../components/BlankModal";
+import { Button } from "@chakra-ui/react";
 import CreatingNFTItem from "../../components/CreatingNFTItem";
+import { Flex } from "@chakra-ui/react";
+import { Form } from "react-bootstrap";
 import Hero from "../../components/Hero";
 import Loading from "../../components/Loading";
 import Web3 from "web3";
 import async from "async";
 import axios from "axios";
-import cdnclient from "../../lib/uploadcare";
-import { create } from "ipfs-http-client";
 import useCreateAndAddNFTs from "../../hooks/useCreateAndAddNFTs";
 import { useDropzone } from "react-dropzone";
 import { useEffect } from "react";
@@ -20,13 +20,9 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import { useState } from "react";
 
-const client = create("https://ipfs.infura.io:5001/api/v0");
-
 const CreateNFT = ({ modelData }) => {
   const [ipfsFiles, setIpfsFiles] = useState([]);
   const router = useRouter();
-  const [success, setSuccess] = useState(false);
-  const [cdnUrl, setCdnUrl] = useState("");
   const [sentWithoutIds, setSentWithoutIds] = useState(false);
   const [sentWithIds, setSentWithIds] = useState(false);
   const { data: bnbPrice, error: bnbError } = useSWR(
@@ -54,10 +50,6 @@ const CreateNFT = ({ modelData }) => {
               },
             })
             .then(async function (response) {
-              const file = await cdnclient.uploadFile(
-                `https://treatdao.mypinata.cloud/ipfs/${response.data.IpfsHash}`
-              );
-              setCdnUrl(file.cdnUrl);
               return cb(
                 null,
                 `https://treatdao.mypinata.cloud/ipfs/${response.data.IpfsHash}`
@@ -196,7 +188,6 @@ const CreateNFT = ({ modelData }) => {
         ...nftData,
         id: createNFTResult.nftIds[i],
         blurhash: nftData.blurhash ? nftData.blurhash : null,
-        daoCdnUrl: cdnUrl,
       }));
 
       setShowPendingModal(true);
@@ -324,23 +315,29 @@ const CreateNFT = ({ modelData }) => {
               ))
             }
           />
-          <div className="buttons row pt-4">
-            <div className="col-md-6 mt-2 text-center">
-              <Button variant="light w-100 py-2" onClick={() => router.back()}>
+          <Flex className="flex flex-wrap justify-between md:space-y-0 flex-col md:flex-row space-y-4 pt-4">
+            <div className="w-full md:w-1/2 md:pr-2">
+              <Button
+                variant="text-gray-900 py-2"
+                bgColor="white"
+                isFullWidth
+                onClick={() => router.back()}
+              >
                 <b>BACK TO DASHBOARD</b>
               </Button>
             </div>
-            <div className="col-md-6  mt-2 text-center">
+            <div className="w-full md:w-1/2 md:pl-2">
               <Button
                 type="submit"
                 py={2}
-                className="bg-primary text-white font-bold"
+                colorScheme={"primary"}
+                isFullWidth
                 disabled={ipfsFiles.length === 0}
               >
                 <b>CREATE NFTs</b>
               </Button>
             </div>
-          </div>
+          </Flex>
         </Form>
       </div>
     </FormikProvider>

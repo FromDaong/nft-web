@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Tab, Tabs } from "react-bootstrap";
 
-import Button from "react-bootstrap/Button";
+import { Button } from "@chakra-ui/react";
 import { Clipboard } from "react-bootstrap-icons";
 import ErrorFallback from "../../components/Fallback/Error";
 import Layout from "../../components/Layout";
@@ -209,7 +209,7 @@ const ViewModel = ({
                 px={4}
                 rounded="full"
                 colorScheme={"primary"}
-                style={{ marginTop: 15, width: "100%", borderRadius: 25 }}
+                style={{ marginTop: 15, width: "100%" }}
                 onClick={() => {
                   navigator.clipboard.writeText(
                     `https://treatdao.com/creator/${modelData.username}`

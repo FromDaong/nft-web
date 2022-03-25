@@ -117,7 +117,9 @@ const SubscriptionNFTs = ({
             transaction so we can confirm your wallet with our backend.
             {/* {modelData.subscription.description} */}
           </div>
-          <Button onClick={revealNFTs}>Reveal Subscription NFTs</Button>
+          <Button colorScheme="primary" onClick={revealNFTs}>
+            Reveal Subscription NFTs
+          </Button>
         </div>
       ) : (
         <div
