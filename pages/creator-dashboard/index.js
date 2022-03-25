@@ -11,22 +11,22 @@ import { Nav, Tab } from "react-bootstrap";
 import { useEffect, useState } from "react";
 
 import Axios from "axios";
-import BlankModal from "../components/BlankModal";
-import CancelOrderModal from "../components/CancelOrderModal";
+import BlankModal from "../../components/BlankModal";
+import CancelOrderModal from "../../components/CancelOrderModal";
 import CreatedNFTs from "../../components/CreatorDashboard/CreatedNFTs";
 import CreatorResources from "../../components/CreatorDashboard/CreatorResources";
 import EditProfile from "../../components/CreatorDashboard/EditProfile";
 import ErrorFallback from "../../components/Fallback/Error";
 import Layout from "../../components/Layout";
 import Link from "next/link";
-import ListOrderModal from "../components/ListOrderModal";
+import ListOrderModal from "../../components/ListOrderModal";
 import OwnedNFTs from "../../components/CreatorDashboard/OwnedNFTs";
 import Referrals from "../../components/CreatorDashboard/Referrals";
 import ResaleNFTs from "../../components/CreatorDashboard/ResaleNFTs";
 import SubSettingsBox from "../../components/CreatorDashboard/SubSettingsBox";
 import SubscriptionNFTs from "../../components/CreatorDashboard/SubscriptionNFTs";
 import SubscriptionSettings from "../../components/CreatorDashboard/SubscriptionSettings";
-import TransferNFTModal from "../components/TransferNFTModal";
+import TransferNFTModal from "../../components/TransferNFTModal";
 import { useMoralis } from "react-moralis";
 import useSWR from "swr";
 
