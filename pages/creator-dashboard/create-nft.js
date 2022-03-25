@@ -1,10 +1,12 @@
 import * as Yup from "yup";
 
-import { Button, Form } from "react-bootstrap";
 import { FieldArray, FormikProvider, useFormik } from "formik";
 
 import BlankModal from "../../components/BlankModal";
+import { Button } from "@chakra-ui/react";
 import CreatingNFTItem from "../../components/CreatingNFTItem";
+import { Flex } from "@chakra-ui/react";
+import { Form } from "react-bootstrap";
 import Hero from "../../components/Hero";
 import Loading from "../../components/Loading";
 import Web3 from "web3";
@@ -324,25 +326,29 @@ const CreateNFT = ({ modelData }) => {
               ))
             }
           />
-          <div className="buttons flex justify-between md:space-x-8 md:space-y-0 flex-col md:flex-row space-y-4 pt-4">
-            <Button
-              variant="text-gray-900 w-100 py-2"
-              bgColor="white"
-              isFullWidth
-              onClick={() => router.back()}
-            >
-              <b>BACK TO DASHBOARD</b>
-            </Button>
-            <Button
-              type="submit"
-              py={2}
-              colorScheme={"primary"}
-              isFullWidth
-              disabled={ipfsFiles.length === 0}
-            >
-              <b>CREATE NFTs</b>
-            </Button>
-          </div>
+          <Flex className="flex flex-wrap justify-between md:space-y-0 flex-col md:flex-row space-y-4 pt-4">
+            <div className="w-full md:w-1/2 md:pr-2">
+              <Button
+                variant="text-gray-900 py-2"
+                bgColor="white"
+                isFullWidth
+                onClick={() => router.back()}
+              >
+                <b>BACK TO DASHBOARD</b>
+              </Button>
+            </div>
+            <div className="w-full md:w-1/2 md:pl-2">
+              <Button
+                type="submit"
+                py={2}
+                colorScheme={"primary"}
+                isFullWidth
+                disabled={ipfsFiles.length === 0}
+              >
+                <b>CREATE NFTs</b>
+              </Button>
+            </div>
+          </Flex>
         </Form>
       </div>
     </FormikProvider>
