@@ -165,6 +165,8 @@ const NFTListItem = ({
                 >
                   <Button
                     bgColor="gray.600"
+                    color="white"
+                    className="text-white"
                     isFullWidth
                     disabled={hasOpenOrder}
                     style={hasOpenOrder ? { pointerEvents: "none" } : {}}
@@ -177,6 +179,8 @@ const NFTListItem = ({
               <div className="col-lg-6 mt-3">
                 <Button
                   bgColor="gray.600"
+                  color="white"
+                  className="text-white"
                   isFullWidth
                   onClick={() => transferNFTClick(data)}
                 >

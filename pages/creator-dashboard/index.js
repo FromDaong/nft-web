@@ -8,23 +8,102 @@ import {
   PiggyBankFill,
 } from "react-bootstrap-icons";
 import { Nav, Tab } from "react-bootstrap";
+import { useEffect, useState } from "react";
 
+import Axios from "axios";
+import BlankModal from "../components/BlankModal";
+import CancelOrderModal from "../components/CancelOrderModal";
 import CreatedNFTs from "../../components/CreatorDashboard/CreatedNFTs";
 import CreatorResources from "../../components/CreatorDashboard/CreatorResources";
 import EditProfile from "../../components/CreatorDashboard/EditProfile";
 import ErrorFallback from "../../components/Fallback/Error";
 import Layout from "../../components/Layout";
 import Link from "next/link";
+import ListOrderModal from "../components/ListOrderModal";
+import OwnedNFTs from "../../components/CreatorDashboard/OwnedNFTs";
 import Referrals from "../../components/CreatorDashboard/Referrals";
+import ResaleNFTs from "../../components/CreatorDashboard/ResaleNFTs";
 import SubSettingsBox from "../../components/CreatorDashboard/SubSettingsBox";
 import SubscriptionNFTs from "../../components/CreatorDashboard/SubscriptionNFTs";
 import SubscriptionSettings from "../../components/CreatorDashboard/SubscriptionSettings";
+import TransferNFTModal from "../components/TransferNFTModal";
 import { useMoralis } from "react-moralis";
 import useSWR from "swr";
-import { useState } from "react";
 
 const CreatorDashboardWrapper = ({ modelData }) => {
   const { account, isAuthenticated } = useMoralis();
+  const [ownedNFTData, setOwnedNFTData] = useState({
+    docs: [],
+    hasNextPage: false,
+    hasPrevPage: false,
+    totalPages: 1,
+    totalDocs: 0,
+    page: 1,
+    loading: true,
+  });
+  const [resaleNFTData, setResaleNFTData] = useState({
+    docs: [],
+    hasNextPage: false,
+    hasPrevPage: false,
+    totalPages: 1,
+    totalDocs: 0,
+    page: 1,
+    loading: true,
+  });
+  const [ownedNFTError, setOwnedNFTError] = useState(null);
+  const [resaleNFTError, setResaleNFTError] = useState(null);
+
+  useEffect(() => {
+    setOwnedNFTData({ ...ownedNFTData, loading: true });
+    setResaleNFTData({ ...resaleNFTData, loading: true });
+    if (isAuthenticated) {
+      Axios.post(`/api/v2/nft/my_nfts?page=${ownedNFTData.page}`)
+        .then((res) => {
+          setOwnedNFTData({ ...res.data, loading: false });
+        })
+        .catch((err) => {
+          console.error(err);
+          setOwnedNFTError(err);
+          setOwnedNFTData({ ...ownedNFTData, loading: false });
+        });
+
+      Axios.post(`/api/v2/nft/my_resale_nfts?page=${resaleNFTData.page}`)
+        .then((res) => {
+          setResaleNFTData({ ...res.data, loading: false });
+        })
+        .catch((err) => {
+          console.error(err);
+          setResaleNFTError(err);
+          setResaleNFTData({ ...resaleNFTData, loading: false });
+        });
+    }
+  }, [isAuthenticated]);
+
+  const navigate = (key, page) => {
+    if (key === "owned") {
+      setOwnedNFTData({ ...ownedNFTData, loading: true, page });
+      Axios.post(`/api/v2/nft/my_nfts?page=${page}`)
+        .then((res) => {
+          setOwnedNFTData({ ...res.data, loading: false });
+        })
+        .catch((err) => {
+          console.error(err);
+          setOwnedNFTData({ ...ownedNFTData, loading: false });
+          setOwnedNFTError(err);
+        });
+    } else {
+      setResaleNFTData({ ...resaleNFTData, loading: true, page });
+      Axios.post(`/api/v2/nft/my_resale_nfts?page=${page}`)
+        .then((res) => {
+          setResaleNFTData({ ...res.data, loading: false });
+        })
+        .catch((err) => {
+          console.error(err);
+          setOwnedNFTData({ ...resaleNFTData, loading: false });
+          setResaleNFTError(err);
+        });
+    }
+  };
 
   if (!isAuthenticated || !modelData) {
     return (
@@ -67,16 +146,49 @@ const CreatorDashboardWrapper = ({ modelData }) => {
         account={account}
         nftArray={modelData.nfts}
         modelData={modelData}
+        navigate={navigate}
+        isOwnedLoading={ownedNFTData.loading}
+        isOpenOrdersLoading={resaleNFTData.loading}
+        ownedNFTData={ownedNFTData}
+        resaleNFTData={resaleNFTData}
+        resaleNFTDataError={resaleNFTError}
+        ownedNFTDataError={ownedNFTError}
       />
     );
   }
 };
 
-const ViewNFT = ({ modelData, account }) => {
-  // const [serverNftBalances, setServerNftBalances] = useState(null);
-
-  // const maxNftSupply = useGetNftMaxSupply(account);
+const ViewNFT = ({
+  modelData,
+  account,
+  resaleNFTData,
+  ownedNFTData,
+  isOpenOrdersLoading,
+  isOwnedLoading,
+  ownedNFTDataError,
+  resaleNFTDataError,
+  navigate,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [transferNFTData, setTransferNFTData] = useState(null);
+  const [listOrderData, setListOrderData] = useState(null);
+  const [cancelOrderData, setCancelOrderData] = useState(null);
+  const [showPendingModal, setShowPendingModal] = useState(null);
+  const [showCompleteModal, setShowCompleteModal] = useState(null);
+
+  // TODO: We want to fetch only NFTs with balance from the server and paginate those
+
+  const transferNFTClick = (x) => {
+    setTransferNFTData(x);
+  };
+
+  const listOrderClick = (x) => {
+    setListOrderData(x);
+  };
+
+  const cancelOrderClick = (x) => {
+    setCancelOrderData(x);
+  };
 
   const { data: nftData, error: nftError } = useSWR(
     `/api/model/nfts-from-address/${account}`
@@ -85,16 +197,47 @@ const ViewNFT = ({ modelData, account }) => {
     `/api/model/sub-nfts-from-address/${account}`
   );
 
-  const transferNFTClick = (x) => {
-    //setTransferNFTData(x);
-  };
-
   const hideNFTs = async () => {
     //setServerNftBalances(null);
   };
 
   return (
     <Layout>
+      <TransferNFTModal
+        show={!!transferNFTData}
+        data={transferNFTData}
+        handleClose={() => setTransferNFTData(false)}
+      />
+      <ListOrderModal
+        show={!!listOrderData}
+        data={listOrderData}
+        handleClose={() => setListOrderData(false)}
+        setPendingModal={setShowPendingModal}
+        openCompleteModal={() => setShowCompleteModal(true)}
+      />
+      <CancelOrderModal
+        show={!!cancelOrderData}
+        data={cancelOrderData}
+        setPendingModal={setShowPendingModal}
+        openCompleteModal={() => setShowCompleteModal(true)}
+        handleClose={() => setCancelOrderData(false)}
+        account={account}
+      />
+      <BlankModal
+        show={!!showPendingModal}
+        handleClose={() => setShowPendingModal(false)}
+        title={"Waiting for Transaction Confirmation ⌛"}
+        subtitle={
+          "Please confirm this transaction in your wallet and wait here for up to a few minutes for the transaction to confirm..."
+        }
+        noButton={true}
+        account={account}
+      />
+      <BlankModal
+        show={!!showCompleteModal}
+        handleClose={() => setShowCompleteModal(false)}
+        account={account}
+      />
       <div className="container  my-nft-container">
         <div className="pink-bg d-flex my-5 row justify-content-between">
           <div>
@@ -102,7 +245,7 @@ const ViewNFT = ({ modelData, account }) => {
               className="heading-text p-0"
               style={{ fontSize: "3.5em", lineHeight: 1.2 }}
             >
-              {modelData && modelData.username}'s Dashboard
+              {modelData && modelData.username}&lsquo;s Dashboard
             </div>
             <p
               className="totw-secondary-text m-0 mt-2 "
@@ -158,6 +301,18 @@ const ViewNFT = ({ modelData, account }) => {
                   </Nav.Link>
                 </Nav.Item>
                 <Nav.Item className="white-tp-bg mt-2">
+                  <Nav.Link eventKey="owned-nfts">
+                    <CameraFill className="mr-2 mb-1" />
+                    Owned NFTs
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item className="white-tp-bg mt-2">
+                  <Nav.Link eventKey="resale-nfts">
+                    <CameraFill className="mr-2 mb-1" />
+                    Resale NFTs
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item className="white-tp-bg mt-2">
                   <Nav.Link eventKey="created-nfts">
                     <CameraFill className="mr-2 mb-1" />
                     Sweet Shop NFTs
@@ -193,6 +348,35 @@ const ViewNFT = ({ modelData, account }) => {
               <Tab.Content>
                 <Tab.Pane eventKey="edit-profile">
                   <EditProfile modelData={modelData} />
+                </Tab.Pane>
+                <Tab.Pane eventKey="owned-nfts">
+                  {!nftError ? (
+                    <OwnedNFTs
+                      listOrderClick={listOrderClick}
+                      transferNFTClick={transferNFTClick}
+                      ownedNFTData={ownedNFTData}
+                      isLoading={isOwnedLoading}
+                      navigate={navigate}
+                      error={ownedNFTDataError}
+                    />
+                  ) : (
+                    <ErrorFallback custom="Failed to load Owned NFTs" />
+                  )}
+                </Tab.Pane>
+                <Tab.Pane eventKey="resale-nfts">
+                  {!nftError ? (
+                    <ResaleNFTs
+                      cancelOrderClick={cancelOrderClick}
+                      transferNFTClick={transferNFTClick}
+                      resaleNFTData={resaleNFTData}
+                      revealNFTs={resaleNFTData}
+                      isLoading={isOpenOrdersLoading}
+                      navigate={navigate}
+                      error={resaleNFTDataError}
+                    />
+                  ) : (
+                    <ErrorFallback custom="Failed to load Resale NFTs" />
+                  )}
                 </Tab.Pane>
                 <Tab.Pane eventKey="created-nfts">
                   {!nftError ? (
