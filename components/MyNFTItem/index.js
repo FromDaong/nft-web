@@ -155,37 +155,33 @@ const NFTListItem = ({
           {transferNFTClick ? (
             <div className="row">
               <div className="col-lg-6 mt-3">
-                <span className="d-inline-block w-100">
-                  <OverlayTrigger
-                    placement="top"
-                    overlay={
-                      <Tooltip id="tooltip-disabled">
-                        You must list the same NFTs together.
-                      </Tooltip>
-                    }
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip id="tooltip-disabled">
+                      You must list the same NFTs together.
+                    </Tooltip>
+                  }
+                >
+                  <Button
+                    bgColor="gray.600"
+                    isFullWidth
+                    disabled={hasOpenOrder}
+                    style={hasOpenOrder ? { pointerEvents: "none" } : {}}
+                    onClick={() => listOrderClick({ ...data, balance })}
                   >
-                    <span>
-                      <Button
-                        colorScheme="gray"
-                        disabled={hasOpenOrder}
-                        style={hasOpenOrder ? { pointerEvents: "none" } : {}}
-                        onClick={() => listOrderClick({ ...data, balance })}
-                      >
-                        <b>Re-Sell</b>
-                      </Button>
-                    </span>
-                  </OverlayTrigger>
-                </span>
+                    <b>Re-Sell</b>
+                  </Button>
+                </OverlayTrigger>
               </div>
               <div className="col-lg-6 mt-3">
-                <span className="d-inline-block w-100">
-                  <Button
-                    colorScheme="gray"
-                    onClick={() => transferNFTClick(data)}
-                  >
-                    <b>Transfer</b>
-                  </Button>
-                </span>
+                <Button
+                  bgColor="gray.600"
+                  isFullWidth
+                  onClick={() => transferNFTClick(data)}
+                >
+                  <b>Transfer</b>
+                </Button>
               </div>
             </div>
           ) : (
