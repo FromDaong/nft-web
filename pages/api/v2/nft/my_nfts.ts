@@ -31,8 +31,6 @@ const myNFTs = async (req, res) => {
     web3Node
   );
 
-  contractAddresses.treatNFTMinter[56],
-
   const nftids = owned_nfts.result.map((nft) => Number(nft.token_id));
   // @ts-ignore
   const ownedTokensWithMetadata = await NFT.paginate(
