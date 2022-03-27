@@ -3,6 +3,7 @@ import NFT from "../../../../models/NFT";
 import dbConnect from "../../../../utils/dbConnect";
 import { withJWTAuth } from "../../../../utils/server-utils";
 import { contractAddresses } from "../../../../treat/lib/constants";
+import TreatNFTMinterAbi from "../../../../treat/lib/abi/treatnftminter.json";
 
 dbConnect();
 
