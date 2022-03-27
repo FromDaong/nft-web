@@ -128,7 +128,7 @@ const RenderOwnedNFTs = ({
             flexWrap: "wrap",
             justifyContent: "center",
           }}
-          className="full-width"
+          className="w-full"
         >
           {new Array(12).fill(0).map((_, i) => (
             <MyNFTItemSkeleton key={i} className="col-span-1" />
