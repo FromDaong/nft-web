@@ -83,10 +83,7 @@ const Creators = () => {
         {!loading ? (
           <ModelList totwOnly={false} modelData={modelData || []} />
         ) : (
-          <div
-            className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-12 mt-12"
-            style={{ backgroundColor: "#ffd4da" }}
-          >
+          <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-12 mt-12">
             {new Array(12).fill(0).map((_, i) => (
               <MyNFTItemSkeleton key={i} className="col-span-1" />
             ))}
