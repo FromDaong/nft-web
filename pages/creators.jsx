@@ -1,11 +1,13 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+
 import Hero from "../components/Hero";
+import Layout from "../components/Layout";
 import ModelList from "../components/ModelList";
-import { useRouter } from "next/dist/client/router";
-import axios from "axios";
-import PaginationComponentV2 from "../components/Pagination";
 import MyNFTItemSkeleton from "../components/Skeleton/MyNFTItemSkeleton";
+import PaginationComponentV2 from "../components/Pagination";
+import axios from "axios";
+import { useRouter } from "next/dist/client/router";
 
 const Creators = () => {
   const [apiResponseData, setApiResponseData] = useState({
@@ -59,7 +61,7 @@ const Creators = () => {
   };
 
   return (
-    <>
+    <Layout>
       <div>
         <Hero
           title={"Our Creators"}
@@ -81,7 +83,10 @@ const Creators = () => {
         {!loading ? (
           <ModelList totwOnly={false} modelData={modelData || []} />
         ) : (
-          <div className="full-width">
+          <div
+            className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-12 mt-12"
+            style={{ backgroundColor: "#ffd4da" }}
+          >
             {new Array(12).fill(0).map((_, i) => (
               <MyNFTItemSkeleton key={i} className="col-span-1" />
             ))}
@@ -101,7 +106,7 @@ const Creators = () => {
           />
         </div>
       </div>
-    </>
+    </Layout>
   );
 };
 
