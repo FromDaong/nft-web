@@ -81,7 +81,7 @@ const RenderOwnedNFTs = ({
     return <ErrorFallback custom="Failed to load my NFT's" />;
   }
   return (
-    <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
+    <div className="white-tp-bg" style={{ minHeight: 400 }}>
       {ownedNFTData.docs.length && !isLoading > 0 ? (
         <div className="">
           <div
