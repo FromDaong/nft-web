@@ -1,12 +1,14 @@
-import { Button, Spinner } from "react-bootstrap";
 import {
+  ArrowRepeat,
   CameraFill,
+  CollectionFill,
   GearFill,
   InfoCircleFill,
   PatchCheckFill,
   PencilFill,
   PiggyBankFill,
 } from "react-bootstrap-icons";
+import { Button, Spinner } from "react-bootstrap";
 import { Nav, Tab } from "react-bootstrap";
 import { useEffect, useState } from "react";
 
@@ -302,13 +304,13 @@ const ViewNFT = ({
                 </Nav.Item>
                 <Nav.Item className="white-tp-bg mt-2">
                   <Nav.Link eventKey="owned-nfts">
-                    <CameraFill className="mr-2 mb-1" />
+                    <CollectionFill className="mr-2 mb-1" />
                     Owned NFTs
                   </Nav.Link>
                 </Nav.Item>
                 <Nav.Item className="white-tp-bg mt-2">
                   <Nav.Link eventKey="resale-nfts">
-                    <CameraFill className="mr-2 mb-1" />
+                    <ArrowRepeat className="mr-2 mb-1" />
                     Resale NFTs
                   </Nav.Link>
                 </Nav.Item>
