@@ -1,5 +1,5 @@
 import { Box, Button } from "@chakra-ui/react";
-import { Clipboard, PiggyBankFill } from "react-bootstrap-icons";
+import { Clipboard, ShopWindow } from "react-bootstrap-icons";
 
 import BigNumber from "bignumber.js";
 import ErrorFallback from "../Fallback/Error";
@@ -37,7 +37,7 @@ const ResaleNFTs = ({
               fontSize: 24,
             }}
           >
-            <PiggyBankFill className="pb-1 mr-1" /> My NFTs
+            <ShopWindow className="pb-1 mr-1" /> My NFTs
           </h2>
         </div>
 
@@ -81,7 +81,7 @@ const RenderResaleNFTs = ({
     return <ErrorFallback custom="Failed to load Resale NFT's" />;
   }
   return (
-    <div className="full-width white-tp-bg" style={{ minHeight: 400 }}>
+    <div className="white-tp-bg" style={{ minHeight: 400 }}>
       <div style={{ background: "#FFFDF2" }}>
         <div
           className="px-4 py-2 w-100 container d-flex"

@@ -1,7 +1,8 @@
-import MoralisInstance from "../../../../utils/moralis";
+import MoralisInstance, { ethers, web3Node } from "../../../../utils/moralis";
 import NFT from "../../../../models/NFT";
 import dbConnect from "../../../../utils/dbConnect";
 import { withJWTAuth } from "../../../../utils/server-utils";
+import { contractAddresses } from "../../../../treat/lib/constants";
 
 dbConnect();
 
@@ -23,6 +24,14 @@ const myNFTs = async (req, res) => {
     chain: "bsc",
   });
 
+  const treatNFTMinter = new ethers.Contract(
+    contractAddresses.treatNFTMinter[56],
+    TreatNFTMinterAbi,
+    web3Node
+  );
+
+  contractAddresses.treatNFTMinter[56],
+
   const nftids = owned_nfts.result.map((nft) => Number(nft.token_id));
   // @ts-ignore
   const ownedTokensWithMetadata = await NFT.paginate(
@@ -42,6 +51,10 @@ const myNFTs = async (req, res) => {
           ...nft_data,
           ...data.toObject(),
         };
+
+        returnObj.balance = await treatNFTMinter.methods
+          .balanceOf(session.address, returnObj.nftId)
+          .call();
 
         if (returnObj.cdnUrl) {
           returnObj.image = returnObj.cdnUrl;
