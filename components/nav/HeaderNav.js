@@ -179,11 +179,7 @@ const HeaderNav = ({ modelData }) => {
                   <Link href="/become-creator" passHref>
                     <NavDropdown.Item>Become a Creator</NavDropdown.Item>
                   </Link>
-                ) : (
-                  <Link href="/creator-dashboard" passHref>
-                    <NavDropdown.Item>Creator Dashboard</NavDropdown.Item>
-                  </Link>
-                )}
+                ) : null}
                 {/* <NavDropdown.Item>
                   <Link href={`/p/${account}`}>
                     <a>My Profile</a>
