@@ -37,7 +37,8 @@ const ResaleNFTs = ({
               fontSize: 24,
             }}
           >
-            <ShopWindow className="pb-1 mr-1" /> My NFTs
+            <ShopWindow className="pb-1 mr-1" />
+            Listed on Re-Sale Marketplace
           </h2>
         </div>
 
@@ -82,27 +83,6 @@ const RenderResaleNFTs = ({
   }
   return (
     <div className="white-tp-bg" style={{ minHeight: 400 }}>
-      <div style={{ background: "#FFFDF2" }}>
-        <div
-          className="px-4 py-2 w-100 container d-flex"
-          style={{
-            justifyContent: "space-between",
-            alignItems: "center",
-            borderRadius: 8,
-          }}
-        >
-          <div>
-            <h2
-              className="heading-text-primary pt-1"
-              style={{
-                fontSize: 24,
-              }}
-            >
-              Listed on Re-Sale Marketplace
-            </h2>
-          </div>
-        </div>
-      </div>
       {resaleNFTData.docs.length > 0 && !isLoading ? (
         <div className="container px-4 ">
           <div className="d-flex text-left mt-5">
