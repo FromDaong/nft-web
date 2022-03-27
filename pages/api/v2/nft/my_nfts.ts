@@ -51,12 +51,12 @@ const myNFTs = async (req, res) => {
           ...data.toObject(),
         };
 
-        returnObj.balance = await treatNFTMinter.balanceOf(
+        const balance = await treatNFTMinter.balanceOf(
           session.ethAddress,
           returnObj.id
         );
 
-        console.log({ balance: returnObj.balance });
+        returnObj.balance = Number(balance.toString());
 
         if (returnObj.cdnUrl) {
           returnObj.image = returnObj.cdnUrl;
