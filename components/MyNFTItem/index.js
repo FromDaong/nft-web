@@ -41,9 +41,12 @@ const NFTListItem = ({
         aria-labelledby="example-modal-sizes-title-lg"
       >
         <Modal.Body>
-          <GumletImage
-            src={`/api/v2/utils/images/fetchWithFallback?default=${data.image}`}
-          />
+          <div className="w-full">
+            <GumletImage
+              className="w-full min-h-96"
+              src={`/api/v2/utils/images/fetchWithFallback?default=${data.image}`}
+            />
+          </div>
           <h4 className="text-center pt-3">{data.description}</h4>
         </Modal.Body>
         <Modal.Footer>
