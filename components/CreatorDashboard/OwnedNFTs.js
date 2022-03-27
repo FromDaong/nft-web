@@ -1,6 +1,5 @@
-import { Box, Button } from "@chakra-ui/react";
-import { Clipboard, PiggyBankFill } from "react-bootstrap-icons";
-
+import { Box } from "@chakra-ui/react";
+import { CollectionFill } from "react-bootstrap-icons";
 import ErrorFallback from "../Fallback/Error";
 import LazyLoad from "react-lazyload";
 import MyNFTItem from "../MyNFTItem";
@@ -36,24 +35,9 @@ const OwnedNFTs = ({
               fontSize: 24,
             }}
           >
-            <PiggyBankFill className="pb-1 mr-1" /> My NFTs
+            <CollectionFill className="pb-1 mr-1" /> Owned NFTs
           </h2>
         </div>
-
-        <Button
-          className="bg-primary text-white font-bold"
-          style={{ maxWidth: 250 }}
-          onClick={() => {
-            navigator.clipboard.writeText(
-              `https://treatdao.com/become-creator?r=${account}`
-            );
-          }}
-        >
-          <b>
-            <Clipboard className="pb-1 mr-2" size={24} />
-            {"COPY REFERRAL LINK"}
-          </b>
-        </Button>
       </div>
       <Box className="w-full">
         <RenderOwnedNFTs

@@ -1,7 +1,6 @@
-import { Box, Button } from "@chakra-ui/react";
-import { Clipboard, ShopWindow } from "react-bootstrap-icons";
-
+import { ArrowRepeat } from "react-bootstrap-icons";
 import BigNumber from "bignumber.js";
+import { Box } from "@chakra-ui/react";
 import ErrorFallback from "../Fallback/Error";
 import LazyLoad from "react-lazyload";
 import MyNFTItem from "../MyNFTItem";
@@ -37,25 +36,10 @@ const ResaleNFTs = ({
               fontSize: 24,
             }}
           >
-            <ShopWindow className="pb-1 mr-1" />
+            <ArrowRepeat className="pb-1 mr-1" />
             Listed on Re-Sale Marketplace
           </h2>
         </div>
-
-        <Button
-          className="bg-primary text-white font-bold"
-          style={{ maxWidth: 250 }}
-          onClick={() => {
-            navigator.clipboard.writeText(
-              `https://treatdao.com/become-creator?r=${account}`
-            );
-          }}
-        >
-          <b>
-            <Clipboard className="pb-1 mr-2" size={24} />
-            {"COPY REFERRAL LINK"}
-          </b>
-        </Button>
       </div>
       <Box className="w-full">
         <RenderResaleNFTs
