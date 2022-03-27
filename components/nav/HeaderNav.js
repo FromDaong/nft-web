@@ -116,10 +116,6 @@ const HeaderNav = ({ modelData }) => {
                   </Link>
                 </NavDropdown.Item>
               </NavDropdown>
-
-              <Link href="/my-nfts" passHref>
-                <Nav.Link>My NFTs</Nav.Link>
-              </Link>
               {modelData && !modelData.pending && !modelData.rejected ? (
                 <Link href="/creator-dashboard" passHref>
                   <Nav.Link style={{ color: "#c34573" }}>
@@ -165,9 +161,6 @@ const HeaderNav = ({ modelData }) => {
                 disabled={chainId !== "0x38" && chainId !== "0x61"}
                 id="basic-nav-dropdown"
               >
-                <Link href="/my-nfts" passHref>
-                  <NavDropdown.Item>My NFTs</NavDropdown.Item>
-                </Link>
                 <NavDropdown.Item
                   onClick={() => {
                     setBalanceModalShow(true);
@@ -179,7 +172,11 @@ const HeaderNav = ({ modelData }) => {
                   <Link href="/become-creator" passHref>
                     <NavDropdown.Item>Become a Creator</NavDropdown.Item>
                   </Link>
-                ) : null}
+                ) : (
+                  <Link href="/creator-dashboard" passHref>
+                    <NavDropdown.Item>Creator Dashboard</NavDropdown.Item>
+                  </Link>
+                )}
                 {/* <NavDropdown.Item>
                   <Link href={`/p/${account}`}>
                     <a>My Profile</a>
