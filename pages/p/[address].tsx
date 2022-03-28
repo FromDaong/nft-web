@@ -1,18 +1,17 @@
 import { Button, Flex } from "@chakra-ui/react";
-
 import Layout from "../../components/Layout";
-import Link from "next/link";
 import MoralisInstance from "../../utils/moralis";
 import NFT from "../../models/NFT";
-import PaginationComponentV2 from "../../components/Pagination";
 import Profile from "../../models/Profile";
 import NFTListItem from "../../components/NFTListItem/";
 import dbConnect from "../../utils/dbConnect";
 import { useRouter } from "next/dist/client/router";
 import { useState } from "react";
+import { Clipboard } from "react-bootstrap-icons";
 
 export default function UserProfile(props) {
   const [loadingOwnedNFTs, setLoadingOwnedNFTs] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const router = useRouter();
   const { address } = router.query;
@@ -26,8 +25,34 @@ export default function UserProfile(props) {
       <div className="container">
         <div className="view-model white-tp-bg">
           <div className="user-profile-top-container col-md-12">
-            <div className="label">Treat NFTs owned by:</div>
-            {profile.display_name || profile.username || address}
+            <div>
+              <div className="label">Treat NFTs owned by:</div>
+              {profile.display_name || profile.username || address}
+            </div>
+
+            <Button
+              colorScheme={"white"}
+              variant="outline"
+              style={{ marginTop: 10, fontSize: "0.8em" }}
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  `https://treatdao.com/creator/${modelData.username}`
+                );
+                setCopied(true);
+              }}
+            >
+              {copied ? (
+                <>
+                  <Clipboard className="mb-1 mr-1" />
+                  Copied
+                </>
+              ) : (
+                <>
+                  <Clipboard className="mb-1 mr-1" />
+                  Copy URL
+                </>
+              )}
+            </Button>
           </div>
 
           <div className="profile-info" style={{ marginTop: 0 }}>
