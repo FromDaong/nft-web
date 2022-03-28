@@ -37,7 +37,7 @@ const ResaleNFTs = ({
             }}
           >
             <ArrowRepeat className="pb-1 mr-1" />
-            Listed on Re-Sale Marketplace
+            Listed on Resale Marketplace
           </h2>
         </div>
       </div>
@@ -66,7 +66,7 @@ const RenderResaleNFTs = ({
     return <ErrorFallback custom="Failed to load Resale NFT's" />;
   }
   return (
-    <div className="white-tp-bg" style={{ minHeight: 400 }}>
+    <div className="" style={{ minHeight: 400 }}>
       {resaleNFTData.docs.length > 0 && !isLoading ? (
         <div className="container px-4 ">
           <div className="d-flex text-left mt-5">
