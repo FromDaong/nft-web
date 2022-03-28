@@ -68,7 +68,7 @@ export default function DashboardTabs({
               </Nav.Item>
             )}
             {isModel && (
-              <Nav.Item className="white-tp-bg">
+              <Nav.Item className="white-tp-bg mt-2">
                 <Nav.Link eventKey="edit-profile">
                   <PencilFill className="mr-2 mb-1" />
                   Edit Profile
