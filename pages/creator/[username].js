@@ -187,7 +187,7 @@ const ViewModel = ({
           <div className="buttons">
             {account === modelData.address && (
               <div className="mr-2">
-                <Link href="/creator-dashboard">
+                <Link href="/dashboard">
                   <a>
                     <Button
                       className="px-4"

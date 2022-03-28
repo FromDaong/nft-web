@@ -48,7 +48,7 @@ const SubscriptionNFTs = ({
           </h2>
         </div>
 
-        <Link href="/creator-dashboard/create-sub-nft">
+        <Link href="/dashboard/create-sub-nft">
           <a>
             <Button
               className="bg-primary text-white font-bold"

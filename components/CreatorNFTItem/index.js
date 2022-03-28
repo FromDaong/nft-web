@@ -53,7 +53,7 @@ const CreatorNFTItem = ({ data, modelData, balance }) => {
 
   const goToEditNFT = (e) => {
     e.preventDefault(true);
-    router.push(`/creator-dashboard/edit-nft/${data.id}`);
+    router.push(`/dashboard/edit-nft/${data.id}`);
   };
 
   return (
