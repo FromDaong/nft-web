@@ -6,19 +6,24 @@ import { isBlurhashValid } from "blurhash";
 import { useMoralis } from "react-moralis";
 import { useRouter } from "next/dist/client/router";
 
-export default function TwNFTListItem({ doc }: { doc: any }) {
+export default function TwNFTListItem({ data }: { data: any }) {
   const { account } = useMoralis();
   const router = useRouter();
 
-  const profilePic = `/api/v2/utils/images/fetchWithFallback?default=${doc.model_profile_pic}`;
+  const profilePic = `/api/v2/utils/images/fetchWithFallback?default=${data.model_profile_pic}`;
+  const isTOTMorOldTOTW =
+    data.totw || data.totm || data.old_totw || data.old_totm;
   const { address } = router.query;
 
   return (
-    <div className="p-2 rounded-xl col-span-1 border-3 border-primary">
+    <div
+      className={`nft-card ${isTOTMorOldTOTW && "purple"}`}
+      style={{ width: "100%" }}
+    >
       <LazyLoad height={400} offset={600}>
         <div className="space-y-4 pt-12">
           <div className="w-full rounded-xl flex items-center justify-center h-96 border-2 border-primary2 bg-black relative">
-            <Link href={`/creator/${doc.attributes[0].value.slice(1, -1)}`}>
+            <Link href={`/creator/${data.attributes[0].value.slice(1, -1)}`}>
               <a
                 style={{
                   transform: "translateY(-50%)",
@@ -31,14 +36,14 @@ export default function TwNFTListItem({ doc }: { doc: any }) {
                 />
               </a>
             </Link>
-            {doc.image ? (
+            {data.image ? (
               <img
                 className="rounded-xl w-full h-full object-cover border-2 border-primary2"
-                src={`/api/v2/utils/images/fetchWithFallback?default=${doc.image}`}
+                src={`/api/v2/utils/images/fetchWithFallback?default=${data.image}`}
               />
             ) : (
               <>
-                {isBlurhashValid(doc.blurhash).result ? (
+                {isBlurhashValid(data.blurhash).result ? (
                   <>
                     <div className="info-overlay" style={{ zIndex: 100 }}>
                       <EyeSlash size={32} />
@@ -50,7 +55,7 @@ export default function TwNFTListItem({ doc }: { doc: any }) {
                         overflow: "hidden",
                         zIndex: 95,
                       }}
-                      hash={doc.blurhash}
+                      hash={data.blurhash}
                       width={"100%"}
                       height={375}
                       resolutionX={32}
@@ -68,15 +73,15 @@ export default function TwNFTListItem({ doc }: { doc: any }) {
           </div>
           <div className="p-2 text-white bg-primary rounded-lg flex justify-between w-full">
             <div className="block pr-3">
-              <p className="pb-2 font-bold">{doc.name}</p>
+              <p className="pb-2 font-bold">{data.name}</p>
               {account === address && (
                 <span className="font-bold">Creator: </span>
               )}
-              {doc.attributes[0].value.slice(1, -1)}
+              {data.attributes[0].value.slice(1, -1)}
             </div>
-            {typeof doc.list_price !== "undefined" && (
+            {typeof data.list_price !== "undefined" && (
               <div className="block">
-                <p className="pb-2 font-bold text-left">{doc.list_price}</p>
+                <p className="pb-2 font-bold text-left">{data.list_price}</p>
                 <p className="font-bold">BNB</p>
               </div>
             )}

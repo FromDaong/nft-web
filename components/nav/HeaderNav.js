@@ -47,7 +47,12 @@ const HeaderNav = ({ modelData }) => {
   }, []);
 
   return (
-    <Navbar expand="lg" sticky="top" className="mb-4 main-nav">
+    <Navbar
+      expand="lg"
+      sticky="top"
+      className="mb-4 main-nav"
+      style={{ zIndex: 10 }}
+    >
       <WalletModal
         show={walletModalShow}
         handleClose={() => setWalletModalShow(false)}
@@ -116,21 +121,14 @@ const HeaderNav = ({ modelData }) => {
                   </Link>
                 </NavDropdown.Item>
               </NavDropdown>
-
-              <Link href="/my-nfts" passHref>
-                <Nav.Link>My NFTs</Nav.Link>
+              <Link href="/dashboard" passHref>
+                <Nav.Link style={{ color: "#c34573" }}>Dashboard</Nav.Link>
               </Link>
-              {modelData && !modelData.pending && !modelData.rejected ? (
-                <Link href="/creator-dashboard" passHref>
-                  <Nav.Link style={{ color: "#c34573" }}>
-                    Creator Dashboard
-                  </Nav.Link>
-                </Link>
-              ) : (
+              {/* {modelData && !modelData.pending && !modelData.rejected ? null : (
                 <Link href="/become-creator" passHref>
                   <Nav.Link>Apply</Nav.Link>
                 </Link>
-              )}
+              )} */}
             </>
           )}
 
@@ -165,9 +163,6 @@ const HeaderNav = ({ modelData }) => {
                 disabled={chainId !== "0x38" && chainId !== "0x61"}
                 id="basic-nav-dropdown"
               >
-                <Link href="/my-nfts" passHref>
-                  <NavDropdown.Item>My NFTs</NavDropdown.Item>
-                </Link>
                 <NavDropdown.Item
                   onClick={() => {
                     setBalanceModalShow(true);
@@ -180,15 +175,15 @@ const HeaderNav = ({ modelData }) => {
                     <NavDropdown.Item>Become a Creator</NavDropdown.Item>
                   </Link>
                 ) : (
-                  <Link href="/creator-dashboard" passHref>
-                    <NavDropdown.Item>Creator Dashboard</NavDropdown.Item>
+                  <Link href="/dashboard" passHref>
+                    <NavDropdown.Item>Dashboard</NavDropdown.Item>
                   </Link>
                 )}
-                {/* <NavDropdown.Item>
+                <NavDropdown.Item>
                   <Link href={`/p/${account}`}>
-                    <a>My Profile</a>
+                    <a>My NFT Profile</a>
                   </Link>
-                </NavDropdown.Item> */}
+                </NavDropdown.Item>
                 <NavDropdown.Item style={{ borderRadius: 8 }} onClick={signOut}>
                   Disconnect
                 </NavDropdown.Item>

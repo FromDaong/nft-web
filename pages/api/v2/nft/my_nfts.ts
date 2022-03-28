@@ -1,5 +1,7 @@
-import MoralisInstance from "../../../../utils/moralis";
+import MoralisInstance, { ethers, web3Node } from "../../../../utils/moralis";
+
 import NFT from "../../../../models/NFT";
+import TreatNFTMinterAbi from "../../../../treat/lib/abi/treatnftminter.json";
 import dbConnect from "../../../../utils/dbConnect";
 import { withJWTAuth } from "../../../../utils/server-utils";
 
@@ -23,6 +25,12 @@ const myNFTs = async (req, res) => {
     chain: "bsc",
   });
 
+  const treatNFTMinter = new ethers.Contract(
+    process.env.TREAT_MINTER_ADDRESS,
+    TreatNFTMinterAbi,
+    web3Node
+  );
+
   const nftids = owned_nfts.result.map((nft) => Number(nft.token_id));
   // @ts-ignore
   const ownedTokensWithMetadata = await NFT.paginate(
@@ -33,7 +41,7 @@ const myNFTs = async (req, res) => {
   );
 
   ownedTokensWithMetadata.docs = await Promise.all(
-    ownedTokensWithMetadata.docs.map((data) => {
+    ownedTokensWithMetadata.docs.map(async (data) => {
       const nft_data = owned_nfts.result.find(
         (owned_nft) => Number(owned_nft.token_id) === data.id
       );
@@ -42,6 +50,13 @@ const myNFTs = async (req, res) => {
           ...nft_data,
           ...data.toObject(),
         };
+
+        const balance = await treatNFTMinter.balanceOf(
+          session.ethAddress,
+          returnObj.id
+        );
+
+        returnObj.balance = Number(balance.toString());
 
         if (returnObj.cdnUrl) {
           returnObj.image = returnObj.cdnUrl;

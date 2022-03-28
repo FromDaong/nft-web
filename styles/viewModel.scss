@@ -18,7 +18,19 @@
     margin-bottom: -160px;
     background-size: cover !important;
     background-position: center !important;
-    background: #d3678d;
+    background: #da5184;
+  }
+
+  .user-profile-top-container {
+    text-align: center;
+    padding: 20px 15px;
+    font-weight: 600;
+    font-size: 1.25em;
+    background: #da5184;
+    color: white;
+    .label {
+      font-size: 16px;
+    }
   }
 
   .profile-top-container {
@@ -87,7 +99,7 @@
       max-width: 650px;
     }
     .link {
-      color: #d3678d;
+      color: #da5184;
       font-size: 0.85em;
     }
 
@@ -100,11 +112,11 @@
         background: none;
         border-bottom: 3px solid rgba(0, 0, 0, 0.15);
         font-weight: bolder;
-        color: #d3678d;
+        color: #da5184;
         flex-grow: 1;
 
         &.active {
-          border-bottom: 3px solid #d3678d;
+          border-bottom: 3px solid #da5184;
         }
       }
     }
@@ -140,7 +152,7 @@
     }
 
     .amount {
-      color: #d3678d;
+      color: #da5184;
       margin-top: 5px;
     }
   }

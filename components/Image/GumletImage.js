@@ -6,7 +6,13 @@ const gumletLoader = ({ src }) => {
 
 const GumletImage = (props) => {
   return (
-    <Image {...props} loader={gumletLoader} layout="fill" objectFit="cover" />
+    <Image
+      {...props}
+      loader={gumletLoader}
+      layout="fill"
+      objectFit="cover"
+      unoptimized
+    />
   );
 };
 

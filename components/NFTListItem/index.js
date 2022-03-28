@@ -20,20 +20,26 @@ const NFTListItem = ({
   soldOut,
 }) => {
   useEffect(() => {
-    console.log("Data has changed " + data._id);
+    // console.log("Data has changed ", data);
   }, [data]);
 
   const { ref, gotInView, model } = useNFTItemData(data);
   const isTOTMorOldTOTW =
     data.totw || data.totm || data.old_totw || data.old_totm;
+
   const profilePic = model
     ? `/api/v2/utils/images/fetchWithFallback?default=${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/`
     : `/api/v2/utils/images/fetchWithFallback?default=${data.model_profile_pic}`;
-  if (!data.attributes) return <div></div>;
+
+  if (!data.attributes || !data.id) return <div></div>;
 
   return (
     <Link href={`/view/${data.id}`}>
-      <InView as={"a"} onChange={gotInView} className="row m-0 w-100 my-4">
+      <InView
+        as={"a"}
+        onChange={gotInView}
+        className="row m-0 w-100 my-4 justify-center"
+      >
         <div
           ref={ref}
           className={`nft-card ${isTOTMorOldTOTW && "purple"} ${
@@ -73,7 +79,7 @@ const NFTListItem = ({
           >
             <a>
               <div className="profile-pic">
-                <GumletImage src={profilePic} />
+                <img src={profilePic} />
               </div>
             </a>
           </Link>

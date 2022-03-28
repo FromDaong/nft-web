@@ -11,6 +11,7 @@ import Tooltip from "react-bootstrap/Tooltip";
 import { isBlurhashValid } from "blurhash";
 import { useNFTItemData } from "../../lib/imagecdn";
 import { useState } from "react";
+import Lightbox from "react-image-lightbox";
 
 const NFTListItem = ({
   data,
@@ -34,24 +35,12 @@ const NFTListItem = ({
 
   return (
     <>
-      <Modal
-        size="lg"
-        show={modalData ? true : false}
-        onHide={() => setModalData(null)}
-        aria-labelledby="example-modal-sizes-title-lg"
-      >
-        <Modal.Body>
-          <GumletImage
-            src={`/api/v2/utils/images/fetchWithFallback?default=${data.image}`}
-          />
-          <h4 className="text-center pt-3">{data.description}</h4>
-        </Modal.Body>
-        <Modal.Footer>
-          <div className="container text-center">
-            <Button onClick={() => setModalData(null)}>Close</Button>
-          </div>
-        </Modal.Footer>
-      </Modal>
+      {modalData && (
+        <Lightbox
+          mainSrc={`/api/v2/utils/images/fetchWithFallback?default=${data.image}`}
+          onCloseRequest={() => setModalData(null)}
+        />
+      )}
 
       <InView as={"a"} onChange={gotInView} className="row m-0 w-100 my-4">
         <div ref={ref} className="nft-card" style={{ boxShadow: "none" }}>
@@ -86,33 +75,32 @@ const NFTListItem = ({
             }}
           >
             {data.image || isLoading ? (
-              <>
-                {isLoading ? (
-                  <div
-                    style={{
-                      position: "absolute",
-                      width: "100%",
-                      minHeight: "375px",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
+              <div style={{ minHeight: "375px" }}>
+                <div
+                  style={{
+                    position: "absolute",
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    minHeight: "375px",
+                    top: 0,
+                    left: 0,
+                  }}
+                >
+                  <Spinner
+                    animation="border"
+                    role="status"
+                    className="mt-5 mb-5"
+                    variant="light"
                   >
-                    <Spinner
-                      animation="border"
-                      role="status"
-                      className="mt-5 mb-5"
-                      variant="light"
-                    >
-                      <span className="sr-only">Loading...</span>
-                    </Spinner>
-                  </div>
-                ) : (
-                  <GumletImage
-                    src={`/api/v2/utils/images/fetchWithFallback?default=${data.image}`}
-                  />
-                )}
-              </>
+                    <span className="sr-only">Loading...</span>
+                  </Spinner>
+                </div>
+                <GumletImage
+                  src={`/api/v2/utils/images/fetchWithFallback?default=${data.image}`}
+                />
+              </div>
             ) : (
               <>
                 <div className="info-overlay">
@@ -165,6 +153,8 @@ const NFTListItem = ({
                 >
                   <Button
                     bgColor="gray.600"
+                    color="white"
+                    className="text-white"
                     isFullWidth
                     disabled={hasOpenOrder}
                     style={hasOpenOrder ? { pointerEvents: "none" } : {}}
@@ -177,6 +167,8 @@ const NFTListItem = ({
               <div className="col-lg-6 mt-3">
                 <Button
                   bgColor="gray.600"
+                  color="white"
+                  className="text-white"
                   isFullWidth
                   onClick={() => transferNFTClick(data)}
                 >
