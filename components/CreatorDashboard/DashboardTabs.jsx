@@ -43,21 +43,10 @@ export default function DashboardTabs({
   isModel,
 }) {
   return (
-    <Tab.Container
-      id="left-tabs-example"
-      defaultActiveKey={isModel ? "edit-profile" : "owned_nfts"}
-    >
+    <Tab.Container id="left-tabs-example" defaultActiveKey={"owned-nfts"}>
       <div className="mt-2 row">
         <div className="col-md-2 p-0">
           <Nav variant="pills" className="flex-column">
-            {isModel && (
-              <Nav.Item className="white-tp-bg">
-                <Nav.Link eventKey="edit-profile">
-                  <PencilFill className="mr-2 mb-1" />
-                  Edit Profile
-                </Nav.Link>
-              </Nav.Item>
-            )}
             <Nav.Item className="white-tp-bg mt-2">
               <Nav.Link eventKey="owned-nfts">
                 <CollectionFill className="mr-2 mb-1" />
@@ -75,6 +64,14 @@ export default function DashboardTabs({
                 <Nav.Link eventKey="created-nfts">
                   <CameraFill className="mr-2 mb-1" />
                   Sweet Shop NFTs
+                </Nav.Link>
+              </Nav.Item>
+            )}
+            {isModel && (
+              <Nav.Item className="white-tp-bg mt-2">
+                <Nav.Link eventKey="edit-profile">
+                  <PencilFill className="mr-2 mb-1" />
+                  Edit Profile
                 </Nav.Link>
               </Nav.Item>
             )}
