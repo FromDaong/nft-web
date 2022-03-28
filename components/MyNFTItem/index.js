@@ -42,9 +42,11 @@ const NFTListItem = ({
       >
         <Modal.Body>
           <div className="w-full h-96">
-            <GumletImage
+            <div
               className="w-full h-full object-cover"
-              src={`/api/v2/utils/images/fetchWithFallback?default=${data.image}`}
+              style={{
+                backgroundImage: `/api/v2/utils/images/fetchWithFallback?default=${data.image}`,
+              }}
             />
           </div>
           <h4 className="text-center pt-3">{data.description}</h4>
