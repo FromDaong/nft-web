@@ -48,7 +48,7 @@ export default function DashboardTabs({
       defaultActiveKey={isModel ? "edit-profile" : "owned_nfts"}
     >
       <div className="mt-2 row">
-        <div className="col-md-3 p-0">
+        <div className="col-md-2 p-0">
           <Nav variant="pills" className="flex-column">
             {isModel && (
               <Nav.Item className="white-tp-bg">
@@ -110,7 +110,7 @@ export default function DashboardTabs({
             </Nav.Item>
           </Nav>
         </div>
-        <div className="col-md-9 pr-0 mt-4 mt-md-0 pl-0 pl-md-3">
+        <div className="col-md-10 pr-0 mt-4 mt-md-0 pl-0 pl-md-3">
           <Tab.Content>
             <Tab.Pane eventKey="edit-profile">
               <EditProfile modelData={modelData} />
