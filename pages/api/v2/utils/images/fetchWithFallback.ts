@@ -53,12 +53,11 @@ export default async function fetchWithFallback(req, res) {
       res.setHeader("Content-Type", "image/webp");
       return res.send(Buffer.from(finalImage));
     } catch (err) {
-      console.log({ err });
       const response = await axios.get(req.query.default, {
         responseType: "arraybuffer",
       });
 
-      const blob = response.data.replace(`"`, "").replace(/["']/g, "");
+      const blob = response.data;
       const image = await sharp(Buffer.from(blob))
         .resize(500)
         .toFormat("webp", { nearLossless: true, quality: 50, alphaQuality: 80 })

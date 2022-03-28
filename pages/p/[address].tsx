@@ -6,7 +6,7 @@ import MoralisInstance from "../../utils/moralis";
 import NFT from "../../models/NFT";
 import PaginationComponentV2 from "../../components/Pagination";
 import Profile from "../../models/Profile";
-import TwNFTListItem from "../../components/NFTListItem/TwNFTListItem";
+import NFTListItem from "../../components/NFTListItem/";
 import dbConnect from "../../utils/dbConnect";
 import { useRouter } from "next/dist/client/router";
 import { useState } from "react";
@@ -19,65 +19,36 @@ export default function UserProfile(props) {
   const owned_nfts = JSON.parse(props.owned_nfts);
   const { profile } = props;
 
-  const navigateOwnedNFTs = (p) => {};
+  const navigateOwnedNFTs = (p) => { };
 
   return (
     <Layout>
       <div className="container">
         <div className="view-model white-tp-bg">
-          <div
-            className="banner"
-            style={{
-              backgroundImage: `url(${profile.banner_pic})`,
-            }}
-          ></div>
-          <div className="profile-top-container col-md-12">
-            <div
-              style={{ backgroundImage: `url(${profile.profile_pic})` }}
-              className="profile-pic"
-            />
-            <div className="buttons">
-              {address === profile.address && (
-                <div className="mr-2">
-                  <Link href="/creator-dashboard">
-                    <a>
-                      <Button
-                        className="px-4"
-                        style={{
-                          marginTop: 15,
-                          width: "100%",
-                          borderRadius: 25,
-                          display: "inline-block",
-                        }}
-                      >
-                        Edit Profile
-                      </Button>
-                    </a>
-                  </Link>
-                </div>
-              )}
-              <div></div>
-            </div>
+          <div className="user-profile-top-container col-md-12">
+            <div className="label">Treat NFTs owned by:</div>
+            {profile.display_name || profile.username || address}
           </div>
 
-          <div className="profile-info">
-            <div className="col-md-12">
+          <div className="profile-info" style={{ marginTop: 0 }}>
+            {/*   <div className="col-md-12">
               <div className="name">
                 {profile.display_name || profile.username || address}
-              </div>
-              <div className="username">@{profile.username || address}</div>
-              <p className="bio">{profile.bio}</p>
-            </div>
+              </div> */}
+            {/* <div className="username">@{profile.username || address}</div> */}
+            {/* <p className="bio">{profile.bio}</p> */}
+            {/* </div> */}
             <div className="grid grid-cols-3 gap-8 p-4">
               {owned_nfts.docs.length > 0 ? (
                 <>
                   {owned_nfts.docs.map((doc) => {
+                    console.log({ doc })
                     return (
                       // @ts-ignore
-                      <TwNFTListItem doc={doc} key={doc.id} />
+                      <NFTListItem data={doc} key={doc.id} />
                     );
                   })}
-                  <Flex w={"100%"} justifyContent="center">
+                  {/* <Flex w={"100%"} justifyContent="center">
                     <PaginationComponentV2
                       hasNextPage={owned_nfts.hasNextPage}
                       hasPrevPage={owned_nfts.hasPrevPage}
@@ -93,7 +64,7 @@ export default function UserProfile(props) {
                       loading={loadingOwnedNFTs}
                       setPage={(page) => navigateOwnedNFTs(Number(page))}
                     />
-                  </Flex>
+                  </Flex> */}
                 </>
               ) : (
                 <p>User has no owned nfts</p>
@@ -102,7 +73,7 @@ export default function UserProfile(props) {
           </div>
         </div>
       </div>
-    </Layout>
+    </Layout >
   );
 }
 

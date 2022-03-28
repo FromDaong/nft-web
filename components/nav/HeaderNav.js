@@ -177,11 +177,11 @@ const HeaderNav = ({ modelData }) => {
                     <NavDropdown.Item>Creator Dashboard</NavDropdown.Item>
                   </Link>
                 )}
-                {/* <NavDropdown.Item>
+                <NavDropdown.Item>
                   <Link href={`/p/${account}`}>
-                    <a>My Profile</a>
+                    <a>My NFT Profile</a>
                   </Link>
-                </NavDropdown.Item> */}
+                </NavDropdown.Item>
                 <NavDropdown.Item style={{ borderRadius: 8 }} onClick={signOut}>
                   Disconnect
                 </NavDropdown.Item>
