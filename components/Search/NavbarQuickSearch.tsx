@@ -94,7 +94,7 @@ const SearchModal = ({ isOpen, onClose }) => {
             </form>
           </div>
           {results.length > 0 && (
-            <div className="quick-search-results w-full">
+            <div className="quick-search-results w-full mt-4 space-y-1">
               {results.map((doc) => (
                 <Link
                   key={doc.id ?? doc.username}
@@ -104,8 +104,8 @@ const SearchModal = ({ isOpen, onClose }) => {
                       : `/creator/${doc.username}`
                   }
                 >
-                  <a className="quick-search-results-item w-full">
-                    <div className="quick-search-results-item w-full">
+                  <a className="quick-search-results-item w-full rounded-md">
+                    <div className="flex space-x-2 p-2 items-center rounded-md w-full">
                       {doc.group === "nft" ? (
                         <Photograph className="size-2 mr-2" />
                       ) : (

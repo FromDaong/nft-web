@@ -152,7 +152,7 @@ const CreateNFT = ({ modelData, id }) => {
       <BlankModal
         show={!!showCompleteModal}
         handleClose={() => setShowCompleteModal(false)}
-        buttonAction={() => router.push("/creator-dashboard")}
+        buttonAction={() => router.push("/dashboard")}
       />
 
       <div className="container">

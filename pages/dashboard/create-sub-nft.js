@@ -1,18 +1,16 @@
 import * as Yup from "yup";
 
+import { Button, Form } from "react-bootstrap";
 import { FieldArray, FormikProvider, useFormik } from "formik";
 
 import BlankModal from "../../components/BlankModal";
-import { Button } from "@chakra-ui/react";
 import CreatingNFTItem from "../../components/CreatingNFTItem";
-import { Flex } from "@chakra-ui/react";
-import { Form } from "react-bootstrap";
 import Hero from "../../components/Hero";
 import Loading from "../../components/Loading";
 import Web3 from "web3";
 import async from "async";
 import axios from "axios";
-import useCreateAndAddNFTs from "../../hooks/useCreateAndAddNFTs";
+import useCreateAndAddSubscriberNFTs from "../../hooks/useCreateAndAddSubscriberNFTs";
 import { useDropzone } from "react-dropzone";
 import { useEffect } from "react";
 import { useMoralis } from "react-moralis";
@@ -23,11 +21,7 @@ import { useState } from "react";
 const CreateNFT = ({ modelData }) => {
   const [ipfsFiles, setIpfsFiles] = useState([]);
   const router = useRouter();
-  const [sentWithoutIds, setSentWithoutIds] = useState(false);
-  const [sentWithIds, setSentWithIds] = useState(false);
-  const { data: bnbPrice, error: bnbError } = useSWR(
-    `https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT`
-  );
+  const [success, setSuccess] = useState(false);
 
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
@@ -49,7 +43,7 @@ const CreateNFT = ({ modelData }) => {
                   "7a7b755c9c067dedb142c2cb9e9c077aebf561b552c440bf67b87331bac32939",
               },
             })
-            .then(async function (response) {
+            .then(function (response) {
               return cb(
                 null,
                 `https://treatdao.mypinata.cloud/ipfs/${response.data.IpfsHash}`
@@ -100,7 +94,7 @@ const CreateNFT = ({ modelData }) => {
           list_price: Yup.string().required("Please add the NFT list price"),
           description: Yup.string().required("Please add an NFT description"),
           external_url: Yup.string().required("Please add a external_url"),
-          blurhash: Yup.string(),
+          blurhash: Yup.string().required("Please add a blurhash"),
           image: Yup.string().required("Please add a image"),
           max_supply: Yup.string().required("Please add a max supply"),
           model_handle: Yup.string().required("Please add a model handle"),
@@ -119,8 +113,18 @@ const CreateNFT = ({ modelData }) => {
     },
   });
 
+  const { data: bnbPrice } = useSWR(
+    `https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT`
+  );
+
   const [maxSupplyArray, setMaxSupplyArray] = useState(null);
   const [amountsArray, setAmountsArray] = useState(null);
+
+  const { onCreateAndAddSubscriberNFTs } = useCreateAndAddSubscriberNFTs(
+    maxSupplyArray,
+    amountsArray,
+    "0x"
+  );
 
   useEffect(() => {
     const maxSupplies = formik.values.nfts.map((n) => n.max_supply);
@@ -132,68 +136,20 @@ const CreateNFT = ({ modelData }) => {
     setAmountsArray(amounts);
   }, [formik.values.nfts]);
 
-  const {
-    onCreateAndAddNFTs,
-    data: createNFTResult,
-    txHash,
-  } = useCreateAndAddNFTs(maxSupplyArray, amountsArray, "0x");
+  const SubmitToServer = async () => {
+    try {
+      setShowPendingModal(true);
+      const createNFTResult = await onCreateAndAddSubscriberNFTs();
 
-  useEffect(() => {
-    if (!showPendingModal || !txHash || sentWithoutIds) return;
+      if (!createNFTResult) return setShowPendingModal(false);
 
-    (async () => {
-      // Create NFTs without NFT IDs
-      const submitValues = formik.values.nfts.map((nftData, i) => ({
-        ...nftData,
-        tx_hash: txHash,
-        blurhash: nftData.blurhash ? nftData.blurhash : null,
-      }));
-
-      const res = await fetch(`/api/model/create-nfts-without-ids`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          nfts: submitValues,
-          address: modelData.address,
-        }),
-      });
-      const resJSON = await res.json();
-
-      if (resJSON.error && resJSON.error.errors) {
-        const ogErrors = Object.assign({}, resJSON.error.errors);
-        Object.keys(ogErrors).map((e) => {
-          ogErrors[e] = resJSON.error.errors[e].message;
-        });
-        formik.setErrors(ogErrors);
-        formik.setSubmitting(false);
-      }
-
-      if (resJSON.success) {
-        setSentWithoutIds(true);
-        setShowPendingModal(false);
-        setShowCompleteModal(true);
-      }
-    })();
-  }, [txHash]);
-
-  useEffect(() => {
-    if (!createNFTResult || sentWithIds) return;
-
-    (async () => {
-      // Create NFTs without NFT IDs
       const submitValues = formik.values.nfts.map((nftData, i) => ({
         ...nftData,
         id: createNFTResult.nftIds[i],
         blurhash: nftData.blurhash ? nftData.blurhash : null,
       }));
 
-      setShowPendingModal(true);
-      setShowCompleteModal(false);
-
-      const res = await fetch(`/api/model/create-nfts`, {
+      const res = await fetch(`/api/model/create-sub-nfts`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -216,18 +172,12 @@ const CreateNFT = ({ modelData }) => {
         formik.setErrors(ogErrors);
         formik.setSubmitting(false);
       }
+
       if (resJSON.success) {
-        setSentWithIds(true);
+        setSuccess(true);
         setShowPendingModal(false);
         setShowCompleteModal(true);
       }
-    })();
-  }, [createNFTResult]);
-
-  const SubmitToServer = async () => {
-    try {
-      setShowPendingModal(true);
-      const createNFTResult = await onCreateAndAddNFTs();
     } catch (error) {
       console.error(error);
     }
@@ -246,16 +196,15 @@ const CreateNFT = ({ modelData }) => {
         noButton={true}
       />
       <BlankModal
-        hideClose
         show={!!showCompleteModal}
         handleClose={() => setShowCompleteModal(false)}
-        buttonAction={() => router.push("/creator-dashboard")}
+        buttonAction={() => router.push("/dashboard")}
       />
 
       <div className="container">
         <Hero
-          title="Create Sweet Shop NFTs"
-          subtitle="Complete this form carefully. Make sure you don't leave this page after submitting the creation transaction."
+          title="Create New Subscription NFTs"
+          subtitle="Complete this form carefully. Make sure you don't leave this page after submitting the creation transaction. NFTs created on this page will only be available to your subscribers and will be unblurred. If listed on the resale marketplace, the NFTs will be blurred publicly."
           additionalContent={
             <p
               className="totw-secondary-text m-0 pb-3"
@@ -303,8 +252,9 @@ const CreateNFT = ({ modelData }) => {
               formik.values.nfts.length > 0 &&
               formik.values.nfts.map((nft, i) => (
                 <CreatingNFTItem
-                  bnbPrice={bnbPrice && bnbPrice.price}
+                  bnbPrice={bnbPrice.price}
                   formik={formik}
+                  blurRequired={true}
                   modelData={modelData}
                   index={i}
                   key={nft.image}
@@ -315,29 +265,23 @@ const CreateNFT = ({ modelData }) => {
               ))
             }
           />
-          <Flex className="flex flex-wrap justify-between md:space-y-0 flex-col md:flex-row space-y-4 pt-4">
-            <div className="w-full md:w-1/2 md:pr-2">
-              <Button
-                variant="text-gray-900 py-2"
-                bgColor="white"
-                isFullWidth
-                onClick={() => router.back()}
-              >
+          <div className="buttons row pt-4">
+            <div className="col-md-6 mt-2 text-center">
+              <Button variant="light w-100 py-2" onClick={() => router.back()}>
                 <b>BACK TO DASHBOARD</b>
               </Button>
             </div>
-            <div className="w-full md:w-1/2 md:pl-2">
+            <div className="col-md-6  mt-2 text-center">
               <Button
                 type="submit"
+                className="bg-primary text-white font-bold"
                 py={2}
-                colorScheme={"primary"}
-                isFullWidth
                 disabled={ipfsFiles.length === 0}
               >
                 <b>CREATE NFTs</b>
               </Button>
             </div>
-          </Flex>
+          </div>
         </Form>
       </div>
     </FormikProvider>

@@ -48,7 +48,7 @@ const CreatedNFTs = ({
           </h2>
         </div>
 
-        <Link href="/creator-dashboard/create-nft">
+        <Link href="/dashboard/create-nft">
           <a>
             <Button
               className="bg-primary text-white font-bold"
