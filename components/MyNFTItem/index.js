@@ -89,15 +89,17 @@ const NFTListItem = ({
             }}
           >
             {data.image || isLoading ? (
-              <div>
+              <div style={{ minHeight: "375px" }}>
                 <div
                   style={{
                     position: "absolute",
                     width: "100%",
-                    minHeight: "375px",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
+                    minHeight: "375px",
+                    top: 0,
+                    left: 0,
                   }}
                 >
                   <Spinner
