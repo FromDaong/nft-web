@@ -15,8 +15,6 @@ const OwnedNFTs = ({
   navigate,
   error,
 }) => {
-  const { account } = useMoralis();
-
   return (
     <div className="white-tp-bg" style={{ minHeight: 400 }}>
       <div
