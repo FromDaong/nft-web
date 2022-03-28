@@ -36,7 +36,7 @@ export default function UserProfile(props) {
               style={{ marginTop: 10, fontSize: "0.8em" }}
               onClick={() => {
                 navigator.clipboard.writeText(
-                  `https://treatdao.com/creator/${modelData.username}`
+                  `https://treatdao.com/p/${profile.display_name || profile.username || address}`
                 );
                 setCopied(true);
               }}
