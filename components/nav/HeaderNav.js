@@ -117,10 +117,8 @@ const HeaderNav = ({ modelData }) => {
                 </NavDropdown.Item>
               </NavDropdown>
               {modelData && !modelData.pending && !modelData.rejected ? (
-                <Link href="/creator-dashboard" passHref>
-                  <Nav.Link style={{ color: "#c34573" }}>
-                    Creator Dashboard
-                  </Nav.Link>
+                <Link href="/dashboard" passHref>
+                  <Nav.Link style={{ color: "#c34573" }}>Dashboard</Nav.Link>
                 </Link>
               ) : (
                 <Link href="/become-creator" passHref>
@@ -173,8 +171,8 @@ const HeaderNav = ({ modelData }) => {
                     <NavDropdown.Item>Become a Creator</NavDropdown.Item>
                   </Link>
                 ) : (
-                  <Link href="/creator-dashboard" passHref>
-                    <NavDropdown.Item>Creator Dashboard</NavDropdown.Item>
+                  <Link href="/dashboard" passHref>
+                    <NavDropdown.Item>Dashboard</NavDropdown.Item>
                   </Link>
                 )}
                 <NavDropdown.Item>
