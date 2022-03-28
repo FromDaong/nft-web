@@ -239,7 +239,7 @@ const ViewNFT = ({
             >
               Connected wallet address: {account}
             </p>
-            <p
+            {isModel && <p
               className="totw-secondary-text m-0 pb-3"
               style={{ maxWidth: "none" }}
             >
@@ -253,7 +253,7 @@ const ViewNFT = ({
                   <b>Join our creator Telegram community</b>
                 </small>
               </a>
-            </p>
+            </p>}
             {isModel && (
               <Link href={`/creator/${modelData.username}`}>
                 <a>
