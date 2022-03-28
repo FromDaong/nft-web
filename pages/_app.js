@@ -26,6 +26,7 @@ import fetch from "../lib/fetchJson";
 import { getJWT } from "../utils/axios";
 import { useRouter } from "next/router";
 import useTokenBalance from "../hooks/useTokenBalance";
+import "react-image-lightbox/style.css";
 
 const progress = new ProgressBar({
   size: 3,

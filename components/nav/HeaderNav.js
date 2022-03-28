@@ -47,7 +47,12 @@ const HeaderNav = ({ modelData }) => {
   }, []);
 
   return (
-    <Navbar expand="lg" sticky="top" className="mb-4 main-nav">
+    <Navbar
+      expand="lg"
+      sticky="top"
+      className="mb-4 main-nav"
+      style={{ zIndex: 10 }}
+    >
       <WalletModal
         show={walletModalShow}
         handleClose={() => setWalletModalShow(false)}

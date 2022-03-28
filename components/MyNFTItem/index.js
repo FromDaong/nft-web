@@ -11,6 +11,7 @@ import Tooltip from "react-bootstrap/Tooltip";
 import { isBlurhashValid } from "blurhash";
 import { useNFTItemData } from "../../lib/imagecdn";
 import { useState } from "react";
+import Lightbox from "react-image-lightbox";
 
 const NFTListItem = ({
   data,
@@ -34,29 +35,12 @@ const NFTListItem = ({
 
   return (
     <>
-      <Modal
-        size="lg"
-        show={modalData ? true : false}
-        onHide={() => setModalData(null)}
-        aria-labelledby="example-modal-sizes-title-lg"
-      >
-        <Modal.Body>
-          <div className="w-full h-96">
-            <div
-              className="w-full h-full object-cover"
-              style={{
-                backgroundImage: `/api/v2/utils/images/fetchWithFallback?default=${data.image}`,
-              }}
-            />
-          </div>
-          <h4 className="text-center pt-3">{data.description}</h4>
-        </Modal.Body>
-        <Modal.Footer>
-          <div className="container text-center">
-            <Button onClick={() => setModalData(null)}>Close</Button>
-          </div>
-        </Modal.Footer>
-      </Modal>
+      {modalData && (
+        <Lightbox
+          mainSrc={`/api/v2/utils/images/fetchWithFallback?default=${data.image}`}
+          onCloseRequest={() => setModalData(null)}
+        />
+      )}
 
       <InView as={"a"} onChange={gotInView} className="row m-0 w-100 my-4">
         <div ref={ref} className="nft-card" style={{ boxShadow: "none" }}>
