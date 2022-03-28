@@ -40,6 +40,7 @@ export default function DashboardTabs({
   subNftError,
   subNftData,
   isLoading,
+  isModel,
 }) {
   return (
     <Tab.Container id="left-tabs-example" defaultActiveKey="edit-profile">
@@ -64,30 +65,38 @@ export default function DashboardTabs({
                 Resale NFTs
               </Nav.Link>
             </Nav.Item>
-            <Nav.Item className="white-tp-bg mt-2">
-              <Nav.Link eventKey="created-nfts">
-                <CameraFill className="mr-2 mb-1" />
-                Sweet Shop NFTs
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item className="white-tp-bg mt-2">
-              <Nav.Link eventKey="subscription-nfts">
-                <PatchCheckFill className="mr-2 mb-1" />
-                Subscription NFTs
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item className="white-tp-bg mt-2">
-              <Nav.Link eventKey="subscription-settings">
-                <GearFill className="mr-2 mb-1" />
-                Subscription Settings
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item className="white-tp-bg mt-2">
-              <Nav.Link eventKey="creator-resources">
-                <InfoCircleFill className="mr-2 mb-1" />
-                Creator Resources
-              </Nav.Link>
-            </Nav.Item>
+            {isModel && (
+              <Nav.Item className="white-tp-bg mt-2">
+                <Nav.Link eventKey="created-nfts">
+                  <CameraFill className="mr-2 mb-1" />
+                  Sweet Shop NFTs
+                </Nav.Link>
+              </Nav.Item>
+            )}
+            {isModel && (
+              <Nav.Item className="white-tp-bg mt-2">
+                <Nav.Link eventKey="subscription-nfts">
+                  <PatchCheckFill className="mr-2 mb-1" />
+                  Subscription NFTs
+                </Nav.Link>
+              </Nav.Item>
+            )}
+            {isModel && (
+              <Nav.Item className="white-tp-bg mt-2">
+                <Nav.Link eventKey="subscription-settings">
+                  <GearFill className="mr-2 mb-1" />
+                  Subscription Settings
+                </Nav.Link>
+              </Nav.Item>
+            )}
+            {isModel && (
+              <Nav.Item className="white-tp-bg mt-2">
+                <Nav.Link eventKey="creator-resources">
+                  <InfoCircleFill className="mr-2 mb-1" />
+                  Creator Resources
+                </Nav.Link>
+              </Nav.Item>
+            )}
             <Nav.Item className="white-tp-bg mt-2">
               <Nav.Link eventKey="referrals">
                 <PiggyBankFill className="mr-2 mb-1" />
@@ -130,37 +139,45 @@ export default function DashboardTabs({
                 <ErrorFallback custom="Failed to load Resale NFTs" />
               )}
             </Tab.Pane>
-            <Tab.Pane eventKey="created-nfts">
-              {!nftError ? (
-                <CreatedNFTs
-                  hideNFTs={hideNFTs}
-                  transferNFTClick={transferNFTClick}
-                  nftData={nftData}
-                  modelData={modelData}
-                />
-              ) : (
-                <ErrorFallback custom="Failed to load NFTs" />
-              )}
-            </Tab.Pane>
-            <Tab.Pane eventKey="subscription-nfts">
-              {!subNftError ? (
-                <SubscriptionNFTs
-                  hideNFTs={hideNFTs}
-                  transferNFTClick={transferNFTClick}
-                  nftData={subNftData}
-                  modelData={modelData}
-                />
-              ) : (
-                <ErrorFallback custom="Error loading sub NFTs" />
-              )}
-            </Tab.Pane>
-            <Tab.Pane eventKey="subscription-settings">
-              <SubscriptionSettings />
-              <SubSettingsBox />
-            </Tab.Pane>
-            <Tab.Pane eventKey="creator-resources">
-              <CreatorResources />
-            </Tab.Pane>
+            {isModel && (
+              <Tab.Pane eventKey="created-nfts">
+                {!nftError ? (
+                  <CreatedNFTs
+                    hideNFTs={hideNFTs}
+                    transferNFTClick={transferNFTClick}
+                    nftData={nftData}
+                    modelData={modelData}
+                  />
+                ) : (
+                  <ErrorFallback custom="Failed to load NFTs" />
+                )}
+              </Tab.Pane>
+            )}
+            {isModel && (
+              <Tab.Pane eventKey="subscription-nfts">
+                {!subNftError ? (
+                  <SubscriptionNFTs
+                    hideNFTs={hideNFTs}
+                    transferNFTClick={transferNFTClick}
+                    nftData={subNftData}
+                    modelData={modelData}
+                  />
+                ) : (
+                  <ErrorFallback custom="Error loading sub NFTs" />
+                )}
+              </Tab.Pane>
+            )}
+            {isModel && (
+              <Tab.Pane eventKey="subscription-settings">
+                <SubscriptionSettings />
+                <SubSettingsBox />
+              </Tab.Pane>
+            )}
+            {isModel && (
+              <Tab.Pane eventKey="creator-resources">
+                <CreatorResources />
+              </Tab.Pane>
+            )}
             <Tab.Pane eventKey="referrals">
               <Referrals
                 hideNFTs={hideNFTs}

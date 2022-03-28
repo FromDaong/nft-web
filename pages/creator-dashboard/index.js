@@ -87,6 +87,8 @@ const CreatorDashboardWrapper = ({ modelData }) => {
     }
   };
 
+  const isModel = modelData && !modelData.pending && !modelData.rejected;
+
   if (!isAuthenticated || !modelData) {
     return (
       <div
@@ -135,6 +137,7 @@ const CreatorDashboardWrapper = ({ modelData }) => {
         resaleNFTData={resaleNFTData}
         resaleNFTDataError={resaleNFTError}
         ownedNFTDataError={ownedNFTError}
+        isModel={isModel}
       />
     );
   }
@@ -150,6 +153,7 @@ const ViewNFT = ({
   ownedNFTDataError,
   resaleNFTDataError,
   navigate,
+  isModel,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [transferNFTData, setTransferNFTData] = useState(null);
@@ -250,13 +254,15 @@ const ViewNFT = ({
                 </small>
               </a>
             </p>
-            <Link href={`/creator/${modelData.username}`}>
-              <a>
-                <Button className="bg-primary text-white font-bold">
-                  <b>{"Go to My Creator Profile"}</b>
-                </Button>
-              </a>
-            </Link>
+            {isModel && (
+              <Link href={`/creator/${modelData.username}`}>
+                <a>
+                  <Button className="bg-primary text-white font-bold">
+                    <b>{"Go to My Creator Profile"}</b>
+                  </Button>
+                </a>
+              </Link>
+            )}
           </div>
 
           <div
@@ -290,6 +296,7 @@ const ViewNFT = ({
           subNftError={subNftError}
           subNftData={subNftData}
           isLoading={isLoading}
+          isModel={isModel}
         />
       </div>
     </Layout>
