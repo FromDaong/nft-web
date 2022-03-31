@@ -2,6 +2,7 @@ import Model from "../../../../models/Model";
 import TreatNFTMinterAbi from "../../../../treat/lib/abi/treatnftminter.json";
 import Web3 from "web3";
 import dbConnect from "../../../../utils/dbConnect";
+import { withJWTAuth } from "../../../../utils/server-utils";
 
 dbConnect();
 
@@ -14,7 +15,7 @@ const treatNFTMinter = new web3.eth.Contract(
   "0xde39d0b9a93dcd541c24e80c8361f362aab0f213"
 );
 
-export default async (req, res) => {
+export default withJWTAuth(async (req, res) => {
   const {
     query: { address },
     method,
@@ -30,6 +31,11 @@ export default async (req, res) => {
         if (!modelRes) return res.status(200);
 
         const returnData = { ...modelRes.toObject() };
+        if (
+          returnData.live &&
+          req.session.ethAddress.toLowerCase() !== address.toLowerCase()
+        )
+          delete returnData.live.stream_key;
 
         res.status(200).json(returnData);
       } catch (error) {
@@ -41,4 +47,4 @@ export default async (req, res) => {
       res.status(400).json({ success: false });
       break;
   }
-};
+});
