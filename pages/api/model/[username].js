@@ -31,6 +31,7 @@ export default async (req, res) => {
             .json({ success: false, error: "model not found" });
 
         const returnData = { ...modelRes.toObject() };
+        if (returnData.live) delete returnData.live.stream_key;
         delete returnData.email;
         delete returnData.identity_access_key;
 

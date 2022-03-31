@@ -66,6 +66,16 @@ const ModelSchema = new mongoose.Schema(
     bundle_id: {
       type: String,
     },
+    live: {
+      stream_id: String,
+      playback_id: String,
+      stream_key: String,
+      banned: [
+        {
+          id: String,
+        },
+      ],
+    },
     nfts: [
       {
         id: String,
