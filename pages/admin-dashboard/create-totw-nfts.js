@@ -306,7 +306,7 @@ const CreateNFT = ({ modelData }) => {
 const CreateNFTWrapper = (props) => {
   const { isAuthenticated } = useMoralis();
 
-  if (isAuthenticated) {
+  if (!isAuthenticated) {
     return <Loading />;
   } else {
     return <CreateNFT {...props} />;

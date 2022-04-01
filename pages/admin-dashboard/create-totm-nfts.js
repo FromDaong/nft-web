@@ -283,7 +283,7 @@ const CreateNFT = ({ modelData }) => {
           />
           <div className="buttons row pt-4">
             <div className="col-md-6 mt-2 text-center">
-              <Button variant="light w-100 py-2" onClick={() => router.back()}>
+              <Button variant="w-100 py-2" onClick={() => router.back()}>
                 <b>BACK TO DASHBOARD</b>
               </Button>
             </div>
@@ -306,7 +306,7 @@ const CreateNFT = ({ modelData }) => {
 const CreateNFTWrapper = (props) => {
   const { isAuthenticated } = useMoralis();
 
-  if (isAuthenticated) {
+  if (!isAuthenticated) {
     return <Loading />;
   } else {
     return <CreateNFT {...props} />;
