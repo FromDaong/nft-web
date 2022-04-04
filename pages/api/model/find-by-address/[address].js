@@ -20,6 +20,8 @@ export default async (req, res) => {
           return res.status(200).json({
             bio: "I am a new Treat explorer",
             nfts: [],
+            username: address.substring(0, 6) + "..." + address.substr(-5),
+            address: address,
           });
 
         const returnData = { ...modelRes.toObject() };
