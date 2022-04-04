@@ -63,6 +63,7 @@ const isValidToken = (token) => {
     jwt.verify(token, process.env.NEXT_APP_JWT_KEY);
     return true;
   } catch (err) {
+    console.log({ err });
     return false;
   }
 };
@@ -103,6 +104,10 @@ export const enforceAuth = async (ctx) => {
 export const getModelData = async (ctx) => {
   try {
     const cookies = parseCookies(ctx);
+    console.log(
+      isValidToken(cookies.token),
+      isValidToken(cookies.refreshToken)
+    );
     if (!cookies.token) {
       return redirectToPage({ page: "/auth", redirectTo: ctx.resolvedUrl });
     }
@@ -110,7 +115,18 @@ export const getModelData = async (ctx) => {
       const address = jwt.verify(cookies.token, process.env.NEXT_APP_JWT_KEY, {
         ignoreExpiry: true,
       }).ethAddress;
-      const userInfo = Model.findOne({ $regex: new RegExp(address, "i") });
+      const userInfo = await Model.findOne({
+        $regex: new RegExp(address, "i"),
+      });
+      console.log({ userInfo });
+      return returnProps({ userInfo: JSON.stringify(userInfo) });
+    } else if (isValidToken(cookies.refreshToken)) {
+      const address = jwt.verify(cookies.token, process.env.NEXT_APP_JWT_KEY, {
+        ignoreExpiry: true,
+      }).ethAddress;
+      const userInfo = await Model.findOne({
+        $regex: new RegExp(address, "i"),
+      });
       return returnProps({ userInfo: JSON.stringify(userInfo) });
     }
 
