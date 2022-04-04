@@ -28,8 +28,8 @@ export default async function get_jwt(req, res) {
     } else {
       try {
         const data = { ethAddress, sessionToken, username };
-        const accessToken = signJWT(data, "1m");
-        const refreshToken = signJWT({ sessionToken }, "3d");
+        const accessToken = signJWT(data, "15m");
+        const refreshToken = signJWT({ sessionToken }, "30d");
 
         setCookie({ res }, "token", accessToken, {
           maxAge: 24 * 60 * 60,

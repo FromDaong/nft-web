@@ -2,9 +2,10 @@ import "../styles/index.scss";
 import "swiper/scss";
 import "swiper/scss/navigation";
 import "swiper/scss/pagination";
+import "react-image-lightbox/style.css";
 
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { ChakraProvider, extendTheme, useToast } from "@chakra-ui/react";
 import { MoralisProvider, useMoralis } from "react-moralis";
 import { destroyCookie, setCookie } from "nookies";
 import { useEffect, useState } from "react";
@@ -26,7 +27,6 @@ import fetch from "../lib/fetchJson";
 import { getJWT } from "../utils/axios";
 import { useRouter } from "next/router";
 import useTokenBalance from "../hooks/useTokenBalance";
-import "react-image-lightbox/style.css";
 
 const progress = new ProgressBar({
   size: 3,
@@ -76,6 +76,7 @@ function MyApp({ Component, pageProps }) {
   const [requestedAuth, setRequestedAuth] = useState(false);
   const { authenticate, logout, user, isAuthenticated, account } = useMoralis();
   const router = useRouter();
+  const toast = useToast();
 
   const { data: modelData } = useSWR(
     account && `/api/model/find-by-address/${account}`
@@ -87,6 +88,35 @@ function MyApp({ Component, pageProps }) {
     //to report page view
     ReactGA.pageview(window.location.pathname + window.location.search);
   }, []);
+
+  useEffect(() => {
+    if (user && user?.isNew()) {
+      // Create user in model with isModel false
+      Axios.post("/api/model/become", {
+        address: account,
+        isNotModel: true,
+        username: account,
+        bio: "I am a new Treat explorer",
+      })
+        .then(() =>
+          toast({
+            title: "Account created",
+            description: "You can now treat yourself with your new account",
+            status: "success",
+            duration: 2000,
+          })
+        )
+        .catch((err) => {
+          console.log({ err });
+          toast({
+            title: "Oops. That was an error",
+            description:
+              "We failed to create your Treat account. Please try again",
+            duration: 4000,
+          });
+        });
+    }
+  }, [user]);
 
   useEffect(() => {
     Axios.interceptors.response.use(
@@ -256,21 +286,19 @@ function MyApp({ Component, pageProps }) {
           }}
         >
           <TreatProvider>
-            <ChakraProvider theme={theme}>
-              <TOTMBanner oldTokenBalance={oldTokenBalance} />
-              {oldTokenBalance > 0 && (
-                <V2Banner oldTokenBalance={oldTokenBalance} />
-              )}
-              <Navbar modelData={modelData} />
-              <Container style={{ minHeight: "75vh" }}>
-                <Component
-                  {...pageProps}
-                  modelData={modelData}
-                  key={router.route}
-                />
-              </Container>
-              <Footer />
-            </ChakraProvider>
+            <TOTMBanner oldTokenBalance={oldTokenBalance} />
+            {oldTokenBalance > 0 && (
+              <V2Banner oldTokenBalance={oldTokenBalance} />
+            )}
+            <Navbar modelData={modelData} />
+            <Container style={{ minHeight: "75vh" }}>
+              <Component
+                {...pageProps}
+                modelData={modelData}
+                key={router.route}
+              />
+            </Container>
+            <Footer />
           </TreatProvider>
         </SWRConfig>
       </IntercomProvider>
@@ -285,7 +313,9 @@ function walletWrapper(props) {
       appId={"WZSAZ8e1qSzKZ0U7xRErmhoiYraqhoIyU0CCQ2bJ"}
       serverUrl={"https://ee15wkl2kmkl.usemoralis.com:2053/server"}
     >
-      <MyApp {...props} />
+      <ChakraProvider theme={theme}>
+        <MyApp {...props} />
+      </ChakraProvider>
     </MoralisProvider>
   );
 }
