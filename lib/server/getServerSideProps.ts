@@ -116,20 +116,28 @@ export const getModelData = async (ctx) => {
         ignoreExpiry: true,
       }).ethAddress;
       const userInfo = await Model.findOne({
-        $regex: new RegExp(address, "i"),
+        address: { $regex: new RegExp(address, "i") },
       });
-      console.log({ userInfo });
-      return returnProps({ userInfo: JSON.stringify(userInfo) });
+      console.log({ userInfo, rL: "Basic Token" });
+      return returnProps({
+        userInfo: JSON.stringify(
+          userInfo ?? { bio: "I am a new Treat explorer", nfts: [] }
+        ),
+      });
     } else if (isValidToken(cookies.refreshToken)) {
       const address = jwt.verify(cookies.token, process.env.NEXT_APP_JWT_KEY, {
         ignoreExpiry: true,
       }).ethAddress;
       const userInfo = await Model.findOne({
-        $regex: new RegExp(address, "i"),
+        address: { $regex: new RegExp(address, "i") },
       });
-      console.log({ userInfo });
+      console.log({ userInfo, rL: "Refresh Token" });
 
-      return returnProps({ userInfo: JSON.stringify(userInfo) });
+      return returnProps({
+        userInfo: JSON.stringify(
+          userInfo ?? { bio: "I am a new Treat explorer", nfts: [] }
+        ),
+      });
     }
 
     return redirectToPage({ page: "/auth", redirectTo: ctx.resolvedUrl });
