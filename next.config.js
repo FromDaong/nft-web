@@ -8,13 +8,4 @@ module.exports = withBundleAnalyzer({
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.node = {
-        net: "empty",
-      };
-    }
-
-    return config;
-  },
 });

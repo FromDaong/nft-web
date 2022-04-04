@@ -9,7 +9,7 @@ import Layout from "../../components/Layout";
 import Link from "next/link";
 import ListOrderModal from "../../components/ListOrderModal";
 import TransferNFTModal from "../../components/TransferNFTModal";
-import { getModelData } from "../../utils/server-utils";
+import { getModelData } from "../../lib/server/getServerSideProps";
 import { useMoralis } from "react-moralis";
 import useSWR from "swr";
 

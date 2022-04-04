@@ -103,9 +103,12 @@ export const enforceAuth = async (ctx) => {
 export const getModelData = async (ctx) => {
   try {
     const cookies = parseCookies(ctx);
-    if (!cookies.token)
+    if (!cookies.token) {
+      console.log("No Cookies");
       return redirectToPage({ page: "/auth", redirectTo: ctx.resolvedUrl });
+    }
     if (isValidToken(cookies.token)) {
+      console.log("Valid");
       const address = jwt.verify(
         cookies.token,
         process.env.NEXT_APP_JWT_KEY
@@ -114,8 +117,11 @@ export const getModelData = async (ctx) => {
       return returnProps({ userInfo });
     }
 
+    console.log("Nothing at all");
+
     return redirectToPage({ page: "/auth", redirectTo: ctx.resolvedUrl });
   } catch (err) {
+    console.log({ err });
     return redirectToPage({ page: "/auth", redirectTo: ctx.resolvedUrl });
   }
 };
