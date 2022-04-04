@@ -2,6 +2,7 @@ import "../styles/index.scss";
 import "swiper/scss";
 import "swiper/scss/navigation";
 import "swiper/scss/pagination";
+import "react-image-lightbox/style.css";
 
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
@@ -26,7 +27,6 @@ import fetch from "../lib/fetchJson";
 import { getJWT } from "../utils/axios";
 import { useRouter } from "next/router";
 import useTokenBalance from "../hooks/useTokenBalance";
-import "react-image-lightbox/style.css";
 
 const progress = new ProgressBar({
   size: 3,
@@ -262,7 +262,7 @@ function MyApp({ Component, pageProps }) {
                 <V2Banner oldTokenBalance={oldTokenBalance} />
               )}
               <Navbar modelData={modelData} />
-              <Container style={{ minHeight: "75vh" }}>
+              <Container className="mx-auto" style={{ minHeight: "75vh" }}>
                 <Component
                   {...pageProps}
                   modelData={modelData}
