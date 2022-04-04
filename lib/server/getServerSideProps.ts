@@ -63,6 +63,7 @@ const isValidToken = (token) => {
     jwt.verify(token, process.env.NEXT_APP_JWT_KEY);
     return true;
   } catch (err) {
+    console.log({ err });
     return false;
   }
 };
@@ -103,6 +104,7 @@ export const enforceAuth = async (ctx) => {
 export const getModelData = async (ctx) => {
   try {
     const cookies = parseCookies(ctx);
+    console.log({ cookies });
     console.log(
       isValidToken(cookies.token),
       isValidToken(cookies.refreshToken)
@@ -110,31 +112,25 @@ export const getModelData = async (ctx) => {
     if (!cookies.token) {
       return redirectToPage({ page: "/auth", redirectTo: ctx.resolvedUrl });
     }
-
-    if (isValidToken(cookies.refreshToken) && cookies.token) {
-      console.log("Is it valid");
-      const address = jwt.verify(cookies.token, process.env.NEXT_APP_JWT_KEY, {
-        ignoreExpiry: true,
-      }).ethAddress;
-      let userInfo;
-      try {
-        userInfo = await Model.findOne({
-          address: { $regex: new RegExp(address, "i") },
-        });
-      } catch (err) {
-        userInfo = {
-          bio: "I am a new Treat explorer",
-          nfts: [],
-          username: address.substring(0, 6) + "..." + address.substr(-5),
-          address,
-        };
-      }
-      return returnProps({
-        userInfo: JSON.stringify(userInfo),
+    const address = jwt.verify(cookies.token, process.env.NEXT_APP_JWT_KEY, {
+      ignoreExpiry: true,
+    }).ethAddress;
+    let userInfo;
+    try {
+      userInfo = await Model.findOne({
+        address: { $regex: new RegExp(address, "i") },
       });
-    } else {
-      return redirectToPage({ page: "/auth", redirectTo: ctx.resolvedUrl });
+    } catch (err) {
+      userInfo = {
+        bio: "I am a new Treat explorer",
+        nfts: [],
+        username: address.substring(0, 6) + "..." + address.substr(-5),
+        address,
+      };
     }
+    return returnProps({
+      userInfo: JSON.stringify(userInfo),
+    });
   } catch (err) {
     console.log({ err });
     return redirectToPage({ page: "/auth", redirectTo: ctx.resolvedUrl });
