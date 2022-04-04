@@ -120,6 +120,19 @@ export const getModelData = async (ctx) => {
       userInfo = await Model.findOne({
         address: { $regex: new RegExp(address, "i") },
       });
+
+      if (!userInfo) {
+        userInfo = {
+          bio: "I am a new Treat explorer",
+          nfts: [],
+          username: address.substring(0, 6) + "..." + address.substr(-5),
+          address,
+        };
+      }
+
+      return returnProps({
+        userInfo: JSON.stringify(userInfo),
+      });
     } catch (err) {
       userInfo = {
         bio: "I am a new Treat explorer",
@@ -127,10 +140,11 @@ export const getModelData = async (ctx) => {
         username: address.substring(0, 6) + "..." + address.substr(-5),
         address,
       };
+
+      return returnProps({
+        userInfo: JSON.stringify(userInfo),
+      });
     }
-    return returnProps({
-      userInfo: JSON.stringify(userInfo),
-    });
   } catch (err) {
     console.log({ err });
     return redirectToPage({ page: "/auth", redirectTo: ctx.resolvedUrl });
