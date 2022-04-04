@@ -111,7 +111,9 @@ export const getModelData = async (ctx) => {
     if (!cookies.token) {
       return redirectToPage({ page: "/auth", redirectTo: ctx.resolvedUrl });
     }
+
     if (isValidToken(cookies.token)) {
+      console.log("Is it valid");
       const address = jwt.verify(cookies.token, process.env.NEXT_APP_JWT_KEY, {
         ignoreExpiry: true,
       }).ethAddress;
@@ -129,6 +131,7 @@ export const getModelData = async (ctx) => {
         ),
       });
     } else if (isValidToken(cookies.refreshToken)) {
+      console.log("Its not good");
       const address = jwt.verify(cookies.token, process.env.NEXT_APP_JWT_KEY, {
         ignoreExpiry: true,
       }).ethAddress;
