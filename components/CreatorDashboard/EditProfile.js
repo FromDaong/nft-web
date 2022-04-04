@@ -6,18 +6,14 @@ import Hero from "../../components/Hero";
 import { PencilFill } from "react-bootstrap-icons";
 import axios from "axios";
 import { useFormik } from "formik";
-import { useMoralis } from "react-moralis";
 import { useRouter } from "next/router";
-import useSWR from "swr";
 import { useState } from "react";
 
-const EditProfile = ({}) => {
+const EditProfile = ({ modelData }) => {
   const router = useRouter();
-  const { account } = useMoralis();
-  const { data: res } = useSWR(`/api/model/find-by-address/${account}`);
   const [success] = useState(false);
   const [disabled, setDisabled] = useState(false);
-
+  const res = modelData;
   const formik = useFormik({
     initialValues: res,
     validateOnChange: false,

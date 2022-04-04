@@ -26,7 +26,7 @@ const HeaderNav = ({ modelData }) => {
     logout();
     destroyCookie(null, "token");
     destroyCookie(null, "refreshToken");
-    router.reload();
+    router.push("/");
   };
 
   useEffect(() => {
@@ -94,7 +94,7 @@ const HeaderNav = ({ modelData }) => {
             </NavDropdown.Item>
           </NavDropdown>
 
-          {user && !user.pending && !user.rejected && (
+          {isAuthenticated && user && !user.pending && !user.rejected && (
             <>
               <NavDropdown title="Marketplaces">
                 <NavDropdown.Item href="#action/3.1" className="p-0">

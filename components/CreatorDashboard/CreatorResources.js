@@ -3,24 +3,20 @@ import * as Yup from "yup";
 import { InfoCircleFill } from "react-bootstrap-icons";
 import { ListGroup } from "react-bootstrap";
 import Web3 from "web3";
-import { create } from "ipfs-http-client";
 import useEditSubscription from "../../hooks/useEditSubscription";
 import { useFormik } from "formik";
 import useGetSubscriptionCost from "../../hooks/useGetSubscriptionCost";
 import { useMoralis } from "react-moralis";
 import { useRouter } from "next/router";
-import useSWR from "swr";
 import { useState } from "react";
 
-const client = create("https://ipfs.infura.io:5001/api/v0");
-
-const EditProfile = () => {
+const CreatorResources = ({ modelData }) => {
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
   const router = useRouter();
   const { account } = useMoralis();
   const subscriptionCost = useGetSubscriptionCost(account);
-  const { data: res } = useSWR(`/api/model/find-by-address/${account}`);
+  const res = modelData;
 
   const formik = useFormik({
     initialValues: {
@@ -158,4 +154,4 @@ const EditProfile = () => {
   );
 };
 
-export default EditProfile;
+export default CreatorResources;
