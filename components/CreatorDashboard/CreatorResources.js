@@ -3,16 +3,12 @@ import * as Yup from "yup";
 import { InfoCircleFill } from "react-bootstrap-icons";
 import { ListGroup } from "react-bootstrap";
 import Web3 from "web3";
-import { create } from "ipfs-http-client";
 import useEditSubscription from "../../hooks/useEditSubscription";
 import { useFormik } from "formik";
 import useGetSubscriptionCost from "../../hooks/useGetSubscriptionCost";
 import { useMoralis } from "react-moralis";
 import { useRouter } from "next/router";
-import useSWR from "swr";
 import { useState } from "react";
-
-const client = create("https://ipfs.infura.io:5001/api/v0");
 
 const CreatorResources = ({ modelData }) => {
   const [showPendingModal, setShowPendingModal] = useState(null);
