@@ -112,7 +112,7 @@ export const getModelData = async (ctx) => {
       return redirectToPage({ page: "/auth", redirectTo: ctx.resolvedUrl });
     }
 
-    if (isValidToken(cookies.token)) {
+    if (isValidToken(cookies.refreshToken) && cookies.token) {
       console.log("Is it valid");
       const address = jwt.verify(cookies.token, process.env.NEXT_APP_JWT_KEY, {
         ignoreExpiry: true,
@@ -120,25 +120,6 @@ export const getModelData = async (ctx) => {
       const userInfo = await Model.findOne({
         address: { $regex: new RegExp(address, "i") },
       });
-      return returnProps({
-        userInfo: JSON.stringify(
-          userInfo ?? {
-            bio: "I am a new Treat explorer",
-            nfts: [],
-            username: address.substring(0, 6) + "..." + address.substr(-5),
-            address,
-          }
-        ),
-      });
-    } else if (isValidToken(cookies.refreshToken)) {
-      console.log("Its not good");
-      const address = jwt.verify(cookies.token, process.env.NEXT_APP_JWT_KEY, {
-        ignoreExpiry: true,
-      }).ethAddress;
-      const userInfo = await Model.findOne({
-        address: { $regex: new RegExp(address, "i") },
-      });
-
       return returnProps({
         userInfo: JSON.stringify(
           userInfo ?? {

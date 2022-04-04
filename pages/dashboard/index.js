@@ -13,9 +13,9 @@ import { getModelData } from "../../lib/server/getServerSideProps";
 import { useMoralis } from "react-moralis";
 import useSWR from "swr";
 
-const CreatorDashboardWrapper = ({ userInfo }) => {
-  console.log(null);
-  let modelData = JSON.parse(userInfo);
+const CreatorDashboardWrapper = (props) => {
+  let modelData = JSON.parse(props.userInfo);
+  console.log({ modelData });
   const { account, isAuthenticated } = useMoralis();
   const [ownedNFTData, setOwnedNFTData] = useState({
     docs: [],
