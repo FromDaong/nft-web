@@ -20,12 +20,11 @@ export default async (req, res) => {
 
         const returnData = { ...modelRes.toObject() };
 
-        res.status(200).json(returnData);
+        return res.status(200).json(returnData);
       } catch (error) {
         console.error({ error });
-        res.status(400).json({ success: false, error: error });
+        return res.status(400).json({ success: false, error: error });
       }
-      break;
     default:
       res.status(400).json({ success: false });
       break;
