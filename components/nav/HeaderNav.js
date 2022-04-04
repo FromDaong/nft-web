@@ -26,7 +26,7 @@ const HeaderNav = ({ modelData }) => {
     logout();
     destroyCookie(null, "token");
     destroyCookie(null, "refreshToken");
-    router.reload();
+    router.push("/");
   };
 
   useEffect(() => {
