@@ -104,20 +104,15 @@ export const getModelData = async (ctx) => {
   try {
     const cookies = parseCookies(ctx);
     if (!cookies.token) {
-      console.log("No Cookies");
       return redirectToPage({ page: "/auth", redirectTo: ctx.resolvedUrl });
     }
     if (isValidToken(cookies.token)) {
-      console.log("Valid");
-      const address = jwt.verify(
-        cookies.token,
-        process.env.NEXT_APP_JWT_KEY
-      ).ethAddress;
+      const address = jwt.verify(cookies.token, process.env.NEXT_APP_JWT_KEY, {
+        ignoreExpiry: true,
+      }).ethAddress;
       const userInfo = Model.findOne({ $regex: new RegExp(address, "i") });
-      return returnProps({ userInfo });
+      return returnProps({ userInfo: JSON.stringify(userInfo) });
     }
-
-    console.log("Nothing at all");
 
     return redirectToPage({ page: "/auth", redirectTo: ctx.resolvedUrl });
   } catch (err) {
