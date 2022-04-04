@@ -3,7 +3,7 @@ import { Clipboard, PiggyBankFill } from "react-bootstrap-icons";
 import { Button } from "@chakra-ui/react";
 import { useMoralis } from "react-moralis";
 
-const CreatedNFTs = ({
+const Referrals = ({
   transferNFTClick,
   listOrderClick,
   isLoading,
@@ -89,4 +89,4 @@ const CreatedNFTs = ({
   );
 };
 
-export default CreatedNFTs;
+export default Referrals;

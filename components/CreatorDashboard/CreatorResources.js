@@ -14,7 +14,7 @@ import { useState } from "react";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
-const EditProfile = () => {
+const CreatorResources = () => {
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
   const router = useRouter();
@@ -158,4 +158,4 @@ const EditProfile = () => {
   );
 };
 
-export default EditProfile;
+export default CreatorResources;
