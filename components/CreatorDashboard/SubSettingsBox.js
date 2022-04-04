@@ -11,7 +11,7 @@ import { useMoralis } from "react-moralis";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-const EditProfile = ({ modelData }) => {
+const SubSettingsBox = ({ modelData }) => {
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
   const router = useRouter();
@@ -138,4 +138,4 @@ const EditProfile = ({ modelData }) => {
   );
 };
 
-export default EditProfile;
+export default SubSettingsBox;
