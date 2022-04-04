@@ -127,6 +127,8 @@ export const getModelData = async (ctx) => {
       const userInfo = await Model.findOne({
         $regex: new RegExp(address, "i"),
       });
+      console.log({ userInfo });
+
       return returnProps({ userInfo: JSON.stringify(userInfo) });
     }
 
