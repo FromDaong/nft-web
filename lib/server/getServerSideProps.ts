@@ -63,7 +63,6 @@ const isValidToken = (token) => {
     jwt.verify(token, process.env.NEXT_APP_JWT_KEY);
     return true;
   } catch (err) {
-    console.log({ err });
     return false;
   }
 };
@@ -130,9 +129,9 @@ export const getModelData = async (ctx) => {
           }
         ),
       });
+    } else {
+      return redirectToPage({ page: "/auth", redirectTo: ctx.resolvedUrl });
     }
-
-    return redirectToPage({ page: "/auth", redirectTo: ctx.resolvedUrl });
   } catch (err) {
     console.log({ err });
     return redirectToPage({ page: "/auth", redirectTo: ctx.resolvedUrl });
