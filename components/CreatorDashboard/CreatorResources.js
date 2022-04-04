@@ -14,13 +14,13 @@ import { useState } from "react";
 
 const client = create("https://ipfs.infura.io:5001/api/v0");
 
-const CreatorResources = () => {
+const CreatorResources = ({ modelData }) => {
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
   const router = useRouter();
   const { account } = useMoralis();
   const subscriptionCost = useGetSubscriptionCost(account);
-  const { data: res } = useSWR(`/api/model/find-by-address/${account}`);
+  const res = modelData;
 
   const formik = useFormik({
     initialValues: {
