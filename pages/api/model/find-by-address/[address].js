@@ -16,7 +16,11 @@ export default async (req, res) => {
           address: { $regex: new RegExp(address, "i") },
         });
 
-        if (!modelRes) return res.status(200);
+        if (!modelRes)
+          return res.status(200).json({
+            bio: "I am a new Treat explorer",
+            nfts: [],
+          });
 
         const returnData = { ...modelRes.toObject() };
 
