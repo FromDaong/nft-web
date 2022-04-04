@@ -118,10 +118,14 @@ export const getModelData = async (ctx) => {
       const userInfo = await Model.findOne({
         address: { $regex: new RegExp(address, "i") },
       });
-      console.log({ userInfo, rL: "Basic Token" });
       return returnProps({
         userInfo: JSON.stringify(
-          userInfo ?? { bio: "I am a new Treat explorer", nfts: [] }
+          userInfo ?? {
+            bio: "I am a new Treat explorer",
+            nfts: [],
+            username: address.substring(0, 6) + "..." + address.substr(-5),
+            address,
+          }
         ),
       });
     } else if (isValidToken(cookies.refreshToken)) {
@@ -131,11 +135,15 @@ export const getModelData = async (ctx) => {
       const userInfo = await Model.findOne({
         address: { $regex: new RegExp(address, "i") },
       });
-      console.log({ userInfo, rL: "Refresh Token" });
 
       return returnProps({
         userInfo: JSON.stringify(
-          userInfo ?? { bio: "I am a new Treat explorer", nfts: [] }
+          userInfo ?? {
+            bio: "I am a new Treat explorer",
+            nfts: [],
+            username: address.substring(0, 6) + "..." + address.substr(-5),
+            address,
+          }
         ),
       });
     }
