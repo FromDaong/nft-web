@@ -70,7 +70,7 @@ const CreatorDashboardWrapper = (props) => {
   const navigate = (key, page) => {
     if (key === "owned") {
       setOwnedNFTData({ ...ownedNFTData, loading: true, page });
-      Axios.post(`/api/v2/nft/my_nfts?page=${page}`)
+      Axios.get(`/api/v2/nft/my_nfts?page=${page}`)
         .then((res) => {
           setOwnedNFTData({ ...res.data, loading: false });
         })
@@ -81,7 +81,7 @@ const CreatorDashboardWrapper = (props) => {
         });
     } else {
       setResaleNFTData({ ...resaleNFTData, loading: true, page });
-      Axios.post(`/api/v2/nft/my_resale_nfts?page=${page}`)
+      Axios.get(`/api/v2/nft/my_resale_nfts?page=${page}`)
         .then((res) => {
           setResaleNFTData({ ...res.data, loading: false });
         })
