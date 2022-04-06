@@ -1,6 +1,9 @@
-import jwt from "jsonwebtoken";
 import { parseCookies, setCookie } from "nookies";
+
+import Model from "../../models/Model";
+import jwt from "jsonwebtoken";
 import { signJWT } from "../../utils/server-utils";
+
 export const onlyQueryProps = (ctx: { query: any }) => ({
   props: {
     query: ctx.query,
@@ -60,6 +63,7 @@ const isValidToken = (token) => {
     jwt.verify(token, process.env.NEXT_APP_JWT_KEY);
     return true;
   } catch (err) {
+    console.log({ err });
     return false;
   }
 };
@@ -67,7 +71,6 @@ const isValidToken = (token) => {
 export const enforceAuth = async (ctx) => {
   try {
     const cookies = parseCookies(ctx);
-    console.log({ cookies });
     if (!cookies.token)
       return redirectToPage({ page: "/auth", redirectTo: ctx.resolvedUrl });
     if (isValidToken(cookies.token)) {
@@ -91,6 +94,56 @@ export const enforceAuth = async (ctx) => {
       return returnProps({});
     } else {
       return redirectToPage({ page: "/auth", redirectTo: ctx.resolvedUrl });
+    }
+  } catch (err) {
+    console.log({ err });
+    return redirectToPage({ page: "/auth", redirectTo: ctx.resolvedUrl });
+  }
+};
+
+export const getModelData = async (ctx) => {
+  try {
+    const cookies = parseCookies(ctx);
+    console.log({ cookies });
+    console.log(
+      isValidToken(cookies.token),
+      isValidToken(cookies.refreshToken)
+    );
+    if (!cookies.token) {
+      return redirectToPage({ page: "/auth", redirectTo: ctx.resolvedUrl });
+    }
+    const address = jwt.verify(cookies.token, process.env.NEXT_APP_JWT_KEY, {
+      ignoreExpiry: true,
+    }).ethAddress;
+    let userInfo;
+    try {
+      userInfo = await Model.findOne({
+        address: { $regex: new RegExp(address, "i") },
+      });
+
+      if (!userInfo) {
+        userInfo = {
+          bio: "I am a new Treat explorer",
+          nfts: [],
+          username: address.substring(0, 6) + "..." + address.substr(-5),
+          address,
+        };
+      }
+
+      return returnProps({
+        userInfo: JSON.stringify(userInfo),
+      });
+    } catch (err) {
+      userInfo = {
+        bio: "I am a new Treat explorer",
+        nfts: [],
+        username: address.substring(0, 6) + "..." + address.substr(-5),
+        address,
+      };
+
+      return returnProps({
+        userInfo: JSON.stringify(userInfo),
+      });
     }
   } catch (err) {
     console.log({ err });
