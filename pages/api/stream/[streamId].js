@@ -7,7 +7,6 @@ import axios from "axios";
  */
 export default async (req, res) => {
   if (req.method === "GET") {
-    const authorizationHeader = req.headers && req.headers["authorization"];
     const streamId = req.query.streamId;
     try {
       const streamStatusResponse = await axios.get(

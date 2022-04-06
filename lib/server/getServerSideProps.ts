@@ -112,6 +112,13 @@ export const getModelData = async (ctx) => {
     if (!cookies.token) {
       return redirectToPage({ page: "/auth", redirectTo: ctx.resolvedUrl });
     }
+
+    if (!isValidToken(cookies.token) && !isValidToken(cookies.refreshToken)) {
+      return redirectToPage({
+        page: "/auth",
+        redirectTo: ctx.resolvedUrl,
+      });
+    }
     const address = jwt.verify(cookies.token, process.env.NEXT_APP_JWT_KEY, {
       ignoreExpiry: true,
     }).ethAddress;
