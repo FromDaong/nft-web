@@ -1,12 +1,12 @@
 import * as Yup from "yup";
 
-import { Button } from "@chakra-ui/react";
+import { useCallback, useState } from "react";
 
 import BlankModal from "../../components/BlankModal";
+import { Button } from "@chakra-ui/react";
 import { RecordCircle } from "react-bootstrap-icons";
 import { useMoralis } from "react-moralis";
 import useSWR from "swr";
-import { useState, useCallback } from "react";
 
 const copyTextToClipboard = (text) => {
   navigator.permissions.query({ name: "clipboard-write" }).then((result) => {
@@ -16,7 +16,7 @@ const copyTextToClipboard = (text) => {
   });
 };
 
-const EditProfile = ({ res }) => {
+const EditProfile = ({ modelData }) => {
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
   const { account } = useMoralis();
@@ -58,7 +58,7 @@ const EditProfile = ({ res }) => {
           </h2>
         </div>
       </div>
-      {!res.live || !res.live.stream_id ? (
+      {!modelData.live || !modelData.live.stream_id ? (
         <div className="text-center mt-5">
           Please click the button below in order to enable Livestreaming for
           your Treat Creator account.
@@ -72,7 +72,7 @@ const EditProfile = ({ res }) => {
       ) : (
         <div className="container row">
           <div className="col-md-8">
-            <StreamEnabled data={res.live} />
+            <StreamEnabled data={modelData.live} />
           </div>
           <div className="col-md-4">Chat</div>
         </div>
@@ -101,14 +101,13 @@ const StreamEnabled = ({ data }) => {
   }
 
   const [videoEl, setVideoEl] = useState(null);
-  const [playerEl, setPlayerEl] = useState(null);
 
   const onVideo = useCallback((el) => {
     setVideoEl(el);
   }, []);
 
   const endStream = async () => {
-    await fetch(`/api/stream/${streamID}/end`);
+    await fetch(`/api/stream/${streamId}/end`);
     mutate("/api/dashboard/stream");
   };
   <div className="col-span-1">
