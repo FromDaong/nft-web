@@ -10,14 +10,12 @@ import {
   RecordCircle,
 } from "react-bootstrap-icons";
 import { Nav, Tab } from "react-bootstrap";
-import { useRouter } from "next/router";
-import useSWR from "swr";
-import { useMoralis } from "react-moralis";
 
 import CreatedNFTs from "./CreatedNFTs";
 import CreatorResources from "./CreatorResources";
 import EditProfile from "./EditProfile";
 import ErrorFallback from "../Fallback/Error";
+import LivestreamDashboard from "./LivestreamDashboard";
 import OwnedNFTs from "./OwnedNFTs";
 import React from "react";
 import Referrals from "./Referrals";
@@ -25,7 +23,9 @@ import ResaleNFTs from "./ResaleNFTs";
 import SubSettingsBox from "./SubSettingsBox";
 import SubscriptionNFTs from "./SubscriptionNFTs";
 import SubscriptionSettings from "./SubscriptionSettings";
-import LivestreamDashboard from "./LivestreamDashboard";
+import { useMoralis } from "react-moralis";
+import { useRouter } from "next/router";
+import useSWR from "swr";
 
 export default function DashboardTabs({
   modelData,
@@ -48,8 +48,6 @@ export default function DashboardTabs({
   isModel,
 }) {
   const router = useRouter();
-  const { account } = useMoralis();
-  const { data: res } = useSWR(`/api/model/find-by-address/${account}`);
 
   return (
     <Tab.Container
@@ -197,7 +195,7 @@ export default function DashboardTabs({
             )}
             {isModel && (
               <Tab.Pane eventKey="subscription-livedash">
-                <LivestreamDashboard res={res} />
+                <LivestreamDashboard res={modelData} />
               </Tab.Pane>
             )}
             {isModel && (
