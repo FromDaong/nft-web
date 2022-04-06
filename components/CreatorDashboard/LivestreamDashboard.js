@@ -1,12 +1,16 @@
-import * as Yup from "yup";
+import "videojs-contrib-hls";
+import "videojs-contrib-quality-levels";
+import "videojs-hls-quality-selector";
+import "video.js/dist/video-js.min.css";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import BlankModal from "../../components/BlankModal";
 import { Button } from "@chakra-ui/react";
 import { RecordCircle } from "react-bootstrap-icons";
 import { useMoralis } from "react-moralis";
 import useSWR from "swr";
+import videojs from "video.js";
 
 const copyTextToClipboard = (text) => {
   navigator.permissions.query({ name: "clipboard-write" }).then((result) => {
@@ -96,13 +100,34 @@ const StreamEnabled = ({ data }) => {
 
   if (streamStatusResponse) {
     const { isActive } = streamStatusResponse;
-    console.log({ streamStatusResponse });
     if (streamIsActive !== isActive) setStreamIsActive(isActive);
   }
 
   const [videoEl, setVideoEl] = useState(null);
 
+  useEffect(() => {
+    if (videoEl == null) return;
+    if (streamIsActive && playbackId) {
+      const player = videojs(videoEl, {
+        autoplay: true,
+        controls: true,
+        sources: [
+          {
+            src: `https://cdn.livepeer.com/hls/${playbackId}/index.m3u8`,
+          },
+        ],
+      });
+
+      player.hlsQualitySelector();
+
+      player.on("error", () => {
+        player.src(`https://cdn.livepeer.com/hls/${playbackId}/index.m3u8`);
+      });
+    }
+  }, [streamIsActive]);
+
   const onVideo = useCallback((el) => {
+    console.log({ el });
     setVideoEl(el);
   }, []);
 
