@@ -9,10 +9,16 @@ import Layout from "../../components/Layout";
 import Link from "next/link";
 import ListOrderModal from "../../components/ListOrderModal";
 import TransferNFTModal from "../../components/TransferNFTModal";
+import { getModelData } from "../../lib/server/getServerSideProps";
 import { useMoralis } from "react-moralis";
 import useSWR from "swr";
 
-const CreatorDashboardWrapper = ({ modelData }) => {
+const CreatorDashboardWrapper = (props) => {
+  let modelData = props.modelData ?? JSON.parse(props.userInfo);
+  console.log({ modelData, props });
+  if (modelData === null) {
+    modelData = {};
+  }
   const { account, isAuthenticated } = useMoralis();
   const [ownedNFTData, setOwnedNFTData] = useState({
     docs: [],
@@ -64,7 +70,7 @@ const CreatorDashboardWrapper = ({ modelData }) => {
   const navigate = (key, page) => {
     if (key === "owned") {
       setOwnedNFTData({ ...ownedNFTData, loading: true, page });
-      Axios.post(`/api/v2/nft/my_nfts?page=${page}`)
+      Axios.get(`/api/v2/nft/my_nfts?page=${page}`)
         .then((res) => {
           setOwnedNFTData({ ...res.data, loading: false });
         })
@@ -75,7 +81,7 @@ const CreatorDashboardWrapper = ({ modelData }) => {
         });
     } else {
       setResaleNFTData({ ...resaleNFTData, loading: true, page });
-      Axios.post(`/api/v2/nft/my_resale_nfts?page=${page}`)
+      Axios.get(`/api/v2/nft/my_resale_nfts?page=${page}`)
         .then((res) => {
           setResaleNFTData({ ...res.data, loading: false });
         })
@@ -89,7 +95,7 @@ const CreatorDashboardWrapper = ({ modelData }) => {
 
   const isModel = modelData && !modelData.pending && !modelData.rejected;
 
-  if (!isAuthenticated || !modelData) {
+  if (!isAuthenticated) {
     return (
       <div
         style={{
@@ -239,21 +245,23 @@ const ViewNFT = ({
             >
               Connected wallet address: {account}
             </p>
-            {isModel && <p
-              className="totw-secondary-text m-0 pb-3"
-              style={{ maxWidth: "none" }}
-            >
-              <a
-                href="https://t.me/TreatContentCreators"
-                target="_blank"
-                className="text-primary"
-                rel="noreferrer"
+            {isModel && (
+              <p
+                className="totw-secondary-text m-0 pb-3"
+                style={{ maxWidth: "none" }}
               >
-                <small>
-                  <b>Join our creator Telegram community</b>
-                </small>
-              </a>
-            </p>}
+                <a
+                  href="https://t.me/TreatContentCreators"
+                  target="_blank"
+                  className="text-primary"
+                  rel="noreferrer"
+                >
+                  <small>
+                    <b>Join our creator Telegram community</b>
+                  </small>
+                </a>
+              </p>
+            )}
             {isModel && (
               <Link href={`/creator/${modelData.username}`}>
                 <a>
@@ -302,4 +310,6 @@ const ViewNFT = ({
     </Layout>
   );
 };
+
+export const getServerSideProps = getModelData;
 export default CreatorDashboardWrapper;

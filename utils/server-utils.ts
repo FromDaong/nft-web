@@ -76,3 +76,32 @@ export const withJWTAuth = (handler) => (req, res) => {
     }
   }
 };
+
+export const getSessionFromToken = ({ req, ctx }) => {
+  if (req) {
+    const cookies = parseCookies({ req });
+    const { token } = cookies;
+    try {
+      const session = jwt.verify(token, JWT_KEY);
+      return { ...session };
+    } catch (_) {
+      try {
+        const { refreshToken } = cookies;
+        jwt.verify(refreshToken, JWT_KEY);
+        return { ...jwt.verify(token, JWT_KEY, { ignoreExpiry: true }) };
+      } catch (_) {
+        return null;
+      }
+    }
+  } else if (ctx) {
+    return {
+      ethAddress: "null",
+      error: "Context not yet supported",
+    };
+  } else {
+    return {
+      ethAddress: "null",
+      error: "Invalid JWT token",
+    };
+  }
+};

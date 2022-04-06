@@ -22,34 +22,36 @@ export default function Auth() {
   };
 
   return (
-    <div className="flex flex-col space-y-4">
-      <Button
-        isFullWidth
-        isLoading={isAuthenticating}
-        className="bg-primary text-white font-bold"
-        onClick={() => smartConnectWithMoralis()}
-      >
-        Connect via MetaMask
-      </Button>
-      <br />
-      <Button
-        isFullWidth
-        colorScheme="purple"
-        isLoading={isAuthenticating}
-        className="font-bold"
-        onClick={() => smartConnectWithMoralis("walletconnect")}
-      >
-        Connect via WalletConnect
-      </Button>
-      <Button
-        isFullWidth
-        isLoading={isAuthenticating}
-        colorScheme="yellow"
-        className="font-bold"
-        onClick={web3authConnect}
-      >
-        Connect via Web3Auth
-      </Button>
+    <div className="flexalign-center">
+      <div className="max-w-2xl mx-auto flex-col space-y-4 ">
+        <Button
+          isFullWidth
+          isLoading={isAuthenticating}
+          className="bg-primary text-white font-bold"
+          onClick={() => smartConnectWithMoralis()}
+        >
+          Connect via MetaMask
+        </Button>
+        <br />
+        <Button
+          isFullWidth
+          colorScheme="purple"
+          isLoading={isAuthenticating}
+          className="font-bold"
+          onClick={() => smartConnectWithMoralis("walletconnect")}
+        >
+          Connect via WalletConnect
+        </Button>
+        <Button
+          isFullWidth
+          isLoading={isAuthenticating}
+          colorScheme="yellow"
+          className="font-bold"
+          onClick={web3authConnect}
+        >
+          Connect via Web3Auth
+        </Button>
+      </div>
     </div>
   );
 }

@@ -191,8 +191,8 @@ export default function DashboardTabs({
             )}
             {isModel && (
               <Tab.Pane eventKey="subscription-settings">
-                <SubscriptionSettings />
-                <SubSettingsBox />
+                <SubscriptionSettings modelData={modelData} />
+                <SubSettingsBox modelData={modelData} />
               </Tab.Pane>
             )}
             {isModel && (
@@ -202,7 +202,7 @@ export default function DashboardTabs({
             )}
             {isModel && (
               <Tab.Pane eventKey="creator-resources">
-                <CreatorResources />
+                <CreatorResources modelData={modelData} />
               </Tab.Pane>
             )}
             <Tab.Pane eventKey="referrals">
