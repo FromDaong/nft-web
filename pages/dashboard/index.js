@@ -14,7 +14,7 @@ import { useMoralis } from "react-moralis";
 import useSWR from "swr";
 
 const CreatorDashboardWrapper = (props) => {
-  let modelData = props.modelData ?? JSON.parse(props.userInfo);
+  let modelData = JSON.parse(props.userInfo);
   console.log({ modelData, props });
   if (modelData === null) {
     modelData = {};

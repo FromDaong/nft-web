@@ -85,7 +85,7 @@ const StreamEnabled = ({ data }) => {
   const {
     playback_id: playbackId,
     stream_key: streamKey,
-    streamId: streamId,
+    stream_id: streamId,
   } = data;
   const [streamIsActive, setStreamIsActive] = useState(false);
 
@@ -108,7 +108,7 @@ const StreamEnabled = ({ data }) => {
 
   const endStream = async () => {
     await fetch(`/api/stream/${streamId}/end`);
-    mutate("/api/dashboard/stream");
+    //mutate("/api/dashboard/stream");
   };
   <div className="col-span-1">
     <div className="relative w-full overflow-hidden pb-4 h-75">
