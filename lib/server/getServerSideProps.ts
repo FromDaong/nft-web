@@ -121,12 +121,20 @@ export const getModelData = async (ctx) => {
         address: { $regex: new RegExp(address, "i") },
       });
 
+      if (
+        userInfo.live &&
+        address.toLowerCase() !== userInfo?.address.toLowerCase()
+      ) {
+        delete userInfo.live.stream_key;
+      }
+
       if (!userInfo) {
         userInfo = {
           bio: "I am a new Treat explorer",
           nfts: [],
           username: address.substring(0, 6) + "..." + address.substr(-5),
           address,
+          live: {},
         };
       }
 
