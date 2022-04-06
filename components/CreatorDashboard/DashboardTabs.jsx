@@ -195,7 +195,7 @@ export default function DashboardTabs({
             )}
             {isModel && (
               <Tab.Pane eventKey="subscription-livedash">
-                <LivestreamDashboard res={modelData} />
+                <LivestreamDashboard modelData={modelData} />
               </Tab.Pane>
             )}
             {isModel && (
