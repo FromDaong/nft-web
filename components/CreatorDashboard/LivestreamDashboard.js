@@ -136,8 +136,8 @@ const StreamEnabled = ({ data }) => {
     //mutate("/api/dashboard/stream");
   };
   <div className="col-span-1">
-    <div className="relative w-full overflow-hidden pb-4 h-75">
-      <div data-vjs-player>
+    <div className="relative w-full overflow-hidden pb-4 h-75 player-container">
+      <div data-vjs-player className="h-full">
         <video
           id="video"
           ref={onVideo}
