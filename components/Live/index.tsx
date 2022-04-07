@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Flex,
   Grid,
@@ -12,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 
 import ChatBox from "./Chat";
+import LiveFeed from "./LiveFeed";
 import LiveVideo from "./Video";
 import Participants from "./Participants";
 
@@ -42,7 +44,14 @@ export default function LiveStreamModal({
                 h={"full"}
               >
                 <GridItem colSpan={1} h={"full"}>
-                  <Participants />
+                  <Flex flexDir="column">
+                    <Box w={1 / 2}>
+                      <Participants />
+                    </Box>
+                    <Box w={1 / 2}>
+                      <LiveFeed />
+                    </Box>
+                  </Flex>
                 </GridItem>
                 <GridItem colSpan={3} h={"full"} bgColor="black">
                   <LiveVideo
