@@ -19,7 +19,7 @@ export default function LiveStreamModal({
   data,
   streamIsActive,
 }) {
-  const { playback_id, stream_key, stream_id } = data;
+  const { playback_id, stream_id } = data;
 
   const endStream = async () => {
     await fetch(`/api/stream/${stream_id}/end`);
@@ -32,8 +32,8 @@ export default function LiveStreamModal({
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Livestream</ModalHeader>
-          <ModalBody h={"full"}>
-            <Flex flexDir="column" w={"full"}>
+          <ModalBody h={"full"} position="relative">
+            <Flex flexDir="column" w={"full"} h={"full"} position="absolute">
               <Grid
                 gridTemplateColumns={"repeat(5, 1fr)"}
                 w={"full"}
