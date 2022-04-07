@@ -11,7 +11,9 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 
+import ChatBox from "./Chat";
 import LiveVideo from "./Video";
+import Participants from "./Participants";
 
 export default function LiveStreamModal({
   isOpen,
@@ -39,14 +41,18 @@ export default function LiveStreamModal({
                 w={"full"}
                 h={"full"}
               >
-                <GridItem colSpan={1} h={"full"}></GridItem>
+                <GridItem colSpan={1} h={"full"}>
+                  <Participants />
+                </GridItem>
                 <GridItem colSpan={3} h={"full"} bgColor="black">
                   <LiveVideo
                     streamIsActive={streamIsActive}
                     playback_id={playback_id}
                   />
                 </GridItem>
-                <GridItem colSpan={1} h={"full"}></GridItem>
+                <GridItem colSpan={1} h={"full"}>
+                  <ChatBox />
+                </GridItem>
               </Grid>
             </Flex>
           </ModalBody>
