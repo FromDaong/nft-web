@@ -78,9 +78,13 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
   const toast = useToast();
 
-  const { data: modelData } = useSWR(
-    account && `/api/model/find-by-address/${account}`
-  );
+  const [modelData, setModelData] = useState({});
+
+  useEffect(() => {
+    Axios.get(`/api/model/find-by-adress/${account}`).then((res) => {
+      setModelData(res.data);
+    });
+  }, []);
 
   useEffect(() => {
     ReactGA.initialize("UA-207897573-1");
