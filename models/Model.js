@@ -74,7 +74,6 @@ const ModelSchema = new mongoose.Schema(
       stream_id: String,
       playback_id: String,
       stream_key: String,
-
       banned: [
         {
           id: String,
