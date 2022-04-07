@@ -78,7 +78,7 @@ export default withJWTAuth(async (req, res) => {
       res.statusCode = 500;
 
       // Handles Invalid API key error
-      if (error.response.status === 403) {
+      if (error.response?.status === 403) {
         res.statusCode = 403;
       }
       res.json({ error });
