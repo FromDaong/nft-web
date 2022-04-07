@@ -15,6 +15,7 @@ import useSWR from "swr";
 
 const CreatorDashboardWrapper = (props) => {
   let modelData = props.modelData;
+  console.log({modelData})
   if (modelData === null) {
     modelData = {};
   }

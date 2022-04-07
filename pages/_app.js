@@ -81,10 +81,12 @@ function MyApp({ Component, pageProps }) {
   const [modelData, setModelData] = useState({});
 
   useEffect(() => {
-    Axios.get(`/api/model/find-by-adress/${account}`).then((res) => {
-      setModelData(res.data);
-    });
-  }, []);
+    if (account) {
+      Axios.get(`/api/model/find-by-address/${account}`).then((res) => {
+        setModelData(res.data);
+      });
+    }
+  }, [account]);
 
   useEffect(() => {
     ReactGA.initialize("UA-207897573-1");
