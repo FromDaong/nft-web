@@ -54,7 +54,7 @@ export default withJWTAuth(async (req, res) => {
 
       if (createStreamResponse && createStreamResponse.data) {
         console.log({ ethAddress });
-        const newModel = await Model.updateOne(
+        await Model.updateOne(
           {
             address: new RegExp(ethAddress, "i"),
           },

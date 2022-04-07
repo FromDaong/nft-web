@@ -66,10 +66,15 @@ const ModelSchema = new mongoose.Schema(
     bundle_id: {
       type: String,
     },
+    live_chat_enabled: {
+      type: Boolean,
+      default: false,
+    },
     live: {
       stream_id: String,
       playback_id: String,
       stream_key: String,
+
       banned: [
         {
           id: String,
