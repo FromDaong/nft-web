@@ -101,8 +101,13 @@ const StreamEnabled = ({ data }) => {
   }, [streamStatusResponse]);
 
   return (
-    <div className="col-span-1 py-2">
-      <LiveStreamModal isOpen={isOpen} onClose={onClose} data={data} />
+    <div className="w-full py-2">
+      <LiveStreamModal
+        isOpen={isOpen}
+        onClose={onClose}
+        data={data}
+        streamIsActive={streamIsActive}
+      />
       <div className="p-2 pb-4 mt-4 flex flex-col text-sm space-y-4">
         <div>
           <div className="flex items-center justify-between break-all">
