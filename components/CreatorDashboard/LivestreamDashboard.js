@@ -3,14 +3,14 @@ import "videojs-contrib-quality-levels";
 import "videojs-hls-quality-selector";
 import "video.js/dist/video-js.min.css";
 
-import { useCallback, useEffect, useState } from "react";
+import { Button, Tag, useDisclosure } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 
 import BlankModal from "../../components/BlankModal";
-import { Button } from "@chakra-ui/react";
+import LiveStreamModal from "../Live";
 import { RecordCircle } from "react-bootstrap-icons";
 import { useMoralis } from "react-moralis";
 import useSWR from "swr";
-import videojs from "video.js";
 
 const copyTextToClipboard = (text) => {
   navigator.permissions.query({ name: "clipboard-write" }).then((result) => {
@@ -78,7 +78,6 @@ const EditProfile = ({ modelData }) => {
           <div className="col-md-8">
             <StreamEnabled data={modelData.live} />
           </div>
-          <div className="col-md-4">Chat</div>
         </div>
       )}
     </div>
@@ -86,162 +85,89 @@ const EditProfile = ({ modelData }) => {
 };
 
 const StreamEnabled = ({ data }) => {
-  const {
-    playback_id: playbackId,
-    stream_key: streamKey,
-    stream_id: streamId,
-  } = data;
+  const { stream_key: streamKey, stream_id: streamId } = data;
   const [streamIsActive, setStreamIsActive] = useState(false);
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { data: streamStatusResponse } = useSWR(`/api/stream/${streamId}`, {
     refreshInterval: 10000,
     revalidateOnMount: true,
   });
 
-  if (streamStatusResponse) {
-    const { isActive } = streamStatusResponse;
-    if (streamIsActive !== isActive) setStreamIsActive(isActive);
-  }
-
-  const [videoEl, setVideoEl] = useState(null);
-
   useEffect(() => {
-    if (videoEl == null) return;
-    if (streamIsActive && playbackId) {
-      const player = videojs(videoEl, {
-        autoplay: true,
-        controls: true,
-        sources: [
-          {
-            src: `https://cdn.livepeer.com/hls/${playbackId}/index.m3u8`,
-          },
-        ],
-      });
-
-      player.hlsQualitySelector();
-
-      player.on("error", () => {
-        player.src(`https://cdn.livepeer.com/hls/${playbackId}/index.m3u8`);
-      });
+    if (streamStatusResponse) {
+      const { isActive } = streamStatusResponse;
+      if (streamIsActive !== isActive) setStreamIsActive(isActive);
     }
-  }, [streamIsActive]);
+  }, [streamStatusResponse]);
 
-  const onVideo = useCallback((el) => {
-    console.log({ el });
-    setVideoEl(el);
-  }, []);
-
-  const endStream = async () => {
-    await fetch(`/api/stream/${streamId}/end`);
-    //mutate("/api/dashboard/stream");
-  };
-  <div className="col-span-1">
-    <div className="relative w-full overflow-hidden pb-4 h-75 player-container">
-      <div data-vjs-player className="h-full">
-        <video
-          id="video"
-          ref={onVideo}
-          className="h-full w-full h-full video-js vjs-theme-city z-4"
-          controls
-          playsInline
-        />
-      </div>
-      <div className="bg-white rounded-xl flex items-center z-1 justify-center absolute right-2 top-2 px-2 py-1 text-xs  text-gray-700">
-        <div
-          className={`animate-pulse ${
-            streamIsActive ? "bg-green-700" : "bg-yellow-600"
-          } h-2 w-2 mr-2 rounded-full`}
-        ></div>
-        {streamIsActive ? "Live" : "Waiting for Video"}
-      </div>
-    </div>
-    <div className="lg:p-0 mt-2 text-red-500 text-left text-sm">
-      <span className="font-bold">Note:&nbsp;</span> To start a video stream,
-      please use a broadcaster software like OBS and use the following details:
-    </div>
-    <div className="border border-dashed p-2 pb-4 mt-4 flex flex-col text-sm">
-      <div className="flex items-center justify-between mt-2 break-all">
-        <span>
-          <b>STREAMING URL:</b>
-          <br />
-          rtmp://rtmp.livepeer.com/live/
-        </span>
-        <Button
-          onClick={() => copyTextToClipboard(`rtmp://rtmp.livepeer.com/live/`)}
-          className="border ml-1 p-1 rounded text-sm break-normal"
-        >
-          Copy
-        </Button>
-      </div>
-      <div className="flex items-center justify-between mt-4 break-all">
-        <span>
-          <b>STREAM KEY:</b>
-          <br />
-          {streamKey}
-        </span>
-        <Button
-          onClick={() => copyTextToClipboard(streamKey)}
-          className="border ml-1 p-1 rounded text-sm break-normal"
-        >
-          Copy
-        </Button>
-      </div>
-    </div>
-  </div>;
   return (
-    <div className="col-span-1">
-      <div className="relative w-full overflow-hidden pb-4 h-75">
-        <div data-vjs-player>
-          <video
-            id="video"
-            ref={onVideo}
-            className="h-full w-full h-full video-js vjs-theme-city z-4"
-            controls
-            playsInline
-          />
+    <div className="col-span-1 py-2">
+      <LiveStreamModal isOpen={isOpen} onClose={onClose} data={data} />
+      <div className="p-2 pb-4 mt-4 flex flex-col text-sm space-y-4">
+        <div>
+          <div className="flex items-center justify-between break-all">
+            <span>
+              <b>My Livestream</b>
+              <br />
+              <span>
+                {streamIsActive ? (
+                  <Tag colorScheme={"teal"}>Active</Tag>
+                ) : (
+                  <Tag colorScheme={"red"}>InActive</Tag>
+                )}
+              </span>
+            </span>
+            {!streamIsActive && (
+              <Button colorScheme={"primary"} onClick={onOpen}>
+                Launch Livestream Modal
+              </Button>
+            )}
+          </div>
+          <div className="text-red-500 text-left text-sm pb-2 pt-1">
+            <span className="font-bold">Note:&nbsp;</span> To start a video
+            stream, please use a broadcaster software like OBS and use the
+            following details:
+          </div>
         </div>
-        <div className="bg-white rounded-xl flex items-center z-1 justify-center absolute right-2 top-2 px-2 py-1 text-xs  text-gray-700">
-          <div
-            className={`animate-pulse ${
-              streamIsActive ? "bg-green-700" : "bg-yellow-600"
-            } h-2 w-2 mr-2 rounded-full`}
-          ></div>
-          {streamIsActive ? "Live" : "Waiting for Video"}
-        </div>
-      </div>
-      <div className="p-2 mt-2 text-left text-center text-purple">
-        <span className="font-bold">Note:&nbsp;</span> To start a video stream,
-        please use a broadcaster software like OBS and use the following
-        details:
-      </div>
-      <div className="p-2 pb-4 mt-2 flex flex-col">
-        <div className="flex items-center justify-between mt-2 break-all">
+
+        <div className="flex items-center justify-between break-all">
           <span>
-            <b>INGEST URL:</b>
+            <b>Livestream Chat</b>
+            <br />
+            Status:{" "}
+            {true ? (
+              <Tag colorScheme={"teal"}>Enabled</Tag>
+            ) : (
+              <Tag colorScheme={"red"}>Disabled</Tag>
+            )}
+          </span>
+          {true ? (
+            <Button colorScheme={"red"}>Disable</Button>
+          ) : (
+            <Button colorScheme="green">Enable</Button>
+          )}
+        </div>
+        <div className="flex items-center justify-between break-all">
+          <span>
+            <b>STREAMING URL:</b>
             <br />
             rtmp://rtmp.livepeer.com/live/
           </span>
           <Button
-            colorScheme="secondary"
             onClick={() =>
               copyTextToClipboard(`rtmp://rtmp.livepeer.com/live/`)
             }
           >
-            Copy URL
+            Copy
           </Button>
         </div>
-        <div className="flex items-center justify-between mt-4 break-all">
+        <div className="flex items-center justify-between break-all">
           <span>
             <b>STREAM KEY:</b>
             <br />
             {streamKey}
           </span>
-          <Button
-            onClick={() => copyTextToClipboard(streamKey)}
-            colorScheme="secondary"
-          >
-            Copy Key
-          </Button>
+          <Button onClick={() => copyTextToClipboard(streamKey)}>Copy</Button>
         </div>
       </div>
     </div>
