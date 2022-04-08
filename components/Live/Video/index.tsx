@@ -44,7 +44,7 @@ export default function LiveVideo(props: LiveVideoProps) {
   return (
     <Flex p={2} h={"full"} w={"full"}>
       <Box position="relative" w={"full"} h={"full"} overflow="hidden">
-        <Box h={"full"} w={"full"} data-vjs-player>
+        <Box h={"full"} w={"full"} data-vjs-player style={{ minHeight: 400 }}>
           <video
             id="video"
             ref={onVideo}
