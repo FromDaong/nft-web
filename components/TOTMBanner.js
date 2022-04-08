@@ -20,16 +20,6 @@ const V2Banner = () => {
             View Magazine
           </Button>
         </Link>
-        {/* <a
-          href="https://docs.google.com/gview?url=https://github.com/TreatDAO/litepaper/raw/main/TreatPaperFinal.pdf&embedded=true"
-          target="_blank"
-        >
-          <Button variant="outline ml-3">
-            <b className="text-white" style={{ textDecoration: "underline" }}>
-              {"More Info"}
-            </b>
-          </Button>
-        </a> */}
       </div>
     </>
   );
