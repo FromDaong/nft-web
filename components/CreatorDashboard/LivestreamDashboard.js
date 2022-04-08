@@ -74,10 +74,8 @@ const EditProfile = ({ modelData }) => {
           </a>
         </div>
       ) : (
-        <div className="container row">
-          <div className="col-md-8">
-            <StreamEnabled data={modelData.live} />
-          </div>
+        <div className="col-md-12">
+          <StreamEnabled data={modelData.live} />
         </div>
       )}
     </div>
@@ -115,10 +113,11 @@ const StreamEnabled = ({ data }) => {
               <b>My Livestream</b>
               <br />
               <span>
+                {"Status: "}
                 {streamIsActive ? (
                   <Tag colorScheme={"teal"}>Active</Tag>
                 ) : (
-                  <Tag colorScheme={"red"}>InActive</Tag>
+                  <Tag colorScheme={"red"}>Inactive</Tag>
                 )}
               </span>
             </span>
@@ -135,23 +134,6 @@ const StreamEnabled = ({ data }) => {
           </div>
         </div>
 
-        <div className="flex items-center justify-between break-all">
-          <span>
-            <b>Livestream Chat</b>
-            <br />
-            Status:{" "}
-            {true ? (
-              <Tag colorScheme={"teal"}>Enabled</Tag>
-            ) : (
-              <Tag colorScheme={"red"}>Disabled</Tag>
-            )}
-          </span>
-          {true ? (
-            <Button colorScheme={"red"}>Disable</Button>
-          ) : (
-            <Button colorScheme="green">Enable</Button>
-          )}
-        </div>
         <div className="flex items-center justify-between break-all">
           <span>
             <b>STREAMING URL:</b>
@@ -173,6 +155,23 @@ const StreamEnabled = ({ data }) => {
             {streamKey}
           </span>
           <Button onClick={() => copyTextToClipboard(streamKey)}>Copy</Button>
+        </div>
+        <div className="flex items-center justify-between break-all">
+          <span>
+            <b>Livestream Chat</b>
+            <br />
+            Status:{" "}
+            {true ? (
+              <Tag colorScheme={"teal"}>Enabled</Tag>
+            ) : (
+              <Tag colorScheme={"red"}>Disabled</Tag>
+            )}
+          </span>
+          {true ? (
+            <Button colorScheme={"red"}>Disable</Button>
+          ) : (
+            <Button colorScheme="green">Enable</Button>
+          )}
         </div>
       </div>
     </div>
