@@ -1,8 +1,15 @@
+import "videojs-contrib-hls";
+import "videojs-contrib-quality-levels";
+import "videojs-hls-quality-selector";
+import "video.js/dist/video-js.min.css";
+
 import BlankModal from "../../components/BlankModal";
 import useSWR from "swr";
 import { useState, useCallback, useEffect } from "react";
-import { Button } from "@chakra-ui/react";
+import { Button, GridItem } from "@chakra-ui/react";
 import useSubscribe from "../../hooks/useSubscribe";
+import videojs from "video.js";
+import LiveVideo from "../Live/Video";
 
 const LivestreamViewing = ({
   isSubscribed,
@@ -62,7 +69,7 @@ const LivestreamViewing = ({
           ],
         });
 
-        player.hlsQualitySelector();
+        // player.hlsQualitySelector();
 
         player.on("error", () => {
           player.reset();
@@ -112,28 +119,9 @@ const LivestreamViewing = ({
         account={account}
       />
       <div className="col-md-12 mt-4 container">
-        <div className="col-md-8">
-          <div>
-            <div data-vjs-player>
-              <video
-                id="video"
-                ref={onVideo}
-                className="h-full w-full h-full video-js vjs-theme-city z-4"
-                controls
-                playsInline
-              />
-            </div>
-            <div className="bg-white rounded-xl flex items-center z-1 justify-center absolute right-2 top-2 px-2 py-1 text-xs  text-gray-700 mr-3">
-              <div
-                className={`animate-pulse ${
-                  streamIsActive ? "bg-secondary" : "bg-primary"
-                } h-2 w-2 mr-2 rounded-full`}
-              ></div>
-              {streamIsActive ? "Live" : "Waiting for Video"}
-            </div>
-          </div>
+        <div style={{ minHeight: 500 }}>
+          <LiveVideo streamIsActive={streamIsActive} playback_id={playbackId} />
         </div>
-        <div className="col-md-4"></div>
       </div>
     </>
   );
