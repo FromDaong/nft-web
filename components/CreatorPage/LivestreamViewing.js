@@ -1,11 +1,10 @@
 import BlankModal from "../../components/BlankModal";
 import useSWR from "swr";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Button } from "@chakra-ui/react";
 import useSubscribe from "../../hooks/useSubscribe";
 
 const LivestreamViewing = ({
-  streamId,
   isSubscribed,
   modelData,
   subscriptionCost,
@@ -16,6 +15,8 @@ const LivestreamViewing = ({
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
   const { onSubscribe } = useSubscribe(modelData.address, 1, subscriptionCost);
+
+  const { stream_id: streamId, playback_id: playbackId } = modelData.live;
 
   const handleSubscribe = async () => {
     setShowPendingModal(true);
@@ -46,6 +47,37 @@ const LivestreamViewing = ({
   const onVideo = useCallback((el) => {
     setVideoEl(el);
   }, []);
+
+  useEffect(() => {
+    if (videoEl == null) return;
+    if (streamIsActive && playbackId) {
+      if (!playerEl) {
+        const player = videojs(videoEl, {
+          autoplay: true,
+          controls: true,
+          sources: [
+            {
+              src: `https://cdn.livepeer.com/hls/${playbackId}/index.m3u8`,
+            },
+          ],
+        });
+
+        player.hlsQualitySelector();
+
+        player.on("error", () => {
+          player.reset();
+          player.src(`https://cdn.livepeer.com/hls/${playbackId}/index.m3u8`);
+        });
+
+        setPlayerEl(player);
+      } else {
+        playerEl.reset();
+        playerEl.src(`https://cdn.livepeer.com/hls/${playbackId}/index.m3u8`);
+      }
+    } else if (playerEl) {
+      playerEl.reset();
+    }
+  }, [streamIsActive, playbackId]);
 
   if (!isSubscribed)
     return (

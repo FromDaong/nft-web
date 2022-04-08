@@ -32,15 +32,14 @@ export default function LiveVideo(props: LiveVideoProps) {
         ],
       });
 
-      player.hlsQualitySelector();
+
+      // player.hlsQualitySelector();
 
       player.on("error", () => {
         player.src(playback_url);
       });
     }
-  }, [streamIsActive]);
-
-  console.log({ playback_url, onVideo });
+  }, [streamIsActive, videoEl]);
 
   return (
     <Flex p={2} h={"full"} w={"full"}>
@@ -56,11 +55,10 @@ export default function LiveVideo(props: LiveVideoProps) {
           />
         </Box>
         <Flex right={2} top={2} position="absolute">
-          <Box
-            className={`animate-pulse ${
-              props.streamIsActive ? "bg-green-700" : "bg-yellow-600"
-            } h-2 w-2 mr-2 rounded-full`}
-          ></Box>
+          <div
+            className={`animate-pulse ${props.streamIsActive ? "bg-green-700" : "bg-yellow-600"
+              } h-2 w-2 mr-2 rounded-full`}
+          ></div>
           {props.streamIsActive ? (
             <Tag p={1}>Live</Tag>
           ) : (

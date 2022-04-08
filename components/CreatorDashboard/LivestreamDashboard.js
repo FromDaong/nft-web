@@ -122,7 +122,7 @@ const StreamEnabled = ({ data }) => {
                 )}
               </span>
             </span>
-            {!streamIsActive && (
+            {streamIsActive && (
               <Button colorScheme={"primary"} onClick={onOpen}>
                 Launch Livestream Modal
               </Button>
