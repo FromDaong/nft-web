@@ -67,7 +67,7 @@ export default function LiveStreamModal({
           </ModalBody>
           <ModalFooter justifyContent={"flex-start"}>
             <Button colorScheme={"red"} onClick={onClose}>
-              End Livestream
+              Close
             </Button>
           </ModalFooter>
         </ModalContent>
