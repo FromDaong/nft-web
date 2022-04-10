@@ -1,5 +1,6 @@
 import BlankModal from "../../components/BlankModal";
-import {Button} from "@chakra-ui/react";import Hero from "../../components/Hero";
+import { Button } from "@chakra-ui/react";
+import Hero from "../../components/Hero";
 import Layout from "../../components/Layout";
 import Link from "next/link";
 import Spinner from "react-bootstrap/Spinner";
@@ -16,7 +17,7 @@ const AdminDashboardWrapper = ({ username }) => {
 
   const { data } = useSWR(`/api/admin/is-authed`);
 
-  if (isAuthenticated || !data) {
+  if (!isAuthenticated || !data) {
     return (
       <div
         style={{
