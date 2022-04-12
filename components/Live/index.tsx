@@ -36,11 +36,6 @@ export default function LiveStreamModal({
               playback_id={playback_id}
             />
           </ModalBody>
-          <ModalFooter justifyContent={"flex-start"}>
-            <Button colorScheme={"red"} onClick={endStream}>
-              Close
-            </Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </>
