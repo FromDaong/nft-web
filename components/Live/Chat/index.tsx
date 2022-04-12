@@ -1,9 +1,15 @@
-import { Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
+import ChatContainer from "./ChatContainer";
+import { LiveStreamChatContext } from "../../../contexts/Chat";
 import SendMessageBox from "./SendMessageBox";
+import { useContext } from "react";
 
 export default function ChatBox() {
+  const { messages, last_message, sendMessage } = useContext(
+    LiveStreamChatContext
+  );
   return (
-    <Flex
+    <Box
       w={[3 / 4, 3 / 4, 2 / 3, 1 / 3]}
       className="p-2"
       position="absolute"
@@ -11,7 +17,8 @@ export default function ChatBox() {
       bottom={0}
       left={0}
     >
-      <SendMessageBox />
-    </Flex>
+      <ChatContainer messages={messages} last_message={last_message} />
+      <SendMessageBox sendMessage={sendMessage} />
+    </Box>
   );
 }

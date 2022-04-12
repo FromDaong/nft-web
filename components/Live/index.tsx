@@ -1,12 +1,4 @@
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-} from "@chakra-ui/react";
+import { Modal, ModalBody, ModalContent, ModalOverlay } from "@chakra-ui/react";
 
 import LiveVideo from "./Video";
 
