@@ -1,4 +1,5 @@
 import Message from "../../../../../models/Message";
+import { Notification } from "../../../../../components/Live/types";
 import NotificationModel from "../../../../../models/Notification";
 import ReactionModel from "../../../../../models/Reaction";
 import Tip from "../../../../../models/Tip";
@@ -7,7 +8,7 @@ import { withJWTAuth } from "../../../../../utils/server-utils";
 
 async function publish(req, res) {
   const { channel } = req.params;
-  const { payload } = req.body;
+  const payload: Notification = req.body;
 
   const { ethAddress } = req.session;
   // Publish to channel with pusher
