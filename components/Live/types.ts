@@ -33,7 +33,7 @@ export interface Notification {
   timestamp: number;
   payload: ChatMessage | TipMessage | ReactionMessage;
   sent: boolean;
-  index: number;
+  index: string;
 }
 
 export interface ChatParticipant {
