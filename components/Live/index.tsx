@@ -26,7 +26,7 @@ export default function LiveStreamModal({
 
   return (
     <>
-      <Modal onClose={onClose} size={"full"} isOpen={isOpen} p={0}>
+      <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
         <ModalOverlay />
         <ModalContent p={0}>
           <ModalBody h={"full"} position="relative">
