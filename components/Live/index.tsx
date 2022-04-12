@@ -26,10 +26,9 @@ export default function LiveStreamModal({
 
   return (
     <>
-      <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
+      <Modal onClose={onClose} size={"full"} isOpen={isOpen} p={0}>
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Livestream</ModalHeader>
+        <ModalContent p={0}>
           <ModalBody h={"full"} position="relative">
             <LiveVideo
               streamIsActive={streamIsActive}
