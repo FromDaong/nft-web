@@ -10,7 +10,7 @@ export default function Participants() {
       bgColor="white"
       top={0}
     >
-      <ParticipantsAvatarGroup participants={[{user_id: "Chris", avatar: ""}, {user_id: "Chris", avatar: ""}, {user_id: "Chris", avatar: ""}, {user_id: "Chris", avatar: ""}]}
+      <ParticipantsAvatarGroup participants={[{user_id: "Chris", avatar: ""}, {user_id: "Chris", avatar: ""}, {user_id: "Chris", avatar: ""}, {user_id: "Chris", avatar: ""}]} />
     </Flex>
   );
 }
