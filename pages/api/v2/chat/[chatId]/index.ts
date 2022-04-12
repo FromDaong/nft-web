@@ -1,4 +1,4 @@
-import { withJWTAuth } from "../../../../utils/server-utils";
+import { withJWTAuth } from "../../../../../utils/server-utils";
 
 async function chatId(req, res) {}
 
