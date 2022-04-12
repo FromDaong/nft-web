@@ -1,4 +1,4 @@
-import { ChatParticipant } from "./types";
+import { ChatParticipant, Notification } from "./types";
 
 export const validateSHA256Address = (address: string): boolean => {
   const regex = /^[0-9a-f]{64}$/;
