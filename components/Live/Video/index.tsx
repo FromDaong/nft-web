@@ -53,7 +53,6 @@ const LiveVideoConsumer = (props) => {
 
   return (
     <Flex
-      p={2}
       h={"full"}
       w={"full"}
       position="absolute"
@@ -82,7 +81,9 @@ const LiveVideoConsumer = (props) => {
             } h-2 w-2 mr-2 rounded-full`}
           ></div>
           {props.streamIsActive ? (
-            <Tag p={1}>Live</Tag>
+            <Tag p={1}>
+              Live <span className="mx-2 p-1 bg-red-600 rounded-full" />
+            </Tag>
           ) : (
             <Tag p={1}>Waiting for Video</Tag>
           )}
