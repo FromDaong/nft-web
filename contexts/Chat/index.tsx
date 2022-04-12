@@ -6,6 +6,7 @@ import {
 import { createContext, useEffect, useState } from "react";
 
 import Axios from "axios";
+import { make_id } from "../../components/Live/utils";
 import { reactPusher } from "../../lib/pusher";
 import { useMoralis } from "react-moralis";
 
@@ -43,11 +44,20 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const { account } = useMoralis();
 
   useEffect(() => {
-    reactPusher.bind("message", (data) => {
-      setMessages((messages) => [...messages, data]);
-      setLastMessage(data);
-    });
-  }, []);
+    if (currently_playing) {
+      const current_channel = reactPusher.subscribe(
+        `live-${currently_playing}`
+      );
+      current_channel.bind("live-message", (data) => {
+        setMessages((messages) => [...messages, data]);
+        setLastMessage(data);
+      });
+    } else {
+      if (reactPusher.allChannels().length > 0) {
+        reactPusher.unbind_all();
+      }
+    }
+  }, [currently_playing]);
 
   const sendMessage = async (message: string) => {
     const composed_message: ChatMessage = {
@@ -61,10 +71,11 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       payload: composed_message,
       timestamp: composed_message.timestamp,
       sent: false,
-      index: messages.length,
+      index: make_id(12),
     };
 
     setMessages([...messages, notification]);
+    publish(notification);
   };
 
   const sendTip = (amount: number, message: string) => {};
@@ -75,6 +86,16 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     Axios.post(`/api/v2/chat/${currently_playing}/publish`, { payload }).then(
       (res) => {
         if (res.status === 200) {
+          console.log("published");
+          const update_item = messages.find(
+            (item) => item.index === payload.index
+          );
+          if (update_item) {
+            update_item.sent = true;
+            const messages_copy = [...messages];
+            messages_copy.splice(messages_copy.indexOf(update_item), 1);
+            setMessages([...messages_copy, update_item]);
+          }
         }
       }
     );
