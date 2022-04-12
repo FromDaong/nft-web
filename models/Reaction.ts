@@ -21,7 +21,7 @@ ReactionsSchema.plugin(aggregatePaginate);
 ReactionsSchema.plugin(paginate);
 ReactionsSchema.plugin(require("mongoose-beautiful-unique-validation"));
 
-const Reaction =
+const ReactionModel =
   mongoose.models.ReactionsSchema ||
   mongoose.model("Reaction", ReactionsSchema);
-export default Reaction;
+export default ReactionModel;

@@ -1,5 +1,7 @@
 import Message from "../../../../../models/Message";
 import NotificationModel from "../../../../../models/Notification";
+import ReactionModel from "../../../../../models/Reaction";
+import Tip from "../../../../../models/Tip";
 import { nodePusher } from "../../../../../lib/pusher";
 import { withJWTAuth } from "../../../../../utils/server-utils";
 
@@ -17,22 +19,23 @@ async function publish(req, res) {
   };
 
   try {
-    new NotificationModel(payload).save();
+    await new NotificationModel(payload).save();
     switch (payload.type) {
       case "message":
-        new Message(payload.payload).save();
+        await new Message(payload.payload).save();
         break;
       case "reaction":
+        await new ReactionModel(payload.payload).save();
         break;
-
       case "tip":
+        await new Tip(payload.payload).save();
         break;
 
       default:
         break;
     }
-    nodePusher.trigger(channelName, eventName, data);
 
+    await nodePusher.trigger(channelName, eventName, data);
     return res.status(200).json({ error: false });
   } catch (err) {
     console.log(err);
