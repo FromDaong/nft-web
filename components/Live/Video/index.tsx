@@ -75,14 +75,14 @@ const LiveVideoConsumer = (props) => {
           />
         </Box>
         <Flex right={2} top={2} position="absolute">
-          <div
-            className={`animate-pulse ${
-              props.streamIsActive ? "bg-green-700" : "bg-yellow-600"
-            } h-2 w-2 mr-2 rounded-full`}
-          ></div>
           {props.streamIsActive ? (
             <Tag p={1}>
-              Live <span className="mx-2 p-1 bg-red-600 rounded-full" />
+              Live{" "}
+              <span
+                className={`animate-pulse ${
+                  props.streamIsActive ? "bg-green-700" : "bg-yellow-600"
+                } h-2 w-2 mr-2 rounded-full`}
+              />
             </Tag>
           ) : (
             <Tag p={1}>Waiting for Video</Tag>
