@@ -35,7 +35,7 @@ const LiveVideoConsumer = (props) => {
     if (streamIsActive && playback_id) {
       const player = videojs(videoEl, {
         autoplay: true,
-        controls: true,
+        controls: false,
         sources: [
           {
             src: playback_url,
@@ -44,7 +44,6 @@ const LiveVideoConsumer = (props) => {
       });
 
       // player.hlsQualitySelector();
-      player.userActive(false);
 
       player.on("error", () => {
         player.src(playback_url);
