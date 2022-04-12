@@ -81,8 +81,8 @@ const LiveVideoConsumer = (props) => {
             <Tag p={1}>
               Live{" "}
               <span
-                className={`animate-pulse ${
-                  props.streamIsActive ? "bg-green-700" : "bg-yellow-600"
+                className={`animate-pulse mx-1 ${
+                  props.streamIsActive ? "bg-red-700" : "bg-yellow-600"
                 } h-2 w-2 mr-2 rounded-full`}
               />
             </Tag>
