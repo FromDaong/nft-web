@@ -63,7 +63,9 @@ const LiveVideoConsumer = (props) => {
     >
       <Box position="relative" w={"full"} h={"full"} overflow="hidden">
         <ChatBox />
-        <Participants />
+        {
+          //<Participants />
+        }
         <Box h={"full"} w={"full"} data-vjs-player style={{ minHeight: 400 }}>
           <video
             id="video"
