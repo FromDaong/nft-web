@@ -9,7 +9,7 @@ export default function Participants() {
       zIndex={500000}
       top={0}
     >
-      <ParticipantsAvatarGroup participants={[{user_id: "Chris", avatar: ""}, {user_id: "Chris", avatar: ""}, {user_id: "Chris", avatar: ""}, {user_id: "Chris", avatar: ""}]} />
+      <ParticipantsAvatarGroup participants={[{user_id: "Chris", avatar: ""}, {user_id: "Chris", avatar: ""}, {user_id: "Chris", avatar: ""}, {user_id: "Chris", avatar: ""}, {user_id: "Chris", avatar: ""}, {user_id: "Chris", avatar: ""}]} />
     </Flex>
   );
 }
