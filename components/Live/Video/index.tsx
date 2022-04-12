@@ -44,6 +44,7 @@ const LiveVideoConsumer = (props) => {
       });
 
       // player.hlsQualitySelector();
+      player.userActive(false);
 
       player.on("error", () => {
         player.src(playback_url);
