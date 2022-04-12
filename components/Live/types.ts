@@ -8,6 +8,8 @@ export type NotificationType =
 
 export type ReactionEmojis = "👏" | "❤️" | "🔥" | "💀" | "😂" | "🥰";
 
+export const reaction_emojis = ["👏", "❤️", "🔥", "💀", "😂", "🥰"];
+
 export interface ReactionMessage {
   timestamp: number;
   sender: string;

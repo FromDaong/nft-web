@@ -6,7 +6,9 @@ import "video.js/dist/video-js.min.css";
 import { Box, Flex, Tag } from "@chakra-ui/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import ChatBox from "../Chat";
 import { LiveVideoProps } from "../types";
+import Participants from "../Participants";
 import { getLivestreamPlaybackURL } from "../utils";
 import videojs from "video.js";
 
@@ -32,7 +34,6 @@ export default function LiveVideo(props: LiveVideoProps) {
         ],
       });
 
-
       // player.hlsQualitySelector();
 
       player.on("error", () => {
@@ -44,6 +45,8 @@ export default function LiveVideo(props: LiveVideoProps) {
   return (
     <Flex p={2} h={"full"} w={"full"}>
       <Box position="relative" w={"full"} h={"full"} overflow="hidden">
+        <ChatBox />
+        <Participants />
         <Box h={"full"} w={"full"} data-vjs-player style={{ minHeight: 400 }}>
           <video
             id="video"
@@ -56,8 +59,9 @@ export default function LiveVideo(props: LiveVideoProps) {
         </Box>
         <Flex right={2} top={2} position="absolute">
           <div
-            className={`animate-pulse ${props.streamIsActive ? "bg-green-700" : "bg-yellow-600"
-              } h-2 w-2 mr-2 rounded-full`}
+            className={`animate-pulse ${
+              props.streamIsActive ? "bg-green-700" : "bg-yellow-600"
+            } h-2 w-2 mr-2 rounded-full`}
           ></div>
           {props.streamIsActive ? (
             <Tag p={1}>Live</Tag>
