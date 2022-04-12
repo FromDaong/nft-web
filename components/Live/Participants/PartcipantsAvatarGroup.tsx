@@ -9,7 +9,7 @@ export default function ParticipantsAvatarGroup({
   }>;
 }) {
   return (
-    <AvatarGroup size="xs" max={4}>
+    <AvatarGroup size="sm" max={4}>
       {participants.map((p) => (
         <Avatar
           key={p.user_id}
