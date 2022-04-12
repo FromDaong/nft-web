@@ -7,12 +7,21 @@ import { Box, Flex, Tag } from "@chakra-ui/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import ChatBox from "../Chat";
+import { LiveStreamChatContextProvider } from "../../../contexts/Chat";
 import { LiveVideoProps } from "../types";
 import Participants from "../Participants";
 import { getLivestreamPlaybackURL } from "../utils";
 import videojs from "video.js";
 
 export default function LiveVideo(props: LiveVideoProps) {
+  return (
+    <LiveStreamChatContextProvider>
+      <LiveVideoConsumer {...props} />
+    </LiveStreamChatContextProvider>
+  );
+}
+
+const LiveVideoConsumer = (props) => {
   const { playback_id, streamIsActive } = props;
   const [videoEl, setVideoEl] = useState(null);
   const playback_url = useMemo(() => getLivestreamPlaybackURL(playback_id), []);
@@ -43,7 +52,16 @@ export default function LiveVideo(props: LiveVideoProps) {
   }, [streamIsActive, videoEl]);
 
   return (
-    <Flex p={2} h={"full"} w={"full"}>
+    <Flex
+      p={2}
+      h={"full"}
+      w={"full"}
+      position="absolute"
+      left={0}
+      right={0}
+      bottom={0}
+      top={0}
+    >
       <Box position="relative" w={"full"} h={"full"} overflow="hidden">
         <ChatBox />
         <Participants />
@@ -72,4 +90,4 @@ export default function LiveVideo(props: LiveVideoProps) {
       </Box>
     </Flex>
   );
-}
+};
