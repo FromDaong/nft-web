@@ -4,7 +4,7 @@ import SendMessageBox from "./SendMessageBox";
 export default function ChatBox() {
   return (
     <Flex
-      w={["full", 3 / 4, "0.5", 1 / 3]}
+      w={[3 / 4, 3 / 4, 2 / 3, 1 / 3]}
       className="p-2"
       position="absolute"
       zIndex={500000}
