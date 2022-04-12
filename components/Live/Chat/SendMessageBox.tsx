@@ -2,7 +2,7 @@ import { Box, Button, Flex, Input, InputGroup } from "@chakra-ui/react";
 
 import { useState } from "react";
 
-export default function SendMessageBox() {
+export default function SendMessageBox(props) {
   const [value, setValue] = useState("");
 
   const onMessageChange = (e) => {
@@ -13,6 +13,7 @@ export default function SendMessageBox() {
     e.preventDefault();
     if (!value) return;
     const message = value;
+    props.sendMessage(message);
     setValue("");
   };
   return (

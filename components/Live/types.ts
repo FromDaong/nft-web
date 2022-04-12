@@ -26,13 +26,14 @@ export interface ChatMessage {
   text: string;
   sender: string;
   timestamp: number;
-  index: number;
 }
 
 export interface Notification {
   type: NotificationType;
   timestamp: number;
   payload: ChatMessage | TipMessage | ReactionMessage;
+  sent: boolean;
+  index: number;
 }
 
 export interface ChatParticipant {
