@@ -1,4 +1,5 @@
 import { Flex } from "@chakra-ui/react";
+import SendMessageBox from "./SendMessageBox";
 
 export default function ChatBox() {
   return (
@@ -9,7 +10,7 @@ export default function ChatBox() {
       bgColor="white"
       bottom={0}
     >
-      Chat Box
+      <SendMessageBox />
     </Flex>
   );
 }
