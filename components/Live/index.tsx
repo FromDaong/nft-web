@@ -1,9 +1,5 @@
 import {
-  Box,
   Button,
-  Flex,
-  Grid,
-  GridItem,
   Modal,
   ModalBody,
   ModalContent,
@@ -12,10 +8,7 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 
-import ChatBox from "./Chat";
-import LiveFeed from "./LiveFeed";
 import LiveVideo from "./Video";
-import Participants from "./Participants";
 
 export default function LiveStreamModal({
   isOpen,
@@ -27,6 +20,7 @@ export default function LiveStreamModal({
 
   const endStream = async () => {
     await fetch(`/api/stream/${stream_id}/end`);
+    onClose();
     //mutate("/api/dashboard/stream");
   };
 
@@ -37,36 +31,13 @@ export default function LiveStreamModal({
         <ModalContent>
           <ModalHeader>Livestream</ModalHeader>
           <ModalBody h={"full"} position="relative">
-            <Flex flexDir="column" w={"full"} h={"full"} position="absolute">
-              <Grid
-                gridTemplateColumns={"repeat(5, 1fr)"}
-                w={"full"}
-                h={"full"}
-              >
-                <GridItem colSpan={1} h={"full"}>
-                  <Flex flexDir="column">
-                    <Box w={1 / 2}>
-                      <Participants />
-                    </Box>
-                    <Box w={1 / 2}>
-                      <LiveFeed />
-                    </Box>
-                  </Flex>
-                </GridItem>
-                <GridItem colSpan={3} h={"full"} bgColor="black">
-                  <LiveVideo
-                    streamIsActive={streamIsActive}
-                    playback_id={playback_id}
-                  />
-                </GridItem>
-                <GridItem colSpan={1} h={"full"}>
-                  <ChatBox />
-                </GridItem>
-              </Grid>
-            </Flex>
+            <LiveVideo
+              streamIsActive={streamIsActive}
+              playback_id={playback_id}
+            />
           </ModalBody>
           <ModalFooter justifyContent={"flex-start"}>
-            <Button colorScheme={"red"} onClick={onClose}>
+            <Button colorScheme={"red"} onClick={endStream}>
               Close
             </Button>
           </ModalFooter>
