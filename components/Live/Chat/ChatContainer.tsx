@@ -9,8 +9,9 @@ export default function ChatContainer(props) {
       h={"20vh"}
       py={2}
       mb={2}
+      bottom={24}
       position="absolute"
-      overflowY="hidden"
+      overflowY="scroll"
       id="chat-container"
     >
       {props.messages.map((m: Notification) => (
