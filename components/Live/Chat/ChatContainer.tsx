@@ -9,7 +9,7 @@ export default function ChatContainer(props) {
       h={"20vh"}
       py={2}
       mb={2}
-      position="relative"
+      position="absolute"
       overflowY="hidden"
       id="chat-container"
     >
@@ -19,7 +19,6 @@ export default function ChatContainer(props) {
           key={m.index}
           text={m.payload.text}
           user_id={m.payload.sender}
-          timestamp={m.timestamp}
           type={m.type}
           sent={m.sent}
         />
