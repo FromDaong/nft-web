@@ -17,6 +17,8 @@ export const LiveStreamChatContext = createContext<{
   participants: Array<ChatParticipant>;
   host: string | null;
   isHost: boolean;
+  setHost: () => void;
+  setCurrentlyPlaying: (string) => void;
   sendMessage: (message: string) => void;
   sendTip: (amount: number, message: string) => void;
   sendReaction: (text: string) => void;
@@ -30,18 +32,28 @@ export const LiveStreamChatContext = createContext<{
   sendMessage: (message) => ({ message }),
   sendTip: (amount, message) => ({ amount, message }),
   sendReaction: (text) => ({ text }),
+  setHost: () => {},
+  setCurrentlyPlaying: (a) => ({ a }),
 });
 
 export const LiveStreamChatContextProvider = ({ children }) => {
   const [messages, setMessages] = useState<Array<Notification>>([]);
-  const [currently_playing, setCurrentlyPlaying] = useState<string | null>(
+  const [currently_playing, setCurrently_playing] = useState<string | null>(
     null
   );
   const [last_message, setLastMessage] = useState<Notification | null>(null);
   const [participants, setParticipants] = useState<Array<ChatParticipant>>([]);
-  const [isHost, setIsHost] = useState(false);
+  const [isHost, setIs_host] = useState(false);
   const [host, setHost] = useState<string | null>(null);
   const { account } = useMoralis();
+
+  const setIsPlaying = (playback_id) => {
+    setCurrently_playing(playback_id);
+  };
+
+  const setIsHost = () => {
+    setIs_host(true);
+  };
 
   useEffect(() => {
     if (currently_playing) {
@@ -49,9 +61,31 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         `live-${currently_playing}`
       );
       current_channel.bind("live-message", (data) => {
-        setMessages((messages) => [...messages, data]);
+        console.log({ data });
+        setMessages((messages) => {
+          const index = messages.findIndex((m) => m.index === data.index);
+          if (index === -1) {
+            return [...messages, data];
+          } else {
+            const messages_copy = [...messages];
+            messages_copy[index] = data;
+            console.log({ messages_copy });
+            return [...messages_copy, data];
+          }
+        });
         setLastMessage(data);
       });
+
+      Axios.post("/api/stream/utils/get_host", { stream_id: "stream_id" })
+        .then((res) => {
+          if (res.data.host) {
+            setHost(res.data.host);
+          }
+        })
+        .catch((err) => {
+          console.log({ err });
+          setHost(null);
+        });
     } else {
       if (reactPusher.allChannels().length > 0) {
         reactPusher.unbind_all();
@@ -83,22 +117,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const sendReaction = (message: string) => {};
 
   const publish = (payload: Notification) => {
-    Axios.post(`/api/v2/chat/${currently_playing}/publish`, { payload }).then(
-      (res) => {
-        if (res.status === 200) {
-          console.log("published");
-          const update_item = messages.find(
-            (item) => item.index === payload.index
-          );
-          if (update_item) {
-            update_item.sent = true;
-            const messages_copy = [...messages];
-            messages_copy.splice(messages_copy.indexOf(update_item), 1);
-            setMessages([...messages_copy, update_item]);
-          }
-        }
-      }
-    );
+    Axios.post(`/api/v2/chat/${currently_playing}/publish`, payload);
   };
 
   return (
@@ -113,6 +132,8 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         sendMessage,
         sendReaction,
         sendTip,
+        setCurrentlyPlaying: setIsPlaying,
+        setHost: setIsHost,
       }}
     >
       {children}

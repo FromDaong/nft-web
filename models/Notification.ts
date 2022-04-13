@@ -10,9 +10,10 @@ const NotificationsSchema = new Schema({
   sent: {
     type: Boolean,
     required: true,
+    default: true,
   },
   index: {
-    type: Number,
+    type: String,
     required: true,
   },
   timestamp: {
@@ -30,5 +31,5 @@ NotificationsSchema.plugin(paginate);
 NotificationsSchema.plugin(require("mongoose-beautiful-unique-validation"));
 
 const NotificationModel =
-  models.NotificationsSchema || model("Notification", NotificationsSchema);
+  models.Notification || model("Notification", NotificationsSchema);
 export default NotificationModel;

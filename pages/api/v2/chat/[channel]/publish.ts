@@ -7,20 +7,19 @@ import { nodePusher } from "../../../../../lib/pusher";
 import { withJWTAuth } from "../../../../../utils/server-utils";
 
 async function publish(req, res) {
-  const { channel } = req.params;
+  const { channel } = req.query;
   const payload: Notification = req.body;
+  console.log({ payload });
 
-  const { ethAddress } = req.session;
   // Publish to channel with pusher
   const channelName = `live-${channel}`;
-  const eventName = "message";
+  const eventName = "live-message";
   const data = {
-    ethAddress,
     ...payload,
   };
 
   try {
-    await new NotificationModel(payload).save();
+    await new NotificationModel({ ...payload, sent: true }).save();
     switch (payload.type) {
       case "message":
         await new Message(payload.payload).save();
