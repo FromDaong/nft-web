@@ -13,6 +13,7 @@ export default function ChatContainer(props) {
           user_id={m.payload.sender}
           timestamp={m.timestamp}
           type={m.type}
+          sent={m.sent}
         />
       ))}
     </Box>
