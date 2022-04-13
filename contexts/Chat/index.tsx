@@ -41,6 +41,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const [currently_playing, setCurrently_playing] = useState<string | null>(
     null
   );
+  const [needsRetry, setNeedsRetry] = useState<Array<Notification>>([]);
   const [last_message, setLastMessage] = useState<Notification | null>(null);
   const [participants, setParticipants] = useState<Array<ChatParticipant>>([]);
   const [isHost, setIs_host] = useState(false);
@@ -54,6 +55,12 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const setIsHost = () => {
     setIs_host(true);
   };
+
+  useEffect(() => {
+    if (needsRetry.length > 0) {
+      needsRetry.map((i) => publish(i));
+    }
+  }, [needsRetry]);
 
   useEffect(() => {
     if (last_message) {
@@ -123,7 +130,12 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const sendReaction = (message: string) => {};
 
   const publish = (payload: Notification) => {
-    Axios.post(`/api/v2/chat/${currently_playing}/publish`, payload);
+    Axios.post(`/api/v2/chat/${currently_playing}/publish`, payload).catch(
+      (err) => {
+        console.log({ err });
+        setNeedsRetry([...needsRetry, payload]);
+      }
+    );
   };
 
   return (
