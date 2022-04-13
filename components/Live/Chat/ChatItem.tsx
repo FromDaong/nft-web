@@ -2,14 +2,7 @@ import { Box, Text } from "@chakra-ui/react";
 
 import { useEffect } from "react";
 
-export default function ChatItem({
-  text,
-  user_id,
-  timestamp,
-  type,
-  sent,
-  isLastMessage,
-}) {
+export default function ChatItem({ text, user_id, sent, isLastMessage }) {
   useEffect(() => {
     // if is last message scroll to bottom
     if (isLastMessage) {
