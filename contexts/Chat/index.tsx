@@ -56,20 +56,24 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    if (last_message) {
+      const index = messages.findIndex((m) => m.index === last_message.index);
+      if (index === -1) {
+        setMessages([...messages, last_message]);
+      } else {
+        const messages_copy = [...messages];
+        messages_copy[index] = last_message;
+        setMessages(messages_copy);
+      }
+    }
+  }, [last_message]);
+
+  useEffect(() => {
     if (currently_playing) {
       const current_channel = reactPusher.subscribe(
         `live-${currently_playing}`
       );
       current_channel.bind("live-message", (data) => {
-        const index = messages.findIndex((m) => m.index === data.index);
-        if (index === -1) {
-          setMessages([...messages, data]);
-        } else {
-          const messages_copy = [...messages];
-          messages_copy[index] = data;
-          console.log({ messages_copy });
-          setMessages([...messages_copy, data]);
-        }
         setLastMessage(data);
       });
 
