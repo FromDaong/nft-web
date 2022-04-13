@@ -61,18 +61,15 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         `live-${currently_playing}`
       );
       current_channel.bind("live-message", (data) => {
-        console.log({ data });
-        setMessages((messages) => {
-          const index = messages.findIndex((m) => m.index === data.index);
-          if (index === -1) {
-            return [...messages, data];
-          } else {
-            const messages_copy = [...messages];
-            messages_copy[index] = data;
-            console.log({ messages_copy });
-            return [...messages_copy, data];
-          }
-        });
+        const index = messages.findIndex((m) => m.index === data.index);
+        if (index === -1) {
+          setMessages([...messages, data]);
+        } else {
+          const messages_copy = [...messages];
+          messages_copy[index] = data;
+          console.log({ messages_copy });
+          setMessages([...messages_copy, data]);
+        }
         setLastMessage(data);
       });
 
@@ -91,6 +88,9 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         reactPusher.unbind_all();
       }
     }
+    return () => {
+      reactPusher.unbind_all();
+    };
   }, [currently_playing]);
 
   const sendMessage = async (message: string) => {

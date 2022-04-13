@@ -35,7 +35,7 @@ async function publish(req, res) {
         break;
     }
 
-    await nodePusher.trigger(channelName, eventName, data);
+    await nodePusher.trigger(channelName, eventName, { ...data, sent: true });
     return res.status(200).json({ error: false });
   } catch (err) {
     console.log(err);
