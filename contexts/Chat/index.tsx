@@ -65,6 +65,8 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         messages_copy[index] = last_message;
         setMessages(messages_copy);
       }
+
+      setLastMessage(null);
     }
   }, [last_message]);
 
