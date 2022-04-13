@@ -4,10 +4,13 @@ import "videojs-hls-quality-selector";
 import "video.js/dist/video-js.min.css";
 
 import { Box, Flex, Tag } from "@chakra-ui/react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  LiveStreamChatContext,
+  LiveStreamChatContextProvider,
+} from "../../../contexts/Chat";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 import ChatBox from "../Chat";
-import { LiveStreamChatContextProvider } from "../../../contexts/Chat";
 import { LiveVideoProps } from "../types";
 import Participants from "../Participants";
 import { getLivestreamPlaybackURL } from "../utils";
@@ -25,10 +28,15 @@ const LiveVideoConsumer = (props) => {
   const { playback_id, streamIsActive } = props;
   const [videoEl, setVideoEl] = useState(null);
   const playback_url = useMemo(() => getLivestreamPlaybackURL(playback_id), []);
+  const { setCurrentlyPlaying } = useContext(LiveStreamChatContext);
 
   const onVideo = useCallback((el) => {
     setVideoEl(el);
   }, []);
+
+  useEffect(() => {
+    setCurrentlyPlaying(playback_id);
+  }, [playback_id]);
 
   useEffect(() => {
     if (videoEl == null) return;

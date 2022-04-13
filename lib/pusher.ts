@@ -14,6 +14,6 @@ export const nodePusher = new Pusher({
   useTLS: true,
 });
 
-export const reactPusher = new ReactPusher(key, {
-  cluster,
+export const reactPusher = new ReactPusher("68ea1848874450546ae7", {
+  cluster: "us2",
 });

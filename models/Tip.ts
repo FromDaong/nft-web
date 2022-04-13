@@ -25,5 +25,5 @@ TipsSchema.plugin(aggregatePaginate);
 TipsSchema.plugin(paginate);
 TipsSchema.plugin(require("mongoose-beautiful-unique-validation"));
 
-const Tip = mongoose.models.TipsSchema || mongoose.model("Tip", TipsSchema);
+const Tip = mongoose.models.Tip || mongoose.model("Tip", TipsSchema);
 export default Tip;

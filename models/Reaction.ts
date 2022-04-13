@@ -22,6 +22,5 @@ ReactionsSchema.plugin(paginate);
 ReactionsSchema.plugin(require("mongoose-beautiful-unique-validation"));
 
 const ReactionModel =
-  mongoose.models.ReactionsSchema ||
-  mongoose.model("Reaction", ReactionsSchema);
+  mongoose.models.Reaction || mongoose.model("Reaction", ReactionsSchema);
 export default ReactionModel;

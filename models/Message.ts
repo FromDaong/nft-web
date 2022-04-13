@@ -22,5 +22,5 @@ MessagesSchema.plugin(paginate);
 MessagesSchema.plugin(require("mongoose-beautiful-unique-validation"));
 
 const Message =
-  mongoose.models.MessagesSchema || mongoose.model("Message", MessagesSchema);
+  mongoose.models.Message || mongoose.model("Message", MessagesSchema);
 export default Message;
