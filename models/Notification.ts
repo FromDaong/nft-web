@@ -24,6 +24,10 @@ const NotificationsSchema = new Schema({
     type: Object,
     required: true,
   },
+  channel: {
+    type: String,
+    required: true,
+  },
 });
 
 NotificationsSchema.plugin(aggregatePaginate);
