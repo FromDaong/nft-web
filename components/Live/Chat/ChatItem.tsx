@@ -1,5 +1,5 @@
 import { Box, Button, Text } from "@chakra-ui/react";
-import { useContext, useEffect, useMemo } from "react";
+import { useCallback, useContext, useEffect } from "react";
 
 import { LiveStreamChatContext } from "../../../contexts/Chat";
 
@@ -20,7 +20,7 @@ export default function ChatItem({
   });
 
   const { retryMessage, messages } = useContext(LiveStreamChatContext);
-  const retrySendMessage = useMemo(
+  const retrySendMessage = useCallback(
     () => retryMessage(messages.find((i) => i.index === index)),
     [messages]
   );
