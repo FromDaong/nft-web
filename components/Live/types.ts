@@ -34,6 +34,10 @@ export interface Notification {
   payload: ChatMessage | TipMessage | ReactionMessage;
   sent: boolean;
   index: string;
+  retry?: {
+    attempt: number;
+    nextAttemptTime: number;
+  };
 }
 
 export interface ChatParticipant {
