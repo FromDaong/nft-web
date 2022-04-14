@@ -20,8 +20,9 @@ export default function ChatContainer(props) {
           key={m.index}
           text={m.payload.text}
           user_id={m.payload.sender}
-          type={m.type}
+          retry={m.retry}
           sent={m.sent}
+          index={index}
         />
       ))}
     </Box>
