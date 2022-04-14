@@ -22,6 +22,7 @@ export const LiveStreamChatContext = createContext<{
   sendMessage: (message: string) => void;
   sendTip: (amount: number, message: string) => void;
   sendReaction: (text: string) => void;
+  retryMessage: (payload: Notification) => void;
 }>({
   currently_playing: null,
   messages: [],
@@ -34,6 +35,7 @@ export const LiveStreamChatContext = createContext<{
   sendReaction: (text) => ({ text }),
   setHost: () => {},
   setCurrentlyPlaying: (a) => ({ a }),
+  retryMessage: (m) => ({ m }),
 });
 
 export const LiveStreamChatContextProvider = ({ children }) => {
@@ -142,20 +144,27 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   };
 
   const publish = (payload: Notification) => {
-    if (payload.retry?.attempt === 3) {
+    if (payload.retry?.attempt === 4) {
+      // remove from needsRetry to prevent Infinity loop
+      setNeedsRetry((needsRetry) => {
+        // remove this entry
+        const new_needs_retry = needsRetry.filter(
+          (i) => i.index !== payload.index
+        );
+        return [...new_needs_retry];
+      });
       return;
     }
     Axios.post(`/api/v2/chat/${currently_playing}/publish`, payload).catch(
       (err) => {
         console.log({ err });
+        console.log(
+          `Retrying ${payload.index} for attempt #${payload.retry?.attempt}`
+        );
         const data: Notification = {
           ...payload,
           retry: {
-            attempt: payload.retry
-              ? payload.retry.attempt < 4
-                ? payload.retry.attempt + 1
-                : payload.retry.attempt
-              : 1,
+            attempt: payload.retry ? payload.retry.attempt + 1 : 1,
             nextAttemptTime: new Date().getTime() + 3000,
           },
         };
@@ -189,6 +198,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         sendTip,
         setCurrentlyPlaying: setIsPlaying,
         setHost: setIsHost,
+        retryMessage: retrySendMessage,
       }}
     >
       {children}

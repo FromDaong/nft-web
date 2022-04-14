@@ -1,6 +1,7 @@
 import { Box, Button, Text } from "@chakra-ui/react";
+import { useContext, useEffect, useMemo } from "react";
 
-import { useEffect } from "react";
+import { LiveStreamChatContext } from "../../../contexts/Chat";
 
 export default function ChatItem({
   text,
@@ -8,6 +9,7 @@ export default function ChatItem({
   sent,
   isLastMessage,
   retry,
+  index,
 }) {
   useEffect(() => {
     // if is last message scroll to bottom
@@ -17,6 +19,11 @@ export default function ChatItem({
     }
   });
 
+  const { retryMessage, messages } = useContext(LiveStreamChatContext);
+  const retrySendMessage = useMemo(
+    () => retryMessage(messages.find((i) => i.index === index)),
+    [messages]
+  );
   const showRetryMessage = retry ? retry.attempt === 3 : false;
 
   return (
@@ -27,7 +34,12 @@ export default function ChatItem({
       <Text>{text}</Text>
       <Text color="white">{text}</Text>
       {showRetryMessage && (
-        <Button variant={"link"} colorScheme="red" size="sm">
+        <Button
+          onClick={retrySendMessage}
+          variant={"link"}
+          colorScheme="red"
+          size="sm"
+        >
           Retry
         </Button>
       )}
