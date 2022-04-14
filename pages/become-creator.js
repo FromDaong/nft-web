@@ -368,8 +368,8 @@ const CreateModel = () => {
 
                 <VerifyButton
                   id="asd"
-                  // hidestream
-                  apiKey="zYe9VHCjf5z2MoiuQGlvRK3KRPmQ0B7Kaghp6qyFZ8PfTnQa0zFRuZZWgoVGeAVX"
+                  hidestream
+                  apiKey="DsPgHGsJXFzqRNFtSAL6aUkSaSYCWVHtwGKTqII6aiWma9GgMogUsxoTAFzoObi5"
                   onStart={() => {}}
                   onError={(errorCode) => {}}
                   onFinish={handleVerificationFinish}

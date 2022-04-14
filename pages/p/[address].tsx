@@ -7,7 +7,7 @@ import NFTListItem from "../../components/NFTListItem/";
 import dbConnect from "../../utils/dbConnect";
 import { useRouter } from "next/dist/client/router";
 import { useState } from "react";
-import { Clipboard } from "react-bootstrap-icons";
+import { Send } from "react-bootstrap-icons";
 
 export default function UserProfile(props) {
   const [loadingOwnedNFTs, setLoadingOwnedNFTs] = useState(false);

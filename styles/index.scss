@@ -90,3 +90,34 @@ object {
 .player-container {
   height: 400px;
 }
+
+.video-js {
+  background: transparent !important;
+  color: black !important;
+}
+
+.chat-bubble {
+  // width: fit-content;
+  min-width: 250px;
+  background: rgba(255, 244, 246, 0.25);
+  margin-top: 5px;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+.stream-chat-input {
+  background: rgba(255, 244, 246, 0.75);
+}
+
+.chat-wrapper {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 244, 246, 1) 0%,
+    rgba(255, 244, 246, 0) 75%
+  );
+  -webkit-mask-image: linear-gradient(
+    0deg,
+    rgba(255, 244, 246, 1) 10%,
+    rgba(255, 244, 246, 0) 50%
+  );
+}

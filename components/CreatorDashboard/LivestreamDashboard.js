@@ -7,6 +7,7 @@ import { Button, Tag, useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 import BlankModal from "../../components/BlankModal";
+import LiveVideo from "../Live/Video";
 import LiveStreamModal from "../Live";
 import { RecordCircle } from "react-bootstrap-icons";
 import { useMoralis } from "react-moralis";
@@ -62,7 +63,7 @@ const EditProfile = ({ modelData }) => {
           </h2>
         </div>
       </div>
-      {!modelData.live || !modelData.live.stream_id ? (
+      {modelData && (!modelData.live || !modelData.live.stream_id) ? (
         <div className="text-center mt-5">
           Please click the button below in order to enable Livestreaming for
           your Treat Creator account.
@@ -83,7 +84,11 @@ const EditProfile = ({ modelData }) => {
 };
 
 const StreamEnabled = ({ data }) => {
-  const { stream_key: streamKey, stream_id: streamId } = data;
+  const {
+    stream_key: streamKey,
+    stream_id: streamId,
+    playback_id: playbackId,
+  } = data;
   const [streamIsActive, setStreamIsActive] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { data: streamStatusResponse } = useSWR(`/api/stream/${streamId}`, {
@@ -100,13 +105,7 @@ const StreamEnabled = ({ data }) => {
 
   return (
     <div className="w-full py-2">
-      <LiveStreamModal
-        isOpen={isOpen}
-        onClose={onClose}
-        data={data}
-        streamIsActive={streamIsActive}
-      />
-      <div className="p-2 pb-4 mt-4 flex flex-col text-sm space-y-4">
+      <div className="p-2 pb-4 flex flex-col text-sm space-y-4">
         <div>
           <div className="flex items-center justify-between break-all">
             <span>
@@ -160,7 +159,8 @@ const StreamEnabled = ({ data }) => {
           </span>
           <Button onClick={() => copyTextToClipboard(streamKey)}>Copy</Button>
         </div>
-        <div className="flex items-center justify-between break-all">
+        {/* TODO: add disable chat logic. */}
+        {/* <div className="flex items-center justify-between break-all">
           <span>
             <b>Livestream Chat</b>
             <br />
@@ -176,6 +176,18 @@ const StreamEnabled = ({ data }) => {
           ) : (
             <Button colorScheme="green">Enable</Button>
           )}
+        </div> */}
+        <div className="">
+          <span>
+            <b>Livestream Preview</b>
+            <br />
+            <div style={{ minHeight: 500 }} className="col-md-12">
+              <LiveVideo
+                streamIsActive={streamIsActive}
+                playback_id={playbackId}
+              />
+            </div>
+          </span>
         </div>
       </div>
     </div>
