@@ -138,23 +138,24 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     if (payload.retry?.attempt === 3) {
       return;
     }
-    Axios.post(`/api/v2/chat/${currently_playing}/publish`, payload).catch(
-      (err) => {
-        console.log({ err });
-        const data: Notification = {
-          ...payload,
-          retry: {
-            attempt: payload.retry
-              ? payload.retry.attempt < 4
-                ? payload.retry.attempt + 1
-                : payload.retry.attempt
-              : 1,
-            nextAttemptTime: new Date().getTime() + 3000,
-          },
-        };
-        setNeedsRetry([...needsRetry, data]);
-      }
-    );
+    Axios.post(`/api/v2/chat/${currently_playing}/publish`, {
+      ...payload,
+      channel: currently_playing,
+    }).catch((err) => {
+      console.log({ err });
+      const data: Notification = {
+        ...payload,
+        retry: {
+          attempt: payload.retry
+            ? payload.retry.attempt < 4
+              ? payload.retry.attempt + 1
+              : payload.retry.attempt
+            : 1,
+          nextAttemptTime: new Date().getTime() + 3000,
+        },
+      };
+      setNeedsRetry([...needsRetry, data]);
+    });
   };
 
   return (

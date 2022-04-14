@@ -19,7 +19,11 @@ async function publish(req, res) {
   };
 
   try {
-    await new NotificationModel({ ...payload, sent: true }).save();
+    await new NotificationModel({
+      ...payload,
+      sent: true,
+      channel: payload.channel,
+    }).save();
     switch (payload.type) {
       case "message":
         await new Message(payload.payload).save();
