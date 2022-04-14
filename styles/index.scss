@@ -121,3 +121,13 @@ object {
     rgba(255, 244, 246, 0) 50%
   );
 }
+
+#chat-container {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+#chat-container::-webkit-scrollbar {
+  width: 0; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
+}
