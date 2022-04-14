@@ -6,11 +6,11 @@ export default function ChatContainer(props) {
   return (
     <Box
       w={"full"}
-      h={"20vh"}
+      h={500}
       py={2}
       mb={2}
       bottom={12}
-      position="absolute"
+      // position="absolute"
       overflowY="scroll"
       id="chat-container"
     >

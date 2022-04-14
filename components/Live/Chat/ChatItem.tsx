@@ -11,11 +11,11 @@ export default function ChatItem({ text, user_id, sent, isLastMessage }) {
     }
   });
   return (
-    <Box py={1} opacity={sent ? 1 : 0.5}>
-      <Text color={"white"} fontWeight={"semibold"}>
+    <Box py={1} opacity={sent ? 1 : 0.5} className="chat-bubble">
+      <Text fontWeight={"semibold"}>
         {`${user_id.substring(0, 6)}...${user_id.substr(-5)}`}
       </Text>
-      <Text color="white">{text}</Text>
+      <Text >{text}</Text>
     </Box>
   );
 }

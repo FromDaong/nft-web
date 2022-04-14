@@ -11,14 +11,15 @@ export default function ChatBox() {
   return (
     <Box
       w={[3 / 4, 3 / 4, 2 / 3, 1 / 3]}
-      className="p-2"
       position="absolute"
       zIndex={500000}
       bottom={0}
       left={0}
     >
-      <ChatContainer messages={messages} last_message={last_message} />
-      <SendMessageBox sendMessage={sendMessage} />
+      <div className="chat-wrapper">
+        <ChatContainer messages={messages} last_message={last_message} />
+        <SendMessageBox sendMessage={sendMessage} />
+      </div>
     </Box>
   );
 }

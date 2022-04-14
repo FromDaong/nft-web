@@ -69,7 +69,7 @@ const LivestreamViewing = ({
           ],
         });
 
-        // player.hlsQualitySelector();
+        if (player) player.userActive(false);
 
         player.on("error", () => {
           player.reset();
@@ -119,7 +119,7 @@ const LivestreamViewing = ({
         account={account}
       />
       <div className="col-md-12 mt-4 container">
-        <div style={{ minHeight: 500 }}>
+        <div style={{ minHeight: 500 }} className="col-md-12">
           <LiveVideo streamIsActive={streamIsActive} playback_id={playbackId} />
         </div>
       </div>
