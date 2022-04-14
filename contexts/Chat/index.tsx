@@ -131,6 +131,13 @@ export const LiveStreamChatContextProvider = ({ children }) => {
 
   const retrySendMessage = (payload: Notification) => {
     delete payload.retry;
+    setNeedsRetry((needsRetry) => {
+      // remove this entry
+      const new_needs_retry = needsRetry.filter(
+        (i) => i.index !== payload.index
+      );
+      return [...new_needs_retry];
+    });
     publish(payload);
   };
 
@@ -138,24 +145,34 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     if (payload.retry?.attempt === 3) {
       return;
     }
-    Axios.post(`/api/v2/chat/${currently_playing}/publish`, {
-      ...payload,
-      channel: currently_playing,
-    }).catch((err) => {
-      console.log({ err });
-      const data: Notification = {
-        ...payload,
-        retry: {
-          attempt: payload.retry
-            ? payload.retry.attempt < 4
-              ? payload.retry.attempt + 1
-              : payload.retry.attempt
-            : 1,
-          nextAttemptTime: new Date().getTime() + 3000,
-        },
-      };
-      setNeedsRetry([...needsRetry, data]);
-    });
+    Axios.post(`/api/v2/chat/${currently_playing}/publish`, payload).catch(
+      (err) => {
+        console.log({ err });
+        const data: Notification = {
+          ...payload,
+          retry: {
+            attempt: payload.retry
+              ? payload.retry.attempt < 4
+                ? payload.retry.attempt + 1
+                : payload.retry.attempt
+              : 1,
+            nextAttemptTime: new Date().getTime() + 3000,
+          },
+        };
+        // Update messages with retry
+        setMessages((messages) => {
+          const index = messages.findIndex((m) => m.index === data.index);
+          if (index === -1) {
+            return [...messages, data];
+          } else {
+            const messages_copy = [...messages];
+            messages_copy[index] = data;
+            return messages_copy;
+          }
+        });
+        setNeedsRetry([...needsRetry, data]);
+      }
+    );
   };
 
   return (
