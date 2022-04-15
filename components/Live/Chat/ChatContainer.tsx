@@ -22,7 +22,7 @@ export default function ChatContainer(props) {
           user_id={m.payload.sender}
           retry={m.retry}
           sent={m.sent}
-          index={index}
+          index={m.index}
         />
       ))}
     </Box>
