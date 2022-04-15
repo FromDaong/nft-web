@@ -2,10 +2,10 @@ import Model from "../../../../../../models/Model";
 
 export default async function getLivestreamHost(req, res) {
   try {
-    const { stream_id } = req.body;
+    const { channel } = req.query;
     const model = await Model.findOne({
       live: {
-        stream_id,
+        stream_id: channel,
       },
     });
 

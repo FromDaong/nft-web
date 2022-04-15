@@ -33,7 +33,7 @@ export const LiveStreamChatContext = createContext<{
   sendMessage: (message) => ({ message }),
   sendTip: (amount, message) => ({ amount, message }),
   sendReaction: (text) => ({ text }),
-  setHost: () => {},
+  setHost: () => null,
   setCurrentlyPlaying: (a) => ({ a }),
   retryMessage: (m) => ({ m }),
 });
@@ -63,6 +63,12 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       needsRetry.map((i) => publish(i));
     }
   }, [needsRetry]);
+
+  useEffect(() => {
+    if (currently_playing) {
+      // Call the delete endpoint to delete messages older than 24hrs
+    }
+  }, [currently_playing]);
 
   useEffect(() => {
     if (last_message) {
@@ -204,10 +210,4 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       {children}
     </LiveStreamChatContext.Provider>
   );
-};
-
-export const PrivateChatContext = {};
-
-export const PrivateChatContextProvider = ({ children }) => {
-  useEffect(() => {}, []);
 };
