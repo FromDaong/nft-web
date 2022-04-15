@@ -66,7 +66,11 @@ export const LiveStreamChatContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (currently_playing) {
-      // Call the delete endpoint to delete messages older than 24hrs
+      Axios.post(`/api/v2/chat/${currently_playing}/patch`, {})
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => console.log({ err }));
     }
   }, [currently_playing]);
 
