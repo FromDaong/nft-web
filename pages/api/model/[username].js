@@ -31,10 +31,6 @@ export default async (req, res) => {
             .json({ success: false, error: "model not found" });
 
         const returnData = { ...modelRes.toObject() };
-        if (returnData.live) delete returnData.live.stream_key;
-        delete returnData.email;
-        delete returnData.identity_access_key;
-
         res.status(200).json(returnData);
       } catch (error) {
         console.error({ error });
@@ -44,11 +40,12 @@ export default async (req, res) => {
     case "PUT":
       try {
         let model = await Model.findOne({ username });
+        let new_acc = false;
 
-        if (!model)
-          return res
-            .status(400)
-            .json({ success: false, error: "model not found" });
+        if (!model) {
+          new_acc = true;
+          model = {};
+        }
 
         if (!req.body) {
           return res
@@ -76,8 +73,11 @@ export default async (req, res) => {
               description: req.body.subscription_description,
             };
         }
-
-        model.save();
+        if (new_acc) {
+          await new Model(model).save();
+        } else {
+          await model.save();
+        }
 
         res.status(200).json({ success: true, model });
       } catch (error) {
