@@ -58,11 +58,11 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     setIs_host(true);
   };
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (needsRetry.length > 0) {
       needsRetry.map((i) => i.retry.attempt < 4 && publish(i));
     }
-  }, [needsRetry]);
+  }, [needsRetry]);*/
 
   useEffect(() => {
     if (currently_playing) {
@@ -154,7 +154,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   };
 
   const publish = (payload: Notification) => {
-    if (payload.retry?.attempt === 4) {
+    /*if (payload.retry?.attempt > 3) {
       // remove from needsRetry to prevent Infinity loop
       setNeedsRetry((needsRetry) => {
         // remove this entry
@@ -164,7 +164,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         return [...new_needs_retry];
       });
       return;
-    }
+    }*/
     Axios.post(`/api/v2/chat/${currently_playing}/publish`, payload).catch(
       (err) => {
         console.log({ err });
@@ -189,7 +189,9 @@ export const LiveStreamChatContextProvider = ({ children }) => {
             return messages_copy;
           }
         });
-        setNeedsRetry([...needsRetry, data]);
+        /*if (data.retry.attempt < 4) {
+          setNeedsRetry([...needsRetry, data]);
+        }*/
       }
     );
   };
