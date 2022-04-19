@@ -33,7 +33,7 @@ export default function ChatItem({
       </Text>
       <Text>{text}</Text>
       <Text color="white">{text}</Text>
-      {showRetryMessage && (
+      {false && showRetryMessage && (
         <Button
           onClick={retrySendMessage}
           variant={"link"}
