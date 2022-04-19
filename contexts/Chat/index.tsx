@@ -60,7 +60,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (needsRetry.length > 0) {
-      needsRetry.map((i) => publish(i));
+      needsRetry.map((i) => i.retry.attempt < 4 && publish(i));
     }
   }, [needsRetry]);
 
