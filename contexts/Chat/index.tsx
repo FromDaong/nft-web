@@ -135,6 +135,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       timestamp: composed_message.timestamp,
       sent: false,
       index: make_id(12),
+      channel: currently_playing,
     };
 
     setMessages([...messages, notification]);
