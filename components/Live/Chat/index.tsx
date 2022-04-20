@@ -5,7 +5,7 @@ import SendMessageBox from "./SendMessageBox";
 import { useContext } from "react";
 
 export default function ChatBox() {
-  const { messages, last_message, sendMessage } = useContext(
+  const { messages, last_message, sendMessage, currently_playing } = useContext(
     LiveStreamChatContext
   );
   return (
@@ -18,7 +18,10 @@ export default function ChatBox() {
     >
       <div className="chat-wrapper">
         <ChatContainer messages={messages} last_message={last_message} />
-        <SendMessageBox sendMessage={sendMessage} />
+        <SendMessageBox
+          currently_playing={currently_playing}
+          sendMessage={sendMessage}
+        />
       </div>
     </Box>
   );
