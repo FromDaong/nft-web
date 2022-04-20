@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Input, InputGroup } from "@chakra-ui/react";
 
-import { SendFill } from "react-bootstrap-icons"
+import { SendFill } from "react-bootstrap-icons";
 import { useState } from "react";
 
 export default function SendMessageBox(props) {
@@ -30,8 +30,13 @@ export default function SendMessageBox(props) {
               py={2}
               px={4}
               variant="unstyled"
-              placeholder="Comment"
+              placeholder={
+                props.currently_playing
+                  ? "Comment"
+                  : "Chat will be enabled when stream is active"
+              }
               color="gray.700"
+              disabled={!props.currently_playing}
               value={value}
               onChange={onMessageChange}
             />
