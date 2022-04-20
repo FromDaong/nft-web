@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Input, InputGroup } from "@chakra-ui/react";
-import { SendFill } from "react-bootstrap-icons"
 
+import { SendFill } from "react-bootstrap-icons"
 import { useState } from "react";
 
 export default function SendMessageBox(props) {
@@ -20,7 +20,11 @@ export default function SendMessageBox(props) {
   return (
     <Box w="full">
       <form onSubmit={onSubmit} className="w-full">
-        <Flex className="border border-primary stream-chat-input" rounded="full" w="full" >
+        <Flex
+          className="border border-primary stream-chat-input"
+          rounded="full"
+          w="full"
+        >
           <InputGroup size="sm">
             <Input
               py={2}
@@ -33,7 +37,7 @@ export default function SendMessageBox(props) {
             />
           </InputGroup>
           <Button
-            disabled={!value}
+            disabled={!value || !props.currently_playing}
             size="md"
             my="auto"
             rounded="full"
