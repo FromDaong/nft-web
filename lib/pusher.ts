@@ -16,4 +16,5 @@ export const nodePusher = new Pusher({
 
 export const reactPusher = new ReactPusher("68ea1848874450546ae7", {
   cluster: "us2",
+  authEndpoint: "/api/v2/chat/auth",
 });
