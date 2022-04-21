@@ -29,7 +29,9 @@ const LiveVideoConsumer = (props) => {
   const { playback_id, streamIsActive } = props;
   const [videoEl, setVideoEl] = useState(null);
   const playback_url = useMemo(() => getLivestreamPlaybackURL(playback_id), []);
-  const { setCurrentlyPlaying } = useContext(LiveStreamChatContext);
+  const { setCurrentlyPlaying, participants } = useContext(
+    LiveStreamChatContext
+  );
 
   const { onOpen, isOpen, onClose } = useDisclosure();
 
@@ -94,7 +96,7 @@ const LiveVideoConsumer = (props) => {
         </Box>
         <Flex left={2} top={2} position="absolute">
           <SendTipModal onClose={onClose} isOpen={isOpen} />
-          <Participants />
+          <Participants participants={participants} />
           <Button size={"sm"} colorScheme="primary" ml={2} onClick={onOpen}>
             Send Tip
           </Button>
