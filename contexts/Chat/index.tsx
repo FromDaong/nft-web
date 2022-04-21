@@ -47,6 +47,10 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const [last_message, setLastMessage] = useState<Notification | null>(null);
   const [participants, setParticipants] = useState<Array<ChatParticipant>>([]);
   const [presenceChannel, setPresenceChannel] = useState(null);
+  const [presenceInfo, setPresenceInfo] = useState<{
+    id: string;
+    info: object;
+  }>(null);
   const [isHost, setIs_host] = useState(false);
   const [host, setHost] = useState<string | null>(null);
   const { account } = useMoralis();
@@ -70,9 +74,11 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     );
     setPresenceChannel(presenceChannel);
     presenceChannel.bind("pusher:subscription_succeeded", function () {
+      // @ts-ignore
       const me = presenceChannel.members.me;
       const userId = me.id;
       const userInfo = me.info;
+      setPresenceInfo({ id: userId, info: userInfo });
       setParticipants((prevParticipants) => [
         ...prevParticipants,
         {
@@ -88,6 +94,10 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const removeMeFromParticipants = () => {
     reactPusher.unsubscribe(`presence-${currently_playing}`);
     setPresenceChannel(null);
+    setPresenceInfo(null);
+    setParticipants((prevParticipants) =>
+      prevParticipants.filter((p) => p.user_id !== presenceInfo.id)
+    );
   };
 
   const getParticipants = () => {
