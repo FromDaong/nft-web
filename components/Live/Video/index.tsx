@@ -3,7 +3,7 @@ import "videojs-contrib-quality-levels";
 import "videojs-hls-quality-selector";
 import "video.js/dist/video-js.min.css";
 
-import { Box, Flex, Tag } from "@chakra-ui/react";
+import { Box, Button, Flex, Tag, useDisclosure } from "@chakra-ui/react";
 import {
   LiveStreamChatContext,
   LiveStreamChatContextProvider,
@@ -13,6 +13,7 @@ import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import ChatBox from "../Chat";
 import { LiveVideoProps } from "../types";
 import Participants from "../Participants";
+import SendTipModal from "../Chat/SendTipModal";
 import { getLivestreamPlaybackURL } from "../utils";
 import videojs from "video.js";
 
@@ -29,6 +30,8 @@ const LiveVideoConsumer = (props) => {
   const [videoEl, setVideoEl] = useState(null);
   const playback_url = useMemo(() => getLivestreamPlaybackURL(playback_id), []);
   const { setCurrentlyPlaying } = useContext(LiveStreamChatContext);
+
+  const { onOpen, isOpen, onClose } = useDisclosure();
 
   const onVideo = useCallback((el) => {
     setVideoEl(el);
@@ -74,7 +77,13 @@ const LiveVideoConsumer = (props) => {
         {
           //<Participants />
         }
-        <Box h={"full"} w={"full"} data-vjs-player style={{ minHeight: 400 }}>
+        <Box
+          bgColor="black"
+          h={"full"}
+          w={"full"}
+          data-vjs-player
+          style={{ minHeight: 400 }}
+        >
           <video
             id="video"
             ref={onVideo}
@@ -83,13 +92,21 @@ const LiveVideoConsumer = (props) => {
             playsInline
           />
         </Box>
+        <Flex left={2} top={2} position="absolute">
+          <SendTipModal onClose={onClose} isOpen={isOpen} />
+          <Participants />
+          <Button size={"sm"} onClick={onOpen}>
+            Send Tip
+          </Button>
+        </Flex>
         <Flex right={2} top={2} position="absolute">
           {props.streamIsActive ? (
             <Tag p={1}>
               Live{" "}
               <span
-                className={`animate-pulse mx-1 ${props.streamIsActive ? "bg-red-700" : "bg-yellow-600"
-                  } h-2 w-2 mr-2 rounded-full`}
+                className={`animate-pulse mx-1 ${
+                  props.streamIsActive ? "bg-red-700" : "bg-yellow-600"
+                } h-2 w-2 mr-2 rounded-full`}
               />
             </Tag>
           ) : (

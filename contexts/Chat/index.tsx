@@ -278,6 +278,8 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     );
   };
 
+  console.log({ currently_playing });
+
   return (
     <LiveStreamChatContext.Provider
       value={{
