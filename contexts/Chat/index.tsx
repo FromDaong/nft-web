@@ -73,6 +73,15 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       const me = presenceChannel.members.me;
       const userId = me.id;
       const userInfo = me.info;
+      setParticipants((prevParticipants) => [
+        ...prevParticipants,
+        {
+          user_id: userId,
+          address: userInfo.address,
+          username: userInfo.username,
+          avatar: userInfo.avatar,
+        },
+      ]);
     });
   };
 

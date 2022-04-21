@@ -44,8 +44,8 @@ export interface Notification {
 export interface ChatParticipant {
   username: string;
   user_id: string;
-  _id: string;
   address: string;
+  avatar: string;
 }
 export interface ChatProps {
   type: ChatType;
