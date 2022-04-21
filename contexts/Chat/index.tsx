@@ -46,6 +46,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const [needsRetry, setNeedsRetry] = useState<Array<Notification>>([]);
   const [last_message, setLastMessage] = useState<Notification | null>(null);
   const [participants, setParticipants] = useState<Array<ChatParticipant>>([]);
+  const [presenceChannel, setPresenceChannel] = useState(null);
   const [isHost, setIs_host] = useState(false);
   const [host, setHost] = useState<string | null>(null);
   const { account } = useMoralis();
@@ -59,8 +60,30 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log({ needsRetry });
-  }, [needsRetry]);
+    addMeToParticipants();
+    return () => removeMeFromParticipants();
+  }, []);
+
+  const addMeToParticipants = () => {
+    const presenceChannel = reactPusher.subscribe(
+      `presence-${currently_playing}`
+    );
+    setPresenceChannel(presenceChannel);
+    presenceChannel.bind("pusher:subscription_succeeded", function () {
+      const me = presenceChannel.members.me;
+      const userId = me.id;
+      const userInfo = me.info;
+    });
+  };
+
+  const removeMeFromParticipants = () => {
+    reactPusher.unsubscribe(`presence-${currently_playing}`);
+    setPresenceChannel(null);
+  };
+
+  const getParticipants = () => {
+    const count = presenceChannel?.members.count;
+  };
 
   useEffect(() => {
     if (needsRetry.length > 0) {
