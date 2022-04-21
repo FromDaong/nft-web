@@ -97,7 +97,13 @@ const LiveVideoConsumer = (props) => {
         <Flex left={2} top={2} position="absolute">
           <SendTipModal onClose={onClose} isOpen={isOpen} />
           <Participants participants={participants} />
-          <Button size={"sm"} colorScheme="primary" ml={2} onClick={onOpen}>
+          <Button
+            size={"sm"}
+            colorScheme="primary"
+            ml={2}
+            onClick={onOpen}
+            zIndex={500000}
+          >
             Send Tip
           </Button>
         </Flex>
