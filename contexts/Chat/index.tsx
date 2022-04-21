@@ -79,6 +79,8 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     presenceChannel.bind("pusher:subscription_succeeded", function () {
       // @ts-ignore
       const me = presenceChannel.members.me;
+      console.log({ me });
+
       const userId = me.id;
       const userInfo = me.info;
       setPresenceInfo({ id: userId, info: userInfo });
@@ -98,13 +100,16 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     reactPusher.unsubscribe(`presence-${currently_playing}`);
     setPresenceChannel(null);
     setPresenceInfo(null);
-    setParticipants((prevParticipants) =>
-      prevParticipants.filter((p) => p.user_id !== presenceInfo.id)
-    );
+    if (presenceInfo) {
+      setParticipants((prevParticipants) =>
+          prevParticipants.filter((p) => p.user_id !== presenceInfo?.id)
+        );
+    }
   };
 
   const getParticipants = () => {
     presenceChannel?.members.each(function (member) {
+      console.log({ member });
       const userId = member.id;
       const userInfo = member.info;
       setParticipants((prevParticipants) => [
@@ -278,7 +283,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     );
   };
 
-  console.log({ currently_playing });
+  console.log({ participants });
 
   return (
     <LiveStreamChatContext.Provider
