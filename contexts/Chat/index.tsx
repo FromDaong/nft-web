@@ -102,8 +102,8 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     setPresenceInfo(null);
     if (presenceInfo) {
       setParticipants((prevParticipants) =>
-          prevParticipants.filter((p) => p.user_id !== presenceInfo?.id)
-        );
+        prevParticipants.filter((p) => p.user_id !== presenceInfo?.id)
+      );
     }
   };
 
@@ -282,8 +282,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       }
     );
   };
-
-  console.log({ participants });
 
   return (
     <LiveStreamChatContext.Provider
