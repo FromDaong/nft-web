@@ -64,6 +64,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    getParticipants();
     addMeToParticipants();
     return () => removeMeFromParticipants();
   }, []);
@@ -101,7 +102,19 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   };
 
   const getParticipants = () => {
-    const count = presenceChannel?.members.count;
+    presenceChannel?.members.each(function (member) {
+      const userId = member.id;
+      const userInfo = member.info;
+      setParticipants((prevParticipants) => [
+        ...prevParticipants,
+        {
+          user_id: userId,
+          address: userInfo.address,
+          username: userInfo.username,
+          avatar: userInfo.avatar,
+        },
+      ]);
+    });
   };
 
   useEffect(() => {
