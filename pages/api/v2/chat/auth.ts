@@ -1,6 +1,6 @@
-import Model from "../../../../../../models/Model";
-import { nodePusher } from "../../../../../../lib/pusher";
-import { withJWTAuth } from "../../../../../../utils/server-utils";
+import Model from "../../../../models/Model";
+import { nodePusher } from "../../../../lib/pusher";
+import { withJWTAuth } from "../../../../utils/server-utils";
 
 async function auth(req, res) {
   const { session } = req;
