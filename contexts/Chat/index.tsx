@@ -64,10 +64,12 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    getParticipants();
-    addMeToParticipants();
+    if (currently_playing) {
+      getParticipants();
+      addMeToParticipants();
+    }
     return () => removeMeFromParticipants();
-  }, []);
+  }, [currently_playing]);
 
   const addMeToParticipants = () => {
     const presenceChannel = reactPusher.subscribe(
@@ -197,10 +199,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     publish(notification);
   };
 
-  const sendTip = (amount: number, message: string) => {};
-
-  const sendReaction = (message: string) => {};
-
   const retrySendMessage = (payload: Notification) => {
     delete payload.retry;
     setNeedsRetry((needsRetry) => {
@@ -212,6 +210,10 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     });
     publish(payload);
   };
+
+  const sendTip = (amount: number, message: string) => {};
+
+  const sendReaction = (message: string) => {};
 
   const publish = (payload: Notification) => {
     if (payload.retry?.remaining_attempts <= 0) {
