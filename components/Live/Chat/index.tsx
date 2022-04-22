@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import ChatContainer from "./ChatContainer";
+import ChatUtilsBox from "./ChatUtilsBox";
 import { LiveStreamChatContext } from "../../../contexts/Chat";
 import SendMessageBox from "./SendMessageBox";
 import { useContext } from "react";
@@ -18,6 +19,7 @@ export default function ChatBox() {
     >
       <div className="chat-wrapper">
         <ChatContainer messages={messages} last_message={last_message} />
+        <ChatUtilsBox />
         <SendMessageBox
           currently_playing={currently_playing}
           sendMessage={sendMessage}
