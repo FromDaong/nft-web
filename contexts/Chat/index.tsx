@@ -239,6 +239,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const sendTip = (amount: number, message: string) => {};
 
   const sendReaction = (message: string) => {
+    sendMessage(message)
     setIsThrottled(true);
   };
 
