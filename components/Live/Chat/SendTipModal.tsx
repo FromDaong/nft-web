@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Modal,
   ModalBody,
@@ -14,6 +15,11 @@ import { useContext } from "react";
 
 export default function SendTipModal({ isOpen, onClose }) {
   const { sendTip } = useContext(LiveStreamChatContext);
+  const sendTipToCreator = () => {
+    const currency_address = "";
+    const creator_address = "";
+    const amount = 0;
+  };
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -21,7 +27,9 @@ export default function SendTipModal({ isOpen, onClose }) {
         <ModalContent>
           <ModalHeader>Send Tip</ModalHeader>
           <ModalCloseButton />
-          <ModalBody></ModalBody>
+          <ModalBody>
+            <Box></Box>
+          </ModalBody>
 
           <ModalFooter>
             <Button colorScheme="primary" mr={3} onClick={onClose}>
