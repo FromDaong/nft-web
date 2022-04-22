@@ -13,6 +13,7 @@ import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import ChatBox from "../Chat";
 import { LiveVideoProps } from "../types";
 import Participants from "../Participants";
+import ReactionsOverlay from "../Chat/reactions/Overlay";
 import SendTipModal from "../Chat/SendTipModal";
 import { getLivestreamPlaybackURL } from "../utils";
 import videojs from "video.js";
@@ -75,6 +76,7 @@ const LiveVideoConsumer = (props) => {
       top={0}
     >
       <Box position="relative" w={"full"} h={"full"} overflow="hidden">
+        <ReactionsOverlay />
         <ChatBox />
         {
           //<Participants />

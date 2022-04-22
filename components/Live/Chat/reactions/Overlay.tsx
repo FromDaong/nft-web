@@ -10,11 +10,10 @@ const EMOJI_MAP = {
 };
 
 export const ReactionsOverlay = () => {
-  const { sendMessage, clearLatestReactionMessage, latestReactionMessage } =
-    useContext(LiveStreamChatContext);
+  const { clearLatestReactionMessage, latestReactionMessage } = useContext(
+    LiveStreamChatContext
+  );
   const overlayRef = useRef();
-
-  // -- Handlers
 
   const handleRemoveFlyingEmoji = useCallback((node) => {
     if (!overlayRef.current) return;
