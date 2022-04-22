@@ -17,12 +17,14 @@ export const LiveStreamChatContext = createContext<{
   participants: Array<ChatParticipant>;
   host: string | null;
   isHost: boolean;
+  latestReactionMessage: Notification | null;
   setHost: () => void;
   setCurrentlyPlaying: (string) => void;
   sendMessage: (message: string) => void;
   sendTip: (amount: number, message: string) => void;
   sendReaction: (text: string) => void;
   retryMessage: (payload: Notification) => void;
+  clearLatestReactionMessage: () => void;
 }>({
   currently_playing: null,
   messages: [],
@@ -30,12 +32,14 @@ export const LiveStreamChatContext = createContext<{
   participants: [],
   host: null,
   isHost: false,
+  latestReactionMessage: null,
   sendMessage: (message) => ({ message }),
   sendTip: (amount, message) => ({ amount, message }),
   sendReaction: (text) => ({ text }),
   setHost: () => null,
   setCurrentlyPlaying: (a) => ({ a }),
   retryMessage: (m) => ({ m }),
+  clearLatestReactionMessage: () => ({}),
 });
 
 export const LiveStreamChatContextProvider = ({ children }) => {
@@ -53,6 +57,9 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   }>(null);
   const [isHost, setIs_host] = useState(false);
   const [host, setHost] = useState<string | null>(null);
+  const [isThrottled, setIsThrottled] = useState(false);
+  const [latestReactionMessage, setLatestReactionMessage] = useState(null);
+
   const { account } = useMoralis();
 
   const setIsPlaying = (playback_id) => {
@@ -62,14 +69,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const setIsHost = () => {
     setIs_host(true);
   };
-
-  useEffect(() => {
-    if (currently_playing) {
-      getParticipants();
-      addMeToParticipants();
-    }
-    return () => removeMeFromParticipants();
-  }, [currently_playing]);
 
   const addMeToParticipants = () => {
     const presenceChannel = reactPusher.subscribe(
@@ -130,20 +129,18 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    if (currently_playing) {
+      getParticipants();
+      addMeToParticipants();
+    }
+    return () => removeMeFromParticipants();
+  }, [currently_playing]);
+
+  useEffect(() => {
     if (needsRetry.length > 0) {
       needsRetry.map((i) => i.retry.remaining_attempts > 0 && publish(i));
     }
   }, [needsRetry]);
-
-  useEffect(() => {
-    if (currently_playing) {
-      Axios.post(`/api/v2/chat/${currently_playing}/patch`, {})
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((err) => console.log({ err }));
-    }
-  }, [currently_playing]);
 
   useEffect(() => {
     if (last_message) {
@@ -165,8 +162,12 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       const current_channel = reactPusher.subscribe(
         `live-${currently_playing}`
       );
-      current_channel.bind("live-message", (data) => {
+      current_channel.bind("live-message", (data: Notification) => {
         setLastMessage(data);
+        // set reaction if new message from other senders
+        if (data.type === "reaction" && data.payload.sender !== account) {
+          setLatestReactionMessage(data);
+        }
       });
 
       Axios.post("/api/stream/utils/get_host", { stream_id: "stream_id" })
@@ -189,6 +190,15 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     };
   }, [currently_playing]);
 
+  // @ts-ignore
+  useEffect(() => {
+    if (!isThrottled) {
+      return false;
+    }
+    const t = setTimeout(() => setIsThrottled(false), 1500);
+    return () => clearTimeout(t);
+  }, [isThrottled]);
+
   const sendMessage = async (message: string) => {
     const composed_message: ChatMessage = {
       sender: account,
@@ -206,7 +216,12 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     };
 
     setMessages([...messages, notification]);
+    setLatestReactionMessage(notification);
     publish(notification);
+  };
+
+  const clearLatestReactionMessage = () => {
+    setLatestReactionMessage(null);
   };
 
   const retrySendMessage = (payload: Notification) => {
@@ -223,7 +238,9 @@ export const LiveStreamChatContextProvider = ({ children }) => {
 
   const sendTip = (amount: number, message: string) => {};
 
-  const sendReaction = (message: string) => {};
+  const sendReaction = (message: string) => {
+    setIsThrottled(true);
+  };
 
   const publish = (payload: Notification) => {
     if (payload.retry?.remaining_attempts <= 0) {
@@ -303,6 +320,8 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         setCurrentlyPlaying: setIsPlaying,
         setHost: setIsHost,
         retryMessage: retrySendMessage,
+        clearLatestReactionMessage,
+        latestReactionMessage,
       }}
     >
       {children}
