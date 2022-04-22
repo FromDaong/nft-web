@@ -128,76 +128,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     });
   };
 
-  useEffect(() => {
-    if (currently_playing) {
-      getParticipants();
-      addMeToParticipants();
-    }
-    return () => removeMeFromParticipants();
-  }, [currently_playing]);
-
-  useEffect(() => {
-    if (needsRetry.length > 0) {
-      needsRetry.map((i) => i.retry.remaining_attempts > 0 && publish(i));
-    }
-  }, [needsRetry]);
-
-  useEffect(() => {
-    if (last_message) {
-      const index = messages.findIndex((m) => m.index === last_message.index);
-      if (index === -1) {
-        setMessages([...messages, last_message]);
-      } else {
-        const messages_copy = [...messages];
-        messages_copy[index] = last_message;
-        setMessages(messages_copy);
-      }
-
-      setLastMessage(null);
-    }
-  }, [last_message]);
-
-  useEffect(() => {
-    if (currently_playing) {
-      const current_channel = reactPusher.subscribe(
-        `live-${currently_playing}`
-      );
-      current_channel.bind("live-message", (data: Notification) => {
-        setLastMessage(data);
-        // set reaction if new message from other senders
-        if (data.type === "reaction" && data.payload.sender !== account) {
-          setLatestReactionMessage(data);
-        }
-      });
-
-      Axios.post("/api/stream/utils/get_host", { stream_id: "stream_id" })
-        .then((res) => {
-          if (res.data.host) {
-            setHost(res.data.host);
-          }
-        })
-        .catch((err) => {
-          console.log({ err });
-          setHost(null);
-        });
-    } else {
-      if (reactPusher.allChannels().length > 0) {
-        reactPusher.unbind_all();
-      }
-    }
-    return () => {
-      reactPusher.unbind_all();
-    };
-  }, [currently_playing]);
-
-  // @ts-ignore
-  useEffect(() => {
-    if (!isThrottled) {
-      return false;
-    }
-    const t = setTimeout(() => setIsThrottled(false), 1500);
-    return () => clearTimeout(t);
-  }, [isThrottled]);
+  // TODO: Throttle emojis display
 
   const sendMessage = async (message: string) => {
     const composed_message: ChatMessage = {
@@ -236,10 +167,10 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     publish(payload);
   };
 
-  const sendTip = (amount: number, message: string) => {};
+  const sendTip = (amount: number, message: string) => null;
 
   const sendReaction = (message: string) => {
-    sendMessage(message)
+    sendMessage(message);
     setIsThrottled(true);
   };
 
@@ -305,6 +236,68 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       }
     );
   };
+
+  useEffect(() => {
+    if (currently_playing) {
+      getParticipants();
+      addMeToParticipants();
+    }
+    return () => removeMeFromParticipants();
+  }, [currently_playing]);
+
+  useEffect(() => {
+    if (needsRetry.length > 0) {
+      needsRetry.map((i) => i.retry.remaining_attempts > 0 && publish(i));
+    }
+  }, [needsRetry]);
+
+  useEffect(() => {
+    if (last_message) {
+      const index = messages.findIndex((m) => m.index === last_message.index);
+      if (index === -1) {
+        setMessages([...messages, last_message]);
+      } else {
+        const messages_copy = [...messages];
+        messages_copy[index] = last_message;
+        setMessages(messages_copy);
+      }
+
+      setLastMessage(null);
+    }
+  }, [last_message]);
+
+  useEffect(() => {
+    if (currently_playing) {
+      const current_channel = reactPusher.subscribe(
+        `live-${currently_playing}`
+      );
+      current_channel.bind("live-message", (data: Notification) => {
+        setLastMessage(data);
+        // set reaction if new message from other senders
+        if (data.type === "reaction" && data.payload.sender !== account) {
+          setLatestReactionMessage(data);
+        }
+      });
+
+      Axios.post("/api/stream/utils/get_host", { stream_id: "stream_id" })
+        .then((res) => {
+          if (res.data.host) {
+            setHost(res.data.host);
+          }
+        })
+        .catch((err) => {
+          console.log({ err });
+          setHost(null);
+        });
+    } else {
+      if (reactPusher.allChannels().length > 0) {
+        reactPusher.unbind_all();
+      }
+    }
+    return () => {
+      reactPusher.unbind_all();
+    };
+  }, [currently_playing]);
 
   return (
     <LiveStreamChatContext.Provider
