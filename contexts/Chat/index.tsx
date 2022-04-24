@@ -171,7 +171,13 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     publish(payload);
   };
 
-  const sendTip = (currency_address: string, creator_address: string, amount: number) => null;
+  const sendTip = (
+    currency_address: string,
+    creator_address: string,
+    amount: number
+  ) => {
+    sendMessage("");
+  };
 
   const sendReaction = (message: string) => {
     sendMessage(message);

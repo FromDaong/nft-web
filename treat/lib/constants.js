@@ -160,4 +160,8 @@ export const contractAddresses = {
     97: "0x80582136C2d6c710aD528F2A9d30504665f65306",
     "0x61": "0x80582136C2d6c710aD528F2A9d30504665f65306",
   },
+  tippingContract: {
+    56: "0x9cde4593c9F42B05cB7f8c0B8f89a226c870eb01",
+    "0x38": "0x9cde4593c9F42B05cB7f8c0B8f89a226c870eb01",
+  },
 };
