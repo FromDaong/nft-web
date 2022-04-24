@@ -1,5 +1,12 @@
-import React, { useCallback, useContext, useEffect, useRef } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
+import JSConfetti from "js-confetti";
 import { LiveStreamChatContext } from "../../../../contexts/Chat";
 import { Notification } from "../../types";
 
@@ -7,6 +14,7 @@ const EMOJI_MAP = {
   fire: "🔥",
   squid: "🦑",
   laugh: "🤣",
+  heart: "❤️",
 };
 
 export const ReactionsOverlay = () => {
@@ -26,8 +34,6 @@ export const ReactionsOverlay = () => {
       if (!overlayRef.current) {
         return;
       }
-
-      console.log(`⭐ Displaying flying emoji: ${emoji}`);
 
       const node = document.createElement("div");
       node.appendChild(document.createTextNode(EMOJI_MAP[emoji]));
