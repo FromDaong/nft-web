@@ -27,7 +27,7 @@ export default function SendTipModal({ isOpen, onClose }) {
   };
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} size="lg">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Send Tip</ModalHeader>
@@ -38,11 +38,12 @@ export default function SendTipModal({ isOpen, onClose }) {
                 <Text></Text>
                 <Flex></Flex>
               </Flex>
-              <SimpleGrid columns={[3, 3, 5, 5]} spacing={[4, 4, 6, 6]}>
+              <SimpleGrid columns={3} spacing={[4, 4, 6, 6]}>
                 {bnb_amounts.map((amount) => (
                   <GridItem key={amount}>
                     <Button
                       variant="outline"
+                      w="full"
                       onClick={() => sendTipToCreator(amount)}
                     >
                       {amount} BNB
