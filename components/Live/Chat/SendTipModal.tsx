@@ -22,10 +22,16 @@ const bnb_amounts = [0.001, 0.01, 0.05, 0.1, 0.25, 0.5, 1, 2, 5, 10];
 
 export default function SendTipModal({ isOpen, onClose }) {
   const [selected, setSelected] = useState(null);
-  const { sendTip } = useContext(LiveStreamChatContext);
-  const sendTipToCreator = (amount) => {
-    const currency_address = "";
-    const creator_address = "";
+  const { sendTip, host } = useContext(LiveStreamChatContext);
+  const sendTipToCreator = () => {
+    const currency_address = "0x0000000000000000000000000000000000000000";
+    const creator_address = host;
+    sendTip(currency_address, creator_address, selected);
+  };
+
+  const closeModal = () => {
+    setSelected(null);
+    onClose();
   };
   return (
     <>
@@ -72,12 +78,12 @@ export default function SendTipModal({ isOpen, onClose }) {
             <Button
               colorScheme="primary"
               mr={3}
-              onClick={onClose}
+              onClick={sendTipToCreator}
               disabled={!selected}
             >
               Send Tip
             </Button>
-            <Button variant="ghost" onClick={onClose}>
+            <Button variant="ghost" onClick={closeModal}>
               Close
             </Button>
           </ModalFooter>

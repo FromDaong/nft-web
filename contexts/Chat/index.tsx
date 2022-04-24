@@ -21,7 +21,11 @@ export const LiveStreamChatContext = createContext<{
   setHost: () => void;
   setCurrentlyPlaying: (string) => void;
   sendMessage: (message: string) => void;
-  sendTip: (amount: number, message: string) => void;
+  sendTip: (
+    currency_address: string,
+    creator_address: string,
+    amount: number
+  ) => void;
   sendReaction: (text: string) => void;
   retryMessage: (payload: Notification) => void;
   clearLatestReactionMessage: () => void;
@@ -34,7 +38,7 @@ export const LiveStreamChatContext = createContext<{
   isHost: false,
   latestReactionMessage: null,
   sendMessage: (message) => ({ message }),
-  sendTip: (amount, message) => ({ amount, message }),
+  sendTip: (a, b, c) => ({ a, b, c }),
   sendReaction: (text) => ({ text }),
   setHost: () => null,
   setCurrentlyPlaying: (a) => ({ a }),
@@ -167,7 +171,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     publish(payload);
   };
 
-  const sendTip = (amount: number, message: string) => null;
+  const sendTip = (currency_address: string, creator_address: string, amount: number) => null;
 
   const sendReaction = (message: string) => {
     sendMessage(message);
@@ -279,7 +283,9 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         }
       });
 
-      Axios.post("/api/stream/utils/get_host", { stream_id: "stream_id" })
+      Axios.post(`/api/v2/chat/${currently_playing}/utils/get_host`, {
+        stream_id: currently_playing,
+      })
         .then((res) => {
           if (res.data.host) {
             setHost(res.data.host);
@@ -298,6 +304,8 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       reactPusher.unbind_all();
     };
   }, [currently_playing]);
+
+  console.log({ host });
 
   return (
     <LiveStreamChatContext.Provider
