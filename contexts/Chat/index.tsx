@@ -3,9 +3,10 @@ import {
   ChatParticipant,
   Notification,
 } from "../../components/Live/types";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 import Axios from "axios";
+import { Context } from "../TreatProvider";
 import TippingContractAbi from "../../treat/lib/abi/tippingcontract.json";
 import Web3 from "web3";
 import { contractAddresses } from "../../treat/lib/constants";
@@ -70,6 +71,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const [latestReactionMessage, setLatestReactionMessage] = useState(null);
 
   const { account } = useMoralis();
+  const { treat } = useContext(Context);
 
   const setIsPlaying = (playback_id) => {
     setCurrently_playing(playback_id);
@@ -181,16 +183,18 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     creator_address: string,
     amount: number
   ) => {
-    const tippingContract = new ethers.Contract(
-      contractAddresses.tippingContract["0x38"],
-      TippingContractAbi,
-      web3.getSigner()
-    );
-    await tippingContract.sendTip(
-      Web3.utils.toWei(`${amount}`, "ether"),
-      currency_address,
-      "0x6c87652EF5036c710990EEd218B68b21602e70B8" //creator_address
-    );
+    console.log({ treat });
+    treat?.contracts.tippingContract.methods
+      .sendTip(
+        Web3.utils.toWei(`${amount}`),
+        currency_address,
+        "0x6c87652EF5036c710990EEd218B68b21602e70B8"
+        //creator_address
+      )
+      .send({
+        from: account,
+        value: Web3.utils.toWei(amount.toString()),
+      });
 
     sendMessage("");
   };
