@@ -3,6 +3,7 @@ import {
   Button,
   Flex,
   GridItem,
+  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -13,13 +14,14 @@ import {
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
+import { useContext, useState } from "react";
 
 import { LiveStreamChatContext } from "../../../contexts/Chat";
-import { useContext } from "react";
 
 const bnb_amounts = [0.001, 0.01, 0.05, 0.1, 0.25, 0.5, 1, 2, 5, 10];
 
 export default function SendTipModal({ isOpen, onClose }) {
+  const [selected, setSelected] = useState(null);
   const { sendTip } = useContext(LiveStreamChatContext);
   const sendTipToCreator = (amount) => {
     const currency_address = "";
@@ -42,20 +44,37 @@ export default function SendTipModal({ isOpen, onClose }) {
                 {bnb_amounts.map((amount) => (
                   <GridItem key={amount}>
                     <Button
-                      variant="outline"
+                      variant={amount === selected ? "solid" : "outline"}
+                      colorScheme={amount === selected && "primary"}
                       w="full"
-                      onClick={() => sendTipToCreator(amount)}
+                      onClick={() => setSelected(amount)}
                     >
                       {amount} BNB
                     </Button>
                   </GridItem>
                 ))}
+                <GridItem colSpan={2}>
+                  <Input
+                    w="full"
+                    type="number"
+                    min={0.001}
+                    variant="filled"
+                    placeholder="Custom amount"
+                    colorScheme={"primary"}
+                    onChange={(e) => setSelected(Number(e.target.value))}
+                  />
+                </GridItem>
               </SimpleGrid>
             </Box>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="primary" mr={3} onClick={onClose}>
+            <Button
+              colorScheme="primary"
+              mr={3}
+              onClick={onClose}
+              disabled={!selected}
+            >
               Send Tip
             </Button>
             <Button variant="ghost" onClick={onClose}>
