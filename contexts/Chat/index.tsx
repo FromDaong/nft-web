@@ -6,6 +6,10 @@ import {
 import { createContext, useEffect, useState } from "react";
 
 import Axios from "axios";
+import TippingContractAbi from "../../treat/lib/abi/tippingcontract.json";
+import Web3 from "web3";
+import { contractAddresses } from "../../treat/lib/constants";
+import { ethers } from "ethers";
 import { make_id } from "../../components/Live/utils";
 import { reactPusher } from "../../lib/pusher";
 import { useMoralis } from "react-moralis";
@@ -47,6 +51,7 @@ export const LiveStreamChatContext = createContext<{
 });
 
 export const LiveStreamChatContextProvider = ({ children }) => {
+  const { Moralis, web3 } = useMoralis();
   const [messages, setMessages] = useState<Array<Notification>>([]);
   const [currently_playing, setCurrently_playing] = useState<string | null>(
     null
@@ -171,11 +176,22 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     publish(payload);
   };
 
-  const sendTip = (
+  const sendTip = async (
     currency_address: string,
     creator_address: string,
     amount: number
   ) => {
+    const tippingContract = new ethers.Contract(
+      contractAddresses.tippingContract["0x38"],
+      TippingContractAbi,
+      web3.getSigner()
+    );
+    await tippingContract.sendTip(
+      Web3.utils.toWei(`${amount}`, "ether"),
+      currency_address,
+      "0x6c87652EF5036c710990EEd218B68b21602e70B8" //creator_address
+    );
+
     sendMessage("");
   };
 
