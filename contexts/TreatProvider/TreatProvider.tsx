@@ -4,7 +4,7 @@ import { Treat } from "../../treat";
 import { useMoralis } from "react-moralis";
 
 export interface TreatContext {
-  treat?: typeof Treat;
+  treat?: Treat;
 }
 
 export const Context = createContext<TreatContext>({

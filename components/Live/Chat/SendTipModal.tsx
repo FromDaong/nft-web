@@ -18,7 +18,7 @@ import { useContext, useState } from "react";
 
 import { LiveStreamChatContext } from "../../../contexts/Chat";
 
-const bnb_amounts = [0.001, 0.01, 0.05, 0.1, 0.25, 0.5, 1, 2, 5, 10];
+const bnb_amounts = [0.001, 0.05, 0.25, 0.5, 1, 2];
 
 export default function SendTipModal({ isOpen, onClose }) {
   const [selected, setSelected] = useState(null);
@@ -59,7 +59,7 @@ export default function SendTipModal({ isOpen, onClose }) {
                     </Button>
                   </GridItem>
                 ))}
-                <GridItem colSpan={2}>
+                <GridItem colSpan={3}>
                   <Input
                     w="full"
                     type="number"
