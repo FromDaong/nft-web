@@ -1,10 +1,10 @@
 import { Box } from "@chakra-ui/react";
 import ReactionBubble from "./ReactionBubble";
 
-export default function ChatUtilsBox() {
+export default function ChatUtilsBox({ sendReaction }) {
   return (
     <Box>
-      <ReactionBubble />
+      <ReactionBubble sendReaction={sendReaction} />
     </Box>
   );
 }
