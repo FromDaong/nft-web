@@ -19,17 +19,16 @@ async function publish(req, res) {
   };
 
   try {
-    await new NotificationModel({
-      ...payload,
-      sent: true,
-      channel: payload.channel,
-    }).save();
+    if (payload.type !== "reaction") {
+      await new NotificationModel({
+        ...payload,
+        sent: true,
+        channel: payload.channel,
+      }).save();
+    }
     switch (payload.type) {
       case "message":
         await new Message(payload.payload).save();
-        break;
-      case "reaction":
-        await new ReactionModel(payload.payload).save();
         break;
       case "tip":
         await new Tip(payload.payload).save();
