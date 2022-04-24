@@ -56,9 +56,6 @@ export default function SendMessageBox(props) {
           </Button>
         </Flex>
       </form>
-      <Button rounded="full" size="md" my="auto" ml={2}>
-        ❤️
-      </Button>
     </Box>
   );
 }

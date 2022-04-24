@@ -16,6 +16,8 @@ export default function ChatContainer(props) {
     >
       {props.messages
         .filter((m: Notification) => m.type !== "reaction")
+        // sort by timestamp in descending order
+        .sort((a, b) => b.timestamp - a.timestamp)
         .map((m: Notification) => (
           <ChatItem
             isLastMessage={m.index === props.messages[0]?.index}
