@@ -3,25 +3,26 @@ import * as Types from "./types.js";
 import { SUBTRACT_GAS_LIMIT, contractAddresses } from "./constants.js";
 
 import BigNumber from "bignumber.js/bignumber";
-import TreatAbi from "./abi/treat.json";
-import TotwMinterHelperAbi from "./abi/totwminterhelper.json";
-import TreatMarketplaceAbi from "./abi/treatMarketplace.json";
-import TreatMarketReaderAbi from "./abi/treatmarketreader.json";
-import TreatSubscriptionsAbi from "./abi/treatsubscriptions.json";
-import TreatMartAbi from "./abi/treatmart.json";
 import CreatorMartAbi from "./abi/creatormart.json";
-import SubscriberMartAbi from "./abi/subscribermart.json";
+import MasterMelonFarmerAbi from "./abi/mastermelonfarmer.json";
+import MelonAbi from "./abi/melontoken.json";
 import MelonMartAbi from "./abi/melonmart.json";
+import MinterPermissionHelperAbi from "./abi/nftminterpermissionhelper.json";
+import PancakeLPAbi from "./abi/treatpancakelp.json";
+import SubscriberMartAbi from "./abi/subscribermart.json";
+import TippingContractAbi from "./abi/tippingcontract.json";
+import TotwMinterHelperAbi from "./abi/totwminterhelper.json";
+import Treat2Abi from "./abi/treat2.json";
+import TreatAbi from "./abi/treat.json";
+import TreatMarketReaderAbi from "./abi/treatmarketreader.json";
+import TreatMarketplaceAbi from "./abi/treatMarketplace.json";
+import TreatMartAbi from "./abi/treatmart.json";
 import TreatNFTMinterAbi from "./abi/treatnftminter.json";
 import TreatNFTMinterV1Abi from "./abi/treatnftminterv1.json";
+import TreatSubscriptionsAbi from "./abi/treatsubscriptions.json";
 import TreatTradeInAbi from "./abi/treattradein.json";
 import TreatV1ForV2Abi from "./abi/treatv1forv2.json";
 import WETHAbi from "./abi/weth.json";
-import Treat2Abi from "./abi/treat2.json";
-import MasterMelonFarmerAbi from "./abi/mastermelonfarmer.json";
-import MelonAbi from "./abi/melontoken.json";
-import PancakeLPAbi from "./abi/treatpancakelp.json";
-import MinterPermissionHelperAbi from "./abi/nftminterpermissionhelper.json";
 
 export class Contracts {
   constructor(provider, networkId, web3, options) {
@@ -44,6 +45,7 @@ export class Contracts {
     this.treatMarketplace = new this.web3.eth.Contract(TreatMarketplaceAbi);
     this.treatMarketReader = new this.web3.eth.Contract(TreatMarketReaderAbi);
     this.treatSubscriptions = new this.web3.eth.Contract(TreatSubscriptionsAbi);
+    this.tippingContract = new this.web3.eth.Contract(TippingContractAbi);
     this.weth = new this.web3.eth.Contract(WETHAbi);
     this.treatTradeIn = new this.web3.eth.Contract(TreatTradeInAbi);
     this.treatV1ForV2 = new this.web3.eth.Contract(TreatV1ForV2Abi);
@@ -110,6 +112,10 @@ export class Contracts {
     setProvider(this.melonMart, contractAddresses.melonMart[networkId]);
     setProvider(this.weth, contractAddresses.weth[networkId]);
     setProvider(this.treat2, contractAddresses.treat2[networkId]);
+    setProvider(
+      this.tippingContract,
+      contractAddresses.tippingContract[networkId]
+    );
     setProvider(this.melon, contractAddresses.melon[networkId]);
     setProvider(
       this.masterMelonFarmer,
@@ -141,6 +147,7 @@ export class Contracts {
     this.treatMarketplace.options.from = account;
     this.treatMarketReader.options.from = account;
     this.treatSubscriptions.options.from = account;
+    this.tippingContract.options.from = true;
     this.treatTradeIn.options.from = account;
     this.treatV1ForV2.options.from = account;
     this.treat2.options.from = account;
