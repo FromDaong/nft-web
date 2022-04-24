@@ -4,9 +4,7 @@ export default async function getLivestreamHost(req, res) {
   try {
     const { channel } = req.query;
     const model = await Model.findOne({
-      live: {
-        stream_id: channel,
-      },
+      "live.playback_id": channel,
     });
 
     if (model) {
