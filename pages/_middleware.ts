@@ -1,6 +1,10 @@
+import { signJWT } from "./../utils/server-utils";
+import { jwt } from "jsonwebtoken";
+import logger from "@lib/logger";
 import { NextRequest, NextResponse } from "next/server";
+import Model from "@models/Model";
 
-const refreshToken = (token, refreshToken) => {
+const refreshMyToken = (token, refreshToken) => {
   try {
     jwt.verify(refreshToken, process.env.NEXT_APP_JWT_KEY);
     const expiredToken = jwt.verify(token, process.env.NEXT_APP_JWT_KEY, {
@@ -29,12 +33,43 @@ const isValidToken = (token) => {
     jwt.verify(token, process.env.NEXT_APP_JWT_KEY);
     return true;
   } catch (err) {
-    console.log({ err });
+    logger({ err });
     return false;
   }
 };
 
-export function middleware(req: NextRequest, res: NextResponse) {
+export async function middleware(req: NextRequest) {
   // Add the user token to the response
-  const { token, refreshToken } = req.cookies;
+  const { token, refreshToken, account } = req.cookies;
+  const url = req.nextUrl;
+
+  url.pathname = `/auth/`;
+  if (!token) {
+    return NextResponse.redirect(url);
+  }
+
+  if (!isValidToken(token)) {
+    if (refreshToken && isValidToken(refreshToken)) {
+      refreshMyToken(token, refreshToken);
+    }
+    const model = await Model.findOne({
+      address: { $regex: new RegExp(account, "i") },
+    });
+    if (!model) {
+      return new Response(JSON.stringify({}), {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
+    req.cookies.token = refreshToken;
+  }
+
+  return new Response(JSON.stringify({ message: "hello world!" }), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 }
