@@ -2,6 +2,7 @@ import Axios from "axios";
 import { jwt } from "jsonwebtoken";
 import logger from "../lib/logger";
 import { NextRequest, NextResponse } from "next/server";
+import fetchAdapter from "axios-fetch-adapter";
 
 export const signJWT = (data, expiresIn) => {
   return jwt.sign(data, process.env.JWT_KEY, {
@@ -57,7 +58,10 @@ export async function middleware(req: NextRequest) {
     if (refreshToken && isValidToken(refreshToken)) {
       refreshMyToken(token, refreshToken);
     }
-    const res = await Axios.get("/api/v2/auth/me");
+    const axiosInstance = Axios.create({
+      adapter: fetchAdapter,
+    });
+    const res = await axiosInstance.get("/api/v2/auth/me");
 
     if (!res.data) {
       return new Response(JSON.stringify({}), {
