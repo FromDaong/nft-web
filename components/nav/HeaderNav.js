@@ -46,8 +46,6 @@ const HeaderNav = ({ modelData }) => {
     })();
   }, []);
 
-  console.log({ modelData });
-
   return (
     <Navbar
       expand="lg"
