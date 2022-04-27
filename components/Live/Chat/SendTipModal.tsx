@@ -22,11 +22,19 @@ const bnb_amounts = [0.001, 0.05, 0.25, 0.5, 1, 2];
 
 export default function SendTipModal({ isOpen, onClose }) {
   const [selected, setSelected] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   const { sendTip, host } = useContext(LiveStreamChatContext);
   const sendTipToCreator = () => {
     const currency_address = "0x0000000000000000000000000000000000000000";
     const creator_address = host;
-    sendTip(currency_address, creator_address, selected);
+    setLoading(true);
+    sendTip(currency_address, creator_address, selected)
+      .then(() => setLoading(false))
+      .catch((err) => {
+        console.log({ err });
+        setLoading(false);
+      });
   };
 
   const closeModal = () => {
@@ -80,6 +88,7 @@ export default function SendTipModal({ isOpen, onClose }) {
               mr={3}
               onClick={sendTipToCreator}
               disabled={!selected}
+              isLoading={loading}
             >
               Send Tip
             </Button>
