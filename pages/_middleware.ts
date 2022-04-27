@@ -1,7 +1,7 @@
+import Axios from "axios";
 import { jwt } from "jsonwebtoken";
-import logger from "@lib/logger";
+import logger from "../lib/logger";
 import { NextRequest, NextResponse } from "next/server";
-import Model from "@models/Model";
 
 export const signJWT = (data, expiresIn) => {
   return jwt.sign(data, process.env.JWT_KEY, {
@@ -57,11 +57,9 @@ export async function middleware(req: NextRequest) {
     if (refreshToken && isValidToken(refreshToken)) {
       refreshMyToken(token, refreshToken);
     }
-    const model = await Model.findOne({
-      address: { $regex: new RegExp(account, "i") },
-    });
+    const res = await Axios.get("/api/v2/auth/me");
 
-    if (!model) {
+    if (!res.data) {
       return new Response(JSON.stringify({}), {
         status: 200,
         headers: {
@@ -69,7 +67,7 @@ export async function middleware(req: NextRequest) {
         },
       });
     } else {
-      return new Response(JSON.stringify({ modelData: model }), {
+      return new Response(JSON.stringify({ modelData: res.data }), {
         status: 200,
         headers: {
           "Content-Type": "application/json",
