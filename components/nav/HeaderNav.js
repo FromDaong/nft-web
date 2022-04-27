@@ -46,6 +46,8 @@ const HeaderNav = ({ modelData }) => {
     })();
   }, []);
 
+  console.log({ modelData });
+
   return (
     <Navbar
       expand="lg"
@@ -124,11 +126,11 @@ const HeaderNav = ({ modelData }) => {
               <Link href="/dashboard" passHref>
                 <Nav.Link style={{ color: "#c34573" }}>Dashboard</Nav.Link>
               </Link>
-              {/* {modelData && !modelData.pending && !modelData.rejected ? null : (
+              {modelData && !modelData.isModel ? (
                 <Link href="/become-creator" passHref>
                   <Nav.Link>Apply</Nav.Link>
                 </Link>
-              )} */}
+              ) : null}
             </>
           )}
 
