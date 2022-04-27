@@ -3799,6 +3799,11 @@
   resolved "https://registry.yarnpkg.com/@vascosantos/moving-average/-/moving-average-1.1.0.tgz#8d5793b09b2d6021ba5e620c6a0f876c20db7eaa"
   integrity sha512-MVEJ4vWAPNbrGLjz7ITnHYg+YXZ6ijAqtH5/cHwSoCpbvuJ98aLXwFfPKAUfZpJMQR5uXB58UJajbY130IRF/w==
 
+"@vespaiach/axios-fetch-adapter@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@vespaiach/axios-fetch-adapter/-/axios-fetch-adapter-0.2.2.tgz#2090ba86f8c1cccc775ecf42658110d6aac02e49"
+  integrity sha512-kX9PK/TKTaN3XxU6LW8hPJSwZ4cU8yeAEBsjFjm4qw+clXjS45Hc6lYIguzsDKwBTNVtF3PG0JVt0y/vYmMeWg==
+
 "@videojs/http-streaming@2.13.1":
   version "2.13.1"
   resolved "https://registry.yarnpkg.com/@videojs/http-streaming/-/http-streaming-2.13.1.tgz#b7688d91eec969181430e00868b514b16b3b21b7"
