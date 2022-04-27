@@ -79,6 +79,7 @@ function MyApp({ Component, pageProps }) {
   const toast = useToast();
 
   const [modelData, setModelData] = useState({});
+  console.log({ pageProps });
 
   useEffect(() => {
     if (account) {

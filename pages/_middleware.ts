@@ -1,8 +1,13 @@
-import { signJWT } from "./../utils/server-utils";
 import { jwt } from "jsonwebtoken";
 import logger from "@lib/logger";
 import { NextRequest, NextResponse } from "next/server";
 import Model from "@models/Model";
+
+export const signJWT = (data, expiresIn) => {
+  return jwt.sign(data, process.env.JWT_KEY, {
+    expiresIn: expiresIn ?? "3d",
+  });
+};
 
 const refreshMyToken = (token, refreshToken) => {
   try {
@@ -63,14 +68,13 @@ export async function middleware(req: NextRequest) {
           "Content-Type": "application/json",
         },
       });
+    } else {
+      return new Response(JSON.stringify({ modelData: model }), {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
     }
-    req.cookies.token = refreshToken;
   }
-
-  return new Response(JSON.stringify({ message: "hello world!" }), {
-    status: 200,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
 }
