@@ -24,7 +24,10 @@ const me = async (req, res) => {
   }
 
   const isModel =
-    (modelRes.identity_access_key && !modelRes.rejected) || modelRes.pending;
+    (modelRes._doc.identity_access_key && !modelRes._doc.rejected) ||
+    modelRes._doc.pending;
+
+  return res.status(200).json({ ...modelRes._doc, isModel });
 };
 
 export default withJWTAuth(me);
