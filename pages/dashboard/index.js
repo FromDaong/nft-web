@@ -9,7 +9,6 @@ import Layout from "../../components/Layout";
 import Link from "next/link";
 import ListOrderModal from "../../components/ListOrderModal";
 import TransferNFTModal from "../../components/TransferNFTModal";
-import { getModelData } from "../../lib/server/getServerSideProps";
 import { useMoralis } from "react-moralis";
 import useSWR from "swr";
 
@@ -181,10 +180,19 @@ const ViewNFT = ({
     setCancelOrderData(x);
   };
 
-  const { data: nftData, error: nftError } =
-    isModel && useSWR(`/api/model/nfts-from-address/${account}`);
-  const { data: subNftData, error: subNftError } =
-    isModel && useSWR(`/api/model/sub-nfts-from-address/${account}`);
+  let nftData, nftError;
+  let subNftData, subNftError;
+  if (isModel) {
+    const { data, error } = useSWR(`/api/model/nfts-from-address/${account}`);
+    const { data: dataB, error: errorB } = useSWR(
+      `/api/model/sub-nfts-from-address/${account}`
+    );
+
+    (nftData = data),
+      (nftError = error),
+      (subNftData = dataB),
+      (subNftError = errorB);
+  }
 
   const hideNFTs = async () => {
     //setServerNftBalances(null);
