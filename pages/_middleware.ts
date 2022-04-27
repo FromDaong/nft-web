@@ -61,22 +61,26 @@ export async function middleware(req: NextRequest) {
     const axiosInstance = Axios.create({
       adapter: fetchAdapter,
     });
-    const res = await axiosInstance.get("/api/v2/auth/me");
+    try {
+      const res = await axiosInstance.get("/api/v2/auth/me");
 
-    if (!res.data) {
-      return new Response(JSON.stringify({}), {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    } else {
-      return new Response(JSON.stringify({ modelData: res.data }), {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      if (!res.data) {
+        return new Response(JSON.stringify({}), {
+          status: 200,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      } else {
+        return new Response(JSON.stringify({ modelData: res.data }), {
+          status: 200,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      }
+    } catch (err) {
+      logger(err);
     }
   }
 }
