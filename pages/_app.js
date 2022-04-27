@@ -82,7 +82,7 @@ function MyApp({ Component, pageProps }) {
 
   useEffect(() => {
     if (account) {
-      Axios.get(`/api/model/find-by-address/${account}`).then((res) => {
+      Axios.get(`/api/v2/auth/me`).then((res) => {
         setModelData(res.data);
       });
     }
@@ -100,8 +100,8 @@ function MyApp({ Component, pageProps }) {
       // Create user in model with isModel false
       Axios.post("/api/model/become", {
         address: account,
-        isNotModel: true,
-        username: account,
+        isModel: false,
+        username: account.substring(0, 6) + "..." + account.substr(-5),
         bio: "I am a new Treat explorer",
       })
         .then(() =>

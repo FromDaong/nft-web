@@ -1,0 +1,30 @@
+import Model from "../../../../models/Model";
+import { withJWTAuth } from "./../../../../utils/server-utils";
+
+const me = async (req, res) => {
+  const { ethAddress } = req.session;
+
+  const modelRes = await Model.findOne({
+    address: { $regex: new RegExp(ethAddress, "i") },
+  });
+
+  if (!modelRes) {
+    // create new model in db
+    const modelData = {
+      bio: "I am a new Treat explorer",
+      nfts: [],
+      username: ethAddress.substring(0, 6) + "..." + ethAddress.substr(-5),
+      address: ethAddress,
+      isModel: false,
+    };
+    const newModel = new Model(modelData);
+    await newModel.save();
+    // return new data to client
+    return res.json(200).json(modelData);
+  }
+
+  const isModel =
+    (modelRes.identity_access_key && !modelRes.rejected) || modelRes.pending;
+};
+
+export default withJWTAuth(me);
