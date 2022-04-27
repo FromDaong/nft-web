@@ -55,6 +55,7 @@ export async function middleware(req: NextRequest) {
     const model = await Model.findOne({
       address: { $regex: new RegExp(account, "i") },
     });
+
     if (!model) {
       return new Response(JSON.stringify({}), {
         status: 200,
