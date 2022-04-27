@@ -310,5 +310,4 @@ const ViewNFT = ({
   );
 };
 
-export const getServerSideProps = getModelData;
 export default CreatorDashboardWrapper;
