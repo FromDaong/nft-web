@@ -9,7 +9,6 @@ import { ChakraProvider, extendTheme, useToast } from "@chakra-ui/react";
 import { MoralisProvider, useMoralis } from "react-moralis";
 import { destroyCookie, setCookie } from "nookies";
 import { useEffect, useState } from "react";
-import useSWR, { SWRConfig } from "swr";
 
 import Axios from "axios";
 import Container from "react-bootstrap/Container";
@@ -20,6 +19,7 @@ import Navbar from "../components/nav/HeaderNav";
 import ProgressBar from "@badrap/bar-of-progress";
 import ReactGA from "react-ga";
 import { Router } from "next/dist/client/router";
+import { SWRConfig } from "swr";
 import TOTMBanner from "../components/TOTMBanner";
 import TreatProvider from "../contexts/TreatProvider";
 import V2Banner from "../components/V2Banner";
