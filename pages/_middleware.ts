@@ -2,7 +2,7 @@ import Axios from "axios";
 import { jwt } from "jsonwebtoken";
 import logger from "../lib/logger";
 import { NextRequest, NextResponse } from "next/server";
-import fetchAdapter from "axios-fetch-adapter";
+import fetchAdapter from "@vespaiach/axios-fetch-adapter";
 
 export const signJWT = (data, expiresIn) => {
   return jwt.sign(data, process.env.JWT_KEY, {

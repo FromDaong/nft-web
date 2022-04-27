@@ -26,6 +26,7 @@
     "@sendgrid/mail": "^7.6.0",
     "@typeform/embed-react": "^1.0.5",
     "@uploadcare/upload-client": "^2.2.0",
+    "@vespaiach/axios-fetch-adapter": "^0.2.2",
     "@walletconnect/web3-provider": "^1.7.1",
     "@web3auth/web3auth": "^0.3.2",
     "axios": "^0.25.0",
