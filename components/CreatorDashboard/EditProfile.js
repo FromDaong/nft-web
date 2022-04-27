@@ -11,7 +11,6 @@ import { useState } from "react";
 
 const EditProfile = ({ modelData }) => {
   const router = useRouter();
-  const [success] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const res = modelData;
   const formik = useFormik({
@@ -27,7 +26,7 @@ const EditProfile = ({ modelData }) => {
       banner_pic: Yup.string(),
       email: Yup.string().required("Please add a Email"),
     }),
-    onSubmit: (values) => {
+    onSubmit: () => {
       SubmitToServer();
     },
   });
@@ -87,7 +86,7 @@ const EditProfile = ({ modelData }) => {
       });
   };
 
-  if (success || (res && res.pending))
+  if (res && res.pending)
     return (
       <Hero
         title="Your application has been submitted!"
