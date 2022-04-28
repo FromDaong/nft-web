@@ -79,15 +79,14 @@ function MyApp({ Component, pageProps }) {
   const toast = useToast();
 
   const [modelData, setModelData] = useState({});
-  console.log({ modelData });
 
   useEffect(() => {
-    if (account) {
+    if (isAuthenticated) {
       Axios.get(`/api/v2/auth/me`).then((res) => {
         setModelData(res.data);
       });
     }
-  }, [account]);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     ReactGA.initialize("UA-207897573-1");
@@ -148,6 +147,8 @@ function MyApp({ Component, pageProps }) {
           return logout()
             .then(() => {
               if (!requestedAuth) {
+                console.log({ requestedAuth });
+                console.log("Requesting auth");
                 setRequestedAuth(true);
                 return authenticate()
                   .then((parsedUser) => {
@@ -300,13 +301,15 @@ function MyApp({ Component, pageProps }) {
             )}
             <Navbar modelData={modelData} />
             <Container style={{ minHeight: "75vh" }}>
-              {modelData ? <Component
-                {...pageProps}
-                modelData={modelData}
-                key={router.route}
-              /> : <div>
-                  Please wait fetching your profile details.
-                </div>}
+              {modelData ? (
+                <Component
+                  {...pageProps}
+                  modelData={modelData}
+                  key={router.route}
+                />
+              ) : (
+                <div>Please wait fetching your profile details.</div>
+              )}
             </Container>
             <Footer />
           </TreatProvider>
