@@ -63,7 +63,7 @@ export async function middleware(req: NextRequest) {
     });
     try {
       const res = await axiosInstance.get("/api/v2/auth/me");
-
+      console.log({ res });
       if (!res.data) {
         return new Response(JSON.stringify({}), {
           status: 200,

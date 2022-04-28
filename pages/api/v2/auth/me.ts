@@ -20,7 +20,7 @@ const me = async (req, res) => {
     const newModel = new Model(modelData);
     await newModel.save();
     // return new data to client
-    return res.json(200).json(modelData);
+    return res.status(200).json(modelData);
   }
 
   const isModel =

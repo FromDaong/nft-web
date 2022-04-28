@@ -104,6 +104,7 @@ function MyApp({ Component, pageProps }) {
         isModel: false,
         username: account.substring(0, 6) + "..." + account.substr(-5),
         bio: "I am a new Treat explorer",
+        display_name: account,
       })
         .then(() =>
           toast({
