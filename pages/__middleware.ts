@@ -1,6 +1,7 @@
 import { jwt } from "jsonwebtoken";
 import logger from "../lib/logger";
 import { NextRequest, NextResponse } from "next/server";
+import treatAxios from "../lib/axios";
 
 export const signJWT = (data, expiresIn) => {
   return jwt.sign(data, process.env.JWT_KEY, {
@@ -67,7 +68,7 @@ export async function middleware(req: NextRequest) {
     }
 
     try {
-      const res = await axiosInstance.post("/api/v2/auth/me", {
+      const res = await treatAxios.post("/api/v2/auth/me", {
         token,
       });
       console.log({ res });
