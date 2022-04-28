@@ -79,7 +79,7 @@ function MyApp({ Component, pageProps }) {
   const toast = useToast();
 
   const [modelData, setModelData] = useState({});
-  console.log({ pageProps });
+  console.log({ modelData });
 
   useEffect(() => {
     if (account) {
@@ -300,11 +300,13 @@ function MyApp({ Component, pageProps }) {
             )}
             <Navbar modelData={modelData} />
             <Container style={{ minHeight: "75vh" }}>
-              <Component
+              {modelData ? <Component
                 {...pageProps}
                 modelData={modelData}
                 key={router.route}
-              />
+              /> : <div>
+                  Please wait fetching your profile details.
+                </div>}
             </Container>
             <Footer />
           </TreatProvider>
