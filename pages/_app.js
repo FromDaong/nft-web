@@ -75,6 +75,7 @@ function MyApp({ Component, pageProps }) {
   );
   const [requestedAuth, setRequestedAuth] = useState(false);
   const { authenticate, logout, user, isAuthenticated, account } = useMoralis();
+  const [hasUpdatedLocal, setHasUpdatedLocal] = useState(false);
   const router = useRouter();
   const toast = useToast();
 
@@ -88,7 +89,7 @@ function MyApp({ Component, pageProps }) {
         });
       }
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, hasUpdatedLocal]);
 
   useEffect(() => {
     ReactGA.initialize("UA-207897573-1");
@@ -173,7 +174,9 @@ function MyApp({ Component, pageProps }) {
             })
             .then((thisUser) => {
               if (thisUser || user) {
-                return getJWT(thisUser || user);
+                return getJWT(thisUser || user).then(() =>
+                  setHasUpdatedLocal(true)
+                );
               } else {
                 throw {
                   error: "USER_NOT_AUTH",
