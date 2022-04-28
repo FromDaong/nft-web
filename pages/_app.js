@@ -82,9 +82,11 @@ function MyApp({ Component, pageProps }) {
 
   useEffect(() => {
     if (isAuthenticated) {
-      Axios.get(`/api/v2/auth/me`).then((res) => {
-        setModelData(res.data);
-      });
+      if (localStorage.getItem("tokens")) {
+        Axios.get(`/api/v2/auth/me`).then((res) => {
+          setModelData(res.data);
+        });
+      }
     }
   }, [isAuthenticated]);
 
@@ -145,6 +147,7 @@ function MyApp({ Component, pageProps }) {
           // Let's log out moralis and show metamask login again to redo auth.
           // After that retry the original request
           return logout()
+            .then(() => localStorage.removeItem("tokens"))
             .then(() => {
               if (!requestedAuth) {
                 console.log({ requestedAuth });
