@@ -6,6 +6,7 @@ const ModelSchema = new mongoose.Schema(
   {
     display_name: {
       type: String,
+      default: "",
     },
     username: {
       type: String,
@@ -31,6 +32,7 @@ const ModelSchema = new mongoose.Schema(
     },
     profile_pic: {
       type: String,
+      default: "",
     },
     profilePicCdnUrl: {
       type: String,
@@ -45,9 +47,11 @@ const ModelSchema = new mongoose.Schema(
     },
     social_account: {
       type: String,
+      default: "",
     },
     address: {
       type: String,
+      required: true,
     },
     email: {
       type: String,

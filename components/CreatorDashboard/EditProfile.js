@@ -12,9 +12,8 @@ import { useState } from "react";
 const EditProfile = ({ modelData }) => {
   const router = useRouter();
   const [disabled, setDisabled] = useState(false);
-  const res = modelData;
   const formik = useFormik({
-    initialValues: res,
+    initialValues: modelData,
     validateOnChange: false,
     validateOnBlur: false,
     validationSchema: Yup.object().shape({
@@ -33,7 +32,7 @@ const EditProfile = ({ modelData }) => {
 
   const SubmitToServer = async () => {
     try {
-      const serverRes = await fetch(`/api/model/${res.username}`, {
+      const serverRes = await fetch(`/api/model/${modelData.username}`, {
         method: "PUT",
         headers: {
           Accept: "application/json",
@@ -86,7 +85,7 @@ const EditProfile = ({ modelData }) => {
       });
   };
 
-  if (res && res.pending)
+  if (modelData && modelData.pending)
     return (
       <Hero
         title="Your application has been submitted!"
@@ -94,7 +93,7 @@ const EditProfile = ({ modelData }) => {
       />
     );
 
-  if (res && res.rejected)
+  if (modelData && modelData.rejected)
     return <Hero title="Your application has been rejected" />;
 
   return (
