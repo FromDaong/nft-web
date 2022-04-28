@@ -30,7 +30,7 @@ export const LiveStreamChatContext = createContext<{
     currency_address: string,
     creator_address: string,
     amount: number
-  ) => Promise<void>;
+  ) => Promise<any>;
   sendReaction: (text: string) => void;
   retryMessage: (payload: Notification) => void;
   clearLatestReactionMessage: () => void;
