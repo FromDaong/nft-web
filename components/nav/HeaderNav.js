@@ -124,7 +124,7 @@ const HeaderNav = ({ modelData }) => {
               <Link href="/dashboard" passHref>
                 <Nav.Link style={{ color: "#c34573" }}>Dashboard</Nav.Link>
               </Link>
-              {modelData && !modelData.isModel ? (
+              {!modelData || (!modelData.pending && !modelData.rejected) ? (
                 <Link href="/become-creator" passHref>
                   <Nav.Link>Apply</Nav.Link>
                 </Link>

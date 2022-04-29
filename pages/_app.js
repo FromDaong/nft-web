@@ -274,6 +274,8 @@ function MyApp({ Component, pageProps }) {
     };
   }, []);
 
+  console.log({ modelData });
+
   return (
     <ApolloProvider client={client}>
       <IntercomProvider
