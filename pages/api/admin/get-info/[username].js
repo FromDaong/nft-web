@@ -6,8 +6,8 @@ dbConnect();
 
 const { PassbaseClient, PassbaseConfiguration } = require("@passbase/node");
 
-const apiKey = // hidestream
-  "OSjy4wqjZaKBi0hUf5dir2Y3hfc6LM0fNeUBzzIKCySelBvIjHkKsbak40J2kZvCF4v26w45OGipY0c1er7rkKa9lBJFKYG6Zl14Adf0uk7wEeQLIkS6TZtf33Dve3C4";
+const apiKey =
+  "elBBJ5uEoadUIO99IwEKpmg3IvpzUz74UdSaxMMYcnJqYf1XRYpDlzXMXOMYMBeZrIVrC97SX0dE5GS0otGvZJ9OplGZXZKhqjGB0MctCFA5lmteuK1fzsH1Kkk405we";
 const config = new PassbaseConfiguration({
   apiKey,
 });
