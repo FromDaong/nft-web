@@ -10,5 +10,7 @@ export const axiosNode =
       });
 
 export const getJWT = (payload) => {
-  return axios.post("/api/v2/auth/get-jwt", payload);
+  return axios
+    .post("/api/v2/auth/get-jwt", payload)
+    .then((res) => localStorage.setItem("tokens", JSON.stringify(res.data)));
 };

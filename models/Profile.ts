@@ -18,6 +18,11 @@ const ProfileSchema = new mongoose.Schema({
   address: {
     type: String,
   },
+  banner_pic: {
+    type: String,
+    default:
+      "https://treatdao.mypinata.cloud/ipfs/QmdRewQfGbQP95hcyabRwRnXKWFH8Lyrr8ak6xc2y4uWTP",
+  },
 });
 
 ProfileSchema.plugin(aggregatePaginate);

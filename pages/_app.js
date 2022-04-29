@@ -9,7 +9,6 @@ import { ChakraProvider, extendTheme, useToast } from "@chakra-ui/react";
 import { MoralisProvider, useMoralis } from "react-moralis";
 import { destroyCookie, setCookie } from "nookies";
 import { useEffect, useState } from "react";
-import useSWR, { SWRConfig } from "swr";
 
 import Axios from "axios";
 import Container from "react-bootstrap/Container";
@@ -20,6 +19,7 @@ import Navbar from "../components/nav/HeaderNav";
 import ProgressBar from "@badrap/bar-of-progress";
 import ReactGA from "react-ga";
 import { Router } from "next/dist/client/router";
+import { SWRConfig } from "swr";
 import TOTMBanner from "../components/TOTMBanner";
 import TreatProvider from "../contexts/TreatProvider";
 import V2Banner from "../components/V2Banner";
@@ -75,18 +75,23 @@ function MyApp({ Component, pageProps }) {
   );
   const [requestedAuth, setRequestedAuth] = useState(false);
   const { authenticate, logout, user, isAuthenticated, account } = useMoralis();
+  const [hasUpdatedLocal, setHasUpdatedLocal] = useState(false);
   const router = useRouter();
   const toast = useToast();
 
-  const [modelData, setModelData] = useState({});
+  const [modelData, setModelData] = useState(null);
 
   useEffect(() => {
-    if (account) {
-      Axios.get(`/api/model/find-by-address/${account}`).then((res) => {
-        setModelData(res.data);
-      });
+    if (isAuthenticated) {
+      if (localStorage.getItem("tokens")) {
+        Axios.get(`/api/v2/auth/me`)
+          .then((res) => {
+            setModelData(res.data);
+          })
+          .then();
+      }
     }
-  }, [account]);
+  }, [isAuthenticated, hasUpdatedLocal]);
 
   useEffect(() => {
     ReactGA.initialize("UA-207897573-1");
@@ -100,9 +105,10 @@ function MyApp({ Component, pageProps }) {
       // Create user in model with isModel false
       Axios.post("/api/model/become", {
         address: account,
-        isNotModel: true,
-        username: account,
+        isModel: false,
+        username: account.substring(0, 6) + "..." + account.substr(-5),
         bio: "I am a new Treat explorer",
+        display_name: account,
       })
         .then(() =>
           toast({
@@ -112,6 +118,7 @@ function MyApp({ Component, pageProps }) {
             duration: 2000,
           })
         )
+        .then(() => router.reload())
         .catch((err) => {
           console.log({ err });
           toast({
@@ -144,8 +151,11 @@ function MyApp({ Component, pageProps }) {
           // Let's log out moralis and show metamask login again to redo auth.
           // After that retry the original request
           return logout()
+            .then(() => localStorage.removeItem("tokens"))
             .then(() => {
               if (!requestedAuth) {
+                console.log({ requestedAuth });
+                console.log("Requesting auth");
                 setRequestedAuth(true);
                 return authenticate()
                   .then((parsedUser) => {
@@ -167,7 +177,9 @@ function MyApp({ Component, pageProps }) {
             })
             .then((thisUser) => {
               if (thisUser || user) {
-                return getJWT(thisUser || user);
+                return getJWT(thisUser || user).then(() =>
+                  setHasUpdatedLocal(true)
+                );
               } else {
                 throw {
                   error: "USER_NOT_AUTH",
@@ -265,6 +277,8 @@ function MyApp({ Component, pageProps }) {
     };
   }, []);
 
+  console.log({ modelData });
+
   return (
     <ApolloProvider client={client}>
       <IntercomProvider
@@ -298,11 +312,19 @@ function MyApp({ Component, pageProps }) {
             )}
             <Navbar modelData={modelData} />
             <Container style={{ minHeight: "75vh" }}>
-              <Component
-                {...pageProps}
-                modelData={modelData}
-                key={router.route}
-              />
+              {isAuthenticated && modelData ? (
+                <Component
+                  {...pageProps}
+                  modelData={modelData}
+                  key={router.route}
+                />
+              ) : isAuthenticated && !modelData ? (
+                <div className="mx-auto h-full justify-center align-center">Please wait, we're fetching your profile details.</div>
+              ) : <Component
+                  {...pageProps}
+                  modelData={null}
+                  key={router.route}
+                />}
             </Container>
             <Footer />
           </TreatProvider>

@@ -9,13 +9,11 @@ import Layout from "../../components/Layout";
 import Link from "next/link";
 import ListOrderModal from "../../components/ListOrderModal";
 import TransferNFTModal from "../../components/TransferNFTModal";
-import { getModelData } from "../../lib/server/getServerSideProps";
 import { useMoralis } from "react-moralis";
 import useSWR from "swr";
 
 const CreatorDashboardWrapper = (props) => {
   let modelData = props.modelData;
-  console.log({modelData})
   if (modelData === null) {
     modelData = {};
   }
@@ -93,9 +91,10 @@ const CreatorDashboardWrapper = (props) => {
     }
   };
 
-  const isModel = modelData && !modelData.pending && !modelData.rejected;
+  const { isModel: isModelVar, rejected, pending } = modelData;
+  const isModel = isModelVar || (rejected === false && pending === false);
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated && !modelData) {
     return (
       <div
         style={{
@@ -182,12 +181,19 @@ const ViewNFT = ({
     setCancelOrderData(x);
   };
 
-  const { data: nftData, error: nftError } = useSWR(
-    `/api/model/nfts-from-address/${account}`
-  );
-  const { data: subNftData, error: subNftError } = useSWR(
-    `/api/model/sub-nfts-from-address/${account}`
-  );
+  let nftData, nftError;
+  let subNftData, subNftError;
+  if (isModel) {
+    const { data, error } = useSWR(`/api/model/nfts-from-address/${account}`);
+    const { data: dataB, error: errorB } = useSWR(
+      `/api/model/sub-nfts-from-address/${account}`
+    );
+
+    (nftData = data),
+      (nftError = error),
+      (subNftData = dataB),
+      (subNftError = errorB);
+  }
 
   const hideNFTs = async () => {
     //setServerNftBalances(null);
@@ -200,13 +206,15 @@ const ViewNFT = ({
         data={transferNFTData}
         handleClose={() => setTransferNFTData(false)}
       />
-      <ListOrderModal
-        show={!!listOrderData}
-        data={listOrderData}
-        handleClose={() => setListOrderData(false)}
-        setPendingModal={setShowPendingModal}
-        openCompleteModal={() => setShowCompleteModal(true)}
-      />
+      {isModel && (
+        <ListOrderModal
+          show={!!listOrderData}
+          data={listOrderData}
+          handleClose={() => setListOrderData(false)}
+          setPendingModal={setShowPendingModal}
+          openCompleteModal={() => setShowCompleteModal(true)}
+        />
+      )}
       <CancelOrderModal
         show={!!cancelOrderData}
         data={cancelOrderData}
@@ -311,5 +319,4 @@ const ViewNFT = ({
   );
 };
 
-export const getServerSideProps = getModelData;
 export default CreatorDashboardWrapper;

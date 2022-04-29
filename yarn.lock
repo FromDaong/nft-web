@@ -3799,6 +3799,11 @@
   resolved "https://registry.yarnpkg.com/@vascosantos/moving-average/-/moving-average-1.1.0.tgz#8d5793b09b2d6021ba5e620c6a0f876c20db7eaa"
   integrity sha512-MVEJ4vWAPNbrGLjz7ITnHYg+YXZ6ijAqtH5/cHwSoCpbvuJ98aLXwFfPKAUfZpJMQR5uXB58UJajbY130IRF/w==
 
+"@vespaiach/axios-fetch-adapter@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@vespaiach/axios-fetch-adapter/-/axios-fetch-adapter-0.2.2.tgz#2090ba86f8c1cccc775ecf42658110d6aac02e49"
+  integrity sha512-kX9PK/TKTaN3XxU6LW8hPJSwZ4cU8yeAEBsjFjm4qw+clXjS45Hc6lYIguzsDKwBTNVtF3PG0JVt0y/vYmMeWg==
+
 "@videojs/http-streaming@2.13.1":
   version "2.13.1"
   resolved "https://registry.yarnpkg.com/@videojs/http-streaming/-/http-streaming-2.13.1.tgz#b7688d91eec969181430e00868b514b16b3b21b7"
@@ -5163,6 +5168,11 @@ aws4@^1.8.0:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.11.0.tgz#d61f46d83b2519250e2784daf5b09479a8b41c59"
   integrity sha512-xh1Rl34h6Fi1DC2WWKfxUTVqRsNnr6LsKz2+hfwDxQJWmrx8+c7ylaqBMcHfl1U1r2dsifOvKX3LQuLNZ+XSvA==
+
+axios-fetch-adapter@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/axios-fetch-adapter/-/axios-fetch-adapter-1.0.0.tgz#c78693244f0db4b2b200e65c2612b18ccd35af3f"
+  integrity sha512-OuYRqx6XEfeByYatPKAoXRV48id7qmVkXjfTw8rFUHjwM4Yr8UNiihg7FTx9ZowtUWkq/QkzgFAopgnt26h9xA==
 
 axios@0.24.0:
   version "0.24.0"
