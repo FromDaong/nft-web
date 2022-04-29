@@ -19,11 +19,11 @@ const EditProfile = ({ modelData }) => {
     validationSchema: Yup.object().shape({
       display_name: Yup.string(),
       username: Yup.string().required("Please add a username"),
-      bio: Yup.string().required("Please add the Creator bio"),
+      bio: Yup.string(),
       social_account: Yup.string(),
-      profile_pic: Yup.string().required("Please add a Profile Photo"),
+      profile_pic: Yup.string(),
       banner_pic: Yup.string(),
-      email: Yup.string().required("Please add a Email"),
+      email: Yup.string(),
     }),
     onSubmit: () => {
       SubmitToServer();
