@@ -91,7 +91,8 @@ const CreatorDashboardWrapper = (props) => {
     }
   };
 
-  const { isModel } = modelData;
+  const { isModel: isModelVar, rejected, pending } = modelData;
+  const isModel = isModelVar || (rejected === false && pending === false);
 
   if (!isAuthenticated && !modelData) {
     return (
