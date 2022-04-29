@@ -30,16 +30,16 @@ const CreateModel = () => {
   const [success, setSuccess] = useState(false);
   const [step, setStep] = useState("loading");
   const { account } = useMoralis();
-  const { res, setRes } = useState(null);
+  const [res, setRes] = useState(null);
 
   useEffect(() => {
+    if (!account) return;
     Axios.get(`/api/model/find-by-address/${account}`)
       .then((res) => {
         setRes(res.data);
-        setStep("");
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [account]);
 
   const formik = useFormik({
     initialValues: {
@@ -148,7 +148,7 @@ const CreateModel = () => {
       if (res.pending && res?.identity_access_key?.length > 0) {
         return setStep("pending");
       }
-      if (!res.rejected && !res.pending) {
+      if (res.rejected === false && res.pending === false) {
         return setStep("accepted");
       }
       if (!res.identity_access_key) {
