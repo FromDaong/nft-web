@@ -7,7 +7,8 @@ import { PencilFill } from "react-bootstrap-icons";
 import axios from "axios";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Axios from "axios";
 
 const EditProfile = ({ modelData }) => {
   const router = useRouter();
@@ -30,17 +31,16 @@ const EditProfile = ({ modelData }) => {
     },
   });
 
+  useEffect(() => {
+    formik.setValues({ ...modelData });
+  }, [modelData]);
+
   const SubmitToServer = async () => {
     try {
-      const serverRes = await fetch(`/api/model/${modelData.username}`, {
-        method: "PUT",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formik.values),
+      const serverRes = await Axios.patch(`/api/v2/auth/patch`, {
+        ...formik.values,
       });
-      const resJSON = await serverRes.json();
+      const resJSON = serverRes.data;
 
       if (resJSON.error && resJSON.error.errors) {
         console.error(resJSON.error);
@@ -220,6 +220,7 @@ const EditProfile = ({ modelData }) => {
             {Object.keys(formik.errors).length > 0 && (
               <Form.Control.Feedback type="invalid" className="d-block">
                 {Object.keys(formik.errors).map((e) => (
+                  // eslint-disable-next-line react/jsx-key
                   <div>{formik.errors[e]}</div>
                 ))}
                 {formik.errors.code}
