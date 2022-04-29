@@ -79,14 +79,16 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
   const toast = useToast();
 
-  const [modelData, setModelData] = useState({});
+  const [modelData, setModelData] = useState(null);
 
   useEffect(() => {
     if (isAuthenticated) {
       if (localStorage.getItem("tokens")) {
-        Axios.get(`/api/v2/auth/me`).then((res) => {
-          setModelData(res.data);
-        });
+        Axios.get(`/api/v2/auth/me`)
+          .then((res) => {
+            setModelData(res.data);
+          })
+          .then();
       }
     }
   }, [isAuthenticated, hasUpdatedLocal]);
@@ -316,7 +318,7 @@ function MyApp({ Component, pageProps }) {
                   key={router.route}
                 />
               ) : (
-                <div>Please wait fetching your profile details.</div>
+                <div className="mx-auto h-full justify-center align-center">Please wait, we're fetching your profile details.</div>
               )}
             </Container>
             <Footer />
