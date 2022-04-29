@@ -1,6 +1,7 @@
 import { destroyCookie, setCookie } from "nookies";
 
 import jwt from "jsonwebtoken";
+import logger from "../lib/logger";
 import { parseCookies } from "nookies";
 import { web3 } from "./moralis";
 
@@ -65,7 +66,7 @@ export const withJWTAuth = (handler) => (req, res) => {
 
       return handler(req, res);
     } catch (err) {
-      console.log({ err });
+      logger({ err });
       res.status(401).json({
         error: true,
         message: {

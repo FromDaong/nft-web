@@ -77,14 +77,13 @@ export default function DashboardTabs({
                 </Nav.Link>
               </Nav.Item>
             )}
-            {isModel && (
-              <Nav.Item className="white-tp-bg mt-2">
-                <Nav.Link eventKey="edit-profile">
-                  <PencilFill className="mr-2 mb-1" />
-                  Edit Profile
-                </Nav.Link>
-              </Nav.Item>
-            )}
+            <Nav.Item className="white-tp-bg mt-2">
+              <Nav.Link eventKey="edit-profile">
+                <PencilFill className="mr-2 mb-1" />
+                Edit Profile
+              </Nav.Link>
+            </Nav.Item>
+
             {isModel && (
               <Nav.Item className="white-tp-bg mt-2">
                 <Nav.Link eventKey="subscription-nfts">
