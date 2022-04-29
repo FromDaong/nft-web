@@ -118,6 +118,7 @@ function MyApp({ Component, pageProps }) {
             duration: 2000,
           })
         )
+        .then(() => router.reload())
         .catch((err) => {
           console.log({ err });
           toast({
@@ -311,15 +312,19 @@ function MyApp({ Component, pageProps }) {
             )}
             <Navbar modelData={modelData} />
             <Container style={{ minHeight: "75vh" }}>
-              {modelData ? (
+              {isAuthenticated && modelData ? (
                 <Component
                   {...pageProps}
                   modelData={modelData}
                   key={router.route}
                 />
-              ) : (
+              ) : isAuthenticated && !modelData ? (
                 <div className="mx-auto h-full justify-center align-center">Please wait, we're fetching your profile details.</div>
-              )}
+              ) : <Component
+                  {...pageProps}
+                  modelData={null}
+                  key={router.route}
+                />}
             </Container>
             <Footer />
           </TreatProvider>
