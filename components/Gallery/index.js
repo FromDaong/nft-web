@@ -44,29 +44,47 @@ const Gallery = () => {
             />
           </a>
           <Card.Body>
-            <Card.Title>March: KristinElise</Card.Title>
+            <Card.Title>March: Kristin Elise</Card.Title>
             <Card.Text>Curated collection featuring Kristin Elise</Card.Text>
           </Card.Body>
         </Card>
       </Col>
-
-      {/* {Array.from({ length: 1 }).map((_, idx) => ( */}
       <Col>
         <Card>
-          <a href="https://issuu.com/treatdao/docs/totm_3_maren?fr=sMTgxZjQ2MTQ0MjQ">
+          <a
+            href="https://issuu.com/treatdao/docs/totm_3_maren?fr=sMTgxZjQ2MTQ0MjQ"
+            target="_blank"
+          >
             <Card.Img
               className="p-2"
               variant="top"
               src={"/assets/marenCover.jpg"}
             />
             <Card.Body>
-              <Card.Title>April: marenaltman</Card.Title>
+              <Card.Title>April: Maren Altman</Card.Title>
+              <Card.Text>Curated collection featuring Maren Altman</Card.Text>
+            </Card.Body>
+          </a>
+        </Card>
+      </Col>
+      <Col>
+        <Card>
+          <a
+            href="https://issuu.com/treatdao/docs/totm_4_eliza_rose?fr=sNDIzZDQ2MTQ0MjQ"
+            target="_blank"
+          >
+            <Card.Img
+              className="p-2"
+              variant="top"
+              src={"/assets/elizaCover.jpg"}
+            />
+            <Card.Body>
+              <Card.Title>May: Eliza Rose</Card.Title>
               <Card.Text>Curated collection featuring marenaltman</Card.Text>
             </Card.Body>
           </a>
         </Card>
       </Col>
-      {/* ))} */}
     </Row>
   );
 };
