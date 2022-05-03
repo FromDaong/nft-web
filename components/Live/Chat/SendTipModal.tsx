@@ -38,11 +38,17 @@ export default function SendTipModal({ isOpen, onClose }) {
     useState(null);
 
   const { sendTip, host } = useContext(LiveStreamChatContext);
+
+  const current_currency =
+    Object.keys(currency_addresses).find(
+      (key) => currency_addresses[key] === selected_currency_address
+    ) ?? "bnb";
+
   const sendTipToCreator = () => {
     const currency_address = selected_currency_address;
     const creator_address = host;
     setLoading(true);
-    sendTip(currency_address, creator_address, selected)
+    sendTip(currency_address, creator_address, selected, current_currency)
       .then(() => setLoading(false))
       .catch((err) => {
         console.log({ err });
@@ -54,11 +60,6 @@ export default function SendTipModal({ isOpen, onClose }) {
     setSelected(null);
     onClose();
   };
-
-  const current_currency =
-    Object.keys(currency_addresses).find(
-      (key) => currency_addresses[key] === selected_currency_address
-    ) ?? "bnb";
 
   useEffect(() => {
     setSelectedCurrencyAddress(

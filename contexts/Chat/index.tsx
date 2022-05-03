@@ -29,6 +29,7 @@ export const LiveStreamChatContext = createContext<{
     currency_address: string,
     creator_address: string,
     amount: number
+    currency: string
   ) => Promise<any>;
   sendReaction: (text: string) => void;
   retryMessage: (payload: Notification) => void;
@@ -42,7 +43,7 @@ export const LiveStreamChatContext = createContext<{
   isHost: false,
   latestReactionMessage: null,
   sendMessage: (message) => ({ message }),
-  sendTip: async (a, b, c) => ({ a, b, c }),
+  sendTip: async (a, b, c, d) => ({ a, b, c , d}),
   sendReaction: (text) => ({ text }),
   setHost: () => null,
   setCurrentlyPlaying: (a) => ({ a }),
@@ -184,7 +185,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     amount: number,
     currency: string
   ) => {
-    console.log({ amount, currency_address, creator_address });
     await treat?.contracts.tippingContract.methods
       .sendTip(Web3.utils.toWei(`${amount}`), currency_address, creator_address)
       .send({
