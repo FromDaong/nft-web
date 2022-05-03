@@ -8,13 +8,11 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 import Axios from "axios";
 import { Context } from "../TreatProvider";
-import TippingContractAbi from "../../treat/lib/abi/tippingcontract.json";
 import Web3 from "web3";
-import { contractAddresses } from "../../treat/lib/constants";
-import { ethers } from "ethers";
 import { make_id } from "../../components/Live/utils";
 import { reactPusher } from "../../lib/pusher";
 import { useMoralis } from "react-moralis";
+import { useToast } from "@chakra-ui/react";
 
 export const LiveStreamChatContext = createContext<{
   currently_playing: string | null;
@@ -73,6 +71,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
 
   const { account } = useMoralis();
   const { treat } = useContext(Context);
+  const toast = useToast();
 
   const setIsPlaying = (playback_id) => {
     setCurrently_playing(playback_id);
@@ -182,7 +181,8 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const sendTip = async (
     currency_address: string,
     creator_address: string,
-    amount: number
+    amount: number,
+    currency: string
   ) => {
     console.log({ amount, currency_address, creator_address });
     await treat?.contracts.tippingContract.methods
@@ -192,7 +192,13 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         value: Web3.utils.toWei(amount.toString()),
       });
 
-    sendMessage(`${amount}{currency_address} tipped to creator`, "tip");
+    sendMessage(`${amount}{currency} tipped to creator address`, "tip");
+    toast({
+      title: "Tip sent",
+      description: `${amount}{currency} tipped to creator`,
+      status: "success",
+      duration: 3000,
+    });
     return;
   };
 
@@ -303,6 +309,15 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         // set reaction if new message from other senders
         if (data.type === "reaction" && data.payload.sender !== account) {
           setLatestReactionMessage(data);
+        } else if (data.type === "tip") {
+          toast({
+            title: "You have received a tip",
+            description: `${
+              data.payload.text.split(" ")[0]
+            } has been tipped from ${data.payload.sender}`,
+            status: "success",
+            duration: 3000,
+          });
         }
       });
 
