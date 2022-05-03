@@ -26,8 +26,8 @@ import { LiveStreamChatContext } from "../../../contexts/Chat";
 const bnb_amounts = [0.1, 0.5, 1, 2, 5, 10];
 const currency_addresses = {
   bnb: "0x0000000000000000000000000000000000000000",
-  treat: "",
-  usdc: "",
+  treat: "0xac0c7d9b063ed2c0946982ddb378e03886c064e6",
+  usdc: "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
 };
 
 export default function SendTipModal({ isOpen, onClose }) {
@@ -55,9 +55,10 @@ export default function SendTipModal({ isOpen, onClose }) {
     onClose();
   };
 
-  const current_currency = Object.keys(currency_addresses).find(
-    (key) => currency_addresses[key] === selected_currency_address
-  );
+  const current_currency =
+    Object.keys(currency_addresses).find(
+      (key) => currency_addresses[key] === selected_currency_address
+    ) ?? "bnb";
 
   useEffect(() => {
     setSelectedCurrencyAddress(
@@ -68,7 +69,10 @@ export default function SendTipModal({ isOpen, onClose }) {
 
   useEffect(() => {
     if (selected_currency_address) {
-      localStorage.setItem(selected_currency_address);
+      localStorage.setItem(
+        "selected_currency_address",
+        selected_currency_address
+      );
     }
   }, [selected_currency_address]);
 
@@ -81,12 +85,12 @@ export default function SendTipModal({ isOpen, onClose }) {
           <ModalCloseButton />
           <ModalBody>
             <Box>
-              <Flex justifyContent="space-between">
+              <Flex mb={4} justifyContent="space-between">
                 <Text></Text>
                 <Flex>
                   <Menu>
                     <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                      Currency: {current_currency}
+                      Currency: {current_currency.toUpperCase()}
                     </MenuButton>
                     <MenuList>
                       <MenuItem

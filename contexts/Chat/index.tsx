@@ -183,6 +183,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     creator_address: string,
     amount: number
   ) => {
+    console.log({amount, currency_address, creator_address});
     await treat?.contracts.tippingContract.methods
       .sendTip(Web3.utils.toWei(`${amount}`), currency_address, creator_address)
       .send({
