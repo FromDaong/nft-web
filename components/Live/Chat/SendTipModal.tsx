@@ -4,6 +4,10 @@ import {
   Flex,
   GridItem,
   Input,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -14,19 +18,28 @@ import {
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import { LiveStreamChatContext } from "../../../contexts/Chat";
 
-const bnb_amounts = [0.001, 0.05, 0.25, 0.5, 1, 2];
+const bnb_amounts = [0.1, 0.5, 1, 2, 5, 10];
+const currency_addresses = {
+  bnb: "0x0000000000000000000000000000000000000000",
+  treat: "0xac0c7d9b063ed2c0946982ddb378e03886c064e6",
+  usdc: "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
+};
 
 export default function SendTipModal({ isOpen, onClose }) {
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [denomination, setDenomination] = useState<"fiat" | "base">("fiat");
+  const [selected_currency_address, setSelectedCurrencyAddress] =
+    useState(null);
 
   const { sendTip, host } = useContext(LiveStreamChatContext);
   const sendTipToCreator = () => {
-    const currency_address = "0x0000000000000000000000000000000000000000";
+    const currency_address = selected_currency_address;
     const creator_address = host;
     setLoading(true);
     sendTip(currency_address, creator_address, selected)
@@ -41,6 +54,28 @@ export default function SendTipModal({ isOpen, onClose }) {
     setSelected(null);
     onClose();
   };
+
+  const current_currency =
+    Object.keys(currency_addresses).find(
+      (key) => currency_addresses[key] === selected_currency_address
+    ) ?? "bnb";
+
+  useEffect(() => {
+    setSelectedCurrencyAddress(
+      localStorage?.getItem("selected_currency_address") ??
+        currency_addresses.bnb
+    );
+  }, []);
+
+  useEffect(() => {
+    if (selected_currency_address) {
+      localStorage.setItem(
+        "selected_currency_address",
+        selected_currency_address
+      );
+    }
+  }, [selected_currency_address]);
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose} size="lg">
@@ -50,9 +85,38 @@ export default function SendTipModal({ isOpen, onClose }) {
           <ModalCloseButton />
           <ModalBody>
             <Box>
-              <Flex justifyContent="space-between">
+              <Flex mb={4} justifyContent="space-between">
                 <Text></Text>
-                <Flex></Flex>
+                <Flex>
+                  <Menu>
+                    <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                      Currency: {current_currency.toUpperCase()}
+                    </MenuButton>
+                    <MenuList>
+                      <MenuItem
+                        onClick={() =>
+                          setSelectedCurrencyAddress(currency_addresses.bnb)
+                        }
+                      >
+                        BNB
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() =>
+                          setSelectedCurrencyAddress(currency_addresses.treat)
+                        }
+                      >
+                        TREAT
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() =>
+                          setSelectedCurrencyAddress(currency_addresses.usdc)
+                        }
+                      >
+                        USDC
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
+                </Flex>
               </Flex>
               <SimpleGrid columns={3} spacing={[4, 4, 6, 6]}>
                 {bnb_amounts.map((amount) => (
@@ -63,7 +127,7 @@ export default function SendTipModal({ isOpen, onClose }) {
                       w="full"
                       onClick={() => setSelected(amount)}
                     >
-                      {amount} BNB
+                      {amount} {current_currency.toUpperCase()}
                     </Button>
                   </GridItem>
                 ))}
