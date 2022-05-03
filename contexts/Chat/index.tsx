@@ -28,7 +28,7 @@ export const LiveStreamChatContext = createContext<{
   sendTip: (
     currency_address: string,
     creator_address: string,
-    amount: number
+    amount: number,
     currency: string
   ) => Promise<any>;
   sendReaction: (text: string) => void;
@@ -43,7 +43,7 @@ export const LiveStreamChatContext = createContext<{
   isHost: false,
   latestReactionMessage: null,
   sendMessage: (message) => ({ message }),
-  sendTip: async (a, b, c, d) => ({ a, b, c , d}),
+  sendTip: async (a, b, c, d) => ({ a, b, c, d }),
   sendReaction: (text) => ({ text }),
   setHost: () => null,
   setCurrentlyPlaying: (a) => ({ a }),
