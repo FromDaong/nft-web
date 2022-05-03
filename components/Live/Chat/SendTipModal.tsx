@@ -18,7 +18,7 @@ import {
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { LiveStreamChatContext } from "../../../contexts/Chat";
@@ -34,9 +34,8 @@ export default function SendTipModal({ isOpen, onClose }) {
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(false);
   const [denomination, setDenomination] = useState<"fiat" | "base">("fiat");
-  const [selected_currency_address, setSelectedCurrencyAddress] = useState(
-    localStorage?.get("selected_currency_address") ?? currency_addresses.bnb
-  );
+  const [selected_currency_address, setSelectedCurrencyAddress] =
+    useState(null);
 
   const { sendTip, host } = useContext(LiveStreamChatContext);
   const sendTipToCreator = () => {
@@ -55,6 +54,24 @@ export default function SendTipModal({ isOpen, onClose }) {
     setSelected(null);
     onClose();
   };
+
+  const current_currency = Object.keys(currency_addresses).find(
+    (key) => currency_addresses[key] === selected_currency_address
+  );
+
+  useEffect(() => {
+    setSelectedCurrencyAddress(
+      localStorage?.getItem("selected_currency_address") ??
+        currency_addresses.bnb
+    );
+  }, []);
+
+  useEffect(() => {
+    if (selected_currency_address) {
+      localStorage.setItem(selected_currency_address);
+    }
+  }, [selected_currency_address]);
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose} size="lg">
@@ -69,15 +86,7 @@ export default function SendTipModal({ isOpen, onClose }) {
                 <Flex>
                   <Menu>
                     <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                      Currency:{" "}
-                      {
-                        // get object key by value
-                        Object.keys(currency_addresses).find(
-                          (key) =>
-                            currency_addresses[key] ===
-                            selected_currency_address
-                        )
-                      }
+                      Currency: {current_currency}
                     </MenuButton>
                     <MenuList>
                       <MenuItem
@@ -114,7 +123,7 @@ export default function SendTipModal({ isOpen, onClose }) {
                       w="full"
                       onClick={() => setSelected(amount)}
                     >
-                      {amount} BNB
+                      {amount} {current_currency.toUpperCase()}
                     </Button>
                   </GridItem>
                 ))}
