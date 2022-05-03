@@ -2,6 +2,7 @@ import {
   ChatMessage,
   ChatParticipant,
   Notification,
+  NotificationType,
 } from "../../components/Live/types";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -141,7 +142,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
 
   // TODO: Throttle emojis display
 
-  const sendMessage = async (message: string) => {
+  const sendMessage = async (message: string, type?: NotificationType) => {
     const composed_message: ChatMessage = {
       sender: account,
       text: message,
@@ -149,7 +150,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     };
 
     const notification: Notification = {
-      type: "message",
+      type: type ? type : "message",
       payload: composed_message,
       timestamp: composed_message.timestamp,
       sent: false,
@@ -183,7 +184,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     creator_address: string,
     amount: number
   ) => {
-    console.log({amount, currency_address, creator_address});
+    console.log({ amount, currency_address, creator_address });
     await treat?.contracts.tippingContract.methods
       .sendTip(Web3.utils.toWei(`${amount}`), currency_address, creator_address)
       .send({
@@ -191,7 +192,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         value: Web3.utils.toWei(amount.toString()),
       });
 
-    sendMessage(`${amount}{currency_address} tipped to creator`);
+    sendMessage(`${amount}{currency_address} tipped to creator`, "tip");
     return;
   };
 
