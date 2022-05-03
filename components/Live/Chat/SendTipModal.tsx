@@ -69,7 +69,15 @@ export default function SendTipModal({ isOpen, onClose }) {
                 <Flex>
                   <Menu>
                     <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                      Currency: {selected_currency_address}
+                      Currency:{" "}
+                      {
+                        // get object key by value
+                        Object.keys(currency_addresses).find(
+                          (key) =>
+                            currency_addresses[key] ===
+                            selected_currency_address
+                        )
+                      }
                     </MenuButton>
                     <MenuList>
                       <MenuItem
