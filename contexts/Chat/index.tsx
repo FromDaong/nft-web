@@ -185,13 +185,46 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     amount: number,
     currency: string
   ) => {
-    await treat?.contracts.tippingContract.methods
-      .sendTip(Web3.utils.toWei(`${amount}`), currency_address, creator_address)
-      .send({
-        from: account,
-        value: Web3.utils.toWei(amount.toString()),
-      });
+    // Check if the address is 0x00 (BNB), if it is, send with value attached to tip:
+    if (currency_address === "0x0000000000000000000000000000000000000000") {
+      await treat?.contracts.tippingContract.methods
+        .sendTip(
+          Web3.utils.toWei(`${amount}`),
+          currency_address,
+          creator_address
+        )
+        .send({
+          from: account,
+          value: Web3.utils.toWei(amount.toString()),
+        });
+    }
+    // if the currency address is TREAT, BUSD, or USDC::
+    else {
+      // FIRST GET APPROVAL FROM CURRENCY CONTRACT...
+      // Instantiate new contract using generic BEP20 ABI
+      // Call new token to approve the treat contract
+      // then execute the transaction
 
+      await treat?.contracts.tippingContract.methods
+        .approve(treat.contracts.tippingContract, Web3.utils.toWei(`${amount}`))
+        .send({ from: account });
+
+      // wait until the approval is completed before sending the tip
+
+      await treat?.contracts.tippingContract.methods
+        .sendTip(
+          Web3.utils.toWei(`${amount}`),
+          currency_address,
+          creator_address
+        )
+        .send({
+          from: account,
+        });
+
+      // will not take any BNB since no value is attached ^-^
+    }
+
+    // user inform
     sendMessage(`${amount}{currency} tipped to creator address`, "tip");
     toast({
       title: "Tip sent",
