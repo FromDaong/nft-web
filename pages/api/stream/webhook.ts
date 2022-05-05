@@ -19,7 +19,7 @@ const livestream_hook = async (req: NextApiRequest, res: NextApiResponse) => {
         "live.playback_id": stream.playback_id,
       },
       {
-        livestream_active: event === "stream.active" ? true : false,
+        livestream_active: event === "stream.started" ? true : false,
       },
       { new: true }
     );
