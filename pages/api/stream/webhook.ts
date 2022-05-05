@@ -10,6 +10,9 @@ const livestream_hook = (req, res) => {
 };
 
 const hook_signature_verify = (handler) => (req: NextApiRequest, res) => {
+  console.log({ headers: req.headers, body: req.body });
+  handler();
+
   const livepeer_signature: string = req.headers[
     "Livepeer-Signature"
   ] as string;
@@ -24,8 +27,6 @@ const hook_signature_verify = (handler) => (req: NextApiRequest, res) => {
   const { body } = req;
 
   console.log({ signature_object_flat, body, signature_elements });
-
-  handler();
 };
 
 export default hook_signature_verify(livestream_hook);
