@@ -1,7 +1,7 @@
-import { NextApiRequest } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 // enable this webhook to set live
 
-const livestream_hook = (req, res) => {
+const livestream_hook = (req: NextApiRequest, res: NextApiResponse) => {
   const { body } = req;
 
   console.log({ body });
@@ -9,25 +9,4 @@ const livestream_hook = (req, res) => {
   res.status(200).json({ error: false });
 };
 
-const hook_signature_verify = (handler) => (req: NextApiRequest, res) => {
-  console.log({ headers: req.headers, body: req.body });
-  handler();
-  /*
-  const livepeer_signature: string = req.headers[
-    "Livepeer-Signature"
-  ] as string;
-
-  const signature_elements = livepeer_signature.split(",");
-  const signature_object = signature_elements.map((s) => {
-    const [key, value] = s.split("=");
-    return { [key]: value };
-  });
-
-  const signature_object_flat = Object.assign({}, ...signature_object);
-  const { body } = req;
-
-  console.log({ signature_object_flat, body, signature_elements });
-  */
-};
-
-export default hook_signature_verify(livestream_hook);
+export default livestream_hook;
