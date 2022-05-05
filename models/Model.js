@@ -110,6 +110,10 @@ const ModelSchema = new mongoose.Schema(
       },
     },
     referred: [],
+    livestream_active: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: { createdAt: true, updatedAt: false },
