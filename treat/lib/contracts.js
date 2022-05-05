@@ -23,6 +23,7 @@ import TreatSubscriptionsAbi from "./abi/treatsubscriptions.json";
 import TreatTradeInAbi from "./abi/treattradein.json";
 import TreatV1ForV2Abi from "./abi/treatv1forv2.json";
 import WETHAbi from "./abi/weth.json";
+import GenericBep20 from "./abi/erc20.json";
 
 export class Contracts {
   constructor(provider, networkId, web3, options) {
@@ -57,7 +58,10 @@ export class Contracts {
     this.minterPermissionHelper = new this.web3.eth.Contract(
       MinterPermissionHelperAbi
     );
-
+    // add generic BEP20 payments
+    this.busdToken = new this.web3.et.Contract(GenericBep20);
+    this.usdcToken = new this.web3.et.Contract(GenericBep20);
+    //
     this.setProvider(provider, networkId);
     this.setDefaultAccount(this.web3.eth.defaultAccount);
   }
@@ -133,6 +137,8 @@ export class Contracts {
       this.minterPermissionHelper,
       contractAddresses.minterPermissionHelper[networkId]
     );
+    setProvider(this.busdToken, contractAddresses.busdToken[networkId]);
+    setProvider(this.usdcToken, contractAddresses.usdcToken[networkId]);
   }
 
   setDefaultAccount(account) {
@@ -148,6 +154,10 @@ export class Contracts {
     this.treatMarketReader.options.from = account;
     this.treatSubscriptions.options.from = account;
     this.tippingContract.options.from = true;
+    // token support:
+    this.busdToken.options.from = account;
+    this.usdcToken.options.from = account;
+    //
     this.treatTradeIn.options.from = account;
     this.treatV1ForV2.options.from = account;
     this.treat2.options.from = account;

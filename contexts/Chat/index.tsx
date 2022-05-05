@@ -13,6 +13,7 @@ import { make_id } from "../../components/Live/utils";
 import { reactPusher } from "../../lib/pusher";
 import { useMoralis } from "react-moralis";
 import { useToast } from "@chakra-ui/react";
+import { contractAddresses } from "@treat/lib/constants";
 
 export const LiveStreamChatContext = createContext<{
   currently_playing: string | null;
@@ -183,7 +184,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     currency_address: string,
     creator_address: string,
     amount: number,
-    currency: string
+    currency: string // this should be properly typed with the correct addresses (BUSD & USDC)
   ) => {
     // Check if the address is 0x00 (BNB), if it is, send with value attached to tip:
     if (currency_address === "0x0000000000000000000000000000000000000000") {
@@ -200,17 +201,33 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     }
     // if the currency address is TREAT, BUSD, or USDC::
     else {
-      // FIRST GET APPROVAL FROM CURRENCY CONTRACT...
-      // Instantiate new contract using generic BEP20 ABI
-      // Call new token to approve the treat contract
-      // then execute the transaction
-
-      await treat?.contracts.tippingContract.methods
-        .approve(treat.contracts.tippingContract, Web3.utils.toWei(`${amount}`))
-        .send({ from: account });
+      // this can be changed with proper typings in an enum
+      // temporary workaround until completed.
+      if (currency === contractAddresses.busdToken[56]) {
+        // get approval for tipping contract to spend the users BUSD
+        await treat?.contracts.busdToken.methods.approve(
+          treat.contractAddresses.tippingContract,
+          Web3.utils.toWei(amount)
+        );
+      }
+      // If USDC Token
+      if (currency === contractAddresses.usdcToken[56]) {
+        // get approval for tipping contract to spend the users USDC
+        await treat?.contracts.usdcToken.methods.approve(
+          treat.contractAddresses.tippingContract,
+          Web3.utils.toWei(amount)
+        );
+      }
+      // If TREAT Token
+      if (currency === contractAddresses.treat2[56]) {
+        // get approval for tipping contract to spend the users TREAT
+        await treat?.contracts.treat2.methods.approve(
+          treat.contractAddresses.tippingContract,
+          Web3.utils.toWei(amount)
+        );
+      }
 
       // wait until the approval is completed before sending the tip
-
       await treat?.contracts.tippingContract.methods
         .sendTip(
           Web3.utils.toWei(`${amount}`),
