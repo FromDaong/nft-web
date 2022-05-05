@@ -164,4 +164,13 @@ export const contractAddresses = {
     56: "0x9cde4593c9F42B05cB7f8c0B8f89a226c870eb01",
     "0x38": "0x9cde4593c9F42B05cB7f8c0B8f89a226c870eb01",
   },
+  // add generic BEP20 payments for tips:
+  busdToken: {
+    56: "0xe9e7cea3dedca5984780bafc599bd69add087d56",
+    "0x38": "0xe9e7cea3dedca5984780bafc599bd69add087d56", // not correct testnet contract
+  },
+  usdcToken: {
+    56: "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
+    "0x38": "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d", // not correct testnet contract
+  },
 };
