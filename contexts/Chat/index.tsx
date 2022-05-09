@@ -181,10 +181,11 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const sendTip = async (
     currency_address: string,
     creator_address: string,
-    amount: number,
+    amount: number | string,
     currency: string // this should be properly typed with the correct addresses (BUSD & USDC)
   ) => {
     // Check if the address is 0x00 (BNB), if it is, send with value attached to tip:
+    amount = amount.toString();
     if (currency_address === "0x0000000000000000000000000000000000000000") {
       await treat?.contracts.tippingContract.methods
         .sendTip(
@@ -204,7 +205,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       if (currency === contractAddresses.busdToken[56]) {
         // get approval for tipping contract to spend the users BUSD
         await treat?.contracts.busdToken.methods.approve(
-          treat.contractAddresses.tippingContract,
+          contractAddresses.tippingContract,
           Web3.utils.toWei(amount)
         );
       }
@@ -212,7 +213,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       if (currency === contractAddresses.usdcToken[56]) {
         // get approval for tipping contract to spend the users USDC
         await treat?.contracts.usdcToken.methods.approve(
-          treat.contractAddresses.tippingContract,
+          contractAddresses.tippingContract,
           Web3.utils.toWei(amount)
         );
       }
@@ -220,7 +221,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       if (currency === contractAddresses.treat2[56]) {
         // get approval for tipping contract to spend the users TREAT
         await treat?.contracts.treat2.methods.approve(
-          treat.contractAddresses.tippingContract,
+          contractAddresses.tippingContract,
           Web3.utils.toWei(amount)
         );
       }
