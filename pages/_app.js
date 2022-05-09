@@ -16,19 +16,21 @@ import Footer from "@components/Footer";
 import Head from "next/head";
 import { IntercomProvider } from "react-use-intercom";
 import Navbar from "@components/nav/HeaderNav";
+import ProgressBar from "@badrap/bar-of-progress";
 import ReactGA from "react-ga";
 import { SWRConfig } from "swr";
 import TreatProvider from "@contexts/TreatProvider";
 import dynamic from "next/dynamic";
-import { extendTheme } from "@chakra-ui/react";
 import fetch from "@lib/fetchJson";
-import { getJWT } from "@utils/axios";
-import { useToast } from "@chakra-ui/hooks";
+import theme from "@styles/theme";
 import useTokenBalance from "@hooks/useTokenBalance";
 
-const V2Banner = dynamic(() => import("@components/V2Banner"));
-const ProgressBar = dynamic(() => import("@badrap/bar-of-progress"));
-const TOTMBanner = dynamic(() => import("@components/TOTMBanner"));
+const V2Banner = dynamic(() =>
+  import("@components/V2Banner").then((c) => c.default)
+);
+const TOTMBanner = dynamic(() =>
+  import("@components/TOTMBanner").then((c) => c.default)
+);
 
 const progress = new ProgressBar({
   size: 3,
@@ -40,46 +42,15 @@ Router.events.on("routeChangeStart", progress.start);
 Router.events.on("routeChangeComplete", progress.finish);
 Router.events.on("routeChangeError", progress.finish);
 
-const theme = extendTheme({
-  colors: {
-    secondary: {
-      50: "#F1EBFA",
-      100: "#D9C7F0",
-      200: "#C1A3E6",
-      300: "#A87EDC",
-      400: "#905AD3",
-      500: "#7736C9",
-      600: "#602BA1",
-      700: "#482178",
-      800: "#301650",
-      900: "#180B28",
-    },
-    primary: {
-      50: "#FCE8EF",
-      100: "#F8BFD4",
-      200: "#F396B8",
-      300: "#EE6D9C",
-      400: "#E94380",
-      500: "#E94380",
-      600: "#B71550",
-      700: "#89103C",
-      800: "#5B0B28",
-      900: "#2E0514",
-    },
-  },
-});
-
 Axios.defaults.withCredentials = true;
 
 function MyApp({ Component, pageProps }) {
   const oldTokenBalance = useTokenBalance(
     "0xac0c7d9b063ed2c0946982ddb378e03886c064e6"
   );
-  const [requestedAuth, setRequestedAuth] = useState(false);
-  const { authenticate, logout, user, isAuthenticated, account } = useMoralis();
-  const [hasUpdatedLocal, setHasUpdatedLocal] = useState(false);
+  const { user, isAuthenticated, account } = useMoralis();
+  const [hasUpdatedLocal] = useState(false);
   const router = useRouter();
-  const toast = useToast();
 
   const [modelData, setModelData] = useState(null);
 
@@ -112,104 +83,13 @@ function MyApp({ Component, pageProps }) {
         bio: "I am a new Treat explorer",
         display_name: account,
       })
-        .then(() =>
-          toast({
-            title: "Account created",
-            description: "You can now treat yourself with your new account",
-            status: "success",
-            duration: 2000,
-          })
-        )
         .then(() => router.reload())
-        .catch(() => {
-          toast({
-            title: "Oops. That was an error",
-            description:
-              "We failed to create your Treat account. Please try again",
-            duration: 4000,
-          });
+        .then(() => router.reload())
+        .catch((err) => {
+          console.log({ err });
         });
     }
   }, [user]);
-
-  useEffect(() => {
-    Axios.interceptors.response.use(
-      (response) => {
-        return response;
-      },
-      function (error) {
-        const originalRequest = error.config;
-        if (
-          error.response.status === 401 &&
-          originalRequest.url.includes("refresh")
-        ) {
-          return Promise.reject(error);
-        }
-
-        if (error.response.status === 401 && !originalRequest._retry) {
-          originalRequest._retry = true;
-          // This means the refreshToken is not valid too, or has expired whatever
-          // Let's log out moralis and show metamask login again to redo auth.
-          // After that retry the original request
-          return logout()
-            .then(() => localStorage.removeItem("tokens"))
-            .then(() => {
-              if (!requestedAuth) {
-                setRequestedAuth(true);
-                return authenticate()
-                  .then((parsedUser) => {
-                    setRequestedAuth(false);
-                    return parsedUser;
-                  })
-                  .catch(() => {
-                    setRequestedAuth(false);
-                    throw {
-                      error: "METAMASK_AUTH_CANCELLED",
-                      message: "Metamask authentication cancelled",
-                    };
-                  });
-              } else {
-                if (isAuthenticated) {
-                  return user;
-                }
-              }
-            })
-            .then((thisUser) => {
-              if (thisUser || user) {
-                return getJWT(thisUser || user).then(() =>
-                  setHasUpdatedLocal(true)
-                );
-              } else {
-                throw {
-                  error: "USER_NOT_AUTH",
-                  message: "User is not authenticated",
-                };
-              }
-            })
-            .then(() => router.reload())
-            .catch((err) => {
-              return Promise.reject(err);
-            });
-        }
-        return Promise.reject(error);
-      }
-    );
-  }, []);
-
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      getJWT(user).then(() => {
-        if (router.pathname === "/auth") {
-          const { redirectTo } = router.query;
-          if (redirectTo) {
-            router.push(redirectTo);
-          } else {
-            router.push("/");
-          }
-        }
-      });
-    }
-  }, [isAuthenticated, user]);
 
   if (process.env.NEXT_PUBLIC_STOP) {
     return <>Supposed to be Public Stop</>;

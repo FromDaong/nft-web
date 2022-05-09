@@ -20,7 +20,8 @@ import TotwListItem from "../components/TotwListItem";
 import { useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
-const Home = () => {
+const Home = ({ modelD }) => {
+  console.log({ modelD });
   const [nftData, setNftData] = useState();
   const [modelData, setModelData] = useState();
   const [totm, setTOTMData] = useState();
