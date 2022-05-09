@@ -1,7 +1,8 @@
+import * as Scroll from "react-scroll";
+
+import ModelListItem from "../ModelListItem";
 import React from "react";
 import Spinner from "react-bootstrap/Spinner";
-import ModelListItem from "../ModelListItem";
-import * as Scroll from "react-scroll";
 
 /**
  *
@@ -13,7 +14,6 @@ import * as Scroll from "react-scroll";
 
 const ModelList = ({ totwOnly = false, modelData, startIndex, endIndex }) => {
   let modelListRender;
-  console.log({ modelData });
 
   if (modelData) {
     const mR = modelData
