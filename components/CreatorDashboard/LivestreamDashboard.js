@@ -89,7 +89,7 @@ const StreamEnabled = ({ data }) => {
     playback_id: playbackId,
   } = data;
   const [streamIsActive, setStreamIsActive] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { onOpen } = useDisclosure();
   const { data: streamStatusResponse } = useSWR(`/api/stream/${streamId}`, {
     refreshInterval: 10000,
     revalidateOnMount: true,

@@ -4,28 +4,31 @@ import "swiper/scss/navigation";
 import "swiper/scss/pagination";
 import "react-image-lightbox/style.css";
 
-import { ChakraProvider, extendTheme, useToast } from "@chakra-ui/react";
 import { MoralisProvider, useMoralis } from "react-moralis";
+import { Router, useRouter } from "next/router";
 import { destroyCookie, setCookie } from "nookies";
 import { useEffect, useState } from "react";
 
 import Axios from "axios";
+import { ChakraProvider } from "@chakra-ui/provider";
 import Container from "react-bootstrap/Container";
-import Footer from "../components/Footer";
+import Footer from "@components/Footer";
 import Head from "next/head";
 import { IntercomProvider } from "react-use-intercom";
-import Navbar from "../components/nav/HeaderNav";
-import ProgressBar from "@badrap/bar-of-progress";
+import Navbar from "@components/nav/HeaderNav";
 import ReactGA from "react-ga";
-import { Router } from "next/dist/client/router";
 import { SWRConfig } from "swr";
-import TOTMBanner from "../components/TOTMBanner";
-import TreatProvider from "../contexts/TreatProvider";
-import V2Banner from "../components/V2Banner";
-import fetch from "../lib/fetchJson";
-import { getJWT } from "../utils/axios";
-import { useRouter } from "next/router";
-import useTokenBalance from "../hooks/useTokenBalance";
+import TreatProvider from "@contexts/TreatProvider";
+import dynamic from "next/dynamic";
+import { extendTheme } from "@chakra-ui/react";
+import fetch from "@lib/fetchJson";
+import { getJWT } from "@utils/axios";
+import { useToast } from "@chakra-ui/hooks";
+import useTokenBalance from "@hooks/useTokenBalance";
+
+const V2Banner = dynamic(() => import("@components/V2Banner"));
+const ProgressBar = dynamic(() => import("@badrap/bar-of-progress"));
+const TOTMBanner = dynamic(() => import("@components/TOTMBanner"));
 
 const progress = new ProgressBar({
   size: 3,
@@ -118,7 +121,7 @@ function MyApp({ Component, pageProps }) {
           })
         )
         .then(() => router.reload())
-        .catch((err) => {
+        .catch(() => {
           toast({
             title: "Oops. That was an error",
             description:
@@ -298,19 +301,7 @@ function MyApp({ Component, pageProps }) {
           )}
           <Navbar modelData={modelData} />
           <Container style={{ minHeight: "75vh" }}>
-            {isAuthenticated && modelData ? (
-              <Component
-                {...pageProps}
-                modelData={modelData}
-                key={router.route}
-              />
-            ) : isAuthenticated && !modelData ? (
-              <div className="mx-auto h-full justify-center align-center">
-                Please wait, we're fetching your profile details.
-              </div>
-            ) : (
-              <Component {...pageProps} modelData={null} key={router.route} />
-            )}
+            <Component {...pageProps} modelData={modelData} y={router.route} />
           </Container>
           <Footer />
         </TreatProvider>
