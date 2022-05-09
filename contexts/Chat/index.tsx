@@ -53,7 +53,6 @@ export const LiveStreamChatContext = createContext<{
 });
 
 export const LiveStreamChatContextProvider = ({ children }) => {
-  const { Moralis, web3 } = useMoralis();
   const [messages, setMessages] = useState<Array<Notification>>([]);
   const [currently_playing, setCurrently_playing] = useState<string | null>(
     null
@@ -68,7 +67,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   }>(null);
   const [isHost, setIs_host] = useState(false);
   const [host, setHost] = useState<string | null>(null);
-  const [isThrottled, setIsThrottled] = useState(false);
+  const [, setIsThrottled] = useState(false);
   const [latestReactionMessage, setLatestReactionMessage] = useState(null);
 
   const { account } = useMoralis();
@@ -270,7 +269,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     }
 
     Axios.post(`/api/v2/chat/${currently_playing}/publish`, payload).catch(
-      (err) => {
+      () => {
         console.log(
           `Retrying ${payload.index} for attempt #${payload.retry?.remaining_attempts}`
         );

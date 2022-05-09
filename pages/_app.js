@@ -4,7 +4,6 @@ import "swiper/scss/navigation";
 import "swiper/scss/pagination";
 import "react-image-lightbox/style.css";
 
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { ChakraProvider, extendTheme, useToast } from "@chakra-ui/react";
 import { MoralisProvider, useMoralis } from "react-moralis";
 import { destroyCookie, setCookie } from "nookies";
@@ -213,11 +212,6 @@ function MyApp({ Component, pageProps }) {
     return <>Supposed to be Public Stop</>;
   }
 
-  const client = new ApolloClient({
-    uri: "https://api.thegraph.com/subgraphs/name/0x6e6f6c61/treat",
-    cache: new InMemoryCache(),
-  });
-
   useEffect(() => {
     (async () => {
       window.scrollTo(0, 0);
@@ -273,57 +267,55 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   return (
-    <ApolloProvider client={client}>
-      <IntercomProvider
-        appId={"a3jgejbc"}
-        autoBoot
-        autoBootProps={{ name: account }}
-      >
-        <Head>
-          <title>Treat DAO</title>
-          <meta name="title" content="Treat DAO" />
-          <meta name="image" content="https://i.imgur.com/OEiuwp4.jpg" />
-          <meta property="og:image" content="https://i.imgur.com/OEiuwp4.jpg" />
+    <IntercomProvider
+      appId={"a3jgejbc"}
+      autoBoot
+      autoBootProps={{ name: account }}
+    >
+      <Head>
+        <title>Treat DAO</title>
+        <meta name="title" content="Treat DAO" />
+        <meta name="image" content="https://i.imgur.com/OEiuwp4.jpg" />
+        <meta property="og:image" content="https://i.imgur.com/OEiuwp4.jpg" />
 
-          <meta
-            name="description"
-            content="Treat is an exclusive platform for creators to sell NFTs. Hold $TREAT to have a say on which creators are chosen & new platform features."
-          />
-        </Head>
-        <SWRConfig
-          value={{
-            fetcher: fetch,
-            onError: (err) => {
-              console.error(err);
-            },
-          }}
-        >
-          <TreatProvider>
-            <TOTMBanner oldTokenBalance={oldTokenBalance} />
-            {oldTokenBalance > 0 && (
-              <V2Banner oldTokenBalance={oldTokenBalance} />
+        <meta
+          name="description"
+          content="Treat is an exclusive platform for creators to sell NFTs. Hold $TREAT to have a say on which creators are chosen & new platform features."
+        />
+      </Head>
+      <SWRConfig
+        value={{
+          fetcher: fetch,
+          onError: (err) => {
+            console.error(err);
+          },
+        }}
+      >
+        <TreatProvider>
+          <TOTMBanner oldTokenBalance={oldTokenBalance} />
+          {oldTokenBalance > 0 && (
+            <V2Banner oldTokenBalance={oldTokenBalance} />
+          )}
+          <Navbar modelData={modelData} />
+          <Container style={{ minHeight: "75vh" }}>
+            {isAuthenticated && modelData ? (
+              <Component
+                {...pageProps}
+                modelData={modelData}
+                key={router.route}
+              />
+            ) : isAuthenticated && !modelData ? (
+              <div className="mx-auto h-full justify-center align-center">
+                Please wait, we're fetching your profile details.
+              </div>
+            ) : (
+              <Component {...pageProps} modelData={null} key={router.route} />
             )}
-            <Navbar modelData={modelData} />
-            <Container style={{ minHeight: "75vh" }}>
-              {isAuthenticated && modelData ? (
-                <Component
-                  {...pageProps}
-                  modelData={modelData}
-                  key={router.route}
-                />
-              ) : isAuthenticated && !modelData ? (
-                <div className="mx-auto h-full justify-center align-center">
-                  Please wait, we're fetching your profile details.
-                </div>
-              ) : (
-                <Component {...pageProps} modelData={null} key={router.route} />
-              )}
-            </Container>
-            <Footer />
-          </TreatProvider>
-        </SWRConfig>
-      </IntercomProvider>
-    </ApolloProvider>
+          </Container>
+          <Footer />
+        </TreatProvider>
+      </SWRConfig>
+    </IntercomProvider>
   );
 }
 
