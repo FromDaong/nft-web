@@ -1,8 +1,8 @@
-import Axios from "axios";
-import { jwt } from "jsonwebtoken";
-import logger from "../lib/logger";
 import { NextRequest, NextResponse } from "next/server";
-import fetchAdapter from "@vespaiach/axios-fetch-adapter";
+
+import { jwt } from "jsonwebtoken";
+import logger from "@lib/logger";
+import treatAxios from "@lib/axios";
 
 export const signJWT = (data, expiresIn) => {
   return jwt.sign(data, process.env.JWT_KEY, {
@@ -44,9 +44,18 @@ const isValidToken = (token) => {
   }
 };
 
+const sendResponse = (data: object) => {
+  return new Response(JSON.stringify(data), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};
+
 export async function middleware(req: NextRequest) {
   // Add the user token to the response
-  const { token, refreshToken, account } = req.cookies;
+  const { token, refreshToken } = req.cookies;
   const url = req.nextUrl;
 
   url.pathname = `/auth/`;
@@ -58,26 +67,16 @@ export async function middleware(req: NextRequest) {
     if (refreshToken && isValidToken(refreshToken)) {
       refreshMyToken(token, refreshToken);
     }
-    const axiosInstance = Axios.create({
-      adapter: fetchAdapter,
-    });
+
     try {
-      const res = await axiosInstance.get("/api/v2/auth/me");
+      const res = await treatAxios.post("/api/v2/auth/me", {
+        token,
+      });
       console.log({ res });
       if (!res.data) {
-        return new Response(JSON.stringify({}), {
-          status: 200,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        return sendResponse({});
       } else {
-        return new Response(JSON.stringify({ modelData: res.data }), {
-          status: 200,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        return sendResponse({ model: res.data });
       }
     } catch (err) {
       logger(err);
