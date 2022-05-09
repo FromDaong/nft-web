@@ -62,7 +62,6 @@ export default async function getWithBalances(req, res) {
             .status(400)
             .json({ success: false, error: "nft not found" });
 
-        console.log("[+] Getting balances for " + NFTS.docs.length + " NFTS");
         NFTS.docs = await Promise.all(
           NFTS.docs.map(async (nft) => {
             let hasOpenOrder;

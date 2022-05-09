@@ -1,16 +1,16 @@
+import { BagX, PatchCheck, RecordCircle, Shop } from "react-bootstrap-icons";
 import React, { useEffect, useState } from "react";
 import { Tab, Tabs } from "react-bootstrap";
 
-import { PatchCheck, RecordCircle, Shop, BagX } from "react-bootstrap-icons";
 import { Button } from "@chakra-ui/react";
 import { Clipboard } from "react-bootstrap-icons";
 import ErrorFallback from "../../components/Fallback/Error";
 import Layout from "../../components/Layout";
 import Link from "next/link";
+import LivestreamViewing from "../../components/CreatorPage/LivestreamViewing";
 import Spinner from "react-bootstrap/Spinner";
 import SubscriptionNFTs from "../../components/CreatorPage/SubscriptionNFTs";
 import SweetShopNFTs from "../../components/CreatorPage/SweetShopNFTs";
-import LivestreamViewing from "../../components/CreatorPage/LivestreamViewing";
 import Web3 from "web3";
 import useGetIsSubscribed from "../../hooks/useGetIsSubscribed";
 import useGetSubscriptionCost from "../../hooks/useGetSubscriptionCost";
@@ -150,7 +150,6 @@ const ViewModel = ({
   onRedeemSet,
   nftSetPrice,
 }) => {
-  console.log({ newNFTs, subNFTs, totwNFTs, totmNFTs, outOfPrintNFTs });
   const [copied, setCopied] = useState(false);
   const { account } = useMoralis();
   const subscriptionCost = useGetSubscriptionCost(modelData.address || "");

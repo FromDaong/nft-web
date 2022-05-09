@@ -9,11 +9,11 @@ import { createContext, useContext, useEffect, useState } from "react";
 import Axios from "axios";
 import { Context } from "../TreatProvider";
 import Web3 from "web3";
+import { contractAddresses } from "@treat/lib/constants";
 import { make_id } from "../../components/Live/utils";
 import { reactPusher } from "../../lib/pusher";
 import { useMoralis } from "react-moralis";
 import { useToast } from "@chakra-ui/react";
-import { contractAddresses } from "@treat/lib/constants";
 
 export const LiveStreamChatContext = createContext<{
   currently_playing: string | null;
@@ -91,7 +91,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     presenceChannel.bind("pusher:subscription_succeeded", function () {
       // @ts-ignore
       const me = presenceChannel.members.me;
-      console.log({ me });
 
       const userId = me.id;
       const userInfo = me.info;
@@ -126,7 +125,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
 
   const getParticipants = () => {
     presenceChannel?.members.each(function (member) {
-      console.log({ member });
       const userId = member.id;
       const userInfo = member.info;
       setParticipants((prevParticipants) => [
@@ -272,7 +270,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
 
     Axios.post(`/api/v2/chat/${currently_playing}/publish`, payload).catch(
       (err) => {
-        console.log({ err });
         console.log(
           `Retrying ${payload.index} for attempt #${payload.retry?.remaining_attempts}`
         );
@@ -380,7 +377,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
           }
         })
         .catch((err) => {
-          console.log({ err });
           setHost(null);
         });
     } else {
@@ -392,8 +388,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       reactPusher.unbind_all();
     };
   }, [currently_playing]);
-
-  console.log({ host });
 
   return (
     <LiveStreamChatContext.Provider

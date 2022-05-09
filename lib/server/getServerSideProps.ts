@@ -63,7 +63,6 @@ const isValidToken = (token) => {
     jwt.verify(token, process.env.NEXT_APP_JWT_KEY);
     return true;
   } catch (err) {
-    console.log({ err });
     return false;
   }
 };
@@ -96,7 +95,6 @@ export const enforceAuth = async (ctx) => {
       return redirectToPage({ page: "/auth", redirectTo: ctx.resolvedUrl });
     }
   } catch (err) {
-    console.log({ err });
     return redirectToPage({ page: "/auth", redirectTo: ctx.resolvedUrl });
   }
 };

@@ -120,7 +120,6 @@ function MyApp({ Component, pageProps }) {
         )
         .then(() => router.reload())
         .catch((err) => {
-          console.log({ err });
           toast({
             title: "Oops. That was an error",
             description:
@@ -154,8 +153,6 @@ function MyApp({ Component, pageProps }) {
             .then(() => localStorage.removeItem("tokens"))
             .then(() => {
               if (!requestedAuth) {
-                console.log({ requestedAuth });
-                console.log("Requesting auth");
                 setRequestedAuth(true);
                 return authenticate()
                   .then((parsedUser) => {
@@ -189,7 +186,6 @@ function MyApp({ Component, pageProps }) {
             })
             .then(() => router.reload())
             .catch((err) => {
-              console.log({ err });
               return Promise.reject(err);
             });
         }
@@ -203,7 +199,6 @@ function MyApp({ Component, pageProps }) {
       getJWT(user).then(() => {
         if (router.pathname === "/auth") {
           const { redirectTo } = router.query;
-          console.log(redirectTo);
           if (redirectTo) {
             router.push(redirectTo);
           } else {
@@ -277,8 +272,6 @@ function MyApp({ Component, pageProps }) {
     };
   }, []);
 
-  console.log({ modelData });
-
   return (
     <ApolloProvider client={client}>
       <IntercomProvider
@@ -319,12 +312,12 @@ function MyApp({ Component, pageProps }) {
                   key={router.route}
                 />
               ) : isAuthenticated && !modelData ? (
-                <div className="mx-auto h-full justify-center align-center">Please wait, we're fetching your profile details.</div>
-              ) : <Component
-                  {...pageProps}
-                  modelData={null}
-                  key={router.route}
-                />}
+                <div className="mx-auto h-full justify-center align-center">
+                  Please wait, we're fetching your profile details.
+                </div>
+              ) : (
+                <Component {...pageProps} modelData={null} key={router.route} />
+              )}
             </Container>
             <Footer />
           </TreatProvider>

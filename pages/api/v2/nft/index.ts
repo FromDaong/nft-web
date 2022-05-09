@@ -29,7 +29,6 @@ export default async function all_nfts(req, res) {
   let filterTags = [];
   let NFTs;
 
-  console.log({ TREAT_MINT_OWNER_ADDRESS, TREAT_MINTER_ADDRESS });
 
   if (tags) {
     filterTags = atob(tags).split(",");
@@ -71,7 +70,6 @@ export default async function all_nfts(req, res) {
     token_address: TREAT_MINTER_ADDRESS,
     chain: "bsc",
   });
-  console.log({ owned_nfts: all_nfts });
   const nftids = all_nfts.result.map((nft) => Number(nft.token_id));
 
   try {
