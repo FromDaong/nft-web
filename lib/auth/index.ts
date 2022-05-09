@@ -1,12 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
-import { SignJWT, jwtVerify } from "jose";
-
+import { NextRequest } from "next/server";
 import { jsonResponse } from "@lib/auth/jsonResponse";
-import { nanoid } from "nanoid";
+import { jwtVerify } from "jose";
 
 const JWT_SECRET_KEY = process.env.JWT_KEY;
 const USER_TOKEN = "token";
-const REFRESH_TOKEN = "refreshToken";
 
 export async function verifyAuth(request: NextRequest) {
   const token = request.cookies[USER_TOKEN];

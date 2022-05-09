@@ -25,8 +25,8 @@ const Home = ({ modelD }) => {
   const [nftData, setNftData] = useState();
   const [modelData, setModelData] = useState();
   const [totm, setTOTMData] = useState();
-  const [nftResultError, setNFTResultError] = useState(false);
-  const [ref, inView] = useInView();
+  const [nftResultError] = useState(false);
+  const [, inView] = useInView();
 
   const controls = useAnimation();
 
@@ -64,7 +64,7 @@ const Home = ({ modelD }) => {
             <div className="row align-items-center">
               <div className="col-lg-6 hero-text mt-3">
                 <div className="heading-text">
-                  It's time to <br />
+                  It&lsquo;s time to <br />
                   treat yourself...
                 </div>
                 <div className="secondary-text">
@@ -211,8 +211,8 @@ const Home = ({ modelD }) => {
                 </div>
                 <div className="desc">
                   List your NFTs publicly on our resale marketplace for others
-                  to purchase. Blurred NFTs' hidden images are only viewable by
-                  their owner.
+                  to purchase. Blurred NFTslsquo; hidden images are only
+                  viewable by their owner.
                 </div>
               </div>
             </div>
