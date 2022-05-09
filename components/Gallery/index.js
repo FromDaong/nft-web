@@ -80,7 +80,7 @@ const Gallery = () => {
             />
             <Card.Body>
               <Card.Title>May: Eliza Rose</Card.Title>
-              <Card.Text>Curated collection featuring marenaltman</Card.Text>
+              <Card.Text>Curated collection featuring Eliza Rose</Card.Text>
             </Card.Body>
           </a>
         </Card>
