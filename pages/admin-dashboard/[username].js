@@ -114,7 +114,7 @@ const AdminDashboard = ({ username }) => {
     setShowPendingModal(true);
     const performer = await onAddPerformerToMinter();
     if (performer) {
-      const res = await fetch(`/api/admin/${username}/approve`);
+      await fetch(`/api/admin/${username}/approve`);
       setShowCompleteModal(true);
     }
     setShowPendingModal(false);

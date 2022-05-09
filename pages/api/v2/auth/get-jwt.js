@@ -1,9 +1,6 @@
-import { destroyCookie, setCookie } from "nookies";
-import {
-  destroyNextCookie,
-  isValidSignature,
-  signJWT,
-} from "../../../../utils/server-utils";
+import { destroyNextCookie, signJWT } from "../../../../utils/server-utils";
+
+import { setCookie } from "nookies";
 
 export default async function get_jwt(req, res) {
   const payload = req.body;
