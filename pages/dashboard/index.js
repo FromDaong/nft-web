@@ -35,13 +35,9 @@ const CreatorDashboardWrapper = () => {
   });
   const [ownedNFTError, setOwnedNFTError] = useState(null);
   const [resaleNFTError, setResaleNFTError] = useState(null);
-  const { modelData, fetchModelData } = useContext(Context);
+  const { modelData } = useContext(Context);
 
-  useEffect(() => {
-    if (!modelData) {
-      fetchModelData();
-    }
-  }, [modelData]);
+  console.log({ modelData });
 
   useEffect(() => {
     setOwnedNFTData({ ...ownedNFTData, loading: true });
@@ -95,10 +91,7 @@ const CreatorDashboardWrapper = () => {
     }
   };
 
-  const { isModel: isModelVar, rejected, pending } = modelData;
-  const isModel = isModelVar || (rejected === false && pending === false);
-
-  if (!isAuthenticated && !modelData) {
+  if (!modelData) {
     return (
       <div
         style={{
@@ -134,6 +127,9 @@ const CreatorDashboardWrapper = () => {
       </div>
     );
   } else {
+    const { isModel: isModelVar, rejected, pending } = modelData;
+    const isModel = isModelVar || (rejected === false && pending === false);
+
     return (
       <ViewNFT
         account={account}

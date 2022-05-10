@@ -51,7 +51,7 @@ function MyApp({ Component, pageProps }) {
   const { user, isAuthenticated, account } = useMoralis();
   const router = useRouter();
 
-  const [modelData, setModelData] = useState(null);
+  const [modelData] = useState(null);
 
   useEffect(() => {
     if (isAuthenticated && account && user) {
@@ -59,11 +59,7 @@ function MyApp({ Component, pageProps }) {
         ethAddress: account,
         sessionToken: user.getSessionToken(),
         username: user.getUsername(),
-      }).then(() =>
-        Axios.get(`/api/v2/auth/me`).then((res) => {
-          setModelData(res.data);
-        })
-      );
+      });
     }
   }, [isAuthenticated, account, user]);
 

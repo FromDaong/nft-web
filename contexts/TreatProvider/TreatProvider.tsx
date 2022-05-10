@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
 import Axios from "axios";
 import { Treat } from "../../treat";
@@ -7,13 +7,16 @@ import { useMoralis } from "react-moralis";
 export interface TreatContext {
   treat?: Treat;
   modelData: object | null;
-  fetchModelData: () => void;
+  fetchModelData: (account, user) => void;
 }
 
 export const Context = createContext<TreatContext>({
   treat: undefined,
   modelData: null,
-  fetchModelData: () => null,
+  fetchModelData: (account, user) => ({
+    account,
+    user,
+  }),
 });
 
 declare global {
@@ -64,7 +67,7 @@ const TreatProvider: React.FC = ({ children }) => {
     }
   }, [provider, isWeb3Enabled]);
 
-  const fetchModelData = useCallback(() => {
+  const fetchModelData = (account, user) => {
     if (account && user) {
       Axios.post("/api/v2/auth/get-jwt", {
         ethAddress: account,
@@ -76,7 +79,13 @@ const TreatProvider: React.FC = ({ children }) => {
         })
       );
     }
-  }, [account, user]);
+  };
+
+  useEffect(() => {
+    if (!modelData && account && user) {
+      fetchModelData(account, user);
+    }
+  }, [modelData, account, user]);
 
   return (
     <Context.Provider value={{ treat, modelData, fetchModelData }}>
