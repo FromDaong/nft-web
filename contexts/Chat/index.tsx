@@ -181,10 +181,12 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     currency_address: string,
     creator_address: string,
     amount: number | string,
-    currency: string // this should be properly typed with the correct addresses (BUSD & USDC)
+    currency_symbol: string // this should be properly typed with the correct addresses (BUSD & USDC)
   ) => {
     // Check if the address is 0x00 (BNB), if it is, send with value attached to tip:
     amount = amount.toString();
+    console.log({ currency_address, treat: contractAddresses.treat2[56] });
+
     if (currency_address === "0x0000000000000000000000000000000000000000") {
       await treat?.contracts.tippingContract.methods
         .sendTip(
@@ -201,32 +203,41 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     else {
       // this can be changed with proper typings in an enum
       // temporary workaround until completed.
-      if (currency === contractAddresses.busdToken[56]) {
+      if (
+        currency_address.toUpperCase() ===
+        contractAddresses.busdToken[56].toUpperCase()
+      ) {
         // get approval for tipping contract to spend the users BUSD
         await treat?.contracts.busdToken.methods.approve(
-          contractAddresses.tippingContract,
+          contractAddresses.tippingContract[56],
           Web3.utils.toWei(amount)
         );
       }
       // If USDC Token
-      if (currency === contractAddresses.usdcToken[56]) {
+      if (
+        currency_address.toUpperCase() ===
+        contractAddresses.usdcToken[56].toUpperCase()
+      ) {
         // get approval for tipping contract to spend the users USDC
         await treat?.contracts.usdcToken.methods.approve(
-          contractAddresses.tippingContract,
+          contractAddresses.tippingContract[56],
           Web3.utils.toWei(amount)
         );
       }
       // If TREAT Token
-      if (currency === contractAddresses.treat2[56]) {
+      if (
+        currency_address.toUpperCase() ===
+        contractAddresses.treat2[56].toUpperCase()
+      ) {
         // get approval for tipping contract to spend the users TREAT
         await treat?.contracts.treat2.methods.approve(
-          contractAddresses.tippingContract,
+          contractAddresses.tippingContract[56],
           Web3.utils.toWei(amount)
         );
       }
 
       // wait until the approval is completed before sending the tip
-      await treat?.contracts.tippingContract.methods
+      /*await treat?.contracts.tippingContract.methods
         .sendTip(
           Web3.utils.toWei(`${amount}`),
           currency_address,
@@ -235,15 +246,19 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         .send({
           from: account,
         });
+        */
 
       // will not take any BNB since no value is attached ^-^
     }
 
     // user inform
-    sendMessage(`${amount}{currency} tipped to creator address`, "tip");
+    sendMessage(
+      `${amount} ${currency_symbol} tipped to creator address`,
+      "tip"
+    );
     toast({
       title: "Tip sent",
-      description: `${amount}{currency} tipped to creator`,
+      description: `${amount} ${currency_symbol} tipped to creator`,
       status: "success",
       duration: 3000,
     });

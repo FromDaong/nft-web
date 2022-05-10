@@ -26,13 +26,14 @@ import { LiveStreamChatContext } from "../../../contexts/Chat";
 const bnb_amounts = {
   BNB: [0.01, 0.025, 0.1, 0.5, 1, 5],
   TREAT: [100, 250, 500, 1000, 5000, 10000],
-  USDC: [5, 10, 25, 50, 1000, 250],
+  BUSD: [5, 10, 25, 50, 1000, 250],
 };
 
 const currency_addresses = {
   bnb: "0x0000000000000000000000000000000000000000",
-  treat: "0xac0c7d9b063ed2c0946982ddb378e03886c064e6",
+  treat: "0x01bd7acb6fF3B6Dd5aefA05CF085F2104f3fC53F",
   usdc: "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
+  busd: "0xe9e7cea3dedca5984780bafc599bd69add087d56",
 };
 
 export default function SendTipModal({ isOpen, onClose }) {
@@ -114,10 +115,10 @@ export default function SendTipModal({ isOpen, onClose }) {
                       </MenuItem>
                       <MenuItem
                         onClick={() =>
-                          setSelectedCurrencyAddress(currency_addresses.usdc)
+                          setSelectedCurrencyAddress(currency_addresses.busd)
                         }
                       >
-                        USDC
+                        BUSD
                       </MenuItem>
                     </MenuList>
                   </Menu>

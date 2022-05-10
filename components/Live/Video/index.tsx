@@ -101,17 +101,20 @@ const LiveVideoConsumer = (props) => {
         <Flex left={2} top={2} position="absolute">
           <SendTipModal onClose={onClose} isOpen={isOpen} />
           <Participants participants={participants} />
-          {host && account.toLowerCase() !== host.toLowerCase() && (
-            <Button
-              size={"sm"}
-              colorScheme="primary"
-              ml={2}
-              onClick={onOpen}
-              zIndex={500000}
-            >
-              Send Tip
-            </Button>
-          )}
+          {
+            //host && account.toLowerCase() !== host.toLowerCase()
+            true && (
+              <Button
+                size={"sm"}
+                colorScheme="primary"
+                ml={2}
+                onClick={onOpen}
+                zIndex={500000}
+              >
+                Send Tip
+              </Button>
+            )
+          }
         </Flex>
         <Flex right={2} top={2} position="absolute">
           {props.streamIsActive ? (

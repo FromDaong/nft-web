@@ -92,6 +92,11 @@ const HeaderNav = ({ modelData }) => {
                 <Nav.Link>Subscriptions</Nav.Link>
               </Link>
             </NavDropdown.Item>
+            <NavDropdown.Item href="#" className="p-0">
+              <Link href="/streaming" passHref>
+                <Nav.Link>Livestreams</Nav.Link>
+              </Link>
+            </NavDropdown.Item>
           </NavDropdown>
 
           {isAuthenticated && user && !user.pending && !user.rejected && (

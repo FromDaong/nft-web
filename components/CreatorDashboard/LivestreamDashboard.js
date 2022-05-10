@@ -119,15 +119,6 @@ const StreamEnabled = ({ data }) => {
                 )}
               </span>
             </span>
-
-            {
-              // TODO: remove this when chat testing done
-              !streamIsActive && (
-                <Button colorScheme={"primary"} onClick={onOpen}>
-                  Launch Livestream Modal
-                </Button>
-              )
-            }
           </div>
           <div className="text-red-500 text-left text-sm pb-2 pt-1">
             <span className="font-bold">Note:&nbsp;</span> To start a video
