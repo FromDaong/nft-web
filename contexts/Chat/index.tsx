@@ -207,11 +207,13 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         currency_address.toUpperCase() ===
         contractAddresses.busdToken[56].toUpperCase()
       ) {
-        // get approval for tipping contract to spend the users BUSD
-        await treat?.contracts.busdToken.methods.approve(
-          contractAddresses.tippingContract[56],
-          Web3.utils.toWei(amount)
-        );
+        // // get approval for tipping contract to spend the users BUSD
+        await treat?.contracts.busdToken.methods
+          .approve(
+            contractAddresses.tippingContract[56],
+            Web3.utils.toWei(amount)
+          )
+          .send();
       }
       // If USDC Token
       if (
@@ -219,10 +221,12 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         contractAddresses.usdcToken[56].toUpperCase()
       ) {
         // get approval for tipping contract to spend the users USDC
-        await treat?.contracts.usdcToken.methods.approve(
-          contractAddresses.tippingContract[56],
-          Web3.utils.toWei(amount)
-        );
+        await treat?.contracts.usdcToken.methods
+          .approve(
+            contractAddresses.tippingContract[56],
+            Web3.utils.toWei(amount)
+          )
+          .send();
       }
       // If TREAT Token
       if (
@@ -230,23 +234,20 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         contractAddresses.treat2[56].toUpperCase()
       ) {
         // get approval for tipping contract to spend the users TREAT
-        await treat?.contracts.treat2.methods.approve(
-          contractAddresses.tippingContract[56],
-          Web3.utils.toWei(amount)
-        );
+        await treat?.contracts.treat2.methods
+          .approve(
+            contractAddresses.tippingContract[56],
+            Web3.utils.toWei(amount)
+          )
+          .send();
       }
 
       // wait until the approval is completed before sending the tip
-      /*await treat?.contracts.tippingContract.methods
-        .sendTip(
-          Web3.utils.toWei(`${amount}`),
-          currency_address,
-          creator_address
-        )
+      await treat?.contracts.tippingContract.methods
+        .sendTip(Web3.utils.toWei(amount), currency_address, creator_address)
         .send({
           from: account,
         });
-        */
 
       // will not take any BNB since no value is attached ^-^
     }
