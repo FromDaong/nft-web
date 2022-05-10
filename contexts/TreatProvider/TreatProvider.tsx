@@ -6,13 +6,13 @@ import { useMoralis } from "react-moralis";
 
 export interface TreatContext {
   treat?: Treat;
-  modelData: object | null;
+  profile: object | null;
   fetchModelData: (account, user) => void;
 }
 
 export const Context = createContext<TreatContext>({
   treat: undefined,
-  modelData: null,
+  profile: null,
   fetchModelData: (account, user) => ({
     account,
     user,
@@ -36,7 +36,7 @@ const TreatProvider: React.FC = ({ children }) => {
     user,
   } = useMoralis();
   const [treat, setTreat] = useState<any>();
-  const [modelData, setModelData] = useState<object | null>(null);
+  const [profile, setModelData] = useState<object | null>(null);
 
   if (typeof window !== "undefined") {
     // @ts-ignore
@@ -82,13 +82,13 @@ const TreatProvider: React.FC = ({ children }) => {
   };
 
   useEffect(() => {
-    if (!modelData && account && user) {
+    if (!profile && account && user) {
       fetchModelData(account, user);
     }
-  }, [modelData, account, user]);
+  }, [profile, account, user]);
 
   return (
-    <Context.Provider value={{ treat, modelData, fetchModelData }}>
+    <Context.Provider value={{ treat, profile, fetchModelData }}>
       {children}
     </Context.Provider>
   );
