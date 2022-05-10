@@ -17,7 +17,7 @@ import ReactionsOverlay from "../Chat/reactions/Overlay";
 import SendTipModal from "../Chat/SendTipModal";
 import { getLivestreamPlaybackURL } from "../utils";
 import videojs from "video.js";
-import {useMoralis} from "react-moralis"
+import { useMoralis } from "react-moralis";
 
 export default function LiveVideo(props: LiveVideoProps) {
   return (
@@ -30,7 +30,7 @@ export default function LiveVideo(props: LiveVideoProps) {
 const LiveVideoConsumer = (props) => {
   const { playback_id, streamIsActive } = props;
   const [videoEl, setVideoEl] = useState(null);
-  const {account} = useMoralis()
+  const { account } = useMoralis();
   const playback_url = useMemo(() => getLivestreamPlaybackURL(playback_id), []);
   const { setCurrentlyPlaying, participants, host } = useContext(
     LiveStreamChatContext
@@ -101,15 +101,17 @@ const LiveVideoConsumer = (props) => {
         <Flex left={2} top={2} position="absolute">
           <SendTipModal onClose={onClose} isOpen={isOpen} />
           <Participants participants={participants} />
-          {account === <Button
-            size={"sm"}
-            colorScheme="primary"
-            ml={2}
-            onClick={onOpen}
-            zIndex={500000}
-          >
-            Send Tip
-          </Button>}
+          {account !== host && (
+            <Button
+              size={"sm"}
+              colorScheme="primary"
+              ml={2}
+              onClick={onOpen}
+              zIndex={500000}
+            >
+              Send Tip
+            </Button>
+          )}
         </Flex>
         <Flex right={2} top={2} position="absolute">
           {props.streamIsActive ? (
