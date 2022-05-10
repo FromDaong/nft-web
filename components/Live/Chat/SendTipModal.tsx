@@ -23,7 +23,12 @@ import { useContext, useEffect, useState } from "react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { LiveStreamChatContext } from "../../../contexts/Chat";
 
-const bnb_amounts = [0.1, 0.5, 1, 2, 5, 10];
+const bnb_amounts = {
+  BNB: [0.01, 0.025, 0.1, 0.5, 1, 5],
+  TREAT: [100, 250, 500, 1000, 5000, 10000],
+  USDC: [5, 10, 25, 50, 1000, 250],
+};
+
 const currency_addresses = {
   bnb: "0x0000000000000000000000000000000000000000",
   treat: "0xac0c7d9b063ed2c0946982ddb378e03886c064e6",
@@ -33,7 +38,6 @@ const currency_addresses = {
 export default function SendTipModal({ isOpen, onClose }) {
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [denomination, setDenomination] = useState<"fiat" | "base">("fiat");
   const [selected_currency_address, setSelectedCurrencyAddress] =
     useState(null);
 
@@ -120,7 +124,7 @@ export default function SendTipModal({ isOpen, onClose }) {
                 </Flex>
               </Flex>
               <SimpleGrid columns={3} spacing={[4, 4, 6, 6]}>
-                {bnb_amounts.map((amount) => (
+                {bnb_amounts[current_currency.toUpperCase()].map((amount) => (
                   <GridItem key={amount}>
                     <Button
                       variant={amount === selected ? "solid" : "outline"}
