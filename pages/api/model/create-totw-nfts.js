@@ -1,21 +1,9 @@
-import Model from "../../../models/Model";
-import NFT from "../../../models/NFT";
-import TreatNFTMinterAbi from "../../../treat/lib/abi/treatnftminter.json";
-import Web3 from "web3";
-import { contractAddresses } from "../../../treat/lib/constants";
+import Model from "../../../db/models/Model";
+import NFT from "../../../db/models/NFT";
 import dbConnect from "../../../utils/dbConnect";
 import withSession from "../../../lib/session";
 
 dbConnect();
-
-const web3 = new Web3(
-  "https://speedy-nodes-nyc.moralis.io/0e4b710bbd818e9709fe0ef5/bsc/mainnet"
-);
-
-const treatNFTMinter = new web3.eth.Contract(
-  TreatNFTMinterAbi,
-  contractAddresses.treatNFTMinter[56]
-);
 
 export default withSession(async (req, res) => {
   const { method } = req;
@@ -32,6 +20,7 @@ export default withSession(async (req, res) => {
 
         const newNFTs = await Promise.all(
           req.body.nfts.map((nft) => {
+            // eslint-disable-next-line no-async-promise-executor
             return new Promise(async (resolve, reject) => {
               const nftBody = {
                 id: Number(nft.id),

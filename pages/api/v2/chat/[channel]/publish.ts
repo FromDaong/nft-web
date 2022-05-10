@@ -1,8 +1,8 @@
-import Message from "../../../../../models/Message";
+import Message from "../../../../../db/models/Message";
 import { Notification } from "../../../../../components/Live/types";
-import NotificationModel from "../../../../../models/Notification";
-import ReactionModel from "../../../../../models/Reaction";
-import Tip from "../../../../../models/Tip";
+import NotificationModel from "../../../../../db/models/Notification";
+import ReactionModel from "../../../../../db/models/Reaction";
+import Tip from "../../../../../db/models/Tip";
 import { nodePusher } from "../../../../../lib/pusher";
 import { withJWTAuth } from "../../../../../utils/server-utils";
 
