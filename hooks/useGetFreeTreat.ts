@@ -16,12 +16,7 @@ const useGetFreeTreat = (
     : getTreatMartContract(treat);
 
   const handleGetFreeTreat = useCallback(async () => {
-    const txHash = await mintFreeTreat(
-      treatMartContract,
-      account,
-      id,
-      treatCost
-    );
+    const txHash = await mintFreeTreat(treatMartContract, account, id);
 
     return txHash;
   }, [account, id, treatCost, treatMartContract]);

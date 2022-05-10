@@ -22,8 +22,7 @@ const useListOrder = () => {
         account,
         nftId,
         quantity,
-        price,
-        expiresDate
+        price
       );
       return txHash;
     },

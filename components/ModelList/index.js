@@ -1,6 +1,6 @@
 import * as Scroll from "react-scroll";
 
-import ModelListItem from "../db/modelsListItem";
+import ModelListItem from "../ModelListItem";
 import React from "react";
 import Spinner from "react-bootstrap/Spinner";
 
