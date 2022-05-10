@@ -35,9 +35,9 @@ const CreatorDashboardWrapper = () => {
   });
   const [ownedNFTError, setOwnedNFTError] = useState(null);
   const [resaleNFTError, setResaleNFTError] = useState(null);
-  const { modelData } = useContext(Context);
+  const { profile } = useContext(Context);
 
-  console.log({ modelData });
+  console.log({ profile });
 
   useEffect(() => {
     setOwnedNFTData({ ...ownedNFTData, loading: true });
@@ -91,7 +91,7 @@ const CreatorDashboardWrapper = () => {
     }
   };
 
-  if (!modelData) {
+  if (!profile) {
     return (
       <div
         style={{
@@ -127,14 +127,14 @@ const CreatorDashboardWrapper = () => {
       </div>
     );
   } else {
-    const { isModel: isModelVar, rejected, pending } = modelData;
+    const { isModel: isModelVar, rejected, pending } = profile;
     const isModel = isModelVar || (rejected === false && pending === false);
 
     return (
       <ViewNFT
         account={account}
-        nftArray={modelData.nfts}
-        modelData={modelData}
+        nftArray={profile.nfts}
+        modelData={profile}
         navigate={navigate}
         isOwnedLoading={ownedNFTData.loading}
         isOpenOrdersLoading={resaleNFTData.loading}
