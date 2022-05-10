@@ -1,25 +1,21 @@
-import { Button, Flex } from "@chakra-ui/react";
-import { Clipboard, Send } from "react-bootstrap-icons";
-
+import { Button } from "@chakra-ui/react";
+import { Clipboard } from "react-bootstrap-icons";
 import Layout from "../../components/Layout";
 import MoralisInstance from "../../utils/moralis";
-import NFT from "../../models/NFT";
+import NFT from "../../db/models/NFT";
 import NFTListItem from "../../components/NFTListItem/";
-import Profile from "../../models/Profile";
+import Profile from "../../db/models/Profile";
 import dbConnect from "../../utils/dbConnect";
 import { useRouter } from "next/dist/client/router";
 import { useState } from "react";
 
 export default function UserProfile(props) {
-  const [loadingOwnedNFTs, setLoadingOwnedNFTs] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const router = useRouter();
   const { address } = router.query;
   const owned_nfts = JSON.parse(props.owned_nfts);
   const { profile } = props;
-
-  const navigateOwnedNFTs = (p) => {};
 
   return (
     <Layout>

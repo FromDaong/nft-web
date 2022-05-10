@@ -1,19 +1,12 @@
 import BigNumber from "bignumber.js";
+import Web3 from "web3";
 import { decToBn } from "../utils/index";
 import { ethers } from "ethers";
-import Web3 from "web3";
 
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
   DECIMAL_PLACES: 80,
 });
-
-const GAS_LIMIT = {
-  STAKING: {
-    DEFAULT: 200000,
-    SNX: 850000,
-  },
-};
 
 export const getTreatAddress = (treat) => {
   return treat && treat.treatAddress;
@@ -453,7 +446,8 @@ export const addCreatorNft = async (
 export const addSubscriberFreeTreat = async (
   subscriberMartContract,
   account,
-  nftIds
+  nftIds,
+  nftCosts
 ) => {
   try {
     return await subscriberMartContract.methods
@@ -467,7 +461,8 @@ export const addSubscriberFreeTreat = async (
 export const addCreatorFreeTreat = async (
   creatorMartContract,
   account,
-  nftIds
+  nftIds,
+  nftCosts
 ) => {
   try {
     return await creatorMartContract.methods
@@ -478,12 +473,7 @@ export const addCreatorFreeTreat = async (
   }
 };
 
-export const mintFreeTreat = async (
-  treatMartContract,
-  account,
-  nftId,
-  nftCost
-) => {
+export const mintFreeTreat = async (treatMartContract, account, nftId) => {
   try {
     return await treatMartContract.methods
       .redeemFreeTreat(nftId)
@@ -496,8 +486,7 @@ export const mintFreeTreat = async (
 export const mintFreeSubscriberTreat = async (
   subscriberMartContract,
   account,
-  nftId,
-  nftCost
+  nftId
 ) => {
   try {
     return await subscriberMartContract.methods
@@ -511,8 +500,7 @@ export const mintFreeSubscriberTreat = async (
 export const mintFreeCreatorTreat = async (
   creatorMartContract,
   account,
-  nftId,
-  nftCost
+  nftId
 ) => {
   try {
     return await creatorMartContract.methods
@@ -525,7 +513,7 @@ export const mintFreeCreatorTreat = async (
 
 export const getSetIds = async (treatMartContract, setId) => {
   try {
-    const txHash = await treatMartContract.methods.getSetIds(setId).call();
+    await treatMartContract.methods.getSetIds(setId).call();
   } catch (e) {
     console.error(e);
     return undefined;
@@ -534,7 +522,7 @@ export const getSetIds = async (treatMartContract, setId) => {
 
 export const getSubscriberSetIds = async (subscriberMartContract, setId) => {
   try {
-    const txHash = await subscriberMartContract.methods.getSetIds(setId).call();
+    await subscriberMartContract.methods.getSetIds(setId).call();
   } catch (e) {
     console.error(e);
     return undefined;
@@ -543,7 +531,7 @@ export const getSubscriberSetIds = async (subscriberMartContract, setId) => {
 
 export const getCreatorSetIds = async (creatorMartContract, setId) => {
   try {
-    const txHash = await creatorMartContract.methods.getSetIds(setId).call();
+    await creatorMartContract.methods.getSetIds(setId).call();
   } catch (e) {
     console.error(e);
     return undefined;
@@ -584,7 +572,7 @@ export const redeemSet = async (
   setCost
 ) => {
   try {
-    const txHash = await treatMartContract.methods.redeemSet(nftSetId).send({
+    await treatMartContract.methods.redeemSet(nftSetId).send({
       from: account,
       value: setCost,
     });
@@ -601,12 +589,10 @@ export const redeemSubscriberSet = async (
   setCost
 ) => {
   try {
-    const txHash = await subscriberMartContract.methods
-      .redeemSet(nftSetId)
-      .send({
-        from: account,
-        value: setCost,
-      });
+    await subscriberMartContract.methods.redeemSet(nftSetId).send({
+      from: account,
+      value: setCost,
+    });
   } catch (e) {
     console.error(e);
     return undefined;
@@ -620,7 +606,7 @@ export const redeemCreatorSet = async (
   setCost
 ) => {
   try {
-    const txHash = await creatorMartContract.methods.redeemSet(nftSetId).send({
+    await creatorMartContract.methods.redeemSet(nftSetId).send({
       from: account,
       value: setCost,
     });
@@ -637,7 +623,7 @@ export const redeemV1forV2 = async (
   amounts
 ) => {
   try {
-    const txHash = await treatTradeInContract.methods
+    await treatTradeInContract.methods
       .tradeInMultiple(nftIds, amounts)
       .send({ from: account });
   } catch (e) {
@@ -649,7 +635,7 @@ export const redeemV1forV2 = async (
 
 export const tradeInV1ForV2 = async (treatV1ForV2Contract, account, amount) => {
   try {
-    const txHash = await treatV1ForV2Contract.methods
+    await treatV1ForV2Contract.methods
       .tradeInTreat(amount)
       .send({ from: account });
   } catch (e) {
@@ -862,8 +848,7 @@ export const listOrder = async (
   account,
   nftId,
   quantity,
-  price,
-  expiresDate
+  price
 ) => {
   try {
     const priceBn = BigNumber.isBigNumber(price) ? price : decToBn(price);

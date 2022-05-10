@@ -1,5 +1,5 @@
-import NotificationModel from "../../../../../models/Notification";
-import { withJWTAuth } from "../../../../../utils/server-utils";
+import NotificationModel from "../../../../../db/models/Notification";
+import { withJWTAuth } from "@utils/server-utils";
 
 async function chat(req, res) {
   const { channel } = req.data;

@@ -1,6 +1,6 @@
-import { withJWTAuth } from "./../../../../utils/server-utils";
-import Model from "../../../../models/Model";
+import Model from "../../../../db/models/Model";
 import dbConnect from "../../../../utils/dbConnect";
+import { withJWTAuth } from "./../../../../utils/server-utils";
 
 dbConnect();
 
