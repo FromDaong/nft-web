@@ -9,12 +9,9 @@ import EditingNFTItem from "../../../components/EditingNFTItem";
 import Hero from "../../../components/Hero";
 import Loading from "../../../components/Loading";
 import Web3 from "web3";
-import { create } from "ipfs-http-client";
 import useAddCreatorNFTs from "../../../hooks/useAddCreatorNft";
 import { useMoralis } from "react-moralis";
 import { useRouter } from "next/router";
-
-const client = create("https://ipfs.infura.io:5001/api/v0");
 
 const CreateNFT = ({ modelData, id }) => {
   const router = useRouter();

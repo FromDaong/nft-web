@@ -1,4 +1,4 @@
-import Model from "../../../../models/Model";
+import Model from "../../../../db/models/Model";
 import { nodePusher } from "../../../../lib/pusher";
 import { withJWTAuth } from "../../../../utils/server-utils";
 

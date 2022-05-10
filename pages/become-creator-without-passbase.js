@@ -206,7 +206,7 @@ const CreateModel = () => {
             {Object.keys(formik.errors).length > 0 && (
               <Form.Control.Feedback type="invalid" className="d-block">
                 {Object.keys(formik.errors).map((e) => (
-                  <div>{formik.errors[e]}</div>
+                  <div key={e}>{formik.errors[e]}</div>
                 ))}
                 {formik.errors.code}
               </Form.Control.Feedback>

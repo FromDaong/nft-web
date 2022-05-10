@@ -1,11 +1,11 @@
 import * as atob from "atob";
 
 import MoralisInstance from "../../../../utils/moralis";
-import NFT from "../../../../models/NFT";
+import NFT from "../../../../db/models/NFT";
 import dbConnect from "../../../../utils/dbConnect";
 
 dbConnect();
-const { TREAT_MINT_OWNER_ADDRESS, TREAT_MINTER_ADDRESS } = process.env;
+const { TREAT_MINTER_ADDRESS } = process.env;
 
 const sanitize_nft_data = (nft_data) => {
   const returnObj = { ...(nft_data.toObject ? nft_data.toObject() : nft_data) };
@@ -28,7 +28,6 @@ export default async function all_nfts(req, res) {
   const { s, p, tags, sort, all } = req.query;
   let filterTags = [];
   let NFTs;
-
 
   if (tags) {
     filterTags = atob(tags).split(",");

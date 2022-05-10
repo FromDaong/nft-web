@@ -1,8 +1,8 @@
 import MoralisInstance from "../../../../utils/moralis";
-import NFT from "../../../../models/NFT";
+import NFT from "../../../../db/models/NFT";
 import { NextApiRequest } from "next";
 import { NextApiResponse } from "next";
-import Profile from "../../../../models/Profile";
+import Profile from "../../../../db/models/Profile";
 import dbConnect from "../../../../utils/dbConnect";
 
 dbConnect();

@@ -1,4 +1,4 @@
-import Model from "../../../../../../models/Model";
+import Model from "../../../../../../db/models/Model";
 
 export default async function getLivestreamHost(req, res) {
   try {

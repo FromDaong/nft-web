@@ -160,7 +160,7 @@ const ViewNFT = ({
   navigate,
   isModel,
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
   const [transferNFTData, setTransferNFTData] = useState(null);
   const [listOrderData, setListOrderData] = useState(null);
   const [cancelOrderData, setCancelOrderData] = useState(null);
@@ -317,6 +317,15 @@ const ViewNFT = ({
       </div>
     </Layout>
   );
+};
+
+export const getInitialProps = async (ctx) => {
+  try {
+    const model = await Axios.get("/api/v2/auth/me");
+    console.log({ model });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export default CreatorDashboardWrapper;

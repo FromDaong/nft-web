@@ -1,7 +1,7 @@
-import { Notification } from "./../../../../../components/Live/types";
-import NotificationModel from "../../../../../models/Notification";
-import { nodePusher } from "../../../../../lib/pusher";
-import { withJWTAuth } from "../../../../../utils/server-utils";
+import { Notification } from "@components/Live/types";
+import NotificationModel from "../../../../../db/models/Notification";
+import { nodePusher } from "@lib/pusher";
+import { withJWTAuth } from "@utils/server-utils";
 
 async function patch(req, res) {
   const { action } = req.body;

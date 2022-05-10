@@ -1,6 +1,6 @@
 import MoralisInstance, { ethers, web3Node } from "../../../../utils/moralis";
 
-import NFT from "../../../../models/NFT";
+import NFT from "../../../../db/models/NFT";
 import TreatNFTMinterAbi from "../../../../treat/lib/abi/treatnftminter.json";
 import dbConnect from "../../../../utils/dbConnect";
 import { withJWTAuth } from "../../../../utils/server-utils";
