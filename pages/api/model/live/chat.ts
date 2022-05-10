@@ -1,4 +1,4 @@
-import Model from "../../../../models/Model";
+import Model from "../../../../db/models/Model";
 import { withJWTAuth } from "./../../../../utils/server-utils";
 
 async function chat(req, res) {

@@ -1,6 +1,6 @@
+import NFT from "../../../db/models/NFT";
 import dbConnect from "../../../utils/dbConnect";
 import { mapNftBody } from "./mappers";
-import NFT from "../../../models/NFT";
 import withSession from "../../../lib/session";
 
 dbConnect();
@@ -46,8 +46,6 @@ export default withSession(async (req, res) => {
         };
 
         const newNFT = await NFT.create(nftBody);
-
-        
 
         res.status(200).json({ success: true, newNFT });
       } catch (error) {

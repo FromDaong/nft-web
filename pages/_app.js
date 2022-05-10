@@ -49,22 +49,19 @@ function MyApp({ Component, pageProps }) {
     "0xac0c7d9b063ed2c0946982ddb378e03886c064e6"
   );
   const { user, isAuthenticated, account } = useMoralis();
-  const [hasUpdatedLocal] = useState(false);
   const router = useRouter();
 
   const [modelData, setModelData] = useState(null);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      if (localStorage.getItem("tokens")) {
-        Axios.get(`/api/v2/auth/me`)
-          .then((res) => {
-            setModelData(res.data);
-          })
-          .then();
-      }
+    if (isAuthenticated && account) {
+      Axios.post("/api/v2/auth/get-jwt").then(() =>
+        Axios.get(`/api/v2/auth/me`).then((res) => {
+          setModelData(res.data);
+        })
+      );
     }
-  }, [isAuthenticated, hasUpdatedLocal]);
+  }, [isAuthenticated, account]);
 
   useEffect(() => {
     ReactGA.initialize("UA-207897573-1");

@@ -1,9 +1,9 @@
 import * as atob from "atob";
 
-import NFT from "../../../models/NFT";
+import NFT from "../../../db/models/NFT";
 import dbConnect from "../../../utils/dbConnect";
 
-// import User from "../../../../models/User";
+// import User from "../../../../db/models/User";
 dbConnect();
 
 const sanitize_nft_data = (nft_data) => {

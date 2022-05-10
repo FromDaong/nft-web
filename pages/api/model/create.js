@@ -1,5 +1,5 @@
+import Model from "../../../db/models/Model";
 import dbConnect from "../../../utils/dbConnect";
-import Model from "../../../models/Model";
 import withSession from "../../../lib/session";
 
 dbConnect();
@@ -22,10 +22,7 @@ export default withSession(async (req, res) => {
           nfts: [],
         };
 
-        
         const newNFT = await Model.create(nftBody);
-
-        
 
         res.status(200).json({ success: true, newNFT });
       } catch (error) {

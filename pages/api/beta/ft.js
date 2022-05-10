@@ -1,5 +1,5 @@
+import Model from "../../../db/models/Model";
 import dbConnect from "../../../utils/dbConnect";
-import Model from "../../../models/Model";
 
 export default async function FTS(req, res) {
   await dbConnect();

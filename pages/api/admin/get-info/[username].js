@@ -1,5 +1,5 @@
 /* eslint-disable no-case-declarations */
-import Model from "../../../../models/Model";
+import Model from "../../../../db/models/Model";
 import dbConnect from "../../../../utils/dbConnect";
 import withSession from "../../../../lib/session";
 

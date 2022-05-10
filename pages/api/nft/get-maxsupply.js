@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import NFT from "../../../models/NFT";
+import NFT from "../../../db/models/NFT";
 import Web3 from "web3";
 import { contractAddresses } from "../../../treat/lib/constants";
 import dbConnect from "../../../utils/dbConnect";

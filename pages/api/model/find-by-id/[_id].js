@@ -1,5 +1,5 @@
+import Model from "../../../../db/models/Model";
 import dbConnect from "../../../../utils/dbConnect";
-import Model from "../../../../models/Model";
 
 dbConnect();
 
@@ -12,7 +12,7 @@ export default async (req, res) => {
   switch (method) {
     case "GET":
       try {
-        let modelRes = await Model.findOne({address: _id});
+        let modelRes = await Model.findOne({ address: _id });
 
         if (!modelRes) return res.status(404);
 
