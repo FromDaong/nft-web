@@ -1,14 +1,19 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useEffect, useState } from "react";
 
+import Axios from "axios";
 import { Treat } from "../../treat";
 import { useMoralis } from "react-moralis";
 
 export interface TreatContext {
   treat?: Treat;
+  modelData: object | null;
+  fetchModelData: () => void;
 }
 
 export const Context = createContext<TreatContext>({
   treat: undefined,
+  modelData: null,
+  fetchModelData: () => null,
 });
 
 declare global {
@@ -22,11 +27,13 @@ const TreatProvider: React.FC = ({ children }) => {
     Moralis,
     chainId: _chainId,
     provider,
-    account,
     enableWeb3,
     isWeb3Enabled,
+    account,
+    user,
   } = useMoralis();
   const [treat, setTreat] = useState<any>();
+  const [modelData, setModelData] = useState<object | null>(null);
 
   if (typeof window !== "undefined") {
     // @ts-ignore
@@ -57,7 +64,25 @@ const TreatProvider: React.FC = ({ children }) => {
     }
   }, [provider, isWeb3Enabled]);
 
-  return <Context.Provider value={{ treat }}>{children}</Context.Provider>;
+  const fetchModelData = useCallback(() => {
+    if (account && user) {
+      Axios.post("/api/v2/auth/get-jwt", {
+        ethAddress: account,
+        sessionToken: user.getSessionToken(),
+        username: user.getUsername(),
+      }).then(() =>
+        Axios.get(`/api/v2/auth/me`).then((res) => {
+          setModelData(res.data);
+        })
+      );
+    }
+  }, [account, user]);
+
+  return (
+    <Context.Provider value={{ treat, modelData, fetchModelData }}>
+      {children}
+    </Context.Provider>
+  );
 };
 
 export default TreatProvider;
