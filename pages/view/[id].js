@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import {
   ArrowUpRightSquare,
   Bag,
@@ -257,7 +259,7 @@ const ViewNFT = ({ nftData, account }) => {
 
   const {
     loading: loadingMintHistory,
-    error: errorMintHistory,
+    error: _errorMintHistory,
     data: mintHistoryData,
   } = useQuery(
     gql`
@@ -325,12 +327,14 @@ const ViewNFT = ({ nftData, account }) => {
     }
   };
 
+  /*
   const historyEvents = nftData.mints.map((m) => {
     return {
       when: m.timestamp.toString(),
       event: `${m.buyer} bought for ${m.price}`, // TODO: look up username from account
     };
   });
+  */
 
   const setSort = (sortBy) => {
     setSortBy(sortBy);
@@ -483,8 +487,10 @@ const ViewNFT = ({ nftData, account }) => {
                 <div className="bio">{nftData.description}</div>
                 <div className="tags mt-2">
                   {nftData.tags &&
-                    nftData.tags.map((tag) => (
-                      <Badge variant="secondary mr-2">{tag}</Badge>
+                    nftData.tags.map((tag, i) => (
+                      <Badge key={i} variant="secondary mr-2">
+                        {tag}
+                      </Badge>
                     ))}
                 </div>
               </div>
@@ -615,8 +621,21 @@ const ViewNFT = ({ nftData, account }) => {
   );
 };
 
+const ViewNFTPage = ({ id }) => {
+  const client = new ApolloClient({
+    uri: "https://api.thegraph.com/subgraphs/name/0x6e6f6c61/treat",
+    cache: new InMemoryCache(),
+  });
+
+  return (
+    <ApolloProvider client={client}>
+      <ViewNFTWrapper id={id} />
+    </ApolloProvider>
+  );
+};
+
 ViewNFTWrapper.getInitialProps = async ({ query: { id } }) => {
   return { id };
 };
 
-export default ViewNFTWrapper;
+export default ViewNFTPage;

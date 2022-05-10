@@ -14,17 +14,27 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "downlevelIteration": true,
+    "baseUrl": ".",
     "paths": {
       "@lib/*": ["./lib/*"],
       "@components/*": ["./components/*"],
       "@utils/*": ["./utils/*"],
       "@hooks/*": ["./hooks/*"],
-      "@models/*": ["./models/*"],
+      "@models/*": ["./db/models/*"],
+      "@db/*": ["./db/*"],
       "@constants/*": ["./constants/*"],
       "@treat/*": ["./treat/*"],
-      "@contexts/*": ["./contexts/*"]
+      "@contexts/*": ["./contexts/*"],
+      "@styles/*": ["./styles/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.jsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.jsx",
+    "pages/dashboard/._middleware.ts",
+    "pages/.__middleware.ts"
+  ],
   "exclude": ["node_modules"]
 }

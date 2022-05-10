@@ -20,12 +20,13 @@ import TotwListItem from "../components/TotwListItem";
 import { useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
-const Home = () => {
+const Home = ({ modelD }) => {
+  console.log({ modelD });
   const [nftData, setNftData] = useState();
   const [modelData, setModelData] = useState();
   const [totm, setTOTMData] = useState();
-  const [nftResultError, setNFTResultError] = useState(false);
-  const [ref, inView] = useInView();
+  const [nftResultError] = useState(false);
+  const [, inView] = useInView();
 
   const controls = useAnimation();
 
@@ -63,7 +64,7 @@ const Home = () => {
             <div className="row align-items-center">
               <div className="col-lg-6 hero-text mt-3">
                 <div className="heading-text">
-                  It's time to <br />
+                  It&lsquo;s time to <br />
                   treat yourself...
                 </div>
                 <div className="secondary-text">
@@ -210,8 +211,8 @@ const Home = () => {
                 </div>
                 <div className="desc">
                   List your NFTs publicly on our resale marketplace for others
-                  to purchase. Blurred NFTs' hidden images are only viewable by
-                  their owner.
+                  to purchase. Blurred NFTslsquo; hidden images are only
+                  viewable by their owner.
                 </div>
               </div>
             </div>

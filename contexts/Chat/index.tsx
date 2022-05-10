@@ -9,11 +9,11 @@ import { createContext, useContext, useEffect, useState } from "react";
 import Axios from "axios";
 import { Context } from "../TreatProvider";
 import Web3 from "web3";
+import { contractAddresses } from "@treat/lib/constants";
 import { make_id } from "../../components/Live/utils";
 import { reactPusher } from "../../lib/pusher";
 import { useMoralis } from "react-moralis";
 import { useToast } from "@chakra-ui/react";
-import { contractAddresses } from "@treat/lib/constants";
 
 export const LiveStreamChatContext = createContext<{
   currently_playing: string | null;
@@ -53,7 +53,6 @@ export const LiveStreamChatContext = createContext<{
 });
 
 export const LiveStreamChatContextProvider = ({ children }) => {
-  const { Moralis, web3 } = useMoralis();
   const [messages, setMessages] = useState<Array<Notification>>([]);
   const [currently_playing, setCurrently_playing] = useState<string | null>(
     null
@@ -68,7 +67,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   }>(null);
   const [isHost, setIs_host] = useState(false);
   const [host, setHost] = useState<string | null>(null);
-  const [isThrottled, setIsThrottled] = useState(false);
+  const [, setIsThrottled] = useState(false);
   const [latestReactionMessage, setLatestReactionMessage] = useState(null);
 
   const { account } = useMoralis();
@@ -91,7 +90,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     presenceChannel.bind("pusher:subscription_succeeded", function () {
       // @ts-ignore
       const me = presenceChannel.members.me;
-      console.log({ me });
 
       const userId = me.id;
       const userInfo = me.info;
@@ -126,7 +124,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
 
   const getParticipants = () => {
     presenceChannel?.members.each(function (member) {
-      console.log({ member });
       const userId = member.id;
       const userInfo = member.info;
       setParticipants((prevParticipants) => [
@@ -183,10 +180,11 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const sendTip = async (
     currency_address: string,
     creator_address: string,
-    amount: number,
+    amount: number | string,
     currency: string // this should be properly typed with the correct addresses (BUSD & USDC)
   ) => {
     // Check if the address is 0x00 (BNB), if it is, send with value attached to tip:
+    amount = amount.toString();
     if (currency_address === "0x0000000000000000000000000000000000000000") {
       await treat?.contracts.tippingContract.methods
         .sendTip(
@@ -206,7 +204,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       if (currency === contractAddresses.busdToken[56]) {
         // get approval for tipping contract to spend the users BUSD
         await treat?.contracts.busdToken.methods.approve(
-          treat.contractAddresses.tippingContract,
+          contractAddresses.tippingContract,
           Web3.utils.toWei(amount)
         );
       }
@@ -214,7 +212,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       if (currency === contractAddresses.usdcToken[56]) {
         // get approval for tipping contract to spend the users USDC
         await treat?.contracts.usdcToken.methods.approve(
-          treat.contractAddresses.tippingContract,
+          contractAddresses.tippingContract,
           Web3.utils.toWei(amount)
         );
       }
@@ -222,7 +220,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       if (currency === contractAddresses.treat2[56]) {
         // get approval for tipping contract to spend the users TREAT
         await treat?.contracts.treat2.methods.approve(
-          treat.contractAddresses.tippingContract,
+          contractAddresses.tippingContract,
           Web3.utils.toWei(amount)
         );
       }
@@ -271,8 +269,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     }
 
     Axios.post(`/api/v2/chat/${currently_playing}/publish`, payload).catch(
-      (err) => {
-        console.log({ err });
+      () => {
         console.log(
           `Retrying ${payload.index} for attempt #${payload.retry?.remaining_attempts}`
         );
@@ -380,7 +377,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
           }
         })
         .catch((err) => {
-          console.log({ err });
           setHost(null);
         });
     } else {
@@ -392,8 +388,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       reactPusher.unbind_all();
     };
   }, [currently_playing]);
-
-  console.log({ host });
 
   return (
     <LiveStreamChatContext.Provider

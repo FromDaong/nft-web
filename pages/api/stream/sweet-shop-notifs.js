@@ -1,11 +1,10 @@
+import Model from "../../../db/models/Model";
+import NFT from "../../../db/models/NFT";
+import PendingNFT from "../../../db/models/PendingNFT";
+import Web3 from "web3";
 import dbConnect from "../../../utils/dbConnect";
-import PendingNFT from "../../../models/PendingNFT";
-import NFT from "../../../models/NFT";
-import Model from "../../../models/Model";
 import withSession from "../../../lib/session";
 const sgClient = require("@sendgrid/mail");
-
-import Web3 from "web3";
 
 dbConnect();
 

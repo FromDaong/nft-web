@@ -113,7 +113,7 @@ const CreateNFT = ({ modelData }) => {
         })
       ),
     }),
-    handleChange: (c) => {},
+    handleChange: (c) => null,
     onSubmit: (values) => {
       SubmitToServer();
     },

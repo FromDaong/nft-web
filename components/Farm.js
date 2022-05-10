@@ -13,7 +13,6 @@ import { useState } from "react";
 import useUnstakeFarms from "../hooks/useUnstakeFarms";
 
 const Farm = ({ contract, treatBal, title, pid }) => {
-  console.log({ contract });
   const hasApproved = contract && hasApprovedContract(pid);
   const { onReward } = contract && useHarvestFarms(pid);
   const { onApprove } = contract && useApproveContract(pid);

@@ -1,4 +1,4 @@
-import Model from "../../../../models/Model";
+import Model from "../../../../db/models/Model";
 import { withJWTAuth } from "./../../../../utils/server-utils";
 
 const me = async (req, res) => {

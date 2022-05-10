@@ -18,7 +18,6 @@ export default function SendMessageBox(props) {
     setValue("");
   };
 
-  console.log({ props });
   return (
     <Box w="full pb-2">
       <form onSubmit={onSubmit} className="w-full">

@@ -1,6 +1,6 @@
-import dbConnect from "../../../../utils/dbConnect";
-import Model from "../../../../models/Model";
-import withSession from "../../../../lib/session";
+import Model from "@models/Model";
+import dbConnect from "@utils/dbConnect";
+import withSession from "@lib/session";
 
 dbConnect();
 

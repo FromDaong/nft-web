@@ -10,7 +10,6 @@ import Hero from "../../components/Hero";
 import Loading from "../../components/Loading";
 import async from "async";
 import axios from "axios";
-import { create } from "ipfs-http-client";
 import useCreateAndAddMelonNFTs from "../../hooks/useCreateAndAddMelonNFTs";
 import { useDropzone } from "react-dropzone";
 import { useEffect } from "react";
@@ -19,12 +18,10 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import { useState } from "react";
 
-const client = create("https://ipfs.infura.io:5001/api/v0");
-
-const CreateNFT = ({ modelData }) => {
+const CreateNFT = () => {
   const [ipfsFiles, setIpfsFiles] = useState([]);
   const router = useRouter();
-  const [success, setSuccess] = useState(false);
+  const [, setSuccess] = useState(false);
 
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
@@ -72,11 +69,7 @@ const CreateNFT = ({ modelData }) => {
     }
   };
 
-  const {
-    acceptedFiles: files,
-    getRootProps,
-    getInputProps,
-  } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop,
   });
 
@@ -119,8 +112,8 @@ const CreateNFT = ({ modelData }) => {
         })
       ),
     }),
-    handleChange: (c) => {},
-    onSubmit: (values) => {
+    handleChange: () => null,
+    onSubmit: () => {
       SubmitToServer();
     },
   });
@@ -252,8 +245,8 @@ const CreateNFT = ({ modelData }) => {
               >
                 <input {...getInputProps()} />
                 <p className="mb-0 text-center" style={{ fontSize: "1.1em" }}>
-                  Step 2: Drag 'n' drop your all your high resolution images
-                  here, <br />
+                  Step 2: Drag &#39;n&#39; drop your all your high resolution
+                  images here, <br />
                   or click to here to select them
                 </p>
               </div>

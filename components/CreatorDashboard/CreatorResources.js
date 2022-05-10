@@ -53,7 +53,6 @@ const CreatorResources = ({ modelData }) => {
       const resJSON = await serverRes.json();
 
       if (resJSON.error && resJSON.error.errors) {
-        console.log(resJSON.error);
         const ogErrors = Object.assign({}, resJSON.error.errors);
         Object.keys(ogErrors).map((e) => {
           ogErrors[e] = resJSON.error.errors[e].message;

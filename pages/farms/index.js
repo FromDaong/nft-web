@@ -20,7 +20,6 @@ const Farms = () => {
   );
   const treat = useTreat();
   const masterMelonFarmerContract = getMasterMelonFarmerContract(treat);
-  console.log({ treatBal, treatLpBal, melonBal, chainId });
 
   return (
     <>

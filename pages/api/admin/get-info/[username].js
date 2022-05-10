@@ -1,5 +1,6 @@
+/* eslint-disable no-case-declarations */
+import Model from "../../../../db/models/Model";
 import dbConnect from "../../../../utils/dbConnect";
-import Model from "../../../../models/Model";
 import withSession from "../../../../lib/session";
 
 dbConnect();
@@ -22,10 +23,9 @@ export default withSession(async (req, res) => {
   switch (method) {
     case "GET":
       const user = await req.session.get("admin");
+      let modelRes = await Model.findOne({ username });
 
       if (!user) return res.status(400).json({ success: false });
-
-      let modelRes = await Model.findOne({ username });
 
       if (!modelRes)
         return res
