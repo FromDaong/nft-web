@@ -4,6 +4,7 @@ import { SUBTRACT_GAS_LIMIT, contractAddresses } from "./constants.js";
 
 import BigNumber from "bignumber.js/bignumber";
 import CreatorMartAbi from "./abi/creatormart.json";
+import GenericBep20 from "./abi/erc20.json";
 import MasterMelonFarmerAbi from "./abi/mastermelonfarmer.json";
 import MelonAbi from "./abi/melontoken.json";
 import MelonMartAbi from "./abi/melonmart.json";
@@ -23,7 +24,6 @@ import TreatSubscriptionsAbi from "./abi/treatsubscriptions.json";
 import TreatTradeInAbi from "./abi/treattradein.json";
 import TreatV1ForV2Abi from "./abi/treatv1forv2.json";
 import WETHAbi from "./abi/weth.json";
-import GenericBep20 from "./abi/erc20.json";
 
 export class Contracts {
   constructor(provider, networkId, web3, options) {
@@ -59,8 +59,8 @@ export class Contracts {
       MinterPermissionHelperAbi
     );
     // add generic BEP20 payments
-    this.busdToken = new this.web3.et.Contract(GenericBep20);
-    this.usdcToken = new this.web3.et.Contract(GenericBep20);
+    this.busdToken = new this.web3.eth.Contract(GenericBep20);
+    this.usdcToken = new this.web3.eth.Contract(GenericBep20);
     //
     this.setProvider(provider, networkId);
     this.setDefaultAccount(this.web3.eth.defaultAccount);

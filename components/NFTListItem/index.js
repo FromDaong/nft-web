@@ -19,9 +19,7 @@ const NFTListItem = ({
   owner,
   soldOut,
 }) => {
-  useEffect(() => {
-    // console.log("Data has changed ", data);
-  }, [data]);
+  useEffect(() => {}, [data]);
 
   const { ref, gotInView, model } = useNFTItemData(data);
   const isTOTMorOldTOTW =

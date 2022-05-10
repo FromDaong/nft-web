@@ -58,7 +58,6 @@ export const ReactionsOverlay = () => {
       if (!overlayRef.current) {
         return;
       }
-      console.log(`🚨 New emoji message received: ${e.payload.text}`);
       handleDisplayFlyingEmoji(e.payload.text);
     },
     [handleDisplayFlyingEmoji]

@@ -1,6 +1,6 @@
 import { ethers, web3Node } from "../../../../utils/moralis";
 
-import NFT from "../../../../models/NFT";
+import NFT from "../../../../db/models/NFT";
 import TreatMarketplaceAbi from "../../../../treat/lib/abi/treatMarketplace.json";
 import dbConnect from "../../../../utils/dbConnect";
 import { withJWTAuth } from "../../../../utils/server-utils";

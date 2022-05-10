@@ -1,6 +1,6 @@
+import Model from "../../../../db/models/Model";
 import axios from "axios";
 import { withJWTAuth } from "../../../../utils/server-utils";
-import Model from "../../../../models/Model";
 
 /**
  * calls the /stream route of Livepeer.com APIs to create a new stream.
