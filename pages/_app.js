@@ -54,14 +54,18 @@ function MyApp({ Component, pageProps }) {
   const [modelData, setModelData] = useState(null);
 
   useEffect(() => {
-    if (isAuthenticated && account) {
-      Axios.post("/api/v2/auth/get-jwt").then(() =>
+    if (isAuthenticated && account && user) {
+      Axios.post("/api/v2/auth/get-jwt", {
+        ethAddress: account,
+        sessionToken: user.getSessionToken(),
+        username: user.getUsername(),
+      }).then(() =>
         Axios.get(`/api/v2/auth/me`).then((res) => {
           setModelData(res.data);
         })
       );
     }
-  }, [isAuthenticated, account]);
+  }, [isAuthenticated, account, user]);
 
   useEffect(() => {
     ReactGA.initialize("UA-207897573-1");
@@ -76,9 +80,11 @@ function MyApp({ Component, pageProps }) {
       Axios.post("/api/model/become", {
         address: account,
         isModel: false,
-        username: account.substring(0, 6) + "..." + account.substr(-5),
+        username:
+          user.getUsername() ??
+          account.substring(0, 6) + "..." + account.substr(-5),
         bio: "I am a new Treat explorer",
-        display_name: account,
+        display_name: user.getUsername() ?? account,
       })
         .then(() => router.reload())
         .then(() => router.reload())
