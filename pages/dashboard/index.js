@@ -1,9 +1,10 @@
 import { Button, Spinner } from "react-bootstrap";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import Axios from "axios";
 import BlankModal from "../../components/BlankModal";
 import CancelOrderModal from "../../components/CancelOrderModal";
+import { Context } from "../../contexts/TreatProvider";
 import DashboardTabs from "../../components/CreatorDashboard/DashboardTabs";
 import Layout from "../../components/Layout";
 import Link from "next/link";
@@ -12,11 +13,7 @@ import TransferNFTModal from "../../components/TransferNFTModal";
 import { useMoralis } from "react-moralis";
 import useSWR from "swr";
 
-const CreatorDashboardWrapper = (props) => {
-  let modelData = props.modelData;
-  if (modelData === null) {
-    modelData = {};
-  }
+const CreatorDashboardWrapper = () => {
   const { account, isAuthenticated } = useMoralis();
   const [ownedNFTData, setOwnedNFTData] = useState({
     docs: [],
@@ -38,6 +35,13 @@ const CreatorDashboardWrapper = (props) => {
   });
   const [ownedNFTError, setOwnedNFTError] = useState(null);
   const [resaleNFTError, setResaleNFTError] = useState(null);
+  const { modelData, fetchModelData } = useContext(Context);
+
+  useEffect(() => {
+    if (!modelData) {
+      fetchModelData();
+    }
+  }, [modelData]);
 
   useEffect(() => {
     setOwnedNFTData({ ...ownedNFTData, loading: true });
