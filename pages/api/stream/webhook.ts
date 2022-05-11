@@ -20,14 +20,14 @@ const livestream_hook = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!model) {
       return res.status(200).json({ error: false });
     }
-    await Model.findByIdAndUpdate(
+    const updated_model = await Model.findByIdAndUpdate(
       model._id,
       {
         livestream_active: event === "stream.started" ? true : false,
       },
       { new: true }
     );
-    console.log({ model });
+    console.log({ updated_model });
     return res.status(200).json({ error: false });
   } catch (err) {
     console.log({ err });
