@@ -161,8 +161,8 @@ export const contractAddresses = {
     "0x61": "0x80582136C2d6c710aD528F2A9d30504665f65306",
   },
   tippingContract: {
-    56: "0x9cde4593c9F42B05cB7f8c0B8f89a226c870eb01",
-    "0x38": "0x9cde4593c9F42B05cB7f8c0B8f89a226c870eb01",
+    56: "0xd1f398cFD58047e6aF3a02C565Da7269F9540715",
+    "0x38": "0xd1f398cFD58047e6aF3a02C565Da7269F9540715",
   },
   // add generic BEP20 payments for tips:
   busdToken: {
