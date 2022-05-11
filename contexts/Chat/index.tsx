@@ -210,12 +210,14 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         contractAddresses.busdToken[56].toUpperCase()
       ) {
         // // get approval for tipping contract to spend the users BUSD
-        await treat?.contracts.busdToken.methods
+        const tx = await treat?.contracts.busdToken.methods
           .approve(
             contractAddresses.tippingContract[56],
             Web3.utils.toWei(amount)
           )
           .send();
+
+        console.log(tx);
       }
       // If USDC Token
       if (
@@ -253,7 +255,11 @@ export const LiveStreamChatContextProvider = ({ children }) => {
 
       // wait until the approval is completed before sending the tip
       await treat?.contracts.tippingContract.methods
-        .sendTip(Web3.utils.toWei(amount), currency_address, creator_address)
+        .sendTip(
+          Web3.utils.toWei(amount),
+          currency_address,
+          "0x0E068DBcbc884B81A8A4ECC6F9E4502AD9DF1011"
+        )
         .send({
           from: account,
         });
