@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import {
   ArrowUpRightSquare,
   Bag,
@@ -19,6 +18,8 @@ import Dropdown from "react-bootstrap/Dropdown";
 import ErrorFallback from "../../components/Fallback/Error";
 import Layout from "../../components/Layout";
 import Link from "next/link";
+import Model from "@models/Model";
+import NFT from "@models/NFT";
 import NFTPurchaseModal from "../../components/NFTPurchaseModal";
 import Spinner from "react-bootstrap/Spinner";
 import Web3 from "web3";
@@ -38,7 +39,6 @@ import useMintCreatorNft from "../../hooks/useMintCreatorNft";
 import useMintNft from "../../hooks/useMintNft";
 import useMintSubcriberNft from "../../hooks/useMintSubscriberNft";
 import { useMoralis } from "react-moralis";
-import { useRouter } from "next/router";
 
 const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   const { account } = useMoralis();
@@ -134,23 +134,7 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   );
 };
 
-const ViewNFTWrapper = () => {
-  const [error, setErr] = useState(null);
-  const [nftData, setNftData] = useState();
-  const router = useRouter();
-  const { id } = router.query;
-  console.log({ id });
-
-  useEffect(() => {
-   if(id) {
-      Axios.get(`/api/v2/nft/${id}`)
-        .then((res) => {
-          setNftData(res.data);
-        })
-        .catch((err) => setErr(err));
-   }
-  }, [id]);
-
+const ViewNFTWrapper = ({ nftData }) => {
   if (!nftData) {
     return (
       <div
@@ -176,24 +160,17 @@ const ViewNFTWrapper = () => {
         >
           Please make sure your Binance Smart Chain wallet is connected.
         </h5>
-        <Spinner
-          animation="border"
-          role="status"
-          size="xl"
-          style={{ marginTop: 5 }}
-        >
+        <Spinner animation="border" role="status" style={{ marginTop: 5 }}>
           <span className="sr-only">Loading...</span>
         </Spinner>
       </div>
     );
-  } else if (error) {
-    return <ErrorFallback custom="Could not load NFT" />;
   } else {
     return <ViewNFT nftData={nftData} />;
   }
 };
 
-const ViewNFT = ({ nftData, account }) => {
+const ViewNFT = ({ nftData }) => {
   const totwNftCost = useGetTreatNFTCost(nftData.id);
   const creatorNftCost = getCreatorNftCost(nftData.id);
   const subscriberNftCost = getSubscriberNftCost(nftData.id);
@@ -462,7 +439,6 @@ const ViewNFT = ({ nftData, account }) => {
                 remainingNfts={remainingNfts}
                 nftData={nftData}
                 setShowModal={setShowModal}
-                account={account}
               />
             </div>
           </div>
@@ -627,8 +603,8 @@ const ViewNFT = ({ nftData, account }) => {
   );
 };
 
-const ViewNFTPage = ({ id }) => {
-  return <ViewNFTWrapper id={id} />;
+const ViewNFTPage = ({ nftData }) => {
+  return <ViewNFTWrapper nftData={nftData} />;
 };
 
 ViewNFTWrapper.getInitialProps = async ({ query: { id } }) => {
@@ -636,3 +612,34 @@ ViewNFTWrapper.getInitialProps = async ({ query: { id } }) => {
 };
 
 export default ViewNFTPage;
+
+const getTop100Nfts = async () => {
+  const res = await Axios.get("https://treatdao.com/api/nft");
+  const docs = res.data.docs;
+  return docs;
+};
+
+const getNFT = async (id) => {
+  const d = await Axios.get(`https://treatdao.com/api/nft/${id}`);
+  return d.data;
+};
+
+export async function getStaticPaths() {
+  const nfts = await getTop100Nfts();
+  const paths = nfts.map((nftId) => ({
+    params: { id: nftId.id.toString() },
+  }));
+
+  return { paths, fallback: "blocking" };
+}
+
+export async function getStaticProps({ params }) {
+  const nftData = await getNFT(params.id);
+  console.log({ nftData });
+  return {
+    props: {
+      nftData,
+    },
+    revalidate: 60,
+  };
+}
