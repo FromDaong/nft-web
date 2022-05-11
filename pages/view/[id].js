@@ -38,6 +38,7 @@ import useMintCreatorNft from "../../hooks/useMintCreatorNft";
 import useMintNft from "../../hooks/useMintNft";
 import useMintSubcriberNft from "../../hooks/useMintSubscriberNft";
 import { useMoralis } from "react-moralis";
+import { useRouter } from "next/router";
 
 const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   const { account } = useMoralis();
@@ -133,17 +134,22 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   );
 };
 
-const ViewNFTWrapper = ({ id }) => {
+const ViewNFTWrapper = () => {
   const [error, setErr] = useState(null);
   const [nftData, setNftData] = useState();
+  const router = useRouter();
+  const { id } = router.query;
+  console.log({ id });
 
   useEffect(() => {
-    Axios.get(`/api/v2/nft/${id}`)
-      .then((res) => {
-        setNftData(res.data);
-      })
-      .catch((err) => setErr(err));
-  }, []);
+   if(id) {
+      Axios.get(`/api/v2/nft/${id}`)
+        .then((res) => {
+          setNftData(res.data);
+        })
+        .catch((err) => setErr(err));
+   }
+  }, [id]);
 
   if (!nftData) {
     return (
@@ -622,16 +628,7 @@ const ViewNFT = ({ nftData, account }) => {
 };
 
 const ViewNFTPage = ({ id }) => {
-  const client = new ApolloClient({
-    uri: "https://api.thegraph.com/subgraphs/name/0x6e6f6c61/treat",
-    cache: new InMemoryCache(),
-  });
-
-  return (
-    <ApolloProvider client={client}>
-      <ViewNFTWrapper id={id} />
-    </ApolloProvider>
-  );
+  return <ViewNFTWrapper id={id} />;
 };
 
 ViewNFTWrapper.getInitialProps = async ({ query: { id } }) => {
