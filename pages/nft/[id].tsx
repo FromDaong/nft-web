@@ -6,8 +6,9 @@ import {
   ShopWindow,
 } from "react-bootstrap-icons";
 import { Nav, Tab } from "react-bootstrap";
+import { ethers, web3Node } from "@utils/moralis";
 import { gql, useQuery } from "@apollo/client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import Axios from "axios";
 import Badge from "react-bootstrap/Badge";
@@ -22,7 +23,9 @@ import Model from "@models/Model";
 import NFT from "@models/NFT";
 import NFTPurchaseModal from "../../components/NFTPurchaseModal";
 import Spinner from "react-bootstrap/Spinner";
+import TreatMinterAbi from "@treat/lib/abi/treatnftminter.json";
 import Web3 from "web3";
+import { contractAddresses } from "@treat/lib/constants";
 import { generateFromString } from "generate-avatar";
 import getCreatorNftCost from "../../hooks/useGetCreatorNftCost";
 import { getDisplayBalance } from "../../utils/formatBalance";
@@ -39,6 +42,7 @@ import useMintCreatorNft from "../../hooks/useMintCreatorNft";
 import useMintNft from "../../hooks/useMintNft";
 import useMintSubcriberNft from "../../hooks/useMintSubscriberNft";
 import { useMoralis } from "react-moralis";
+import { useRouter } from "next/router";
 
 const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   const { account } = useMoralis();
@@ -50,11 +54,7 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   const isOldTotw =
     (nftData.old_totw && !nftData.totw) || (nftData.old_totm && !nftData.totm);
 
-  if (
-    remainingNfts.toNumber() < 0 ||
-    isNaN(remainingNfts.toNumber()) ||
-    !nftData
-  ) {
+  if (remainingNfts < 0 || isNaN(remainingNfts) || !nftData) {
     return (
       <Spinner animation="border" role="status" className="p3 mt-3 mb-2">
         <span className="sr-only">Loading...</span>
@@ -72,7 +72,7 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
       style={{ borderRadius: 7 }}
       disabled={
         disabled ||
-        remainingNfts.toNumber() === 0 ||
+        remainingNfts === 0 ||
         isOldTotw ||
         (nftData.subscription_nft && !isSubscribed)
       }
@@ -120,13 +120,13 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
         </div>
       ) : (
         <b>
-          {remainingNfts.toNumber() > 0 &&
+          {remainingNfts > 0 &&
             !isOldTotw &&
             !nftData.subscription_nft &&
             `Buy Now`}
-          {(remainingNfts.toNumber() === 0 || isOldTotw) && `Sold Out`}
+          {(remainingNfts === 0 || isOldTotw) && `Sold Out`}
           {nftData.subscription_nft &&
-            remainingNfts.toNumber() > 0 &&
+            remainingNfts > 0 &&
             `Buy Subscription NFT`}
         </b>
       )}
@@ -171,31 +171,45 @@ const ViewNFTWrapper = ({ nftData }) => {
 };
 
 const ViewNFT = ({ nftData }) => {
-  const totwNftCost = useGetTreatNFTCost(nftData.id);
-  const creatorNftCost = getCreatorNftCost(nftData.id);
-  const subscriberNftCost = getSubscriberNftCost(nftData.id);
+  const router = useRouter();
+  const id = router.query.id as unknown as number;
+  const [, updateState] = useState();
+
+  const totwNftCost = useGetTreatNFTCost(id);
+  const creatorNftCost = getCreatorNftCost(id);
+  const subscriberNftCost = getSubscriberNftCost(id);
   const [sortBy, setSortBy] = useState("Price Low to High");
 
   let nftCost = nftData.old_totw ? totwNftCost : creatorNftCost;
   nftCost = nftData.subscription_nft ? subscriberNftCost : nftCost;
   nftCost = nftData.old_totm ? totwNftCost : nftCost;
 
-  const maxNftSupply = useGetNftMaxSupply(nftData.id);
-  const mintedNfts = useGetNftTotalSupply(nftData.id);
-  const remainingNfts = maxNftSupply.minus(mintedNfts);
-  const { onMintNft: onMintTotwNft } = useMintNft(nftData.id, nftCost);
-  const { onMintCreatorNft } = useMintCreatorNft(nftData.id, nftCost);
-  const { onMintSubscriberNft } = useMintSubcriberNft(nftData.id, nftCost);
+  const maxNftSupply = nftData.maxSupply;
+  const mintedNfts = nftData.mintedNfts;
+  const remainingNfts = nftData.remainingNfts;
+  const { onMintNft: onMintTotwNft } = useMintNft(id, nftCost.toNumber());
+  const { onMintCreatorNft } = useMintCreatorNft(id, nftCost.toNumber());
+  const { onMintSubscriberNft } = useMintSubcriberNft(id, nftCost.toNumber());
 
   const [showModal, setShowModal] = useState(false);
-  const { onGetFreeTreat } = useGetFreeTreat(nftData.id, nftCost);
-  const { onGetFreeCreatorTreat } = useGetFreeCreatorTreat(nftData.id, nftCost);
+  const { onGetFreeTreat } = useGetFreeTreat(id, nftCost.toNumber());
+  const { onGetFreeCreatorTreat } = useGetFreeCreatorTreat(
+    id,
+    nftCost.toNumber()
+  );
   const { onGetFreeSubscriberTreat } = useGetFreeSubscriberTreat(
-    nftData.id,
-    nftCost
+    id,
+    nftCost.toNumber()
   );
 
-  const openOrders = useGetOpenOrdersForNft(nftData.id) ?? [];
+  console.log({
+    maxNftSupply,
+    mintedNfts,
+    remainingNfts,
+    id,
+  });
+
+  const openOrders = useGetOpenOrdersForNft(id) ?? [];
   // Get lowest price value in open orders
   const lowestOpenOrder = new BigNumber(
     openOrders.reduce(
@@ -445,7 +459,7 @@ const ViewNFT = ({ nftData }) => {
           <div className="col-lg-8 text-container container mt-4 mt-lg-0">
             <div className="title-section">
               {/* <div className="edition mb-1"> */}
-              {/* <div>REMAINING: {remainingNfts.toNumber()}</div> */}
+              {/* <div>REMAINING: {remainingNfts}</div> */}
               <div>
                 {nftData.totw && (
                   <div className="edition mb-2">AVAILABLE THIS WEEK ONLY</div>
@@ -455,9 +469,8 @@ const ViewNFT = ({ nftData }) => {
                   nftData.max_supply &&
                   nftData.max_supply < 100000 && (
                     <div className="edition mb-2">
-                      Remaining Supply:{" "}
-                      {remainingNfts && remainingNfts.toNumber()} / Max Supply:{" "}
-                      {nftData.maxSupply}
+                      Remaining Supply: {remainingNfts && remainingNfts} / Max
+                      Supply: {nftData.maxSupply}
                     </div>
                   )}
                 {nftData.melon_nft && (
@@ -635,10 +648,31 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const nftData = await getNFT(params.id);
-  console.log({ nftData });
+
+  const treatMinterContract = new ethers.Contract(
+    contractAddresses.treatNFTMinter[56],
+    TreatMinterAbi,
+    web3Node
+  );
+
+  const maxSupply = (
+    await treatMinterContract.tokenMaxSupply(params.id)
+  ).toNumber();
+  const mintedNfts = (
+    await treatMinterContract.tokenSupply(params.id)
+  ).toNumber();
+  const remainingNfts = maxSupply - mintedNfts;
+
+  console.log({ mintedNfts, maxSupply });
+
   return {
     props: {
-      nftData,
+      nftData: {
+        ...nftData,
+        mintedNfts,
+        remainingNfts,
+        maxSupply,
+      },
     },
     revalidate: 60,
   };
