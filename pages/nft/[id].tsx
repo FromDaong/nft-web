@@ -493,7 +493,9 @@ const ViewNFT = ({ nftData }) => {
             <div className="stats">
               <div className="stat">
                 <div className="label">List Price</div>
-                <div className="number">{getDisplayBalance(nftCost)} BNB</div>
+                <div className="number">
+                  {getDisplayBalance(nftData.cost)} BNB
+                </div>
               </div>
               {openOrders.length > 0 && (
                 <div className="stat">
@@ -663,7 +665,7 @@ export async function getStaticProps({ params }) {
   ).toNumber();
   const remainingNfts = maxSupply - mintedNfts;
 
-  console.log({ mintedNfts, maxSupply });
+  const cost = await treatMinterContract.nftCosts(nftData.id);
 
   return {
     props: {
@@ -672,6 +674,7 @@ export async function getStaticProps({ params }) {
         mintedNfts,
         remainingNfts,
         maxSupply,
+        cost,
       },
     },
     revalidate: 60,
