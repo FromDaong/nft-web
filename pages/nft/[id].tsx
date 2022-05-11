@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import {
   ArrowUpRightSquare,
   Bag,
@@ -617,16 +616,7 @@ const ViewNFT = ({ nftData, account }) => {
 };
 
 const ViewNFTPage = ({ id, nftData }) => {
-  const client = new ApolloClient({
-    uri: "https://api.thegraph.com/subgraphs/name/0x6e6f6c61/treat",
-    cache: new InMemoryCache(),
-  });
-
-  return (
-    <ApolloProvider client={client}>
-      <ViewNFTWrapper id={id} nftData={nftData} />
-    </ApolloProvider>
-  );
+  return <ViewNFTWrapper id={id} nftData={nftData} />;
 };
 
 ViewNFTWrapper.getInitialProps = async ({ query: { id } }) => {
