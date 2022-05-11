@@ -156,8 +156,11 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       channel: currently_playing,
     };
 
-    setMessages([...messages, notification]);
-    setLatestReactionMessage(notification);
+    if (notification.type === "reaction") {
+      setLatestReactionMessage(notification);
+    } else {
+      setMessages([...messages, notification]);
+    }
     publish(notification);
   };
 
@@ -267,7 +270,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   };
 
   const sendReaction = (message: string) => {
-    sendMessage(message);
+    sendMessage(message, "reaction");
     setIsThrottled(true);
   };
 
