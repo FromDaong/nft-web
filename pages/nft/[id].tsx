@@ -134,7 +134,7 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   );
 };
 
-const ViewNFTWrapper = ({ id, nftData }) => {
+const ViewNFTWrapper = ({ nftData }) => {
   if (!nftData) {
     return (
       <div
@@ -166,11 +166,11 @@ const ViewNFTWrapper = ({ id, nftData }) => {
       </div>
     );
   } else {
-    return <ViewNFT nftData={nftData} account={undefined} />;
+    return <ViewNFT nftData={nftData} />;
   }
 };
 
-const ViewNFT = ({ nftData, account }) => {
+const ViewNFT = ({ nftData }) => {
   const totwNftCost = useGetTreatNFTCost(nftData.id);
   const creatorNftCost = getCreatorNftCost(nftData.id);
   const subscriberNftCost = getSubscriberNftCost(nftData.id);
@@ -183,28 +183,16 @@ const ViewNFT = ({ nftData, account }) => {
   const maxNftSupply = useGetNftMaxSupply(nftData.id);
   const mintedNfts = useGetNftTotalSupply(nftData.id);
   const remainingNfts = maxNftSupply.minus(mintedNfts);
-  const { onMintNft: onMintTotwNft } = useMintNft(
-    nftData.id,
-    nftCost.toNumber()
-  );
-  const { onMintCreatorNft } = useMintCreatorNft(
-    nftData.id,
-    nftCost.toNumber()
-  );
-  const { onMintSubscriberNft } = useMintSubcriberNft(
-    nftData.id,
-    nftCost.toNumber()
-  );
+  const { onMintNft: onMintTotwNft } = useMintNft(nftData.id, nftCost);
+  const { onMintCreatorNft } = useMintCreatorNft(nftData.id, nftCost);
+  const { onMintSubscriberNft } = useMintSubcriberNft(nftData.id, nftCost);
 
   const [showModal, setShowModal] = useState(false);
-  const { onGetFreeTreat } = useGetFreeTreat(nftData.id, nftCost.toNumber());
-  const { onGetFreeCreatorTreat } = useGetFreeCreatorTreat(
-    nftData.id,
-    nftCost.toNumber()
-  );
+  const { onGetFreeTreat } = useGetFreeTreat(nftData.id, nftCost);
+  const { onGetFreeCreatorTreat } = useGetFreeCreatorTreat(nftData.id, nftCost);
   const { onGetFreeSubscriberTreat } = useGetFreeSubscriberTreat(
     nftData.id,
-    nftCost.toNumber()
+    nftCost
   );
 
   const openOrders = useGetOpenOrdersForNft(nftData.id) ?? [];
@@ -615,8 +603,8 @@ const ViewNFT = ({ nftData, account }) => {
   );
 };
 
-const ViewNFTPage = ({ id, nftData }) => {
-  return <ViewNFTWrapper id={id} nftData={nftData} />;
+const ViewNFTPage = ({ nftData }) => {
+  return <ViewNFTWrapper nftData={nftData} />;
 };
 
 ViewNFTWrapper.getInitialProps = async ({ query: { id } }) => {
