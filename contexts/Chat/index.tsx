@@ -188,7 +188,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   ) => {
     // Check if the address is 0x00 (BNB), if it is, send with value attached to tip:
     amount = amount.toString();
-    console.log({ currency_address, treat: contractAddresses.treat2[56] });
 
     if (currency_address === "0x0000000000000000000000000000000000000000") {
       await treat?.contracts.tippingContract.methods
@@ -245,14 +244,19 @@ export const LiveStreamChatContextProvider = ({ children }) => {
           .send();
       }
 
+      toast({
+        title: "Approval",
+        description: `You have approved TreatMinter contract.`,
+        status: "success",
+        duration: 3000,
+      });
+
       // wait until the approval is completed before sending the tip
       await treat?.contracts.tippingContract.methods
         .sendTip(Web3.utils.toWei(amount), currency_address, creator_address)
         .send({
           from: account,
         });
-
-      // will not take any BNB since no value is attached ^-^
     }
 
     // user inform
