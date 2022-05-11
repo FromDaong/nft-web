@@ -31,7 +31,7 @@ export default function ChatItem({
       <Text fontWeight={"semibold"}>
         {`${user_id.substring(0, 6)}...${user_id.substr(-5)}`}
       </Text>
-      <Text color="white">{text}</Text>
+      <Text color="gray.600">{text}</Text>
       {showRetryMessage && (
         <Button
           onClick={retrySendMessage}
