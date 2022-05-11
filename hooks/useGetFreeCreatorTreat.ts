@@ -1,12 +1,13 @@
 import { getCreatorMartContract, mintFreeCreatorTreat } from "../treat/utils";
 
+import BigNumber from "bignumber.js";
 import { useCallback } from "react";
 import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
 
 const useGetFreeCreatorTreat = (
   id: number,
-  treatCost: number,
+  treatCost: number | BigNumber,
   useFreeCreatorTreats = false
 ) => {
   const { account } = useMoralis();

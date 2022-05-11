@@ -4,6 +4,7 @@ import "swiper/scss/navigation";
 import "swiper/scss/pagination";
 import "react-image-lightbox/style.css";
 
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { MoralisProvider, useMoralis } from "react-moralis";
 import { Router, useRouter } from "next/router";
 import { destroyCookie, setCookie } from "nookies";
@@ -191,15 +192,22 @@ function MyApp({ Component, pageProps }) {
 
 function walletWrapper(props) {
   // Add context wrapper here which has account and status
+  const client = new ApolloClient({
+    uri: "https://api.thegraph.com/subgraphs/name/0x6e6f6c61/treat",
+    cache: new InMemoryCache(),
+  });
+
   return (
-    <MoralisProvider
-      appId={"WZSAZ8e1qSzKZ0U7xRErmhoiYraqhoIyU0CCQ2bJ"}
-      serverUrl={"https://ee15wkl2kmkl.usemoralis.com:2053/server"}
-    >
-      <ChakraProvider theme={theme}>
-        <MyApp {...props} />
-      </ChakraProvider>
-    </MoralisProvider>
+    <ApolloProvider client={client}>
+      <MoralisProvider
+        appId={"WZSAZ8e1qSzKZ0U7xRErmhoiYraqhoIyU0CCQ2bJ"}
+        serverUrl={"https://ee15wkl2kmkl.usemoralis.com:2053/server"}
+      >
+        <ChakraProvider theme={theme}>
+          <MyApp {...props} />
+        </ChakraProvider>
+      </MoralisProvider>
+    </ApolloProvider>
   );
 }
 

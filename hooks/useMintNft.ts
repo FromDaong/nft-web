@@ -1,10 +1,15 @@
 import { getTreatMartContract, mintNft } from "../treat/utils";
 
+import BigNumber from "bignumber.js";
 import { useCallback } from "react";
 import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
 
-const useMintNft = (id: number, treatCost: number, useTreatMart = false) => {
+const useMintNft = (
+  id: number,
+  treatCost: number | BigNumber,
+  useTreatMart = false
+) => {
   const { account } = useMoralis();
   const treat = useTreat();
   const treatMartContract = useTreatMart
