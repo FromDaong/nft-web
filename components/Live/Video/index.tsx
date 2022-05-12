@@ -16,8 +16,8 @@ import Participants from "../Participants";
 import ReactionsOverlay from "../Chat/reactions/Overlay";
 import SendTipModal from "../Chat/SendTipModal";
 import { getLivestreamPlaybackURL } from "../utils";
-import videojs from "video.js";
 import { useMoralis } from "react-moralis";
+import videojs from "video.js";
 
 export default function LiveVideo(props: LiveVideoProps) {
   return (
@@ -30,9 +30,8 @@ export default function LiveVideo(props: LiveVideoProps) {
 const LiveVideoConsumer = (props) => {
   const { playback_id, streamIsActive } = props;
   const [videoEl, setVideoEl] = useState(null);
-  const { account } = useMoralis();
   const playback_url = useMemo(() => getLivestreamPlaybackURL(playback_id), []);
-  const { setCurrentlyPlaying, participants, host } = useContext(
+  const { setCurrentlyPlaying, participants, isBanned } = useContext(
     LiveStreamChatContext
   );
 
@@ -66,6 +65,25 @@ const LiveVideoConsumer = (props) => {
       });
     }
   }, [streamIsActive, videoEl]);
+
+  if (isBanned) {
+    return (
+      <Box
+        p={4}
+        borderWidth="1px"
+        borderColor="gray.200"
+        borderRadius="md"
+        bg="gray.50"
+        color="gray.700"
+      >
+        <Flex align="center" justify="center">
+          <Tag colorScheme="red">
+            You are banned from accessing this livestream
+          </Tag>
+        </Flex>
+      </Box>
+    );
+  }
 
   return (
     <Flex
