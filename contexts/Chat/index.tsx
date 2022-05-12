@@ -14,6 +14,10 @@ import { make_id } from "../../components/Live/utils";
 import { reactPusher } from "../../lib/pusher";
 import { useMoralis } from "react-moralis";
 import { useToast } from "@chakra-ui/react";
+import useERC20, {
+  ContractInteractionTypes,
+  TippingCurrencies,
+} from "@hooks/useERC20";
 
 export const LiveStreamChatContext = createContext<{
   currently_playing: string | null;
@@ -73,6 +77,8 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const { account } = useMoralis();
   const { treat } = useContext(Context);
   const toast = useToast();
+  const { approval, allowance, balanceOf } = useERC20();
+  const [hasTipApproval, setTipApproval] = useState<boolean>(false);
 
   const setIsPlaying = (playback_id) => {
     setCurrently_playing(playback_id);
@@ -184,110 +190,176 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     currency_address: string,
     creator_address: string,
     amount: number | string,
-    currency_symbol: string // this should be properly typed with the correct addresses (BUSD & USDC)
+    currency_symbol: string
   ) => {
-    // Check if the address is 0x00 (BNB), if it is, send with value attached to tip:
-    amount = amount.toString();
+    let token: TippingCurrencies;
+    if (
+      currency_address.toUpperCase() ===
+      contractAddresses.busdToken[56].toUpperCase()
+    ) {
+      token = TippingCurrencies.BUSD;
+    }
+    if (currency_address === "0x0000000000000000000000000000000000000000") {
+      token = TippingCurrencies.BNB;
+    }
+    if (
+      currency_address.toUpperCase() ===
+      contractAddresses.usdcToken[56].toUpperCase()
+    ) {
+      token = TippingCurrencies.USDC;
+    }
+    if (
+      currency_address.toUpperCase() ===
+      contractAddresses.treat2[56].toUpperCase()
+    ) {
+      token = TippingCurrencies.TREAT;
+    }
+
+    const bal = await balanceOf({
+      currency: token,
+      interactionType: ContractInteractionTypes.CALL,
+    });
+
+    if (parseFloat(Web3.utils.fromWei(bal)) < amount) {
+      toast({
+        title: "Not Enough Balance!",
+        description: `You do not have enough funds in your wallet to send this tip. The contract will fail.`,
+        status: "error",
+        duration: 3000,
+      });
+      return;
+    }
+    amount = Web3.utils.toWei(amount.toString());
 
     if (currency_address === "0x0000000000000000000000000000000000000000") {
-      await treat?.contracts.tippingContract.methods
+      const sentTip = await treat?.contracts.tippingContract.methods
         .sendTip(
-          Web3.utils.toWei(`${amount}`),
+          amount,
           currency_address,
-          creator_address
+          "0x0E068DBcbc884B81A8A4ECC6F9E4502AD9DF1011"
         )
         .send({
           from: account,
-          value: Web3.utils.toWei(amount.toString()),
+          value: amount,
         });
+
+      if (sentTip) {
+        informUserTip(Web3.utils.fromWei(amount), currency_symbol);
+        return;
+      }
     }
     // if the currency address is TREAT, BUSD, or USDC::
     else {
       // this can be changed with proper typings in an enum
       // temporary workaround until completed.
-      if (
-        currency_address.toUpperCase() ===
-        contractAddresses.busdToken[56].toUpperCase()
-      ) {
-        // // get approval for tipping contract to spend the users BUSD
-        await treat?.contracts.busdToken.methods
-          .approve(
-            contractAddresses.tippingContract[56],
-            Web3.utils.toWei(amount)
-          )
-          .send();
-      }
-      // If USDC Token
-      if (
-        currency_address.toUpperCase() ===
-        contractAddresses.usdcToken[56].toUpperCase()
-      ) {
-        // get approval for tipping contract to spend the users USDC
-        await treat?.contracts.usdcToken.methods
-          .approve(
-            contractAddresses.tippingContract[56],
-            Web3.utils.toWei(amount)
-          )
-          .send();
-      }
-      // If TREAT Token
-      if (
-        currency_address.toUpperCase() ===
-        contractAddresses.treat2[56].toUpperCase()
-      ) {
-        // get approval for tipping contract to spend the users TREAT
-        await treat?.contracts.treat2.methods
-          .approve(
-            contractAddresses.tippingContract[56],
-            Web3.utils.toWei(amount)
-          )
-          .send();
-      }
-
-      toast({
-        title: "Approval",
-        description: `You have approved TreatMinter contract.`,
-        status: "success",
-        duration: 3000,
-      });
-
-      // set time out to remove weird failure sometimes?
-      setTimeout(async function () {
-        await treat?.contracts.tippingContract.methods
-          .sendTip(
-            Web3.utils.toWei(`${amount}`),
-            currency_address,
-            creator_address
-          )
-          .send({
-            from: account,
+      switch (token) {
+        case TippingCurrencies.BUSD: {
+          const currentAllowance = await allowance({
+            currency: TippingCurrencies.BUSD,
           });
-      }, 2000);
+          if (currentAllowance < Web3.utils.fromWei(amount)) {
+            const success = await approval(
+              {
+                currency: TippingCurrencies.BUSD,
+                interactionType: ContractInteractionTypes.SEND,
+              },
+              amount
+            );
+            if (success.transactionHash) {
+              setTipApproval(true);
+            } else {
+              setTipApproval(false);
+            }
+          } else {
+            setTipApproval(true);
+          }
+          break;
+        }
+        case TippingCurrencies.USDC: {
+          const currentAllowance = await allowance({
+            currency: TippingCurrencies.USDC,
+          });
 
-      // // wait until the approval is completed before sending the tip
-      // await treat?.contracts.tippingContract.methods
-      //   .sendTip(
-      //     Web3.utils.toWei(amount),
-      //     currency_address,
-      //     "0x0E068DBcbc884B81A8A4ECC6F9E4502AD9DF1011"
-      //   )
-      //   .send({
-      //     from: account,
-      //   });
+          if (currentAllowance < Web3.utils.fromWei(amount)) {
+            const success = await approval(
+              {
+                currency: TippingCurrencies.USDC,
+                interactionType: ContractInteractionTypes.SEND,
+              },
+              amount
+            );
+            if (success.transactionHash) {
+              setTipApproval(true);
+            } else {
+              setTipApproval(false);
+            }
+          } else {
+            setTipApproval(true);
+          }
+          break;
+        }
+        case TippingCurrencies.TREAT: {
+          const currentAllowance = await allowance({
+            currency: TippingCurrencies.TREAT,
+          });
+
+          if (currentAllowance < Web3.utils.fromWei(amount)) {
+            const success = await approval(
+              {
+                currency: TippingCurrencies.TREAT,
+                interactionType: ContractInteractionTypes.SEND,
+              },
+              amount
+            );
+            if (success.transactionHash) {
+              setTipApproval(true);
+            } else {
+              setTipApproval(false);
+            }
+          } else {
+            setTipApproval(true);
+          }
+        }
+      }
     }
-
-    // user inform
-    sendMessage(
-      `${amount} ${currency_symbol} tipped to creator address`,
-      "tip"
-    );
     toast({
-      title: "Tip sent",
-      description: `${amount} ${currency_symbol} tipped to creator`,
+      title: "Approval",
+      description: `You have approved TreatMinter contract.`,
       status: "success",
       duration: 3000,
     });
+
+    if (hasTipApproval) {
+      // set time out to remove weird failure sometimes?
+      // setTimeout(async function () {
+      const sentTip = await treat?.contracts.tippingContract.methods
+        .sendTip(
+          amount,
+          currency_address,
+          "0x0E068DBcbc884B81A8A4ECC6F9E4502AD9DF1011"
+        )
+        .send({
+          from: account,
+        });
+
+      if (sentTip) {
+        informUserTip(Web3.utils.fromWei(amount), currency_symbol);
+        return;
+      }
+    }
+
     return;
+  };
+
+  const informUserTip = (amount: string, currency: string) => {
+    // user inform
+    sendMessage(`${amount} ${currency} tipped to creator address`, "tip");
+    toast({
+      title: "Tip sent",
+      description: `${amount} ${currency} tipped to creator`,
+      status: "success",
+      duration: 3000,
+    });
   };
 
   const sendReaction = (message: string) => {
