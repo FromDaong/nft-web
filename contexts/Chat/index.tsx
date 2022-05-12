@@ -210,14 +210,12 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         contractAddresses.busdToken[56].toUpperCase()
       ) {
         // // get approval for tipping contract to spend the users BUSD
-        const tx = await treat?.contracts.busdToken.methods
+        await treat?.contracts.busdToken.methods
           .approve(
             contractAddresses.tippingContract[56],
             Web3.utils.toWei(amount)
           )
           .send();
-
-        console.log(tx);
       }
       // If USDC Token
       if (
@@ -253,16 +251,29 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         duration: 3000,
       });
 
-      // wait until the approval is completed before sending the tip
-      await treat?.contracts.tippingContract.methods
-        .sendTip(
-          Web3.utils.toWei(amount),
-          currency_address,
-          "0x0E068DBcbc884B81A8A4ECC6F9E4502AD9DF1011"
-        )
-        .send({
-          from: account,
-        });
+      // set time out to remove weird failure sometimes?
+      setTimeout(async function () {
+        await treat?.contracts.tippingContract.methods
+          .sendTip(
+            Web3.utils.toWei(`${amount}`),
+            currency_address,
+            creator_address
+          )
+          .send({
+            from: account,
+          });
+      }, 2000);
+
+      // // wait until the approval is completed before sending the tip
+      // await treat?.contracts.tippingContract.methods
+      //   .sendTip(
+      //     Web3.utils.toWei(amount),
+      //     currency_address,
+      //     "0x0E068DBcbc884B81A8A4ECC6F9E4502AD9DF1011"
+      //   )
+      //   .send({
+      //     from: account,
+      //   });
     }
 
     // user inform
