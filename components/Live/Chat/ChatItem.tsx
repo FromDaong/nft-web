@@ -30,7 +30,8 @@ export default function ChatItem({
     }
   });
 
-  const { retryMessage, messages } = useContext(LiveStreamChatContext);
+  const { retryMessage, messages, isBanned, banAddress, liftBan, kickout } =
+    useContext(LiveStreamChatContext);
   const retrySendMessage = useCallback(
     () => retryMessage(messages.find((i) => i.index === index)),
     [messages]
@@ -49,8 +50,14 @@ export default function ChatItem({
               <ThreeDotsVertical />
             </MenuButton>
             <MenuList>
-              <MenuItem>Ban </MenuItem>
-              <MenuItem onClick={() => alert("Kagebunshin")}>Kick out</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  isBanned ? liftBan(user_id) : kickout(user_id);
+                }}
+              >
+                Ban{" "}
+              </MenuItem>
+              <MenuItem onClick={() => kickout(user_id)}>Kick out</MenuItem>
             </MenuList>
           </>
         </Menu>

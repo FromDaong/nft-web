@@ -5,6 +5,10 @@ import {
   NotificationType,
 } from "../../components/Live/types";
 import { createContext, useContext, useEffect, useState } from "react";
+import useERC20, {
+  ContractInteractionTypes,
+  TippingCurrencies,
+} from "@hooks/useERC20";
 
 import Axios from "axios";
 import { Context } from "../TreatProvider";
@@ -13,11 +17,8 @@ import { contractAddresses } from "@treat/lib/constants";
 import { make_id } from "../../components/Live/utils";
 import { reactPusher } from "../../lib/pusher";
 import { useMoralis } from "react-moralis";
+import { useRouter } from "next/dist/client/router";
 import { useToast } from "@chakra-ui/react";
-import useERC20, {
-  ContractInteractionTypes,
-  TippingCurrencies,
-} from "@hooks/useERC20";
 
 export const LiveStreamChatContext = createContext<{
   currently_playing: string | null;
@@ -39,6 +40,10 @@ export const LiveStreamChatContext = createContext<{
   sendReaction: (text: string) => void;
   retryMessage: (payload: Notification) => void;
   clearLatestReactionMessage: () => void;
+  isBanned: boolean;
+  banAddress: (address: string) => void;
+  liftBan: (address: string) => void;
+  kickout: (address: string) => void;
 }>({
   currently_playing: null,
   messages: [],
@@ -54,6 +59,10 @@ export const LiveStreamChatContext = createContext<{
   setCurrentlyPlaying: (a) => ({ a }),
   retryMessage: (m) => ({ m }),
   clearLatestReactionMessage: () => ({}),
+  isBanned: false,
+  banAddress: (a) => ({ a }),
+  liftBan: (a) => ({ a }),
+  kickout: (a) => ({ a }),
 });
 
 export const LiveStreamChatContextProvider = ({ children }) => {
@@ -73,12 +82,15 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const [host, setHost] = useState<string | null>(null);
   const [, setIsThrottled] = useState(false);
   const [latestReactionMessage, setLatestReactionMessage] = useState(null);
+  const [banned, setBanned] = useState([]);
+  const [isBanned, setIsBanned] = useState(false);
 
   const { account } = useMoralis();
   const { treat } = useContext(Context);
   const toast = useToast();
   const { approval, allowance, balanceOf } = useERC20();
   const [hasTipApproval, setTipApproval] = useState<boolean>(false);
+  const router = useRouter();
 
   const setIsPlaying = (playback_id) => {
     setCurrently_playing(playback_id);
@@ -429,9 +441,48 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     );
   };
 
-  const getParticipantIp = (address: string) => {};
+  const banAddress = (address: string) => {
+    Axios.post(`/api/v2/chat/${currently_playing}/ban`, {
+      address,
+      toggle: "ban",
+    })
+      .then(() => {
+        sendMessage(`${address} has been banned from chat`);
+        setBanned([...banned, address]);
+      })
+      .catch((err) => {
+        console.log({ err });
+        sendMessage(`${address} could not be banned from chat`);
+      });
+  };
 
-  const banAddress = (address: string) => {};
+  const liftBan = (address: string) => {
+    Axios.post(`/api/v2/chat/${currently_playing}/ban`, {
+      address,
+      toggle: "ban",
+    })
+      .then(() => {
+        sendMessage(`${address} ban has been lifted`);
+        setBanned([...banned, address]);
+      })
+      .catch((err) => {
+        console.log({ err });
+        sendMessage(`${address} ban could not be lifted`);
+      });
+  };
+
+  const kickout = (address: string) => {
+    sendMessage(`${address} has been kicked out of chat`, "kickout").then(
+      () => {
+        toast({
+          title: "Kickout",
+          description: `${address} has been kicked out of chat`,
+          status: "success",
+          duration: 3000,
+        });
+      }
+    );
+  };
 
   useEffect(() => {
     if (currently_playing) {
@@ -440,6 +491,26 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     }
     return () => removeMeFromParticipants();
   }, [currently_playing]);
+
+  useEffect(() => {
+    // get banned
+    if (currently_playing) {
+      Axios.get(`/api/v2/chat/${currently_playing}/ban`)
+        .then((res) => {
+          setBanned(res.data);
+        })
+        .catch((err) => {
+          console.log({ err });
+        });
+    }
+  }, [currently_playing]);
+
+  useEffect(() => {
+    // if account in banned
+    if (banned.indexOf(account) > -1) {
+      setIsBanned(true);
+    }
+  }, [banned, account]);
 
   useEffect(() => {
     if (needsRetry.length > 0) {
@@ -481,6 +552,10 @@ export const LiveStreamChatContextProvider = ({ children }) => {
             status: "success",
             duration: 3000,
           });
+        } else if (data.type === "ban" && data.payload.sender === account) {
+          router.reload();
+        } else if (data.type === "kickout" && data.payload.sender === account) {
+          router.reload();
         }
       });
 
@@ -522,6 +597,10 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         retryMessage: retrySendMessage,
         clearLatestReactionMessage,
         latestReactionMessage,
+        isBanned,
+        banAddress,
+        liftBan,
+        kickout,
       }}
     >
       {children}
