@@ -429,6 +429,10 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     );
   };
 
+  const getParticipantIp = (address: string) => {};
+
+  const banAddress = (address: string) => {};
+
   useEffect(() => {
     if (currently_playing) {
       getParticipants();
