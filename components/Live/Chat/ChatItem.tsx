@@ -1,7 +1,18 @@
-import { Box, Button, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Text,
+} from "@chakra-ui/react";
 import { useCallback, useContext, useEffect } from "react";
 
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import { LiveStreamChatContext } from "../../../contexts/Chat";
+import { ThreeDotsVertical } from "react-bootstrap-icons";
 
 export default function ChatItem({
   text,
@@ -28,9 +39,22 @@ export default function ChatItem({
 
   return (
     <Box py={1} opacity={sent ? 1 : 0.5} className="chat-bubble">
-      <Text fontWeight={"semibold"}>
-        {`${user_id.substring(0, 6)}...${user_id.substr(-5)}`}
-      </Text>
+      <Flex experimental_spaceX={2}>
+        <Text flex={1} fontWeight={"semibold"}>
+          {`${user_id.substring(0, 6)}...${user_id.substr(-5)}`}
+        </Text>
+        <Menu>
+          <>
+            <MenuButton as={Button} variant="link" size="sm">
+              <ThreeDotsVertical />
+            </MenuButton>
+            <MenuList>
+              <MenuItem>Ban </MenuItem>
+              <MenuItem onClick={() => alert("Kagebunshin")}>Kick out</MenuItem>
+            </MenuList>
+          </>
+        </Menu>
+      </Flex>
       <Text color="gray.600">{text}</Text>
       {showRetryMessage && (
         <Button
