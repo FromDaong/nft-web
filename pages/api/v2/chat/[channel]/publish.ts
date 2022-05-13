@@ -9,7 +9,6 @@ import { withJWTAuth } from "../../../../../utils/server-utils";
 async function publish(req, res) {
   const { channel } = req.query;
   const payload: Notification = req.body;
-  console.log({ payload });
 
   // Publish to channel with pusher
   const channelName = `live-${channel}`;
@@ -36,6 +35,18 @@ async function publish(req, res) {
 
       default:
         break;
+    }
+    if (payload.type === "kickout") {
+      await nodePusher.trigger(channelName, "ban-event", {
+        address: payload.target,
+        host: req.session.ethAddress,
+        toggle: payload.type,
+      });
+    } else {
+      await nodePusher.trigger(channelName, eventName, {
+        ...data,
+        sent: true,
+      });
     }
 
     await nodePusher.trigger(channelName, eventName, { ...data, sent: true });

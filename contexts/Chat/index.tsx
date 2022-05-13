@@ -566,8 +566,8 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       );
       current_channel.bind(
         "ban-event",
-        (data: { address: string; event: string; host: string }) => {
-          if (data.event === "ban") {
+        (data: { address: string; toggle: string; host: string }) => {
+          if (data.toggle === "ban") {
             setBanned([...banned, data.address]);
             account !== data.host &&
               toast({
@@ -576,7 +576,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
                 status: "warning",
                 duration: 3000,
               });
-          } else if (data.event === "lift") {
+          } else if (data.toggle === "lift") {
             setBanned((banned) => {
               const new_banned = banned.filter((b) => b !== data.address);
               return new_banned;
@@ -588,7 +588,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
                 status: "success",
                 duration: 3000,
               });
-          } else if (data.event === "kickout") {
+          } else if (data.toggle === "kickout") {
             setBanned([...banned, data.address]);
             account !== data.host &&
               toast({
