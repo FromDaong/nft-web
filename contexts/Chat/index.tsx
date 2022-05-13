@@ -113,19 +113,20 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       const userInfo = me.info;
       setPresenceInfo({ id: userId, info: userInfo });
       // Set unique items only in partipants
-      setParticipants((prevParticipants) =>
-        Array.from(
-          new Set([
-            ...prevParticipants,
+      const unique = [
+        ...new Map(
+          [
+            ...participants,
             {
               user_id: userId,
               address: userInfo.address,
               username: userInfo.username,
               avatar: userInfo.avatar,
             },
-          ])
-        )
-      );
+          ].map((item, key) => [item[key], item])
+        ).values(),
+      ];
+      setParticipants(unique);
     });
   };
 
