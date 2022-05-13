@@ -100,6 +100,15 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     setIs_host(true);
   };
 
+  const setUniqueParticipants = (obj) => {
+    const unique = [
+      ...new Map(
+        [...participants, obj].map((item, key) => [item[key], item])
+      ).values(),
+    ];
+    setParticipants(unique);
+  };
+
   const addMeToParticipants = () => {
     const presenceChannel = reactPusher.subscribe(
       `presence-${currently_playing}`
@@ -113,20 +122,12 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       const userInfo = me.info;
       setPresenceInfo({ id: userId, info: userInfo });
       // Set unique items only in partipants
-      const unique = [
-        ...new Map(
-          [
-            ...participants,
-            {
-              user_id: userId,
-              address: userInfo.address,
-              username: userInfo.username,
-              avatar: userInfo.avatar,
-            },
-          ].map((item, key) => [item[key], item])
-        ).values(),
-      ];
-      setParticipants(unique);
+      setUniqueParticipants({
+        user_id: userId,
+        address: userInfo.address,
+        username: userInfo.username,
+        avatar: userInfo.avatar,
+      });
     });
   };
 
@@ -145,15 +146,12 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     presenceChannel?.members.each(function (member) {
       const userId = member.id;
       const userInfo = member.info;
-      setParticipants((prevParticipants) => [
-        ...prevParticipants,
-        {
-          user_id: userId,
-          address: userInfo.address,
-          username: userInfo.username,
-          avatar: userInfo.avatar,
-        },
-      ]);
+      setUniqueParticipants({
+        user_id: userId,
+        dress: userInfo.address,
+        username: userInfo.username,
+        atar: userInfo.avatar,
+      });
     });
   };
 
