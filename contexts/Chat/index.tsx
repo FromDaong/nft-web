@@ -158,7 +158,11 @@ export const LiveStreamChatContextProvider = ({ children }) => {
 
   // TODO: Throttle emojis display
 
-  const sendMessage = async (message: string, type?: NotificationType) => {
+  const sendMessage = async (
+    message: string,
+    type?: NotificationType,
+    address?: string
+  ) => {
     const composed_message: ChatMessage = {
       sender: account,
       text: message,
@@ -172,6 +176,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       sent: false,
       index: make_id(12),
       channel: currently_playing,
+      target: address,
     };
 
     if (notification.type === "reaction") {
@@ -445,9 +450,10 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     Axios.post(`/api/v2/chat/${currently_playing}/ban`, {
       address,
       toggle: "ban",
+      host: account,
     })
       .then(() => {
-        sendMessage(`${address} has been banned from chat`, "ban");
+        sendMessage(`${address} has been banned from chat`, "ban", address);
         setBanned([...banned, address]);
       })
       .catch((err) => {
@@ -460,10 +466,15 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     Axios.post(`/api/v2/chat/${currently_playing}/ban`, {
       address,
       toggle: "ban",
+      host: account,
     })
       .then(() => {
         sendMessage(`${address} ban has been lifted`, "ban");
-        setBanned([...banned, address]);
+        // remove address from banned
+        setBanned((banned) => {
+          const new_banned = banned.filter((b) => b !== address);
+          return new_banned;
+        });
       })
       .catch((err) => {
         console.log({ err });
@@ -472,16 +483,31 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   };
 
   const kickout = (address: string) => {
-    sendMessage(`${address} has been kicked out of chat`, "kickout").then(
-      () => {
-        toast({
-          title: "Kickout",
-          description: `${address} has been kicked out of chat`,
-          status: "success",
-          duration: 3000,
+    Axios.post(`/api/v2/chat/${currently_playing}/ban`, {
+      address,
+      toggle: "ban",
+      expires: 24 * 60 * 60 * 1000,
+      host: account,
+    })
+      .then(() => {
+        sendMessage(
+          `${address} has been kicked out of chat`,
+          "kickout",
+          address
+        ).then(() => {
+          toast({
+            title: "Kickout",
+            description: `${address} has been kicked out of chat`,
+            status: "success",
+            duration: 3000,
+          });
         });
-      }
-    );
+        setBanned([...banned, address]);
+      })
+      .catch((err) => {
+        console.log({ err });
+        sendMessage(`${address} ban could not be lifted`);
+      });
   };
 
   useEffect(() => {
@@ -538,6 +564,46 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       const current_channel = reactPusher.subscribe(
         `live-${currently_playing}`
       );
+      current_channel.bind(
+        "ban-event",
+        (data: { address: string; event: string; host: string }) => {
+          if (data.event === "ban") {
+            setBanned([...banned, data.address]);
+            account !== data.host &&
+              toast({
+                title: "Ban",
+                description: `${data.address} has been banned from live-stream`,
+                status: "warning",
+                duration: 3000,
+              });
+          } else if (data.event === "lift") {
+            setBanned((banned) => {
+              const new_banned = banned.filter((b) => b !== data.address);
+              return new_banned;
+            });
+            account !== data.host &&
+              toast({
+                title: "Ban",
+                description: `${data.address}'s ban has been lifted`,
+                status: "success",
+                duration: 3000,
+              });
+          } else if (data.event === "kickout") {
+            setBanned([...banned, data.address]);
+            account !== data.host &&
+              toast({
+                title: "Ban",
+                description: `${data.address} has been kicked out from this live-stream`,
+                status: "warning",
+                duration: 3000,
+              });
+          }
+
+          if (data.address.toUpperCase() === account.toUpperCase()) {
+            router.reload();
+          }
+        }
+      );
       current_channel.bind("live-message", (data: Notification) => {
         setLastMessage(data);
         // set reaction if new message from other senders
@@ -552,10 +618,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
             status: "success",
             duration: 3000,
           });
-        } else if (data.type === "ban" && data.payload.sender === account) {
-          router.reload();
-        } else if (data.type === "kickout" && data.payload.sender === account) {
-          router.reload();
         }
       });
 

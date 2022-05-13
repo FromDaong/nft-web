@@ -35,6 +35,7 @@ export interface Notification {
   sent: boolean;
   index: string;
   channel?: string;
+  target?: string;
   retry?: {
     remaining_attempts: number;
     nextAttemptTime: number;
