@@ -447,7 +447,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       toggle: "ban",
     })
       .then(() => {
-        sendMessage(`${address} has been banned from chat`);
+        sendMessage(`${address} has been banned from chat`, "ban");
         setBanned([...banned, address]);
       })
       .catch((err) => {
@@ -462,7 +462,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       toggle: "ban",
     })
       .then(() => {
-        sendMessage(`${address} ban has been lifted`);
+        sendMessage(`${address} ban has been lifted`, "ban");
         setBanned([...banned, address]);
       })
       .catch((err) => {
@@ -568,6 +568,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
           }
         })
         .catch((err) => {
+          console.log({ err });
           setHost(null);
         });
     } else {
