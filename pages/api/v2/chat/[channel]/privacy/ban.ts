@@ -1,18 +1,21 @@
 import Ban from "@models/privacy/Ban";
 import Model from "@models/Model";
+import axios from "axios";
 import { nodePusher } from "@lib/pusher";
 import { withJWTAuth } from "./../../../../../../utils/server-utils";
 
 const enforceIsHost = (handler) => async (req, res) => {
   const { ethAddress } = req.session;
   const { channel } = req.query;
-
-  const host = await Model.findOne({
-    "live.playback_id": channel,
-  });
-  if (`${ethAddress}`.toUpperCase() === `${host.address}`.toUpperCase()) {
-    handler(req, res);
-  } else {
+  try {
+    const host_req = await axios.get(`/api/v2/chat/${channel}/utils/get_host`);
+    const host = host_req.data.host;
+    if (`${ethAddress}`.toUpperCase() === `${host}`.toUpperCase()) {
+      handler(req, res);
+    } else {
+      res.status(401).json({ error: "UnAuthorized" });
+    }
+  } catch (err) {
     res.status(401).json({ error: "UnAuthorized" });
   }
 };
