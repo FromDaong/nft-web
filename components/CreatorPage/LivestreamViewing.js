@@ -86,7 +86,10 @@ const LivestreamViewing = ({
     }
   }, [streamIsActive, playbackId]);
 
-  if (!isSubscribed)
+  if (
+    !isSubscribed &&
+    modelData.address.toLowerCase() !== account.toLowerCase()
+  )
     return (
       <div className="not-subscribed-container">
         <div className="title">Subscribe to see {modelData.username} Live!</div>
