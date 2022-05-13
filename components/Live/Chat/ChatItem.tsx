@@ -53,7 +53,7 @@ export default function ChatItem({
           {`${user_id.substring(0, 6)}...${user_id.substr(-5)}`}
         </Text>
         {account.toUpperCase() === host.toUpperCase() && (
-          <Menu direction="rtl" flip isLazy>
+          <Menu flip isLazy>
             <>
               <MenuButton as={Button} variant="link" size="sm">
                 <ThreeDotsVertical />
