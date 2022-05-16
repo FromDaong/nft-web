@@ -249,11 +249,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
 
     if (currency_address === "0x0000000000000000000000000000000000000000") {
       const sentTip = await treat?.contracts.tippingContract.methods
-        .sendTip(
-          amount,
-          currency_address,
-          "0x0E068DBcbc884B81A8A4ECC6F9E4502AD9DF1011"
-        )
+        .sendTip(amount, currency_address, creator_address)
         .send({
           from: account,
           value: amount,
@@ -273,13 +269,18 @@ export const LiveStreamChatContextProvider = ({ children }) => {
           const currentAllowance = await allowance({
             currency: TippingCurrencies.BUSD,
           });
+          console.log("CURRENT BUSD ALLOWANCE:::", currentAllowance);
           if (currentAllowance < Web3.utils.fromWei(amount)) {
+            console.log("AMOUNT::", parseFloat(amount));
+
             const success = await approval(
               {
                 currency: TippingCurrencies.BUSD,
                 interactionType: ContractInteractionTypes.SEND,
               },
-              amount
+              parseFloat(Web3.utils.fromWei(amount)) > 1000
+                ? amount
+                : Web3.utils.toWei("1000")
             );
             if (success.transactionHash) {
               setTipApproval(true);
@@ -295,6 +296,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
           const currentAllowance = await allowance({
             currency: TippingCurrencies.USDC,
           });
+          console.log("CURRENT USDC ALLOWANCE:::", currentAllowance);
 
           if (currentAllowance < Web3.utils.fromWei(amount)) {
             const success = await approval(
@@ -302,7 +304,9 @@ export const LiveStreamChatContextProvider = ({ children }) => {
                 currency: TippingCurrencies.USDC,
                 interactionType: ContractInteractionTypes.SEND,
               },
-              amount
+              parseFloat(Web3.utils.fromWei(amount)) > 1000
+                ? amount
+                : Web3.utils.toWei("1000")
             );
             if (success.transactionHash) {
               setTipApproval(true);
@@ -318,6 +322,10 @@ export const LiveStreamChatContextProvider = ({ children }) => {
           const currentAllowance = await allowance({
             currency: TippingCurrencies.TREAT,
           });
+          console.log(
+            "!!!!!CURRENT TREAT ALLOWANCE:::",
+            Web3.utils.fromWei(currentAllowance)
+          );
 
           if (currentAllowance < Web3.utils.fromWei(amount)) {
             const success = await approval(
@@ -325,7 +333,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
                 currency: TippingCurrencies.TREAT,
                 interactionType: ContractInteractionTypes.SEND,
               },
-              amount
+              parseFloat(amount) > 250000 ? amount : Web3.utils.toWei("250000")
             );
             if (success.transactionHash) {
               setTipApproval(true);
@@ -348,12 +356,9 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     if (hasTipApproval) {
       // set time out to remove weird failure sometimes?
       // setTimeout(async function () {
+
       const sentTip = await treat?.contracts.tippingContract.methods
-        .sendTip(
-          amount,
-          currency_address,
-          creator_address
-        )
+        .sendTip(amount, currency_address, creator_address)
         .send({
           from: account,
         });
