@@ -553,16 +553,23 @@ export const LiveStreamChatContextProvider = ({ children }) => {
 
   useEffect(() => {
     setMessage(null);
-    allowance({
-      currency: TippingCurrencies.BUSD,
-    }).then((currentAllowance) => {
-      if (currentAllowance < Web3.utils.fromWei(tip_amount)) {
-        setMessage("approval");
-      } else {
-        setMessage("send-tip");
-      }
-    });
-  }, [allowance, balanceOf]);
+    if (tip_amount) {
+      allowance({
+        currency: TippingCurrencies.BUSD,
+      })
+        .then((currentAllowance) => {
+          console.log({ currentAllowance });
+          if (currentAllowance < Web3.utils.fromWei(`${tip_amount}`)) {
+            setMessage("approval");
+          } else {
+            setMessage("send-tip");
+          }
+        })
+        .catch((err) => {
+          console.log({ err });
+        });
+    }
+  }, [allowance, balanceOf, tip_amount]);
 
   useEffect(() => {
     if (currently_playing) {
