@@ -37,6 +37,7 @@ export default function SendTipModal({ isOpen, onClose }) {
     setSelectedCurrencyAddress,
     selected_currency_address,
   } = useContext(LiveStreamChatContext);
+  console.log({ amount, message, selected_currency_address });
 
   const current_currency =
     Object.keys(currency_addresses).find(
@@ -119,15 +120,15 @@ export default function SendTipModal({ isOpen, onClose }) {
                 </Flex>
               </Flex>
               <SimpleGrid columns={3} spacing={[4, 4, 6, 6]}>
-                {bnb_amounts[current_currency.toUpperCase()].map((amount) => (
-                  <GridItem key={amount}>
+                {bnb_amounts[current_currency.toUpperCase()].map((_amount) => (
+                  <GridItem key={_amount}>
                     <Button
-                      variant={amount === amount ? "solid" : "outline"}
-                      colorScheme={amount === amount && "primary"}
+                      variant={_amount === amount ? "solid" : "outline"}
+                      colorScheme={_amount === amount && "primary"}
                       w="full"
-                      onClick={() => setAmount(amount)}
+                      onClick={() => setAmount(_amount)}
                     >
-                      {amount} {current_currency.toUpperCase()}
+                      {_amount} {current_currency.toUpperCase()}
                     </Button>
                   </GridItem>
                 ))}
@@ -151,7 +152,7 @@ export default function SendTipModal({ isOpen, onClose }) {
               colorScheme="primary"
               mr={3}
               onClick={sendTipToCreator}
-              disabled={!amount}
+              disabled={!amount || message === null || loading}
               isLoading={loading || message === null}
             >
               {message === "send-tip" ? "Send Tip" : "Approve"}

@@ -21,14 +21,14 @@ export default function ChatBox() {
       bottom={0}
       left={0}
     >
-      <div className="chat-wrapper">
+      <Box p={2} className="chat-wrapper">
         <ChatContainer messages={messages} last_message={last_message} />
         <ChatUtilsBox sendReaction={sendReaction} />
         <SendMessageBox
           currently_playing={currently_playing}
           sendMessage={sendMessage}
         />
-      </div>
+      </Box>
     </Box>
   );
 }
