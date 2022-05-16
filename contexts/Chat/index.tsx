@@ -553,12 +553,13 @@ export const LiveStreamChatContextProvider = ({ children }) => {
 
   useEffect(() => {
     setMessage(null);
-    const selected_currency = Object.keys(currency_addresses).map(key => {
-      if(currency_addresses[key] === selected_currency_address) return key.toUpperCase()
-    })
+    const selected_currency = Object.keys(currency_addresses).map((key) => {
+      if (currency_addresses[key] === selected_currency_address)
+        return key.toUpperCase();
+    });
     if (tip_amount) {
       allowance({
-        currency: TippingCurrencies[selected_currency],
+        currency: TippingCurrencies[selected_currency[0]],
       })
         .then((currentAllowance) => {
           console.log({ currentAllowance });
