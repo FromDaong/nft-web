@@ -47,13 +47,18 @@ export default function ChatItem({
   const showRetryMessage = retry ? retry.attempt === 3 : false;
 
   return (
-    <Box py={1} opacity={sent ? 1 : 0.9} className="chat-bubble">
+    <Box
+      py={1}
+      opacity={sent ? 1 : 0.9}
+      className="chat-bubble"
+      bgColor={"gray.50"}
+    >
       <Flex experimental_spaceX={2}>
         <Text flex={1} fontWeight={"semibold"}>
           {`${user_id.substring(0, 6)}...${user_id.substr(-5)}`}
         </Text>
         {account.toUpperCase() === host.toUpperCase() && (
-          <Menu flip isLazy>
+          <Menu direction="rtl" isLazy>
             <>
               <MenuButton as={Button} variant="link" size="sm">
                 <ThreeDotsVertical />

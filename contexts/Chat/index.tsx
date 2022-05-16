@@ -552,14 +552,17 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    setMessage(null);
     const selected_currency = Object.keys(currency_addresses).map((key) => {
       if (currency_addresses[key] === selected_currency_address)
         return key.toUpperCase();
     });
+
+    const selected_currency_symbol = selected_currency.filter(
+      (i) => i !== undefined
+    )[0];
     if (tip_amount) {
       allowance({
-        currency: TippingCurrencies[selected_currency[0]],
+        currency: TippingCurrencies[selected_currency_symbol],
       })
         .then((currentAllowance) => {
           console.log({ currentAllowance });
