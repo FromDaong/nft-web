@@ -352,7 +352,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         .sendTip(
           amount,
           currency_address,
-          "0x0E068DBcbc884B81A8A4ECC6F9E4502AD9DF1011"
+          creator_address
         )
         .send({
           from: account,
