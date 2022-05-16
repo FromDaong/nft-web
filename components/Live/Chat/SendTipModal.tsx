@@ -19,7 +19,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
-import useERC20, { TippingCurrencies } from "@hooks/useERC20";
 
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { LiveStreamChatContext } from "../../../contexts/Chat";
