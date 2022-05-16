@@ -19,30 +19,25 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
+import useERC20, { TippingCurrencies } from "@hooks/useERC20";
 
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { LiveStreamChatContext } from "../../../contexts/Chat";
 
-const bnb_amounts = {
-  BNB: [0.01, 0.025, 0.1, 0.5, 1, 5],
-  TREAT: [100, 250, 500, 1000, 5000, 10000],
-  BUSD: [5, 10, 25, 50, 1000, 250],
-};
-
-const currency_addresses = {
-  bnb: "0x0000000000000000000000000000000000000000",
-  treat: "0x01bd7acb6fF3B6Dd5aefA05CF085F2104f3fC53F",
-  usdc: "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
-  busd: "0xe9e7cea3dedca5984780bafc599bd69add087d56",
-};
-
 export default function SendTipModal({ isOpen, onClose }) {
-  const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [selected_currency_address, setSelectedCurrencyAddress] =
-    useState(null);
 
-  const { sendTip, host } = useContext(LiveStreamChatContext);
+  const {
+    sendTip,
+    host,
+    message,
+    bnb_amounts,
+    currency_addresses,
+    tip_amount: amount,
+    setTipAmount: setAmount,
+    setSelectedCurrencyAddress,
+    selected_currency_address,
+  } = useContext(LiveStreamChatContext);
 
   const current_currency =
     Object.keys(currency_addresses).find(
@@ -53,7 +48,7 @@ export default function SendTipModal({ isOpen, onClose }) {
     const currency_address = selected_currency_address;
     const creator_address = host;
     setLoading(true);
-    sendTip(currency_address, creator_address, selected, current_currency)
+    sendTip(currency_address, creator_address, amount, current_currency)
       .then(() => setLoading(false))
       .catch((err) => {
         console.log({ err });
@@ -62,7 +57,7 @@ export default function SendTipModal({ isOpen, onClose }) {
   };
 
   const closeModal = () => {
-    setSelected(null);
+    setAmount(null);
     onClose();
   };
 
@@ -128,10 +123,10 @@ export default function SendTipModal({ isOpen, onClose }) {
                 {bnb_amounts[current_currency.toUpperCase()].map((amount) => (
                   <GridItem key={amount}>
                     <Button
-                      variant={amount === selected ? "solid" : "outline"}
-                      colorScheme={amount === selected && "primary"}
+                      variant={amount === amount ? "solid" : "outline"}
+                      colorScheme={amount === amount && "primary"}
                       w="full"
-                      onClick={() => setSelected(amount)}
+                      onClick={() => setAmount(amount)}
                     >
                       {amount} {current_currency.toUpperCase()}
                     </Button>
@@ -145,7 +140,7 @@ export default function SendTipModal({ isOpen, onClose }) {
                     variant="filled"
                     placeholder="Custom amount"
                     colorScheme={"primary"}
-                    onChange={(e) => setSelected(Number(e.target.value))}
+                    onChange={(e) => setAmount(Number(e.target.value))}
                   />
                 </GridItem>
               </SimpleGrid>
@@ -157,10 +152,10 @@ export default function SendTipModal({ isOpen, onClose }) {
               colorScheme="primary"
               mr={3}
               onClick={sendTipToCreator}
-              disabled={!selected}
-              isLoading={loading}
+              disabled={!amount}
+              isLoading={loading || message === null}
             >
-              Send Tip
+              {message === "send-tip" ? "Send Tip" : "Approve"}
             </Button>
             <Button variant="ghost" onClick={closeModal}>
               Close
