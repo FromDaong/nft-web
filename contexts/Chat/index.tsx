@@ -4,7 +4,13 @@ import {
   Notification,
   NotificationType,
 } from "../../components/Live/types";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  Dispatch,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import useERC20, {
   ContractInteractionTypes,
   TippingCurrencies,
@@ -28,6 +34,14 @@ export const LiveStreamChatContext = createContext<{
   host: string | null;
   isHost: boolean;
   latestReactionMessage: Notification | null;
+  message: string | null;
+  isBanned: boolean;
+  bnb_amounts: any;
+  currency_addresses: any;
+  tip_amount: number;
+  selected_currency_address: string;
+  setTipAmount: Dispatch<any>;
+  setSelectedCurrencyAddress: Dispatch<any>;
   setHost: () => void;
   setCurrentlyPlaying: (string) => void;
   sendMessage: (message: string) => void;
@@ -40,7 +54,6 @@ export const LiveStreamChatContext = createContext<{
   sendReaction: (text: string) => void;
   retryMessage: (payload: Notification) => void;
   clearLatestReactionMessage: () => void;
-  isBanned: boolean;
   banAddress: (address: string) => void;
   liftBan: (address: string) => void;
   kickout: (address: string) => void;
@@ -52,6 +65,14 @@ export const LiveStreamChatContext = createContext<{
   host: null,
   isHost: false,
   latestReactionMessage: null,
+  message: null,
+  isBanned: false,
+  bnb_amounts: [],
+  currency_addresses: [],
+  tip_amount: 0,
+  selected_currency_address: "",
+  setTipAmount: (a) => ({ a }),
+  setSelectedCurrencyAddress: (a) => ({ a }),
   sendMessage: (message) => ({ message }),
   sendTip: async (a, b, c, d) => ({ a, b, c, d }),
   sendReaction: (text) => ({ text }),
@@ -59,7 +80,6 @@ export const LiveStreamChatContext = createContext<{
   setCurrentlyPlaying: (a) => ({ a }),
   retryMessage: (m) => ({ m }),
   clearLatestReactionMessage: () => ({}),
-  isBanned: false,
   banAddress: (a) => ({ a }),
   liftBan: (a) => ({ a }),
   kickout: (a) => ({ a }),
@@ -84,6 +104,10 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const [latestReactionMessage, setLatestReactionMessage] = useState(null);
   const [banned, setBanned] = useState([]);
   const [isBanned, setIsBanned] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const [tip_amount, setAmount] = useState(null);
+  const [selected_currency_address, setSelectedCurrencyAddress] =
+    useState(null);
 
   const { account } = useMoralis();
   const { treat } = useContext(Context);
@@ -91,6 +115,19 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const { approval, allowance, balanceOf } = useERC20();
   const [hasTipApproval, setTipApproval] = useState<boolean>(false);
   const router = useRouter();
+
+  const bnb_amounts = {
+    BNB: [0.01, 0.025, 0.1, 0.5, 1, 5],
+    TREAT: [100, 250, 500, 1000, 5000, 10000],
+    BUSD: [5, 10, 25, 50, 1000, 250],
+  };
+
+  const currency_addresses = {
+    bnb: "0x0000000000000000000000000000000000000000",
+    treat: "0x01bd7acb6fF3B6Dd5aefA05CF085F2104f3fC53F",
+    usdc: "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
+    busd: "0xe9e7cea3dedca5984780bafc599bd69add087d56",
+  };
 
   const setIsPlaying = (playback_id) => {
     setCurrently_playing(playback_id);
@@ -515,6 +552,19 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    setMessage(null);
+    allowance({
+      currency: TippingCurrencies.BUSD,
+    }).then((currentAllowance) => {
+      if (currentAllowance < Web3.utils.fromWei(tip_amount)) {
+        setMessage("approval");
+      } else {
+        setMessage("send-tip");
+      }
+    });
+  }, [allowance, balanceOf]);
+
+  useEffect(() => {
     if (currently_playing) {
       getParticipants();
       addMeToParticipants();
@@ -656,6 +706,13 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         participants,
         isHost,
         host,
+        message,
+        bnb_amounts,
+        currency_addresses,
+        setTipAmount: setAmount,
+        setSelectedCurrencyAddress,
+        selected_currency_address,
+        tip_amount,
         sendMessage,
         sendReaction,
         sendTip,
