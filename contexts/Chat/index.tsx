@@ -29,6 +29,7 @@ import { useToast } from "@chakra-ui/react";
 export const LiveStreamChatContext = createContext<{
   currently_playing: string | null;
   messages: Array<Notification>;
+  isBanned: boolean;
   last_message: Notification | null;
   participants: Array<ChatParticipant>;
   host: string | null;
@@ -59,6 +60,7 @@ export const LiveStreamChatContext = createContext<{
 }>({
   currently_playing: null,
   messages: [],
+  isBanned: false,
   last_message: null,
   participants: [],
   host: null,
@@ -727,7 +729,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         setSelectedCurrencyAddress,
         selected_currency_address,
         tip_amount,
-
+        isBanned,
         sendMessage,
         sendReaction,
         sendTip,
