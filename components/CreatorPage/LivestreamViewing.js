@@ -22,6 +22,7 @@ const LivestreamViewing = ({
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
   const { onSubscribe } = useSubscribe(modelData.address, 1, subscriptionCost);
+  const [isBanned, setIsBanned] = useState(false);
 
   const { stream_id: streamId, playback_id: playbackId } = modelData.live;
 
@@ -41,7 +42,6 @@ const LivestreamViewing = ({
     refreshInterval: 10000,
     revalidateOnMount: true,
   });
-  const { banned } = streamStatusResponse;
 
   if (streamStatusResponse) {
     const { isActive } = streamStatusResponse;
@@ -54,6 +54,15 @@ const LivestreamViewing = ({
   const onVideo = useCallback((el) => {
     setVideoEl(el);
   }, []);
+
+  useEffect(() => {
+
+    if (account && streamStatusResponse) {
+          const { banned } = streamStatusResponse;
+
+      if (banned.find((b) => (b.address = account))) setIsBanned(true);
+    }
+  }, [streamStatusResponse, account]);
 
   useEffect(() => {
     if (videoEl == null) return;
@@ -104,6 +113,19 @@ const LivestreamViewing = ({
       </div>
     );
 
+      if (
+    !isBanned &&
+    modelData.address.toLowerCase() !== account.toLowerCase()
+  )
+    return (
+      <div className="not-subscribed-container">
+        <div className="title">Banned by {modelData.username}</div>
+        <div className="bio">
+          Thew creator {modelData.username} has banned you from this their livestream
+        </div>
+      </div>
+    );
+
   return (
     <>
       <BlankModal
@@ -124,7 +146,6 @@ const LivestreamViewing = ({
       <div className="col-md-12 mt-4 container">
         <div style={{ minHeight: 500 }} className="col-md-12">
           <LiveVideo
-            chatBanned={banned}
             streamIsActive={streamIsActive}
             playback_id={playbackId}
           />
