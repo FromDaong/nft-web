@@ -6,6 +6,7 @@ const ModelSchema = new mongoose.Schema(
   {
     display_name: {
       type: String,
+      default: "",
     },
     username: {
       type: String,
@@ -15,6 +16,10 @@ const ModelSchema = new mongoose.Schema(
     bio: {
       type: String,
       required: [true, "Please add a Model bio"],
+    },
+    isModel: {
+      type: Boolean,
+      default: true,
     },
     totm: {
       type: Boolean,
@@ -27,6 +32,7 @@ const ModelSchema = new mongoose.Schema(
     },
     profile_pic: {
       type: String,
+      default: "",
     },
     profilePicCdnUrl: {
       type: String,
@@ -41,9 +47,11 @@ const ModelSchema = new mongoose.Schema(
     },
     social_account: {
       type: String,
+      default: "",
     },
     address: {
       type: String,
+      required: true,
     },
     email: {
       type: String,
@@ -65,6 +73,20 @@ const ModelSchema = new mongoose.Schema(
     },
     bundle_id: {
       type: String,
+    },
+    live_chat_enabled: {
+      type: Boolean,
+      default: false,
+    },
+    live: {
+      stream_id: String,
+      playback_id: String,
+      stream_key: String,
+      banned: [
+        {
+          id: String,
+        },
+      ],
     },
     nfts: [
       {
@@ -88,6 +110,10 @@ const ModelSchema = new mongoose.Schema(
       },
     },
     referred: [],
+    livestream_active: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: { createdAt: true, updatedAt: false },

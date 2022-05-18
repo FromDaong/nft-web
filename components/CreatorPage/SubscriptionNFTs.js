@@ -105,7 +105,9 @@ const SubscriptionNFTs = ({
             )}
           </div>
           <div className="amount mb-2">{formattedSubCost} BNB for 30 days</div>
-          <Button onClick={handleSubscribe}>Subscribe to see NFTs</Button>
+          <Button onClick={handleSubscribe} colorScheme="primary">
+            Subscribe to see NFTs
+          </Button>
         </div>
       ) : !revealedNFTs ? (
         <div className="not-subscribed-container">

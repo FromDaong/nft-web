@@ -1,6 +1,7 @@
 import { destroyCookie, setCookie } from "nookies";
 
 import jwt from "jsonwebtoken";
+import logger from "../lib/logger";
 import { parseCookies } from "nookies";
 import { web3 } from "./moralis";
 
@@ -29,7 +30,14 @@ export const signJWT = (data, expiresIn) => {
 
 export const withJWTAuth = (handler) => (req, res) => {
   const cookies = parseCookies({ req });
-  const { token } = cookies;
+  let { token, refreshToken } = cookies;
+  if (!token) {
+    token = req.query.token;
+  }
+
+  if (!refreshToken) {
+    refreshToken = req.query.refreshToken;
+  }
 
   try {
     const session = jwt.verify(token, JWT_KEY);
@@ -37,7 +45,6 @@ export const withJWTAuth = (handler) => (req, res) => {
     return handler(req, res);
   } catch (error) {
     try {
-      const { refreshToken } = cookies;
       jwt.verify(refreshToken, JWT_KEY);
 
       const expiredToken = jwt.verify(token, JWT_KEY, {
@@ -65,7 +72,7 @@ export const withJWTAuth = (handler) => (req, res) => {
 
       return handler(req, res);
     } catch (err) {
-      console.log({ err });
+      logger(err);
       res.status(401).json({
         error: true,
         message: {

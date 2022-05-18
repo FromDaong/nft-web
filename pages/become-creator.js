@@ -30,16 +30,16 @@ const CreateModel = () => {
   const [success, setSuccess] = useState(false);
   const [step, setStep] = useState("loading");
   const { account } = useMoralis();
-  const { res, setRes } = useState(null);
+  const [res, setRes] = useState(null);
 
   useEffect(() => {
+    if (!account) return;
     Axios.get(`/api/model/find-by-address/${account}`)
       .then((res) => {
         setRes(res.data);
-        setStep("");
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [account]);
 
   const formik = useFormik({
     initialValues: {
@@ -148,7 +148,7 @@ const CreateModel = () => {
       if (res.pending && res?.identity_access_key?.length > 0) {
         return setStep("pending");
       }
-      if (!res.rejected && !res.pending) {
+      if (res.rejected === false && res.pending === false) {
         return setStep("accepted");
       }
       if (!res.identity_access_key) {
@@ -341,7 +341,7 @@ const CreateModel = () => {
                 {Object.keys(formik.errors).length > 0 && (
                   <Form.Control.Feedback type="invalid" className="d-block">
                     {Object.keys(formik.errors).map((e) => (
-                      <div>{formik.errors[e]}</div>
+                      <div key={e}>{formik.errors[e]}</div>
                     ))}
                     {formik.errors.code}
                   </Form.Control.Feedback>
@@ -368,10 +368,10 @@ const CreateModel = () => {
 
                 <VerifyButton
                   id="asd"
-                  // hidestream
-                  apiKey="zYe9VHCjf5z2MoiuQGlvRK3KRPmQ0B7Kaghp6qyFZ8PfTnQa0zFRuZZWgoVGeAVX"
-                  onStart={() => {}}
-                  onError={(errorCode) => {}}
+                  hidestream
+                  apiKey="DsPgHGsJXFzqRNFtSAL6aUkSaSYCWVHtwGKTqII6aiWma9GgMogUsxoTAFzoObi5"
+                  onStart={() => null}
+                  onError={() => null}
                   onFinish={handleVerificationFinish}
                 />
                 <small className="text-danger">

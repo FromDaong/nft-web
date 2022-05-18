@@ -1,5 +1,5 @@
-import Model from "../../../models/Model";
-import PendingNFT from "../../../models/PendingNFT";
+/* eslint-disable no-async-promise-executor */
+import PendingNFT from "../../../db/models/PendingNFT";
 import TreatNFTMinterAbi from "../../../treat/lib/abi/treatnftminter.json";
 import Web3 from "web3";
 import { contractAddresses } from "../../../treat/lib/constants";

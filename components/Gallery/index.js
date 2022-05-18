@@ -35,7 +35,7 @@ const Gallery = () => {
         <Card>
           <a
             href="https://issuu.com/treatdao/docs/totm_2_kristin_elise?fr=sNTUyZTQ2MTQ0MjQ"
-            target="_blank"
+            target="_blank" rel="noreferrer"
           >
             <Card.Img
               className="p-2"

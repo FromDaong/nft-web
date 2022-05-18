@@ -1,4 +1,5 @@
-import Document, { Html, Head, Main, NextScript } from "next/document";
+import Document, { Head, Html, Main, NextScript } from "next/document";
+
 import Script from "next/script";
 
 class MyDocument extends Document {
@@ -7,7 +8,7 @@ class MyDocument extends Document {
     return { ...initialProps };
   }
 
-  webp = (e) =>
+  webp = () =>
     document
       .createElement("canvas")
       .toDataURL("image/webp")

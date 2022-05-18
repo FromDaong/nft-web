@@ -114,7 +114,7 @@ const AdminDashboard = ({ username }) => {
     setShowPendingModal(true);
     const performer = await onAddPerformerToMinter();
     if (performer) {
-      const res = await fetch(`/api/admin/${username}/approve`);
+      await fetch(`/api/admin/${username}/approve`);
       setShowCompleteModal(true);
     }
     setShowPendingModal(false);
@@ -204,6 +204,8 @@ const AdminDashboard = ({ username }) => {
               <b>Passbase status:</b>
               <br />
               {!data.identity && "NOT PASSBASE VERIFIED"}
+              <br />
+              {data.identity_access_key}
               {data.identity && (
                 <>
                   {data.identity.status && `Status: ${data.identity.status}`}

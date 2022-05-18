@@ -22,8 +22,7 @@ const useGetFreeSubscriberTreat = (
     const txHash = await mintFreeSubscriberTreat(
       subscriberMartContract,
       account,
-      id,
-      treatCost
+      id
     );
 
     return txHash;

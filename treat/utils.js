@@ -453,7 +453,8 @@ export const addCreatorNft = async (
 export const addSubscriberFreeTreat = async (
   subscriberMartContract,
   account,
-  nftIds
+  nftIds,
+  nftCosts
 ) => {
   try {
     return await subscriberMartContract.methods
@@ -467,7 +468,8 @@ export const addSubscriberFreeTreat = async (
 export const addCreatorFreeTreat = async (
   creatorMartContract,
   account,
-  nftIds
+  nftIds,
+  nftCosts
 ) => {
   try {
     return await creatorMartContract.methods

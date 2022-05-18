@@ -1,6 +1,6 @@
-import Model from "../../../models/Model";
-import NFT from "../../../models/NFT";
-import PendingNFT from "../../../models/PendingNFT";
+import Model from "../../../db/models/Model";
+import NFT from "../../../db/models/NFT";
+import PendingNFT from "../../../db/models/PendingNFT";
 import Web3 from "web3";
 import { contractAddresses } from "../../../treat/lib/constants";
 import dbConnect from "../../../utils/dbConnect";

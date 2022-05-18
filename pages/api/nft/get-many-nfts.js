@@ -2,7 +2,7 @@ import * as atob from "atob";
 
 import { getNftMaxSupply, getNftTotalSupply } from "../../../treat/utils";
 
-import NFT from "../../../models/NFT";
+import NFT from "../../../db/models/NFT";
 import TreatNFTMinterAbi from "../../../treat/lib/abi/treatnftminter.json";
 import Web3 from "web3";
 import { contractAddresses } from "../../../treat/lib/constants";

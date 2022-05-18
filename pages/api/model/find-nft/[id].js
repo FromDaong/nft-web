@@ -1,4 +1,4 @@
-import NFT from "../../../../models/NFT";
+import NFT from "../../../../db/models/NFT";
 import TreatNFTMinterAbi from "../../../../treat/lib/abi/treatnftminter.json";
 import Web3 from "web3";
 import dbConnect from "../../../../utils/dbConnect";

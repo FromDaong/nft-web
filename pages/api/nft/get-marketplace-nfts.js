@@ -1,6 +1,6 @@
+import NFT from "../../../db/models/NFT";
 import dbConnect from "../../../utils/dbConnect";
-import NFT from "../../../models/NFT";
-// import User from "../../../../models/User";
+// import User from "../../../../db/models/User";
 import withSession from "../../../lib/session";
 
 dbConnect();

@@ -8,4 +8,6 @@ module.exports = withBundleAnalyzer({
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
+  reactStrictMode: true,
+  concurrentFeatures: true,
 });

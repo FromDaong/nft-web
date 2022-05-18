@@ -1,3 +1,4 @@
+import { BagX, PatchCheck, RecordCircle, Shop } from "react-bootstrap-icons";
 import React, { useEffect, useState } from "react";
 import { Tab, Tabs } from "react-bootstrap";
 
@@ -6,6 +7,7 @@ import { Clipboard } from "react-bootstrap-icons";
 import ErrorFallback from "../../components/Fallback/Error";
 import Layout from "../../components/Layout";
 import Link from "next/link";
+import LivestreamViewing from "../../components/CreatorPage/LivestreamViewing";
 import Spinner from "react-bootstrap/Spinner";
 import SubscriptionNFTs from "../../components/CreatorPage/SubscriptionNFTs";
 import SweetShopNFTs from "../../components/CreatorPage/SweetShopNFTs";
@@ -148,7 +150,6 @@ const ViewModel = ({
   onRedeemSet,
   nftSetPrice,
 }) => {
-  console.log({ newNFTs, subNFTs, totwNFTs, totmNFTs, outOfPrintNFTs });
   const [copied, setCopied] = useState(false);
   const { account } = useMoralis();
   const subscriptionCost = useGetSubscriptionCost(modelData.address || "");
@@ -158,9 +159,7 @@ const ViewModel = ({
 
   useEffect(() => {
     if (Number(formattedSubCost) !== 0) setKey("sub");
-    if (totwNFTs && totwNFTs.length !== 0) setKey("totw");
-    if (totmNFTs && totmNFTs.length !== 0) setKey("totm");
-  }, [formattedSubCost, totwNFTs, totmNFTs]);
+  }, [formattedSubCost]);
 
   const formatURL = (str) => {
     if (str) {
@@ -258,7 +257,14 @@ const ViewModel = ({
               mountOnEnter
             >
               {totwNFTs && totwNFTs.length > 0 && (
-                <Tab eventKey="totw" title="TOTW NFTs">
+                <Tab
+                  eventKey="totw"
+                  title={
+                    <span>
+                      <PatchCheck /> TOTW NFTs
+                    </span>
+                  }
+                >
                   <SweetShopNFTs
                     modelNFTs={totwNFTs}
                     onRedeemSet={onRedeemSet}
@@ -268,7 +274,7 @@ const ViewModel = ({
                 </Tab>
               )}
               {totmNFTs && totmNFTs.length > 0 && (
-                <Tab eventKey="totm" title="TOTM NFTs">
+                <Tab eventKey="totm" title={`TOTM NFTs`}>
                   <SweetShopNFTs
                     modelNFTs={totmNFTs}
                     onRedeemSet={onRedeemSet}
@@ -278,7 +284,14 @@ const ViewModel = ({
                 </Tab>
               )}
               {Number(formattedSubCost) !== 0 && (
-                <Tab eventKey="sub" title="Subscription NFTs">
+                <Tab
+                  eventKey="sub"
+                  title={
+                    <span>
+                      <PatchCheck className="mr-1 mb-1" /> Subscription NFTs
+                    </span>
+                  }
+                >
                   <SubscriptionNFTs
                     isSubscribed={isSubscribed}
                     modelNFTs={subNFTs}
@@ -290,14 +303,53 @@ const ViewModel = ({
                   />
                 </Tab>
               )}
-              <Tab eventKey="sweet" title="Sweet Shop NFTs">
+              {Number(formattedSubCost) !== 0 &&
+                modelData.live &&
+                modelData.live.stream_id && (
+                  <Tab
+                    eventKey="live"
+                    title={
+                      <span>
+                        <RecordCircle
+                          className="mr-1 mb-1"
+                          isSubscribed={isSubscribed}
+                        />{" "}
+                        Livestream
+                      </span>
+                    }
+                  >
+                    <LivestreamViewing
+                      subscriptionCost={subscriptionCost}
+                      isSubscribed={isSubscribed}
+                      account={account}
+                      formattedSubCost={formattedSubCost}
+                      streamId={modelData.live.stream_id}
+                      modelData={modelData}
+                    />
+                  </Tab>
+                )}
+              <Tab
+                eventKey="sweet"
+                title={
+                  <span>
+                    <Shop className="mr-1 mb-1" /> Sweet Shop NFTs
+                  </span>
+                }
+              >
                 <SweetShopNFTs
                   modelNFTs={newNFTs}
                   onRedeemSet={onRedeemSet}
                   modelData={modelData}
                 />
               </Tab>
-              <Tab eventKey="soldout" title="Sold out NFTs">
+              <Tab
+                eventKey="soldout"
+                title={
+                  <span>
+                    <BagX className="mr-1 mb-1" /> Sold Out NFTs
+                  </span>
+                }
+              >
                 <SweetShopNFTs
                   modelNFTs={outOfPrintNFTs}
                   onRedeemSet={onRedeemSet}

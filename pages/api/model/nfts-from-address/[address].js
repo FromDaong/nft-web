@@ -1,6 +1,6 @@
+import Model from "../../../../db/models/Model";
+import NFT from "../../../../db/models/NFT";
 import dbConnect from "../../../../utils/dbConnect";
-import Model from "../../../../models/Model";
-import NFT from "../../../../models/NFT";
 
 dbConnect();
 
