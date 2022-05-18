@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-import Model from "../../../db/models/Model";
+import Model from "@models/Model";
 
 // enable this webhook to set live
 

@@ -28,11 +28,14 @@ export default function LiveVideo(props: LiveVideoProps) {
 }
 
 const LiveVideoConsumer = (props) => {
-  const { playback_id, streamIsActive } = props;
+  const { playback_id, streamIsActive, banned } = props;
   const [videoEl, setVideoEl] = useState(null);
+  const [isBanned, setIsBanned] = useState(false);
+  const { account } = useMoralis();
   const playback_url = useMemo(() => getLivestreamPlaybackURL(playback_id), []);
-  const { setCurrentlyPlaying, participants, isBanned, loadingBanned } =
-    useContext(LiveStreamChatContext);
+  const { setCurrentlyPlaying, participants, loadingBanned } = useContext(
+    LiveStreamChatContext
+  );
 
   const { onOpen, isOpen, onClose } = useDisclosure();
 
@@ -43,6 +46,12 @@ const LiveVideoConsumer = (props) => {
   useEffect(() => {
     setCurrentlyPlaying(playback_id);
   }, [playback_id]);
+
+  useEffect(() => {
+    if (account && banned) {
+      if (banned.find((b) => (b.address = account))) setIsBanned(true);
+    }
+  }, [banned, account]);
 
   useEffect(() => {
     if (videoEl == null) return;

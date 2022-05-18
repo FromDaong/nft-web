@@ -1,4 +1,6 @@
 import axios from "axios";
+import Model from "@models/Model";
+import Ban from "@models/Ban";
 
 /**
  * calls the /stream/<id> route of Livepeer.com APIs to get the stream's status to verify that the stream is live or not.
@@ -20,8 +22,10 @@ export default async (req, res) => {
       );
 
       if (streamStatusResponse && streamStatusResponse.data) {
+        const model = Model.findOne({ "live.stream_id": streamId });
+        const banned = Ban.find({ channel: model.live.playback_id });
         res.statusCode = 200;
-        res.json({ ...streamStatusResponse.data });
+        res.json({ ...streamStatusResponse.data, banned: [...banned] });
       } else {
         res.statusCode = 500;
         res.json({ error: "Something went wrong" });
