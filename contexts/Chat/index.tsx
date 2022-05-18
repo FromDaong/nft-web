@@ -35,14 +35,12 @@ export const LiveStreamChatContext = createContext<{
   isHost: boolean;
   latestReactionMessage: Notification | null;
   message: string | null;
-  isBanned: boolean;
   bnb_amounts: any;
   currency_addresses: any;
   tip_amount: number;
   selected_currency_address: string;
   setTipAmount: Dispatch<any>;
   setSelectedCurrencyAddress: Dispatch<any>;
-  loadingBanned: boolean;
   setHost: () => void;
   setCurrentlyPlaying: (string) => void;
   sendMessage: (message: string) => void;
@@ -67,12 +65,10 @@ export const LiveStreamChatContext = createContext<{
   isHost: false,
   latestReactionMessage: null,
   message: null,
-  isBanned: false,
   bnb_amounts: [],
   currency_addresses: [],
   tip_amount: 0,
   selected_currency_address: "",
-  loadingBanned: true,
   setTipAmount: (a) => ({ a }),
   setSelectedCurrencyAddress: (a) => ({ a }),
   sendMessage: (message) => ({ message }),
@@ -611,8 +607,8 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   useEffect(() => {
     // if account in banned
     if (account && banned) {
-      if (banned.find(b => b.address === account)) {
-        setIsBanned(true)
+      if (banned.find((b) => b.address === account)) {
+        setIsBanned(true);
       }
     }
   }, [banned, account]);
@@ -731,7 +727,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         setSelectedCurrencyAddress,
         selected_currency_address,
         tip_amount,
-        loadingBanned,
+
         sendMessage,
         sendReaction,
         sendTip,
@@ -740,7 +736,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         retryMessage: retrySendMessage,
         clearLatestReactionMessage,
         latestReactionMessage,
-        isBanned,
         banAddress,
         liftBan,
         kickout,

@@ -30,9 +30,11 @@ export default function LiveVideo(props: LiveVideoProps) {
 const LiveVideoConsumer = (props) => {
   const { playback_id, streamIsActive } = props;
   const [videoEl, setVideoEl] = useState(null);
+  const { account } = useMoralis();
   const playback_url = useMemo(() => getLivestreamPlaybackURL(playback_id), []);
-  const { setCurrentlyPlaying, participants, isBanned, loadingBanned } =
-    useContext(LiveStreamChatContext);
+  const { setCurrentlyPlaying, participants } = useContext(
+    LiveStreamChatContext
+  );
 
   const { onOpen, isOpen, onClose } = useDisclosure();
 
@@ -43,6 +45,8 @@ const LiveVideoConsumer = (props) => {
   useEffect(() => {
     setCurrentlyPlaying(playback_id);
   }, [playback_id]);
+
+
 
   useEffect(() => {
     if (videoEl == null) return;
@@ -63,46 +67,7 @@ const LiveVideoConsumer = (props) => {
         player.src(playback_url);
       });
     }
-  }, [streamIsActive, videoEl]);
-
-  if (isBanned) {
-    return (
-      <Box
-        p={4}
-        borderWidth="1px"
-        borderColor="gray.200"
-        borderRadius="md"
-        bg="gray.50"
-        color="gray.700"
-      >
-        <Flex align="center" justify="center">
-          <Tag colorScheme="red">
-            You are banned from accessing this livestream
-          </Tag>
-        </Flex>
-      </Box>
-    );
-  }
-
-  if (loadingBanned) {
-    return (
-      <Box
-        p={4}
-        borderWidth="1px"
-        borderColor="gray.200"
-        borderRadius="md"
-        bg="gray.50"
-        color="gray.700"
-      >
-        <Flex align="center" justify="center">
-          <Tag colorScheme="yellow">
-            Please wait, we're fetching details about this livestream.
-          </Tag>
-        </Flex>
-      </Box>
-    );
-  }
-
+  }, [streamIsActive, videoEl])
 
   return (
     <Flex
