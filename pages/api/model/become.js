@@ -1,5 +1,5 @@
+import Model from "../../../db/models/Model";
 import dbConnect from "../../../utils/dbConnect";
-import Model from "../../../models/Model";
 import withSession from "../../../lib/session";
 dbConnect();
 
@@ -22,6 +22,7 @@ export default withSession(async (req, res) => {
           nfts: [],
           pending: true,
           rejected: false,
+          isModel: req.body.isModel,
         };
 
         // const identity = await client.getIdentityById("identity_access_key");

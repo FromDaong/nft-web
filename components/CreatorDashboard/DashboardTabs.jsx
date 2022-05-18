@@ -4,9 +4,10 @@ import {
   CollectionFill,
   GearFill,
   InfoCircleFill,
-  PatchCheckFill,
+  PatchCheck,
   PencilFill,
   PiggyBankFill,
+  RecordCircle,
 } from "react-bootstrap-icons";
 import { Nav, Tab } from "react-bootstrap";
 
@@ -14,6 +15,7 @@ import CreatedNFTs from "./CreatedNFTs";
 import CreatorResources from "./CreatorResources";
 import EditProfile from "./EditProfile";
 import ErrorFallback from "../Fallback/Error";
+import LivestreamDashboard from "./LivestreamDashboard";
 import OwnedNFTs from "./OwnedNFTs";
 import React from "react";
 import Referrals from "./Referrals";
@@ -21,6 +23,9 @@ import ResaleNFTs from "./ResaleNFTs";
 import SubSettingsBox from "./SubSettingsBox";
 import SubscriptionNFTs from "./SubscriptionNFTs";
 import SubscriptionSettings from "./SubscriptionSettings";
+import { useMoralis } from "react-moralis";
+import { useRouter } from "next/router";
+import useSWR from "swr";
 
 export default function DashboardTabs({
   modelData,
@@ -42,8 +47,13 @@ export default function DashboardTabs({
   isLoading,
   isModel,
 }) {
+  const router = useRouter();
+
   return (
-    <Tab.Container id="left-tabs-example" defaultActiveKey={"owned-nfts"}>
+    <Tab.Container
+      id="left-tabs-example"
+      defaultActiveKey={router.query.tab || "owned-nfts"}
+    >
       <div className="mt-2 row">
         <div className="col-md-2 p-0">
           <Nav variant="pills" className="flex-column">
@@ -67,18 +77,17 @@ export default function DashboardTabs({
                 </Nav.Link>
               </Nav.Item>
             )}
-            {isModel && (
-              <Nav.Item className="white-tp-bg mt-2">
-                <Nav.Link eventKey="edit-profile">
-                  <PencilFill className="mr-2 mb-1" />
-                  Edit Profile
-                </Nav.Link>
-              </Nav.Item>
-            )}
+            <Nav.Item className="white-tp-bg mt-2">
+              <Nav.Link eventKey="edit-profile">
+                <PencilFill className="mr-2 mb-1" />
+                Edit Profile
+              </Nav.Link>
+            </Nav.Item>
+
             {isModel && (
               <Nav.Item className="white-tp-bg mt-2">
                 <Nav.Link eventKey="subscription-nfts">
-                  <PatchCheckFill className="mr-2 mb-1" />
+                  <PatchCheck className="mr-2 mb-1" />
                   Subscription NFTs
                 </Nav.Link>
               </Nav.Item>
@@ -88,6 +97,14 @@ export default function DashboardTabs({
                 <Nav.Link eventKey="subscription-settings">
                   <GearFill className="mr-2 mb-1" />
                   Subscription Settings
+                </Nav.Link>
+              </Nav.Item>
+            )}
+            {isModel && (
+              <Nav.Item className="white-tp-bg mt-2">
+                <Nav.Link eventKey="subscription-livedash">
+                  <RecordCircle className="mr-2 mb-1" />
+                  Livestream Dashboard
                 </Nav.Link>
               </Nav.Item>
             )}
@@ -173,6 +190,11 @@ export default function DashboardTabs({
               <Tab.Pane eventKey="subscription-settings">
                 <SubscriptionSettings modelData={modelData} />
                 <SubSettingsBox modelData={modelData} />
+              </Tab.Pane>
+            )}
+            {isModel && (
+              <Tab.Pane eventKey="subscription-livedash">
+                <LivestreamDashboard modelData={modelData} />
               </Tab.Pane>
             )}
             {isModel && (

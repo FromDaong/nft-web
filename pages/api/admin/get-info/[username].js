@@ -1,13 +1,14 @@
+/* eslint-disable no-case-declarations */
+import Model from "../../../../db/models/Model";
 import dbConnect from "../../../../utils/dbConnect";
-import Model from "../../../../models/Model";
 import withSession from "../../../../lib/session";
 
 dbConnect();
 
 const { PassbaseClient, PassbaseConfiguration } = require("@passbase/node");
 
-const apiKey = // hidestream
-  "OSjy4wqjZaKBi0hUf5dir2Y3hfc6LM0fNeUBzzIKCySelBvIjHkKsbak40J2kZvCF4v26w45OGipY0c1er7rkKa9lBJFKYG6Zl14Adf0uk7wEeQLIkS6TZtf33Dve3C4";
+const apiKey =
+  "elBBJ5uEoadUIO99IwEKpmg3IvpzUz74UdSaxMMYcnJqYf1XRYpDlzXMXOMYMBeZrIVrC97SX0dE5GS0otGvZJ9OplGZXZKhqjGB0MctCFA5lmteuK1fzsH1Kkk405we";
 const config = new PassbaseConfiguration({
   apiKey,
 });
@@ -22,10 +23,9 @@ export default withSession(async (req, res) => {
   switch (method) {
     case "GET":
       const user = await req.session.get("admin");
+      let modelRes = await Model.findOne({ username });
 
       if (!user) return res.status(400).json({ success: false });
-
-      let modelRes = await Model.findOne({ username });
 
       if (!modelRes)
         return res

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import {
   ArrowUpRightSquare,
   Bag,
@@ -36,6 +38,7 @@ import useMintCreatorNft from "../../hooks/useMintCreatorNft";
 import useMintNft from "../../hooks/useMintNft";
 import useMintSubcriberNft from "../../hooks/useMintSubscriberNft";
 import { useMoralis } from "react-moralis";
+import { useRouter } from "next/router";
 
 const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   const { account } = useMoralis();
@@ -131,17 +134,22 @@ const RedeemButton = ({ onMintNft, remainingNfts, nftData, setShowModal }) => {
   );
 };
 
-const ViewNFTWrapper = ({ id }) => {
+const ViewNFTWrapper = () => {
   const [error, setErr] = useState(null);
   const [nftData, setNftData] = useState();
+  const router = useRouter();
+  const { id } = router.query;
+  console.log({ id });
 
   useEffect(() => {
-    Axios.get(`/api/v2/nft/${id}`)
-      .then((res) => {
-        setNftData(res.data);
-      })
-      .catch((err) => setErr(err));
-  }, []);
+   if(id) {
+      Axios.get(`/api/v2/nft/${id}`)
+        .then((res) => {
+          setNftData(res.data);
+        })
+        .catch((err) => setErr(err));
+   }
+  }, [id]);
 
   if (!nftData) {
     return (
@@ -257,7 +265,7 @@ const ViewNFT = ({ nftData, account }) => {
 
   const {
     loading: loadingMintHistory,
-    error: errorMintHistory,
+    error: _errorMintHistory,
     data: mintHistoryData,
   } = useQuery(
     gql`
@@ -325,12 +333,14 @@ const ViewNFT = ({ nftData, account }) => {
     }
   };
 
+  /*
   const historyEvents = nftData.mints.map((m) => {
     return {
       when: m.timestamp.toString(),
       event: `${m.buyer} bought for ${m.price}`, // TODO: look up username from account
     };
   });
+  */
 
   const setSort = (sortBy) => {
     setSortBy(sortBy);
@@ -483,8 +493,10 @@ const ViewNFT = ({ nftData, account }) => {
                 <div className="bio">{nftData.description}</div>
                 <div className="tags mt-2">
                   {nftData.tags &&
-                    nftData.tags.map((tag) => (
-                      <Badge variant="secondary mr-2">{tag}</Badge>
+                    nftData.tags.map((tag, i) => (
+                      <Badge key={i} variant="secondary mr-2">
+                        {tag}
+                      </Badge>
                     ))}
                 </div>
               </div>
@@ -615,8 +627,12 @@ const ViewNFT = ({ nftData, account }) => {
   );
 };
 
+const ViewNFTPage = ({ id }) => {
+  return <ViewNFTWrapper id={id} />;
+};
+
 ViewNFTWrapper.getInitialProps = async ({ query: { id } }) => {
   return { id };
 };
 
-export default ViewNFTWrapper;
+export default ViewNFTPage;

@@ -1,24 +1,21 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
+import { Clipboard } from "react-bootstrap-icons";
 import Layout from "../../components/Layout";
 import MoralisInstance from "../../utils/moralis";
-import NFT from "../../models/NFT";
-import Profile from "../../models/Profile";
+import NFT from "../../db/models/NFT";
 import NFTListItem from "../../components/NFTListItem/";
+import Profile from "../../db/models/Profile";
 import dbConnect from "../../utils/dbConnect";
 import { useRouter } from "next/dist/client/router";
 import { useState } from "react";
-import { Clipboard } from "react-bootstrap-icons";
 
 export default function UserProfile(props) {
-  const [loadingOwnedNFTs, setLoadingOwnedNFTs] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const router = useRouter();
   const { address } = router.query;
   const owned_nfts = JSON.parse(props.owned_nfts);
   const { profile } = props;
-
-  const navigateOwnedNFTs = (p) => { };
 
   return (
     <Layout>
@@ -36,7 +33,9 @@ export default function UserProfile(props) {
               style={{ marginTop: 10, fontSize: "0.8em" }}
               onClick={() => {
                 navigator.clipboard.writeText(
-                  `https://treatdao.com/p/${profile.display_name || profile.username || address}`
+                  `https://treatdao.com/p/${
+                    profile.display_name || profile.username || address
+                  }`
                 );
                 setCopied(true);
               }}
@@ -67,7 +66,6 @@ export default function UserProfile(props) {
               {owned_nfts.docs.length > 0 ? (
                 <>
                   {owned_nfts.docs.map((doc) => {
-                    console.log({ doc })
                     return (
                       // @ts-ignore
                       <NFTListItem data={doc} key={doc.id} />
@@ -98,7 +96,7 @@ export default function UserProfile(props) {
           </div>
         </div>
       </div>
-    </Layout >
+    </Layout>
   );
 }
 

@@ -1,9 +1,10 @@
-import Model from "../../../../models/Model";
+import Model from "../../../../db/models/Model";
 import dbConnect from "../../../../utils/dbConnect";
+import { getSessionFromToken } from "../../../../utils/server-utils";
 
 dbConnect();
 
-export default async (req, res) => {
+const getByAddr = async (req, res) => {
   const {
     query: { address },
     method,
@@ -16,6 +17,8 @@ export default async (req, res) => {
           address: { $regex: new RegExp(address, "i") },
         });
 
+        const session = getSessionFromToken({ req });
+
         if (!modelRes)
           return res.status(200).json({
             bio: "I am a new Treat explorer",
@@ -25,6 +28,11 @@ export default async (req, res) => {
           });
 
         const returnData = { ...modelRes.toObject() };
+        if (
+          returnData.live &&
+          session.ethAddress.toLowerCase() !== address.toLowerCase()
+        )
+          delete returnData.live.stream_key;
 
         return res.status(200).json(returnData);
       } catch (error) {
@@ -36,3 +44,5 @@ export default async (req, res) => {
       break;
   }
 };
+
+export default getByAddr;

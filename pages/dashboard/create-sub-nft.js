@@ -21,7 +21,7 @@ import { useState } from "react";
 const CreateNFT = ({ modelData }) => {
   const [ipfsFiles, setIpfsFiles] = useState([]);
   const router = useRouter();
-  const [success, setSuccess] = useState(false);
+  const [, setSuccess] = useState(false);
 
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
@@ -107,7 +107,7 @@ const CreateNFT = ({ modelData }) => {
         })
       ),
     }),
-    handleChange: (c) => {},
+    handleChange: (c) => null,
     onSubmit: (values) => {
       SubmitToServer();
     },

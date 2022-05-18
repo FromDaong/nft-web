@@ -7,42 +7,40 @@ import { PencilFill } from "react-bootstrap-icons";
 import axios from "axios";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Axios from "axios";
 
 const EditProfile = ({ modelData }) => {
   const router = useRouter();
-  const [success] = useState(false);
   const [disabled, setDisabled] = useState(false);
-  const res = modelData;
   const formik = useFormik({
-    initialValues: res,
+    initialValues: modelData,
     validateOnChange: false,
     validateOnBlur: false,
     validationSchema: Yup.object().shape({
       display_name: Yup.string(),
       username: Yup.string().required("Please add a username"),
-      bio: Yup.string().required("Please add the Creator bio"),
+      bio: Yup.string(),
       social_account: Yup.string(),
-      profile_pic: Yup.string().required("Please add a Profile Photo"),
+      profile_pic: Yup.string(),
       banner_pic: Yup.string(),
-      email: Yup.string().required("Please add a Email"),
+      email: Yup.string(),
     }),
-    onSubmit: (values) => {
+    onSubmit: () => {
       SubmitToServer();
     },
   });
 
+  useEffect(() => {
+    formik.setValues({ ...modelData });
+  }, [modelData]);
+
   const SubmitToServer = async () => {
     try {
-      const serverRes = await fetch(`/api/model/${res.username}`, {
-        method: "PUT",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formik.values),
+      const serverRes = await Axios.patch(`/api/v2/auth/patch`, {
+        ...formik.values,
       });
-      const resJSON = await serverRes.json();
+      const resJSON = serverRes.data;
 
       if (resJSON.error && resJSON.error.errors) {
         console.error(resJSON.error);
@@ -87,7 +85,7 @@ const EditProfile = ({ modelData }) => {
       });
   };
 
-  if (success || (res && res.pending))
+  if (modelData && modelData.pending)
     return (
       <Hero
         title="Your application has been submitted!"
@@ -95,7 +93,7 @@ const EditProfile = ({ modelData }) => {
       />
     );
 
-  if (res && res.rejected)
+  if (modelData && modelData.rejected)
     return <Hero title="Your application has been rejected" />;
 
   return (
@@ -222,6 +220,7 @@ const EditProfile = ({ modelData }) => {
             {Object.keys(formik.errors).length > 0 && (
               <Form.Control.Feedback type="invalid" className="d-block">
                 {Object.keys(formik.errors).map((e) => (
+                  // eslint-disable-next-line react/jsx-key
                   <div>{formik.errors[e]}</div>
                 ))}
                 {formik.errors.code}

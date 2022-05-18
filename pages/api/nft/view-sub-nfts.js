@@ -4,7 +4,7 @@ import {
 } from "../../../treat/utils";
 
 import BigNumber from "bignumber.js";
-import NFT from "../../../models/NFT";
+import NFT from "../../../db/models/NFT";
 import TreatNFTMinterAbi from "../../../treat/lib/abi/treatnftminter.json";
 import TreatSubscriptionsAbi from "../../../treat/lib/abi/treatsubscriptions.json";
 import Web3 from "web3";

@@ -1,24 +1,19 @@
 import { Button, Spinner } from "react-bootstrap";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import Axios from "axios";
 import BlankModal from "../../components/BlankModal";
 import CancelOrderModal from "../../components/CancelOrderModal";
+import { Context } from "../../contexts/TreatProvider";
 import DashboardTabs from "../../components/CreatorDashboard/DashboardTabs";
 import Layout from "../../components/Layout";
 import Link from "next/link";
 import ListOrderModal from "../../components/ListOrderModal";
 import TransferNFTModal from "../../components/TransferNFTModal";
-import { getModelData } from "../../lib/server/getServerSideProps";
 import { useMoralis } from "react-moralis";
 import useSWR from "swr";
 
-const CreatorDashboardWrapper = (props) => {
-  let modelData = props.modelData ?? JSON.parse(props.userInfo);
-  console.log({ modelData, props });
-  if (modelData === null) {
-    modelData = {};
-  }
+const CreatorDashboardWrapper = () => {
   const { account, isAuthenticated } = useMoralis();
   const [ownedNFTData, setOwnedNFTData] = useState({
     docs: [],
@@ -40,6 +35,9 @@ const CreatorDashboardWrapper = (props) => {
   });
   const [ownedNFTError, setOwnedNFTError] = useState(null);
   const [resaleNFTError, setResaleNFTError] = useState(null);
+  const { profile } = useContext(Context);
+
+  console.log({ profile });
 
   useEffect(() => {
     setOwnedNFTData({ ...ownedNFTData, loading: true });
@@ -70,7 +68,7 @@ const CreatorDashboardWrapper = (props) => {
   const navigate = (key, page) => {
     if (key === "owned") {
       setOwnedNFTData({ ...ownedNFTData, loading: true, page });
-      Axios.post(`/api/v2/nft/my_nfts?page=${page}`)
+      Axios.get(`/api/v2/nft/my_nfts?page=${page}`)
         .then((res) => {
           setOwnedNFTData({ ...res.data, loading: false });
         })
@@ -81,7 +79,7 @@ const CreatorDashboardWrapper = (props) => {
         });
     } else {
       setResaleNFTData({ ...resaleNFTData, loading: true, page });
-      Axios.post(`/api/v2/nft/my_resale_nfts?page=${page}`)
+      Axios.get(`/api/v2/nft/my_resale_nfts?page=${page}`)
         .then((res) => {
           setResaleNFTData({ ...res.data, loading: false });
         })
@@ -93,9 +91,7 @@ const CreatorDashboardWrapper = (props) => {
     }
   };
 
-  const isModel = modelData && !modelData.pending && !modelData.rejected;
-
-  if (!isAuthenticated) {
+  if (!profile) {
     return (
       <div
         style={{
@@ -131,11 +127,14 @@ const CreatorDashboardWrapper = (props) => {
       </div>
     );
   } else {
+    const { isModel: isModelVar, rejected, pending } = profile;
+    const isModel = isModelVar || (rejected === false && pending === false);
+
     return (
       <ViewNFT
         account={account}
-        nftArray={modelData.nfts}
-        modelData={modelData}
+        nftArray={profile.nfts}
+        modelData={profile}
         navigate={navigate}
         isOwnedLoading={ownedNFTData.loading}
         isOpenOrdersLoading={resaleNFTData.loading}
@@ -161,7 +160,7 @@ const ViewNFT = ({
   navigate,
   isModel,
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
   const [transferNFTData, setTransferNFTData] = useState(null);
   const [listOrderData, setListOrderData] = useState(null);
   const [cancelOrderData, setCancelOrderData] = useState(null);
@@ -182,12 +181,19 @@ const ViewNFT = ({
     setCancelOrderData(x);
   };
 
-  const { data: nftData, error: nftError } = useSWR(
-    `/api/model/nfts-from-address/${account}`
-  );
-  const { data: subNftData, error: subNftError } = useSWR(
-    `/api/model/sub-nfts-from-address/${account}`
-  );
+  let nftData, nftError;
+  let subNftData, subNftError;
+  if (isModel) {
+    const { data, error } = useSWR(`/api/model/nfts-from-address/${account}`);
+    const { data: dataB, error: errorB } = useSWR(
+      `/api/model/sub-nfts-from-address/${account}`
+    );
+
+    (nftData = data),
+      (nftError = error),
+      (subNftData = dataB),
+      (subNftError = errorB);
+  }
 
   const hideNFTs = async () => {
     //setServerNftBalances(null);
@@ -200,13 +206,15 @@ const ViewNFT = ({
         data={transferNFTData}
         handleClose={() => setTransferNFTData(false)}
       />
-      <ListOrderModal
-        show={!!listOrderData}
-        data={listOrderData}
-        handleClose={() => setListOrderData(false)}
-        setPendingModal={setShowPendingModal}
-        openCompleteModal={() => setShowCompleteModal(true)}
-      />
+      {isModel && (
+        <ListOrderModal
+          show={!!listOrderData}
+          data={listOrderData}
+          handleClose={() => setListOrderData(false)}
+          setPendingModal={setShowPendingModal}
+          openCompleteModal={() => setShowCompleteModal(true)}
+        />
+      )}
       <CancelOrderModal
         show={!!cancelOrderData}
         data={cancelOrderData}
@@ -311,5 +319,13 @@ const ViewNFT = ({
   );
 };
 
-export const getServerSideProps = getModelData;
+export const getInitialProps = async (ctx) => {
+  try {
+    const model = await Axios.get("/api/v2/auth/me");
+    console.log({ model });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export default CreatorDashboardWrapper;

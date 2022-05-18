@@ -84,7 +84,7 @@ export const contractAddresses = {
     "0x38": "0xA38978E839c08046FA80B0fee55736253Ab3B8a3",
     // NEW CONTRACT ^
     // 56: "0x6991a8e77a1a4ea5819da2c5a65a3524259ca66e",
-    "0x38": "0x6991a8e77a1a4ea5819da2c5a65a3524259ca66e",
+    // "0x38": "0x6991a8e77a1a4ea5819da2c5a65a3524259ca66e",
     97: "0xB70EC99ECBF67453F315635000d20bA28aC35132",
     "0x61": "0xB70EC99ECBF67453F315635000d20bA28aC35132",
   },
@@ -159,5 +159,18 @@ export const contractAddresses = {
     "0x38": "0xcbeae003281F14598bE320E1eCe1236A6860b235",
     97: "0x80582136C2d6c710aD528F2A9d30504665f65306",
     "0x61": "0x80582136C2d6c710aD528F2A9d30504665f65306",
+  },
+  tippingContract: {
+    56: "0xd1f398cFD58047e6aF3a02C565Da7269F9540715",
+    "0x38": "0xd1f398cFD58047e6aF3a02C565Da7269F9540715",
+  },
+  // add generic BEP20 payments for tips:
+  busdToken: {
+    56: "0xe9e7cea3dedca5984780bafc599bd69add087d56",
+    "0x38": "0xe9e7cea3dedca5984780bafc599bd69add087d56", // not correct testnet contract
+  },
+  usdcToken: {
+    56: "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
+    "0x38": "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d", // not correct testnet contract
   },
 };

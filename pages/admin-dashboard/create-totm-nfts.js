@@ -120,8 +120,8 @@ const CreateNFT = ({ modelData }) => {
         })
       ),
     }),
-    handleChange: (c) => {},
-    onSubmit: (values) => {
+    handleChange: (c) => null,
+    onSubmit: () => {
       SubmitToServer();
     },
   });
@@ -252,8 +252,8 @@ const CreateNFT = ({ modelData }) => {
               >
                 <input {...getInputProps()} />
                 <p className="mb-0 text-center" style={{ fontSize: "1.1em" }}>
-                  Step 2: Drag 'n' drop your all your high resolution images
-                  here, <br />
+                  Step 2: Drag &#39;n&#39; drop your all your high resolution
+                  images here, <br />
                   or click to here to select them
                 </p>
               </div>

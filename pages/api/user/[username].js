@@ -1,4 +1,4 @@
-import Model from "../../../models/Model";
+import Model from "../../../db/models/Model";
 import TreatNFTMinterAbi from "../../../treat/lib/abi/treatnftminter.json";
 import Web3 from "web3";
 import dbConnect from "../../../utils/dbConnect";
