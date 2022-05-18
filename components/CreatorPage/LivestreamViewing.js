@@ -41,10 +41,10 @@ const LivestreamViewing = ({
     refreshInterval: 10000,
     revalidateOnMount: true,
   });
+  const { banned } = streamStatusResponse;
 
   if (streamStatusResponse) {
     const { isActive } = streamStatusResponse;
-    console.log({ streamStatusResponse });
     if (streamIsActive !== isActive) setStreamIsActive(isActive);
   }
 
@@ -123,7 +123,11 @@ const LivestreamViewing = ({
       />
       <div className="col-md-12 mt-4 container">
         <div style={{ minHeight: 500 }} className="col-md-12">
-          <LiveVideo streamIsActive={streamIsActive} playback_id={playbackId} />
+          <LiveVideo
+            chatBanned={banned}
+            streamIsActive={streamIsActive}
+            playback_id={playbackId}
+          />
         </div>
       </div>
     </>
