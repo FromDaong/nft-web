@@ -42,6 +42,7 @@ export const LiveStreamChatContext = createContext<{
   selected_currency_address: string;
   setTipAmount: Dispatch<any>;
   setSelectedCurrencyAddress: Dispatch<any>;
+  loadingBanned: boolean;
   setHost: () => void;
   setCurrentlyPlaying: (string) => void;
   sendMessage: (message: string) => void;
@@ -71,6 +72,7 @@ export const LiveStreamChatContext = createContext<{
   currency_addresses: [],
   tip_amount: 0,
   selected_currency_address: "",
+  loadingBanned: true,
   setTipAmount: (a) => ({ a }),
   setSelectedCurrencyAddress: (a) => ({ a }),
   sendMessage: (message) => ({ message }),
@@ -106,6 +108,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const [isBanned, setIsBanned] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [tip_amount, setAmount] = useState(null);
+  const [loadingBanned, setLoadingBanned] = useState(true);
   const [selected_currency_address, setSelectedCurrencyAddress] =
     useState(null);
 
@@ -488,10 +491,11 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   };
 
   const banAddress = (address: string) => {
-    Axios.post(`/api/v2/chat/${currently_playing}/ban`, {
+    Axios.post(`/api/v2/chat/${currently_playing}/privacy/ban`, {
       address,
       toggle: "ban",
       host: account,
+      url: window.origin,
     })
       .then(() => {
         sendMessage(`${address} has been banned from chat`, "ban", address);
@@ -504,10 +508,11 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   };
 
   const liftBan = (address: string) => {
-    Axios.post(`/api/v2/chat/${currently_playing}/ban`, {
+    Axios.post(`/api/v2/chat/${currently_playing}/privacy/ban`, {
       address,
       toggle: "ban",
       host: account,
+      url: window.origin,
     })
       .then(() => {
         sendMessage(`${address} ban has been lifted`, "ban");
@@ -524,11 +529,12 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   };
 
   const kickout = (address: string) => {
-    Axios.post(`/api/v2/chat/${currently_playing}/ban`, {
+    Axios.post(`/api/v2/chat/${currently_playing}/privacy/ban`, {
       address,
       toggle: "ban",
       expires: 24 * 60 * 60 * 1000,
       host: account,
+      url: window.origin,
     })
       .then(() => {
         sendMessage(
@@ -587,12 +593,15 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   }, [currently_playing]);
 
   useEffect(() => {
-    // get banned
+    // get banned users
     if (currently_playing) {
-      Axios.get(`/api/v2/chat/${currently_playing}/ban`)
+      Axios.post(`/api/v2/chat/${currently_playing}/privacy/ban`, {
+        url: window.origin,
+      })
         .then((res) => {
           setBanned(res.data);
         })
+        .then(() => setLoadingBanned(false))
         .catch((err) => {
           console.log({ err });
         });
@@ -601,8 +610,10 @@ export const LiveStreamChatContextProvider = ({ children }) => {
 
   useEffect(() => {
     // if account in banned
-    if (banned.indexOf(account) > -1) {
-      setIsBanned(true);
+    if (account && banned) {
+      if(banned.find(b => b.address === account)) {
+        setIsBanned(true)
+      }
     }
   }, [banned, account]);
 
@@ -649,26 +660,20 @@ export const LiveStreamChatContextProvider = ({ children }) => {
               const new_banned = banned.filter((b) => b !== data.address);
               return new_banned;
             });
-            account !== data.host &&
-              toast({
-                title: "Ban",
-                description: `${data.address}'s ban has been lifted`,
-                status: "success",
-                duration: 3000,
-              });
+            toast({
+              title: "Ban",
+              description: `${data.address}'s ban has been lifted`,
+              status: "success",
+              duration: 3000,
+            });
           } else if (data.toggle === "kickout") {
             setBanned([...banned, data.address]);
-            account !== data.host &&
-              toast({
-                title: "Ban",
-                description: `${data.address} has been kicked out from this live-stream`,
-                status: "warning",
-                duration: 3000,
-              });
-          }
-
-          if (data.address.toUpperCase() === account.toUpperCase()) {
-            router.reload();
+            toast({
+              title: "Ban",
+              description: `${data.address} has been kicked out from this live-stream`,
+              status: "warning",
+              duration: 3000,
+            });
           }
         }
       );
@@ -727,6 +732,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         setSelectedCurrencyAddress,
         selected_currency_address,
         tip_amount,
+        loadingBanned,
         sendMessage,
         sendReaction,
         sendTip,
