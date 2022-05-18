@@ -56,9 +56,8 @@ const LivestreamViewing = ({
   }, []);
 
   useEffect(() => {
-
     if (account && streamStatusResponse) {
-          const { banned } = streamStatusResponse;
+      const { banned } = streamStatusResponse;
 
       if (banned.find((b) => (b.address = account))) setIsBanned(true);
     }
@@ -113,15 +112,12 @@ const LivestreamViewing = ({
       </div>
     );
 
-      if (
-    !isBanned &&
-    modelData.address.toLowerCase() !== account.toLowerCase()
-  )
+  if (isBanned && modelData.address.toLowerCase() !== account.toLowerCase())
     return (
       <div className="not-subscribed-container">
         <div className="title">Banned by {modelData.username}</div>
         <div className="bio">
-          Thew creator {modelData.username} has banned you from this their livestream
+          Thew creator {modelData.username} has banned you from their livestream
         </div>
       </div>
     );
@@ -145,10 +141,7 @@ const LivestreamViewing = ({
       />
       <div className="col-md-12 my-4 container">
         <div style={{ minHeight: 500 }} className="col-md-12">
-          <LiveVideo
-            streamIsActive={streamIsActive}
-            playback_id={playbackId}
-          />
+          <LiveVideo streamIsActive={streamIsActive} playback_id={playbackId} />
         </div>
       </div>
     </>
