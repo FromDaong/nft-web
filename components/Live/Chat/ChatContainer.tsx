@@ -3,6 +3,7 @@ import ChatItem from "./ChatItem";
 import { Notification } from "../types";
 
 export default function ChatContainer(props) {
+  console.log({ messages: props.messages })
   return (
     <Box
       w={"full"}
@@ -27,6 +28,7 @@ export default function ChatContainer(props) {
             retry={m.retry}
             sent={m.sent}
             index={m.index}
+            type={m.type}
           />
         ))}
     </Box>

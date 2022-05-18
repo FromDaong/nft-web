@@ -65,6 +65,25 @@ const LiveVideoConsumer = (props) => {
     }
   }, [streamIsActive, videoEl]);
 
+  if (isBanned) {
+    return (
+      <Box
+        p={4}
+        borderWidth="1px"
+        borderColor="gray.200"
+        borderRadius="md"
+        bg="gray.50"
+        color="gray.700"
+      >
+        <Flex align="center" justify="center">
+          <Tag colorScheme="red">
+            You are banned from accessing this livestream
+          </Tag>
+        </Flex>
+      </Box>
+    );
+  }
+
   if (loadingBanned) {
     return (
       <Box
@@ -84,24 +103,6 @@ const LiveVideoConsumer = (props) => {
     );
   }
 
-  if (isBanned) {
-    return (
-      <Box
-        p={4}
-        borderWidth="1px"
-        borderColor="gray.200"
-        borderRadius="md"
-        bg="gray.50"
-        color="gray.700"
-      >
-        <Flex align="center" justify="center">
-          <Tag colorScheme="red">
-            You are banned from accessing this livestream
-          </Tag>
-        </Flex>
-      </Box>
-    );
-  }
 
   return (
     <Flex
@@ -157,9 +158,8 @@ const LiveVideoConsumer = (props) => {
             <Tag p={1}>
               Live{" "}
               <span
-                className={`animate-pulse mx-1 ${
-                  props.streamIsActive ? "bg-red-700" : "bg-yellow-600"
-                } h-2 w-2 mr-2 rounded-full`}
+                className={`animate-pulse mx-1 ${props.streamIsActive ? "bg-red-700" : "bg-yellow-600"
+                  } h-2 w-2 mr-2 rounded-full`}
               />
             </Tag>
           ) : (
