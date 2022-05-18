@@ -21,6 +21,7 @@ export default function ChatItem({
   isLastMessage,
   retry,
   index,
+  type
 }) {
   const { account } = useMoralis();
   useEffect(() => {
@@ -50,7 +51,7 @@ export default function ChatItem({
     <Box
       py={1}
       opacity={sent ? 1 : 0.9}
-      className="chat-bubble"
+      className={`${type === "ban" && "chat-bubble-ban"} chat-bubble`}
       bgColor={"gray.50"}
     >
       <Flex experimental_spaceX={2}>

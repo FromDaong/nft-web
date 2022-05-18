@@ -8,6 +8,8 @@ import { withJWTAuth } from "./../../../../../../utils/server-utils";
 
 const enforceIsHost =
   (handler) => async (req: NextApiRequest, res: NextApiResponse) => {
+    return handler(req, res);
+
     //@ts-ignore
     const { ethAddress } = req.session;
     const { channel } = req.query;

@@ -22,7 +22,7 @@ export default function SendMessageBox(props) {
     <Box w="full pb-2">
       <form onSubmit={onSubmit} className="w-full">
         <Flex
-          className="border border-primary stream-chat-input"
+          className="border border-primary stream-chat-input bg-white"
           rounded="full"
           w="full"
         >

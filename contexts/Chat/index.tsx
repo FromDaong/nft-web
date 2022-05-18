@@ -600,8 +600,8 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       })
         .then((res) => {
           setBanned(res.data);
+          setLoadingBanned(false);
         })
-        .then(() => setLoadingBanned(false))
         .catch((err) => {
           console.log({ err });
         });
@@ -611,7 +611,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   useEffect(() => {
     // if account in banned
     if (account && banned) {
-      if(banned.find(b => b.address === account)) {
+      if (banned.find(b => b.address === account)) {
         setIsBanned(true)
       }
     }
@@ -685,9 +685,8 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         } else if (data.type === "tip") {
           toast({
             title: "You have received a tip",
-            description: `${
-              data.payload.text.split(" ")[0]
-            } has been tipped from ${data.payload.sender}`,
+            description: `${data.payload.text.split(" ")[0]
+              } has been tipped from ${data.payload.sender}`,
             status: "success",
             duration: 3000,
           });
