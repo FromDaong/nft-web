@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 
 import AgeModal from "../AgeModal";
+import { Context } from "../../contexts/TreatProvider";
 import BalanceModal from "../BalanceModal";
 import { Button } from "@chakra-ui/react";
 import Link from "next/link";
@@ -17,6 +18,7 @@ const HeaderNav = ({ modelData }) => {
   const [walletModalShow, setWalletModalShow] = useState(false);
   const [balanceModalShow, setBalanceModalShow] = useState(false);
   const [ageModalShow, setAgeModalShow] = useState(false);
+  const { profile } = useContext(Context);
   const { isAuthenticated, chainId, user, enableWeb3, logout, account } =
     useMoralis();
   const router = useRouter();
@@ -28,6 +30,8 @@ const HeaderNav = ({ modelData }) => {
     destroyCookie(null, "refreshToken");
     router.push("/");
   };
+
+  console.log({ profile });
 
   useEffect(() => {
     enableWeb3();
@@ -129,7 +133,8 @@ const HeaderNav = ({ modelData }) => {
               <Link href="/dashboard" passHref>
                 <Nav.Link style={{ color: "#c34573" }}>Dashboard</Nav.Link>
               </Link>
-              {!modelData || (!modelData.pending && !modelData.rejected) ? (
+              {!profile ||
+              !(profile.pending === false && profile.rejected === false) ? (
                 <Link href="/become-creator" passHref>
                   <Nav.Link>Apply</Nav.Link>
                 </Link>
@@ -175,15 +180,17 @@ const HeaderNav = ({ modelData }) => {
                 >
                   $Treat Balance
                 </NavDropdown.Item>
-                {!modelData || modelData.pending || modelData.rejected ? (
-                  <Link href="/become-creator" passHref>
-                    <NavDropdown.Item>Become a Creator</NavDropdown.Item>
-                  </Link>
-                ) : (
-                  <Link href="/dashboard" passHref>
-                    <NavDropdown.Item>Dashboard</NavDropdown.Item>
-                  </Link>
-                )}
+                {!profile ||
+                  (!(
+                    profile.pending === false && profile.rejected === false
+                  ) && (
+                    <Link href="/become-creator" passHref>
+                      <NavDropdown.Item>Become a Creator</NavDropdown.Item>
+                    </Link>
+                  ))}
+                <Link href="/dashboard" passHref>
+                  <NavDropdown.Item>Dashboard</NavDropdown.Item>
+                </Link>
                 <NavDropdown.Item>
                   <Link href={`/p/${account}`}>
                     <a>My NFT Profile</a>
