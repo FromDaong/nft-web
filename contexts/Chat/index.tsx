@@ -56,7 +56,7 @@ export const LiveStreamChatContext = createContext<{
   retryMessage: (payload: Notification) => void;
   clearLatestReactionMessage: () => void;
   banAddress: (address: string) => void;
-  liftBan: (address: string) => Promise<void>;
+  liftBan: (address: string) => Promise<any>;
   kickout: (address: string) => void;
   setBannedUsers: (banned_users: Array<object>) => void;
 }>({
@@ -509,8 +509,8 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       });
   };
 
-  const liftBan = (address: string) => {
-    Axios.post(`/api/v2/chat/${currently_playing}/privacy/ban`, {
+  const liftBan = async (address: string) => {
+    return Axios.post(`/api/v2/chat/${currently_playing}/privacy/ban`, {
       address,
       toggle: "lift",
       host: account,

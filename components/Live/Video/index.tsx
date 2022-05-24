@@ -49,11 +49,6 @@ const LiveVideoConsumer = (props) => {
 
   const { onOpen, isOpen, onClose } = useDisclosure();
   const [banLoading, setBanLoading] = useState<Array<string>>([]);
-  // check if banloading contains
-  const isAddressBannedLoading = useCallback(
-    (address: string) => banLoading.includes(address),
-    [banLoading]
-  );
   const onVideo = useCallback((el) => {
     setVideoEl(el);
   }, []);
@@ -152,7 +147,7 @@ const LiveVideoConsumer = (props) => {
               <DrawerHeader>Banned users</DrawerHeader>
 
               <DrawerBody>
-                {banned.map((banned) => (
+                {banned.map((banned: any) => (
                   <Flex
                     alignItems="center"
                     justifyContent="space-between"
