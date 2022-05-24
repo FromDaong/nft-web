@@ -200,8 +200,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     });
   };
 
-  // TODO: Throttle emojis display
-
   const sendMessage = async (
     message: string,
     type?: NotificationType,
