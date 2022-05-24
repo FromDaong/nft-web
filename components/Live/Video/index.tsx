@@ -46,8 +46,6 @@ const LiveVideoConsumer = (props) => {
     setCurrentlyPlaying(playback_id);
   }, [playback_id]);
 
-
-
   useEffect(() => {
     if (videoEl == null) return;
     if (streamIsActive && playback_id) {
@@ -67,7 +65,7 @@ const LiveVideoConsumer = (props) => {
         player.src(playback_url);
       });
     }
-  }, [streamIsActive, videoEl])
+  }, [streamIsActive, videoEl]);
 
   return (
     <Flex
@@ -103,28 +101,26 @@ const LiveVideoConsumer = (props) => {
         <Flex left={2} top={2} position="absolute">
           <SendTipModal onClose={onClose} isOpen={isOpen} />
           <Participants participants={participants} />
-          {
-            //host && account.toLowerCase() !== host.toLowerCase()
-            true && (
-              <Button
-                size={"sm"}
-                colorScheme="primary"
-                ml={2}
-                onClick={onOpen}
-                zIndex={500000}
-              >
-                Send Tip
-              </Button>
-            )
-          }
+          {host && account.toLowerCase() !== host.toLowerCase() && (
+            <Button
+              size={"sm"}
+              colorScheme="primary"
+              ml={2}
+              onClick={onOpen}
+              zIndex={500000}
+            >
+              Send Tip
+            </Button>
+          )}
         </Flex>
         <Flex right={2} top={2} position="absolute">
           {props.streamIsActive ? (
             <Tag p={1}>
               Live{" "}
               <span
-                className={`animate-pulse mx-1 ${props.streamIsActive ? "bg-red-700" : "bg-yellow-600"
-                  } h-2 w-2 mr-2 rounded-full`}
+                className={`animate-pulse mx-1 ${
+                  props.streamIsActive ? "bg-red-700" : "bg-yellow-600"
+                } h-2 w-2 mr-2 rounded-full`}
               />
             </Tag>
           ) : (
