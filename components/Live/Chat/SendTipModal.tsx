@@ -151,8 +151,8 @@ export default function SendTipModal({ isOpen, onClose }) {
               colorScheme="primary"
               mr={3}
               onClick={sendTipToCreator}
-              disabled={!amount || message === null || loading}
-              isLoading={loading || message === null}
+              disabled={!amount || /* message === null  ||*/ loading}
+              isLoading={loading /* || message === null */}
             >
               {message === "send-tip" ? "Send Tip" : "Approve"}
             </Button>

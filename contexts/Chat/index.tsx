@@ -501,7 +501,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     })
       .then(() => {
         sendMessage(`${address} has been banned from chat`, "ban", address);
-        setBanned([...banned, address]);
+        setBanned([...banned, { address }]);
       })
       .catch((err) => {
         console.log({ err });
@@ -549,7 +549,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
             duration: 3000,
           });
         });
-        setBanned([...banned, address]);
+        setBanned([...banned, { address }]);
       })
       .catch((err) => {
         console.log({ err });
@@ -582,6 +582,8 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       (i) => i !== undefined
     )[0];
     if (tip_amount) {
+      console.log({ tip_amount });
+
       allowance({
         currency: TippingCurrencies[selected_currency_symbol],
       })
@@ -594,6 +596,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
           }
         })
         .catch((err) => {
+          alert(err);
           console.log({ err });
         });
     }
