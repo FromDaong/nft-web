@@ -37,7 +37,6 @@ export default function SendTipModal({ isOpen, onClose }) {
     setSelectedCurrencyAddress,
     selected_currency_address,
   } = useContext(LiveStreamChatContext);
-  console.log({ amount, message, selected_currency_address });
 
   const current_currency =
     Object.keys(currency_addresses).find(
@@ -152,8 +151,8 @@ export default function SendTipModal({ isOpen, onClose }) {
               colorScheme="primary"
               mr={3}
               onClick={sendTipToCreator}
-              disabled={!amount || message === null || loading}
-              isLoading={loading || message === null}
+              disabled={!amount || /* message === null  ||*/ loading}
+              isLoading={loading /* || message === null */}
             >
               {message === "send-tip" ? "Send Tip" : "Approve"}
             </Button>

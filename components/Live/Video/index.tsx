@@ -5,18 +5,30 @@ import "video.js/dist/video-js.min.css";
 
 import { Box, Button, Flex, Tag, useDisclosure } from "@chakra-ui/react";
 import {
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+} from "@chakra-ui/react";
+import {
   LiveStreamChatContext,
   LiveStreamChatContextProvider,
 } from "../../../contexts/Chat";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 
+import { Avatar } from "@chakra-ui/react";
 import ChatBox from "../Chat";
 import { LiveVideoProps } from "../types";
 import Participants from "../Participants";
 import ReactionsOverlay from "../Chat/reactions/Overlay";
 import SendTipModal from "../Chat/SendTipModal";
+import { Text } from "@chakra-ui/react";
 import { getLivestreamPlaybackURL } from "../utils";
 import { useMoralis } from "react-moralis";
+import { useRef } from "react";
 import videojs from "video.js";
 
 export default function LiveVideo(props: LiveVideoProps) {
@@ -32,12 +44,11 @@ const LiveVideoConsumer = (props) => {
   const [videoEl, setVideoEl] = useState(null);
   const { account } = useMoralis();
   const playback_url = useMemo(() => getLivestreamPlaybackURL(playback_id), []);
-  const { setCurrentlyPlaying, participants } = useContext(
-    LiveStreamChatContext
-  );
+  const { setCurrentlyPlaying, participants, host, banned, liftBan } =
+    useContext(LiveStreamChatContext);
 
   const { onOpen, isOpen, onClose } = useDisclosure();
-
+  const [banLoading, setBanLoading] = useState<Array<string>>([]);
   const onVideo = useCallback((el) => {
     setVideoEl(el);
   }, []);
@@ -45,8 +56,6 @@ const LiveVideoConsumer = (props) => {
   useEffect(() => {
     setCurrentlyPlaying(playback_id);
   }, [playback_id]);
-
-
 
   useEffect(() => {
     if (videoEl == null) return;
@@ -67,7 +76,14 @@ const LiveVideoConsumer = (props) => {
         player.src(playback_url);
       });
     }
-  }, [streamIsActive, videoEl])
+  }, [streamIsActive, videoEl]);
+
+  const {
+    isOpen: isSideBarOpen,
+    onOpen: onOpenSidebar,
+    onClose: onCloseSidebar,
+  } = useDisclosure();
+  const btnRef = useRef();
 
   return (
     <Flex
@@ -103,28 +119,80 @@ const LiveVideoConsumer = (props) => {
         <Flex left={2} top={2} position="absolute">
           <SendTipModal onClose={onClose} isOpen={isOpen} />
           <Participants participants={participants} />
-          {
-            //host && account.toLowerCase() !== host.toLowerCase()
-            true && (
-              <Button
-                size={"sm"}
-                colorScheme="primary"
-                ml={2}
-                onClick={onOpen}
-                zIndex={500000}
-              >
-                Send Tip
-              </Button>
-            )
-          }
+          {host && account.toLowerCase() !== host.toLowerCase() && (
+            <Button
+              size={"sm"}
+              colorScheme="primary"
+              ml={2}
+              onClick={onOpen}
+              zIndex={500000}
+            >
+              Send Tip
+            </Button>
+          )}
+          {host && account.toLowerCase() === host.toLowerCase() && (
+            <Button ml={2} size="sm" onClick={onOpenSidebar}>
+              {banned.length} Banned
+            </Button>
+          )}
+          <Drawer
+            isOpen={isSideBarOpen}
+            placement="right"
+            onClose={onCloseSidebar}
+            finalFocusRef={btnRef}
+          >
+            <DrawerOverlay />
+            <DrawerContent>
+              <DrawerCloseButton />
+              <DrawerHeader>Banned users</DrawerHeader>
+
+              <DrawerBody>
+                {banned.map((banned: any) => (
+                  <Flex
+                    alignItems="center"
+                    justifyContent="space-between"
+                    key={banned.address}
+                    mb={2}
+                  >
+                    <Flex alignItems="center">
+                      <Avatar
+                        size="sm"
+                        name={banned.address}
+                        src={banned.avatar}
+                      />
+                      <Text ml={2}>
+                        {banned.address?.substring(0, 6) +
+                          "..." +
+                          banned.address?.substring(
+                            banned.address?.length - 4,
+                            banned.address?.length
+                          )}
+                      </Text>
+                    </Flex>
+                    <Button
+                      isLoading={false}
+                      size="sm"
+                      onClick={() => {
+                        setBanLoading([...banLoading, banned.address]);
+                        liftBan(banned.address);
+                      }}
+                    >
+                      Lift ban
+                    </Button>
+                  </Flex>
+                ))}
+              </DrawerBody>
+            </DrawerContent>
+          </Drawer>
         </Flex>
         <Flex right={2} top={2} position="absolute">
           {props.streamIsActive ? (
             <Tag p={1}>
               Live{" "}
               <span
-                className={`animate-pulse mx-1 ${props.streamIsActive ? "bg-red-700" : "bg-yellow-600"
-                  } h-2 w-2 mr-2 rounded-full`}
+                className={`animate-pulse mx-1 ${
+                  props.streamIsActive ? "bg-red-700" : "bg-yellow-600"
+                } h-2 w-2 mr-2 rounded-full`}
               />
             </Tag>
           ) : (

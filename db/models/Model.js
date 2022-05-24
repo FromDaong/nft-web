@@ -19,6 +19,7 @@ const ModelSchema = new mongoose.Schema(
     },
     isModel: {
       type: Boolean,
+      // Default to show creator flag
       default: true,
     },
     totm: {
