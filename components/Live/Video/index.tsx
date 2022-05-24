@@ -166,11 +166,11 @@ const LiveVideoConsumer = (props) => {
                         src={banned.avatar}
                       />
                       <Text ml={2}>
-                        {banned.address.substring(0, 6) +
+                        {banned.address?.substring(0, 6) +
                           "..." +
-                          banned.address.substring(
-                            banned.address.length - 4,
-                            banned.address.length
+                          banned.address?.substring(
+                            banned.address?.length - 4,
+                            banned.address?.length
                           )}
                       </Text>
                     </Flex>
