@@ -303,31 +303,34 @@ const ViewModel = ({
                   />
                 </Tab>
               )}
-              {Number(formattedSubCost) !== 0 &&
-                modelData.live &&
-                modelData.live.stream_id && (
-                  <Tab
-                    eventKey="live"
-                    title={
-                      <span>
-                        <RecordCircle
-                          className="mr-1 mb-1"
-                          isSubscribed={isSubscribed}
-                        />{" "}
-                        Livestream
-                      </span>
-                    }
-                  >
-                    <LivestreamViewing
-                      subscriptionCost={subscriptionCost}
-                      isSubscribed={isSubscribed}
-                      account={account}
-                      formattedSubCost={formattedSubCost}
-                      streamId={modelData.live.stream_id}
-                      modelData={modelData}
-                    />
-                  </Tab>
-                )}
+              {
+                // TODO: Change to zero check
+                Number(formattedSubCost) === 0 &&
+                  modelData.live &&
+                  modelData.live.stream_id && (
+                    <Tab
+                      eventKey="live"
+                      title={
+                        <span>
+                          <RecordCircle
+                            className="mr-1 mb-1"
+                            isSubscribed={isSubscribed}
+                          />{" "}
+                          Livestream
+                        </span>
+                      }
+                    >
+                      <LivestreamViewing
+                        subscriptionCost={subscriptionCost}
+                        isSubscribed={isSubscribed}
+                        account={account}
+                        formattedSubCost={formattedSubCost}
+                        streamId={modelData.live.stream_id}
+                        modelData={modelData}
+                      />
+                    </Tab>
+                  )
+              }
               <Tab
                 eventKey="sweet"
                 title={

@@ -21,7 +21,7 @@ export default function ChatItem({
   isLastMessage,
   retry,
   index,
-  type
+  type,
 }) {
   const { account } = useMoralis();
   useEffect(() => {
@@ -52,31 +52,32 @@ export default function ChatItem({
       py={1}
       opacity={sent ? 1 : 0.9}
       className={`${type === "ban" && "chat-bubble-ban"} chat-bubble`}
-      bgColor={"gray.50"}
+      bgColor={"gray.100"}
     >
       <Flex experimental_spaceX={2}>
         <Text flex={1} fontWeight={"semibold"}>
           {`${user_id.substring(0, 6)}...${user_id.substr(-5)}`}
         </Text>
-        {account.toUpperCase() === host.toUpperCase() && (
-          <Menu direction="rtl" isLazy>
-            <>
-              <MenuButton as={Button} variant="link" size="sm">
-                <ThreeDotsVertical />
-              </MenuButton>
-              <MenuList>
-                <MenuItem
-                  onClick={() => {
-                    isBanned ? liftBan(user_id) : banAddress(user_id);
-                  }}
-                >
-                  Ban{" "}
-                </MenuItem>
-                <MenuItem onClick={() => kickout(user_id)}>Kick out</MenuItem>
-              </MenuList>
-            </>
-          </Menu>
-        )}
+        {account.toUpperCase() === host.toUpperCase() &&
+          account.toUpperCase() !== user_id.toUpperCase() && (
+            <Menu direction="rtl" isLazy>
+              <>
+                <MenuButton as={Button} variant="link" size="sm">
+                  <ThreeDotsVertical />
+                </MenuButton>
+                <MenuList>
+                  <MenuItem
+                    onClick={() => {
+                      isBanned ? liftBan(user_id) : banAddress(user_id);
+                    }}
+                  >
+                    Ban{" "}
+                  </MenuItem>
+                  <MenuItem onClick={() => kickout(user_id)}>Kick out</MenuItem>
+                </MenuList>
+              </>
+            </Menu>
+          )}
       </Flex>
       <Text color="gray.600">{text}</Text>
       {showRetryMessage && (
