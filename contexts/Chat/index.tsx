@@ -649,7 +649,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         "ban-event",
         (data: { address: string; toggle: string; host: string }) => {
           if (data.toggle === "ban") {
-            setBanned([...banned, data.address]);
+            setBanned([...banned, { address: data.address }]);
             account !== data.host &&
               toast({
                 title: "Ban",
@@ -659,7 +659,9 @@ export const LiveStreamChatContextProvider = ({ children }) => {
               });
           } else if (data.toggle === "lift") {
             setBanned((banned) => {
-              const new_banned = banned.filter((b) => b !== data.address);
+              const new_banned = banned.filter(
+                (b) => b.address !== data.address
+              );
               return new_banned;
             });
             toast({
@@ -669,7 +671,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
               duration: 3000,
             });
           } else if (data.toggle === "kickout") {
-            setBanned([...banned, data.address]);
+            setBanned([...banned, { address: data.address }]);
             toast({
               title: "Ban",
               description: `${data.address} has been kicked out from this live-stream`,
