@@ -37,8 +37,6 @@ const CreatorDashboardWrapper = () => {
   const [resaleNFTError, setResaleNFTError] = useState(null);
   const { profile } = useContext(Context);
 
-  console.log({ profile });
-
   useEffect(() => {
     setOwnedNFTData({ ...ownedNFTData, loading: true });
     setResaleNFTData({ ...resaleNFTData, loading: true });
@@ -128,7 +126,8 @@ const CreatorDashboardWrapper = () => {
     );
   } else {
     const { isModel: isModelVar, rejected, pending } = profile;
-    const isModel = isModelVar || (rejected === false && pending === false);
+    // Logic here ??
+    const isModel = isModelVar || (!rejected && !pending);
 
     return (
       <ViewNFT
