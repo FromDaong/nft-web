@@ -303,7 +303,7 @@ const ViewModel = ({
                   />
                 </Tab>
               )}
-              {Number(formattedSubCost) !== 0 &&
+              {Number(formattedSubCost) === 0 &&
                 modelData.live &&
                 modelData.live.stream_id && (
                   <Tab
