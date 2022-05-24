@@ -29,6 +29,7 @@ import { useToast } from "@chakra-ui/react";
 export const LiveStreamChatContext = createContext<{
   currently_playing: string | null;
   messages: Array<Notification>;
+  banned: Array<object>;
   isBanned: boolean;
   last_message: Notification | null;
   participants: Array<ChatParticipant>;
@@ -55,11 +56,13 @@ export const LiveStreamChatContext = createContext<{
   retryMessage: (payload: Notification) => void;
   clearLatestReactionMessage: () => void;
   banAddress: (address: string) => void;
-  liftBan: (address: string) => void;
+  liftBan: (address: string) => Promise<any>;
   kickout: (address: string) => void;
+  setBannedUsers: (banned_users: Array<object>) => void;
 }>({
   currently_playing: null,
   messages: [],
+  banned: [],
   isBanned: false,
   last_message: null,
   participants: [],
@@ -81,8 +84,9 @@ export const LiveStreamChatContext = createContext<{
   retryMessage: (m) => ({ m }),
   clearLatestReactionMessage: () => ({}),
   banAddress: (a) => ({ a }),
-  liftBan: (a) => ({ a }),
+  liftBan: async (a) => ({ a }),
   kickout: (a) => ({ a }),
+  setBannedUsers: (a) => ({ a }),
 });
 
 export const LiveStreamChatContextProvider = ({ children }) => {
@@ -106,7 +110,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const [isBanned, setIsBanned] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [tip_amount, setAmount] = useState(null);
-  const [loadingBanned, setLoadingBanned] = useState(true);
   const [selected_currency_address, setSelectedCurrencyAddress] =
     useState(null);
 
@@ -115,7 +118,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const toast = useToast();
   const { approval, allowance, balanceOf } = useERC20();
   const [hasTipApproval, setTipApproval] = useState<boolean>(false);
-  const router = useRouter();
 
   const bnb_amounts = {
     BNB: [0.01, 0.025, 0.1, 0.5, 1, 5],
@@ -128,6 +130,10 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     treat: "0x01bd7acb6fF3B6Dd5aefA05CF085F2104f3fC53F",
     usdc: "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
     busd: "0xe9e7cea3dedca5984780bafc599bd69add087d56",
+  };
+
+  const setBannedUsers = (banned: Array<object>) => {
+    setBanned(banned);
   };
 
   const setIsPlaying = (playback_id) => {
@@ -192,8 +198,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       });
     });
   };
-
-  // TODO: Throttle emojis display
 
   const sendMessage = async (
     message: string,
@@ -497,7 +501,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     })
       .then(() => {
         sendMessage(`${address} has been banned from chat`, "ban", address);
-        setBanned([...banned, address]);
+        setBanned([...banned, { address }]);
       })
       .catch((err) => {
         console.log({ err });
@@ -505,20 +509,18 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       });
   };
 
-  const liftBan = (address: string) => {
-    Axios.post(`/api/v2/chat/${currently_playing}/privacy/ban`, {
+  const liftBan = async (address: string) => {
+    return Axios.post(`/api/v2/chat/${currently_playing}/privacy/ban`, {
       address,
-      toggle: "ban",
+      toggle: "lift",
       host: account,
       url: window.origin,
     })
       .then(() => {
         sendMessage(`${address} ban has been lifted`, "ban");
         // remove address from banned
-        setBanned((banned) => {
-          const new_banned = banned.filter((b) => b !== address);
-          return new_banned;
-        });
+        const new_banned = banned.filter((b) => b.address !== address);
+        setBannedUsers(new_banned);
       })
       .catch((err) => {
         console.log({ err });
@@ -547,13 +549,28 @@ export const LiveStreamChatContextProvider = ({ children }) => {
             duration: 3000,
           });
         });
-        setBanned([...banned, address]);
+        setBanned([...banned, { address }]);
       })
       .catch((err) => {
         console.log({ err });
         sendMessage(`${address} ban could not be lifted`);
       });
   };
+
+  useEffect(() => {
+    // get banned users
+    if (currently_playing) {
+      Axios.post(`/api/v2/chat/${currently_playing}/privacy/ban`, {
+        url: window.origin,
+      })
+        .then((res) => {
+          setBannedUsers(res.data);
+        })
+        .catch((err) => {
+          console.log({ err });
+        });
+    }
+  }, [currently_playing]);
 
   useEffect(() => {
     const selected_currency = Object.keys(currency_addresses).map((key) => {
@@ -565,6 +582,8 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       (i) => i !== undefined
     )[0];
     if (tip_amount) {
+      console.log({ tip_amount });
+
       allowance({
         currency: TippingCurrencies[selected_currency_symbol],
       })
@@ -577,6 +596,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
           }
         })
         .catch((err) => {
+          alert(err);
           console.log({ err });
         });
     }
@@ -588,22 +608,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       addMeToParticipants();
     }
     return () => removeMeFromParticipants();
-  }, [currently_playing]);
-
-  useEffect(() => {
-    // get banned users
-    if (currently_playing) {
-      Axios.post(`/api/v2/chat/${currently_playing}/privacy/ban`, {
-        url: window.origin,
-      })
-        .then((res) => {
-          setBanned(res.data);
-          setLoadingBanned(false);
-        })
-        .catch((err) => {
-          console.log({ err });
-        });
-    }
   }, [currently_playing]);
 
   useEffect(() => {
@@ -645,7 +649,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         "ban-event",
         (data: { address: string; toggle: string; host: string }) => {
           if (data.toggle === "ban") {
-            setBanned([...banned, data.address]);
+            setBanned([...banned, { address: data.address }]);
             account !== data.host &&
               toast({
                 title: "Ban",
@@ -655,7 +659,9 @@ export const LiveStreamChatContextProvider = ({ children }) => {
               });
           } else if (data.toggle === "lift") {
             setBanned((banned) => {
-              const new_banned = banned.filter((b) => b !== data.address);
+              const new_banned = banned.filter(
+                (b) => b.address !== data.address
+              );
               return new_banned;
             });
             toast({
@@ -665,7 +671,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
               duration: 3000,
             });
           } else if (data.toggle === "kickout") {
-            setBanned([...banned, data.address]);
+            setBanned([...banned, { address: data.address }]);
             toast({
               title: "Ban",
               description: `${data.address} has been kicked out from this live-stream`,
@@ -683,8 +689,9 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         } else if (data.type === "tip") {
           toast({
             title: "You have received a tip",
-            description: `${data.payload.text.split(" ")[0]
-              } has been tipped from ${data.payload.sender}`,
+            description: `${
+              data.payload.text.split(" ")[0]
+            } has been tipped from ${data.payload.sender}`,
             status: "success",
             duration: 3000,
           });
@@ -730,6 +737,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         selected_currency_address,
         tip_amount,
         isBanned,
+        banned,
         sendMessage,
         sendReaction,
         sendTip,
@@ -741,6 +749,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         banAddress,
         liftBan,
         kickout,
+        setBannedUsers,
       }}
     >
       {children}

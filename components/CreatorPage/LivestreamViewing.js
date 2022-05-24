@@ -3,13 +3,15 @@ import "videojs-contrib-quality-levels";
 import "videojs-hls-quality-selector";
 import "video.js/dist/video-js.min.css";
 
-import BlankModal from "../../components/BlankModal";
-import useSWR from "swr";
-import { useState, useCallback, useEffect } from "react";
 import { Button, GridItem } from "@chakra-ui/react";
+import { useCallback, useContext, useEffect, useState } from "react";
+
+import BlankModal from "../../components/BlankModal";
+import { LiveStreamChatContext } from "../../contexts/Chat";
+import LiveVideo from "../Live/Video";
+import useSWR from "swr";
 import useSubscribe from "../../hooks/useSubscribe";
 import videojs from "video.js";
-import LiveVideo from "../Live/Video";
 
 const LivestreamViewing = ({
   isSubscribed,
@@ -23,6 +25,7 @@ const LivestreamViewing = ({
   const [showCompleteModal, setShowCompleteModal] = useState(null);
   const { onSubscribe } = useSubscribe(modelData.address, 1, subscriptionCost);
   const [isBanned, setIsBanned] = useState(false);
+  const { setBannedUsers } = useContext(LiveStreamChatContext);
 
   const { stream_id: streamId, playback_id: playbackId } = modelData.live;
 
@@ -51,17 +54,17 @@ const LivestreamViewing = ({
   const [videoEl, setVideoEl] = useState(null);
   const [playerEl, setPlayerEl] = useState(null);
 
-  const onVideo = useCallback((el) => {
+  useCallback((el) => {
     setVideoEl(el);
   }, []);
 
   useEffect(() => {
-    if (account && streamStatusResponse) {
+    if (account && streamStatusResponse && setBannedUsers) {
       const { banned } = streamStatusResponse;
-
-      if (banned.find((b) => (b.address = account))) setIsBanned(true);
+      if (banned.find((b) => b.address.toUpperCase() === account.toUpperCase()))
+        setIsBanned(true);
     }
-  }, [streamStatusResponse, account]);
+  }, [streamStatusResponse, account, setBannedUsers]);
 
   useEffect(() => {
     if (videoEl == null) return;
@@ -117,7 +120,7 @@ const LivestreamViewing = ({
       <div className="not-subscribed-container">
         <div className="title">Banned by {modelData.username}</div>
         <div className="bio">
-          Thew creator {modelData.username} has banned you from their livestream
+          The creator {modelData.username} has banned you from their livestream
         </div>
       </div>
     );

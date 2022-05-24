@@ -44,12 +44,33 @@ export default async function autocomplete(req, res) {
       },
     ]);
 
+    const streaming_models = await Model.aggregate([
+      {
+        $search: {
+          autocomplete: {
+            //index: "models_autocomplete",
+            query: s,
+            path: "username",
+            fuzzy: {
+              maxEdits: 2,
+              prefixLength: 3,
+            },
+          },
+        },
+        $match: {
+          livestream_active: true,
+        },
+      },
+    ]);
+
     if (group) {
       switch (group) {
         case "nfts":
           return res.json(nfts);
         case "models":
           return res.json(models);
+        case "streaming":
+          return res.json(streaming_models);
         default:
           return res.json([]);
       }
@@ -58,6 +79,7 @@ export default async function autocomplete(req, res) {
     return res.json([
       ...nfts.map((nft) => ({ ...nft, group: "nft" })),
       ...models.map((model) => ({ ...model, group: "model" })),
+      ...streaming_models.map((model) => ({ ...model, group: "streaming" })),
     ]);
   } catch (error) {
     console.error({ error });
