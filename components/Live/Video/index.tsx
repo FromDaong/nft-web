@@ -25,6 +25,7 @@ import { LiveVideoProps } from "../types";
 import Participants from "../Participants";
 import ReactionsOverlay from "../Chat/reactions/Overlay";
 import SendTipModal from "../Chat/SendTipModal";
+import { Text } from "@chakra-ui/react";
 import { getLivestreamPlaybackURL } from "../utils";
 import { useMoralis } from "react-moralis";
 import { useRef } from "react";
@@ -158,22 +159,27 @@ const LiveVideoConsumer = (props) => {
                     key={banned.address}
                     mb={2}
                   >
-                    <Avatar
-                      size="sm"
-                      name={banned.address}
-                      src={banned.avatar}
-                    />
+                    <Flex alignItems="center">
+                      <Avatar
+                        size="sm"
+                        name={banned.address}
+                        src={banned.avatar}
+                      />
+                      <Text ml={2}>
+                        {banned.address.substring(0, 6) +
+                          "..." +
+                          banned.address.substring(
+                            banned.address.length - 4,
+                            banned.address.length
+                          )}
+                      </Text>
+                    </Flex>
                     <Button
-                      isLoading={() => isAddressBannedLoading(banned.address)}
+                      isLoading={false}
                       size="sm"
                       onClick={() => {
                         setBanLoading([...banLoading, banned.address]);
-                        liftBan(banned.address).then(() => {
-                          // remove ban.address from banLoading
-                          setBanLoading(
-                            banLoading.filter((ban) => ban !== banned.address)
-                          );
-                        });
+                        liftBan(banned.address);
                       }}
                     >
                       Lift ban
@@ -181,13 +187,6 @@ const LiveVideoConsumer = (props) => {
                   </Flex>
                 ))}
               </DrawerBody>
-
-              <DrawerFooter>
-                <Button variant="outline" mr={3} onClick={onCloseSidebar}>
-                  Cancel
-                </Button>
-                <Button colorScheme="blue">Save</Button>
-              </DrawerFooter>
             </DrawerContent>
           </Drawer>
         </Flex>

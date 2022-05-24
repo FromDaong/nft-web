@@ -56,7 +56,7 @@ export const LiveStreamChatContext = createContext<{
   retryMessage: (payload: Notification) => void;
   clearLatestReactionMessage: () => void;
   banAddress: (address: string) => void;
-  liftBan: (address: string) => void;
+  liftBan: (address: string) => Promise<void>;
   kickout: (address: string) => void;
   setBannedUsers: (banned_users: Array<object>) => void;
 }>({
@@ -84,7 +84,7 @@ export const LiveStreamChatContext = createContext<{
   retryMessage: (m) => ({ m }),
   clearLatestReactionMessage: () => ({}),
   banAddress: (a) => ({ a }),
-  liftBan: (a) => ({ a }),
+  liftBan: async (a) => ({ a }),
   kickout: (a) => ({ a }),
   setBannedUsers: (a) => ({ a }),
 });
