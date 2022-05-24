@@ -3,13 +3,15 @@ import "videojs-contrib-quality-levels";
 import "videojs-hls-quality-selector";
 import "video.js/dist/video-js.min.css";
 
-import BlankModal from "../../components/BlankModal";
-import useSWR from "swr";
-import { useState, useCallback, useEffect } from "react";
 import { Button, GridItem } from "@chakra-ui/react";
+import { useCallback, useContext, useEffect, useState } from "react";
+
+import BlankModal from "../../components/BlankModal";
+import { LiveStreamChatContext } from "../../contexts/Chat";
+import LiveVideo from "../Live/Video";
+import useSWR from "swr";
 import useSubscribe from "../../hooks/useSubscribe";
 import videojs from "video.js";
-import LiveVideo from "../Live/Video";
 
 const LivestreamViewing = ({
   isSubscribed,
@@ -23,6 +25,7 @@ const LivestreamViewing = ({
   const [showCompleteModal, setShowCompleteModal] = useState(null);
   const { onSubscribe } = useSubscribe(modelData.address, 1, subscriptionCost);
   const [isBanned, setIsBanned] = useState(false);
+  const { setBannedUsers } = useContext(LiveStreamChatContext);
 
   const { stream_id: streamId, playback_id: playbackId } = modelData.live;
 
@@ -58,8 +61,9 @@ const LivestreamViewing = ({
   useEffect(() => {
     if (account && streamStatusResponse) {
       const { banned } = streamStatusResponse;
-
-      if (banned.find((b) => (b.address = account))) setIsBanned(true);
+      setBannedUsers(banned);
+      if (banned.find((b) => b.address.toUpperCase() === account.toUpperCase()))
+        setIsBanned(true);
     }
   }, [streamStatusResponse, account]);
 
@@ -95,7 +99,8 @@ const LivestreamViewing = ({
   }, [streamIsActive, playbackId]);
 
   if (
-    !isSubscribed &&
+    // TODO: restore correct logic
+    !!isSubscribed &&
     modelData.address.toLowerCase() !== account.toLowerCase()
   )
     return (
@@ -117,7 +122,7 @@ const LivestreamViewing = ({
       <div className="not-subscribed-container">
         <div className="title">Banned by {modelData.username}</div>
         <div className="bio">
-          Thew creator {modelData.username} has banned you from their livestream
+          The creator {modelData.username} has banned you from their livestream
         </div>
       </div>
     );

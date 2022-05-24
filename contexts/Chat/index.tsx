@@ -29,6 +29,7 @@ import { useToast } from "@chakra-ui/react";
 export const LiveStreamChatContext = createContext<{
   currently_playing: string | null;
   messages: Array<Notification>;
+  banned: Array<object>;
   isBanned: boolean;
   last_message: Notification | null;
   participants: Array<ChatParticipant>;
@@ -57,9 +58,11 @@ export const LiveStreamChatContext = createContext<{
   banAddress: (address: string) => void;
   liftBan: (address: string) => void;
   kickout: (address: string) => void;
+  setBannedUsers: (banned_users: Array<object>) => void;
 }>({
   currently_playing: null,
   messages: [],
+  banned: [],
   isBanned: false,
   last_message: null,
   participants: [],
@@ -83,6 +86,7 @@ export const LiveStreamChatContext = createContext<{
   banAddress: (a) => ({ a }),
   liftBan: (a) => ({ a }),
   kickout: (a) => ({ a }),
+  setBannedUsers: (a) => ({ a }),
 });
 
 export const LiveStreamChatContextProvider = ({ children }) => {
@@ -130,6 +134,9 @@ export const LiveStreamChatContextProvider = ({ children }) => {
     busd: "0xe9e7cea3dedca5984780bafc599bd69add087d56",
   };
 
+  const setBannedUsers = (banned: Array<object>) => {
+    setBanned(banned);
+  };
   const setIsPlaying = (playback_id) => {
     setCurrently_playing(playback_id);
   };
@@ -683,8 +690,9 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         } else if (data.type === "tip") {
           toast({
             title: "You have received a tip",
-            description: `${data.payload.text.split(" ")[0]
-              } has been tipped from ${data.payload.sender}`,
+            description: `${
+              data.payload.text.split(" ")[0]
+            } has been tipped from ${data.payload.sender}`,
             status: "success",
             duration: 3000,
           });
@@ -730,6 +738,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         selected_currency_address,
         tip_amount,
         isBanned,
+        banned,
         sendMessage,
         sendReaction,
         sendTip,

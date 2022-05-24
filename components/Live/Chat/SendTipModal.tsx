@@ -37,7 +37,6 @@ export default function SendTipModal({ isOpen, onClose }) {
     setSelectedCurrencyAddress,
     selected_currency_address,
   } = useContext(LiveStreamChatContext);
-  console.log({ amount, message, selected_currency_address });
 
   const current_currency =
     Object.keys(currency_addresses).find(

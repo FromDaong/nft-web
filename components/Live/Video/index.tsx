@@ -5,11 +5,21 @@ import "video.js/dist/video-js.min.css";
 
 import { Box, Button, Flex, Tag, useDisclosure } from "@chakra-ui/react";
 import {
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+} from "@chakra-ui/react";
+import {
   LiveStreamChatContext,
   LiveStreamChatContextProvider,
 } from "../../../contexts/Chat";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 
+import { Avatar } from "@chakra-ui/react";
 import ChatBox from "../Chat";
 import { LiveVideoProps } from "../types";
 import Participants from "../Participants";
@@ -17,6 +27,7 @@ import ReactionsOverlay from "../Chat/reactions/Overlay";
 import SendTipModal from "../Chat/SendTipModal";
 import { getLivestreamPlaybackURL } from "../utils";
 import { useMoralis } from "react-moralis";
+import { useRef } from "react";
 import videojs from "video.js";
 
 export default function LiveVideo(props: LiveVideoProps) {
@@ -32,11 +43,11 @@ const LiveVideoConsumer = (props) => {
   const [videoEl, setVideoEl] = useState(null);
   const { account } = useMoralis();
   const playback_url = useMemo(() => getLivestreamPlaybackURL(playback_id), []);
-  const { setCurrentlyPlaying, participants } = useContext(
-    LiveStreamChatContext
-  );
+  const { setCurrentlyPlaying, participants, host, banned, liftBan } =
+    useContext(LiveStreamChatContext);
 
   const { onOpen, isOpen, onClose } = useDisclosure();
+  const [banLoading, setBanLoading] = useState<[string]>([]);
 
   const onVideo = useCallback((el) => {
     setVideoEl(el);
@@ -66,6 +77,13 @@ const LiveVideoConsumer = (props) => {
       });
     }
   }, [streamIsActive, videoEl]);
+
+  const {
+    isOpen: isSideBarOpen,
+    onOpen: onOpenSidebar,
+    onClose: onCloseSidebar,
+  } = useDisclosure();
+  const btnRef = useRef();
 
   return (
     <Flex
@@ -112,6 +130,62 @@ const LiveVideoConsumer = (props) => {
               Send Tip
             </Button>
           )}
+          {host && account.toLowerCase() === host.toLowerCase() && (
+            <Button ml={2} size="sm" onClick={onOpenSidebar}>
+              {banned.length} Banned
+            </Button>
+          )}
+          <Drawer
+            isOpen={isSideBarOpen}
+            placement="right"
+            onClose={onCloseSidebar}
+            finalFocusRef={btnRef}
+          >
+            <DrawerOverlay />
+            <DrawerContent>
+              <DrawerCloseButton />
+              <DrawerHeader>Banned users</DrawerHeader>
+
+              <DrawerBody>
+                {banned.map((banned) => (
+                  <Flex
+                    alignItems="center"
+                    justifyContent="space-between"
+                    key={banned.address}
+                    mb={2}
+                  >
+                    <Avatar
+                      size="sm"
+                      name={banned.address}
+                      src={banned.avatar}
+                    />
+                    <Button
+                      isLoading={banLoading.contains(banned.address)}
+                      size="sm"
+                      onClick={() => {
+                        setBanLoading([...banLoading, banned.address]);
+                        liftBan(banned.address).then(() => {
+                          // remove ban.address from banLoading
+                          setBanLoading(
+                            banLoading.filter((ban) => ban !== banned.address)
+                          );
+                        });
+                      }}
+                    >
+                      Lift ban
+                    </Button>
+                  </Flex>
+                ))}
+              </DrawerBody>
+
+              <DrawerFooter>
+                <Button variant="outline" mr={3} onClick={onCloseSidebar}>
+                  Cancel
+                </Button>
+                <Button colorScheme="blue">Save</Button>
+              </DrawerFooter>
+            </DrawerContent>
+          </Drawer>
         </Flex>
         <Flex right={2} top={2} position="absolute">
           {props.streamIsActive ? (
