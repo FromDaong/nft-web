@@ -10,6 +10,7 @@
     "basic-dev": "next dev",
     "migrate-nft": "node ./lib/migrate-to-cdn.js",
     "lint": "eslint .",
+    "test": "jest",
     "next-lint": "next lint"
   },
   "dependencies": {
@@ -109,11 +110,20 @@
     "yup": "^0.29.3"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.2.0",
+    "@types/jest": "^27.5.1",
+    "@types/react-test-renderer": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/parser": "^5.12.1",
     "autoprefixer": "^10.4.2",
+    "babel-jest": "^28.1.0",
     "eslint": "<8.0.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^28.1.0",
+    "jest-environment-jsdom": "^28.1.0",
     "postcss": "^8.4.6",
+    "react-test-renderer": "^18.1.0",
     "tailwindcss": "^3.0.18",
     "typescript": "^4.3.5"
   }
