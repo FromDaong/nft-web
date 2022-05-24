@@ -127,7 +127,7 @@ const CreatorDashboardWrapper = () => {
   } else {
     const { isModel: isModelVar, rejected, pending } = profile;
     // Logic here ??
-    const isModel = isModelVar || (!rejected && !pending);
+    const isModel = isModelVar ? isModelVar : rejected === false && pending === false;
 
     return (
       <ViewNFT
