@@ -54,18 +54,17 @@ const LivestreamViewing = ({
   const [videoEl, setVideoEl] = useState(null);
   const [playerEl, setPlayerEl] = useState(null);
 
-  const onVideo = useCallback((el) => {
+  useCallback((el) => {
     setVideoEl(el);
   }, []);
 
   useEffect(() => {
-    if (account && streamStatusResponse) {
+    if (account && streamStatusResponse && setBannedUsers) {
       const { banned } = streamStatusResponse;
-      setBannedUsers(banned);
       if (banned.find((b) => b.address.toUpperCase() === account.toUpperCase()))
         setIsBanned(true);
     }
-  }, [streamStatusResponse, account]);
+  }, [streamStatusResponse, account, setBannedUsers]);
 
   useEffect(() => {
     if (videoEl == null) return;

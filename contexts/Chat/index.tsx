@@ -110,7 +110,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const [isBanned, setIsBanned] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [tip_amount, setAmount] = useState(null);
-  const [loadingBanned, setLoadingBanned] = useState(true);
   const [selected_currency_address, setSelectedCurrencyAddress] =
     useState(null);
 
@@ -119,7 +118,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const toast = useToast();
   const { approval, allowance, balanceOf } = useERC20();
   const [hasTipApproval, setTipApproval] = useState<boolean>(false);
-  const router = useRouter();
 
   const bnb_amounts = {
     BNB: [0.01, 0.025, 0.1, 0.5, 1, 5],
@@ -137,6 +135,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const setBannedUsers = (banned: Array<object>) => {
     setBanned(banned);
   };
+
   const setIsPlaying = (playback_id) => {
     setCurrently_playing(playback_id);
   };
@@ -513,17 +512,15 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   const liftBan = (address: string) => {
     Axios.post(`/api/v2/chat/${currently_playing}/privacy/ban`, {
       address,
-      toggle: "ban",
+      toggle: "lift",
       host: account,
       url: window.origin,
     })
       .then(() => {
         sendMessage(`${address} ban has been lifted`, "ban");
         // remove address from banned
-        setBanned((banned) => {
-          const new_banned = banned.filter((b) => b !== address);
-          return new_banned;
-        });
+        const new_banned = banned.filter((b) => b.address !== address);
+        setBannedUsers(new_banned);
       })
       .catch((err) => {
         console.log({ err });
@@ -561,6 +558,21 @@ export const LiveStreamChatContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    // get banned users
+    if (currently_playing) {
+      Axios.post(`/api/v2/chat/${currently_playing}/privacy/ban`, {
+        url: window.origin,
+      })
+        .then((res) => {
+          setBannedUsers(res.data);
+        })
+        .catch((err) => {
+          console.log({ err });
+        });
+    }
+  }, [currently_playing]);
+
+  useEffect(() => {
     const selected_currency = Object.keys(currency_addresses).map((key) => {
       if (currency_addresses[key] === selected_currency_address)
         return key.toUpperCase();
@@ -593,22 +605,6 @@ export const LiveStreamChatContextProvider = ({ children }) => {
       addMeToParticipants();
     }
     return () => removeMeFromParticipants();
-  }, [currently_playing]);
-
-  useEffect(() => {
-    // get banned users
-    if (currently_playing) {
-      Axios.post(`/api/v2/chat/${currently_playing}/privacy/ban`, {
-        url: window.origin,
-      })
-        .then((res) => {
-          setBanned(res.data);
-          setLoadingBanned(false);
-        })
-        .catch((err) => {
-          console.log({ err });
-        });
-    }
   }, [currently_playing]);
 
   useEffect(() => {
@@ -748,6 +744,7 @@ export const LiveStreamChatContextProvider = ({ children }) => {
         banAddress,
         liftBan,
         kickout,
+        setBannedUsers,
       }}
     >
       {children}
