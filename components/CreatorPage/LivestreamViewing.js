@@ -99,8 +99,7 @@ const LivestreamViewing = ({
   }, [streamIsActive, playbackId]);
 
   if (
-    // TODO: restore correct logic
-    !!isSubscribed &&
+    !isSubscribed &&
     modelData.address.toLowerCase() !== account.toLowerCase()
   )
     return (
