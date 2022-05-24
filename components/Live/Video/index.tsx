@@ -47,8 +47,12 @@ const LiveVideoConsumer = (props) => {
     useContext(LiveStreamChatContext);
 
   const { onOpen, isOpen, onClose } = useDisclosure();
-  const [banLoading, setBanLoading] = useState<[string]>([]);
-
+  const [banLoading, setBanLoading] = useState<Array<string>>([]);
+  // check if banloading contains
+  const isAddressBannedLoading = useCallback(
+    (address: string) => banLoading.includes(address),
+    [banLoading]
+  );
   const onVideo = useCallback((el) => {
     setVideoEl(el);
   }, []);
@@ -160,7 +164,7 @@ const LiveVideoConsumer = (props) => {
                       src={banned.avatar}
                     />
                     <Button
-                      isLoading={banLoading.contains(banned.address)}
+                      isLoading={() => isAddressBannedLoading(banned.address)}
                       size="sm"
                       onClick={() => {
                         setBanLoading([...banLoading, banned.address]);
