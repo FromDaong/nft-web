@@ -311,10 +311,10 @@ export const LiveStreamChatContextProvider = ({ children }) => {
           const currentAllowance = await allowance({
             currency: TippingCurrencies.BUSD,
           });
-          console.log("CURRENT BUSD ALLOWANCE:::", currentAllowance);
-          if (currentAllowance < Web3.utils.fromWei(amount)) {
-            console.log("AMOUNT::", parseFloat(amount));
-
+          if (
+            parseInt(Web3.utils.fromWei(currentAllowance)) <
+            parseInt(Web3.utils.fromWei(amount))
+          ) {
             const success = await approval(
               {
                 currency: TippingCurrencies.BUSD,
@@ -338,9 +338,10 @@ export const LiveStreamChatContextProvider = ({ children }) => {
           const currentAllowance = await allowance({
             currency: TippingCurrencies.USDC,
           });
-          console.log("CURRENT USDC ALLOWANCE:::", currentAllowance);
-
-          if (currentAllowance < Web3.utils.fromWei(amount)) {
+          if (
+            parseInt(Web3.utils.fromWei(currentAllowance)) <
+            parseInt(Web3.utils.fromWei(amount))
+          ) {
             const success = await approval(
               {
                 currency: TippingCurrencies.USDC,
@@ -364,12 +365,11 @@ export const LiveStreamChatContextProvider = ({ children }) => {
           const currentAllowance = await allowance({
             currency: TippingCurrencies.TREAT,
           });
-          console.log(
-            "!!!!!CURRENT TREAT ALLOWANCE:::",
-            Web3.utils.fromWei(currentAllowance)
-          );
 
-          if (currentAllowance < Web3.utils.fromWei(amount)) {
+          if (
+            parseInt(Web3.utils.fromWei(currentAllowance)) <
+            parseInt(Web3.utils.fromWei(amount))
+          ) {
             const success = await approval(
               {
                 currency: TippingCurrencies.TREAT,

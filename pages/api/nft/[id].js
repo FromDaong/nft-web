@@ -47,12 +47,31 @@ export default async (req, res) => {
           totalSupply,
         };
 
-        if (returnData.blurhash) {
-          delete returnData.image;
-          delete returnData.cdnUrl;
+        const nft = NFTres.toObject();
+
+        const formattedResponse = {
+          name: nft.name,
+          image: nft.image,
+          description: nft.description,
+          properties: {
+            _id: nft.id,
+            external_url: nft.external_url,
+            model: {
+              handle: nft.model_handle,
+              address: nft.model_bnb_address,
+            },
+            createdAt: nft.createdAt,
+            tags: nft.tags,
+          },
+          attributes: nft.attributes,
+        };
+
+        if (nft.blurhash) {
+          formattedResponse.image = nft.model_profile_pic;
+          // delete returnData.cdnUrl;
         }
 
-        res.status(200).json(returnData);
+        res.status(200).json(formattedResponse);
       } catch (error) {
         console.error({ error });
         res.status(400).json({ success: false, error: error });
