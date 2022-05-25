@@ -19,7 +19,7 @@ const treatNFTMinter = new web3.eth.Contract(
 
 export default async (req, res) => {
   const {
-    query: { id },
+    query: { id, internal },
     method,
   } = req;
 
@@ -41,37 +41,43 @@ export default async (req, res) => {
           await getNftTotalSupply(treatNFTMinter, id)
         )?.toNumber();
 
-        const returnData = {
-          ...NFTres.toObject(),
-          maxSupply,
-          totalSupply,
-        };
+        if (!internal) {
+          const nft = NFTres.toObject();
 
-        const nft = NFTres.toObject();
-
-        const formattedResponse = {
-          name: nft.name,
-          image: nft.image,
-          description: nft.description,
-          properties: {
-            _id: nft.id,
-            external_url: nft.external_url,
-            model: {
-              handle: nft.model_handle,
-              address: nft.model_bnb_address,
+          const formattedResponse = {
+            name: nft.name,
+            image: nft.image,
+            description: nft.description,
+            properties: {
+              _id: nft.id,
+              external_url: nft.external_url,
+              model: {
+                handle: nft.model_handle,
+                address: nft.model_bnb_address,
+              },
+              createdAt: nft.createdAt,
+              tags: nft.tags,
             },
-            createdAt: nft.createdAt,
-            tags: nft.tags,
-          },
-          attributes: nft.attributes,
-        };
+            attributes: nft.attributes,
+          };
 
-        if (nft.blurhash) {
-          formattedResponse.image = nft.model_profile_pic;
-          // delete returnData.cdnUrl;
+          if (nft.blurhash) {
+            formattedResponse.image = nft.model_profile_pic;
+            // delete returnData.cdnUrl;
+          }
+          res.status(200).json(formattedResponse);
+        } else {
+          const returnData = {
+            ...NFTres.toObject(),
+            maxSupply,
+            totalSupply,
+          };
+          if (returnData.blurhash) {
+            delete returnData.image;
+            delete returnData.cdnUrl;
+          }
+          res.status(200).json(returnData);
         }
-
-        res.status(200).json(formattedResponse);
       } catch (error) {
         console.error({ error });
         res.status(400).json({ success: false, error: error });
