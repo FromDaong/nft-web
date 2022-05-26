@@ -151,7 +151,7 @@ const CreateModel = () => {
       if (res.rejected === false && res.pending === false) {
         return setStep("accepted");
       }
-      if (!res.identity_access_key) {
+      if (res.pending && !res.identity_access_key) {
         return setStep("verify");
       }
       if (res.pending && res?.identity_access_key?.length < 1) {
