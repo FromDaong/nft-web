@@ -57,6 +57,8 @@ export default async function autocomplete(req, res) {
             },
           },
         },
+      },
+      {
         $match: {
           livestream_active: true,
         },
