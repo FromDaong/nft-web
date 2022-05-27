@@ -18,6 +18,7 @@ export default async (req, res) => {
         };
 
         let Models;
+        const { s } = req.query;
 
         if (!req.query.s) {
           Models = await Model.paginate(
