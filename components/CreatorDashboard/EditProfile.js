@@ -1,14 +1,15 @@
 import * as Yup from "yup";
 
+import { Box, GridItem, SimpleGrid } from "@chakra-ui/react";
 import { Button, Form, FormControl } from "react-bootstrap";
+import { useEffect, useState } from "react";
 
+import Axios from "axios";
 import Hero from "../../components/Hero";
 import { PencilFill } from "react-bootstrap-icons";
 import axios from "axios";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import Axios from "axios";
 
 const EditProfile = ({ modelData }) => {
   const router = useRouter();
@@ -87,10 +88,12 @@ const EditProfile = ({ modelData }) => {
 
   if (modelData && modelData.pending)
     return (
-      <Hero
-        title="Your application has been submitted!"
-        subtitle="When approved you will see a creator dashboard at the top of the navigation bar.  You can check back in a few hours."
-      />
+      <Box p={4}>
+        <Hero
+          title="Your application has been submitted!"
+          subtitle="When approved you will see a creator dashboard at the top of the navigation bar.  You can check back in a few hours."
+        />
+      </Box>
     );
 
   if (modelData && modelData.rejected)
@@ -181,17 +184,30 @@ const EditProfile = ({ modelData }) => {
               <small>
                 Please ensure photo is square, 1000 x 1000 recommended.
               </small>
-              <FormControl
-                type="file"
-                size="lg"
-                placeholder="E.g. https://img.ur/123"
-                name="profile_pic"
-                className="bg-white p-3 rounded"
-                // value={formik.values.profile_pic}
-                onChange={(file) =>
-                  ipfsUpload(file.target.files[0], "profile_pic")
-                }
-              />
+              <br />
+              <SimpleGrid p={3} bgColor="white" columns={[1, 2, 4, 4]}>
+                <GridItem colSpan={1}>
+                  <img
+                    className="h-32 w-32 rounded-full object-cover"
+                    src={formik.values.profile_pic}
+                    alt="Profile picture"
+                    data-testid="profile-pic"
+                  />
+                </GridItem>
+                <GridItem colSpan={(1, 1, 3, 3)}>
+                  <FormControl
+                    type="file"
+                    size="lg"
+                    placeholder="E.g. https://img.ur/123"
+                    name="profile_pic"
+                    className="bg-white p-3 rounded"
+                    // value={formik.values.profile_pic}
+                    onChange={(file) =>
+                      ipfsUpload(file.target.files[0], "profile_pic")
+                    }
+                  />
+                </GridItem>
+              </SimpleGrid>
             </div>
             <div className="pb-4">
               <label className="m-0">Change Banner Photo</label>
