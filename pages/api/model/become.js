@@ -1,10 +1,12 @@
 import Model from "../../../db/models/Model";
 import dbConnect from "../../../utils/dbConnect";
 import withSession from "../../../lib/session";
+
 dbConnect();
 
 export default withSession(async (req, res) => {
   const { method } = req;
+  const { ethAddress } = req.session;
 
   switch (method) {
     case "POST":
@@ -27,7 +29,13 @@ export default withSession(async (req, res) => {
 
         // const identity = await client.getIdentityById("identity_access_key");
 
-        const newNFT = await Model.create(nftBody);
+        const newNFT = await Model.findOneAndUpdate(
+          {
+            address: { $regex: new RegExp(ethAddress, "i") },
+          },
+          { ...nftBody },
+          { new: true }
+        );
 
         if (req.body.referrer_address) {
           const referrer = await Model.findOne({
