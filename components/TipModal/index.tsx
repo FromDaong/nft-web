@@ -226,12 +226,7 @@ export default function GenericSendTipModal({
         status: "success",
         duration: 3000,
       });
-    }
-
-    if (hasTipApproval) {
-      // set time out to remove weird failure sometimes?
-      // setTimeout(async function () {
-
+    } else {
       const sentTip = await treat?.contracts.tippingContract.methods
         .sendTip(amount, currency_address, creator_address)
         .send({
@@ -240,11 +235,9 @@ export default function GenericSendTipModal({
 
       if (sentTip) {
         informUserTip(Web3.utils.fromWei(amount), currency_symbol);
-        return;
+        return onClose();
       }
     }
-
-    return;
   };
 
   const closeModal = () => {
