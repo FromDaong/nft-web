@@ -113,8 +113,8 @@ export const contractAddresses = {
     "0x61": "0x33Cc2629bcc81f87FBF75a5428B5696f53cEb452",
   },
   totwMinterHelper: {
-    56: "0x3Da2011868dc84Af49Fbc6e5f97D8b2ea9998D76",
-    "0x38": "0x3Da2011868dc84Af49Fbc6e5f97D8b2ea9998D76",
+    56: "0x045dAEa9536ae0c9A119B8a179C0Efb491e5cb1D",
+    "0x38": "0x045dAEa9536ae0c9A119B8a179C0Efb491e5cb1D",
     97: "0x756f7fc71f67808037A2B3801e8d6afAf83b043C",
     "0x61": "0x756f7fc71f67808037A2B3801e8d6afAf83b043C",
   },
