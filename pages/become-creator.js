@@ -327,7 +327,7 @@ const CreateModel = () => {
                           colorScheme="secondary"
                           size="sm"
                           onClick={() => {
-                            formik.setFieldValue("");
+                            formik.setFieldValue("profile_pic", "");
                             formik.validateForm();
                           }}
                         >
