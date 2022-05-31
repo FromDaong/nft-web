@@ -11,7 +11,7 @@ export default withSession(async (req, res) => {
   } = req;
 
   switch (method) {
-    case "GET":
+    case "POST":
       try {
         if (
           req.body.event === "VERIFICATION_REVIEWED" &&
