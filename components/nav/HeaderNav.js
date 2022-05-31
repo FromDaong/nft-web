@@ -1,9 +1,9 @@
-import { useEffect, useState, useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import AgeModal from "../AgeModal";
-import { Context } from "../../contexts/TreatProvider";
 import BalanceModal from "../BalanceModal";
 import { Button } from "@chakra-ui/react";
+import { Context } from "../../contexts/TreatProvider";
 import Link from "next/link";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -14,7 +14,7 @@ import { destroyCookie } from "nookies";
 import { useMoralis } from "react-moralis";
 import { useRouter } from "next/router";
 
-const HeaderNav = ({ modelData }) => {
+const HeaderNav = () => {
   const [walletModalShow, setWalletModalShow] = useState(false);
   const [balanceModalShow, setBalanceModalShow] = useState(false);
   const [ageModalShow, setAgeModalShow] = useState(false);
@@ -30,8 +30,6 @@ const HeaderNav = ({ modelData }) => {
     destroyCookie(null, "refreshToken");
     router.push("/");
   };
-
-  console.log({ profile });
 
   useEffect(() => {
     enableWeb3();
