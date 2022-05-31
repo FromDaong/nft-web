@@ -9,7 +9,6 @@ const me = async (req, res) => {
   });
 
   if (!modelRes) {
-    // create new model in db
     const modelData = {
       bio: "I am a new Treat explorer",
       nfts: [],

@@ -1,15 +1,16 @@
 import * as Yup from "yup";
 
+import { Button, Text } from "@chakra-ui/react";
 import {
-  Button,
   Form,
   FormCheck,
   FormControl,
   FormGroup,
+  Spinner,
 } from "react-bootstrap";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
-import Axios from "axios";
+import { Context } from "../contexts/TreatProvider/TreatProvider";
 import Hero from "../components/Hero";
 import Loading from "../components/Loading";
 import { create } from "ipfs-http-client";
@@ -27,42 +28,40 @@ const client = create("https://ipfs.infura.io:5001/api/v0");
 
 const CreateModel = () => {
   const router = useRouter();
-  const [success, setSuccess] = useState(false);
+  const [, setSuccess] = useState(false);
   const [step, setStep] = useState("loading");
-  const { account } = useMoralis();
-  const [res, setRes] = useState(null);
-
-  useEffect(() => {
-    if (!account) return;
-    Axios.get(`/api/model/find-by-address/${account}`)
-      .then((res) => {
-        setRes(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, [account]);
+  const [uploading, setUploading] = useState(false);
+  const { profile } = useContext(Context);
 
   const formik = useFormik({
     initialValues: {
-      address: account,
+      ...profile,
       referrer_address: router.query.r,
       identity_access_key: "",
     },
     validateOnChange: false,
     validateOnBlur: false,
+    enableReinitialize: true,
     validationSchema: Yup.object().shape({
       username: Yup.string().required("Please add a username"),
       bio: Yup.string().required("Please add the Creator bio"),
       model_bnb_address: Yup.string(),
-      social_account: Yup.string().required("Please add a social account"),
+      social_account: Yup.string(),
       profile_pic: Yup.string().required("Please add a Profile Photo"),
       email: Yup.string().required("Please add a Email"),
       referrer_address: Yup.string(),
       terms_accepted: Yup.boolean().oneOf([true], "Please accept the terms"),
     }),
-    onSubmit: (values) => {
+    onSubmit: () => {
       SubmitToServer();
     },
   });
+
+  useEffect(() => {
+    for (let key in profile) {
+      formik.setFieldValue(key, profile[key]);
+    }
+  }, [profile]);
 
   const SubmitToServer = async () => {
     try {
@@ -96,14 +95,23 @@ const CreateModel = () => {
   };
 
   const ipfsUpload = (file, field) => {
+    setUploading(true);
     toBuffer(file, (err, buff) => {
       if (err || !file) return;
-      client.add(buff).then((results) => {
-        formik.setFieldValue(
-          field,
-          `https://treatdao.mypinata.cloud/ipfs/${results.path}`
-        );
-      });
+      client
+        .add(buff)
+        .then((results) => {
+          formik.setFieldValue(
+            field,
+            `https://treatdao.mypinata.cloud/ipfs/${results.path}`
+          );
+          formik.validateForm();
+          setUploading(false);
+        })
+        .catch((err) => {
+          console.log({ err });
+          setUploading(false);
+        });
     });
   };
 
@@ -140,28 +148,65 @@ const CreateModel = () => {
     }
   };
 
+  console.log({ formik });
+
   useEffect(() => {
-    if (res) {
-      if (res.rejected) {
+    if (profile) {
+      if (profile.rejected) {
         return setStep("rejected");
       }
-      if (res.pending && res?.identity_access_key?.length > 0) {
+      if (profile.pending && profile?.identity_access_key?.length > 0) {
         return setStep("pending");
       }
-      if (res.rejected === false && res.pending === false) {
+      if (profile.rejected === false && profile.pending === false) {
         return setStep("accepted");
       }
-      if (res.pending && !res.identity_access_key) {
+      if (profile.pending && !profile.identity_access_key) {
         return setStep("verify");
       }
-      if (res.pending && res?.identity_access_key?.length < 1) {
+      if (profile.pending && profile?.identity_access_key?.length < 1) {
         return setStep("verify");
       }
     }
     return setStep("signup");
-  }, [res]);
+  }, [profile]);
 
-  console.log({ step, res });
+  if (profile === null) {
+    return (
+      <div
+        style={{
+          position: "fixed",
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          top: 0,
+          left: 0,
+          justifyContent: "center",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <h5
+          style={{
+            fontWeight: "bolder",
+            background: "white",
+            borderRadius: 5,
+            padding: 10,
+          }}
+        >
+          Please make sure your wallet on the Binance Smart Chain is connected.
+        </h5>
+        <Spinner
+          animation="border"
+          role="status"
+          size="xl"
+          style={{ marginTop: 5 }}
+        >
+          <span className="sr-only">Loading...</span>
+        </Spinner>
+      </div>
+    );
+  }
 
   return (
     <div className="no-position" style={{ maxWidth: 800, margin: "auto" }}>
@@ -196,12 +241,13 @@ const CreateModel = () => {
                     placeholder="E.g. alexanbt"
                     name="username"
                     value={formik.values.username}
-                    onChange={(e) =>
+                    onChange={(e) => {
                       formik.setFieldValue(
                         "username",
                         e.target.value.replace(" ", "")
-                      )
-                    }
+                      );
+                      formik.validateForm();
+                    }}
                   />
                   <small>treatdao.com/creator/{formik.values.username}</small>
                 </div>
@@ -257,6 +303,7 @@ const CreateModel = () => {
                         }
                       }
                       formik.setFieldValue("social_account", value);
+                      formik.validateForm();
                     }}
                   />
                   <small className="text-danger">
@@ -269,17 +316,61 @@ const CreateModel = () => {
                   <small>
                     Please ensure photo is square, 1000 x 1000 recommended.
                   </small>
-                  <FormControl
-                    type="file"
-                    size="lg"
-                    placeholder="E.g. https://img.ur/123"
-                    name="profile_pic"
-                    className="bg-white p-3 rounded"
-                    // value={formik.values.profile_pic}
-                    onChange={(file) =>
-                      ipfsUpload(file.target.files[0], "profile_pic")
-                    }
-                  />
+                  {!uploading &&
+                    (formik.values.profile_pic ? (
+                      <div className="w-full p-3 bg-white rounded-md">
+                        <Text fontWeight="bold">
+                          Your profile picture has been uploaded to IPFS
+                        </Text>
+                        <Button
+                          mt={2}
+                          colorScheme="secondary"
+                          size="sm"
+                          onClick={() => {
+                            formik.setFieldValue("profile_pic", "");
+                            formik.validateForm();
+                          }}
+                        >
+                          Change profile picture
+                        </Button>
+                        <Text mt={1} color="secondary" fontSize={"sm"}>
+                          {formik.values.profile_pic}
+                        </Text>
+                      </div>
+                    ) : (
+                      <FormControl
+                        type="file"
+                        size="lg"
+                        placeholder="E.g. https://img.ur/123"
+                        name="profile_pic"
+                        className="bg-white p-3 rounded"
+                        // value={formik.values.profile_pic}
+                        onChange={(file) =>
+                          ipfsUpload(file.target.files[0], "profile_pic")
+                        }
+                      />
+                    ))}
+                  {uploading && (
+                    <div className="w-full p-3 bg-white flex rounded-md items-center">
+                      <svg
+                        role="status"
+                        className="inline w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-pink-600"
+                        viewBox="0 0 100 101"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                          fill="currentColor"
+                        />
+                        <path
+                          d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                          fill="currentFill"
+                        />
+                      </svg>
+                      <Text>Uploading your profile picture to IFPS</Text>
+                    </div>
+                  )}
                 </div>
 
                 <div className="pb-4">
@@ -322,6 +413,7 @@ const CreateModel = () => {
                   <Button
                     className="bg-primary text-white font-bold"
                     onClick={formik.handleSubmit}
+                    disabled={!formik.dirty || !formik.isValid}
                     type="submit"
                   >
                     Submit Application
@@ -332,7 +424,7 @@ const CreateModel = () => {
                   <Button
                     className="bg-primary text-white font-bold"
                     disabled
-                    onClick={null}
+                    isLoading
                   >
                     Submitting...
                   </Button>
