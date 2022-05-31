@@ -23,7 +23,6 @@ import { contractAddresses } from "@treat/lib/constants";
 import { make_id } from "../../components/Live/utils";
 import { reactPusher } from "../../lib/pusher";
 import { useMoralis } from "react-moralis";
-import { useRouter } from "next/dist/client/router";
 import { useToast } from "@chakra-ui/react";
 
 export const LiveStreamChatContext = createContext<{
