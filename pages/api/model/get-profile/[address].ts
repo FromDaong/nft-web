@@ -5,15 +5,15 @@ dbConnect();
 
 export default async (req, res) => {
   const {
-    query: { _id },
+    query: { address },
     method,
   } = req;
 
   switch (method) {
     case "GET":
       try {
-        let modelRes = await Model.findOne({
-          address: { $regex: new RegExp(_id, "i") },
+        const modelRes = await Model.findOne({
+          address: { $regex: new RegExp(address, "i") },
         });
 
         if (!modelRes) return res.status(404);
