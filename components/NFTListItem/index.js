@@ -23,7 +23,9 @@ const NFTListItem = ({
   const isTOTMorOldTOTW =
     data.totw || data.totm || data.old_totw || data.old_totm;
 
-  const profilePic = `/api/v2/utils/images/fetchWithFallback?default=${model.model_profile_pic}`;
+  const profilePic = model
+    ? `/api/v2/utils/images/fetchWithFallback?default=${model.profile_pic}`
+    : `/api/v2/utils/images/fetchWithFallback?default=${data.model_profile_pic}`;
 
   if (!data.attributes || !data.id) return <div></div>;
 
