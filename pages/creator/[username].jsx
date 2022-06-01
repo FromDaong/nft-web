@@ -1,10 +1,11 @@
 import { BagX, PatchCheck, RecordCircle, Shop } from "react-bootstrap-icons";
+import { Button, useDisclosure } from "@chakra-ui/react";
+import { CashIcon, ClipboardCopyIcon } from "@heroicons/react/solid";
 import React, { useEffect, useState } from "react";
 import { Tab, Tabs } from "react-bootstrap";
 
-import { Button } from "@chakra-ui/react";
-import { Clipboard } from "react-bootstrap-icons";
 import ErrorFallback from "../../components/Fallback/Error";
+import GenericTipModal from "../../components/TipModal";
 import Layout from "../../components/Layout";
 import Link from "next/link";
 import LivestreamViewing from "../../components/CreatorPage/LivestreamViewing";
@@ -15,7 +16,6 @@ import Web3 from "web3";
 import useGetIsSubscribed from "../../hooks/useGetIsSubscribed";
 import useGetSubscriptionCost from "../../hooks/useGetSubscriptionCost";
 import { useMoralis } from "react-moralis";
-import { useRouter } from "next/router";
 import useSWR from "swr";
 
 const ViewModelWrapper = ({ username }) => {
@@ -27,7 +27,6 @@ const ViewModelWrapper = ({ username }) => {
   const [modelNFTs, setModelNFTs] = useState();
   const [newNFTs, setNewNFTs] = useState();
   const [outOfPrintNFTs, setOutOfPrintNFTs] = useState();
-  const router = useRouter();
 
   useEffect(() => {
     (async () => {
@@ -52,7 +51,7 @@ const ViewModelWrapper = ({ username }) => {
           })
         );
 
-        let newNFTs = mNfts.filter(
+        const newNFTs = mNfts.filter(
           (nft) =>
             nft.maxSupply > nft.totalSupply &&
             !nft.totw &&
@@ -60,12 +59,12 @@ const ViewModelWrapper = ({ username }) => {
             !nft.old_totw &&
             !nft.old_totm
         );
-        let outOfPrint = mNfts.filter(
+        const outOfPrint = mNfts.filter(
           (nft) =>
             nft.maxSupply === nft.totalSupply || nft.old_totw || nft.old_totm
         );
-        let getTotwNFTs = mNfts.filter((nft) => nft.totw);
-        let getTotmNFTs = mNfts.filter((nft) => nft.totm);
+        const getTotwNFTs = mNfts.filter((nft) => nft.totw);
+        const getTotmNFTs = mNfts.filter((nft) => nft.totm);
 
         setModelNFTs(mNfts);
         setNewNFTs(newNFTs);
@@ -169,6 +168,8 @@ const ViewModel = ({
     }
   };
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <div className="container">
       <div className="view-model white-tp-bg">
@@ -203,12 +204,26 @@ const ViewModel = ({
                 </Link>
               </div>
             )}
-            <div>
+            <div className="flex" style={{ marginTop: 15, width: "100%" }}>
+              <GenericTipModal
+                isOpen={isOpen}
+                onClose={onClose}
+                creator_address={modelData.address}
+              />
+              <Button
+                leftIcon={<CashIcon className="w-5 h-5" />}
+                rounded="full"
+                onClick={onOpen}
+                colorScheme={"primary"}
+                mr={[3, 4, 4, 4]}
+              >
+                Tip creator
+              </Button>
               <Button
                 px={4}
                 rounded="full"
                 colorScheme={"primary"}
-                style={{ marginTop: 15, width: "100%" }}
+                leftIcon={<ClipboardCopyIcon className="w-5 h-5" />}
                 onClick={() => {
                   navigator.clipboard.writeText(
                     `https://treatdao.com/creator/${modelData.username}`
@@ -216,17 +231,7 @@ const ViewModel = ({
                   setCopied(true);
                 }}
               >
-                {copied ? (
-                  <>
-                    <Clipboard className="mb-1 mr-1" />
-                    Copied
-                  </>
-                ) : (
-                  <>
-                    <Clipboard className="mb-1 mr-1" />
-                    Copy URL
-                  </>
-                )}
+                {copied ? <>Copied</> : <>Copy URL</>}
               </Button>
             </div>
           </div>
