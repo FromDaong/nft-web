@@ -37,7 +37,7 @@ const CreatorList = ({ modelData }) => {
       <div className="model-display-section row">
         {modelsWithNFTs &&
           modelsWithNFTs.slice(0, 12).map((model) => {
-            const profilePic = model.profilePicCdnUrl ?? model.profile_pic;
+            const profilePic = model.profile_pic;
             const profilePicUrl = `/api/v2/utils/images/fetchWithFallback?default=${profilePic}`;
             return (
               <Link key={model.username} href={`/creator/${model.username}`}>

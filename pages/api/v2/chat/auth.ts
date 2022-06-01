@@ -16,7 +16,7 @@ async function auth(req, res) {
     user_id: "unique_user_id",
     user_info: {
       address: ethAddress,
-      avatar: user.profilePicCdnUrl ?? user.profile_picture,
+      avatar: user.profile_pic,
       username: user.username,
     },
   };
