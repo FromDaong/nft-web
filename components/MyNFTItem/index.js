@@ -3,6 +3,7 @@ import { Button } from "@chakra-ui/react";
 import { EyeSlash } from "react-bootstrap-icons";
 import GumletImage from "../Image/GumletImage";
 import InView from "react-intersection-observer";
+import Lightbox from "react-image-lightbox";
 import Link from "next/link";
 import Modal from "react-bootstrap/Modal";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
@@ -11,7 +12,6 @@ import Tooltip from "react-bootstrap/Tooltip";
 import { isBlurhashValid } from "blurhash";
 import { useNFTItemData } from "../../lib/imagecdn";
 import { useState } from "react";
-import Lightbox from "react-image-lightbox";
 
 const NFTListItem = ({
   data,
@@ -30,7 +30,7 @@ const NFTListItem = ({
   const bgImage = `/api/v2/utils/images/fetchWithFallback?default=${data.image}`;
 
   const profilePic = model
-    ? `/api/v2/utils/images/fetchWithFallback?default=${model.profilePicCdnUrl}-/quality/lightest/-/format/webp/`
+    ? `/api/v2/utils/images/fetchWithFallback?default=${model.profile_pic}`
     : `/api/v2/utils/images/fetchWithFallback?default=${data.model_profile_pic}`;
 
   return (
