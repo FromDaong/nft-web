@@ -14,7 +14,7 @@ const V2Banner = () => {
           background: "#DA5184",
         }}
       >
-        {"Our May edition Treat of the Month + Magazine is out now!"}
+        {"Our June edition Treat of the Month + Magazine is out now!"}
         <Link href="/magazine">
           <Button className="ml-2" bgColor="white" color="gray.900">
             View Magazine
