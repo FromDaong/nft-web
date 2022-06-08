@@ -4,6 +4,7 @@ import { NextApiRequest } from "next";
 import { NextApiResponse } from "next";
 import Profile from "../../../../db/models/Profile";
 import dbConnect from "../../../../utils/dbConnect";
+import navigateToPage from "@utils/pagination";
 
 dbConnect();
 
@@ -13,9 +14,8 @@ export default async function profile(
 ) {
   try {
     const address = req.query.address as any;
-    const page = req.query.p as any;
+    const page = req.query.page as any;
     const options = {
-      page: page ?? 1,
       limit: 12,
       collation: {
         locale: "en",
@@ -24,11 +24,14 @@ export default async function profile(
     };
 
     const profile = await Profile.findOne({ address });
-    const ownedNFTs = await MoralisInstance.Web3API.account.getNFTsForContract({
-      address,
-      token_address: process.env.TREAT_MINTER_ADDRESS,
-      chain: "bsc",
-    });
+    const ownedNFTs = await MoralisInstance.Web3API.account
+      .getNFTsForContract({
+        address,
+        token_address: process.env.TREAT_MINTER_ADDRESS,
+        chain: "bsc",
+        limit: 12,
+      })
+      .then((response) => navigateToPage(response, parseInt(page ?? 1)));
     const ownedNFTsIds = await ownedNFTs.result.map((nft) => nft.token_id);
 
     // @ts-ignore

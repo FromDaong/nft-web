@@ -3,27 +3,30 @@ import MoralisInstance, { ethers, web3Node } from "../../../../utils/moralis";
 import NFT from "../../../../db/models/NFT";
 import TreatNFTMinterAbi from "../../../../treat/lib/abi/treatnftminter.json";
 import dbConnect from "../../../../utils/dbConnect";
+import navigateToPage from "@utils/pagination";
 import { withJWTAuth } from "../../../../utils/server-utils";
 
 dbConnect();
 
 const myNFTs = async (req, res) => {
   const { session } = req;
+  const { page } = req.query;
 
   const options = {
-    page: req.query.page ?? 1,
     collation: {
       locale: "en",
     },
     sort: {},
   };
 
-  const owned_nfts = await MoralisInstance.Web3API.account.getNFTsForContract({
-    address: session.ethAddress,
-    token_address: process.env.TREAT_MINTER_ADDRESS,
-    chain: "bsc",
-    limit: 12,
-  });
+  const owned_nfts = await MoralisInstance.Web3API.account
+    .getNFTsForContract({
+      address: session.ethAddress,
+      token_address: process.env.TREAT_MINTER_ADDRESS,
+      chain: "bsc",
+      limit: 12,
+    })
+    .then((response) => navigateToPage(response, parseInt(page ?? 1)));
 
   const treatNFTMinter = new ethers.Contract(
     process.env.TREAT_MINTER_ADDRESS,
