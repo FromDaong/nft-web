@@ -12,7 +12,6 @@ const myNFTs = async (req, res) => {
 
   const options = {
     page: req.query.page ?? 1,
-    limit: 12,
     collation: {
       locale: "en",
     },
@@ -23,6 +22,7 @@ const myNFTs = async (req, res) => {
     address: session.ethAddress,
     token_address: process.env.TREAT_MINTER_ADDRESS,
     chain: "bsc",
+    limit: 12,
   });
 
   const treatNFTMinter = new ethers.Contract(

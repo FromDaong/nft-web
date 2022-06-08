@@ -12,7 +12,6 @@ const myNFTs = async (req, res) => {
   const { ethAddress } = session;
 
   const options = {
-    page: req.query.page ?? 1,
     limit: 12,
     collation: {
       locale: "en",
