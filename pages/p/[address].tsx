@@ -106,7 +106,6 @@ export const getServerSideProps = async (ctx) => {
     const address = ctx.query.address as any;
     const page = ctx.query.p as any;
     const options = {
-      page: page ?? 1,
       limit: 12,
       collation: {
         locale: "en",
@@ -119,6 +118,7 @@ export const getServerSideProps = async (ctx) => {
       address,
       token_address: process.env.TREAT_MINTER_ADDRESS,
       chain: "bsc",
+      limit: 12,
     });
     const ownedNFTsIds = await ownedNFTs.result.map((nft) => nft.token_id);
 
