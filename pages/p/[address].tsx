@@ -6,6 +6,7 @@ import NFT from "../../db/models/NFT";
 import NFTListItem from "../../components/NFTListItem/";
 import Profile from "../../db/models/Profile";
 import dbConnect from "../../utils/dbConnect";
+import navigateToPage from "@utils/pagination";
 import { useRouter } from "next/dist/client/router";
 import { useState } from "react";
 
@@ -114,12 +115,14 @@ export const getServerSideProps = async (ctx) => {
     };
 
     const profile = await Profile.findOne({ address });
-    const ownedNFTs = await MoralisInstance.Web3API.account.getNFTsForContract({
-      address,
-      token_address: process.env.TREAT_MINTER_ADDRESS,
-      chain: "bsc",
-      limit: 12,
-    });
+    const ownedNFTs = await MoralisInstance.Web3API.account
+      .getNFTsForContract({
+        address,
+        token_address: process.env.TREAT_MINTER_ADDRESS,
+        chain: "bsc",
+        limit: 12,
+      })
+      .then((response) => navigateToPage(response, parseInt(page ?? 1)));
     const ownedNFTsIds = await ownedNFTs.result.map((nft) => nft.token_id);
 
     // @ts-ignore
