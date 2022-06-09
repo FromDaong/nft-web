@@ -63,12 +63,26 @@ export default async function all_nfts(req, res) {
   } else {
     options.sort.id = -1;
   }
+  const all_nfts = {
+    result: [],
+  };
+  let cursor = "";
 
-  const all_nfts = await MoralisInstance.Web3API.account.getNFTsForContract({
-    address: "0xE965D19FD021355fc85f4Cdcc856C018274cACF8",
-    token_address: TREAT_MINTER_ADDRESS,
-    chain: "bsc",
-  });
+  while (cursor !== null) {
+    const nfts = await MoralisInstance.Web3API.account.getNFTsForContract({
+      address: "0xE965D19FD021355fc85f4Cdcc856C018274cACF8",
+      token_address: TREAT_MINTER_ADDRESS,
+      chain: "bsc",
+      limit: 100,
+    });
+    all_nfts.result = [...all_nfts.result, ...nfts.result];
+    if (nfts.next) {
+      cursor = nfts.cursor;
+    } else {
+      cursor = null;
+    }
+  }
+
   const nftids = all_nfts.result.map((nft) => Number(nft.token_id));
 
   try {

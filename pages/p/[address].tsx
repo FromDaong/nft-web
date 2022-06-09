@@ -115,15 +115,25 @@ export const getServerSideProps = async (ctx) => {
     };
 
     const profile = await Profile.findOne({ address });
-    const ownedNFTs = await MoralisInstance.Web3API.account
-      .getNFTsForContract({
+    let cursor;
+    let ownedNFTs = [];
+
+    while (cursor !== null) {
+      const nfts = await MoralisInstance.Web3API.account.getNFTsForContract({
         address,
         token_address: process.env.TREAT_MINTER_ADDRESS,
         chain: "bsc",
-        limit: 12,
-      })
-      .then((response) => navigateToPage(response, parseInt(page ?? 1)));
-    const ownedNFTsIds = await ownedNFTs.result.map((nft) => nft.token_id);
+        limit: 100,
+        cursor,
+      });
+      ownedNFTs = [...ownedNFTs, ...nfts.result];
+      if (nfts.next) {
+        cursor = nfts.cursor;
+      } else {
+        cursor = null;
+      }
+    }
+    const ownedNFTsIds = await ownedNFTs.map((nft) => nft.token_id);
 
     // @ts-ignore
     const nftsWithMetadata = await NFT.paginate(
@@ -135,7 +145,7 @@ export const getServerSideProps = async (ctx) => {
 
     nftsWithMetadata.docs = await Promise.all(
       nftsWithMetadata.docs.map((data) => {
-        const nft_data = ownedNFTs.result.find(
+        const nft_data = ownedNFTs.find(
           (owned_nft) => Number(owned_nft.token_id) === data.id
         );
         if (nft_data) {
