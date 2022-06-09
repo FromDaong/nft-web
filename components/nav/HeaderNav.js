@@ -140,7 +140,7 @@ const HeaderNav = () => {
             </>
           )}
 
-          <Link href="/buy-crypto" passHref>
+          <Link href="/buy" passHref>
             <Nav.Link>Buy BNB</Nav.Link>
           </Link>
           {!user && (
