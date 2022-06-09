@@ -17,16 +17,30 @@ const myNFTs = async (req, res) => {
       locale: "en",
     },
     sort: {},
+    page,
+    limit: 12,
   };
 
-  const owned_nfts = await MoralisInstance.Web3API.account
-    .getNFTsForContract({
+  let cursor;
+  let owned_nfts = [];
+
+  while (cursor !== null) {
+    const nfts = await MoralisInstance.Web3API.account.getNFTsForContract({
       address: session.ethAddress,
       token_address: process.env.TREAT_MINTER_ADDRESS,
       chain: "bsc",
-      limit: 12,
-    })
-    .then((response) => navigateToPage(response, parseInt(page ?? 1)));
+      limit: 100,
+      cursor,
+    });
+    owned_nfts = [...owned_nfts, ...nfts.result];
+    if (nfts.next) {
+      cursor = nfts.cursor;
+    } else {
+      cursor = null;
+    }
+  }
+
+  // .then((response) => navigateToPage(response, parseInt(page ?? 1)));
 
   const treatNFTMinter = new ethers.Contract(
     process.env.TREAT_MINTER_ADDRESS,
@@ -34,7 +48,7 @@ const myNFTs = async (req, res) => {
     web3Node
   );
 
-  const nftids = owned_nfts.result.map((nft) => Number(nft.token_id));
+  const nftids = owned_nfts.map((nft) => Number(nft.token_id));
   // @ts-ignore
   const ownedTokensWithMetadata = await NFT.paginate(
     {
@@ -45,7 +59,7 @@ const myNFTs = async (req, res) => {
 
   ownedTokensWithMetadata.docs = await Promise.all(
     ownedTokensWithMetadata.docs.map(async (data) => {
-      const nft_data = owned_nfts.result.find(
+      const nft_data = owned_nfts.find(
         (owned_nft) => Number(owned_nft.token_id) === data.id
       );
       if (nft_data) {
