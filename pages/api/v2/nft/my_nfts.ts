@@ -10,29 +10,24 @@ dbConnect();
 
 const myNFTs = async (req, res) => {
   const { session } = req;
-  const { page } = req.query;
-
-  const options = {
-    collation: {
-      locale: "en",
-    },
-    sort: {},
-    page,
-    limit: 12,
-  };
+  let { page } = req.query;
+  page = parseInt(page);
 
   let cursor;
-  let owned_nfts = [];
+  let owned_nfts: any = {};
+  let n = 0;
 
-  while (cursor !== null) {
-    const nfts = await MoralisInstance.Web3API.account.getNFTsForContract({
+  while (cursor !== null && n < parseInt(page)) {
+    const nfts: any = await MoralisInstance.Web3API.account.getNFTsForContract({
       address: session.ethAddress,
       token_address: process.env.TREAT_MINTER_ADDRESS,
       chain: "bsc",
-      limit: 100,
+      limit: 12,
       cursor,
     });
-    owned_nfts = [...owned_nfts, ...nfts.result];
+    owned_nfts = nfts;
+    n++;
+
     if (nfts.next) {
       cursor = nfts.cursor;
     } else {
@@ -48,18 +43,15 @@ const myNFTs = async (req, res) => {
     web3Node
   );
 
-  const nftids = owned_nfts.map((nft) => Number(nft.token_id));
+  const nftids = owned_nfts.result.map((nft) => Number(nft.token_id));
   // @ts-ignore
-  const ownedTokensWithMetadata = await NFT.paginate(
-    {
-      id: { $in: nftids },
-    },
-    options
-  );
+  let ownedTokensWithMetadata = await NFT.find({
+    id: { $in: nftids },
+  });
 
-  ownedTokensWithMetadata.docs = await Promise.all(
-    ownedTokensWithMetadata.docs.map(async (data) => {
-      const nft_data = owned_nfts.find(
+  ownedTokensWithMetadata = await Promise.all(
+    ownedTokensWithMetadata.map(async (data) => {
+      const nft_data = owned_nfts.result.find(
         (owned_nft) => Number(owned_nft.token_id) === data.id
       );
       if (nft_data) {
@@ -90,8 +82,21 @@ const myNFTs = async (req, res) => {
     })
   );
 
-  ownedTokensWithMetadata.docs = ownedTokensWithMetadata.docs.filter((e) => e);
-  return res.json(ownedTokensWithMetadata);
+  ownedTokensWithMetadata = ownedTokensWithMetadata.filter((e) => e);
+
+  page = n;
+
+  return res.json({
+    docs: ownedTokensWithMetadata,
+    page,
+    totalPages: owned_nfts.total / 12 + 1,
+    nextPage: page + 1,
+    hasNextPage: page < owned_nfts.total / 12 + 1,
+    hasPrevPage: page - 1 > 0,
+    limit: 12,
+    totalDocs: owned_nfts.total,
+    prevPage: page === 1 ? null : page - 1,
+  });
 };
 
 export default withJWTAuth(myNFTs);
