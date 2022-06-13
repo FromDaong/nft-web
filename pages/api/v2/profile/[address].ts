@@ -4,6 +4,7 @@ import { NextApiRequest } from "next";
 import { NextApiResponse } from "next";
 import Profile from "../../../../db/models/Profile";
 import dbConnect from "../../../../utils/dbConnect";
+import navigateToPage from "@utils/pagination";
 
 dbConnect();
 
@@ -13,10 +14,10 @@ export default async function profile(
 ) {
   try {
     const address = req.query.address as any;
-    const page = req.query.p as any;
+    const page = req.query.page as any;
     const options = {
-      page: page ?? 1,
       limit: 12,
+      page,
       collation: {
         locale: "en",
       },
@@ -24,12 +25,25 @@ export default async function profile(
     };
 
     const profile = await Profile.findOne({ address });
-    const ownedNFTs = await MoralisInstance.Web3API.account.getNFTsForContract({
-      address,
-      token_address: process.env.TREAT_MINTER_ADDRESS,
-      chain: "bsc",
-    });
-    const ownedNFTsIds = await ownedNFTs.result.map((nft) => nft.token_id);
+    let cursor;
+    let ownedNFTs = [];
+
+    while (cursor !== null) {
+      const nfts = await MoralisInstance.Web3API.account.getNFTsForContract({
+        address,
+        token_address: process.env.TREAT_MINTER_ADDRESS,
+        chain: "bsc",
+        limit: 100,
+        cursor,
+      });
+      ownedNFTs = [...ownedNFTs, ...nfts.result];
+      if (nfts.next) {
+        cursor = nfts.cursor;
+      } else {
+        cursor = null;
+      }
+    }
+    const ownedNFTsIds = await ownedNFTs.map((nft) => nft.token_id);
 
     // @ts-ignore
     const nftsWithMetadata = await NFT.paginate(
@@ -41,7 +55,7 @@ export default async function profile(
 
     nftsWithMetadata.docs = await Promise.all(
       nftsWithMetadata.docs.map((data) => {
-        const nft_data = ownedNFTs.result.find(
+        const nft_data = ownedNFTs.find(
           (owned_nft) => Number(owned_nft.token_id) === data.id
         );
         if (nft_data) {

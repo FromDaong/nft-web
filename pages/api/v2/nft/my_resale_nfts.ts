@@ -12,6 +12,8 @@ const myNFTs = async (req, res) => {
   const { ethAddress } = session;
 
   const options = {
+    // Keep page here because we're fetching all IDs from resale contract
+    // we will use MongoDB to control paginate
     page: req.query.page ?? 1,
     limit: 12,
     collation: {
