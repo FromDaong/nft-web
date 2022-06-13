@@ -89,9 +89,9 @@ const myNFTs = async (req, res) => {
   return res.json({
     docs: ownedTokensWithMetadata,
     page,
-    totalPages: owned_nfts.total / 12 + 1,
+    totalPages: Math.ceil(owned_nfts.total / 12),
     nextPage: page + 1,
-    hasNextPage: page < owned_nfts.total / 12 + 1,
+    hasNextPage: page < Math.ceil(owned_nfts.total / 12),
     hasPrevPage: page - 1 > 0,
     limit: 12,
     totalDocs: owned_nfts.total,
