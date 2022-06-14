@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
 import Model from "@models/Model";
-import treatAxios from "@lib/axios";
+import axios from "axios"
 
 // enable this webhook to set live
 
@@ -24,7 +24,7 @@ const livestream_hook = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if(!stream.isActive) {
       try{
-        const stream_res = await treatAxios.get(`/api/stream/${model.live.stream_id}`);
+        const stream_res = await axios.get(`/api/stream/${model.live.stream_id}`);
         await Model.findByIdAndUpdate(model._id, {
           livestream_active: stream_res.data.isActive ? true : false,
         });
