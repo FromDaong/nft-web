@@ -12,13 +12,13 @@ const livestream_hook = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  const { event, stream } = body;
+  const { stream } = body;
 
   try {
     const model = await Model.findOne({
-      "live.playback_id": { $regex: new RegExp(stream.playback_id, "i") },
+      "live.stream_id": stream.id,
     });
-    console.log({model, stream, playback_id: model.live.playback_id, stream_playback_id: stream.playback_id, event})
+    // console.log({model, stream, playback_id: model.live.playback_id, stream_playback_id: stream.playback_id, event})
     if (!model) {
       return res.status(200).json({ error: false });
     }
