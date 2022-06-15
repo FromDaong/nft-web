@@ -2,8 +2,10 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import Model from "@models/Model";
 import axios from "axios"
+import dbConnect from "@utils/dbConnect";
 
 // enable this webhook to set live
+dbConnect();
 
 const livestream_hook = async (req: NextApiRequest, res: NextApiResponse) => {
   const { body } = req;
