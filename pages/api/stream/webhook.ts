@@ -18,6 +18,7 @@ const livestream_hook = async (req: NextApiRequest, res: NextApiResponse) => {
     const model = await Model.findOne({
       "live.playback_id": stream.playback_id,
     });
+    console.log({model, stream, playback_id: model.live.playback_id, stream_playback_id: stream.playback_id, event})
     if (!model) {
       return res.status(200).json({ error: false });
     }
