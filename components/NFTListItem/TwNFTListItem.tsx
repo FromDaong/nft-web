@@ -23,7 +23,9 @@ export default function TwNFTListItem({ data }: { data: any }) {
       <LazyLoad height={400} offset={600}>
         <div className="space-y-4 pt-12">
           <div className="w-full rounded-xl flex items-center justify-center h-96 border-2 border-primary2 bg-black relative">
-            <Link href={`/creator/${data.attributes[0].value.slice(1, -1)}`}>
+            <Link
+              href={`/creator/${data.attributes[0].value.replace("@", "")}`}
+            >
               <a
                 style={{
                   transform: "translateY(-50%)",
@@ -77,7 +79,7 @@ export default function TwNFTListItem({ data }: { data: any }) {
               {account === address && (
                 <span className="font-bold">Creator: </span>
               )}
-              {data.attributes[0].value.slice(1, -1)}
+              {data.attributes[0].value.replace("@", "")}
             </div>
             {typeof data.list_price !== "undefined" && (
               <div className="block">
