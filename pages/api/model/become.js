@@ -31,7 +31,7 @@ export default withSession(async (req, res) => {
 
         const newNFT = await Model.findOneAndUpdate(
           {
-            address: { $regex: new RegExp(ethAddress, "i") },
+            address: ethAddress,
           },
           { ...nftBody },
           { new: true }

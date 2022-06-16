@@ -8,7 +8,7 @@ async function chat(req, res) {
     try {
       const model = await Model.updateOne(
         {
-          address: new RegExp(ethAddress, "i"),
+          address: ethAddress
         },
         {
           live_chat_enabled,

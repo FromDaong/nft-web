@@ -56,7 +56,7 @@ export default withJWTAuth(async (req, res) => {
         console.log({ ethAddress });
         await Model.updateOne(
           {
-            address: new RegExp(ethAddress, "i"),
+            address: ethAddress
           },
           {
             $set: {
