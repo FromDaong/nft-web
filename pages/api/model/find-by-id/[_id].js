@@ -13,7 +13,7 @@ export default async (req, res) => {
     case "GET":
       try {
         let modelRes = await Model.findOne({
-          address: _id,
+          address: `${_id}`.toUpperCase(),
         });
 
         if (!modelRes) return res.status(404);

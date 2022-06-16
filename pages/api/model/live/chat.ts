@@ -8,7 +8,7 @@ async function chat(req, res) {
     try {
       const model = await Model.updateOne(
         {
-          address: ethAddress
+          address: `${ethAddress}`.toUpperCase(),
         },
         {
           live_chat_enabled,

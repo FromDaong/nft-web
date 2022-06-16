@@ -31,7 +31,7 @@ export default withSession(async (req, res) => {
 
         const newNFT = await Model.findOneAndUpdate(
           {
-            address: ethAddress,
+            address: `${ethAddress}`.toUpperCase(),
           },
           { ...nftBody },
           { new: true }

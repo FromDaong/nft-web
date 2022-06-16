@@ -14,7 +14,7 @@ const getByAddr = async (req, res) => {
     case "GET":
       try {
         let modelRes = await Model.findOne({
-          address
+          address: `${address}`.toUpperCase(),
         });
 
         const session = getSessionFromToken({ req });
