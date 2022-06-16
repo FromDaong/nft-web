@@ -1,4 +1,5 @@
 import Model from "@models/Model"
+import dbConnect from "@utils/dbConnect"
 
 const capitalizeModelAddresses = async () => {
     return Model.find((err, models) => {
@@ -19,4 +20,4 @@ const capitalizeModelAddresses = async () => {
     })
 }
 
-capitalizeModelAddresses()
+dbConnect("url").then(capitalizeModelAddresses);
