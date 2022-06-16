@@ -8,7 +8,7 @@ const patch = async (req, res) => {
   const { ethAddress } = req.session;
   try {
     let model = await Model.findOne({
-      address: ethAddress,
+      address: `${ethAddress}`.toUpperCase(),
     });
     let new_acc = false;
 
