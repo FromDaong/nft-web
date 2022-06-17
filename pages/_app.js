@@ -150,23 +150,20 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   return (
-    <div
-      className="pink-bg"
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "95vh",
-        fontSize: 20,
-        textAlign: "center",
-      }}
-    >
-      TreatDAO is undergroing maintenance.
-      <br />
-      Please check back later.
-    </div>
+    <TreatProvider>
+      <TOTMBanner oldTokenBalance={oldTokenBalance} />
+      <Container style={{ minHeight: "75vh" }}>
+        <div className="w-screen h-screen">
+          <div className="container mx-auto flex justify-center align-center">
+            <h1 className="text-3xl">Coming back soon</h1>
+            <p className="text-lg">We are working on major security fixes and will be back soon!</p>
+          </div>
+        </div>
+      </Container>
+      <Footer />
+    </TreatProvider>
   );
-
+    /*
   return (
     <IntercomProvider
       appId={"a3jgejbc"}
@@ -205,7 +202,7 @@ function MyApp({ Component, pageProps }) {
         </TreatProvider>
       </SWRConfig>
     </IntercomProvider>
-  );
+  );*/
 }
 
 function walletWrapper(props) {
