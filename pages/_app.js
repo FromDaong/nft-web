@@ -161,12 +161,12 @@ function MyApp({ Component, pageProps }) {
         textAlign: "center",
       }}
     >
-      TreatDAO is undergroing maintenance.
+      TreatDAO is undergoing maintenance.
       <br />
       Please check back later.
     </div>
   );
-
+  /*
   return (
     <IntercomProvider
       appId={"a3jgejbc"}
@@ -205,7 +205,7 @@ function MyApp({ Component, pageProps }) {
         </TreatProvider>
       </SWRConfig>
     </IntercomProvider>
-  );
+  );*/
 }
 
 function walletWrapper(props) {
