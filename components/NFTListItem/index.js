@@ -70,7 +70,7 @@ const NFTListItem = ({
 
           <Link
             href={`/creator/${
-              model ? model.username : data.attributes[0].value.slice(1, -1)
+              model ? model.username : data.attributes[0].value.replace("@", "")
             }`}
           >
             <a>
@@ -145,7 +145,7 @@ const NFTListItem = ({
               <div className="title">{data.name}</div>
               <div className="s">
                 {owner && <b>Creator: </b>}
-                {model ? model.username : data.attributes[0].value.slice(1, -1)}
+                {model ? model.username : data.attributes[0].value.replace("@", "")}
               </div>
             </div>
             {(typeof price !== "undefined" ||

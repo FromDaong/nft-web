@@ -9,7 +9,7 @@ async function auth(req, res) {
   const channel = req.body.channel_name;
   // MongoDB regex find
   const user = await Model.findOne({
-    address: { $regex: new RegExp(ethAddress, "i") },
+    address: `${ethAddress}`.toUpperCase(),
   });
 
   const presenceData = {
