@@ -150,6 +150,24 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   return (
+    <div
+      className="pink-bg"
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "95vh",
+        fontSize: 20,
+        textAlign: "center",
+      }}
+    >
+      TreatDAO is undergroing maintenance.
+      <br />
+      Please check back later.
+    </div>
+  );
+
+  return (
     <IntercomProvider
       appId={"a3jgejbc"}
       autoBoot
