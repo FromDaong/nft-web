@@ -161,7 +161,7 @@ function MyApp({ Component, pageProps }) {
         textAlign: "center",
       }}
     >
-      TreatDAO is undergroing maintenance.
+      TreatDAO is undergoing maintenance.
       <br />
       Please check back later.
     </div>
