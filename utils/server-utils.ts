@@ -41,6 +41,8 @@ export const withJWTAuth = (handler) => (req, res) => {
 
   try {
     const session = jwt.verify(token, JWT_KEY);
+    // Capitalize address
+    session.ethAddress = `${session.ethAddress}`.toUpperCase()
     req.session = session;
     return handler(req, res);
   } catch (error) {
