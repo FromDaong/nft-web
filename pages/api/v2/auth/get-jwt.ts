@@ -13,7 +13,7 @@ export default async function get_jwt(req, res) {
     const { ethAddress, sessionToken, username } = payload;
 
     try {
-      const data = { ethAddress, sessionToken, username };
+      const data = { ethAddress: `${ethAddress}`.toUpperCase(), sessionToken, username };
       const accessToken = signJWT(data, "15m");
       const refreshToken = signJWT({ ...data }, "30d");
 
