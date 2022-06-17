@@ -29,7 +29,7 @@ export default withSession(async (req, res) => {
 
         // const identity = await client.getIdentityById("identity_access_key");
 
-        const newNFT = await Model.findOneAndUpdate(
+        const newModel = await Model.findOneAndUpdate(
           {
             address: `${ethAddress}`.toUpperCase(),
           },
@@ -50,7 +50,7 @@ export default withSession(async (req, res) => {
           referrer.save();
         }
 
-        res.status(200).json({ success: true, newNFT });
+        res.status(200).json({ success: true, newNFT: newModel });
       } catch (error) {
         res.status(400).json({ success: false, error: error });
       }
