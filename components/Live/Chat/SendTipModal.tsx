@@ -90,7 +90,7 @@ export default function SendTipModal({ isOpen, onClose }) {
                 <Flex>
                   <Menu>
                     <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                      Currency: {current_currency.toLowerCase()}
+                      Currency: {current_currency.toUpperCase()}
                     </MenuButton>
                     <MenuList>
                       <MenuItem
@@ -119,7 +119,7 @@ export default function SendTipModal({ isOpen, onClose }) {
                 </Flex>
               </Flex>
               <SimpleGrid columns={3} spacing={[4, 4, 6, 6]}>
-                {bnb_amounts[current_currency.toLowerCase()].map((_amount) => (
+                {bnb_amounts[current_currency.toUpperCase()].map((_amount) => (
                   <GridItem key={_amount}>
                     <Button
                       variant={_amount === amount ? "solid" : "outline"}
@@ -127,7 +127,7 @@ export default function SendTipModal({ isOpen, onClose }) {
                       w="full"
                       onClick={() => setAmount(_amount)}
                     >
-                      {_amount} {current_currency.toLowerCase()}
+                      {_amount} {current_currency.toUpperCase()}
                     </Button>
                   </GridItem>
                 ))}

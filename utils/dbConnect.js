@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGO_URL;
+const MONGODB_URI =
+  "mongodb+srv://secureauth:pW3ItSEFBa8wDJ9P@treatcluster.9uuso.mongodb.net/treat?authSource=admin&replicaSet=atlas-2abzpt-shard-0&w=majority&readPreference=primary&retryWrites=true&ssl=true";
+// const MONGODB_URI = process.env.MONGO_URL;
 
 if (!MONGODB_URI) {
   throw new Error(
@@ -29,9 +31,11 @@ async function dbConnect(url) {
       bufferCommands: true,
     };
 
-    cached.promise = mongoose.connect(url ? url : MONGODB_URI, opts).then((mongoose) => {
-      return mongoose;
-    });
+    cached.promise = mongoose
+      .connect(url ? url : MONGODB_URI, opts)
+      .then((mongoose) => {
+        return mongoose;
+      });
   }
   cached.conn = await cached.promise;
   return cached.conn;
