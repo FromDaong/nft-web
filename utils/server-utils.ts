@@ -8,7 +8,7 @@ import { web3 } from "./moralis";
 const JWT_KEY = process.env.NEXT_APP_JWT_KEY;
 export const isValidSignature = ({ signature, message, address }) => {
   const signer = web3.eth.accounts.recover(message, signature);
-  return signer.toUpperCase() === address.toUpperCase();
+  return signer.toLowerCase() === address.toLowerCase();
 };
 
 export const setNextCookie = (res, name, data, maxAge?) => {
@@ -42,7 +42,7 @@ export const withJWTAuth = (handler) => (req, res) => {
   try {
     const session = jwt.verify(token, JWT_KEY);
     // Capitalize address
-    session.ethAddress = `${session.ethAddress}`.toUpperCase()
+    session.ethAddress = `${session.ethAddress}`.toLowerCase();
     req.session = session;
     return handler(req, res);
   } catch (error) {
