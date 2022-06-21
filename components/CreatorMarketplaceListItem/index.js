@@ -13,7 +13,7 @@ export const Order = ({
 }) => {
   const data = order;
 
-  const isOwner = !!account && account.toUpperCase() === data.model_bnb_address;
+  const isOwner = !!account && account.toLowerCase() === data.model_bnb_address;
 
   return (
     <div className="order-container">

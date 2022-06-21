@@ -18,7 +18,7 @@ export const Order = ({
 
   const isOwner =
     !!account &&
-    account.toUpperCase() === order.model_bnb_address?.toUpperCase();
+    account.toLowerCase() === order.model_bnb_address?.toLowerCase();
 
   if (!nftResult) return <></>;
 

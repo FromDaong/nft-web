@@ -5,7 +5,7 @@ const me = async (req, res) => {
   const { ethAddress } = req.session;
 
   const modelRes = await Model.findOne({
-    address: `${ethAddress}`.toUpperCase(),
+    address: `${ethAddress}`.toLowerCase(),
   });
 
   if (!modelRes) {
