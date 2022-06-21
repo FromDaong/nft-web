@@ -18,7 +18,7 @@ const enforceIsHost =
         `${req.body.url}/api/v2/chat/${channel}/utils/get_host`
       );
       const host = host_req.data.host;
-      if (`${ethAddress}`.toUpperCase() === `${host}`.toUpperCase()) {
+      if (`${ethAddress}`.toLowerCase() === `${host}`.toLowerCase()) {
         handler(req, res);
       } else {
         console.log({ ethAddress, host });

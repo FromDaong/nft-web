@@ -61,7 +61,7 @@ const LivestreamViewing = ({
   useEffect(() => {
     if (account && streamStatusResponse && setBannedUsers) {
       const { banned } = streamStatusResponse;
-      if (banned.find((b) => b.address.toUpperCase() === account.toUpperCase()))
+      if (banned.find((b) => b.address.toLowerCase() === account.toLowerCase()))
         setIsBanned(true);
     }
   }, [streamStatusResponse, account, setBannedUsers]);
