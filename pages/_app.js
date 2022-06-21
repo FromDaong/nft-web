@@ -148,7 +148,8 @@ function MyApp({ Component, pageProps }) {
       }
     };
   }, []);
-
+  
+  /*
   return (
     <div
       className="pink-bg"
@@ -166,7 +167,8 @@ function MyApp({ Component, pageProps }) {
       Please check back later.
     </div>
   );
-  /*
+  */
+  
   return (
     <IntercomProvider
       appId={"a3jgejbc"}
@@ -205,7 +207,7 @@ function MyApp({ Component, pageProps }) {
         </TreatProvider>
       </SWRConfig>
     </IntercomProvider>
-  );*/
+  );
 }
 
 function walletWrapper(props) {
