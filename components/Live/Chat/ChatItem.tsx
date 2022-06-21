@@ -58,8 +58,8 @@ export default function ChatItem({
         <Text flex={1} fontWeight={"semibold"}>
           {`${user_id.substring(0, 6)}...${user_id.substr(-5)}`}
         </Text>
-        {account.toUpperCase() === host?.toUpperCase() &&
-          account.toUpperCase() !== user_id.toUpperCase() && (
+        {account.toLowerCase() === host?.toLowerCase() &&
+          account.toLowerCase() !== user_id.toLowerCase() && (
             <Menu direction="rtl" isLazy>
               <>
                 <MenuButton as={Button} variant="link" size="sm">
