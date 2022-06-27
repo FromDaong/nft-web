@@ -18,9 +18,11 @@ import { useEffect } from "react";
 import { useMoralis } from "react-moralis";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { Context } from "../../contexts/TreatProvider";
 
-const CreateNFT = ({ modelData }) => {
+const CreateNFT = () => {
+  const { profile: modelData } = useContext(Context);
   const [ipfsFiles, setIpfsFiles] = useState([]);
   const router = useRouter();
   const [sentWithoutIds, setSentWithoutIds] = useState(false);
@@ -347,7 +349,7 @@ const CreateNFT = ({ modelData }) => {
 const CreateNFTWrapper = (props) => {
   const { isAuthenticated } = useMoralis();
 
-  if (!isAuthenticated || !props.modelData) {
+  if (!isAuthenticated) {
     return <Loading />;
   } else {
     return <CreateNFT {...props} />;

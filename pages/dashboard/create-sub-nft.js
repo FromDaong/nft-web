@@ -2,6 +2,7 @@ import * as Yup from "yup";
 
 import { Button, Form } from "react-bootstrap";
 import { FieldArray, FormikProvider, useFormik } from "formik";
+import { Context } from "../../contexts/TreatProvider";
 
 import BlankModal from "../../components/BlankModal";
 import CreatingNFTItem from "../../components/CreatingNFTItem";
@@ -12,16 +13,17 @@ import async from "async";
 import axios from "axios";
 import useCreateAndAddSubscriberNFTs from "../../hooks/useCreateAndAddSubscriberNFTs";
 import { useDropzone } from "react-dropzone";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { useMoralis } from "react-moralis";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import { useState } from "react";
 
-const CreateNFT = ({ modelData }) => {
+const CreateNFT = () => {
   const [ipfsFiles, setIpfsFiles] = useState([]);
   const router = useRouter();
   const [, setSuccess] = useState(false);
+  const { profile: modelData } = useContext(Context);
 
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
@@ -267,14 +269,14 @@ const CreateNFT = ({ modelData }) => {
           />
           <div className="buttons row pt-4">
             <div className="col-md-6 mt-2 text-center">
-              <Button variant="light w-100 py-2" onClick={() => router.back()}>
+              <Button variant="white w-100 py-2" onClick={() => router.back()}>
                 <b>BACK TO DASHBOARD</b>
               </Button>
             </div>
             <div className="col-md-6  mt-2 text-center">
               <Button
                 type="submit"
-                className="bg-primary text-white font-bold"
+                className="bg-primary text-white font-bold w-100"
                 py={2}
                 disabled={ipfsFiles.length === 0}
               >
@@ -291,7 +293,7 @@ const CreateNFT = ({ modelData }) => {
 const CreateNFTWrapper = (props) => {
   const { isAuthenticated } = useMoralis();
 
-  if (!isAuthenticated || !props.modelData) {
+  if (!isAuthenticated) {
     return <Loading />;
   } else {
     return <CreateNFT {...props} />;
