@@ -2,7 +2,7 @@ import * as Yup from "yup";
 
 import { Button, Form } from "react-bootstrap";
 import { FormikProvider, useFormik } from "formik";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 
 import BlankModal from "../../../components/BlankModal";
 import EditingNFTItem from "../../../components/EditingNFTItem";
@@ -10,12 +10,14 @@ import Hero from "../../../components/Hero";
 import Loading from "../../../components/Loading";
 import Web3 from "web3";
 import useAddCreatorNFTs from "../../../hooks/useAddCreatorNft";
+import { Context } from "../../contexts/TreatProvider";
 import { useMoralis } from "react-moralis";
 import { useRouter } from "next/router";
 
-const CreateNFT = ({ modelData, id }) => {
+const CreateNFT = ({ id }) => {
   const router = useRouter();
   const [success, setSuccess] = useState(false);
+  const { profile: moodelData } = useContext(Context);
 
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
@@ -187,7 +189,7 @@ const CreateNFT = ({ modelData, id }) => {
 const CreateNFTWrapper = (props) => {
   const { isAuthenticated } = useMoralis();
 
-  if (!isAuthenticated || !props.modelData) {
+  if (!isAuthenticated) {
     return <Loading />;
   } else {
     return <CreateNFT {...props} />;
