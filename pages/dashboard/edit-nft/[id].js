@@ -10,7 +10,7 @@ import Hero from "../../../components/Hero";
 import Loading from "../../../components/Loading";
 import Web3 from "web3";
 import useAddCreatorNFTs from "../../../hooks/useAddCreatorNft";
-import { Context } from "../../contexts/TreatProvider";
+import { Context } from "../../../contexts/TreatProvider";
 import { useMoralis } from "react-moralis";
 import { useRouter } from "next/router";
 
