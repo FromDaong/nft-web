@@ -1,10 +1,11 @@
 import Model from "../../../db/models/Model";
 import dbConnect from "../../../utils/dbConnect";
 import withSession from "../../../lib/session";
+import { withJWTAuth } from "../../../utils/server-utils";
 
 dbConnect();
 
-export default withSession(async (req, res) => {
+export default withJWTAuth(async (req, res) => {
   const { method } = req;
   const { ethAddress } = req.session;
 
@@ -36,6 +37,8 @@ export default withSession(async (req, res) => {
           { ...nftBody },
           { new: true }
         );
+
+        console.log({ newModel, ethAddress });
 
         if (req.body.referrer_address) {
           const referrer = await Model.findOne({
