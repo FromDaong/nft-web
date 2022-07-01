@@ -117,9 +117,10 @@ const CreateModel = () => {
 
   const handleVerificationFinish = async (identityAccessKey) => {
     try {
-      setStep("submitting");
-      const res = await fetch(`/api/model/${res.username}`, {
-        method: "PUT",
+      if (!identityAccessKey) return;
+      // setStep("submitting");
+      const res = await fetch(`/api/model/set-verification-id`, {
+        method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -129,6 +130,7 @@ const CreateModel = () => {
         }),
       });
       const resJSON = await res.json();
+      console.log({ resJSON });
 
       if (resJSON.error && resJSON.error.errors) {
         const ogErrors = Object.assign({}, resJSON.error.errors);
@@ -137,11 +139,13 @@ const CreateModel = () => {
         });
         formik.setErrors(ogErrors);
         formik.setSubmitting(false);
+        console.log({ error: resJSON.error });
       }
 
       if (resJSON.success) {
         setSuccess(true);
         setStep("pending");
+        console.log("hjere");
       }
     } catch (error) {
       console.error(error);
@@ -156,6 +160,7 @@ const CreateModel = () => {
         return setStep("rejected");
       }
       if (profile.pending && profile?.identity_access_key?.length > 0) {
+        console.log({ profile });
         return setStep("pending");
       }
       if (profile.rejected === false && profile.pending === false) {
@@ -211,18 +216,15 @@ const CreateModel = () => {
   return (
     <div className="no-position" style={{ maxWidth: 800, margin: "auto" }}>
       {step === "accepted" && <Hero title="You are already a creator" />}
-
       {step === "rejected" && (
         <Hero title="Your application has been rejected" />
       )}
-
       {step === "pending" && (
         <Hero
           title="Your application has been submitted!"
           subtitle="When approved you will see a creator dashboard at the top of the navigation bar.  You can check back in a few hours."
         />
       )}
-
       {(step === "signup" || step === "submitting") && (
         <div className="pink-bg mb-5">
           <Hero
@@ -413,7 +415,7 @@ const CreateModel = () => {
                   <Button
                     className="bg-primary text-white font-bold"
                     onClick={formik.handleSubmit}
-                    disabled={!formik.dirty || !formik.isValid}
+                    disabled={!formik.dirty}
                     type="submit"
                   >
                     Submit Application
@@ -443,7 +445,6 @@ const CreateModel = () => {
           </div>
         </div>
       )}
-
       {step === "verify" && (
         <div className="pink-bg mb-5">
           <Hero
@@ -459,12 +460,15 @@ const CreateModel = () => {
                 <label>Click the button below to verify your identity</label>
 
                 <VerifyButton
-                  id="asd"
                   hidestream
                   apiKey="DsPgHGsJXFzqRNFtSAL6aUkSaSYCWVHtwGKTqII6aiWma9GgMogUsxoTAFzoObi5"
                   onStart={() => null}
                   onError={() => null}
                   onFinish={handleVerificationFinish}
+                  onSubmitted={handleVerificationFinish}
+                  prefillAttributes={{
+                    email: formik.values.email,
+                  }}
                 />
                 <small className="text-danger">
                   {formik.errors["identity_access_key"]}
@@ -474,7 +478,6 @@ const CreateModel = () => {
           </div>
         </div>
       )}
-
       {step === "loading" && <Loading custom={"Loading..."} />}
     </div>
   );

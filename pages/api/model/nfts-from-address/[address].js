@@ -13,6 +13,8 @@ export default async (req, res) => {
   switch (method) {
     case "GET":
       try {
+        if (!address) return res.status(200);
+
         let modelRes = await Model.findOne({
           address: `${address}`.toLowerCase(),
         });
