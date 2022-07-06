@@ -7,6 +7,10 @@ import Atropos from "atropos/react";
 
 const totmArr = [
   {
+    image: "/assets/cherieCover.jpg",
+    href: "https://issuu.com/treatdao/docs/totm_6_cherie_noel?fr=sOWIxODQ2MTQ0MjQ",
+  },
+  {
     image: "/assets/stormyCover.jpg",
     href: "https://issuu.com/treatdao/docs/totm_5_stormy_daniels?fr=sMTc0YTQ2MTQ0MjQ",
   },
