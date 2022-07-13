@@ -16,7 +16,7 @@ export default async (req, res) => {
           address: `${address}`.toLowerCase(),
         });
 
-        if (!modelRes) return res.status(404);
+        if (!modelRes) return res.status(404).json({ error: "not found" });
 
         const returnData = { ...modelRes.toObject() };
         res.status(200).json(returnData);
