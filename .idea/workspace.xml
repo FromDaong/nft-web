@@ -3,8 +3,25 @@
   <component name="ChangeListManager">
     <list default="true" id="13ddaae3-483e-427b-8a07-e5e133fac976" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hooks/useERC20.ts" beforeDir="false" afterPath="$PROJECT_DIR$/hooks/useERC20.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/model/create-nfts-without-ids.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/model/create-nfts-without-ids.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/model/create-nfts.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/model/create-nfts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/model/create-sub-nfts.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/model/create-sub-nfts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/model/create-totm-nfts.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/model/create-totm-nfts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/model/edit-nft.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/model/edit-nft.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/model/find-nft/[id].js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/model/find-nft/[id].js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/model/get-profile/[address].ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/model/get-profile/[address].ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/nft/[id].js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/nft/[id].js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/nft/get-many-nfts.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/nft/get-many-nfts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/nft/get-maxsupply.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/nft/get-maxsupply.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/nft/view-nfts.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/nft/view-nfts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/nft/view-sub-nfts.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/nft/view-sub-nfts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/stream/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/stream/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/user/[username].js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/user/[username].js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/v2/nft/[id].ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/v2/nft/[id].ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/v2/nft/getWithBalances.js" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/v2/nft/getWithBalances.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/moralis.ts" beforeDir="false" afterPath="$PROJECT_DIR$/utils/moralis.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/web3.ts" beforeDir="false" afterPath="$PROJECT_DIR$/utils/web3.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,6 +61,7 @@
     "nodejs_package_manager_path": "yarn",
     "prettierjs.PrettierConfiguration.Package": "/Users/lucamarchal/code/treat-next/node_modules/prettier",
     "settings.editor.selected.configurable": "settings.javascript.prettier",
+    "ts.external.directory.path": "/Users/lucamarchal/code/treat-next/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
