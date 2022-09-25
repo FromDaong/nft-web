@@ -8,7 +8,7 @@ export default function Button(props: ButtonProps) {
 
 type ButtonProps = {
   children: React.ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
   className?: string;
   theme?: string;
   colorScheme?: string;
