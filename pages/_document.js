@@ -29,15 +29,7 @@ class MyDocument extends Document {
             }}
           />
         </Head>
-        <body
-          style={{
-            backgroundImage: `url(${
-              this.webp
-                ? "https://ucarecdn.com/bd659922-683b-46c1-b32e-0ac53e7f54db/-/format/webp/"
-                : "/assets/bg.jpg"
-            })`,
-          }}
-        >
+        <body className="bg-gray-50">
           <Main />
           <NextScript />
           {false && (
