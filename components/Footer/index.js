@@ -1,17 +1,4 @@
-import { useEffect, useState } from "react";
-
-import { useMoralis } from "react-moralis";
-
 const Footer = () => {
-  const { isAuthenticated } = useMoralis();
-  const [, setWalletModalShow] = useState(false);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      setWalletModalShow(false);
-    }
-  }, [isAuthenticated]);
-
   return (
     <footer className="py-5 border-top footer">
       <div className="container">
@@ -24,7 +11,7 @@ const Footer = () => {
               style={{ maxWidth: 150 }}
             />
           </div>
-          <div className="col-md-3 mt-5 mt-md-0">
+          <div className="mt-5 col-md-3 mt-md-0">
             <h5>$TREAT</h5>
             <ul className="list-unstyled text-small">
               <li>
@@ -72,7 +59,7 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-          <div className="col-md-3 mt-3 mt-md-0">
+          <div className="mt-3 col-md-3 mt-md-0">
             <h5>Social Media</h5>
             <ul className="list-unstyled text-small">
               <li>
@@ -122,7 +109,7 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-          <div className="col-md-3 mt-3 mt-md-0">
+          <div className="mt-3 col-md-3 mt-md-0">
             <h5>Resources</h5>
             <ul className="list-unstyled text-small">
               <li>

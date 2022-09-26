@@ -1,4 +1,4 @@
-import Index from "../pages/index";
+import Index from "../pages/__index";
 import renderer from "react-test-renderer";
 
 it("renders homepage unchanged", () => {
