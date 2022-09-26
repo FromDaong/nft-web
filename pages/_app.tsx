@@ -6,6 +6,7 @@ import Head from "next/head";
 import ProgressBar from "@badrap/bar-of-progress";
 import { Container } from "packages/shared/components/Container";
 import Navbar from "packages/navigation/Navbar";
+import Footer from "packages/shared/components/Footer";
 
 const progress = new ProgressBar({
   size: 3,
@@ -33,14 +34,17 @@ function MyApp({ Component, pageProps }) {
           content="Treat is an exclusive platform for creators to sell NFTs. Hold $TREAT to have a say on which creators are chosen & new platform features."
         />
       </Head>
-      <Container>
-        <div className="py-3">
-          <Navbar />
-        </div>
-        <main>
+      <div className="py-3">
+        <Navbar />
+      </div>
+      <Container className="max-w-6xl mx-auto">
+        <main className="mt-8">
           <Component {...pageProps} />
         </main>
       </Container>
+      <div className="py-12">
+        <Footer />
+      </div>
     </>
   );
 }
