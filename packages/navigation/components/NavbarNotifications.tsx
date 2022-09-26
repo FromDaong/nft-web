@@ -1,6 +1,5 @@
 import { LightningBoltIcon } from "@heroicons/react/solid";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import Link from "next/link";
 
 const NavbarNotifications = () => (
   <DropdownMenu.Root>
@@ -10,7 +9,7 @@ const NavbarNotifications = () => (
       </div>
     </DropdownMenu.Trigger>
     <DropdownMenu.Portal>
-      <DropdownMenu.Content className="w-64 divide-y shadow-xl gap-y-3 rounded-xl">
+      <DropdownMenu.Content className="z-50 w-64 bg-white divide-y shadow-xl gap-y-3 rounded-xl">
         <DropdownMenu.Label className="px-3 py-2 text-gray-600">
           Notifications
         </DropdownMenu.Label>

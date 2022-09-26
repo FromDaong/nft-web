@@ -50,11 +50,6 @@ export default function NFTItem() {
             onMouseLeave={toggleHover}
             className="relative flex-shrink-0 w-full p-4 overflow-hidden h-96 rounded-xl"
           >
-            <div className="absolute top-0 right-0 z-10 p-4">
-              <div className="p-2 bg-white rounded-lg shadow-xl">
-                <p className="text-sm font-medium text-purple-600">TOTM</p>
-              </div>
-            </div>
             <div className="absolute top-0 left-0 z-0 w-full h-7/10">
               <img
                 src="https://ui8-crypter-nft.herokuapp.com/images/content/video-preview@2x.jpg"
@@ -63,7 +58,7 @@ export default function NFTItem() {
               />
             </div>
             {isImageHovered ? (
-              <div className="absolute top-0 left-0 flex flex-col justify-between w-full h-[70%] z-1 bg-gray-900/20">
+              <div className="absolute top-0 left-0 flex flex-col justify-between w-full h-[70%] z-1 bg-gray-900/40">
                 <div className="flex items-center gap-2 p-4">
                   <div className="w-8 h-8">
                     <img

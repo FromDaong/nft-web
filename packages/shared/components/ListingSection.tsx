@@ -18,3 +18,7 @@ export default function ListingSection({ title, href, children }) {
     </div>
   );
 }
+
+export const InfinityScrollListing = ({ children }) => {
+  return <div className="grid grid-cols-3 gap-8">{children}</div>;
+};

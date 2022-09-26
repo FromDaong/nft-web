@@ -5,14 +5,18 @@ import Link from "next/link";
 const ExploreDropdownLinks = [
   {
     label: "Sweetshop",
-    link: "/sweetshop",
+    link: "/nft",
   },
   {
     label: "Resale Marketplace",
-    link: "/resale",
+    link: "/nft/resale",
   },
   {
-    label: "Melon Farm",
+    label: "Creators",
+    link: "/creator",
+  },
+  {
+    label: "Farm",
     link: "/farm",
   },
   {
@@ -29,7 +33,7 @@ const NavbarExploreDropdown = () => (
       </span>
     </DropdownMenu.Trigger>
     <DropdownMenu.Portal>
-      <DropdownMenu.Content className="p-2 bg-white shadow-xl rounded-xl gap-y-3">
+      <DropdownMenu.Content className="z-50 p-2 bg-white shadow-xl rounded-xl gap-y-3">
         {ExploreDropdownLinks.map((link) => (
           <Link key={link.link} href={link.link}>
             <a className="w-full h-full">
