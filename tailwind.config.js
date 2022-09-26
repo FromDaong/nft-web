@@ -11,5 +11,5 @@ module.exports = {
       secondary: "#ecc94b",
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/line-clamp")],
 };
