@@ -9,7 +9,7 @@ import { Button } from "packages/shared/components/Button";
 
 export default function Navbar() {
   return (
-    <nav className="fixed top-0 left-0 z-50 w-full px-4 shadow-sm lg:px-0 bg-gray-50">
+    <nav className="fixed top-0 left-0 z-40 w-full px-4 shadow-sm lg:px-0 bg-gray-50">
       <div className="flex items-center justify-between max-w-6xl py-3 mx-auto bg-gray-50">
         <div className="flex items-center gap-8">
           <Link href="/">

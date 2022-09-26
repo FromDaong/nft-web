@@ -11,7 +11,7 @@ const NavbarActionDropdown = () => (
       </TriggerButton>
     </DropdownMenu.Trigger>
     <DropdownMenu.Portal>
-      <DropdownMenu.Content className="p-3 shadow-xl gap-y-3 rounded-xl">
+      <DropdownMenu.Content className="z-50 p-3 bg-white drop-shadow-xl gap-y-3 rounded-xl">
         <Link href={"/create/nft"}>
           <a>
             <DropdownMenu.Item className="px-4 py-2">
