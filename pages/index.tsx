@@ -65,7 +65,7 @@ export default function Test() {
       >
         {[0, 1, 2, 3, 4, 5].map((i) => (
           <div key={i} className="col-span-1">
-            <NFTItem />
+            <NFTItem redeemable={i % 4 === 0} />
           </div>
         ))}
       </ListingSection>

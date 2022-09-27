@@ -24,7 +24,7 @@ const motionStates = {
   },
 };
 
-export default function NFTItem() {
+export default function NFTItem({ redeemable }: { redeemable?: boolean }) {
   const [isImageHovered, setIsImageHovered] = useState(false);
   const [motionParams, setMotionParams] = useState(motionStates.show);
 
@@ -54,7 +54,9 @@ export default function NFTItem() {
               <img
                 src="https://ui8-crypter-nft.herokuapp.com/images/content/video-preview@2x.jpg"
                 alt="NFT Image"
-                className="object-cover w-full h-full"
+                className={`object-cover w-full h-full ${
+                  redeemable ? "blur-3xl" : null
+                }`}
               />
             </div>
             {isImageHovered ? (
