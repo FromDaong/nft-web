@@ -19,7 +19,7 @@ export default function NFTS() {
             </Link>
           </p>
           <p className="px-8 py-4 text-xl font-bold ">
-            <Link href={"/creator/"}>
+            <Link href={"/creator/subscriptions/"}>
               <a>Subscriptions</a>
             </Link>
           </p>
