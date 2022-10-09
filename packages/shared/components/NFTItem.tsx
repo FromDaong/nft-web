@@ -74,7 +74,7 @@ export default function NFTItem({ redeemable }: { redeemable?: boolean }) {
                   </p>
                 </div>
                 <div className="p-4">
-                  <h4 className="text-xl font-bold text-white">
+                  <h4 className="text-xl font-medium text-white">
                     The Carwash Poster #2
                   </h4>
                 </div>

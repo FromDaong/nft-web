@@ -8,17 +8,17 @@ export default function NFTS() {
     <div className="w-full py-8">
       <div className="w-full border-b border-gray-200">
         <div className="flex">
-          <p className="px-8 py-4 text-xl font-bold ">
+          <p className="px-8 py-4 text-xl font-medium ">
             <Link href={"/creator/"}>
               <a>All creators</a>
             </Link>
           </p>
-          <p className="px-8 py-4 text-xl font-bold ">
+          <p className="px-8 py-4 text-xl font-medium ">
             <Link href={"/creator/live"}>
               <a>Currently streaming</a>
             </Link>
           </p>
-          <p className="px-8 py-4 text-xl font-bold text-pink-600 border-b-4 border-pink-600">
+          <p className="px-8 py-4 text-xl font-medium text-pink-600 border-b-4 border-pink-600">
             <Link href={"#"}>
               <a>Subscriptions</a>
             </Link>

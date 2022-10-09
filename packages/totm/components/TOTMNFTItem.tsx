@@ -78,7 +78,7 @@ export default function TOTMNFTItem() {
                   </p>
                 </div>
                 <div className="p-4">
-                  <h4 className="text-xl font-bold text-white">
+                  <h4 className="text-xl font-medium text-white">
                     The Carwash Poster #2
                   </h4>
                 </div>

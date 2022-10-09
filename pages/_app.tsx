@@ -7,6 +7,9 @@ import ProgressBar from "@badrap/bar-of-progress";
 import { Container } from "packages/shared/components/Container";
 import Navbar from "packages/navigation/Navbar";
 import Footer from "packages/shared/components/Footer";
+import Commandbar from "packages/commandbar";
+import { useDisclosure } from "packages/hooks";
+import { useEffect } from "react";
 
 const progress = new ProgressBar({
   size: 3,
@@ -21,6 +24,12 @@ Router.events.on("routeChangeError", progress.finish);
 Axios.defaults.withCredentials = true;
 
 function MyApp({ Component, pageProps }) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(() => {
+    onOpen();
+  }, []);
+
   return (
     <>
       <Head>
@@ -34,6 +43,7 @@ function MyApp({ Component, pageProps }) {
           content="Treat is an exclusive platform for creators to sell NFTs. Hold $TREAT to have a say on which creators are chosen & new platform features."
         />
       </Head>
+      <Commandbar isOpen={isOpen} onClose={onClose} />
       <div className="py-3">
         <Navbar />
       </div>
