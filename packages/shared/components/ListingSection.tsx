@@ -3,18 +3,22 @@ import Link from "next/link";
 
 export default function ListingSection({ title, href, children }) {
   return (
-    <div className="my-24">
+    <div className="px-4 my-24 md:px-8 lg:px-0">
       <div className="w-full">
         <div className="flex items-center justify-between">
-          <h2 className="text-3xl font-bold text-gray-900">{title}</h2>
+          <h2 className="text-xl font-medium text-gray-900 md:text-3xl">
+            {title}
+          </h2>
           <Link href={href}>
-            <a className="flex items-center gap-2">
+            <a className="flex items-center gap-2 text-sm md:text-base">
               View more <ArrowRightIcon className="w-5 h-5" />
             </a>
           </Link>
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-8 mt-12">{children}</div>
+      <div className="grid grid-cols-1 gap-8 mt-12 md:grid-cols-2 lg:grid-cols-3">
+        {children}
+      </div>
     </div>
   );
 }

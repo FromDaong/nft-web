@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
-    <footer className="w-full px-4 pt-16 border-t border-gray-200">
-      <div className="grid max-w-6xl grid-cols-4 mx-auto">
+    <footer className="w-full px-4 pt-16 border-t border-gray-200 md:px-8 lg:px-0">
+      <div className="grid max-w-6xl grid-cols-1 gap-8 mx-auto md:grid-cols-4">
         <div className="col-span-1">
           <img
             src={"/assets/hero-logo.png"}
@@ -11,7 +11,9 @@ export default function Footer() {
           />
         </div>
         <div className="col-span-1">
-          <h5 className="mb-4 text-xl font-medium text-gray-900">$TREAT</h5>
+          <h5 className="mb-2 text-xl font-medium text-gray-900 md:mb-4">
+            $TREAT
+          </h5>
           <ul className="list-unstyled text-small">
             <li>
               <a
@@ -59,7 +61,7 @@ export default function Footer() {
           </ul>
         </div>
         <div className="col-span-1">
-          <h5 className="mb-4 text-xl font-medium text-gray-900">
+          <h5 className="mb-2 text-xl font-medium text-gray-900 md:mb-4">
             Social Media
           </h5>
           <ul className="list-unstyled text-small">
@@ -107,7 +109,9 @@ export default function Footer() {
           </ul>
         </div>
         <div className="col-span-1">
-          <h5 className="mb-4 text-xl font-medium text-gray-900">Resources</h5>
+          <h5 className="mb-2 text-xl font-medium text-gray-900 md:mb-4">
+            Resources
+          </h5>
           <ul className="list-unstyled text-small">
             <li>
               <a

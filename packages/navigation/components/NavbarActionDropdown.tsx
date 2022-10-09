@@ -1,4 +1,4 @@
-import { LightningBoltIcon } from "@radix-ui/react-icons";
+import { PlusIcon } from "@radix-ui/react-icons";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { TriggerButton } from "packages/shared/components/Button";
 import Link from "next/link";
@@ -6,8 +6,8 @@ import Link from "next/link";
 const NavbarActionDropdown = () => (
   <DropdownMenu.Root>
     <DropdownMenu.Trigger>
-      <TriggerButton className="flex items-center gap-4 px-5 py-3 text-gray-800 bg-gray-300 rounded-full">
-        Create <LightningBoltIcon />
+      <TriggerButton className="flex items-center gap-4 px-8 py-2 text-white bg-pink-600 rounded-full">
+        Create <PlusIcon />
       </TriggerButton>
     </DropdownMenu.Trigger>
     <DropdownMenu.Portal>

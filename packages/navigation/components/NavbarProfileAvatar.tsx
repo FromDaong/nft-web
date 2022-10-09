@@ -5,12 +5,12 @@ import Link from "next/link";
 const NavbarProfileAvatar = () => (
   <DropdownMenu.Root>
     <DropdownMenu.Trigger>
-      <Avatar.Root className="bg-gray-200 rounded-full">
+      <Avatar.Root className="rounded-full shadow bg-gray-50">
         <Avatar.Image
-          className="object-cover w-10 h-10 rounded-full"
+          className="object-cover w-10 h-10 rounded-full shadow-md"
           src="https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?&w=128&h=128&dpr=2&q=80"
         />
-        <Avatar.Fallback className="w-10 h-10 rounded-full">
+        <Avatar.Fallback className="w-10 h-10 rounded-full shadow-md">
           <p>TR</p>
         </Avatar.Fallback>
       </Avatar.Root>
