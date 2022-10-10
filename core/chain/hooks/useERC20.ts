@@ -1,4 +1,4 @@
-import { Context } from "@contexts/TreatProvider/TreatProvider";
+import { Context } from "core/contexts/TreatProvider/TreatProvider";
 import { contractAddresses } from "packages/treat/lib/constants";
 import React, { useContext } from "react";
 import { useMoralis } from "react-moralis";

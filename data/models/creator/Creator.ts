@@ -125,5 +125,5 @@ ModelSchema.plugin(aggregatePaginate);
 ModelSchema.plugin(paginate);
 ModelSchema.plugin(require("mongoose-beautiful-unique-validation"));
 
-const Model = mongoose.models.Model || mongoose.model("Model", ModelSchema);
-module.exports = Model;
+const Creator = mongoose.models.Model || mongoose.model("Model", ModelSchema);
+export default Creator;
