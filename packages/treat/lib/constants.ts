@@ -1,4 +1,4 @@
-import { BigNumber } from "../";
+import { BigNumber } from "..";
 export const SUBTRACT_GAS_LIMIT = 100000;
 
 const ONE_MINUTE_IN_SECONDS = new BigNumber(60);

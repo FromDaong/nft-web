@@ -1,4 +1,7 @@
-import { getCreatorMartContract, getCreatorNftCost } from "../treat/utils";
+import {
+  getCreatorMartContract,
+  getCreatorNftCost,
+} from "../packages/treat/utils";
 import { useCallback, useEffect, useState } from "react";
 
 import BigNumber from "bignumber.js";

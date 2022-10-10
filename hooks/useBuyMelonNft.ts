@@ -1,4 +1,4 @@
-import { buyMelonNft, getMelonMartContract } from "../treat/utils";
+import { buyMelonNft, getMelonMartContract } from "../packages/treat/utils";
 
 import { useCallback } from "react";
 import { useMoralis } from "react-moralis";

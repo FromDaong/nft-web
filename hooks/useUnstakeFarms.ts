@@ -2,7 +2,7 @@ import {
   getMasterMelonFarmerContract,
   getV1MasterMelonFarmerContract,
   unstakeFarm,
-} from "../treat/utils";
+} from "../packages/treat/utils";
 
 import { useCallback } from "react";
 import useTreat from "./useTreat";

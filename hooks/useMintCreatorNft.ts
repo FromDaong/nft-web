@@ -1,4 +1,7 @@
-import { getCreatorMartContract, mintCreatorNft } from "../treat/utils";
+import {
+  getCreatorMartContract,
+  mintCreatorNft,
+} from "../packages/treat/utils";
 
 import { useCallback } from "react";
 import { useMoralis } from "react-moralis";

@@ -1,4 +1,7 @@
-import { getSubCost, getTreatSubscriptionContract } from "../treat/utils";
+import {
+  getSubCost,
+  getTreatSubscriptionContract,
+} from "../packages/treat/utils";
 import { useCallback, useEffect, useState } from "react";
 
 import BigNumber from "bignumber.js";

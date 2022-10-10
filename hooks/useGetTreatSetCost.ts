@@ -1,4 +1,4 @@
-import { getSetPrice, getTreatMartContract } from "../treat/utils";
+import { getSetPrice, getTreatMartContract } from "../packages/treat/utils";
 import { useCallback, useEffect, useState } from "react";
 
 import BigNumber from "bignumber.js";

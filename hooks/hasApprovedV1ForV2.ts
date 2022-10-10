@@ -2,7 +2,7 @@ import {
   getTreatContract,
   getTreatV1ForV2Contract,
   hasApprovedTreatOneForTwoContract,
-} from "../treat/utils";
+} from "../packages/treat/utils";
 import { useCallback, useEffect, useState } from "react";
 
 import { useMoralis } from "react-moralis";

@@ -4,7 +4,7 @@ import {
   getTreatPancakeLPContract,
   hasApprovedTreatPancakeLPStaking,
   hasApprovedTreatStaking,
-} from "../treat/utils";
+} from "../packages/treat/utils";
 import { useCallback, useEffect, useState } from "react";
 
 import { useMoralis } from "react-moralis";

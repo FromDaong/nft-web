@@ -1,4 +1,7 @@
-import { getTreatSubscriptionContract, isSubscribed } from "../treat/utils";
+import {
+  getTreatSubscriptionContract,
+  isSubscribed,
+} from "../packages/treat/utils";
 import { useCallback, useEffect, useState } from "react";
 
 import { useMoralis } from "react-moralis";

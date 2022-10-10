@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 
-import { getCreatorMartContract } from "../treat/utils";
+import { getCreatorMartContract } from "../packages/treat/utils";
 import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
 

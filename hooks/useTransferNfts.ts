@@ -1,4 +1,7 @@
-import { getTreatNFTMinterContract, transferNfts } from "../treat/utils";
+import {
+  getTreatNFTMinterContract,
+  transferNfts,
+} from "../packages/treat/utils";
 
 import { useCallback } from "react";
 import { useMoralis } from "react-moralis";

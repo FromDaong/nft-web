@@ -1,7 +1,7 @@
 import {
   getTreatNFTMinterContract,
   isPerformerForMinter,
-} from "../treat/utils";
+} from "../packages/treat/utils";
 
 import { useCallback } from "react";
 import useTreat from "./useTreat";

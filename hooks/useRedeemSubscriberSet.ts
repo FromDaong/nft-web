@@ -1,4 +1,7 @@
-import { getSubscriberMartContract, redeemSubscriberSet } from "../treat/utils";
+import {
+  getSubscriberMartContract,
+  redeemSubscriberSet,
+} from "../packages/treat/utils";
 
 import { useCallback } from "react";
 import { useMoralis } from "react-moralis";

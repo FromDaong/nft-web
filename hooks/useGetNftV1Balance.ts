@@ -1,4 +1,7 @@
-import { getNftV1Balance, getTreatNFTMinterV1Contract } from "../treat/utils";
+import {
+  getNftV1Balance,
+  getTreatNFTMinterV1Contract,
+} from "../packages/treat/utils";
 import { useCallback, useEffect, useState } from "react";
 
 import BigNumber from "bignumber.js";

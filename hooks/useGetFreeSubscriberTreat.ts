@@ -1,7 +1,7 @@
 import {
   getSubscriberMartContract,
   mintFreeSubscriberTreat,
-} from "../treat/utils";
+} from "../packages/treat/utils";
 
 import { useCallback } from "react";
 import { useMoralis } from "react-moralis";

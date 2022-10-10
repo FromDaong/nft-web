@@ -1,4 +1,4 @@
-import { editSub, getTreatSubscriptionContract } from "../treat/utils";
+import { editSub, getTreatSubscriptionContract } from "../packages/treat/utils";
 
 import { useCallback } from "react";
 import { useMoralis } from "react-moralis";

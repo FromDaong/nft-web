@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { decToBn } from "../utils/index";
+import { decToBn } from "../../utils/index";
 import { ethers } from "ethers";
 import Web3 from "web3";
 

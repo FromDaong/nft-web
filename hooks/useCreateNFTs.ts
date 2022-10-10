@@ -1,4 +1,7 @@
-import { createNFTs, getCreatorMinterHelperContract } from "../treat/utils";
+import {
+  createNFTs,
+  getCreatorMinterHelperContract,
+} from "../packages/treat/utils";
 
 import { useCallback } from "react";
 import { useMoralis } from "react-moralis";
