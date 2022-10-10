@@ -1,7 +1,4 @@
-import BigNumber from "bignumber.js/bignumber";
-//import treaEthLPFarmIcon from '../../assets/img/treat-ethereum-farm-icon.png'
-//import treatFarmIcon from '../../assets/img/treat-farm-icon.png'
-
+import { BigNumber } from "../";
 export const SUBTRACT_GAS_LIMIT = 100000;
 
 const ONE_MINUTE_IN_SECONDS = new BigNumber(60);

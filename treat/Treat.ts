@@ -1,13 +1,21 @@
 import { Account } from "./lib/accounts.js";
 import BigNumber from "bignumber.js";
 import { Contracts } from "./lib/contracts.js";
-import { EVM } from "./lib/evm.js";
 import Web3 from "web3";
 import { contractAddresses } from "./lib/constants";
 
 export class Treat {
-  constructor(provider, networkId, testing, options) {
-    var realProvider;
+  web3: Web3;
+  snapshot: any;
+  contracts: Contracts;
+  privateKey: any;
+  treatAddress: any;
+  wethAddress: any;
+  treatNFTMinterAddress: any;
+  accounts: any;
+  operation: any;
+  constructor(provider, networkId, options) {
+    let realProvider;
 
     if (typeof provider === "string") {
       if (provider.includes("wss")) {
@@ -27,11 +35,6 @@ export class Treat {
 
     this.web3 = new Web3(realProvider);
 
-    if (testing) {
-      this.testing = new EVM(realProvider);
-      this.snapshot = this.testing.snapshot();
-    }
-
     if (options.defaultAccount) {
       this.web3.eth.defaultAccount = options.defaultAccount;
     }
@@ -41,16 +44,13 @@ export class Treat {
     this.treatNFTMinterAddress = contractAddresses.treatNFTMinter[networkId];
   }
 
-  async resetEVM() {
-    this.testing.resetEVM(this.snapshot);
-  }
-
   signMessage = async (key, msg) => {
-    return await this.web3.eth.personal.sign(msg, key);
+    // TODO: Implement signMessage
+    throw Error("NOT Implemented");
   };
 
-  addAccount(address, number) {
-    this.accounts.push(new Account(this.contracts, address, number));
+  addAccount(address) {
+    this.accounts.push(new Account(this.contracts, address));
   }
 
   setProvider(provider, networkId) {
@@ -84,6 +84,6 @@ export class Treat {
   }
 
   toBigN(a) {
-    return BigNumber(a);
+    return new BigNumber(a);
   }
 }
