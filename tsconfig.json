@@ -19,7 +19,7 @@
       "@lib/*": ["./lib/*"],
       "@components/*": ["./components/*"],
       "@utils/*": ["./utils/*"],
-      "@hooks/*": ["./hooks/*"],
+      "@hooks/*": ["core/chain/hooks/*"],
       "@models/*": ["./db/models/*"],
       "@db/*": ["./db/*"],
       "@constants/*": ["./constants/*"],

@@ -446,12 +446,11 @@ export const addCreatorNft = async (
 export const addSubscriberFreeTreat = async (
   subscriberMartContract,
   account,
-  nftIds,
-  nftCosts
+  nftIds
 ) => {
   try {
     return await subscriberMartContract.methods
-      .addGiveAwayTreat(nftIds, nftCosts)
+      .addGiveAwayTreat(nftIds)
       .send({ from: account, value: 0 });
   } catch (e) {
     return undefined;
@@ -461,12 +460,11 @@ export const addSubscriberFreeTreat = async (
 export const addCreatorFreeTreat = async (
   creatorMartContract,
   account,
-  nftIds,
-  nftCosts
+  nftIds
 ) => {
   try {
     return await creatorMartContract.methods
-      .addGiveAwayTreat(nftIds, nftCosts)
+      .addGiveAwayTreat(nftIds)
       .send({ from: account, value: 0 });
   } catch (e) {
     return undefined;
