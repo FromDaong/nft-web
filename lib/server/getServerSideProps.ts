@@ -1,6 +1,5 @@
 import { parseCookies, setCookie } from "nookies";
 
-import Model from "../../db/models/Model";
 import jwt from "jsonwebtoken";
 import { signJWT } from "../../utils/server-utils";
 
