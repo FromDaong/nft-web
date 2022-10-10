@@ -1,6 +1,6 @@
-import * as Types from "./types.js";
+import * as Types from "./types";
 
-import { SUBTRACT_GAS_LIMIT, contractAddresses } from "./constants.js";
+import { SUBTRACT_GAS_LIMIT, contractAddresses } from "./constants";
 
 import BigNumber from "bignumber.js/bignumber";
 import CreatorMartAbi from "./abi/creatormart.json";
@@ -24,8 +24,41 @@ import TreatSubscriptionsAbi from "./abi/treatsubscriptions.json";
 import TreatTradeInAbi from "./abi/treattradein.json";
 import TreatV1ForV2Abi from "./abi/treatv1forv2.json";
 import WETHAbi from "./abi/weth.json";
+import { Treat } from "..";
 
-export class Contracts {
+export class Contracts implements Types.IContracts {
+  web3: any;
+  defaultConfirmations: any;
+  autoGasMultiplier: any;
+  confirmationType: any;
+  defaultGas: any;
+  defaultGasPrice: any;
+  treat: Treat;
+  treatNFTMinter: any;
+  treatNFTMinterV1: any;
+  treatMart: any;
+  creatorMart: any;
+  subscriberMart: any;
+  melonMart: any;
+  totwMinterHelper: any;
+  treatMarketplace: any;
+  treatMarketReader: any;
+  treatSubscriptions: any;
+  tippingContract: any;
+  weth: any;
+  treatTradeIn: any;
+  treatV1ForV2: any;
+  treat2: any;
+  melon: any;
+  masterMelonFarmer: any;
+  v1MasterMelonFarmer: any;
+  treatPancakeLP: any;
+  minterPermissionHelper: any;
+  busdToken: any;
+  usdcToken: any;
+  blockGasLimit: any;
+  notifier: any;
+
   constructor(provider, networkId, web3, options) {
     this.web3 = web3;
     this.defaultConfirmations = options.defaultConfirmations;
@@ -58,10 +91,11 @@ export class Contracts {
     this.minterPermissionHelper = new this.web3.eth.Contract(
       MinterPermissionHelperAbi
     );
+
     // add generic BEP20 payments
     this.busdToken = new this.web3.eth.Contract(GenericBep20);
     this.usdcToken = new this.web3.eth.Contract(GenericBep20);
-    //
+
     this.setProvider(provider, networkId);
     this.setDefaultAccount(this.web3.eth.defaultAccount);
   }
@@ -205,8 +239,8 @@ export class Contracts {
       }
 
       if (confirmationType === Types.ConfirmationType.Simulate) {
-        let g = txOptions.gas;
-        return { gasEstimate, g };
+        const gas = txOptions.gas;
+        return { gasEstimate, g: gas };
       }
     }
 

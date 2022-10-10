@@ -14,6 +14,8 @@ export class Treat {
   treatNFTMinterAddress: any;
   accounts: any;
   operation: any;
+  options: any;
+
   constructor(provider, networkId, options) {
     let realProvider;
 
