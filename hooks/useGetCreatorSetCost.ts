@@ -1,4 +1,7 @@
-import { getCreatorMartContract, getCreatorSetPrice } from "../treat/utils";
+import {
+  getCreatorMartContract,
+  getCreatorSetPrice,
+} from "../packages/treat/utils";
 import { useCallback, useEffect, useState } from "react";
 
 import BigNumber from "bignumber.js";

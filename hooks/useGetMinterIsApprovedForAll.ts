@@ -1,7 +1,7 @@
 import {
   getTreatMarketplaceAddress,
   getTreatNFTMinterContract,
-} from "../treat/utils";
+} from "../packages/treat/utils";
 import { useCallback, useEffect, useState } from "react";
 
 import { getIsApprovedForAll } from "../utils/erc1155";

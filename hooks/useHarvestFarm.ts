@@ -1,4 +1,7 @@
-import { getMasterMelonFarmerContract, harvestFarm } from "../treat/utils";
+import {
+  getMasterMelonFarmerContract,
+  harvestFarm,
+} from "../packages/treat/utils";
 
 import { useCallback } from "react";
 import { useMoralis } from "react-moralis";

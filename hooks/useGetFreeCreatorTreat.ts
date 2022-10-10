@@ -1,4 +1,7 @@
-import { getCreatorMartContract, mintFreeCreatorTreat } from "../treat/utils";
+import {
+  getCreatorMartContract,
+  mintFreeCreatorTreat,
+} from "../packages/treat/utils";
 
 import { useCallback } from "react";
 import { useMoralis } from "react-moralis";

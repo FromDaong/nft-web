@@ -1,4 +1,7 @@
-import { getTreatTradeInContract, redeemV1forV2 } from "../treat/utils";
+import {
+  getTreatTradeInContract,
+  redeemV1forV2,
+} from "../packages/treat/utils";
 
 import { useCallback } from "react";
 import { useMoralis } from "react-moralis";

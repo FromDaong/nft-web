@@ -2,7 +2,7 @@ import {
   approveTreatPancakeLPStaking,
   approveTreatStaking,
   getMasterMelonFarmerContract,
-} from "../treat/utils";
+} from "../packages/treat/utils";
 
 import { Contract } from "ethers";
 import { useCallback } from "react";

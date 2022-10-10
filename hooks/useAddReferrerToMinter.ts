@@ -1,4 +1,7 @@
-import { addReferrerToMinter, getTreatNFTMinterContract } from "../treat/utils";
+import {
+  addReferrerToMinter,
+  getTreatNFTMinterContract,
+} from "../packages/treat/utils";
 
 import { useCallback } from "react";
 import { useMoralis } from "react-moralis";

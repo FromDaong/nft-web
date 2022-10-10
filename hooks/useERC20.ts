@@ -1,5 +1,5 @@
 import { Context } from "@contexts/TreatProvider/TreatProvider";
-import { contractAddresses } from "@treat/lib/constants";
+import { contractAddresses } from "packages/treat/lib/constants";
 import React, { useContext } from "react";
 import { useMoralis } from "react-moralis";
 import Web3 from "web3";

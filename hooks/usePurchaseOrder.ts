@@ -1,4 +1,7 @@
-import { getTreatMarketplaceContract, purchaseOrder } from "../treat/utils";
+import {
+  getTreatMarketplaceContract,
+  purchaseOrder,
+} from "../packages/treat/utils";
 
 import { useCallback } from "react";
 import { useMoralis } from "react-moralis";

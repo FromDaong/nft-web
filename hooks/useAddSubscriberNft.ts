@@ -1,4 +1,7 @@
-import { addSubscriberNft, getSubscriberMartContract } from "../treat/utils";
+import {
+  addSubscriberNft,
+  getSubscriberMartContract,
+} from "../packages/treat/utils";
 
 import { useCallback } from "react";
 import { useMoralis } from "react-moralis";

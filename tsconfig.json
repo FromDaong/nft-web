@@ -23,7 +23,7 @@
       "@models/*": ["./db/models/*"],
       "@db/*": ["./db/*"],
       "@constants/*": ["./constants/*"],
-      "@treat/*": ["./treat/*"],
+      "@treat/*": ["packages/treat/*"],
       "@contexts/*": ["./contexts/*"],
       "@styles/*": ["./styles/*"]
     }

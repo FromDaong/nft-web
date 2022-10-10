@@ -2,7 +2,7 @@ import {
   getMasterMelonFarmerContract,
   getStaked,
   getV1MasterMelonFarmerContract,
-} from "../treat/utils";
+} from "../packages/treat/utils";
 import { useCallback, useEffect, useState } from "react";
 
 import { useMoralis } from "react-moralis";

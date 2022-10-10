@@ -5,7 +5,7 @@ import {
   getResaleOrder,
   getOpenOrdersForNft,
   getOrdersInfoForNftRange,
-} from "../treat/utils";
+} from "../packages/treat/utils";
 import useTreat from "./useTreat";
 
 const useGetAllOpenOrders = (maxId: number) => {

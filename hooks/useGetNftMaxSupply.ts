@@ -1,4 +1,7 @@
-import { getNftMaxSupply, getTreatNFTMinterContract } from "../treat/utils";
+import {
+  getNftMaxSupply,
+  getTreatNFTMinterContract,
+} from "../packages/treat/utils";
 import { useCallback, useEffect, useState } from "react";
 
 import BigNumber from "bignumber.js";

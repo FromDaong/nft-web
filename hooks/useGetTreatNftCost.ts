@@ -1,4 +1,4 @@
-import { getTreatMartContract, getTreatNftCost } from "../treat/utils";
+import { getTreatMartContract, getTreatNftCost } from "../packages/treat/utils";
 import { useCallback, useEffect, useState } from "react";
 
 import BigNumber from "bignumber.js";

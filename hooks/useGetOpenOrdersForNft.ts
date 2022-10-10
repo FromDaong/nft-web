@@ -3,7 +3,7 @@ import {
   getTreatMarketplaceContract,
   getOpenOrdersForNft,
   getResaleOrder,
-} from "../treat/utils";
+} from "../packages/treat/utils";
 import useTreat from "./useTreat";
 
 const useGetOpenOrdersForNft = (nftId: number) => {

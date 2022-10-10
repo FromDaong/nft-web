@@ -1,4 +1,7 @@
-import { getCreatorMartContract, getIsGiveAwayNft } from "../treat/utils";
+import {
+  getCreatorMartContract,
+  getIsGiveAwayNft,
+} from "../packages/treat/utils";
 
 import { useCallback } from "react";
 import { useMoralis } from "react-moralis";

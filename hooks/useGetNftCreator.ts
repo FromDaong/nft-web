@@ -1,4 +1,7 @@
-import { getNftCreator, getTreatNFTMinterContract } from "../treat/utils";
+import {
+  getNftCreator,
+  getTreatNFTMinterContract,
+} from "../packages/treat/utils";
 import { useEffect, useState } from "react";
 
 import { useMoralis } from "react-moralis";

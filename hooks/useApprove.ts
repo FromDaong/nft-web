@@ -1,4 +1,4 @@
-import { approve, getTreatMartContract } from "../treat/utils";
+import { approve, getTreatMartContract } from "../packages/treat/utils";
 
 import { useCallback } from "react";
 import { useMoralis } from "react-moralis";

@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 
 import Axios from "axios";
-import { Treat } from "../../treat";
+import { Treat } from "../../packages/treat";
 import { useMoralis } from "react-moralis";
 
 export interface TreatContext {

@@ -7,7 +7,7 @@ import {
   getNftBalance,
   getOpenOrdersForSeller,
   getTreatNFTMinterV1Contract,
-} from "../treat/utils";
+} from "../packages/treat/utils";
 import useBlock from "./useBlock";
 import useTreat from "./useTreat";
 

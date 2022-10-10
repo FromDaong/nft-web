@@ -2,19 +2,23 @@ import { useEffect, useState } from "react";
 import {
   getTreatMarketplaceContract,
   getRemainingBalanceForOrder,
-} from "../treat/utils";
+} from "../packages/treat/utils";
 import useTreat from "./useTreat";
 
 const useGetRemainingOrderBalance = (seller: string, nftId: number) => {
-  const [remainingBalance, setRemainingBalance] = useState(0)
+  const [remainingBalance, setRemainingBalance] = useState(0);
   const treat = useTreat();
 
   const treatMarketplaceContract = getTreatMarketplaceContract(treat);
 
   useEffect(() => {
     async function fetchBalance() {
-      const balance = await getRemainingBalanceForOrder(treatMarketplaceContract, seller, nftId)
-      setRemainingBalance(balance)
+      const balance = await getRemainingBalanceForOrder(
+        treatMarketplaceContract,
+        seller,
+        nftId
+      );
+      setRemainingBalance(balance);
     }
 
     if (treat) {

@@ -1,4 +1,7 @@
-import { getCreatorMartContract, redeemCreatorSet } from "../treat/utils";
+import {
+  getCreatorMartContract,
+  redeemCreatorSet,
+} from "../packages/treat/utils";
 
 import { useCallback } from "react";
 import { useMoralis } from "react-moralis";

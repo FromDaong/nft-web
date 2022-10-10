@@ -1,4 +1,7 @@
-import { getCreatorReferrer, getTreatNFTMinterContract } from "../treat/utils";
+import {
+  getCreatorReferrer,
+  getTreatNFTMinterContract,
+} from "../packages/treat/utils";
 import { useCallback, useEffect, useState } from "react";
 
 import useTreat from "./useTreat";

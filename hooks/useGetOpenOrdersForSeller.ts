@@ -2,7 +2,7 @@ import {
   getOpenOrdersForSeller,
   getResaleOrder,
   getTreatMarketplaceContract,
-} from "../treat/utils";
+} from "../packages/treat/utils";
 import { useEffect, useState } from "react";
 
 import { useMoralis } from "react-moralis";
