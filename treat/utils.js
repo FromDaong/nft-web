@@ -8,13 +8,6 @@ BigNumber.config({
   DECIMAL_PLACES: 80,
 });
 
-const GAS_LIMIT = {
-  STAKING: {
-    DEFAULT: 200000,
-    SNX: 850000,
-  },
-};
-
 export const getTreatAddress = (treat) => {
   return treat && treat.treatAddress;
 };
