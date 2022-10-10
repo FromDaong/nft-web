@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Context } from "../../../contexts/TreatProvider";
+import { Context } from "../../contexts/TreatProvider";
 
 const useTreat = () => {
   const { treat } = useContext(Context);

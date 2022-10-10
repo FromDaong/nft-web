@@ -20,11 +20,11 @@
       "@components/*": ["./components/*"],
       "@utils/*": ["./utils/*"],
       "@hooks/*": ["core/chain/hooks/*"],
-      "@models/*": ["./db/models/*"],
-      "@db/*": ["./db/*"],
-      "@constants/*": ["./constants/*"],
+      "@models/*": ["data/models/*"],
+      "@db/*": ["data/*"],
+      "@constants/*": ["core/constants/*"],
       "@treat/*": ["packages/treat/*"],
-      "@contexts/*": ["./contexts/*"],
+      "@contexts/*": ["core/contexts/*"],
       "@styles/*": ["./styles/*"]
     }
   },
