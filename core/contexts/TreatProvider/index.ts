@@ -1,1 +1,1 @@
-export { Context, default } from './TreatProvider';
+export { Context, default } from "./TreatProvider";
