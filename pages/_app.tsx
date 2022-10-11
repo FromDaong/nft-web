@@ -10,6 +10,7 @@ import Footer from "packages/shared/components/Footer";
 import Commandbar from "packages/commandbar";
 import { useDisclosure } from "packages/hooks";
 import { useEffect } from "react";
+import { ThemeProvider } from "packages/theme";
 
 const progress = new ProgressBar({
   size: 3,
@@ -31,7 +32,7 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   return (
-    <>
+    <ThemeProvider>
       <Head>
         <title>Treat DAO</title>
         <meta name="title" content="Treat DAO" />
@@ -55,7 +56,7 @@ function MyApp({ Component, pageProps }) {
       <div className="py-12">
         <Footer />
       </div>
-    </>
+    </ThemeProvider>
   );
 }
 
