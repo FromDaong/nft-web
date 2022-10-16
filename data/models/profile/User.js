@@ -36,6 +36,6 @@ UserSchema.plugin(mongoosePaginate);
 //   return num * 100;
 // });
 
-ModelSchema.plugin(require("mongoose-beautiful-unique-validation"));
+UserSchema.plugin(require("mongoose-beautiful-unique-validation"));
 
 module.exports = mongoose.models.Model || mongoose.model("User", UserSchema);

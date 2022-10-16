@@ -22,6 +22,7 @@
       "@hooks/*": ["core/chain/hooks/*"],
       "@models/*": ["data/models/*"],
       "@db/*": ["data/*"],
+      "@packages/*": ["./packages/*"],
       "@constants/*": ["core/constants/*"],
       "@treat/*": ["packages/treat/*"],
       "@contexts/*": ["core/contexts/*"],
