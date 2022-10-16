@@ -1,0 +1,6 @@
+CREATE TABLE 'pacebar'.'creators' (
+  id SERIAL PRIMARY KEY NOT NULL,
+  name VARCHAR(255),
+  email VARCHAR(255) UNIQUE NOT NULL,
+  address CHAR(64) UNIQUE NOT NULL,
+);

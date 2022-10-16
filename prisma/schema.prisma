@@ -1,0 +1,193 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("PLANETSCALE_DATABASE_URL")
+}
+
+model ClientActor {
+  id          String                @id
+  fingerprint String
+  sessions    ClientActorSessions[]
+  user        User?
+}
+
+model ClientActorSessions {
+  id      String      @id
+  actor   ClientActor @relation(fields: [actorId], references: [id])
+  actorId String
+}
+
+model User {
+  id               String         @id
+  address          String         @unique
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @default(now())
+  email            String         @unique
+  username         String         @unique
+  display_name     String?
+  role             Role           @default(ANON_ROLE)
+  profile          Profile?
+  preference       Preference?
+  temporary        Boolean
+  temporaryProfile TemporaryUser?
+  actor            ClientActor    @relation(references: [id], fields: [actorId])
+  actorId          String         @unique
+
+  @@index([email, address, username])
+}
+
+model TemporaryUser {
+  address String @id
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String @unique
+}
+
+model Preference {
+  id     String @id
+  theme  Theme  @default(SYSTEM)
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+}
+
+model Profile {
+  id        String   @id
+  bio       String?  @db.VarChar(300)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  posts     Post[]
+  totm TOTM?
+
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique
+}
+
+model Post {
+  id        String    @id
+  comments  Comment[]
+  media     Media[]
+  text      String
+  tags      Tag[]
+  postType  PostType
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  profile   Profile   @relation(fields: [profileId], references: [id])
+  profileId String
+
+  @@index([text, id])
+}
+
+model Media {
+  id     String    @id
+  type   MediaType
+  url    String
+  post   Post      @relation(fields: [postId], references: [id])
+  postId String
+}
+
+model Comment {
+  id        String   @id
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  post      Post?    @relation(fields: [postId], references: [id])
+  postId    String
+}
+
+model Tag {
+  name   String @id
+  post   Post   @relation(fields: [postId], references: [id])
+  postId String @unique
+}
+
+model SubscriptionPackage {
+  id String @id
+}
+
+model SubscriptionOffer {
+  id String @id
+}
+
+model Livestream {
+  id String @id
+}
+
+model Referral {
+  id String @id
+}
+
+model Chat {
+  id String @id
+}
+
+model Message {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Reaction {
+  id String @id
+}
+
+model Tip {
+  id String @id
+}
+
+model Notification {
+  id String @id
+}
+
+model TOTM {
+  id String @id
+  profile Profile @relation(fields: [profileId], references: [id])
+  profileId String @unique
+}
+
+model NFT {
+  id String @id
+}
+
+model Ban {
+  id String @id
+}
+
+model Block {
+  id String @id
+}
+
+model ChainEvent {
+  tx String @id
+  data String
+}
+
+enum Role {
+  ANON_ROLE
+  GENERAL_ROLE
+  CREATOR_ROLE
+  ADMIN_ROLE
+  SUPERUSER_ROLE
+}
+
+enum Theme {
+  LIGHT
+  DARK
+  PINK
+  SYSTEM
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+enum PostType {
+  COLLECTIBLE
+  CONTENT
+  SUBSCRIPTION_ITEM
+}
