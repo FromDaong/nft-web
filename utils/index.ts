@@ -12,5 +12,4 @@ export const decToBn = (dec: number, decimals = 18) => {
   return new BigNumber(dec).multipliedBy(new BigNumber(10).pow(decimals));
 };
 
-
 export { MathUtil, ReactUtil };
