@@ -13,11 +13,11 @@ datasource db {
 model ClientActor {
   id          String                @id
   fingerprint String
-  sessions    ClientActorSessions[]
+  sessions    ClientActorSession[]
   user        User?
 }
 
-model ClientActorSessions {
+model ClientActorSession {
   id      String      @id
   actor   ClientActor @relation(fields: [actorId], references: [id])
   actorId String
@@ -165,6 +165,19 @@ model ChainEvent {
   tx String @id
   data String
 }
+
+model LogEvent {
+  id  String @id
+  created_at BigInt
+  content String
+}
+
+model AnalyticsEvent {
+  id String @id
+  created_at BigInt
+  content String
+  sessionId String
+  }
 
 enum Role {
   ANON_ROLE
