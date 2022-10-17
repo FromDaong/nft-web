@@ -52,7 +52,7 @@ const TreatProvider: React.FC = ({ children }) => {
   useEffect(() => {
     if (isWeb3Enabled && provider) {
       const chainId = Number(_chainId);
-      const treatLib = new Treat(provider, chainId, false, {
+      const treatLib = new Treat(provider, chainId, {
         defaultAccount: (provider as any).selectedAddress,
         defaultConfirmations: 1,
         autoGasMultiplier: 1.5,

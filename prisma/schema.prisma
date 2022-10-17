@@ -11,16 +11,17 @@ datasource db {
 }
 
 model ClientActor {
-  id          String                @id
+  id          String               @id
   fingerprint String
   sessions    ClientActorSession[]
   user        User?
 }
 
 model ClientActorSession {
-  id      String      @id
-  actor   ClientActor @relation(fields: [actorId], references: [id])
-  actorId String
+  id             String           @id
+  actor          ClientActor      @relation(fields: [actorId], references: [id])
+  actorId        String
+  AnalyticsEvent AnalyticsEvent[]
 }
 
 model User {
@@ -61,10 +62,10 @@ model Profile {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   posts     Post[]
-  totm TOTM?
+  totm      TOTM?
 
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String   @unique
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
 }
 
 model Post {
@@ -144,9 +145,9 @@ model Notification {
 }
 
 model TOTM {
-  id String @id
-  profile Profile @relation(fields: [profileId], references: [id])
-  profileId String @unique
+  id        String  @id
+  profile   Profile @relation(fields: [profileId], references: [id])
+  profileId String  @unique
 }
 
 model NFT {
@@ -162,22 +163,23 @@ model Block {
 }
 
 model ChainEvent {
-  tx String @id
+  tx   String @id
   data String
 }
 
 model LogEvent {
-  id  String @id
+  id         String @id
   created_at BigInt
-  content String
+  content    String
 }
 
 model AnalyticsEvent {
-  id String @id
-  created_at BigInt
-  content String
-  sessionId String
-  }
+  id                 String             @id
+  created_at         BigInt
+  content            String
+  clientActorSession ClientActorSession @relation(fields: [sessionId], references: [id])
+  sessionId          String
+}
 
 enum Role {
   ANON_ROLE
