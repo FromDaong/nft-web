@@ -12,21 +12,14 @@ const NavbarActionDropdown = () => (
     </DropdownMenu.Trigger>
     <DropdownMenu.Portal>
       <DropdownMenu.Content className="z-50 p-3 bg-white drop-shadow-xl gap-y-3 rounded-xl">
-        <Link href={"/create/nft"}>
+        <Link href={"/creator/post"}>
           <a>
             <DropdownMenu.Item className="px-4 py-2">
-              Create NFT
+              Create new post
             </DropdownMenu.Item>
           </a>
         </Link>
-        <Link href={"/create/collection"}>
-          <a>
-            <DropdownMenu.Item className="px-4 py-2">
-              Create NFT Collection
-            </DropdownMenu.Item>
-          </a>
-        </Link>
-        <Link href={"/create/livestream"}>
+        <Link href={"/creator/livestream"}>
           <a>
             <DropdownMenu.Item className="px-4 py-2">
               Start a Livestream
