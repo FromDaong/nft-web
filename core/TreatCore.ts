@@ -1,6 +1,38 @@
 export default class TreatCore {
   web3: TreatWeb3Engine;
+
+  /**
+   * @description Trigger analytics event & logger then sync.
+   * @param event_type
+   * @param metadata
+   */
+  async triggerEvent(event_type: string, metadata: object) {
+    // TODO: Implement logger
+    // TODO: Sync to server
+
+    const meta = JSON.stringify(metadata);
+    const event = {
+      id: "",
+      event_type,
+      metadata: meta,
+    };
+
+    const log_event = { id: "", created_at: Date.now(), metadata: meta };
+    console.log({ event_type, metadata: JSON.stringify(metadata) });
+  }
 }
+
+export type AnalyticsEvent = {
+  id: string;
+  event_type: string;
+  metadata: string;
+};
+
+export type LogEvent = {
+  id: string;
+  created_at: number;
+  metadata: string;
+};
 
 export interface TreatWeb3Engine {
   chain_id: number;
