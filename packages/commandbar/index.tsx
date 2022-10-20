@@ -1,4 +1,4 @@
-import { useDisclosure } from "packages/hooks";
+import { useDisclosure } from "../hooks";
 import CommandbarFrame from "./components/Frame";
 
 export type CommandbarProps = {

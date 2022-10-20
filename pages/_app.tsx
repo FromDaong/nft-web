@@ -11,6 +11,7 @@ import Footer from "packages/shared/components/Footer";
 import { useDisclosure } from "packages/hooks";
 import { ThemeProvider } from "packages/theme";
 import { FpjsProvider } from "@fingerprintjs/fingerprintjs-pro-react";
+import WagmiWrapper from "core/chain/connect";
 
 const progress = new ProgressBar({
   size: 3,
@@ -46,17 +47,19 @@ function MyApp({ Component, pageProps }) {
             content="Treat is an exclusive platform for creators to sell NFTs. Hold $TREAT to have a say on which creators are chosen & new platform features."
           />
         </Head>
-        <div className="py-3">
-          <Navbar />
-        </div>
-        <Container className="max-w-6xl mx-auto">
-          <main className="mt-8">
-            <Component {...pageProps} />
-          </main>
-        </Container>
-        <div className="py-12">
-          <Footer />
-        </div>
+        <WagmiWrapper>
+          <div className="py-3">
+            <Navbar />
+          </div>
+          <Container className="max-w-6xl mx-auto">
+            <main className="mt-8">
+              <Component {...pageProps} />
+            </main>
+          </Container>
+          <div className="py-12">
+            <Footer />
+          </div>
+        </WagmiWrapper>
       </FpjsProvider>
     </ThemeProvider>
   );

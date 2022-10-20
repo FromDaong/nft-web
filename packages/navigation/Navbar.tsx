@@ -7,8 +7,17 @@ import * as Logo from "../../public/brand/logo_mono.svg";
 import Image from "next/image";
 import { Button } from "packages/shared/components/Button";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
+import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { InjectedConnector } from "wagmi/connectors/injected";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export default function Navbar() {
+  const { address, isConnected } = useAccount();
+  const { connect } = useConnect({
+    connector: new InjectedConnector(),
+  });
+  const { disconnect } = useDisconnect();
+  console.log({isConnected, address})
   return (
     <nav className="fixed top-0 left-0 z-40 w-full shadow-sm lg:px-0">
       <div className="relative w-full px-4">
@@ -48,14 +57,12 @@ export default function Navbar() {
           <div className="hidden gap-4 md:flex">
             {
               // eslint-disable-next-line no-constant-condition
-              false ? (
-                <Button className="text-white bg-pink-600 shadow-sm">
-                  Connect Wallet
-                </Button>
+              !isConnected ? (
+                <ConnectButton label="Connect your wallet" />
               ) : (
                 <>
                   <NavbarNotifications />
-                  <NavbarProfileAvatar />
+                  <NavbarProfileAvatar disconnect={disconnect} />
                   <NavbarActionDropdown />
                 </>
               )
