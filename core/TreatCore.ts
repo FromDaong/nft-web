@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+
 export default class TreatCore {
   web3: TreatWeb3Engine;
 
@@ -81,4 +83,14 @@ export interface TreatAuthEngine {
   signInWithSocial();
 
   signOut();
+}
+
+export function usePrevious(value) {
+  const ref = useRef()
+
+  useEffect(() => {
+    ref.current = value
+  }, [value])
+
+  return ref.current
 }

@@ -1,14 +1,14 @@
-export type Feed = {};
+export type Feed = unknown;
 
-export type FAuthor = {};
+export type FAuthor = unknown;
 
-export type FMember = {};
+export type FMember = unknown;
 
-export type FAction = {};
+export type FAction = unknown;
 
-export type FItem = {};
+export type FItem = unknown;
 
-export type FRequest = {};
+export type FRequest = unknown;
 
 export interface NewsFeedAdapter {
   getNewsFeed(

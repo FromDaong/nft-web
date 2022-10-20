@@ -3,7 +3,11 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import Link from "next/link";
 import { useApplicationTheme } from "packages/theme/provider";
 
-const NavbarProfileAvatar = () => {
+type Props = {
+  disconnect: () => void
+}
+
+const NavbarProfileAvatar = (props: Props) => {
   const { updateTheme, nextTheme } = useApplicationTheme();
 
   return (
@@ -44,7 +48,7 @@ const NavbarProfileAvatar = () => {
           </Link>
           <DropdownMenu.Separator />
           <DropdownMenu.Group>
-            <Link href={"/apply"}>
+            <Link href={"/flow/upgrade_to_creator"}>
               <a>
                 <DropdownMenu.Item className="px-4 py-2">
                   Become a creator
@@ -59,7 +63,7 @@ const NavbarProfileAvatar = () => {
             </DropdownMenu.Item>
           </DropdownMenu.Group>
           <DropdownMenu.Separator />
-          <DropdownMenu.Item className="w-full">
+          <DropdownMenu.Item onClick={props.disconnect} className="w-full">
             <button className="px-4 py-2">Sign out</button>
           </DropdownMenu.Item>
         </DropdownMenu.Content>
