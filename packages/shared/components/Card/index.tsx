@@ -10,7 +10,7 @@ export default function Card(props: ComponentThemeProps) {
           props.shadow && props.shadow !== "base" ? props.shadow : "shadow-lg"
         } rounded-${
           props.rounded ? props.rounded : "xl"
-        } shadow-blue-400/10`}
+        } shadow-pink-400/10`}
       >
         {props.children}
       </div>

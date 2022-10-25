@@ -20,7 +20,7 @@ const notifications = [
 const NavbarNotifications = () => (
   <DropdownMenu.Root>
     <DropdownMenu.Trigger>
-      <div className="flex items-center justify-center w-10 h-10 bg-white border-2 rounded-full">
+      <div className="flex items-center justify-center w-10 h-10 bg-white border rounded-full drop-shadow-sm shadow-pink-500/20">
         <LightningBoltIcon className="w-5 h-5" />
       </div>
     </DropdownMenu.Trigger>

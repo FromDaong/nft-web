@@ -41,11 +41,11 @@ export const Button = (props: ComponentThemeProps) => {
 
   return (
     <BasicButton
-      className={`${props.className ?? ""} ${size} ${
+      className={`${!props.className.includes("text") && color} ${props.className ?? ""} ${size} ${
         props.shadow && props.shadow !== "base" ? props.shadow : "shadow-lg"
       } rounded-${
         props.rounded ? props.rounded : "xl"
-      } transition-transform duration-100 hover:scale-105 font-bold ${color}`}
+      } transition-transform duration-100 hover:scale-105 font-bold`}
     >
       {props.children}
     </BasicButton>

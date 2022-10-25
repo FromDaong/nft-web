@@ -15,7 +15,7 @@ export type subPallette = {
 export type pallette = {
   bg: subPallette;
   text: subPallette;
-  shadow: subPallette;
+  card: subPallette;
   border: subPallette;
   overlay: subPallette;
   ring: subPallette;
@@ -26,14 +26,22 @@ export type ThemeType = "high_contrast" | "grayscale" | "monochromatic"
 export type theme = {
   colors: {
     button: pallette;
-    border: pallette;
+    text: pallette;
     ring: pallette;
     bg: pallette;
-    text: pallette;
     shadow: pallette;
   };
   typography: {
     base: string
+  };
+  space: {
+    base: number;
+  };
+  padding: {
+    base: number;
+  };
+  margin: {
+    base: number;
   };
   breakpoints: "xs" | "phone" | "tablet" | "laptop" | "desktop" | "monitor" | "4k"
 
