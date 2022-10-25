@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { useState } from "react";
-import { motion } from "framer-motion";
 
 const motionStates = {
   show: {
@@ -49,7 +48,7 @@ export default function TOTMNFTItem() {
           <div
             onMouseEnter={toggleHover}
             onMouseLeave={toggleHover}
-            className="relative flex-shrink-0 w-full p-4 overflow-hidden border-2 border-purple-600 w-72 h-96 rounded-xl"
+            className="relative flex-shrink-0 p-4 overflow-hidden border-2 border-purple-600 w-72 h-96 rounded-xl"
           >
             <div className="absolute top-0 right-0 z-10 p-4">
               <div className="p-2 bg-white rounded-lg shadow-xl">

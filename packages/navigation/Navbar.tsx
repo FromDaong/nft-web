@@ -5,11 +5,10 @@ import NavbarActionDropdown from "./components/NavbarActionDropdown";
 import NavbarNotifications from "./components/NavbarNotifications";
 import * as Logo from "../../public/brand/logo_mono.svg";
 import Image from "next/image";
-import { Button } from "packages/shared/components/Button";
-import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 
 export default function Navbar() {
   const { address, isConnected } = useAccount();
@@ -17,7 +16,7 @@ export default function Navbar() {
     connector: new InjectedConnector(),
   });
   const { disconnect } = useDisconnect();
-  console.log({isConnected, address})
+  console.log({ isConnected, address });
   return (
     <nav className="fixed top-0 left-0 z-40 w-full shadow-sm lg:px-0">
       <div className="relative w-full px-4">
@@ -36,7 +35,7 @@ export default function Navbar() {
             </Link>
 
             <div className="items-center hidden gap-8 md:flex">
-              <Link href="/feed">
+              <Link href="/discover">
                 <a className="font-medium">Discover</a>
               </Link>
               <Link href="#">

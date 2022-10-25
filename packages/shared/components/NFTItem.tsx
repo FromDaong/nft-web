@@ -60,7 +60,7 @@ export default function NFTItem({ redeemable }: { redeemable?: boolean }) {
               />
             </div>
             {isImageHovered ? (
-              <div className="absolute top-0 left-0 flex flex-col justify-between w-full h-[70%] z-1 bg-gray-900/40">
+              <div className="absolute top-0 left-0 flex flex-col transition-opacity duration-150 justify-between w-full h-[70%] z-1 bg-gray-900/40">
                 <div className="flex items-center gap-2 p-4">
                   <div className="w-8 h-8">
                     <img

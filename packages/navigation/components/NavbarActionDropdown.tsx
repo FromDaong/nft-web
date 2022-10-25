@@ -1,31 +1,41 @@
-import { PlusIcon } from "@radix-ui/react-icons";
+import { KeyboardIcon, PlusIcon } from "@radix-ui/react-icons";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { TriggerButton } from "packages/shared/components/Button";
+import { Button } from "packages/shared/components/Button";
 import Link from "next/link";
 
 const NavbarActionDropdown = () => (
   <DropdownMenu.Root>
     <DropdownMenu.Trigger>
-      <TriggerButton className="flex items-center gap-4 px-8 py-2 text-white bg-pink-600 rounded-full">
+      <Button className="flex items-center gap-4 px-6 py-1 text-white bg-blue-600 rounded-full">
         Create <PlusIcon />
-      </TriggerButton>
+      </Button>
     </DropdownMenu.Trigger>
     <DropdownMenu.Portal>
-      <DropdownMenu.Content className="z-50 p-3 bg-white drop-shadow-xl gap-y-3 rounded-xl">
-        <Link href={"/creator/post"}>
-          <a>
-            <DropdownMenu.Item className="px-4 py-2">
-              Create new post
-            </DropdownMenu.Item>
-          </a>
-        </Link>
-        <Link href={"/creator/livestream"}>
-          <a>
-            <DropdownMenu.Item className="px-4 py-2">
-              Start a Livestream
-            </DropdownMenu.Item>
-          </a>
-        </Link>
+      <DropdownMenu.Content className="z-50 py-3 bg-white divide-y divide-y-500/10 min-w-[256px] drop-shadow-xl gap-y-3 rounded-xl">
+        <div>
+          <Link href={"/creator/post"}>
+            <a>
+              <DropdownMenu.Item className="flex items-baseline justify-between px-4 py-2 ">
+                <span>Create new post</span>
+                <span className="flex gap-2 text-sm text-gray-400">
+                  <KeyboardIcon className="w-5 h-5" />P
+                </span>
+              </DropdownMenu.Item>
+            </a>
+          </Link>
+        </div>
+        <div>
+          <Link href={"/creator/livestream"}>
+            <a>
+              <DropdownMenu.Item className="flex items-baseline justify-between px-4 py-2 ">
+                <span>Start a livestream</span>
+                <span className="flex gap-2 text-sm text-gray-400">
+                  <KeyboardIcon className="w-5 h-5" />L
+                </span>
+              </DropdownMenu.Item>
+            </a>
+          </Link>
+        </div>
       </DropdownMenu.Content>
     </DropdownMenu.Portal>
   </DropdownMenu.Root>

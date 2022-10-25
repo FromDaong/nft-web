@@ -5,12 +5,12 @@ export default function ListingSection({ title, href, children }) {
   return (
     <div className="px-4 my-24 md:px-8 lg:px-0">
       <div className="w-full">
-        <div className="flex items-center justify-between">
+        <div className="flex items-baseline justify-between">
           <h2 className="text-xl font-medium text-gray-900 md:text-3xl">
             {title}
           </h2>
           <Link href={href}>
-            <a className="flex items-center gap-2 text-sm md:text-base">
+            <a className="flex items-center gap-2 text-sm">
               View more <ArrowRightIcon className="w-5 h-5" />
             </a>
           </Link>

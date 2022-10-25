@@ -1,9 +1,9 @@
 import { SEOHead } from "@packages/seo/page";
 
-export default function Messages() {
+export default function Explore() {
   return (
     <>
-      <SEOHead title="Messages" />
+      <SEOHead title="Explore" />
     </>
   );
 }
