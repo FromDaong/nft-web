@@ -1,8 +1,10 @@
 import { Button } from "packages/shared/components/Button";
+import Card from "../Card";
 
 export default function ProfileCard() {
   return (
-    <div className="w-full bg-white border border-gray-200 drop-shadow-sm rounded-xl">
+    <Card className="border border-gray-200">
+      <div className="w-full">
       <div className="relative overflow-hidden h-96 rounded-xl">
         <div className="absolute top-0 left-0 w-full h-[30%] z-0">
           <img
@@ -21,7 +23,7 @@ export default function ProfileCard() {
         <div className="absolute bottom-0 ">
           <div className="p-4">
             <div className="flex">
-              <h3 className="text-4xl font-medium text-gray-900">
+              <h3 className="text-2xl font-medium text-gray-900">
                 Cherie Noel
               </h3>
             </div>
@@ -38,11 +40,12 @@ export default function ProfileCard() {
               <p>followers</p>
             </div>
             <div>
-              <Button className="text-white bg-pink-600 ">Follow</Button>
+              <Button className="text-white bg-blue-600 ">Follow</Button>
             </div>
           </div>
         </div>
       </div>
     </div>
+    </Card>
   );
 }

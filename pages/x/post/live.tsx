@@ -13,13 +13,13 @@ export default function NFTS() {
               <a>All creators</a>
             </Link>
           </p>
-          <p className="px-8 py-4 text-xl font-medium ">
-            <Link href={"/creator/live"}>
+          <p className="px-8 py-4 text-xl font-medium text-blue-600 border-b-4 border-blue-600">
+            <Link href={"#"}>
               <a>Currently streaming</a>
             </Link>
           </p>
-          <p className="px-8 py-4 text-xl font-medium text-pink-600 border-b-4 border-pink-600">
-            <Link href={"#"}>
+          <p className="px-8 py-4 text-xl font-medium ">
+            <Link href={"/creator/subscriptions/"}>
               <a>Subscriptions</a>
             </Link>
           </p>
@@ -28,22 +28,22 @@ export default function NFTS() {
       <div className="flex justify-between w-full">
         <div className="flex w-full gap-2 py-8">
           <div>
-            <span className="px-4 py-1 text-sm font-medium text-gray-900 bg-gray-100 border-2 border-gray-200 rounded-full cursor-pointer hover:border-pink-600 hover:bg-white">
-              Offers subscription
+            <span className="px-4 py-1 text-sm font-medium text-gray-900 bg-gray-100 border-2 border-gray-200 rounded-full cursor-pointer hover:border-blue-600 hover:bg-white">
+              Free
             </span>
           </div>
           <div>
-            <span className="px-4 py-1 text-sm font-medium text-gray-900 bg-gray-100 border-2 border-gray-200 rounded-full cursor-pointer hover:border-pink-600 hover:bg-white">
-              Treat of The Month
+            <span className="px-4 py-1 text-sm font-medium text-gray-900 bg-gray-100 border-2 border-gray-200 rounded-full cursor-pointer hover:border-blue-600 hover:bg-white">
+              Rare
             </span>
           </div>
           <div>
-            <span className="px-4 py-1 text-sm font-medium text-gray-900 bg-gray-100 border-2 border-gray-200 rounded-full cursor-pointer hover:border-pink-600 hover:bg-white">
+            <span className="px-4 py-1 text-sm font-medium text-gray-900 bg-gray-100 border-2 border-gray-200 rounded-full cursor-pointer hover:border-blue-600 hover:bg-white">
               Following
             </span>
           </div>
           <div>
-            <span className="px-4 py-1 text-sm font-medium text-gray-900 bg-gray-100 border-2 border-gray-200 rounded-full cursor-pointer hover:border-pink-600 hover:bg-white">
+            <span className="px-4 py-1 text-sm font-medium text-gray-900 bg-gray-100 border-2 border-gray-200 rounded-full cursor-pointer hover:border-blue-600 hover:bg-white">
               Recommended
             </span>
           </div>

@@ -2,13 +2,10 @@ import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useAccount, useConnect, useDisconnect } from "wagmi";
-import { InjectedConnector } from "wagmi/connectors/injected";
 import { ReactNode } from "react";
 
 const { chains, provider } = configureChains(
-  [ chain.polygon, chain.optimism, chain.arbitrum],
+  [chain.polygon, chain.optimism, chain.arbitrum],
   [alchemyProvider({ apiKey: process.env.ALCHEMY_ID }), publicProvider()]
 );
 
@@ -23,31 +20,12 @@ const wagmiClient = createClient({
   provider,
 });
 
-function Profile() {
-  const { address, isConnected } = useAccount();
-  const { connect } = useConnect({
-    connector: new InjectedConnector(),
-  });
-  const { disconnect } = useDisconnect();
-
-  if (isConnected)
-    return (
-      <div>
-        Connected to {address}
-        <button onClick={() => disconnect()}>Disconnect</button>
-      </div>
-    );
-  return <button onClick={() => connect()}>Connect Wallet</button>;
-}
-
-const WagmiWrapper = ({children}: {children: ReactNode}) => {
+const WagmiWrapper = ({ children }: { children: ReactNode }) => {
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains}>
-        {children}
-      </RainbowKitProvider>
+      <RainbowKitProvider chains={chains}>{children}</RainbowKitProvider>
     </WagmiConfig>
   );
 };
 
-export default WagmiWrapper
+export default WagmiWrapper;

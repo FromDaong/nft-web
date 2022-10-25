@@ -86,11 +86,11 @@ export interface TreatAuthEngine {
 }
 
 export function usePrevious(value) {
-  const ref = useRef()
+  const ref = useRef();
 
   useEffect(() => {
-    ref.current = value
-  }, [value])
+    ref.current = value;
+  }, [value]);
 
-  return ref.current
+  return ref.current;
 }

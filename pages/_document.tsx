@@ -29,7 +29,7 @@ class MyDocument extends Document {
             }}
           />
         </Head>
-        <body className="text-gray-600 bg-gray-50">
+        <body className="text-base font-thin text-slate-500 bg-gray-50">
           <Main />
           <NextScript />
           {false && (

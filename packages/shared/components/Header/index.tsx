@@ -26,10 +26,10 @@ export default function LandingPageHeader() {
             </p>
 
             <div className="flex items-center justify-center max-w-lg gap-8 mt-12">
-              <Button className="text-white bg-pink-600">
+              <Button className="text-white bg-blue-600">
                 Discover content
               </Button>
-              <Button className="gap-4 bg-pink-50">
+              <Button className="gap-4 text-blue-600 bg-white border-2 border-blue-500">
                 Buy $TREAT <ArrowRightIcon className="w-5 h-5" />
               </Button>
             </div>

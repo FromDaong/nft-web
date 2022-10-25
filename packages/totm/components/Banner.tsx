@@ -1,6 +1,6 @@
 import { CurrencyDollarIcon } from "@heroicons/react/solid";
+import ProfileCard from "@packages/shared/components/ProfileCard";
 import { Button } from "packages/shared/components/Button";
-import TOTMProfileCard from "./TOTMProfileCard";
 
 const TOTMBanner = () => {
   return (
@@ -46,7 +46,7 @@ const TOTMBanner = () => {
           </Button>
         </div>
         <div className="w-full gap-8 mt-8 ">
-          <TOTMProfileCard />
+          <ProfileCard />
         </div>
       </div>
     </div>

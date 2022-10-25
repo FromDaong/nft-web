@@ -1,10 +1,10 @@
 import { ArrowRightIcon } from "@heroicons/react/solid";
+import ProfileCard from "@packages/shared/components/ProfileCard";
 import Link from "next/link";
 import LandingPageHeader from "packages/shared/components/Header";
 import ListingSection from "packages/shared/components/ListingSection";
 import MagazineBanner from "packages/shared/components/MagazineBanner";
 import NFTItem from "packages/shared/components/NFTItem";
-import TOTMProfileCard from "packages/totm/components/TOTMProfileCard";
 import LandingPageTOTM from "packages/totm/LandingPageTOTM";
 
 export default function Test() {
@@ -27,22 +27,22 @@ export default function Test() {
         </div>
         <div className="grid grid-cols-1 gap-8 mt-12 md:grid-cols-2 lg:grid-cols-3">
           <div className="col-span-1">
-            <TOTMProfileCard />
+            <ProfileCard />
           </div>
           <div className="col-span-1">
-            <TOTMProfileCard />
+            <ProfileCard />
           </div>
           <div className="col-span-1">
-            <TOTMProfileCard />
+            <ProfileCard />
           </div>
           <div className="col-span-1">
-            <TOTMProfileCard />
+            <ProfileCard />
           </div>
           <div className="col-span-1">
-            <TOTMProfileCard />
+            <ProfileCard />
           </div>
           <div className="col-span-1">
-            <TOTMProfileCard />
+            <ProfileCard />
           </div>
         </div>
       </div>

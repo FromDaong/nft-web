@@ -1,6 +1,6 @@
 export class Profiler {
-  timers: Array<{ id: string; time: Array<number> }>;
-  splits: Array<string>;
+  timers: Array<{ id: string; time: Array<number> }> = [];
+  splits: Array<string> = [];
   meta: {
     id: string;
     duration: string;
