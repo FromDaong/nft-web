@@ -2,6 +2,10 @@ import { createStitches } from "@stitches/react";
 
 export const { createTheme } = createStitches();
 
+export const calculateColorHSL = () => {
+  return {}
+}
+
 export const darkTheme = createTheme({
   colors: {
     hiContrast: "hsl(206,2%,93%)",

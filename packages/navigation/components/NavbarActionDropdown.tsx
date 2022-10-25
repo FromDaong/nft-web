@@ -6,7 +6,7 @@ import Link from "next/link";
 const NavbarActionDropdown = () => (
   <DropdownMenu.Root>
     <DropdownMenu.Trigger>
-      <Button className="flex items-center gap-4 px-6 py-1 text-white bg-blue-600 rounded-full">
+      <Button className="flex items-center gap-4 px-6 py-1 text-white bg-pink-600 rounded-full">
         Create <PlusIcon />
       </Button>
     </DropdownMenu.Trigger>

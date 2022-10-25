@@ -40,7 +40,7 @@ export default function ProfileCard() {
               <p>followers</p>
             </div>
             <div>
-              <Button className="text-white bg-blue-600 ">Follow</Button>
+              <Button className="text-white bg-pink-600 ">Follow</Button>
             </div>
           </div>
         </div>
