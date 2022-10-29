@@ -18,6 +18,16 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossOrigin="true"
+          />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400&display=swap"
+            rel="stylesheet"
+          />
           <Script
             strategy="lazyOnload"
             dangerouslySetInnerHTML={{
@@ -29,7 +39,7 @@ class MyDocument extends Document {
             }}
           />
         </Head>
-        <body className="text-base font-thin text-slate-500 bg-gray-50">
+        <body className="font-light tracking-tight bg-white text-text">
           <Main />
           <NextScript />
           {false && (

@@ -8,7 +8,7 @@ export default function HorizontalScroll({
 }) {
   return (
     <div
-      className="relative flex gap-8 py-4 overflow-hidden snap-mandatory snap-x"
+      className="relative flex gap-8 py-4 overflow-x-auto flex-nowrap snap-mandatory snap-x"
       id="totm-section"
     >
       <HorizontalScrollButtons />

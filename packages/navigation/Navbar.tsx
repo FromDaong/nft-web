@@ -62,7 +62,7 @@ export default function Navbar() {
                 <>
                   <NavbarNotifications />
                   <NavbarProfileAvatar disconnect={disconnect} />
-                  <NavbarActionDropdown />
+                  {false && <NavbarActionDropdown />}
                 </>
               )
             }

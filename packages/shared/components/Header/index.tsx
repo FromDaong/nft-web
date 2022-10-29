@@ -15,10 +15,10 @@ export default function LandingPageHeader() {
       <Container>
         <div className="flex flex-col justify-center w-full max-w-3xl mx-auto">
           <div className="flex flex-col items-center text-center">
-            <h1 className="text-4xl font-medium text-gray-900 md:text-6xl lg:text-8xl">
+            <h1 className="text-4xl font-bold tracking-tighter text-gray-900 md:text-6xl lg:text-8xl">
               Spicy content. Directly from the Creators
             </h1>
-            <p className="justify-center mx-auto mt-12">
+            <p className="justify-center mx-auto mt-12 text-xl">
               Treat is an open platform for creators to curate their adult
               content as NFTs. Hold the $TREAT token to have a say in the future
               of the only NSFW platform that focuses on decentralization first

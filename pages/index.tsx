@@ -1,5 +1,6 @@
 import { ArrowRightIcon } from "@heroicons/react/solid";
 import ProfileCard from "@packages/shared/components/ProfileCard";
+import { Container } from "packages/shared/components/Container";
 import Link from "next/link";
 import LandingPageHeader from "packages/shared/components/Header";
 import ListingSection from "packages/shared/components/ListingSection";
@@ -9,7 +10,7 @@ import LandingPageTOTM from "packages/totm/LandingPageTOTM";
 
 export default function Test() {
   return (
-    <>
+    <Container className="max-w-6xl">
       <LandingPageHeader />
       <LandingPageTOTM />
       <div className="px-4 mt-24 md:px-8 lg:px-0">
@@ -69,6 +70,6 @@ export default function Test() {
           </div>
         ))}
       </ListingSection>
-    </>
+    </Container>
   );
 }

@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, ReactNode, useEffect, useState } from "react";
 
 import Axios from "axios";
 import { Treat } from "../../../packages/treat";
@@ -25,7 +25,7 @@ declare global {
   }
 }
 
-const TreatProvider: React.FC = ({ children }) => {
+const TreatProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const {
     Moralis,
     chainId: _chainId,

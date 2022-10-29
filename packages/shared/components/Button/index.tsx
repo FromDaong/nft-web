@@ -38,7 +38,9 @@ export const Button = (props: ComponentThemeProps) => {
 
   return (
     <BasicButton
-      className={`${!props.className?.includes("text") ? color : props.className} ${size} ${
+      className={`${
+        !props.className?.includes("text") ? color : props.className
+      } ${size} ${
         props.shadow && props.shadow !== "base" ? props.shadow : "shadow-lg"
       } rounded-${
         props.rounded ? props.rounded : "xl"
