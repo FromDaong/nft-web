@@ -21,7 +21,7 @@ export type pallette = {
   ring: subPallette;
 };
 
-export type ThemeType = "high_contrast" | "grayscale" | "monochromatic"
+export type ThemeType = "high_contrast" | "grayscale" | "monochromatic";
 
 export type theme = {
   colors: {
@@ -32,7 +32,7 @@ export type theme = {
     shadow: pallette;
   };
   typography: {
-    base: string
+    base: string;
   };
   space: {
     base: number;
@@ -43,6 +43,12 @@ export type theme = {
   margin: {
     base: number;
   };
-  breakpoints: "xs" | "phone" | "tablet" | "laptop" | "desktop" | "monitor" | "4k"
-
+  breakpoints:
+    | "xs"
+    | "phone"
+    | "tablet"
+    | "laptop"
+    | "desktop"
+    | "monitor"
+    | "4k";
 };

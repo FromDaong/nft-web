@@ -8,9 +8,7 @@ export default function Card(props: ComponentThemeProps) {
         data-component-type="card"
         className={`${props.className ?? ""} ${
           props.shadow && props.shadow !== "base" ? props.shadow : "shadow-lg"
-        } rounded-${
-          props.rounded ? props.rounded : "xl"
-        } shadow-pink-400/10`}
+        } rounded-${props.rounded ? props.rounded : "xl"} shadow-pink-400/10`}
       >
         {props.children}
       </div>

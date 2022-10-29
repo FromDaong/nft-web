@@ -29,6 +29,12 @@
       "@styles/*": ["./styles/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.jsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.jsx",
+    "core/state/machines/auth-engine.tsss"
+  ],
   "exclude": ["node_modules"]
 }

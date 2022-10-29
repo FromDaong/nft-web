@@ -3,8 +3,8 @@ import { createStitches } from "@stitches/react";
 export const { createTheme } = createStitches();
 
 export const calculateColorHSL = () => {
-  return {}
-}
+  return {};
+};
 
 export const darkTheme = createTheme({
   colors: {

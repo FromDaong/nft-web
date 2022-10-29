@@ -3,3 +3,5 @@ const formatAddress = (address: string) => {
 };
 
 export default formatAddress;
+
+// a basic function
