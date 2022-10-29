@@ -2,6 +2,7 @@ import { prisma } from "@db/engine";
 import { SEOHead } from "@packages/seo/page";
 import { Button } from "@packages/shared/components/Button";
 import { ShortDivider } from "@packages/shared/components/Divider";
+import MagazineCard from "@packages/shared/components/MagazineCard";
 import OptimizedImage from "@packages/shared/components/OptimizedImage";
 import { Magazine } from "@prisma/client";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
@@ -89,45 +90,7 @@ export default function MagazinePage({
             creators.
           </p>
           <div className="grid grid-cols-3 gap-x-8 gap-y-16">
-            {magazines.map((m) => {
-              return (
-                <div
-                  className="h-auto relative col-span-3 h-[480px] border shadow-xl overflow-clip rounded-xl md:col-span-2 lg:col-span-1"
-                  key={m.cover}
-                >
-                  <Link href={m.href}>
-                    <a target={"_blank"} rel="noopener">
-                      <div className="relative w-full h-full">
-                        <div className="h-full">
-                          <OptimizedImage
-                            src={m.cover}
-                            alt={m.title}
-                            layout="fill"
-                          />
-                        </div>
-                      </div>
-                      <div className="absolute bottom-0 left-0 z-10 flex w-full h-full linear-card-gradient">
-                        <div className="flex flex-col justify-end w-full">
-                          <div className="px-4 py-1">
-                            <h3 className="mb-1 text-xl font-medium">
-                              {m.title}
-                            </h3>
-                          </div>
-                          <div className="flex justify-between w-full p-4 bg-gray-50">
-                            <div className="p-2 border rounded-full bg-pink-50">
-                              <ArrowRightIcon className="w-6 h-6 text-pink-600" />
-                            </div>
-                            <div className="relative w-8 h-8">
-                                <OptimizedImage alt="Issuu Logo" src="/assets/issuu-logo.png" layout="fill" />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  </Link>
-                </div>
-              );
-            })}
+            {magazines.map((m) => <MagazineCard key={m.href} {...m} />)}
           </div>
         </div>
       </div>

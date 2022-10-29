@@ -25,7 +25,7 @@ class MyDocument extends Document {
             crossOrigin="true"
           />
           <link
-            href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap"
             rel="stylesheet"
           />
           <Script
@@ -39,7 +39,7 @@ class MyDocument extends Document {
             }}
           />
         </Head>
-        <body className="font-light tracking-tight bg-white text-text">
+        <body className="tracking-tight bg-white text-text">
           <Main />
           <NextScript />
           {false && (
