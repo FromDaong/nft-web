@@ -39,7 +39,7 @@ class MyDocument extends Document {
             }}
           />
         </Head>
-        <body className="tracking-tight bg-white text-text">
+        <body className="bg-white text-slate-600">
           <Main />
           <NextScript />
           {false && (
