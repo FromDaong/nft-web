@@ -1,4 +1,5 @@
 @import "./init.css";
+@import "./overrides.css";
 
 @tailwind base;
 @tailwind components;

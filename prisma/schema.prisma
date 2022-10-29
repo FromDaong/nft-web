@@ -2,19 +2,23 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
   provider = "mysql"
   url      = env("PLANETSCALE_DATABASE_URL")
+
+  referentialIntegrity = "prisma"
 }
 
 model ClientActor {
   id          String               @id
   fingerprint String
   sessions    ClientActorSession[]
-  user        User?
+  user        User?                @relation(fields: [userId], references: [id])
+  userId      String?              @unique
 }
 
 model ClientActorSession {
@@ -22,6 +26,8 @@ model ClientActorSession {
   actor          ClientActor      @relation(fields: [actorId], references: [id])
   actorId        String
   AnalyticsEvent AnalyticsEvent[]
+
+  @@index([actorId])
 }
 
 model User {
@@ -35,10 +41,8 @@ model User {
   role             Role           @default(ANON_ROLE)
   profile          Profile?
   preference       Preference?
-  temporary        Boolean
   temporaryProfile TemporaryUser?
-  actor            ClientActor    @relation(references: [id], fields: [actorId])
-  actorId          String         @unique
+  ClientActor      ClientActor?
 
   @@index([email, address, username])
 }
@@ -47,6 +51,8 @@ model TemporaryUser {
   address String @id
   user    User   @relation(fields: [userId], references: [id])
   userId  String @unique
+
+  @@index([address])
 }
 
 model Preference {
@@ -57,23 +63,29 @@ model Preference {
 }
 
 model Profile {
-  id        String   @id
-  bio       String?  @db.VarChar(300)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  posts     Post[]
-  totm      TOTM?
+  id          String   @id
+  bio         String?  @db.VarChar(300)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  banner_pic  String?
+  banner_pic_blurhash String?
+  profile_pic String?
+  profile_pic_blurhash String?
+  posts       Post[]
+  totm        TOTM?
 
   user   User   @relation(fields: [userId], references: [id])
   userId String @unique
+
+  @@index([id, userId])
 }
 
 model Post {
   id        String    @id
+  text      String
   comments  Comment[]
   media     Media[]
-  text      String
-  tags      Tag[]
+  tags      String
   postType  PostType
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now())
@@ -87,6 +99,7 @@ model Media {
   id     String    @id
   type   MediaType
   url    String
+  blurhash String?
   post   Post      @relation(fields: [postId], references: [id])
   postId String
 }
@@ -102,8 +115,8 @@ model Comment {
 
 model Tag {
   name   String @id
-  post   Post   @relation(fields: [postId], references: [id])
-  postId String @unique
+
+  @@index([name])
 }
 
 model SubscriptionPackage {
@@ -179,6 +192,14 @@ model AnalyticsEvent {
   content            String
   clientActorSession ClientActorSession @relation(fields: [sessionId], references: [id])
   sessionId          String
+}
+
+model Magazine {
+  id String @id
+  title String
+  href String
+  cover String
+  month_year Int
 }
 
 enum Role {

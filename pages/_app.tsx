@@ -8,10 +8,10 @@ import ProgressBar from "@badrap/bar-of-progress";
 import { Container } from "packages/shared/components/Container";
 import Navbar from "packages/navigation/Navbar";
 import Footer from "packages/shared/components/Footer";
-import { useDisclosure } from "packages/hooks";
 import { ThemeProvider } from "packages/theme";
 import { FpjsProvider } from "@fingerprintjs/fingerprintjs-pro-react";
 import WagmiWrapper from "core/chain/connect";
+import Commandbar from "@packages/commandbar";
 
 const progress = new ProgressBar({
   size: 3,
@@ -26,8 +26,6 @@ Router.events.on("routeChangeError", progress.finish);
 Axios.defaults.withCredentials = true;
 
 function MyApp({ Component, pageProps }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   return (
     <ThemeProvider>
       <FpjsProvider
@@ -48,6 +46,7 @@ function MyApp({ Component, pageProps }) {
           />
         </Head>
         <WagmiWrapper>
+          <Commandbar />
           <div className="py-3">
             <Navbar />
           </div>

@@ -22,11 +22,66 @@ export type ComponentType =
   | "label"
   | "support-text";
 
+const switchColors = (scheme: string) => {
+  switch (scheme) {
+    case "primary":
+      return {
+        text: "white",
+        background: "pink-600",
+      };
+    case "secondary":
+      return {
+        text: "white",
+        background: "indigo-600",
+      };
+    case "accent":
+      return {
+        text: "white",
+        background: "purple-600",
+      };
+    case "error":
+      return {
+        text: "white",
+        background: "red-600",
+      };
+    case "success":
+      return {
+        text: "white",
+        background: "green-600"
+      };
+    case "warning":
+      return {
+        text: "white",
+        background: "orange-600",
+      };
+    case "disabled":
+      return {
+        text: "disabled-text",
+        background: "background",
+      };
+    case "ghost":
+      return {
+        text: "text-slate-500",
+        background: " border-2 border-slate-500",
+      };
+    case "mono":
+      return {
+        text: "text-slate-500",
+        background: " border-2 border-slate-500",
+      };
+    default:
+      return {
+        text: "white",
+        background: "pink-600",
+      };
+  }
+}
+
 export const getColorScheme = (scheme: ThemeColorOption) => {
-  const bg = "blue-400";
-  const text = "white";
-  const shadow = "blue-400/20";
-  const border = "blue-400/40";
+  // Get text and background color for a given color scheme
+  const {background: bg, text} = switchColors(scheme);
+  const shadow = `${bg}/40`;
+  const border = `${bg}/20`;
 
   return (
     "bg-" + bg + " text-" + text + " shadow-" + shadow + " border-" + border
