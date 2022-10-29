@@ -9,6 +9,10 @@ module.exports = {
       primary: "#eb518a",
       primary2: "#e795b6",
       secondary: "#ecc94b",
+      text: "#222222",
+      colors: {
+        text: "#222222",
+      },
     },
   },
   plugins: [require("@tailwindcss/line-clamp")],

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useReducer } from "react";
+import React, { ReactNode, useCallback, useEffect, useReducer } from "react";
 
 import Context from "./context";
 import reducer, {
@@ -8,7 +8,9 @@ import reducer, {
 } from "./reducer";
 import { Transaction, TransactionsMap } from "./types";
 
-const TransactionsProvider: React.FC = ({ children }) => {
+const TransactionsProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [{ initialized, transactions }, dispatch] = useReducer(
     reducer,
     initialState

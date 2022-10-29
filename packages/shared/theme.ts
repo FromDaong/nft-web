@@ -47,7 +47,7 @@ const switchColors = (scheme: string) => {
     case "success":
       return {
         text: "white",
-        background: "green-600"
+        background: "green-600",
       };
     case "warning":
       return {
@@ -75,11 +75,11 @@ const switchColors = (scheme: string) => {
         background: "pink-600",
       };
   }
-}
+};
 
 export const getColorScheme = (scheme: ThemeColorOption) => {
   // Get text and background color for a given color scheme
-  const {background: bg, text} = switchColors(scheme);
+  const { background: bg, text } = switchColors(scheme);
   const shadow = `${bg}/40`;
   const border = `${bg}/20`;
 

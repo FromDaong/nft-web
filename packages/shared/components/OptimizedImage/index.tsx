@@ -16,17 +16,17 @@ type OptimizedImageProps = {
 
 const OptimizedImage = (props: OptimizedImageProps) => {
   return (
-    <div className="h-[360px] xl:h-[720px] image-container">
-        <Image
-            loader={gumletLoader}
-            quality={props.quality}
-            src={props.src}
-            alt={props.alt}
-            width={props.height}
-            height={props.height}
-            className={props.className + " object-cover"}
-            layout={props.layout}
-        />
+    <div className="image-container">
+      <Image
+        loader={gumletLoader}
+        quality={props.quality}
+        src={props.src}
+        alt={props.alt}
+        width={props.height}
+        height={props.height}
+        className={props.className + " object-cover"}
+        layout={props.layout}
+      />
     </div>
   );
 };

@@ -11,7 +11,7 @@ import Footer from "packages/shared/components/Footer";
 import { ThemeProvider } from "packages/theme";
 import { FpjsProvider } from "@fingerprintjs/fingerprintjs-pro-react";
 import WagmiWrapper from "core/chain/connect";
-import Commandbar from "@packages/commandbar";
+import { UniversalCommandbar } from "@packages/commandbar";
 
 const progress = new ProgressBar({
   size: 3,
@@ -46,15 +46,13 @@ function MyApp({ Component, pageProps }) {
           />
         </Head>
         <WagmiWrapper>
-          <Commandbar />
+          <UniversalCommandbar />
           <div className="py-3">
             <Navbar />
           </div>
-          <Container className="max-w-6xl mx-auto">
-            <main className="mt-8">
-              <Component {...pageProps} />
-            </main>
-          </Container>
+          <main className="mt-8">
+            <Component {...pageProps} />
+          </main>
           <div className="py-12">
             <Footer />
           </div>

@@ -27,14 +27,9 @@
       "@treat/*": ["packages/treat/*"],
       "@contexts/*": ["core/contexts/*"],
       "@styles/*": ["./styles/*"]
-    }
+    },
+    "incremental": true
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.jsx",
-    "core/state/machines/auth-engine.tsss"
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.jsx"],
   "exclude": ["node_modules"]
 }
