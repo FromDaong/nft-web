@@ -5,7 +5,6 @@ import { Router } from "next/router";
 import Axios from "axios";
 import Head from "next/head";
 import ProgressBar from "@badrap/bar-of-progress";
-import { Container } from "packages/shared/components/Container";
 import Navbar from "packages/navigation/Navbar";
 import Footer from "packages/shared/components/Footer";
 import { ThemeProvider } from "packages/theme";

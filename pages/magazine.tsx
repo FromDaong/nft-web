@@ -17,7 +17,9 @@ export default function MagazinePage({
   error: boolean;
   trace: any;
 }) {
-  const signUpForNewsletter = () => null;
+  const signUpForNewsletter = () => {
+    // TODO: Implement newsletter signup
+  };
 
   if (error) {
     return (
@@ -47,7 +49,7 @@ export default function MagazinePage({
           <br /> Treat Magazine
         </h1>
         <p className="max-w-xl mx-auto text-2xl text-center">
-          Receive a curated publication by Treat DAO featuring one creator each
+          Get a curated publication by Treat DAO featuring one creator each
           month, directly into your inbox.
         </p>
         <div className="w-full max-w-xl mx-auto mt-8 cta">
@@ -68,12 +70,12 @@ export default function MagazinePage({
       <ShortDivider dir="vertical" />
       <div className="max-w-xl py-16 mx-auto">
         <div className="relative w-full border shadow-xl overflow-clip rounded-xl ">
-          <Link href={magazines[2].href}>
+          <Link href={magazines[0].href}>
             <a target={"_blank"} rel="noopener">
               <div className="h-[512px] lg:h-[800px] hover:lg:scale(110) transition-scale duration-120">
                 <OptimizedImage
-                  src={magazines[2].cover}
-                  alt={magazines[2].title}
+                  src={magazines[0].cover}
+                  alt={magazines[0].title}
                   layout="fill"
                 />
               </div>
