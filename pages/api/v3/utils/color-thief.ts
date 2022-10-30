@@ -5,7 +5,7 @@ import getImagePalette from "image-palette-core";
 
 const colorThief = async (req: NextApiRequest, res: NextApiResponse) => {
   const { imageUrl } = req.body;
-  console.log({imageUrl})
+  console.log({ imageUrl });
 
   const response = await axios.get(imageUrl, {
     responseType: "arraybuffer",
@@ -14,11 +14,10 @@ const colorThief = async (req: NextApiRequest, res: NextApiResponse) => {
     "base64"
   );
 
-    const palette = getImagePalette(`data:image/png;base64,${image_buffer}`);
-    res.status(200).json({
-      palette,
-    });
-  
+  const palette = getImagePalette(`data:image/png;base64,${image_buffer}`);
+  res.status(200).json({
+    palette,
+  });
 };
 
 export default colorThief;

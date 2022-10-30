@@ -202,6 +202,12 @@ model Magazine {
   month_year Int
 }
 
+model NewsletterSubscribers {
+  id String @id
+  email String @unique
+  createdAt DateTime @default(now())
+}
+
 enum Role {
   ANON_ROLE
   GENERAL_ROLE

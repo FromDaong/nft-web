@@ -92,7 +92,9 @@ export default function MagazinePage({
             creators.
           </p>
           <div className="grid grid-cols-3 gap-x-8 gap-y-16">
-            {magazines.map((m) => <MagazineCard key={m.href} {...m} />)}
+            {magazines.map((m) => (
+              <MagazineCard key={m.href} {...m} />
+            ))}
           </div>
         </div>
       </div>
@@ -105,7 +107,11 @@ export default function MagazinePage({
               Get access to our past <br /> magazine publications
             </h1>
             <div className="flex justify-center w-full mt-8">
-              <Button>Visit the Ethereum collection.</Button>
+              <Link href={"https://opensea.io/collection/treatofthemonth"}>
+                <a target="_blank" rel="noopener">
+                  <Button>Visit the Ethereum collection.</Button>
+                </a>
+              </Link>
             </div>
           </div>
           <ShortDivider dir="vertical" />
