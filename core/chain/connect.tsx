@@ -1,4 +1,8 @@
-import { getDefaultWallets, RainbowKitProvider, lightTheme } from "@rainbow-me/rainbowkit";
+import {
+  getDefaultWallets,
+  RainbowKitProvider,
+  lightTheme,
+} from "@rainbow-me/rainbowkit";
 import { Chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
@@ -42,10 +46,16 @@ const wagmiClient = createClient({
 const WagmiWrapper = ({ children }: { children: ReactNode }) => {
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider modalSize="compact" chains={chains} theme={lightTheme({
-        accentColor: '#db2777',
-        accentColorForeground: 'white',
-      })}>{children}</RainbowKitProvider>
+      <RainbowKitProvider
+        modalSize="compact"
+        chains={chains}
+        theme={lightTheme({
+          accentColor: "#db2777",
+          accentColorForeground: "white",
+        })}
+      >
+        {children}
+      </RainbowKitProvider>
     </WagmiConfig>
   );
 };

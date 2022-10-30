@@ -10,5 +10,4 @@ module.exports = withBundleAnalyzer({
   },
   reactStrictMode: true,
   concurrentFeatures: true,
-  swcMinify: false,
 });
