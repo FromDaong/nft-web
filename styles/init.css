@@ -44,4 +44,9 @@ button {
 
 p {
   font-family: "Inter", sans-serif !important;
+  font-weight: 400;
+}
+
+* {
+  outline: none !important;
 }

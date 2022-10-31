@@ -16,12 +16,29 @@ export default function Navbar() {
     connector: new InjectedConnector(),
   });
   const { disconnect } = useDisconnect();
+
+  const notifications = [
+    {
+      text: "subscribed to your trits for 0.09 BNB",
+      actor: "hitta",
+      timestamp: Date.now(),
+      url: "/c/hitta",
+      audience: ["tate2301"],
+    },
+    {
+      text: "@hitta followed you",
+      timestamp: Date.now(),
+      url: "/c/hitta",
+      audience: ["tate2301"],
+    },
+  ];
+
   console.log({ isConnected, address });
   return (
-    <nav className="fixed top-0 left-0 z-40 w-full shadow-sm lg:px-0">
+    <nav className="fixed top-0 left-0 z-30 w-full shadow-sm lg:px-0">
       <div className="relative w-full px-4">
-        <div className="absolute top-0 left-0 z-30 w-full h-full bg-gray-50/70 backdrop-blur-lg" />
-        <div className="relative z-40 flex items-center justify-between max-w-6xl py-3 mx-auto">
+        <div className="absolute top-0 left-0 z-20 w-full h-full bg-gray-50/70 backdrop-blur-lg" />
+        <div className="relative z-30 flex items-center justify-between max-w-6xl py-3 mx-auto">
           <div className="flex items-center gap-8">
             <Link href="/">
               <a className="relative w-8 h-8 text-3xl font-medium">
@@ -60,9 +77,9 @@ export default function Navbar() {
                 <ConnectButton label="Connect your wallet" />
               ) : (
                 <>
-                  <NavbarNotifications />
+                  <NavbarNotifications notifications={notifications} />
                   <NavbarProfileAvatar disconnect={disconnect} />
-                  {false && <NavbarActionDropdown />}
+                  {true && <NavbarActionDropdown />}
                 </>
               )
             }

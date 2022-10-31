@@ -55,7 +55,7 @@ export default function MagazineCard(mag: Magazine) {
             </div>
             <div
               className="absolute inset-0 z-10"
-              style={{ background: "#0b0c0f80" }}
+              style={{ background: "#0b0c0f80", mixBlendMode: "color-dodge" }}
             />
             <div
               style={{

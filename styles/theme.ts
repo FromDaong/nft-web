@@ -53,3 +53,5 @@ export const lightTheme = createTheme({
   space: {},
   fonts: {},
 });
+
+// TODO: Favicon size must drop

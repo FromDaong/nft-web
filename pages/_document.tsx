@@ -25,7 +25,7 @@ class MyDocument extends Document {
             crossOrigin="true"
           />
           <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap"
             rel="stylesheet"
           />
           <Script
@@ -39,7 +39,7 @@ class MyDocument extends Document {
             }}
           />
         </Head>
-        <body className="bg-white text-slate-600">
+        <body className="bg-white text-[#424242]">
           <Main />
           <NextScript />
           {false && (
