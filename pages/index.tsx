@@ -10,7 +10,7 @@ import LandingPageTOTM from "packages/totm/LandingPageTOTM";
 
 export default function Test() {
   return (
-    <Container className="max-w-6xl">
+    <Container className="max-w-6xl mx-auto">
       <LandingPageHeader />
       <LandingPageTOTM />
       <div className="px-4 mt-24 md:px-8 lg:px-0">

@@ -2,6 +2,12 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import Link from "next/link";
 
+import {
+  DropdownContent,
+  NavDropdownContainer,
+  NavDropdownItem,
+} from "./DropdownContainer";
+
 const ExploreDropdownLinks = [
   {
     label: "Sweetshop",
@@ -29,17 +35,19 @@ const NavbarExploreDropdown = () => (
       </span>
     </DropdownMenu.Trigger>
     <DropdownMenu.Portal>
-      <DropdownMenu.Content className="z-50 p-2 min-w-[256px] bg-white shadow-xl rounded-xl gap-y-3">
-        {ExploreDropdownLinks.map((link) => (
-          <Link key={link.link} href={link.link}>
-            <a className="w-full h-full">
-              <DropdownMenu.Item className="px-4 py-2">
-                {link.label}{" "}
-              </DropdownMenu.Item>
-            </a>
-          </Link>
-        ))}
-      </DropdownMenu.Content>
+      <DropdownContent>
+        <NavDropdownContainer>
+          {ExploreDropdownLinks.map((link) => (
+            <Link key={link.link} href={link.link}>
+              <a className="w-full h-full">
+                <NavDropdownItem className="px-4 py-2 hover:bg-gray-100/90">
+                  {link.label}{" "}
+                </NavDropdownItem>
+              </a>
+            </Link>
+          ))}
+        </NavDropdownContainer>
+      </DropdownContent>
     </DropdownMenu.Portal>
   </DropdownMenu.Root>
 );

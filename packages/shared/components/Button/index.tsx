@@ -44,7 +44,9 @@ export const Button = (props: ComponentThemeProps) => {
         props.shadow && props.shadow !== "base" ? props.shadow : "shadow-lg"
       } rounded-${
         props.rounded ? props.rounded : "xl"
-      } transition-transform duration-100 hover:scale-105 font-bold`}
+      } transition-transform duration-100 hover:scale-105 font-bold items-center justify-center ${
+        props.className
+      }`}
     >
       {props.children}
     </BasicButton>
