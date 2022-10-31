@@ -3,6 +3,11 @@ import {
   RainbowKitProvider,
   lightTheme,
 } from "@rainbow-me/rainbowkit";
+import {
+  GetSiweMessageOptions,
+  RainbowKitSiweNextAuthProvider,
+} from "@rainbow-me/rainbowkit-siwe-next-auth";
+
 import { Chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
@@ -41,6 +46,10 @@ const wagmiClient = createClient({
   autoConnect: true,
   connectors,
   provider,
+});
+
+const getSiweMessageOptions: GetSiweMessageOptions = () => ({
+  statement: "Sign in to my RainbowKit app",
 });
 
 const WagmiWrapper = ({ children }: { children: ReactNode }) => {

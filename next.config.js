@@ -9,5 +9,4 @@ module.exports = withBundleAnalyzer({
     ignoreDuringBuilds: true,
   },
   reactStrictMode: true,
-  concurrentFeatures: true,
 });

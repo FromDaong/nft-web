@@ -9,6 +9,7 @@ import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
+import { signOut, useSession } from "next-auth/react";
 
 export default function Navbar() {
   const { address, isConnected } = useAccount();
@@ -16,7 +17,13 @@ export default function Navbar() {
     connector: new InjectedConnector(),
   });
   const { disconnect } = useDisconnect();
+  const { data: session, status } = useSession();
+  const loading = status === "loading";
 
+  const logout = () => {
+    disconnect();
+    //await signOut();
+  };
   const notifications = [
     {
       text: "subscribed to your trits for 0.09 BNB",
@@ -33,7 +40,6 @@ export default function Navbar() {
     },
   ];
 
-  console.log({ isConnected, address });
   return (
     <nav className="fixed top-0 left-0 z-30 w-full shadow-sm lg:px-0">
       <div className="relative w-full px-4">
@@ -74,11 +80,15 @@ export default function Navbar() {
             {
               // eslint-disable-next-line no-constant-condition
               !isConnected ? (
-                <ConnectButton label="Connect your wallet" />
+                <ConnectButton
+                  label="Connect your wallet"
+                  chainStatus="icon"
+                  showBalance={false}
+                />
               ) : (
                 <>
                   <NavbarNotifications notifications={notifications} />
-                  <NavbarProfileAvatar disconnect={disconnect} />
+                  <NavbarProfileAvatar />
                   {true && <NavbarActionDropdown />}
                 </>
               )
