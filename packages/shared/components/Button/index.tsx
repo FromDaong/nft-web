@@ -9,12 +9,11 @@ export const TriggerButton = styled("p", {
 });
 
 export const Button = styled("button", {
-  fontWeight: "700",
   padding: "8px 16px",
   alignItems: "center",
   gap: "6px",
   display: "flex",
   borderRadius: "12px",
-  boxShadow: "0px 4px 23px rgba(0, 0, 0, 0.15)",
+  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.01)",
   fontFamily: "'Helvetica', sans-serif",
 });
