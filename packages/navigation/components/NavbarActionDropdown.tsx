@@ -7,7 +7,7 @@ import { DropdownContainer, DropdownContent } from "./DropdownContainer";
 const NavbarActionDropdown = () => (
   <DropdownMenu.Root>
     <DropdownMenu.Trigger>
-      <button className="flex items-center gap-4 px-6 py-2 font-medium text-white bg-pink-600 border shadow-sm rounded-xl">
+      <button className="flex items-center gap-4 px-4 py-2 font-medium text-white bg-pink-600 rounded-xl">
         Create
       </button>
     </DropdownMenu.Trigger>
