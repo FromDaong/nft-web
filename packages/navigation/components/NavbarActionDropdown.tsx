@@ -1,4 +1,4 @@
-import { PlusIcon, UploadIcon } from "@radix-ui/react-icons";
+import { UploadIcon } from "@radix-ui/react-icons";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import Kbd, { ctrl_button_emoji } from "@packages/shared/components/Kbd";
 import { VideoCameraIcon } from "@heroicons/react/solid";
@@ -7,8 +7,8 @@ import { DropdownContainer, DropdownContent } from "./DropdownContainer";
 const NavbarActionDropdown = () => (
   <DropdownMenu.Root>
     <DropdownMenu.Trigger>
-      <button className="flex items-center gap-4 px-6 py-2 font-medium text-white bg-pink-600 shadow rounded-xl">
-        Create <PlusIcon />
+      <button className="flex items-center gap-4 px-4 py-2 font-medium text-white bg-pink-600 rounded-xl">
+        Create
       </button>
     </DropdownMenu.Trigger>
     <DropdownMenu.Portal>
