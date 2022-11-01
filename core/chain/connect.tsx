@@ -2,16 +2,23 @@ import {
   getDefaultWallets,
   RainbowKitProvider,
   lightTheme,
+  connectorsForWallets,
+  DisclaimerComponent,
 } from "@rainbow-me/rainbowkit";
+import {
+  injectedWallet,
+  walletConnectWallet,
+  metaMaskWallet,
+  coinbaseWallet,
+} from "@rainbow-me/rainbowkit/wallets";
+
 import {
   GetSiweMessageOptions,
   RainbowKitSiweNextAuthProvider,
 } from "@rainbow-me/rainbowkit-siwe-next-auth";
-
 import { Chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
-
 import { ReactNode } from "react";
 
 const binance: Chain = {
@@ -32,15 +39,31 @@ const binance: Chain = {
   testnet: false,
 };
 
-const { chains, provider } = configureChains(
+const { provider } = configureChains(
   [binance],
-  [alchemyProvider({ apiKey: process.env.ALCHEMY_ID }), publicProvider()]
+  [alchemyProvider({ apiKey: "yourAlchemyApiKey" }), publicProvider()]
 );
 
-const { connectors } = getDefaultWallets({
-  appName: "Treat",
-  chains,
-});
+const connectors = connectorsForWallets([
+  {
+    groupName: "Recommended",
+    wallets: [
+      injectedWallet({
+        chains: [binance],
+        shimDisconnect: true,
+      }),
+      metaMaskWallet({
+        chains: [binance],
+        shimDisconnect: true,
+      }),
+      coinbaseWallet({
+        chains: [binance],
+        appName: "Treat",
+      }),
+      walletConnectWallet({ chains: [binance] }),
+    ],
+  },
+]);
 
 const wagmiClient = createClient({
   autoConnect: true,
@@ -52,12 +75,25 @@ const getSiweMessageOptions: GetSiweMessageOptions = () => ({
   statement: "Sign in to my RainbowKit app",
 });
 
+const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
+  <Text>
+    By connecting your wallet, you agree to the{" "}
+    <Link href="/tos">Terms of Service</Link> and acknowledge you have read and
+    understand the protocol <Link href="/tos">Disclaimer</Link>
+  </Text>
+);
+
 const WagmiWrapper = ({ children }: { children: ReactNode }) => {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider
         modalSize="compact"
-        chains={chains}
+        appInfo={{
+          appName: "Treat",
+          disclaimer: Disclaimer,
+        }}
+        showRecentTransactions={true}
+        chains={[binance]}
         theme={lightTheme({
           accentColor: "#db2777",
           accentColorForeground: "white",
