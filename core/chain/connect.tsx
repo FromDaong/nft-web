@@ -1,5 +1,4 @@
 import {
-  getDefaultWallets,
   RainbowKitProvider,
   lightTheme,
   connectorsForWallets,
@@ -12,14 +11,14 @@ import {
   coinbaseWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 
-import {
-  GetSiweMessageOptions,
-  RainbowKitSiweNextAuthProvider,
-} from "@rainbow-me/rainbowkit-siwe-next-auth";
 import { Chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { ReactNode } from "react";
+import {
+  RainbowKitSiweNextAuthProvider,
+  GetSiweMessageOptions,
+} from "core/auth/components/AuthenticationProvider";
 
 const binance: Chain = {
   id: 56,

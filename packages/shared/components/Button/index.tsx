@@ -16,6 +16,61 @@ export const Button = styled("button", {
   borderRadius: "12px",
   boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.01)",
   fontFamily: "'Helvetica', sans-serif",
+
+  variants: {
+    color: {
+      secondary: {
+        backgroundColor: "blueviolet",
+        color: "white",
+        "&:hover": {
+          backgroundColor: "darkviolet",
+        },
+      },
+      primary: {
+        backgroundColor: "pink",
+        color: "#212121",
+        "&:hover": {
+          backgroundColor: "darkpink",
+        },
+      },
+      mute: {
+        backgroundColor: "gainsboro",
+        "&:hover": {
+          backgroundColor: "lightgray",
+        },
+        color: "#212121",
+      },
+    },
+    outlined: {
+      true: {
+        borderColor: "lightgray",
+      },
+    },
+  },
+  compoundVariants: [
+    {
+      color: "violet",
+      outlined: true,
+      css: {
+        color: "blueviolet",
+        borderColor: "darkviolet",
+        "&:hover": {
+          color: "white",
+        },
+      },
+    },
+    {
+      color: "gray",
+      outlined: true,
+      css: {
+        color: "gray",
+        borderColor: "lightgray",
+        "&:hover": {
+          color: "black",
+        },
+      },
+    },
+  ],
 });
 
 export const WhiteButton = styled(Button, {
