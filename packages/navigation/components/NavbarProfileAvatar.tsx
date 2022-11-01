@@ -43,7 +43,7 @@ const NavbarProfileAvatar = () => {
       <DropdownMenu.Portal>
         <DropdownContent>
           <DropdownContainer>
-            <DropdownMenu.DropdownMenuGroup py-2>
+            <DropdownMenu.DropdownMenuGroup>
               <DropdownMenu.DropdownMenuItem>
                 <WalletConnectButton />
               </DropdownMenu.DropdownMenuItem>

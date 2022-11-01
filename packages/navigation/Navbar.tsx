@@ -1,8 +1,4 @@
 import Link from "next/link";
-import NavbarExploreDropdown from "./components/NavbarExploreDropdown";
-import NavbarProfileAvatar from "./components/NavbarProfileAvatar";
-import NavbarActionDropdown from "./components/NavbarActionDropdown";
-import NavbarNotifications from "./components/NavbarNotifications";
 import * as Logo from "../../public/brand/logo_mono.svg";
 import Image from "next/image";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
@@ -10,20 +6,26 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { signOut, useSession } from "next-auth/react";
+import dynamic from "next/dynamic";
+import { Suspense } from "react";
+import NavbarExploreDropdown from "./components/NavbarExploreDropdown";
+
+const NavbarProfileAvatar = dynamic(
+  () => import("./components/NavbarProfileAvatar")
+);
+const NavbarActionDropdown = dynamic(
+  () => import("./components/NavbarActionDropdown")
+);
+const NavbarNotifications = dynamic(
+  () => import("./components/NavbarNotifications")
+);
 
 export default function Navbar() {
-  const { address, isConnected } = useAccount();
-  const { connect } = useConnect({
-    connector: new InjectedConnector(),
-  });
-  const { disconnect } = useDisconnect();
-  const { data: session, status } = useSession();
-  const loading = status === "loading";
+  const { status } = useSession();
 
-  const logout = () => {
-    disconnect();
-    //await signOut();
-  };
+  const loading = status === "loading";
+  const isConnected = !loading && status != "unauthenticated";
+
   const notifications = [
     {
       text: "subscribed to your trits for 0.09 BNB",
@@ -81,13 +83,13 @@ export default function Navbar() {
               // eslint-disable-next-line no-constant-condition
               !isConnected ? (
                 <ConnectButton
-                  label="Connect your wallet"
+                  label="Sign in"
                   chainStatus="icon"
                   showBalance={false}
                 />
               ) : (
                 <>
-                  <NavbarNotifications notifications={notifications} />
+                  {<NavbarNotifications notifications={notifications} />}
                   <NavbarProfileAvatar />
                   {true && <NavbarActionDropdown />}
                 </>
