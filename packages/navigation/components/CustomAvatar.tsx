@@ -14,7 +14,6 @@ const stringToHash = (str: string) => {
   return hash;
 };
 
-
 const CustomAvatar: AvatarComponent = ({ address, ensImage, size }) => {
   const color = generateColorFromAddress(address);
   return ensImage ? (

@@ -17,3 +17,9 @@ export const Button = styled("button", {
   boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.01)",
   fontFamily: "'Helvetica', sans-serif",
 });
+
+export const WhiteButton = styled(Button, {
+  backgroundColor: "white",
+  boxShadow: "0px 2px 6px rgba(37, 41, 46, 0.04);",
+  color: "#25292e",
+});
