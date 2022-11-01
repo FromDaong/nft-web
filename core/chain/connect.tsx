@@ -86,21 +86,25 @@ const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
 const WagmiWrapper = ({ children }: { children: ReactNode }) => {
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider
-        modalSize="compact"
-        appInfo={{
-          appName: "Treat",
-          disclaimer: Disclaimer,
-        }}
-        showRecentTransactions={true}
-        chains={[binance]}
-        theme={lightTheme({
-          accentColor: "#db2777",
-          accentColorForeground: "white",
-        })}
+      <RainbowKitSiweNextAuthProvider
+        getSiweMessageOptions={getSiweMessageOptions}
       >
-        {children}
-      </RainbowKitProvider>
+        <RainbowKitProvider
+          modalSize="compact"
+          appInfo={{
+            appName: "Treat",
+            disclaimer: Disclaimer,
+          }}
+          showRecentTransactions={true}
+          chains={[binance]}
+          theme={lightTheme({
+            accentColor: "#db2777",
+            accentColorForeground: "white",
+          })}
+        >
+          {children}
+        </RainbowKitProvider>
+      </RainbowKitSiweNextAuthProvider>
     </WagmiConfig>
   );
 };
