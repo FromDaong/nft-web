@@ -11,7 +11,7 @@ export const SaveDraftButton = () => {
 };
 
 export const SaveButton = () => {
-  return <Button colorScheme="primary">Done</Button>;
+  return <Button>Done</Button>;
 };
 
 export const UndoButton = () => {

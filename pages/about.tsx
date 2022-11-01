@@ -99,10 +99,10 @@ export default function About() {
             purchase $TREAT tokens, you can use one of the following DEXes and
             exchanges:
           </p>
-          <div className="mt-4">
+          <div className="mt-8">
             <Link href={"/swap"}>
               <a>
-                <Button className="flex gap-4">
+                <Button className="flex gap-4 border border-gray-600">
                   Swap with 1INCH
                   <ArrowRightIcon className="w-5 h-5" />
                 </Button>
