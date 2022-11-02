@@ -7,7 +7,7 @@ import {
   NavDropdownContainer,
   NavDropdownItem,
 } from "./DropdownContainer";
-import { ImportantSmallText } from "@packages/shared/components/Typography/Headings";
+import { BoldLink } from "@packages/shared/components/Typography/Text";
 
 const ExploreDropdownLinks = [
   {
@@ -42,7 +42,7 @@ const NavbarExploreDropdown = () => (
             <Link key={link.link} href={link.link}>
               <a className="w-full h-full">
                 <NavDropdownItem className="px-4 py-2 font-medium font-helv hover:bg-gray-100/90">
-                  <ImportantSmallText>{link.label}</ImportantSmallText>
+                  <BoldLink>{link.label}</BoldLink>
                 </NavDropdownItem>
               </a>
             </Link>

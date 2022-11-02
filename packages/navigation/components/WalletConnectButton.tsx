@@ -1,3 +1,4 @@
+import { BoldLink } from "@packages/shared/components/Typography/Text";
 import * as Avatar from "@radix-ui/react-avatar";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { getChainNameById } from "core/chain";
@@ -76,9 +77,7 @@ export default function WalletConnectButton() {
                       onClick={openAccountModal}
                       className="gap-4 p-2 bg-gray-100 rounded-xl hover:bg-gray-50 hover:cursor-pointer"
                     >
-                      <span className="font-medium">
-                        Manage wallet connection
-                      </span>
+                      <BoldLink>Manage wallet connection</BoldLink>
                     </button>
                   )}
                 </div>

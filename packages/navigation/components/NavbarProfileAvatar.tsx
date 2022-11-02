@@ -2,17 +2,15 @@ import {
   ArrowRightIcon,
   CurrencyDollarIcon,
   DesktopComputerIcon,
-  LogoutIcon,
   ShoppingBagIcon,
   UserCircleIcon,
   CogIcon,
 } from "@heroicons/react/solid";
+import { BoldLink } from "@packages/shared/components/Typography/Text";
 import * as Avatar from "@radix-ui/react-avatar";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Link from "next/link";
-import { useApplicationTheme } from "packages/theme/provider";
-import { useAccount, useDisconnect } from "wagmi";
+import { useAccount } from "wagmi";
 import { DropdownContainer, DropdownContent } from "./DropdownContainer";
 import WalletConnectButton from "./WalletConnectButton";
 
@@ -58,7 +56,7 @@ const NavbarProfileAvatar = () => {
                       <div className="p-2 bg-gray-100 rounded-full">
                         <ShoppingBagIcon className="w-5 h-5 text-gray-700" />
                       </div>
-                      <p className="">Become a Tritter</p>
+                      <BoldLink>Become a Tritter</BoldLink>
                     </div>
                     <ArrowRightIcon className="w-5 h-5 text-gray-700" />
                   </DropdownMenu.Item>
@@ -69,7 +67,7 @@ const NavbarProfileAvatar = () => {
                   <div className="p-2 bg-gray-100 rounded-full">
                     <CurrencyDollarIcon className="w-5 h-5 text-gray-700" />
                   </div>
-                  <p className="">Buy crypto</p>
+                  <BoldLink>Buy crypto</BoldLink>
                 </div>
                 <ArrowRightIcon className="w-5 h-5 text-gray-700" />
               </DropdownMenu.Item>
@@ -78,7 +76,7 @@ const NavbarProfileAvatar = () => {
                   <div className="p-2 bg-gray-100 rounded-full">
                     <UserCircleIcon className="w-5 h-5 text-gray-700" />
                   </div>
-                  <p className="">Profile & account</p>
+                  <BoldLink>Profile & account</BoldLink>
                 </div>
                 <ArrowRightIcon className="w-5 h-5 text-gray-700" />
               </DropdownMenu.Item>
@@ -87,7 +85,7 @@ const NavbarProfileAvatar = () => {
                   <div className="p-2 bg-gray-100 rounded-full">
                     <CogIcon className="w-5 h-5 text-gray-700" />
                   </div>
-                  <p className="">Settings & privacy</p>
+                  <BoldLink>Settings & privacy</BoldLink>
                 </div>
                 <ArrowRightIcon className="w-5 h-5 text-gray-700" />
               </DropdownMenu.Item>
@@ -96,7 +94,7 @@ const NavbarProfileAvatar = () => {
                   <div className="p-2 bg-gray-100 rounded-full">
                     <DesktopComputerIcon className="w-5 h-5 text-gray-700" />
                   </div>
-                  <p className="">Display & accessibility</p>
+                  <BoldLink>Display & accessibility</BoldLink>
                 </div>
                 <ArrowRightIcon className="w-5 h-5 text-gray-700" />
               </DropdownMenu.Item>

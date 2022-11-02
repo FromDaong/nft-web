@@ -1,6 +1,7 @@
 import { ArrowRightIcon } from "@heroicons/react/solid";
 import { Container } from "core/components";
 import { Button } from "../Button";
+import { BoldLink } from "../Typography/Text";
 
 export default function LandingPageHeader() {
   return (
@@ -27,10 +28,12 @@ export default function LandingPageHeader() {
 
             <div className="flex items-center justify-center max-w-lg gap-8 mt-12">
               <Button className="text-white bg-pink-600">
-                Discover content
+                <BoldLink>Discover content</BoldLink>
               </Button>
               <Button className="gap-4 text-pink-600 bg-white border-2 border-pink-500">
-                Buy $TREAT <ArrowRightIcon className="w-4 h-4" />
+                <BoldLink className="flex items-center gap-2">
+                  Buy $TREAT <ArrowRightIcon className="w-4 h-4" />
+                </BoldLink>
               </Button>
             </div>
           </div>

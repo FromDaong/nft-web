@@ -5,12 +5,13 @@ import { VideoCameraIcon } from "@heroicons/react/solid";
 import { DropdownContainer, DropdownContent } from "./DropdownContainer";
 import Link from "next/link";
 import { ImportantSmallText } from "@packages/shared/components/Typography/Headings";
+import { BoldLink } from "@packages/shared/components/Typography/Text";
 
 const NavbarActionDropdown = () => (
   <DropdownMenu.Root>
     <DropdownMenu.Trigger>
       <button className="flex items-center gap-4 px-4 py-2 font-medium text-white bg-pink-600 rounded-xl">
-        Create
+        <BoldLink>Create</BoldLink>
       </button>
     </DropdownMenu.Trigger>
     <DropdownMenu.Portal>
@@ -23,7 +24,7 @@ const NavbarActionDropdown = () => (
                   <div className="p-2 bg-gray-100 rounded-full">
                     <UploadIcon className="w-4 h-4 text-gray-500" />
                   </div>
-                  <p>Create new trit</p>
+                  <BoldLink>Create new trit</BoldLink>
                 </div>
                 <span className="flex gap-2 text-sm text-gray-400">
                   <Kbd>{ctrl_button_emoji}</Kbd>
@@ -39,7 +40,7 @@ const NavbarActionDropdown = () => (
                   <div className="p-2 bg-gray-100 rounded-full">
                     <VideoCameraIcon className="w-4 h-4 text-gray-500" />
                   </div>
-                  <ImportantSmallText>Start livestream</ImportantSmallText>
+                  <BoldLink>Start livestream</BoldLink>
                 </div>
                 <span className="flex gap-2 text-sm text-gray-400">
                   <Kbd>{ctrl_button_emoji}</Kbd>
