@@ -22,9 +22,11 @@ const NavbarNotifications = dynamic(
 
 export default function Navbar() {
   const { status } = useSession();
+  const { isConnected: connected } = useAccount();
 
-  const loading = status === "loading";
-  const isConnected = !loading && status != "unauthenticated";
+  const isConnected = connected; //&& status === "authenticated";
+
+  console.log({ isConnected, status });
 
   const notifications = [
     {
@@ -60,7 +62,7 @@ export default function Navbar() {
             </Link>
 
             <div className="items-center hidden gap-8 md:flex">
-              <Link href="/discover">
+              <Link href="/fyp">
                 <a className="font-medium">Discover</a>
               </Link>
               <Link href="#">

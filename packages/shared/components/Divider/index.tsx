@@ -11,3 +11,17 @@ export const ShortDivider = ({ dir }: { dir: "vertical" | "horizontal" }) => {
     </div>
   );
 };
+
+export const Divider = ({ dir }: { dir: "vertical" | "horizontal" }) => {
+  return (
+    <div className="w-full py-2">
+      <div
+        className={`${
+          dir === "horizontal"
+            ? "w-full my-auto border-l border"
+            : "w-full mx-auto border-t"
+        }`}
+      />
+    </div>
+  );
+};

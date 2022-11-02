@@ -3,9 +3,8 @@ import {
   RainbowKitAuthenticationProvider,
 } from "@rainbow-me/rainbowkit";
 import { getCsrfToken, signIn, signOut, useSession } from "next-auth/react";
-import React, { ReactNode, useEffect, useMemo } from "react";
+import React, { ReactNode, useMemo } from "react";
 import { SiweMessage } from "siwe";
-import { useAccount, useDisconnect } from "wagmi";
 
 type UnconfigurableMessageOptions = {
   address: string;

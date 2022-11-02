@@ -3,6 +3,8 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import Kbd, { ctrl_button_emoji } from "@packages/shared/components/Kbd";
 import { VideoCameraIcon } from "@heroicons/react/solid";
 import { DropdownContainer, DropdownContent } from "./DropdownContainer";
+import Link from "next/link";
+import { ImportantSmallText } from "@packages/shared/components/Typography/Headings";
 
 const NavbarActionDropdown = () => (
   <DropdownMenu.Root>
@@ -14,30 +16,38 @@ const NavbarActionDropdown = () => (
     <DropdownMenu.Portal>
       <DropdownContent>
         <DropdownContainer>
-          <DropdownMenu.Item className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-xl hover:cursor-pointer">
-            <div className="flex items-center gap-4">
-              <div className="p-2 bg-gray-100 rounded-full">
-                <UploadIcon className="w-4 h-4 text-gray-500" />
-              </div>
-              <p className="font-medium">Create new trit</p>
-            </div>
-            <span className="flex gap-2 text-sm text-gray-400">
-              <Kbd>{ctrl_button_emoji}</Kbd>
-              <Kbd>P</Kbd>
-            </span>
-          </DropdownMenu.Item>
-          <DropdownMenu.Item className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-xl hover:cursor-pointer">
-            <div className="flex items-center gap-4">
-              <div className="p-2 bg-gray-100 rounded-full">
-                <VideoCameraIcon className="w-4 h-4 text-gray-500" />
-              </div>
-              <p className="font-medium">Start livestream</p>
-            </div>
-            <span className="flex gap-2 text-sm text-gray-400">
-              <Kbd>{ctrl_button_emoji}</Kbd>
-              <Kbd>L</Kbd>
-            </span>{" "}
-          </DropdownMenu.Item>
+          <Link href={"/create/"}>
+            <a>
+              <DropdownMenu.Item className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-xl hover:cursor-pointer">
+                <div className="flex items-center gap-4">
+                  <div className="p-2 bg-gray-100 rounded-full">
+                    <UploadIcon className="w-4 h-4 text-gray-500" />
+                  </div>
+                  <p>Create new trit</p>
+                </div>
+                <span className="flex gap-2 text-sm text-gray-400">
+                  <Kbd>{ctrl_button_emoji}</Kbd>
+                  <Kbd>P</Kbd>
+                </span>
+              </DropdownMenu.Item>
+            </a>
+          </Link>
+          <Link href={"/create/live"}>
+            <a>
+              <DropdownMenu.Item className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-xl hover:cursor-pointer">
+                <div className="flex items-center gap-4">
+                  <div className="p-2 bg-gray-100 rounded-full">
+                    <VideoCameraIcon className="w-4 h-4 text-gray-500" />
+                  </div>
+                  <ImportantSmallText>Start livestream</ImportantSmallText>
+                </div>
+                <span className="flex gap-2 text-sm text-gray-400">
+                  <Kbd>{ctrl_button_emoji}</Kbd>
+                  <Kbd>L</Kbd>
+                </span>{" "}
+              </DropdownMenu.Item>
+            </a>
+          </Link>
         </DropdownContainer>
       </DropdownContent>
     </DropdownMenu.Portal>

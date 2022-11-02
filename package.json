@@ -16,6 +16,7 @@
   "dependencies": {
     "@ably-labs/react-hooks": "^2.0.9",
     "@apollo/client": "^3.4.16",
+    "@atlaskit/avatar-group": "^9.1.0",
     "@badrap/bar-of-progress": "^0.1.2",
     "@binance-chain/bsc-connector": "^1.0.0",
     "@binance-chain/bsc-use-wallet": "^0.8.1",

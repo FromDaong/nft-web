@@ -1,7 +1,7 @@
 import Link from "next/link";
 import NFTDropdownSort from "packages/navigation/components/NFTDropdownFilter";
 import { InfinityScrollListing } from "packages/shared/components/ListingSection";
-import NFTItem from "packages/shared/components/NFTItem";
+import PostCard from "packages/totm/components/PostCard";
 
 export default function NFTS() {
   return (
@@ -55,7 +55,7 @@ export default function NFTS() {
       <InfinityScrollListing>
         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
           <div key={i} className="col-span-1">
-            <NFTItem />
+            <PostCard />
           </div>
         ))}
       </InfinityScrollListing>
