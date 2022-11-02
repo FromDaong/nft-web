@@ -37,8 +37,9 @@ export default function Navbar() {
       audience: ["tate2301"],
     },
     {
-      text: "@hitta followed you",
+      text: "followed you",
       timestamp: Date.now(),
+      actor: "kamfeskaya",
       url: "/c/hitta",
       audience: ["tate2301"],
     },

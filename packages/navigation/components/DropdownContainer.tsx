@@ -5,7 +5,7 @@ export const DropdownContainer = styled("div", {
   width: "320px",
   background: "#FFFFFF",
   border: "1px solid rgba(0, 0, 0, 0.07)",
-  boxShadow: "0px 4px 23px rgba(0, 0, 0, 0.15)",
+  boxShadow: "0px 4px 23px rgba(0, 0, 0, 0.10)",
   borderRadius: "30px",
   padding: "12px",
   zIndex: "100",
@@ -22,7 +22,7 @@ export const NavDropdownContainer = styled("div", {
 });
 
 export const NavDropdownItem = styled(Item, {
-  padding: "12px 20px",
+  padding: "12px",
   minWidth: "200px",
   borderRadius: "12px",
   fontWeight: "500",

@@ -16,6 +16,7 @@ export const Button = styled("button", {
   borderRadius: "12px",
   boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.01)",
   fontFamily: "'Helvetica', sans-serif",
+  fontWeight: "600",
 
   variants: {
     color: {

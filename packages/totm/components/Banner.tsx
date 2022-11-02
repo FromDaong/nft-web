@@ -1,6 +1,7 @@
 import { CurrencyDollarIcon } from "@heroicons/react/solid";
 import OptimizedImage from "@packages/shared/components/OptimizedImage";
 import ProfileCard from "@packages/shared/components/ProfileCard";
+import { BoldLink } from "@packages/shared/components/Typography/Text";
 import { Button } from "packages/shared/components/Button";
 
 const TOTMBanner = () => {
@@ -30,7 +31,7 @@ const TOTMBanner = () => {
             <div className="w-12 h-12 bg-purple-100 border-2 border-purple-400 rounded-full"></div>
             <div>
               <p className="text-sm text-gray-400">Creator</p>
-              <p className="font-medium">Cherie Noel</p>
+              <BoldLink className="font-medium">Cherie Noel</BoldLink>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -39,7 +40,7 @@ const TOTMBanner = () => {
             </div>
             <div>
               <p className="text-sm text-gray-400">Reserve Price</p>
-              <p className="font-medium">0.90 BNB</p>
+              <BoldLink className="font-medium">0.90 BNB</BoldLink>
             </div>
           </div>
         </div>

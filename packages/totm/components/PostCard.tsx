@@ -153,11 +153,6 @@ export default function PostCard() {
     }
   };
 
-  const toggleHover = () => {
-    toggleMotionParams();
-    setIsImageHovered(!isImageHovered);
-  };
-
   return (
     <PostCardContainer>
       <PostCardCreatorInfoContainer>
