@@ -1,0 +1,41 @@
+import { SEOHead } from "@packages/seo/page";
+import ListingSection from "@packages/shared/components/ListingSection";
+import PostCard from "@packages/totm/components/PostCard";
+import StoryPreview from "@packages/totm/components/StoryCard";
+import ApplicationLayout from "core/components/layouts/ApplicationLayout";
+import FeedLayout from "core/components/layouts/FeedLayout";
+import { StoryListLayout } from "core/components/layouts/StoryLayout";
+
+export default function ForYouPage() {
+  return (
+    <ApplicationLayout>
+      <SEOHead title="For you - Tritt" />
+      <StoryListLayout>
+        <div className="flex gap-8">
+          {[0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((i) => (
+            <div key={i} className="shrink-0">
+              <StoryPreview />
+            </div>
+          ))}
+        </div>
+      </StoryListLayout>
+      <FeedLayout>
+        {[0, 1, 2, 3, 4, 5].map((i) => (
+          <div key={i} className="col-span-1">
+            <PostCard />
+          </div>
+        ))}
+      </FeedLayout>
+      <ListingSection
+        title={"Recently created NFTs"}
+        href={"/nfts?group=recent"}
+      >
+        {[0, 1, 2, 3, 4, 5].map((i) => (
+          <div key={i} className="col-span-1">
+            <PostCard />
+          </div>
+        ))}
+      </ListingSection>
+    </ApplicationLayout>
+  );
+}

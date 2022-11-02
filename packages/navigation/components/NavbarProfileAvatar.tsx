@@ -21,6 +21,8 @@ const NavbarProfileAvatar = () => {
   // const { updateTheme, nextTheme } = useApplicationTheme();
   const { address, isConnected } = useAccount();
 
+  console.log({ address, isConnected });
+
   if (!isConnected) {
     return null;
   }
@@ -56,7 +58,7 @@ const NavbarProfileAvatar = () => {
                       <div className="p-2 bg-gray-100 rounded-full">
                         <ShoppingBagIcon className="w-5 h-5 text-gray-700" />
                       </div>
-                      <p className="">Upgrade to a Tritter account</p>
+                      <p className="">Become a Tritter</p>
                     </div>
                     <ArrowRightIcon className="w-5 h-5 text-gray-700" />
                   </DropdownMenu.Item>

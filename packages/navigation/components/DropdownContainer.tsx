@@ -2,10 +2,10 @@ import { Content, Item } from "@radix-ui/react-dropdown-menu";
 import { styled } from "@stitches/react";
 
 export const DropdownContainer = styled("div", {
-  width: "385px",
+  width: "320px",
   background: "#FFFFFF",
   border: "1px solid rgba(0, 0, 0, 0.07)",
-  boxShadow: "0px 4px 23px rgba(0, 0, 0, 0.05)",
+  boxShadow: "0px 4px 23px rgba(0, 0, 0, 0.15)",
   borderRadius: "30px",
   padding: "12px",
   zIndex: "100",
