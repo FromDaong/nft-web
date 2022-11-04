@@ -24,7 +24,8 @@ export default function Navbar() {
   const { status } = useSession();
   const { isConnected: connected } = useAccount();
 
-  const isConnected = connected; //&& status === "authenticated";
+  const isConnected =
+    connected && status !== "loading" && status === "authenticated";
 
   console.log({ isConnected, status });
 
@@ -84,18 +85,18 @@ export default function Navbar() {
           <div className="hidden gap-4 md:flex">
             {
               // eslint-disable-next-line no-constant-condition
-              !isConnected ? (
-                <ConnectButton
-                  label="Sign in"
-                  chainStatus="icon"
-                  showBalance={false}
-                />
-              ) : (
+              isConnected ? (
                 <>
                   {<NavbarNotifications notifications={notifications} />}
                   <NavbarProfileAvatar />
                   {true && <NavbarActionDropdown />}
                 </>
+              ) : (
+                <ConnectButton
+                  label="Sign in"
+                  chainStatus="icon"
+                  showBalance={false}
+                />
               )
             }
           </div>
