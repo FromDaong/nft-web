@@ -4,7 +4,7 @@ import { ComponentBasicProps } from "core/TreatCore";
 
 const ApplicationChildrenContainer = styled("div", {
   margin: "40px 0",
-  overflow: "scroll",
+  overflowY: "scroll",
 });
 
 export default function FeedLayout({ children }: ComponentBasicProps) {

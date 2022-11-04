@@ -29,10 +29,10 @@ export const Text = styled("p", {
 });
 
 export const SmallText = styled("p", {
-  fontSize: "14px",
+  fontSize: "12px",
 });
 
-export const ImportantSmallText = styled("p", {
+export const ImportantSmallText = styled("span", {
   fontSize: "14px",
   color: "#121212",
   fontWeight: "500",
