@@ -38,7 +38,7 @@ export default function WalletConnectButton() {
                 <div className="flex flex-col gap-1 p-2 border border-gray-100 rounded-xl">
                   <div
                     style={{ display: "flex", gap: 12 }}
-                    className="flex items-center justify-between px-4 py-2 rounded-xl hover:bg-gray-50 hover:cursor-pointer"
+                    className="flex items-center justify-between px-4 py-2 rounded-xl hover:cursor-pointer"
                   >
                     <button
                       onClick={openAccountModal}
