@@ -55,15 +55,10 @@ function MyApp({
               />
             </Head>
             <UniversalCommandbar />
-            <div className="py-3">
-              <Navbar />
-            </div>
-            <main className="mt-8">
+            <Navbar />
+            <main className="mt-[60px]">
               <Component {...pageProps} />
             </main>
-            <div className="py-12">
-              <Footer />
-            </div>
           </FpjsProvider>
         </WagmiWrapper>
       </SessionProvider>

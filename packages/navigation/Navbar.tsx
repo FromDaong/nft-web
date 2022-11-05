@@ -47,8 +47,8 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 z-30 w-full shadow-sm lg:px-0">
-      <div className="relative w-full px-4">
+    <nav className="fixed top-0 left-0 z-30 w-full shadow-sm lg:px-0 h-[60px]">
+      <div className="relative w-full h-full px-4">
         <div className="absolute top-0 left-0 z-20 w-full h-full bg-gray-50/70 backdrop-blur-lg" />
         <div className="relative z-30 flex items-center justify-between max-w-6xl py-3 mx-auto">
           <div className="flex items-center gap-8">
@@ -64,7 +64,7 @@ export default function Navbar() {
             </Link>
 
             <div className="items-center hidden gap-8 md:flex">
-              <Link href="/fyp">
+              <Link href="/discover">
                 <a className="font-medium">Discover</a>
               </Link>
               <Link href="#">
