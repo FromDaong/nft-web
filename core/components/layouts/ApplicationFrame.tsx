@@ -15,26 +15,40 @@ import { ComponentBasicProps } from "core/TreatCore";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import FeaturedFrame from "./FeaturedFrame";
-import * as Avatar from "@radix-ui/react-avatar";
+import Avatar, {
+  LivestreamingAvatar,
+} from "@packages/shared/components/Avatar";
 
 const ApplicationChildrenContainer = styled("div", {
-  marginTop: "12px",
   marginBottom: "56px",
   width: "100%",
-  gap: "3em",
   display: "grid",
 });
 
 const Main = styled(Container, {
   width: "56%",
+  maxWidth: "640px",
   gap: "4%",
+  marginBottom: "56px",
+  height: "100%",
+  overflowY: "auto",
+  overscrollBehaviorY: "contain",
+  minHeight: "100%",
 });
 
 const Sidebar = styled("div", {
-  width: "36%",
-  marginTop: "12px",
-  marginBottom: "56px",
+  width: "280px",
   gap: "20px",
+  height: "100vh",
+  marginTop: "-128px",
+  overflowY: "auto",
+  overscrollBehaviorY: "contain",
+  minHeight: "100%",
+  paddingTop: "64px",
+});
+
+const Frame = styled("div", {
+  position: "relative",
 });
 
 export default function ApplicationFrame({ children }: ComponentBasicProps) {
@@ -59,11 +73,11 @@ export default function ApplicationFrame({ children }: ComponentBasicProps) {
   const router = useRouter();
   const { pathname } = router;
 
-  const isActive = (href) => pathname === "/fyp" + href;
+  const isActive = (href) => pathname === "/discover" + href;
 
   return (
-    <Container className="flex max-w-6xl mx-auto">
-      <Sidebar className="divide-y">
+    <Frame className="relative flex max-w-6xl mx-auto">
+      <Sidebar className="sticky top-0 divide-y">
         <div className="flex flex-col w-full gap-4 py-2">
           {tabs.map((t) => (
             <div
@@ -72,7 +86,7 @@ export default function ApplicationFrame({ children }: ComponentBasicProps) {
                 isActive(t.href) ? "text-pink-600" : ""
               } hover:bg-gray-100`}
             >
-              <Link href={`/fyp/${t.href}`}>
+              <Link href={`/discover/${t.href}`}>
                 <a className="flex items-center gap-4 text-2xl font-bold">
                   {t.icon}
                   <span>{t.label}</span>
@@ -87,17 +101,7 @@ export default function ApplicationFrame({ children }: ComponentBasicProps) {
           </h4>
           {new Array(5).fill(5).map((i) => (
             <div key={i} className="flex items-center gap-4">
-              <Avatar.Root className="rounded-full">
-                <Avatar.Image
-                  className="object-cover w-10 h-10 rounded-full shadow-md"
-                  src="/assets/KristinCover.jpg"
-                />
-                <Avatar.Fallback className="rounded-full shadow-xl ">
-                  <p className="flex items-center justify-center w-10 h-10 bg-white border rounded-full drop-shadow-sm shadow-pink-500/10 text-slate-700">
-                    TR
-                  </p>
-                </Avatar.Fallback>
-              </Avatar.Root>
+              <Avatar />
               <div>
                 <Username>@kamfeskaya</Username>
                 <MutedParagraph>
@@ -114,11 +118,29 @@ export default function ApplicationFrame({ children }: ComponentBasicProps) {
           <h4 className="font-semibold">
             <MutedParagraph>Trending livestreams</MutedParagraph>
           </h4>
+          {new Array(5).fill(5).map((i) => (
+            <div key={i} className="flex items-center gap-4">
+              <LivestreamingAvatar />
+              <div className="w-2/3">
+                <p className="ellipsis truncate ...">
+                  <BoldLink>Come hang out with your boy on this thing</BoldLink>
+                </p>
+                <MutedParagraph>
+                  <SmallText>@kamfeskaya</SmallText>
+                </MutedParagraph>
+              </div>
+            </div>
+          ))}
+          <div className="mt-2">
+            <BoldLink className="text-pink-500">See more</BoldLink>
+          </div>
         </FeaturedFrame>
       </Sidebar>
       <Main>
-        <ApplicationChildrenContainer>{children}</ApplicationChildrenContainer>
+        <ApplicationChildrenContainer className="divide-y divide-gray-100">
+          {children}
+        </ApplicationChildrenContainer>
       </Main>
-    </Container>
+    </Frame>
   );
 }

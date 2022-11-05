@@ -63,7 +63,6 @@ const Membership = objectType({
   },
 });
 
-
 const Query = objectType({
   name: "Query",
   definition(t) {

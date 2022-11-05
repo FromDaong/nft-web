@@ -7,13 +7,11 @@ import {
 } from "@packages/shared/components/Typography/Headings";
 import { HeartIcon } from "@radix-ui/react-icons";
 import { styled } from "@stitches/react";
-import * as Avatar from "@radix-ui/react-avatar";
-import Link from "next/link";
-import Image from "next/image";
-import { DotsHorizontalIcon, GiftIcon, ChatIcon } from "@heroicons/react/solid";
-import { Divider } from "@packages/shared/components/Divider";
+import { DotsHorizontalIcon, GiftIcon } from "@heroicons/react/solid";
 import { BoldLink } from "@packages/shared/components/Typography/Text";
 import { useState } from "react";
+import Avatar from "@packages/shared/components/Avatar";
+import { ChatAltIcon, SaveIcon } from "@heroicons/react/outline";
 
 export type Post = {
   id: string;
@@ -76,7 +74,7 @@ const motionStates = {
 };
 
 const PostCardContainer = styled("div", {
-  border: "1px solid rgba(0, 0, 0, 0.1);",
+  // border: "1px solid rgba(0, 0, 0, 0.1);",
   borderRadius: "20px",
   width: "100%",
   flexShrink: "0",
@@ -85,19 +83,17 @@ const PostCardContainer = styled("div", {
 const PostMediaContainer = styled("div", {
   width: "100%",
   height: "max-content",
+  borderRadius: "12px",
+  overflow: "hidden",
 });
 
 const PostVisualMediaWrapper = styled("div", {
   width: "100%",
   height: "520px",
 });
-const PostAudioMediaWrapper = styled("div", {
-  width: "100%",
-  height: "256x",
-});
 
 const PostCardCreatorInfoContainer = styled("div", {
-  padding: "12px",
+  padding: "4px 0",
   display: "flex",
   alignItems: "center",
   columnGap: "12px",
@@ -105,7 +101,7 @@ const PostCardCreatorInfoContainer = styled("div", {
 });
 
 const PostCardMetaContainer = styled("div", {
-  padding: "12px",
+  padding: "4px 0",
   display: "flex",
   flexDirection: "column",
 });
@@ -132,7 +128,7 @@ const PostCardCollectorsContainer = styled("div", {
 });
 
 const IconWrapper = styled("p", {
-  padding: "4px",
+  padding: "8px",
   width: "40px",
   height: "40px",
 
@@ -144,98 +140,93 @@ const IconWrapper = styled("p", {
 export default function PostCard() {
   const [motionParams, setMotionParams] = useState(motionStates.show);
 
-  const toggleMotionParams = () => {
-    if (motionParams.initial.opacity === 1) {
-      setMotionParams(motionStates.hide);
-    } else {
-      setMotionParams(motionStates.show);
-    }
-  };
-
   return (
-    <PostCardContainer>
-      <PostCardCreatorInfoContainer>
-        <div
-          style={{ display: "flex", columnGap: "12px", alignItems: "center" }}
-        >
-          <div>
-            <Avatar.Root className="rounded-full">
-              <Avatar.Image
-                className="object-cover w-12 h-12 rounded-full shadow-md"
-                src="/assets/KristinCover.jpg"
-              />
-              <Avatar.Fallback className="rounded-full shadow-xl ">
-                <p className="flex items-center justify-center w-12 h-12 bg-white border rounded-full drop-shadow-sm shadow-pink-500/10 text-slate-700">
-                  TR
-                </p>
-              </Avatar.Fallback>
-            </Avatar.Root>
+    <PostCardContainer className="flex py-8">
+      <div className="w-16">
+        <Avatar size={16} />
+      </div>
+
+      <div className="flex-1 px-4">
+        <PostCardCreatorInfoContainer>
+          <div
+            style={{ display: "flex", columnGap: "12px", alignItems: "center" }}
+          >
+            <div>
+              <Username>@tate2301</Username>
+              <MutedParagraph>
+                <SmallText>12 min ago</SmallText>
+              </MutedParagraph>
+            </div>
           </div>
-          <div>
-            <Username>@tate2301</Username>
+        </PostCardCreatorInfoContainer>
+        <PostCardMetaContainer>
+          <Text style={{ marginTop: "4px" }}>So you wanna play huh?</Text>
+        </PostCardMetaContainer>
+        <PostMediaContainer>
+          <PostVisualMediaWrapper
+            style={{
+              backgroundImage:
+                "url('https://img.hulu.com/user/v3/artwork/8a267ee7-f537-4b8a-b0b5-17e8377bd563?base_image_bucket_name=image_manager&base_image=2f7ed314-7ed0-4942-b709-33c176aab598&size=550x825&format=jpeg')",
+            }}
+          />
+        </PostMediaContainer>
+        <PostCardMetaContainer>
+          <PostCardCollectorsContainer>
             <MutedParagraph>
-              <SmallText>12 min ago</SmallText>
+              {
+                // Can also be written as liked by, in non collectible content
+              }
+              Collected by <ImportantSmallText>kamfeskaya</ImportantSmallText>{" "}
+              and
+              <ImportantSmallText>others</ImportantSmallText>
             </MutedParagraph>
+          </PostCardCollectorsContainer>
+        </PostCardMetaContainer>
+      </div>
+
+      <div className="w-16 pb-16">
+        <div className="flex flex-col justify-between h-full gap-6">
+          <div className="flex flex-col items-center gap-6">
+            <PostCardAction>
+              <button className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
+                <BoldLink>
+                  <DotsHorizontalIcon className="w-6 h-6" />
+                </BoldLink>
+              </button>
+            </PostCardAction>
+            <PostCardAction>
+              <button className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
+                <BoldLink>
+                  <GiftIcon className="w-6 h-6" />
+                </BoldLink>
+              </button>
+            </PostCardAction>
+          </div>
+          <div className="flex flex-col items-center gap-6">
+            <PostCardAction>
+              <button className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
+                <BoldLink>
+                  <HeartIcon className="w-6 h-6" />
+                </BoldLink>
+              </button>
+            </PostCardAction>
+            <PostCardAction>
+              <button className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
+                <BoldLink>
+                  <ChatAltIcon className="w-6 h-6" />
+                </BoldLink>
+              </button>
+            </PostCardAction>
+            <PostCardAction>
+              <button className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
+                <BoldLink>
+                  <SaveIcon className="w-6 h-6" />
+                </BoldLink>
+              </button>
+            </PostCardAction>
           </div>
         </div>
-        <div className="flex items-center gap-8">
-          <button>
-            <BoldLink>
-              <GiftIcon className="w-6 h-6" />
-            </BoldLink>
-          </button>
-          <button>
-            <BoldLink>
-              <DotsHorizontalIcon className="w-6 h-6" />
-            </BoldLink>
-          </button>
-        </div>
-      </PostCardCreatorInfoContainer>
-      <PostMediaContainer>
-        <PostVisualMediaWrapper
-          style={{
-            backgroundImage:
-              "url('https://img.hulu.com/user/v3/artwork/8a267ee7-f537-4b8a-b0b5-17e8377bd563?base_image_bucket_name=image_manager&base_image=2f7ed314-7ed0-4942-b709-33c176aab598&size=550x825&format=jpeg')",
-          }}
-        />
-      </PostMediaContainer>
-      <PostCardMetaContainer>
-        <PostCardActionsContainer>
-          <PostCardAction>
-            <IconWrapper>
-              <HeartIcon width={"100%"} height={"100%"} />
-            </IconWrapper>
-          </PostCardAction>
-        </PostCardActionsContainer>
-        <Divider dir="vertical" />
-
-        <Text style={{ marginTop: "4px" }}>
-          <Username>@tate2301</Username> So you wanna play huh?
-        </Text>
-
-        <PostCardCollectorsContainer>
-          <div style={{ display: "flex", width: "auto" }}>
-            <Avatar.Root className="rounded-full">
-              <Avatar.Image
-                className="object-cover w-4 h-4 rounded-full"
-                src="/assets/KristinCover.jpg"
-              />
-              <Avatar.Fallback className="rounded-full">
-                <p className="flex items-center justify-center p-2 text-xs bg-white border rounded-full text-slate-700">
-                  TR
-                </p>
-              </Avatar.Fallback>
-            </Avatar.Root>
-          </div>
-          <MutedParagraph>
-            {
-              // Can also be written as liked by, in non collectible content
-            }
-            Collected by <ImportantSmallText>kamfeskaya</ImportantSmallText> and
-            <ImportantSmallText>others</ImportantSmallText>
-          </MutedParagraph>
-        </PostCardCollectorsContainer>
-      </PostCardMetaContainer>
+      </div>
     </PostCardContainer>
   );
 }

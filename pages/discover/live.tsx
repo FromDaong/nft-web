@@ -3,7 +3,7 @@ import PostCard from "@packages/totm/components/PostCard";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 
-export default function ForYouPage() {
+export default function LivePage() {
   return (
     <ApplicationLayout>
       <SEOHead title="For you - Tritt" />
