@@ -1,14 +1,17 @@
-import { createServer } from "@graphql-yoga/node";
+import { createYoga } from "graphql-yoga";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-import { resolvers } from "@/graphql/resolvers";
-import { typeDefs } from "@/graphql/typeDefs";
-
-const server = createServer({
-  schema: {
-    typeDefs,
-    resolvers,
+export const config = {
+  api: {
+    // Disable body parsing (required for file uploads)
+    bodyParser: false,
   },
-  endpoint: "/api/graphql",
-});
+};
 
-export default server;
+export default createYoga<{
+  req: NextApiRequest;
+  res: NextApiResponse;
+}>({
+  // Needed to be defined explicitly because our endpoint lives at a different path other than `/graphql`
+  graphqlEndpoint: "/api/graphql",
+});
