@@ -71,7 +71,7 @@ const wagmiClient = createClient({
 });
 
 const getSiweMessageOptions: GetSiweMessageOptions = () => ({
-  statement: "Sign in to my RainbowKit app",
+  statement: "Sign in to Trit",
 });
 
 const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
@@ -91,7 +91,7 @@ const WagmiWrapper = ({ children }: { children: ReactNode }) => {
         <RainbowKitProvider
           modalSize="compact"
           appInfo={{
-            appName: "Treat",
+            appName: "Trit",
             disclaimer: Disclaimer,
           }}
           showRecentTransactions={true}
