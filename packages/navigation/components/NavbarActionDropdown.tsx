@@ -4,7 +4,6 @@ import Kbd, { ctrl_button_emoji } from "@packages/shared/components/Kbd";
 import { VideoCameraIcon } from "@heroicons/react/solid";
 import { DropdownContainer, DropdownContent } from "./DropdownContainer";
 import Link from "next/link";
-import { ImportantSmallText } from "@packages/shared/components/Typography/Headings";
 import { BoldLink } from "@packages/shared/components/Typography/Text";
 
 const NavbarActionDropdown = () => (

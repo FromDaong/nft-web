@@ -80,19 +80,17 @@ export default function ApplicationFrame({ children }: ComponentBasicProps) {
       <Sidebar className="sticky top-0 divide-y">
         <div className="flex flex-col w-full gap-4 py-2">
           {tabs.map((t) => (
-            <div
-              key={t.href}
-              className={`px-4 py-1 rounded-xl ${
-                isActive(t.href) ? "text-pink-600" : ""
-              } hover:bg-gray-100`}
-            >
-              <Link href={`/discover/${t.href}`}>
-                <a className="flex items-center gap-4 text-2xl font-bold">
-                  {t.icon}
-                  <span>{t.label}</span>
-                </a>
-              </Link>
-            </div>
+            <Link key={t.href} href={`/discover/${t.href}`}>
+              <a
+                key={t.href}
+                className={`px-4 py-1 rounded-xl ${
+                  isActive(t.href) ? "text-pink-600" : ""
+                } hover:bg-gray-100 flex items-center gap-4 text-2xl font-bold`}
+              >
+                {t.icon}
+                <span>{t.label}</span>
+              </a>
+            </Link>
           ))}
         </div>
         <FeaturedFrame>

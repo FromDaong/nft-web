@@ -36,13 +36,5 @@ module.exports =
     runtimeCaching,
     buildExcludes: [/middleware-manifest.json$/],
   },*/
-    async headers() {
-      return [
-        {
-          source: "/:path*",
-          headers: securityHeaders(),
-        },
-      ];
-    },
   };
 //);
