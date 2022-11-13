@@ -1,4 +1,4 @@
-import { styled } from "@stitches/react";
+import { styled } from "@styles/theme";
 import { ReactNode } from "react";
 import { BoldLink } from "../Typography/Text";
 

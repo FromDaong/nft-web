@@ -1,3 +1,4 @@
+import { getCssText } from "@styles/theme";
 import Document, { Head, Html, Main, NextScript } from "next/document";
 
 import Script from "next/script";
@@ -50,6 +51,10 @@ class MyDocument extends Document {
           />
           <meta name="theme-color" content="#333333" />
           <meta name="referrer" content={"strict-origin"} />
+          <style
+            id="stitches"
+            dangerouslySetInnerHTML={{ __html: getCssText() }}
+          />
 
           <Script
             strategy="lazyOnload"

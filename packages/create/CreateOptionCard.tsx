@@ -1,4 +1,4 @@
-import { styled } from "@stitches/react";
+import { styled } from "@styles/theme";
 import Link from "next/link";
 import { ReactNode } from "react";
 

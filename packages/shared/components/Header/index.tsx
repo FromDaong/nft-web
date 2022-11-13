@@ -27,7 +27,7 @@ export default function LandingPageHeader() {
             </p>
 
             <div className="flex items-center justify-center max-w-lg gap-8 mt-12">
-              <Button className="text-white bg-pink-600">
+              <Button>
                 <BoldLink>Discover content</BoldLink>
               </Button>
               <Button className="gap-4 text-pink-600 bg-white border-2 border-pink-500">

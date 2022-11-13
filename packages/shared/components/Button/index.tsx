@@ -1,4 +1,4 @@
-import { styled } from "@stitches/react";
+import { styled } from "@styles/theme";
 
 export const TriggerButton = styled("p", {
   fontWeight: "500",
@@ -17,10 +17,12 @@ export const Button = styled("button", {
   boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.01)",
   fontFamily: "'Helvetica', sans-serif",
   fontWeight: "600",
+  color: "$accentTextContrast",
+  backgroundColor: "$accentBg",
 
   variants: {
     color: {
-      secondary: {
+      default: {
         backgroundColor: "blueviolet",
         color: "white",
         "&:hover": {

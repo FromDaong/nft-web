@@ -1,5 +1,5 @@
 import { Content, Item } from "@radix-ui/react-dropdown-menu";
-import { styled } from "@stitches/react";
+import { styled } from "@styles/theme";
 
 export const DropdownContainer = styled("div", {
   width: "320px",
