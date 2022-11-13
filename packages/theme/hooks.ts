@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-export function useTheme(default_theme = "light") {
-  const [theme, setTheme] = useState(default_theme);
+export function useTheme(default_theme: "light" | "pink" | "dark" = "light") {
+  const [theme, setTheme] = useState<"light" | "pink" | "dark">(default_theme);
 
-  const updateTheme = (theme: string) => {
+  const updateTheme = (theme: "light" | "pink" | "dark") => {
     setTheme(theme);
   };
 

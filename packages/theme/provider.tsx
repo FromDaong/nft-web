@@ -1,8 +1,10 @@
+import { darkTheme, lightTheme, ogPinkTheme } from "@styles/theme";
 import {
   createContext,
   ReactNode,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import { useTheme } from "./hooks";
@@ -28,7 +30,15 @@ export const useApplicationTheme = () => {
 };
 
 export default function ThemeProvider({ children }: { children: ReactNode }) {
-  const { theme, updateTheme } = useTheme("dark");
+  const { theme, updateTheme } = useTheme("light");
+
+  const themes = {
+    light: lightTheme,
+    dark: darkTheme,
+    pink: ogPinkTheme,
+  };
+
+  const currentTheme = useMemo(() => themes[theme], [theme]);
 
   useEffect(() => {
     const body = document.getElementsByTagName("body")[0];
@@ -39,7 +49,7 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
     <ApplicationTheme.Provider
       value={{ theme, themes: ["dark", "light", "pink"], updateTheme }}
     >
-      {children}
+      <div className={currentTheme}>{children}</div>
     </ApplicationTheme.Provider>
   );
 }

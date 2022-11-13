@@ -97,7 +97,7 @@ const WagmiWrapper = ({ children }: { children: ReactNode }) => {
           showRecentTransactions={true}
           chains={[binance]}
           theme={lightTheme({
-            accentColor: "#db2777",
+            accentColor: "#121212",
             accentColorForeground: "white",
           })}
         >

@@ -9,7 +9,7 @@ import { BoldLink } from "@packages/shared/components/Typography/Text";
 const NavbarActionDropdown = () => (
   <DropdownMenu.Root>
     <DropdownMenu.Trigger>
-      <button className="flex items-center gap-4 px-4 py-2 font-medium text-white bg-pink-600 rounded-xl">
+      <button className="flex items-center gap-4 px-4 py-2 font-medium text-white bg-gray-900 rounded-xl">
         <BoldLink>Create</BoldLink>
       </button>
     </DropdownMenu.Trigger>

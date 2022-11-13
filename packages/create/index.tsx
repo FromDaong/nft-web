@@ -22,7 +22,7 @@ export default function CreateOptions() {
       icon: <CurrencyDollarIcon className="w-12 h-12" />,
     },
     {
-      title: "Special edition trits",
+      title: "Trit collection",
       description:
         "Create special edition trits that can be used as passes for events or promotions you host.",
       url: "/create/p/subscription",
