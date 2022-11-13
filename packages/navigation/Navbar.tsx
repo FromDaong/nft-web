@@ -25,8 +25,6 @@ export default function Navbar() {
   const isConnected =
     connected && status !== "loading" && status === "authenticated";
 
-  console.log({ isConnected, status });
-
   const notifications = [
     {
       text: "subscribed to your trits for 0.09 BNB",
