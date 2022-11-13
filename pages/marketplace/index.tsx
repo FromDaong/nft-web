@@ -12,22 +12,20 @@ import PostCard from "packages/totm/components/PostCard";
 export default function NFTS() {
   return (
     <ApplicationFrame>
-      <SEOHead title={"Resale Content"} />
+      <SEOHead title="Explore NFTs" />
       <div className="w-full py-8">
         <div className="w-full border-b border-gray-200">
           <div className="flex">
-            <p className="px-8 py-4 text-xl font-medium ">
-              <Link href={"/x/nft"}>
+            <p className="px-8 py-4 text-xl font-medium text-pink-600 border-b-4 border-pink-600">
+              <Link href={"/marketplace/nft"}>
                 <a>
-                  <DisabledLink>Listed NFTs</DisabledLink>
+                  <BoldLink>Listed NFTs</BoldLink>
                 </a>
               </Link>
             </p>
-            <p className="px-8 py-4 text-xl font-medium text-pink-600 border-b-4 border-pink-600">
-              <Link href={"#"}>
-                <a>
-                  <BoldLink>Resale NFTs</BoldLink>
-                </a>
+            <p className="px-8 py-4 text-xl font-medium ">
+              <Link href={"/marketplace/nft/resale"}>
+                <DisabledLink>Resale NFTs</DisabledLink>
               </Link>
             </p>
           </div>
@@ -46,12 +44,12 @@ export default function NFTS() {
             </div>
             <div>
               <span className="px-4 py-1 text-sm font-medium text-gray-900 bg-gray-100 border-2 border-gray-200 rounded-full cursor-pointer hover:border-pink-600 hover:bg-white">
-                Following
+                Treat of The Month
               </span>
             </div>
             <div>
               <span className="px-4 py-1 text-sm font-medium text-gray-900 bg-gray-100 border-2 border-gray-200 rounded-full cursor-pointer hover:border-pink-600 hover:bg-white">
-                Treat of The Month
+                Following
               </span>
             </div>
             <div>
