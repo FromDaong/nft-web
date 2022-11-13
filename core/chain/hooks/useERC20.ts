@@ -49,7 +49,7 @@ const useERC20 = () => {
    */
   const approve: IWeb3Context["approve"] = React.useCallback(
     ({ currency, interactionType }, priceInWei) => {
-      return new Promise(async (resolve, reject) => {
+      return new Promise((resolve, reject) => {
         switch (currency) {
           // TREAT Token
           case TippingCurrencies.TREAT:
@@ -94,11 +94,13 @@ const useERC20 = () => {
                     }
                   );
               if (interactionType === ContractInteractionTypes.SEND)
-                await treat.contracts.busdToken.methods
-                  .approve(contractAddresses.tippingContract[56], priceInWei)
-                  .send({ from: account })
-                  .then((result: ApprovalReceipt) => resolve(result))
-                  .catch((error: string) => reject(error));
+                resolve(
+                  treat.contracts.busdToken.methods
+                    .approve(contractAddresses.tippingContract[56], priceInWei)
+                    .send({ from: account })
+                    .then((result: ApprovalReceipt) => resolve(result))
+                    .catch((error: string) => reject(error))
+                );
             } else console.warn("BUSD Contract not initialized");
             break;
           case TippingCurrencies.USDC:
@@ -114,11 +116,13 @@ const useERC20 = () => {
                     }
                   );
               if (interactionType === ContractInteractionTypes.SEND)
-                await treat.contracts.usdcToken.methods
-                  .approve(contractAddresses.tippingContract[56], priceInWei)
-                  .send({ from: account })
-                  .then((result: ApprovalReceipt) => resolve(result))
-                  .catch((error: string) => reject(error));
+                resolve(
+                  treat.contracts.usdcToken.methods
+                    .approve(contractAddresses.tippingContract[56], priceInWei)
+                    .send({ from: account })
+                    .then((result: ApprovalReceipt) => resolve(result))
+                    .catch((error: string) => reject(error))
+                );
             } else console.warn("BUSD Contract not initialized");
             break;
         }
@@ -133,7 +137,7 @@ const useERC20 = () => {
    */
   const allowance: IWeb3Context["allowance"] = React.useCallback(
     ({ currency }) => {
-      return new Promise(async (resolve, reject) => {
+      return new Promise((resolve, reject) => {
         switch (currency) {
           case TippingCurrencies.TREAT: {
             if (treat?.contracts.treat2) {
@@ -179,7 +183,7 @@ const useERC20 = () => {
    */
   const balanceOf: IWeb3Context["balanceOf"] = React.useCallback(
     ({ currency, interactionType }) => {
-      return new Promise<string>(async (resolve, reject) => {
+      return new Promise<string>((resolve, reject) => {
         switch (currency) {
           case TippingCurrencies.TREAT: {
             if (treat?.contracts.treat2) {

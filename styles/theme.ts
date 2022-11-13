@@ -6,6 +6,8 @@ export const calculateColorHSL = () => {
   return {};
 };
 
+//TODO: Theme colors OG pink = https://www.happyhues.co/palettes/7
+
 export const darkTheme = createTheme({
   colors: {
     hiContrast: "hsl(206,2%,93%)",

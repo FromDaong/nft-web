@@ -1,13 +1,11 @@
 import Link from "next/link";
 import * as Logo from "../../public/brand/logo_mono.svg";
 import Image from "next/image";
-import { useAccount, useConnect, useDisconnect } from "wagmi";
-import { InjectedConnector } from "wagmi/connectors/injected";
+import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
-import { Suspense } from "react";
 import NavbarExploreDropdown from "./components/NavbarExploreDropdown";
 
 const NavbarProfileAvatar = dynamic(
@@ -65,7 +63,7 @@ export default function Navbar() {
 
             <div className="items-center hidden gap-8 md:flex">
               <Link href="/discover">
-                <a className="font-medium">Discover</a>
+                <a className="font-medium">Trits</a>
               </Link>
               <Link href="#">
                 <a className="font-medium">

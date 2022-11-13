@@ -13,6 +13,8 @@ import { UniversalCommandbar } from "@packages/commandbar";
 import { AppProps } from "next/app";
 import type { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
+import { useDeveloperTools } from "@packages/hooks";
+import { useEffect } from "react";
 
 const progress = new ProgressBar({
   size: 3,
@@ -30,6 +32,12 @@ function MyApp({
 }: AppProps<{
   session: Session;
 }>) {
+  const { toggleDesignMode } = useDeveloperTools();
+
+  useEffect(() => {
+    toggleDesignMode(false);
+  }, []);
+
   return (
     <ThemeProvider>
       <SessionProvider session={pageProps.session} refetchInterval={0}>

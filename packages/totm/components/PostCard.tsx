@@ -160,7 +160,9 @@ export default function PostCard() {
           </div>
         </PostCardCreatorInfoContainer>
         <PostCardMetaContainer>
-          <Text style={{ marginTop: "4px" }}>So you wanna play huh?</Text>
+          <Text style={{ marginTop: "4px" }}>
+            Spicy content. Directly from the creators!
+          </Text>
         </PostCardMetaContainer>
         <PostMediaContainer>
           <PostVisualMediaWrapper
