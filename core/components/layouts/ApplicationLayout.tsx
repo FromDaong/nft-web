@@ -1,5 +1,5 @@
 import { Container } from "@packages/shared/components/Container";
-import { styled } from "@stitches/react";
+import { styled } from "@styles/theme";
 import { ComponentBasicProps } from "core/TreatCore";
 
 const ApplicationChildrenContainer = styled("div", {

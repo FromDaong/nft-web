@@ -42,14 +42,14 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const body = document.getElementsByTagName("body")[0];
-    body.setAttribute("theme", theme);
+    body.className = currentTheme;
   }, [theme]);
 
   return (
     <ApplicationTheme.Provider
       value={{ theme, themes: ["dark", "light", "pink"], updateTheme }}
     >
-      <div className={currentTheme}>{children}</div>
+      <div>{children}</div>
     </ApplicationTheme.Provider>
   );
 }

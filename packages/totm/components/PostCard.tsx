@@ -6,7 +6,7 @@ import {
   Text,
 } from "@packages/shared/components/Typography/Headings";
 import { HeartIcon } from "@radix-ui/react-icons";
-import { styled } from "@stitches/react";
+import { styled } from "@styles/theme";
 import { DotsHorizontalIcon, GiftIcon } from "@heroicons/react/solid";
 import { BoldLink } from "@packages/shared/components/Typography/Text";
 import { useState } from "react";

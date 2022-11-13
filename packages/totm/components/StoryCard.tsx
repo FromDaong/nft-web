@@ -1,4 +1,4 @@
-import { styled } from "@stitches/react";
+import { styled } from "@styles/theme";
 
 const Circle = styled("div", {
   position: "relative",

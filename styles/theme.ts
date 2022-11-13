@@ -1,6 +1,19 @@
+import {
+  gray,
+  purple,
+  red,
+  green,
+  pink,
+  grayDark,
+  purpleDark,
+  redDark,
+  greenDark,
+  pinkDark,
+} from "@radix-ui/colors";
+
 import { createStitches } from "@stitches/react";
 
-export const { createTheme } = createStitches({
+export const { createTheme, styled, getCssText } = createStitches({
   utils: {
     marginY: (value) => ({
       marginTop: value,
@@ -58,32 +71,24 @@ export const calculateColorHSL = () => {
   return {};
 };
 
+const baseColors = {
+  ...green,
+  ...purple,
+  ...gray,
+  ...red,
+  ...pink,
+  ...grayDark,
+  ...purpleDark,
+  ...redDark,
+  ...greenDark,
+  ...pinkDark,
+};
+
 //TODO: Theme colors OG pink = https://www.happyhues.co/palettes/7
 
 export const darkTheme = createTheme("dark", {
   colors: {
-    gray500: "hsl(206,10%,76%)",
-    blue500: "hsl(206,100%,50%)",
-    purple500: "hsl(252,78%,60%)",
-    green500: "hsl(148,60%,60%)",
-    red500: "hsl(352,100%,62%)",
-    primary: "",
-    secondary: "",
-    accent: "",
-    warning: "",
-    error: "",
-    success: "",
-    bg_primary: "",
-    bg_error: "",
-    bg_secondary: "",
-    bg_accent: "",
-    bg_success: "",
-    bg_warning: "",
-    shadow: "",
-    input_bg: "",
-    input_border: "",
-    input_border_focus: "",
-    overlay: "",
+    ...baseColors,
   },
   space: {
     1: "5px",
@@ -113,16 +118,32 @@ export const darkTheme = createTheme("dark", {
 
 export const ogPinkTheme = createTheme("pink", {
   colors: {
-    muted: "",
-    default: "",
-    surface: "",
-    primary: "",
-    accent: "",
-    warning: "",
-    error: "",
-    brand: "",
-    success: "",
-    on_accent: "",
+    ...baseColors,
+    accentBase: "$purple1",
+    accentBgSubtle: "$purple2",
+    accentBg: "$purple3",
+    accentBgHover: "$purple4",
+    accentBgActive: "$purple5",
+    accentLine: "$purple6",
+    accentBorder: "$purple7",
+    accentBorderHover: "$purple8",
+    accentSolid: "$purple9",
+    accentSolidHover: "$purple10",
+    accentText: "$purple11",
+    accentTextContrast: "$purple12",
+
+    successBase: "$green1",
+    successBgSubtle: "$green2",
+    successBg: "$green3",
+    successBgHover: "$green4",
+    successBgActive: "$green5",
+    successLine: "$green6",
+    successBorder: "$green7",
+    successBorderHover: "$green8",
+    successSolid: "$green9",
+    successSolidHover: "$green10",
+    successText: "$green11",
+    successTextContrast: "$green12",
   },
   space: {
     1: "5px",
@@ -152,11 +173,32 @@ export const ogPinkTheme = createTheme("pink", {
 
 export const lightTheme = createTheme("light", {
   colors: {
-    gray500: "hsl(206,10%,76%)",
-    blue500: "hsl(206,100%,50%)",
-    purple500: "hsl(252,78%,60%)",
-    green500: "hsl(148,60%,60%)",
-    red500: "hsl(352,100%,62%)",
+    ...baseColors,
+    accentBase: "$purple1",
+    accentBgSubtle: "$purple2",
+    accentBg: "$purple3",
+    accentBgHover: "$purple4",
+    accentBgActive: "$purple5",
+    accentLine: "$purple6",
+    accentBorder: "$purple7",
+    accentBorderHover: "$purple8",
+    accentSolid: "$purple9",
+    accentSolidHover: "$purple10",
+    accentText: "$purple11",
+    accentTextContrast: "$purple12",
+
+    successBase: "$green1",
+    successBgSubtle: "$green2",
+    successBg: "$green3",
+    successBgHover: "$green4",
+    successBgActive: "$green5",
+    successLine: "$green6",
+    successBorder: "$green7",
+    successBorderHover: "$green8",
+    successSolid: "$green9",
+    successSolidHover: "$green10",
+    successText: "$green11",
+    successTextContrast: "$green12",
   },
   space: {
     xs: "5px",

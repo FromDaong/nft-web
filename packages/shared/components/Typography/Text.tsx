@@ -1,4 +1,4 @@
-import { styled } from "@stitches/react";
+import { styled } from "@styles/theme";
 
 export const BoldLink = styled("span", {
   fontWeight: "600 !important",

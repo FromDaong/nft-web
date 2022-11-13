@@ -10,7 +10,7 @@ import {
   SmallText,
   Username,
 } from "@packages/shared/components/Typography/Text";
-import { styled } from "@stitches/react";
+import { styled } from "@styles/theme";
 import { ComponentBasicProps } from "core/TreatCore";
 import Link from "next/link";
 import { useRouter } from "next/router";
