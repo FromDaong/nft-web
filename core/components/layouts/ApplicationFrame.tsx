@@ -33,7 +33,7 @@ const Main = styled(Container, {
   height: "100%",
   overflowY: "auto",
   overscrollBehaviorY: "contain",
-  minHeight: "100%",
+  minHeight: "100vh",
 });
 
 const Sidebar = styled("div", {
@@ -80,7 +80,7 @@ export default function ApplicationFrame({ children }: ComponentBasicProps) {
       <Sidebar className="sticky top-0 divide-y">
         <div className="flex flex-col w-full gap-4 py-2">
           {tabs.map((t) => (
-            <Link key={t.href} href={`/discover/${t.href}`}>
+            <Link key={t.href} href={`/discover${t.href}`}>
               <a
                 key={t.href}
                 className={`px-4 py-1 rounded-xl ${

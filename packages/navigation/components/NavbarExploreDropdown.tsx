@@ -12,11 +12,11 @@ import { BoldLink } from "@packages/shared/components/Typography/Text";
 const ExploreDropdownLinks = [
   {
     label: "Sweetshop",
-    link: "/x/nft",
+    link: "/marketplace/nft",
   },
   {
     label: "Creators",
-    link: "/x/creator",
+    link: "/discover/creator",
   },
   {
     label: "Farm",
