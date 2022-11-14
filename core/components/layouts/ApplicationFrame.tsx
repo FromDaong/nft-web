@@ -9,6 +9,7 @@ import {
   AccentText,
   SmallText,
   Username,
+  MutedText,
 } from "@packages/shared/components/Typography/Text";
 import { styled } from "@styles/theme";
 import { ComponentBasicProps } from "core/TreatCore";
@@ -95,16 +96,16 @@ export default function ApplicationFrame({ children }: ComponentBasicProps) {
         </div>
         <FeaturedFrame>
           <h4 className="font-semibold">
-            <AccentText>Featured trit creators</AccentText>
+            <MutedText>Featured trit creators</MutedText>
           </h4>
           {new Array(5).fill(5).map((i) => (
             <div key={i} className="flex items-center gap-4">
               <Avatar />
               <div>
                 <Username>@kamfeskaya</Username>
-                <AccentText>
+                <MutedText>
                   <SmallText>Tatenda Christopher</SmallText>
-                </AccentText>
+                </MutedText>
               </div>
             </div>
           ))}
@@ -114,7 +115,7 @@ export default function ApplicationFrame({ children }: ComponentBasicProps) {
         </FeaturedFrame>
         <FeaturedFrame>
           <h4 className="font-semibold">
-            <AccentText>Trending livestreams</AccentText>
+            <MutedText>Trending livestreams</MutedText>
           </h4>
           {new Array(5).fill(5).map((i) => (
             <div key={i} className="flex items-center gap-4">
@@ -123,9 +124,9 @@ export default function ApplicationFrame({ children }: ComponentBasicProps) {
                 <p className="ellipsis truncate ...">
                   <BoldLink>Come hang out with your boy on this thing</BoldLink>
                 </p>
-                <AccentText>
+                <MutedText>
                   <SmallText>@kamfeskaya</SmallText>
-                </AccentText>
+                </MutedText>
               </div>
             </div>
           ))}

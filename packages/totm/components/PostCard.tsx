@@ -178,9 +178,12 @@ export default function PostCard() {
               {
                 // Can also be written as liked by, in non collectible content
               }
-              Collected by <ImportantSmallText>kamfeskaya</ImportantSmallText>{" "}
+              Collected by{" "}
+              <ImportantSmallText className="mx-1">
+                kamfeskaya
+              </ImportantSmallText>{" "}
               and
-              <ImportantSmallText>others</ImportantSmallText>
+              <ImportantSmallText className="mx-1">others</ImportantSmallText>
             </MutedParagraph>
           </PostCardCollectorsContainer>
         </PostCardMetaContainer>

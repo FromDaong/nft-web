@@ -7,7 +7,7 @@ import SmartContracts from "@packages/shared/components/Card/MarketingPages/Smar
 import { BenefitsCard } from "@packages/shared/components/Card/MarketingPages/BenefitsCard";
 import Footer from "@packages/shared/components/Footer";
 import { ShortDivider } from "@packages/shared/components/Divider";
-import SocialProofCard from "@packages/shared/components/Card/MarketingPages/TreatOfTheMonth";
+import TreatOfTheMonth from "@packages/shared/components/Card/MarketingPages/TreatOfTheMonth";
 
 export default function Index() {
   return (
@@ -16,7 +16,7 @@ export default function Index() {
         <LandingPageHeader />
         <ShortDivider dir={"vertical"} />
         <div className="px-4 my-12 md:px-8 lg:px-0">
-          <SocialProofCard />
+          <TreatOfTheMonth />
         </div>
         <ShortDivider dir={"vertical"} />
 
