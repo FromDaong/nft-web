@@ -41,7 +41,7 @@ const NavbarExploreDropdown = () => (
           {ExploreDropdownLinks.map((link) => (
             <Link key={link.link} href={link.link}>
               <a className="w-full h-full">
-                <NavDropdownItem className="px-4 py-2 font-medium font-helv hover:bg-gray-100/90">
+                <NavDropdownItem className="px-4 py-2 font-helv hover:bg-gray-100/90">
                   <BoldLink>{link.label}</BoldLink>
                 </NavDropdownItem>
               </a>

@@ -13,11 +13,30 @@ export const DisabledLink = styled("span", {
   color: "#858585",
 });
 
-export const MutedParagraph = styled("p", {
+export const MutedText = {
+  fontSize: "14px",
+  color: "$mutedText",
+  display: "flex",
+  gap: "3px",
+};
+
+export const AccentText = styled("p", {
   fontSize: "14px",
   color: "#858585",
   display: "flex",
-  gap: "3px",
+  fontWeight: "500",
+
+  variants: {
+    color: {
+      accent: {
+        color: "$purple7",
+      },
+    },
+  },
+
+  defaultVariants: {
+    color: "accent",
+  },
 });
 
 export const MutedActionText = styled("p", {
@@ -25,7 +44,16 @@ export const MutedActionText = styled("p", {
 });
 
 export const Text = styled("p", {
-  fontSize: "14px",
+  fontSize: "15px",
+  color: "$text",
+
+  variants: {
+    appearance: {
+      white: {
+        color: "#fff",
+      },
+    },
+  },
 });
 
 export const SmallText = styled("p", {

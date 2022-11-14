@@ -5,13 +5,14 @@ import { VideoCameraIcon } from "@heroicons/react/solid";
 import { DropdownContainer, DropdownContent } from "./DropdownContainer";
 import Link from "next/link";
 import { BoldLink } from "@packages/shared/components/Typography/Text";
+import { Button } from "@packages/shared/components/Button";
 
 const NavbarActionDropdown = () => (
   <DropdownMenu.Root>
     <DropdownMenu.Trigger>
-      <button className="flex items-center gap-4 px-4 py-2 font-medium text-white bg-gray-900 rounded-xl">
+      <Button className="flex items-center gap-4 px-4 py-2 font-medium rounded-xl">
         <BoldLink>Create</BoldLink>
-      </button>
+      </Button>
     </DropdownMenu.Trigger>
     <DropdownMenu.Portal>
       <DropdownContent>

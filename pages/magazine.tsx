@@ -41,14 +41,12 @@ export default function MagazinePage({
           className="max-w-3xl mx-auto mb-4 font-bold tracking-tighter text-center text-8xl"
           style={{
             transformStyle: "flat",
-            lineHeight: "80.5px",
-            fontSize: "96px",
           }}
         >
           Meet the
           <br /> Treat Magazine
         </h1>
-        <p className="max-w-xl mx-auto text-2xl text-center">
+        <p className="max-w-xl mx-auto text-xl text-center">
           Get a curated publication by Treat DAO featuring one creator each
           month, directly into your inbox.
         </p>
@@ -60,9 +58,7 @@ export default function MagazinePage({
                 className="flex-1 px-4 py-2 border border-gray-300 shadow shadow-slate-500/10 rounded-xl"
                 placeholder="Enter your email"
               />
-              <Button className="text-pink-600 border-2 border-pink-500">
-                Send me updates
-              </Button>
+              <Button>Send me updates</Button>
             </form>
           </div>
         </div>
