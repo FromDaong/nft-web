@@ -1,4 +1,4 @@
-import { darkTheme, lightTheme, ogPinkTheme } from "@styles/theme";
+import { darkTheme, lightTheme, ogPinkTheme, styled } from "@styles/theme";
 import {
   createContext,
   ReactNode,
@@ -8,6 +8,13 @@ import {
   useState,
 } from "react";
 import { useTheme } from "./hooks";
+
+const Div = styled("div", {
+  height: "100%",
+  width: "100%",
+  backgroundColor: "$bodyBackground",
+  color: "$text",
+});
 
 const ApplicationTheme = createContext<{
   theme: string;
@@ -49,7 +56,7 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
     <ApplicationTheme.Provider
       value={{ theme, themes: ["dark", "light", "pink"], updateTheme }}
     >
-      <div>{children}</div>
+      <Div>{children}</Div>
     </ApplicationTheme.Provider>
   );
 }

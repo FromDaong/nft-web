@@ -9,37 +9,33 @@ export const TriggerButton = styled("p", {
 });
 
 export const Button = styled("button", {
-  padding: "8px 16px",
+  padding: "10px 20px",
   alignItems: "center",
-  gap: "6px",
+  gap: "8px",
   display: "flex",
   borderRadius: "12px",
   boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.01)",
   fontFamily: "'Helvetica', sans-serif",
   fontWeight: "600",
-  color: "$accentTextContrast",
-  backgroundColor: "$accentBg",
 
   variants: {
-    color: {
+    appearance: {
       default: {
-        backgroundColor: "blueviolet",
-        color: "white",
-        "&:hover": {
-          backgroundColor: "darkviolet",
-        },
+        backgroundColor: "$white",
+        color: "$textContrast",
       },
       primary: {
-        backgroundColor: "pink",
-        color: "#212121",
+        backgroundColor: "$mauve3",
+        color: "$white",
         "&:hover": {
-          backgroundColor: "darkpink",
+          backgroundColor: "$mauve2",
         },
       },
       mute: {
         backgroundColor: "gainsboro",
         "&:hover": {
           backgroundColor: "lightgray",
+          //
         },
         color: "#212121",
       },
@@ -49,31 +45,22 @@ export const Button = styled("button", {
         borderColor: "lightgray",
       },
     },
+    link: {
+      true: {
+        backgroundColor: "transparent",
+        color: "$mauve3",
+        padding: 0,
+
+        "&:hover": {
+          backgroundColor: "transparent",
+          //
+        },
+      },
+    },
   },
-  compoundVariants: [
-    {
-      color: "violet",
-      outlined: true,
-      css: {
-        color: "blueviolet",
-        borderColor: "darkviolet",
-        "&:hover": {
-          color: "white",
-        },
-      },
-    },
-    {
-      color: "gray",
-      outlined: true,
-      css: {
-        color: "gray",
-        borderColor: "lightgray",
-        "&:hover": {
-          color: "black",
-        },
-      },
-    },
-  ],
+  defaultVariants: {
+    appearance: "primary",
+  },
 });
 
 export const WhiteButton = styled(Button, {

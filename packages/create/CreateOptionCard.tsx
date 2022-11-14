@@ -19,6 +19,8 @@ const Card = styled("div", {
 
 const CardHeading = styled("h4", {
   fontSize: "18px",
+  color: "$textContrast",
+  fontWeight: "600",
 });
 
 const MutedParagraph = styled("p", {

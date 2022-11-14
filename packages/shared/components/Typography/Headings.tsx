@@ -2,7 +2,7 @@ import { styled } from "@styles/theme";
 import {
   ImportantSmallText,
   MutedActionText,
-  MutedParagraph,
+  AccentText,
   SmallText,
   Text,
   Username,
@@ -12,17 +12,28 @@ export const ContextualHeading = styled("h3", {
   fontSize: "32px",
   marginBottom: "12px",
   marginTop: "4px",
+  color: "$textContrast",
+  fontWeight: "600",
+
+  variants: {
+    appearance: {
+      white: {
+        color: "$white",
+      },
+    },
+  },
 });
 
 export const ContextualHeadingContainer = styled("div", {
   marginTop: "24px",
   minWidth: "400px",
   maxWidth: "520px",
+  color: "$textContrast",
 });
 
 export {
   Username,
-  MutedParagraph,
+  AccentText as MutedParagraph,
   ImportantSmallText,
   Text,
   SmallText,

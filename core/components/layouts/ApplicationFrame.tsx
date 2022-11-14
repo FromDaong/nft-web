@@ -6,7 +6,7 @@ import {
 import { Container } from "@packages/shared/components/Container";
 import {
   BoldLink,
-  MutedParagraph,
+  AccentText,
   SmallText,
   Username,
 } from "@packages/shared/components/Typography/Text";
@@ -95,16 +95,16 @@ export default function ApplicationFrame({ children }: ComponentBasicProps) {
         </div>
         <FeaturedFrame>
           <h4 className="font-semibold">
-            <MutedParagraph>Featured trit creators</MutedParagraph>
+            <AccentText>Featured trit creators</AccentText>
           </h4>
           {new Array(5).fill(5).map((i) => (
             <div key={i} className="flex items-center gap-4">
               <Avatar />
               <div>
                 <Username>@kamfeskaya</Username>
-                <MutedParagraph>
+                <AccentText>
                   <SmallText>Tatenda Christopher</SmallText>
-                </MutedParagraph>
+                </AccentText>
               </div>
             </div>
           ))}
@@ -114,7 +114,7 @@ export default function ApplicationFrame({ children }: ComponentBasicProps) {
         </FeaturedFrame>
         <FeaturedFrame>
           <h4 className="font-semibold">
-            <MutedParagraph>Trending livestreams</MutedParagraph>
+            <AccentText>Trending livestreams</AccentText>
           </h4>
           {new Array(5).fill(5).map((i) => (
             <div key={i} className="flex items-center gap-4">
@@ -123,9 +123,9 @@ export default function ApplicationFrame({ children }: ComponentBasicProps) {
                 <p className="ellipsis truncate ...">
                   <BoldLink>Come hang out with your boy on this thing</BoldLink>
                 </p>
-                <MutedParagraph>
+                <AccentText>
                   <SmallText>@kamfeskaya</SmallText>
-                </MutedParagraph>
+                </AccentText>
               </div>
             </div>
           ))}
