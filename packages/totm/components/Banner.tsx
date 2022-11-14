@@ -26,29 +26,7 @@ const TOTMBanner = () => {
             TreatDAO.
           </p>
         </div>
-        <div className="flex mt-8">
-          <div className="flex items-center w-1/2 gap-4">
-            <div className="w-12 h-12 bg-purple-100 border-2 border-purple-400 rounded-full"></div>
-            <div>
-              <p className="text-sm text-gray-400">Creator</p>
-              <BoldLink className="font-medium">Cherie Noel</BoldLink>
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center w-12 h-12 text-purple-400 border-2 border-purple-400 rounded-full bg-purple-50">
-              <CurrencyDollarIcon className="w-12 h-12" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-400">Reserve Price</p>
-              <BoldLink className="font-medium">0.90 BNB</BoldLink>
-            </div>
-          </div>
-        </div>
-        <div className="w-full mt-8">
-          <Button className="flex justify-center w-full text-center text-white bg-purple-600">
-            Purchase set for 5.0 BNB
-          </Button>
-        </div>
+
         <div className="w-full gap-8 mt-8 ">
           <ProfileCard />
         </div>

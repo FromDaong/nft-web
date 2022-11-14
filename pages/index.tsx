@@ -1,19 +1,13 @@
-import { ArrowRightIcon } from "@heroicons/react/solid";
-import ProfileCard from "@packages/shared/components/ProfileCard";
 import { Container } from "packages/shared/components/Container";
-import Link from "next/link";
 import LandingPageHeader from "packages/shared/components/Header";
-import ListingSection from "packages/shared/components/ListingSection";
-import MagazineBanner from "packages/shared/components/MagazineBanner";
-import PostCard from "packages/totm/components/PostCard";
-import LandingPageTOTM from "@packages/totm/LandingPageTOTM";
 import FeaturesCard from "@packages/shared/components/Card/MarketingPages/FeaturesCard";
 import MonthlyMagazine from "@packages/shared/components/Card/MarketingPages/MonthlyMagazineCard";
 import SubscriptionsCard from "@packages/shared/components/Card/MarketingPages/SubscriptionsCard";
 import SmartContracts from "@packages/shared/components/Card/MarketingPages/SmartContractsCard";
 import { BenefitsCard } from "@packages/shared/components/Card/MarketingPages/BenefitsCard";
 import Footer from "@packages/shared/components/Footer";
-import { Divider, ShortDivider } from "@packages/shared/components/Divider";
+import { ShortDivider } from "@packages/shared/components/Divider";
+import SocialProofCard from "@packages/shared/components/Card/MarketingPages/TreatOfTheMonth";
 
 export default function Index() {
   return (
@@ -21,12 +15,17 @@ export default function Index() {
       <Container className="max-w-6xl mx-auto">
         <LandingPageHeader />
         <ShortDivider dir={"vertical"} />
-        <div className="px-4 my-32 md:px-8 lg:px-0">
-          <MonthlyMagazine />
+        <div className="px-4 my-12 md:px-8 lg:px-0">
+          <SocialProofCard />
         </div>
         <ShortDivider dir={"vertical"} />
 
-        <LandingPageTOTM />
+        <div className="px-4 my-12 md:px-8 lg:px-0">
+          <MonthlyMagazine />
+        </div>
+
+        <ShortDivider dir={"vertical"} />
+
         <div className="grid grid-cols-2 gap-8 px-4 my-24 md:px-8 lg:px-0">
           <div className="col-span-2 px-4 mb-8 md:px-8 lg:px-0">
             <FeaturesCard />

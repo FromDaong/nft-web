@@ -5,6 +5,5 @@ export const config = {
 };
 
 export default function () {
-  const response = "<></>";
-  return new ImageResponse(response);
+  return new ImageResponse(<></>);
 }
