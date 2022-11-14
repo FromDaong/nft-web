@@ -6,17 +6,18 @@ import { ContextualHeading, Text } from "../../Typography/Headings";
 import { BoldLink } from "../../Typography/Text";
 
 const VideoContainer = styled("div", {
-  height: "55vh",
+  height: "65vh",
 });
 
-export default function SocialProofCard() {
+export default function TreatOfTheMonth() {
   return (
-    <HeadlessCard>
+    <>
       <div
         style={{
           display: "flex",
           alignItems: "center",
           flexDirection: "column",
+          width: "100%",
         }}
         className="mx-auto text-center"
       >
@@ -30,19 +31,19 @@ export default function SocialProofCard() {
           </Text>
         </CardDetailSection>
       </div>
-      <VideoContainer className="flex w-full p-8 mt-4 rounded-xl">
-        <div className="flex-1"></div>
-        <div className="w-full lg:w-1/3">
+      <VideoContainer className="grid w-full grid-cols-5 gap-8 p-8 mt-4 rounded-xl">
+        <div className="flex-1 col-span-5 bg-gray-100 lg:col-span-3 rounded-xl"></div>
+        <div className="col-span-5 lg:col-span-2">
           <div className="flex mt-8">
             <div className="flex items-center w-1/2 gap-4">
-              <div className="w-12 h-12 bg-purple-100 border-2 border-purple-400 rounded-full"></div>
+              <div className="w-12 h-12 bg-gray-100 rounded-full"></div>
               <div>
-                <p className="text-sm text-gray-400">Creator</p>
+                <p>Creator</p>
                 <BoldLink className="font-medium">Cherie Noel</BoldLink>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <div className="flex items-center w-12 h-12 text-purple-400 border-2 border-purple-400 rounded-full bg-purple-50">
+              <div className="flex items-center w-12 h-12">
                 <CurrencyDollarIcon className="w-12 h-12" />
               </div>
               <div>
@@ -52,12 +53,12 @@ export default function SocialProofCard() {
             </div>
           </div>
           <div className="w-full mt-8">
-            <Button className="flex justify-center w-full text-center text-white bg-purple-600">
+            <Button className="flex justify-center w-full text-center">
               Purchase set for 5.0 BNB
             </Button>
           </div>
         </div>
       </VideoContainer>
-    </HeadlessCard>
+    </>
   );
 }

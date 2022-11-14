@@ -12,6 +12,7 @@ export const HeadlessCard = styled("div", {
       gradient: {
         background:
           "linear-gradient(97.43deg, rgba(82, 59, 227, 0.04) 3.74%, rgba(152, 108, 243, 0.04) 67.42%, rgba(246, 226, 255, 0.05) 120.94%)",
+        border: "1px solid $mauveA4",
       },
     },
   },

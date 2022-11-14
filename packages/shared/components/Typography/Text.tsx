@@ -13,12 +13,12 @@ export const DisabledLink = styled("span", {
   color: "#858585",
 });
 
-export const MutedText = {
+export const MutedText = styled("span", {
   fontSize: "14px",
   color: "$mutedText",
   display: "flex",
   gap: "3px",
-};
+});
 
 export const AccentText = styled("p", {
   fontSize: "14px",
