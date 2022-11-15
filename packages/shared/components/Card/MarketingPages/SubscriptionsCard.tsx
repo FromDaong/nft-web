@@ -2,11 +2,17 @@ import { ArrowRightIcon } from "@heroicons/react/solid";
 import { CardDetailSection, HeadlessCard } from "..";
 import { Button } from "../../Button";
 import { ContextualHeading, Text } from "../../Typography/Headings";
+import { Overlay } from "./BenefitsCard";
 
 export default function SubscriptionsCard() {
   return (
-    <HeadlessCard appearance={"gradient"}>
-      <div style={{ maxWidth: "60%", display: "block" }}>
+    <HeadlessCard
+      css={{
+        background: "url('/assets/backgrounds/fans_card_bg.jpeg'), top",
+      }}
+    >
+      <Overlay />
+      <div style={{ maxWidth: "60%", display: "block", zIndex: 1 }}>
         <CardDetailSection>
           <ContextualHeading>
             Recurring on-chain payments, ever heard of them?

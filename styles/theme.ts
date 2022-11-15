@@ -1,5 +1,5 @@
 import {
-  mauveA,
+  mauve,
   purple,
   red,
   teal,
@@ -8,6 +8,8 @@ import {
   mint,
   amber,
   crimson,
+  gray,
+  grayDark,
   crimsonDark,
   mauveDark,
   purpleDark,
@@ -80,29 +82,35 @@ const baseColors = {
   // White foreground text at step 9 bg
   ...teal, // Success
   ...purple,
-  ...mauveA,
+  ...mauve,
   ...red, // Error
   ...pink,
   ...mint, // Success
   ...amber, // Warning
   ...sky, // Info
+  ...crimson,
+  ...gray,
+  white: "#fff",
+
+  // Black foreground text at step 9 bg
+};
+
+const baseColorsDark = {
   ...mauveDark,
   ...purpleDark,
   ...redDark,
   ...tealDark,
   ...pinkDark,
-  ...crimson,
   ...crimsonDark,
-  white: "#fff",
-
-  // Black foreground text at step 9 bg
+  ...grayDark,
 };
 
 //TODO: Theme colors OG pink = https://www.happyhues.co/palettes/7
 
 export const darkTheme = createTheme("dark", {
   colors: {
-    ...baseColors,
+    ...baseColorsDark,
+    overlay: "#000000a1",
     accentBase: "$purple1",
     accentBgSubtle: "$purple2",
     accentBg: "$purple3",
@@ -129,18 +137,18 @@ export const darkTheme = createTheme("dark", {
     successText: "$teal11",
     successTextContrast: "$teal12",
 
-    bodyBackground: "$mauveA12",
-    text: "$mauveA2",
-    heading: "$mauveA1",
-    mutedText: "$mauveA5",
-    divider: "$teal6",
-    hiContrast: "$slate1",
-    loContrast: "white",
-    canvas: "hsl(0 0% 93%)",
-    panel: "white",
-    transparentPanel: "hsl(0 0% 0% / 97%)",
-    shadowLight: "hsl(206 22% 7% / 35%)",
-    shadowDark: "hsl(206 22% 7% / 20%)",
+    surface: "$mauve1",
+    surfaceOnSurface: "$mauve2",
+    elementOnSurface: "$mauve3",
+    hoveredElementSurface: "$mauve4",
+    selectedElementSurface: "$mauve5",
+    solidSurface: "$mauve9",
+    selectedSolidSurface: "$mauve10",
+    text: "$mauve11",
+    textContrast: "$mauve12",
+    mutedText: "$mauve11",
+    border: "$mauve7",
+    subtleBorder: "$mauve6",
   },
   space: {
     1: "5px",
@@ -167,6 +175,96 @@ export const darkTheme = createTheme("dark", {
   shadows: {},
   zIndices: {},
   transitions: {},
+});
+
+export const lightTheme = createTheme("light", {
+  colors: {
+    ...baseColors,
+    overlay: "#0000000a",
+    accentBase: "$purple1",
+    accentBgSubtle: "$purple2",
+    accentBg: "$purple3",
+    accentBgHover: "$purple4",
+    accentBgActive: "$purple5",
+    accentLine: "$purple6",
+    accentBorder: "$purple7",
+    accentBorderHover: "$purple8",
+    accentSolid: "$purple9",
+    accentSolidHover: "$purple10",
+    accentText: "$purple11",
+    accentTextContrast: "$purple12",
+
+    successBase: "$teal1",
+    successBgSubtle: "$teal2",
+    successBg: "$teal3",
+    successBgHover: "$teal4",
+    successBgActive: "$teal5",
+    successLine: "$teal6",
+    successBorder: "$teal7",
+    successBorderHover: "$teal8",
+    successSolid: "$teal9",
+    successSolidHover: "$teal10",
+    successText: "$teal11",
+    successTextContrast: "$teal12",
+
+    surface: "$gray1",
+    surfaceOnSurface: "$gray2",
+    elementOnSurface: "$gray3",
+    hoveredElementSurface: "$gray4",
+    selectedElementSurface: "$gray5",
+    solidSurface: "$gray9",
+    selectedSolidSurface: "$gray10",
+    text: "$gray11",
+    textContrast: "$gray12",
+    mutedText: "$gray9",
+    border: "$gray7",
+    subtleBorder: "$gray6",
+  },
+  space: {
+    xs: "5px",
+    sm: "10px",
+    md: "15px",
+    lg: "21px",
+    xl: "28px",
+  },
+  fontSizes: {
+    xs: "12px",
+    sm: "13px",
+    base: "17px",
+    lg: "21px",
+    xl: "32px",
+    "2xl": "48px",
+    "3xl": "96px",
+  },
+  fonts: {
+    untitled: "Untitled Sans, apple-system, sans-serif",
+    mono: "Söhne Mono, menlo, monospace",
+  },
+  fontWeights: {
+    heading: "700",
+    button: "500",
+    text: "400",
+    thin: "300",
+  },
+  lineHeights: {},
+  letterSpacings: {},
+  sizes: {},
+  borderWidths: {},
+  borderStyles: {},
+  radii: {
+    base: "30px",
+    tight: "8px",
+    full: "50%",
+  },
+  shadows: {},
+  zIndices: {
+    base: 1,
+    navbar: 10,
+    overlay: 20,
+    modal: 30,
+    notification: 40,
+    under: -1,
+  },
 });
 
 export const ogPinkTheme = createTheme("pink", {
@@ -198,18 +296,18 @@ export const ogPinkTheme = createTheme("pink", {
     successText: "$teal11",
     successTextContrast: "$teal12",
 
-    bodyBackground: "white",
-    text: "$mauveA11",
-    heading: "$mauveA12",
-    mutedText: "$mauveA7",
-    divider: "$teal6",
-    hiContrast: "$slate12",
-    loContrast: "white",
-    canvas: "hsl(0 0% 93%)",
-    panel: "white",
-    transparentPanel: "hsl(0 0% 0% / 97%)",
-    shadowLight: "hsl(206 22% 7% / 35%)",
-    shadowDark: "hsl(206 22% 7% / 20%)",
+    surface: "$crimson7",
+    surfaceOnSurface: "$crimson2",
+    elementOnSurface: "$crimson3",
+    hoveredElementSurface: "$crimson4",
+    selectedElementSurface: "$crimson5",
+    solidSurface: "$mauve9",
+    selectedSolidSurface: "$crimson10",
+    text: "$crimson1",
+    textContrast: "$crimson12",
+    mutedText: "$crimson10",
+    border: "$crimson7",
+    subtleBorder: "$crimson8",
   },
   space: {
     1: "5px",
@@ -264,84 +362,4 @@ export const ogPinkTheme = createTheme("pink", {
   zIndices: {},
   transitions: {},
 });
-
-export const lightTheme = createTheme("light", {
-  colors: {
-    ...baseColors,
-    accentBase: "$purple1",
-    accentBgSubtle: "$purple2",
-    accentBg: "$purple3",
-    accentBgHover: "$purple4",
-    accentBgActive: "$purple5",
-    accentLine: "$purple6",
-    accentBorder: "$purple7",
-    accentBorderHover: "$purple8",
-    accentSolid: "$purple9",
-    accentSolidHover: "$purple10",
-    accentText: "$purple11",
-    accentTextContrast: "$purple12",
-
-    successBase: "$teal1",
-    successBgSubtle: "$teal2",
-    successBg: "$teal3",
-    successBgHover: "$teal4",
-    successBgActive: "$teal5",
-    successLine: "$teal6",
-    successBorder: "$teal7",
-    successBorderHover: "$teal8",
-    successSolid: "$teal9",
-    successSolidHover: "$teal10",
-    successText: "$teal11",
-    successTextContrast: "$teal12",
-
-    text: "$mauveA11",
-    textContrast: "$mauveA12",
-  },
-  space: {
-    xs: "5px",
-    sm: "10px",
-    md: "15px",
-    lg: "21px",
-    xl: "28px",
-  },
-  fontSizes: {
-    xs: "12px",
-    sm: "13px",
-    base: "17px",
-    lg: "21px",
-    xl: "32px",
-    "2xl": "48px",
-    "3xl": "96px",
-  },
-  fonts: {
-    untitled: "Untitled Sans, apple-system, sans-serif",
-    mono: "Söhne Mono, menlo, monospace",
-  },
-  fontWeights: {
-    heading: "700",
-    button: "500",
-    text: "400",
-    thin: "300",
-  },
-  lineHeights: {},
-  letterSpacings: {},
-  sizes: {},
-  borderWidths: {},
-  borderStyles: {},
-  radii: {
-    base: "30px",
-    tight: "8px",
-    full: "50%",
-  },
-  shadows: {},
-  zIndices: {
-    base: 1,
-    navbar: 10,
-    overlay: 20,
-    modal: 30,
-    notification: 40,
-    under: -1,
-  },
-});
-
 // TODO: Favicon size must drop

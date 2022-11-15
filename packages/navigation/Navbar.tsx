@@ -8,6 +8,9 @@ import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import NavbarExploreDropdown from "./components/NavbarExploreDropdown";
 
+import { styled } from "@styles/theme";
+import { BoldLink } from "@packages/shared/components/Typography/Text";
+
 const NavbarProfileAvatar = dynamic(
   () => import("./components/NavbarProfileAvatar")
 );
@@ -17,6 +20,10 @@ const NavbarActionDropdown = dynamic(
 const NavbarNotifications = dynamic(
   () => import("./components/NavbarNotifications")
 );
+
+const Nav = styled("nav", {
+  backgroundColor: "$surfaceOnSurface",
+});
 
 export default function Navbar() {
   const { status } = useSession();
@@ -43,9 +50,9 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 z-30 w-full shadow-sm lg:px-0 h-[60px]">
+    <Nav className="fixed top-0 left-0 z-30 w-full lg:px-0 h-[60px]">
       <div className="relative w-full h-full px-4">
-        <div className="absolute top-0 left-0 z-20 w-full h-full bg-gray-50/70 backdrop-blur-lg" />
+        <div className="absolute top-0 left-0 z-20 w-full h-full" />
         <div className="relative z-30 flex items-center justify-between max-w-6xl py-3 mx-auto">
           <div className="flex items-center gap-8">
             <Link href="/">
@@ -61,21 +68,21 @@ export default function Navbar() {
 
             <div className="items-center hidden gap-8 md:flex">
               <Link href="/discover">
-                <a className="font-medium">Trits</a>
+                <BoldLink className="font-medium">Trits</BoldLink>
               </Link>
               <Link href="#">
-                <a className="font-medium">
+                <BoldLink className="font-medium">
                   <NavbarExploreDropdown />
-                </a>
+                </BoldLink>
               </Link>
               <Link href="/magazine">
-                <a className="font-medium">Magazine</a>
+                <BoldLink className="font-medium">Magazine</BoldLink>
               </Link>
             </div>
           </div>
 
           <div className="flex md:hidden">
-            <HamburgerMenuIcon className="w-8 h-8 p-2 border-2 rounded-full border-gray-200/70" />
+            <HamburgerMenuIcon className="w-8 h-8 p-2 border-2 rounded-full" />
           </div>
 
           <div className="hidden gap-4 md:flex">
@@ -98,6 +105,6 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-    </nav>
+    </Nav>
   );
 }

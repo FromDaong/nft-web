@@ -6,7 +6,6 @@ import {
 import { Container } from "@packages/shared/components/Container";
 import {
   BoldLink,
-  AccentText,
   SmallText,
   Username,
   MutedText,

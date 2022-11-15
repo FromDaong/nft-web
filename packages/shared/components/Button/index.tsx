@@ -17,44 +17,42 @@ export const Button = styled("button", {
   boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.01)",
   fontFamily: "'Helvetica', sans-serif",
   fontWeight: "600",
+  justifyContent: "center",
+  alignContent: "center",
 
   variants: {
     appearance: {
       default: {
-        backgroundColor: "$white",
+        backgroundColor: "$surface",
         color: "$textContrast",
       },
       primary: {
-        backgroundColor: "$mauve3",
-        color: "$white",
-        "&:hover": {
-          backgroundColor: "$mauve2",
-        },
+        backgroundColor: "$textContrast",
+        color: "$surface",
       },
-      mute: {
-        backgroundColor: "gainsboro",
-        "&:hover": {
-          backgroundColor: "lightgray",
-          //
-        },
-        color: "#212121",
+      surface: {
+        backgroundColor: "$elementOnSurface",
+        color: "$textContrast",
+      },
+      subtle: {
+        backgroundColor: "$surfaceOnSurface",
       },
     },
     outlined: {
       true: {
-        borderColor: "lightgray",
+        border: "1px solid $subtleBorder",
+      },
+    },
+    fullWidth: {
+      true: {
+        width: "100%",
       },
     },
     link: {
       true: {
         backgroundColor: "transparent",
-        color: "$mauve3",
+        color: "$textContrast",
         padding: 0,
-
-        "&:hover": {
-          backgroundColor: "transparent",
-          //
-        },
       },
     },
   },
