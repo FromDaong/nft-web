@@ -15,6 +15,7 @@ import type { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { useDeveloperTools } from "@packages/hooks";
 import { useEffect } from "react";
+import Onboarding from "@packages/ikaros/onboarding";
 
 const progress = new ProgressBar({
   size: 3,
@@ -63,6 +64,7 @@ function MyApp({
               />
             </Head>
             <UniversalCommandbar />
+            <Onboarding isOpen={false} />
             <Navbar />
             <main className="mt-[60px]">
               <Component {...pageProps} />
