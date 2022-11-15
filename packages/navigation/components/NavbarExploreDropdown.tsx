@@ -31,20 +31,20 @@ const ExploreDropdownLinks = [
 const NavbarExploreDropdown = () => (
   <DropdownMenu.Root>
     <DropdownMenu.Trigger>
-      <span className="flex items-center gap-1 font-medium">
+      <BoldLink className="flex items-center gap-1">
         Explore <ChevronDownIcon className="w-5 h-5" />
-      </span>
+      </BoldLink>
     </DropdownMenu.Trigger>
     <DropdownMenu.Portal>
       <DropdownContent>
         <NavDropdownContainer>
           {ExploreDropdownLinks.map((link) => (
             <Link key={link.link} href={link.link}>
-              <a className="w-full h-full">
-                <NavDropdownItem className="px-4 py-2 font-helv hover:bg-gray-100/90">
-                  <BoldLink>{link.label}</BoldLink>
+              <BoldLink className="w-full h-full">
+                <NavDropdownItem className="px-4 py-2">
+                  {link.label}
                 </NavDropdownItem>
-              </a>
+              </BoldLink>
             </Link>
           ))}
         </NavDropdownContainer>

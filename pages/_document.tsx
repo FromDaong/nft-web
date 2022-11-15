@@ -1,8 +1,12 @@
-import { getCssText } from "@styles/theme";
+import { getCssText, styled } from "@styles/theme";
 import Document, { Head, Html, Main, NextScript } from "next/document";
 
 import Script from "next/script";
 
+const Body = styled("body", {
+  backgroundColor: "$surface",
+  color: "$text",
+});
 class MyDocument extends Document {
   static async getInitialProps(ctx) {
     const initialProps = await Document.getInitialProps(ctx);
@@ -46,7 +50,7 @@ class MyDocument extends Document {
             crossOrigin="true"
           />
           <link
-            href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&display=swap"
             rel="stylesheet"
           />
           <meta name="theme-color" content="#333333" />
@@ -67,7 +71,7 @@ class MyDocument extends Document {
             }}
           />
         </Head>
-        <body className="bg-white text-[#424242]">
+        <Body>
           <Main />
           <NextScript />
           {false && (
@@ -83,7 +87,7 @@ class MyDocument extends Document {
               ></iframe>
             </noscript>
           )}
-        </body>
+        </Body>
       </Html>
     );
   }

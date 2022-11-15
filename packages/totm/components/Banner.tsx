@@ -1,8 +1,6 @@
-import { CurrencyDollarIcon } from "@heroicons/react/solid";
 import OptimizedImage from "@packages/shared/components/OptimizedImage";
 import ProfileCard from "@packages/shared/components/ProfileCard";
-import { BoldLink } from "@packages/shared/components/Typography/Text";
-import { Button } from "packages/shared/components/Button";
+import { Heading } from "@packages/shared/components/Typography/Headings";
 
 const TOTMBanner = () => {
   return (
@@ -17,9 +15,7 @@ const TOTMBanner = () => {
       </div>
       <div className="w-full h-full gap-8 p-4 md:p-8 lg:w-1/2">
         <div>
-          <h2 className="text-5xl font-medium text-gray-900">
-            Meet our September Treat of The Month
-          </h2>
+          <Heading>Meet our September Treat of The Month</Heading>
           <p className="max-w-2xl mx-auto mt-4">
             TOTM is a curated showcase of creators. We assist the chosen
             creators in presenting a unique set of content exclusive to

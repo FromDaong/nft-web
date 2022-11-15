@@ -1,11 +1,14 @@
 import { CardDetailSection, HeadlessCard } from "..";
 import { Button } from "../../Button";
 import { ContextualHeading, Text } from "../../Typography/Headings";
+import { Overlay } from "./BenefitsCard";
 
 export default function MonthlyMagazine() {
   return (
     <HeadlessCard appearance={"gradient"}>
-      <div style={{ maxWidth: "60%", display: "block" }}>
+      <Overlay />
+
+      <div style={{ maxWidth: "60%", display: "block", zIndex: 1 }}>
         <CardDetailSection>
           <ContextualHeading>
             Guess what. We have a magazine we think you'll love

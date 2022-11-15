@@ -1,7 +1,13 @@
 import { styled } from "@styles/theme";
 
-export const BoldLink = styled("span", {
+export const BoldLink = styled("a", {
   fontWeight: "600 !important",
+  color: "$textContrast",
+  variants: {
+    hover: {
+      true: {},
+    },
+  },
 });
 
 export const ActiveLink = styled("span", {
@@ -27,15 +33,18 @@ export const AccentText = styled("p", {
   fontWeight: "500",
 
   variants: {
-    color: {
+    appearance: {
       accent: {
-        color: "$purple7",
+        color: "$accentText",
+      },
+      white: {
+        color: "#fcfcfc",
       },
     },
   },
 
   defaultVariants: {
-    color: "accent",
+    appearance: "accent",
   },
 });
 
@@ -43,14 +52,21 @@ export const MutedActionText = styled("p", {
   color: "#858585",
 });
 
-export const Text = styled("p", {
+export const LegibleText = styled("span", {
+  color: "$text",
+});
+
+export const Text = styled("span", {
   fontSize: "15px",
   color: "$text",
 
   variants: {
     appearance: {
       white: {
-        color: "#fff",
+        color: "#fdfdfd",
+      },
+      hiContrast: {
+        color: "$textContrast",
       },
     },
   },
@@ -69,4 +85,9 @@ export const ImportantSmallText = styled("span", {
 export const Username = styled("span", {
   color: "#121212",
   fontWeight: "600",
+});
+
+export const Span = styled("span", {
+  fontSize: "inherit",
+  fontWeight: "inherit",
 });

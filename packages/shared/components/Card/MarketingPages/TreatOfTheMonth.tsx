@@ -2,7 +2,7 @@ import { CurrencyDollarIcon } from "@heroicons/react/outline";
 import { styled } from "@styles/theme";
 import { CardDetailSection, HeadlessCard } from "..";
 import { Button } from "../../Button";
-import { ContextualHeading, Text } from "../../Typography/Headings";
+import { ContextualHeading, Heading, Text } from "../../Typography/Headings";
 import { BoldLink } from "../../Typography/Text";
 
 const VideoContainer = styled("div", {
@@ -19,16 +19,16 @@ export default function TreatOfTheMonth() {
           flexDirection: "column",
           width: "100%",
         }}
-        className="mx-auto text-center"
       >
         <CardDetailSection>
-          <ContextualHeading>
-            Meet our September Treat of The Month
-          </ContextualHeading>
-          <Text>
-            TreatDAO is a community owned project built to life easier for
-            content creators.
-          </Text>
+          <Heading size="lg" css={{ color: "$textContrast" }}>
+            Meet our{" "}
+            {
+              // return current month
+              new Date().toLocaleString("default", { month: "long" })
+            }{" "}
+            <br /> Treat of The Month
+          </Heading>
         </CardDetailSection>
       </div>
       <VideoContainer className="grid w-full grid-cols-5 gap-8 p-8 mt-4 rounded-xl">

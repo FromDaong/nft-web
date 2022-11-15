@@ -12,3 +12,8 @@ export function useTheme(default_theme: "light" | "pink" | "dark" = "light") {
     updateTheme,
   };
 }
+
+export const useUpdateTheme = () => {
+  const theme = useTheme();
+  return { theme: theme.theme, updateTheme: theme.updateTheme };
+};

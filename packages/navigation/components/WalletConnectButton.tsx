@@ -1,4 +1,6 @@
-import { BoldLink } from "@packages/shared/components/Typography/Text";
+import { Button } from "@packages/shared/components/Button";
+import { Heading } from "@packages/shared/components/Typography/Headings";
+import { BoldLink, Text } from "@packages/shared/components/Typography/Text";
 import * as Avatar from "@radix-ui/react-avatar";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { getChainNameById } from "core/chain";
@@ -28,37 +30,35 @@ export default function WalletConnectButton() {
             {(() => {
               if (!mounted || !account || !chain) {
                 return (
-                  <button onClick={openConnectModal} type="button">
+                  <Button onClick={openConnectModal} type="button">
                     Verify wallet signature
-                  </button>
+                  </Button>
                 );
               }
 
               return (
-                <div className="flex flex-col gap-1 p-2 border border-gray-100 rounded-xl">
+                <div className="pb-2 rounded-xl">
                   <div
-                    style={{ display: "flex", gap: 12 }}
-                    className="flex items-center justify-between px-4 py-2 rounded-xl hover:cursor-pointer"
+                    style={{ display: "flex" }}
+                    className="flex items-center justify-between py-2 rounded-xl hover:cursor-pointer"
                   >
-                    <button
+                    <Button
                       onClick={openAccountModal}
-                      className="flex items-center py-2 gap-x-3"
+                      className="flex items-center py-4 mb-2 gap-x-3"
+                      appearance={"surface"}
+                      fullWidth
                     >
-                      <Avatar.Root className="rounded-full shadow bg-gray-50">
+                      <Avatar.Root className="rounded-full">
                         <Avatar.Image
                           className="object-cover w-10 h-10 rounded-full shadow-md"
                           src="https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?&w=128&h=128&dpr=2&q=80"
                         />
                       </Avatar.Root>
-                      <div className="flex flex-col">
-                        <h6 className="font-medium text-gray-900">
-                          Terry Rivers
-                        </h6>
-                        <p className="text-sm text-gray-500">
-                          {account.displayName}
-                        </p>
+                      <div className="w-full">
+                        <Heading size="xs">Terry Rivers</Heading>
+                        <Text>{account.displayName}</Text>
                       </div>
-                    </button>
+                    </Button>
                   </div>
                   {chain.unsupported ? (
                     <div
@@ -73,12 +73,14 @@ export default function WalletConnectButton() {
                       </span>
                     </div>
                   ) : (
-                    <button
+                    <Button
+                      fullWidth
                       onClick={openAccountModal}
-                      className="gap-4 p-2 bg-gray-100 rounded-xl hover:bg-gray-50 hover:cursor-pointer"
+                      className="p-2 "
+                      appearance={"default"}
                     >
-                      <BoldLink>Manage wallet connection</BoldLink>
-                    </button>
+                      Manage wallet connection
+                    </Button>
                   )}
                 </div>
               );

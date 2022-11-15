@@ -16,12 +16,12 @@ const Div = styled("div", {
   color: "$text",
 });
 
-const ApplicationTheme = createContext<{
+export const ApplicationTheme = createContext<{
   theme: string;
   themes?: Array<string>;
   updateTheme: (theme: string) => void;
 }>({
-  theme: "light",
+  theme: "dark",
   themes: ["dark", "light"],
   updateTheme: (_theme) => ({ _theme }),
 });
@@ -48,8 +48,26 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
   const currentTheme = useMemo(() => themes[theme], [theme]);
 
   useEffect(() => {
-    const body = document.getElementsByTagName("body")[0];
-    body.className = currentTheme;
+    if (typeof window !== "undefined") {
+      try {
+        const theme = localStorage.getItem("theme");
+        updateTheme(theme as "dark" | "pink" | "light");
+      } catch (err) {
+        console.error("[x] Error reading theme from local");
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const htm = document.getElementsByTagName("html")[0];
+        htm.className = currentTheme;
+        localStorage.setItem("theme", currentTheme);
+      } catch (err) {
+        console.error("[x] Error reading theme from local");
+      }
+    }
   }, [theme]);
 
   return (

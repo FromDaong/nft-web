@@ -1,44 +1,47 @@
 import { ArrowRightIcon } from "@heroicons/react/solid";
-import { Container } from "core/components";
+import { styled } from "@styles/theme";
 import { Button } from "../Button";
-import { BoldLink } from "../Typography/Text";
+import { Heading } from "../Typography/Headings";
+import { LegibleText } from "../Typography/Text";
+
+const TextContainer = styled("div", {
+  position: "absolute",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  background: "$surface",
+  display: "flex",
+});
 
 export default function LandingPageHeader() {
   return (
     <div
       className="flex items-center justify-center w-full p-4 md:p-8 py-12 lg:py-24 min-h-[80vh]"
       style={{
-        // background: "url('/assets/hero-background.svg')",
+        background: "url('/assets/hero-background.svg')",
         backgroundPosition: "center",
         backgroundSize: "contain",
+        position: "relative",
       }}
     >
-      <Container>
-        <div className="relative flex flex-col justify-center w-full max-w-3xl mx-auto">
-          <div
-            className="absolute inset-0 w-full h-full"
-            style={{
-              borderRadius: "10%",
-              transform: "scale(1.3)",
-              zIndex: "0",
-              background:
-                "radial-gradient(50% 50% at 50% 50%, #FFFFFF 0%, #FFFFFF 76.04%, rgba(255, 255, 255, 0) 100%)",
-              filter: "blur(12px)",
-            }}
-          />
+      <TextContainer>
+        <div className="relative flex flex-col justify-center w-full max-w-4xl mx-auto">
           <div
             className="flex flex-col items-center text-center"
             style={{ zIndex: "2" }}
           >
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 md:text-6xl lg:text-8xl">
+            <Heading size="xl" className="tracking-tight">
               Spicy content. Directly from the Creators
-            </h1>
-            <p className="justify-center mx-auto mt-12 text-xl">
+            </Heading>
+            <LegibleText
+              css={{ fontSize: "21px" }}
+              className="justify-center max-w-3xl mx-auto mt-12"
+            >
               Treat is an open platform for creators to curate their adult
-              content as NFTs. Hold the $TREAT token to have a say in the future
-              of the only NSFW platform that focuses on decentralization first
-              and foremost
-            </p>
+              content as NFTs, the only platform that focuses on
+              decentralization.
+            </LegibleText>
 
             <div className="flex items-center justify-center max-w-lg gap-8 mt-12">
               <Button>
@@ -54,7 +57,7 @@ export default function LandingPageHeader() {
             </div>
           </div>
         </div>
-      </Container>
+      </TextContainer>
     </div>
   );
 }

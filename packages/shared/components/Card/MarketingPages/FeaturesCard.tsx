@@ -3,24 +3,21 @@ import { CardDetailSection, HeadlessCard } from "..";
 import { Button } from "../../Button";
 import {
   ContextualHeading,
+  Heading,
   MutedParagraph,
   Text,
 } from "../../Typography/Headings";
+import { Span } from "../../Typography/Text";
 
 export default function FeaturesCard() {
   return (
     <div>
-      <div style={{ maxWidth: "60%", display: "block" }}>
+      <div style={{ maxWidth: "100%", display: "block" }}>
         <CardDetailSection>
-          <ContextualHeading>
-            Built by creators, for <br />
-            creators and their fans
-          </ContextualHeading>
-          <Text>
-            We have built a platform for content creators like you, leveraging
-            blockchain technology to help you monetize your content and grow
-            closer to your fans.
-          </Text>
+          <Heading size="lg">
+            A platform built by creators and fans,{" "}
+            <Span>for creators and their fans</Span>
+          </Heading>
         </CardDetailSection>
       </div>
     </div>
