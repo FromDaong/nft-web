@@ -1,4 +1,5 @@
 import { ImageResponse } from "@vercel/og";
+import axios from "axios";
 
 export const config = {
   runtime: "experimental-edge",
@@ -69,11 +70,27 @@ const image = (
     </div>
   </div>
 );
+const font = fetch(
+  new URL("../../../assets/helvetica.ttf", import.meta.url)
+).then((res) => res.arrayBuffer());
 
-export default function (req) {
+export default async function (req) {
   const { searchParams } = new URL(req.url);
+
+  const fontData = await font;
 
   // ?type=<media_type>
   const hasType = searchParams.has("type");
-  if (!hasType) return new ImageResponse(image);
+  if (!hasType)
+    return new ImageResponse(image, {
+      width: 1200,
+      height: 630,
+      fonts: [
+        {
+          name: "Helvetica",
+          data: fontData,
+          style: "normal",
+        },
+      ],
+    });
 }

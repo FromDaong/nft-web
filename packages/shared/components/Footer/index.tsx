@@ -1,5 +1,6 @@
 import { styled } from "@styles/theme";
 import { ReactNode } from "react";
+import { Heading } from "../Typography/Headings";
 import { BoldLink } from "../Typography/Text";
 
 const Ul = styled("ul", {
@@ -25,9 +26,13 @@ const ListLinkItem = ({
   </li>
 );
 
+const FooterComponent = styled("footer", {
+  borderTop: "1px solid $subtleBorder",
+});
+
 export default function Footer() {
   return (
-    <footer className="w-full px-4 pt-16 border-t border-gray-200 md:px-8 lg:px-0">
+    <FooterComponent className="w-full px-4 pt-16 border-t md:px-8 lg:px-0">
       <div className="grid max-w-6xl grid-cols-1 gap-8 mx-auto md:grid-cols-4">
         <div className="col-span-1">
           <img
@@ -38,9 +43,9 @@ export default function Footer() {
           />
         </div>
         <div className="col-span-1">
-          <h5 className="mb-2 text-xl font-medium text-gray-900 md:mb-4">
+          <Heading size="xs" className="mb-2 md:mb-4">
             $TREAT
-          </h5>
+          </Heading>
           <Ul className="gap-2 list-unstyled text-small">
             <ListLinkItem
               target="_blank"
@@ -76,9 +81,9 @@ export default function Footer() {
           </Ul>
         </div>
         <div className="col-span-1">
-          <h5 className="mb-2 text-xl font-medium text-gray-900 md:mb-4">
+          <Heading size="xs" className="mb-2 md:mb-4">
             Social Media
-          </h5>
+          </Heading>
           <Ul className="list-unstyled text-small">
             <ListLinkItem
               href="https://t.me/TreatDAO"
@@ -118,9 +123,9 @@ export default function Footer() {
           </Ul>
         </div>
         <div className="col-span-1">
-          <h5 className="mb-2 text-xl font-medium text-gray-900 md:mb-4">
+          <Heading size="xs" className="mb-2 md:mb-4">
             Resources
-          </h5>
+          </Heading>
           <Ul className="list-unstyled text-small">
             <ListLinkItem
               href="https://help.treatdao.com/"
@@ -148,6 +153,6 @@ export default function Footer() {
           </Ul>
         </div>
       </div>
-    </footer>
+    </FooterComponent>
   );
 }

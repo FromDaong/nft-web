@@ -41,6 +41,8 @@ export const Button = styled("button", {
     outlined: {
       true: {
         border: "1px solid $subtleBorder",
+        backgroundColor: "transparent",
+        color: "$textContrast",
       },
     },
     fullWidth: {

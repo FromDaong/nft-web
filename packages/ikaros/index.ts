@@ -20,10 +20,17 @@ type ContentTypes =
   | "banner"
   | "toast";
 
+export class IkarosHelpers {
+  static getComponentType() {}
+  static getDeviceType() {}
+  static getOptimumQualityType() {}
+}
+
 export class DynamicAlgorithmInterface {
   components: object;
 
   onReceivePayload = (payload: object) => {};
+  onIntersectionTriggered = (payload: object) => {};
 }
 
 // TODO: Check if we are at 5 items from last and fetch new ones
