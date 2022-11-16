@@ -64,7 +64,7 @@ function MyApp({
               />
             </Head>
             <UniversalCommandbar />
-            <Onboarding isOpen={false} />
+            <Onboarding config={{}} isOpen={false} />
             <Navbar />
             <main className="mt-[60px]">
               <Component {...pageProps} />
