@@ -13,6 +13,9 @@ import { UniversalCommandbar } from "@packages/commandbar";
 import { AppProps } from "next/app";
 import type { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
+import { useDeveloperTools } from "@packages/hooks";
+import { useEffect } from "react";
+import Onboarding from "@packages/ikaros/onboarding";
 
 const progress = new ProgressBar({
   size: 3,
@@ -30,6 +33,12 @@ function MyApp({
 }: AppProps<{
   session: Session;
 }>) {
+  const { toggleDesignMode } = useDeveloperTools();
+
+  useEffect(() => {
+    toggleDesignMode(false);
+  }, []);
+
   return (
     <ThemeProvider>
       <SessionProvider session={pageProps.session} refetchInterval={0}>
@@ -55,15 +64,11 @@ function MyApp({
               />
             </Head>
             <UniversalCommandbar />
-            <div className="py-3">
-              <Navbar />
-            </div>
-            <main className="mt-8">
+            <Onboarding config={{}} isOpen={false} />
+            <Navbar />
+            <main className="mt-[60px]">
               <Component {...pageProps} />
             </main>
-            <div className="py-12">
-              <Footer />
-            </div>
           </FpjsProvider>
         </WagmiWrapper>
       </SessionProvider>

@@ -1,8 +1,8 @@
 import { LightningBoltIcon } from "@heroicons/react/solid";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import Link from "next/link";
 import * as Avatar from "@radix-ui/react-avatar";
 import { DropdownContainer, DropdownContent } from "./DropdownContainer";
+import { BoldLink } from "@packages/shared/components/Typography/Text";
 
 const NavbarNotifications = ({
   notifications,
@@ -11,9 +11,9 @@ const NavbarNotifications = ({
 }) => (
   <DropdownMenu.Root>
     <DropdownMenu.Trigger>
-      <div className="flex items-center justify-center w-10 h-10 bg-white border rounded-full drop-shadow-sm shadow-pink-500/20">
+      <BoldLink className="flex items-center justify-center w-10 h-10 border rounded-full">
         <LightningBoltIcon className="w-5 h-5" />
-      </div>
+      </BoldLink>
     </DropdownMenu.Trigger>
     <DropdownMenu.Portal>
       <DropdownContent>
@@ -26,7 +26,7 @@ const NavbarNotifications = ({
               <div className="grid">
                 {notifications.map((notification) => (
                   <div
-                    className="flex justify-between px-2 py-4 rounded-lg hover:bg-gray-100 hover:cursor-pointer"
+                    className="flex justify-between p-2 rounded-lg hover:bg-gray-100 hover:cursor-pointer"
                     key={notification.url + notification.timestamp}
                   >
                     <div className="flex gap-x-4">
@@ -45,15 +45,17 @@ const NavbarNotifications = ({
                       </div>
                       <div className="flex-1">
                         <p>
-                          <span className="font-medium">
+                          <BoldLink className="font-medium">
                             @{notification.actor}
-                          </span>{" "}
+                          </BoldLink>{" "}
                           {notification.text}
                         </p>
                         <p className="mt-2 text-xs font-medium text-purple-400">
-                          {Intl.DateTimeFormat().format(
-                            new Date(notification.timestamp)
-                          )}
+                          <>
+                            {Intl.DateTimeFormat().format(
+                              new Date(notification.timestamp)
+                            )}
+                          </>
                         </p>
                       </div>
                     </div>

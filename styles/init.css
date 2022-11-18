@@ -1,28 +1,15 @@
-@font-face {
-  font-family: "Helvetica";
-  src: url("../public/fonts/helvetica-medium.woff2") format("woff2");
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Helvetica";
-  src: url("../public/fonts/helvetica-bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-}
-
 * {
-  font-size: 16px;
-  font-family: "Inter", sans-serif !important;
+  font-size: 14px;
+  font-family: "Manrope", sans-serif !important;
+  overscroll-behavior: none;
 }
 
 button {
-  font-family: "Helvetica", sans-serif !important;
+  font-family: "Manrope", sans-serif !important;
 }
 
 p {
-  font-family: "Inter", sans-serif !important;
+  font-family: "Manrope", -apple-system, system-ui, sans-serif !important;
   font-weight: 400;
 }
 
@@ -33,10 +20,10 @@ h4,
 h5,
 h6 {
   margin: 0;
-  color: #222222;
-  font-family: "Helvetica", sans-serif !important;
+  font-family: "Manrope", -apple-system, system-ui, sans-serif !important;
 }
 
 * {
   outline: none !important;
+  box-sizing: border-box !important;
 }

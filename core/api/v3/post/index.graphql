@@ -1,0 +1,32 @@
+type Post {
+    
+}
+
+type Comment {
+
+}
+
+type Media {
+    
+}
+
+type Collector {
+    id: String!
+    author: Author!
+}
+
+type Author {
+    id: String!
+    username: String!
+    avatar: String
+}
+
+type Query {
+    posts: [Post!]!
+    post(_id: String!): Post!
+}
+
+type Mutation {
+    create_post(content: String!): Post!
+    create_comment(post_id: String!, content: String!): Comment!
+}

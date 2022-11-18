@@ -7,15 +7,16 @@ import {
   NavDropdownContainer,
   NavDropdownItem,
 } from "./DropdownContainer";
+import { BoldLink } from "@packages/shared/components/Typography/Text";
 
 const ExploreDropdownLinks = [
   {
     label: "Sweetshop",
-    link: "/x/nft",
+    link: "/marketplace/nft",
   },
   {
     label: "Creators",
-    link: "/x/creator",
+    link: "/discover/creator",
   },
   {
     label: "Farm",
@@ -30,20 +31,20 @@ const ExploreDropdownLinks = [
 const NavbarExploreDropdown = () => (
   <DropdownMenu.Root>
     <DropdownMenu.Trigger>
-      <span className="flex items-center gap-1 font-medium">
+      <BoldLink className="flex items-center gap-1">
         Explore <ChevronDownIcon className="w-5 h-5" />
-      </span>
+      </BoldLink>
     </DropdownMenu.Trigger>
     <DropdownMenu.Portal>
       <DropdownContent>
         <NavDropdownContainer>
           {ExploreDropdownLinks.map((link) => (
             <Link key={link.link} href={link.link}>
-              <a className="w-full h-full">
-                <NavDropdownItem className="px-4 py-2 hover:bg-gray-100/90">
-                  {link.label}{" "}
+              <BoldLink className="w-full h-full">
+                <NavDropdownItem className="px-4 py-2">
+                  {link.label}
                 </NavDropdownItem>
-              </a>
+              </BoldLink>
             </Link>
           ))}
         </NavDropdownContainer>

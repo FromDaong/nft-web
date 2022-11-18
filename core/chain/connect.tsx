@@ -1,5 +1,4 @@
 import {
-  getDefaultWallets,
   RainbowKitProvider,
   lightTheme,
   connectorsForWallets,
@@ -12,14 +11,14 @@ import {
   coinbaseWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 
-import {
-  GetSiweMessageOptions,
-  RainbowKitSiweNextAuthProvider,
-} from "@rainbow-me/rainbowkit-siwe-next-auth";
 import { Chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { ReactNode } from "react";
+import {
+  RainbowKitSiweNextAuthProvider,
+  GetSiweMessageOptions,
+} from "core/auth/components/AuthenticationProvider";
 
 const binance: Chain = {
   id: 56,
@@ -72,7 +71,7 @@ const wagmiClient = createClient({
 });
 
 const getSiweMessageOptions: GetSiweMessageOptions = () => ({
-  statement: "Sign in to my RainbowKit app",
+  statement: "Sign in to Trit",
 });
 
 const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
@@ -92,13 +91,13 @@ const WagmiWrapper = ({ children }: { children: ReactNode }) => {
         <RainbowKitProvider
           modalSize="compact"
           appInfo={{
-            appName: "Treat",
+            appName: "Trit",
             disclaimer: Disclaimer,
           }}
           showRecentTransactions={true}
           chains={[binance]}
           theme={lightTheme({
-            accentColor: "#db2777",
+            accentColor: "#121212",
             accentColorForeground: "white",
           })}
         >

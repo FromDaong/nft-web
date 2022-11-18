@@ -1,18 +1,27 @@
+import { darkTheme, lightTheme, ogPinkTheme, styled } from "@styles/theme";
 import {
   createContext,
   ReactNode,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import { useTheme } from "./hooks";
 
-const ApplicationTheme = createContext<{
+const Div = styled("div", {
+  height: "100%",
+  width: "100%",
+  backgroundColor: "$bodyBackground",
+  color: "$text",
+});
+
+export const ApplicationTheme = createContext<{
   theme: string;
   themes?: Array<string>;
   updateTheme: (theme: string) => void;
 }>({
-  theme: "light",
+  theme: "dark",
   themes: ["dark", "light"],
   updateTheme: (_theme) => ({ _theme }),
 });
@@ -28,18 +37,44 @@ export const useApplicationTheme = () => {
 };
 
 export default function ThemeProvider({ children }: { children: ReactNode }) {
-  const { theme, updateTheme } = useTheme("dark");
+  const { theme, updateTheme } = useTheme("light");
+
+  const themes = {
+    light: lightTheme,
+    dark: darkTheme,
+    pink: ogPinkTheme,
+  };
+
+  const currentTheme = useMemo(() => themes[theme], [theme]);
 
   useEffect(() => {
-    const body = document.getElementsByTagName("body")[0];
-    body.setAttribute("theme", theme);
+    if (typeof window !== "undefined") {
+      try {
+        const theme = localStorage.getItem("theme");
+        updateTheme(theme as "dark" | "pink" | "light");
+      } catch (err) {
+        console.error("[x] Error reading theme from local");
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const htm = document.getElementsByTagName("html")[0];
+        htm.className = currentTheme;
+        localStorage.setItem("theme", currentTheme);
+      } catch (err) {
+        console.error("[x] Error reading theme from local");
+      }
+    }
   }, [theme]);
 
   return (
     <ApplicationTheme.Provider
       value={{ theme, themes: ["dark", "light", "pink"], updateTheme }}
     >
-      {children}
+      <Div>{children}</Div>
     </ApplicationTheme.Provider>
   );
 }

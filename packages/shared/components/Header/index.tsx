@@ -1,6 +1,18 @@
 import { ArrowRightIcon } from "@heroicons/react/solid";
-import { Container } from "core/components";
+import { styled } from "@styles/theme";
 import { Button } from "../Button";
+import { Heading } from "../Typography/Headings";
+import { LegibleText } from "../Typography/Text";
+
+const TextContainer = styled("div", {
+  position: "absolute",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  background: "$surface",
+  display: "flex",
+});
 
 export default function LandingPageHeader() {
   return (
@@ -10,32 +22,42 @@ export default function LandingPageHeader() {
         background: "url('/assets/hero-background.svg')",
         backgroundPosition: "center",
         backgroundSize: "contain",
+        position: "relative",
       }}
     >
-      <Container>
-        <div className="flex flex-col justify-center w-full max-w-3xl mx-auto">
-          <div className="flex flex-col items-center text-center">
-            <h1 className="text-4xl font-bold tracking-tighter text-gray-900 md:text-6xl lg:text-8xl">
+      <TextContainer>
+        <div className="relative flex flex-col justify-center w-full max-w-4xl mx-auto">
+          <div
+            className="flex flex-col items-center text-center"
+            style={{ zIndex: "2" }}
+          >
+            <Heading size="xl" className="tracking-tight">
               Spicy content. Directly from the Creators
-            </h1>
-            <p className="justify-center mx-auto mt-12 text-xl">
+            </Heading>
+            <LegibleText
+              css={{ fontSize: "21px" }}
+              className="justify-center max-w-3xl mx-auto mt-12"
+            >
               Treat is an open platform for creators to curate their adult
-              content as NFTs. Hold the $TREAT token to have a say in the future
-              of the only NSFW platform that focuses on decentralization first
-              and foremost
-            </p>
+              content as NFTs, the only platform that focuses on
+              decentralization.
+            </LegibleText>
 
             <div className="flex items-center justify-center max-w-lg gap-8 mt-12">
-              <Button className="text-white bg-pink-600">
-                Discover content
-              </Button>
-              <Button className="gap-4 text-pink-600 bg-white border-2 border-pink-500">
-                Buy $TREAT <ArrowRightIcon className="w-4 h-4" />
+              <Button>
+                Start exploring content{" "}
+                <ArrowRightIcon
+                  style={{
+                    width: "1.2rem",
+                    height: "1.2rem",
+                    marginLeft: "0.5rem",
+                  }}
+                />
               </Button>
             </div>
           </div>
         </div>
-      </Container>
+      </TextContainer>
     </div>
   );
 }
