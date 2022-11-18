@@ -25,3 +25,19 @@
   background-color: #f5f5f5;
   border-radius: 12px;
 }
+
+html {
+  background-color: var(--colors-surface);
+}
+
+.scheme-dark {
+  color-scheme: dark;
+}
+
+.scheme-light {
+  color-scheme: light;
+}
+
+.scheme-pink {
+  color-scheme: pink;
+}

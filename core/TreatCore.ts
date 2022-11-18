@@ -1,4 +1,7 @@
-import { useEffect, useRef } from "react";
+import { ReactNode, useEffect, useRef } from "react";
+import { PrismaClient } from "@prisma/client";
+
+export type Context = { prisma: PrismaClient; currentUserEmail: string };
 
 export default class TreatCore {
   web3: TreatWeb3Engine;
@@ -23,6 +26,10 @@ export default class TreatCore {
     console.log({ event_type, metadata: JSON.stringify(metadata) });
   }
 }
+
+export type ComponentBasicProps = {
+  children: ReactNode;
+};
 
 export type AnalyticsEvent = {
   id: string;

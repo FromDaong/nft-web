@@ -1,40 +1,20 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/zeit/next.js/tree/canary/packages/create-next-app).
+# Tools & rel
 
-Update the `next.config.js` file with your mongodb connection string.
+- Tiptap.dev: Rich Text Editor
+- Framer Motion: Animation Library
+- The Graph: Web3 GraphQL API
 
-```js
-module.exports = {
-  env: {
-    MONGO_URI: "Your connection string",
-  },
-};
-```
+## What is the Discover page
 
-## Getting Started
+Its basically just the TikTok for you page, still really debating on whether to have only the people you are following or should we also include content we think you will love. I mean yeah the latter seems best because we wont have much to filter but when should we allow the user to show only those they follow and how often can we break those rules?
 
-First, run the development server:
+- Use of a recommender algorithm to figure which content to promote to the user. Going to be using a white label finetuned on our dataset with the hopes of creating an in-house algorithm later, might be really worth it. Also use this to populate the featured tabs for user, we want to show a featured user whom you might follow as we have limited space in that tab.
+- Recommended creators
+- Personalized feed
+- Featured creators
+- Featured content
+- Content discovery
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## What to put in the featured tab?
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/zeit/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on ZEIT Now
-
-The easiest way to deploy your Next.js app is to use the [ZEIT Now Platform](https://zeit.co/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## What to put in the explore page?

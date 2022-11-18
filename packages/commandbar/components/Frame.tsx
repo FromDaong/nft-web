@@ -6,11 +6,12 @@ export default function CommandbarFrame({ onClose }: { onClose: () => void }) {
   return (
     <>
       <div
-        className="fixed z-40 w-screen h-screen bg-gray-900/20 backdrop-blur-sm"
+        className="fixed z-50 w-screen h-screen bg-gray-900/20 backdrop-blur-sm"
+        style={{ zIndex: 1000 }}
         onClick={onClose}
       />
       <div
-        className="fixed z-50 w-full max-w-xl bg-white border divide-y rounded-xl drop-shadow-lg border-gray-900/30 divide-gray-900/10"
+        className="fixed z-50 w-full max-w-xl bg-white border divide-y rounded-xl"
         style={{
           top: "50%",
           left: "50%",

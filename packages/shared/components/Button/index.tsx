@@ -1,4 +1,4 @@
-import { styled } from "@stitches/react";
+import { styled } from "@styles/theme";
 
 export const TriggerButton = styled("p", {
   fontWeight: "500",
@@ -9,13 +9,58 @@ export const TriggerButton = styled("p", {
 });
 
 export const Button = styled("button", {
-  padding: "8px 16px",
+  padding: "10px 20px",
   alignItems: "center",
-  gap: "6px",
+  gap: "8px",
   display: "flex",
   borderRadius: "12px",
   boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.01)",
   fontFamily: "'Helvetica', sans-serif",
+  fontWeight: "600",
+  justifyContent: "center",
+  alignContent: "center",
+
+  variants: {
+    appearance: {
+      default: {
+        backgroundColor: "$surface",
+        color: "$textContrast",
+      },
+      primary: {
+        backgroundColor: "$textContrast",
+        color: "$surface",
+      },
+      surface: {
+        backgroundColor: "$elementOnSurface",
+        color: "$textContrast",
+      },
+      subtle: {
+        backgroundColor: "$surfaceOnSurface",
+      },
+    },
+    outlined: {
+      true: {
+        border: "1px solid $subtleBorder",
+        backgroundColor: "transparent",
+        color: "$textContrast",
+      },
+    },
+    fullWidth: {
+      true: {
+        width: "100%",
+      },
+    },
+    link: {
+      true: {
+        backgroundColor: "transparent",
+        color: "$textContrast",
+        padding: 0,
+      },
+    },
+  },
+  defaultVariants: {
+    appearance: "primary",
+  },
 });
 
 export const WhiteButton = styled(Button, {

@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import {
-  getTreatMarketplaceContract,
   getTreatMarketReaderContract,
-  getResaleOrder,
-  getOpenOrdersForNft,
   getOrdersInfoForNftRange,
 } from "../../../packages/treat/utils";
 import useTreat from "./useTreat";
@@ -12,12 +9,10 @@ const useGetAllOpenOrders = (maxId: number) => {
   const [orderBook, setOrderBook] = useState(null);
 
   const treat = useTreat();
-  const treatMarketplaceContract = getTreatMarketplaceContract(treat);
   const treatMarketReaderContract = getTreatMarketReaderContract(treat);
 
   useEffect(() => {
     async function fetchAllOrders() {
-      const sales = [];
       const rangeArray = [];
 
       for (let i = 1; i <= Number(maxId); i++) {
@@ -36,8 +31,8 @@ const useGetAllOpenOrders = (maxId: number) => {
 
       const orders = await Promise.all(
         rangeArray.map((a) => {
-          return new Promise(async (resolve, reject) => {
-            const order = await getOrdersInfoForNftRange(
+          return new Promise((resolve) => {
+            const order = getOrdersInfoForNftRange(
               treatMarketReaderContract,
               a.min,
               a.max

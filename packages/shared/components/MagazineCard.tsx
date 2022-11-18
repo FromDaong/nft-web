@@ -1,13 +1,13 @@
 import { Magazine } from "@prisma/client";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { ColorExtractor } from "react-color-extractor";
 import OptimizedImage from "./OptimizedImage";
 
 export default function MagazineCard(mag: Magazine) {
   const [colorMap, setColorMap] = useState([]);
-  const [linear_gradient, setLinearBackground] = useState("");
+  const [, setLinearBackground] = useState("");
 
   const hexToRgb = (hex: string) => {
     console.log(hex);
