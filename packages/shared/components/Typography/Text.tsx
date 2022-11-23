@@ -3,6 +3,7 @@ import { styled } from "@styles/theme";
 export const BoldLink = styled("a", {
   fontWeight: "600 !important",
   color: "$textContrast",
+  cursor: "pointer",
   variants: {
     hover: {
       true: {},
@@ -69,6 +70,11 @@ export const Text = styled("span", {
         color: "$textContrast",
       },
     },
+    weight: {
+      bold: {
+        fontWeight: "bold",
+      },
+    },
   },
 });
 
@@ -79,7 +85,7 @@ export const SmallText = styled("p", {
 export const ImportantSmallText = styled("span", {
   fontSize: "14px",
   color: "#121212",
-  fontWeight: "500",
+  fontWeight: "700",
 });
 
 export const Username = styled("span", {
@@ -91,3 +97,9 @@ export const Span = styled("span", {
   fontSize: "inherit",
   fontWeight: "inherit",
 });
+
+export const JustifiedSpan = styled("span", {
+  marginX: "4px",
+});
+
+export const Bull = () => <JustifiedSpan>&bull;</JustifiedSpan>;

@@ -5,6 +5,12 @@ export type Context = { prisma: PrismaClient; currentUserEmail: string };
 
 export default class TreatCore {
   web3: TreatWeb3Engine;
+  services = {
+    timeline: process.env.TIMELINE_SERVICE,
+    user: process.env.USER_SERVICE,
+    feed: process.env.FEED_SERVICE,
+    trit: process.env.TREAT_SERVICE,
+  };
 
   /**
    * @description Trigger analytics event & logger then sync.

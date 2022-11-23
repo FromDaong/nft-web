@@ -40,7 +40,7 @@ export const Button = styled("button", {
     },
     outlined: {
       true: {
-        border: "1px solid $subtleBorder",
+        border: "2px solid $subtleBorder",
         backgroundColor: "transparent",
         color: "$textContrast",
       },

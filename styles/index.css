@@ -28,6 +28,7 @@
 
 html {
   background-color: var(--colors-surface);
+  overflow-x: hidden;
 }
 
 .scheme-dark {

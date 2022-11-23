@@ -187,6 +187,8 @@ export const lightTheme = createTheme("light", {
     ...baseColors,
     overlay: "#0000000a",
     overlayContrast: "#696969de",
+    shadow:
+      "0px 0px 2px rgba(0, 0, 0, 0.15), 0px 2px 5px rgba(0, 0, 0, 0.05), 0px 8px 40px rgba(0, 0, 0, 0.04)",
     accentBase: "$purple1",
     accentBgSubtle: "$purple2",
     accentBg: "$purple3",
@@ -212,6 +214,19 @@ export const lightTheme = createTheme("light", {
     successSolidHover: "$teal10",
     successText: "$teal11",
     successTextContrast: "$teal12",
+
+    errorBase: "$red1",
+    errorBgSubtle: "$red2",
+    errorBg: "$red3",
+    errorBgHover: "$red4",
+    errorBgActive: "$red5",
+    errorLine: "$red6",
+    errorBorder: "$red7",
+    errorBorderHover: "$red8",
+    errorSolid: "$red9",
+    errorSolidHover: "$red10",
+    errorText: "$red11",
+    errorTextContrast: "$red12",
 
     surface: "$gray1",
     surfaceOnSurface: "$gray2",

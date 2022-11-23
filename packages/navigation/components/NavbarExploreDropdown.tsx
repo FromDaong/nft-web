@@ -7,7 +7,10 @@ import {
   NavDropdownContainer,
   NavDropdownItem,
 } from "./DropdownContainer";
-import { BoldLink } from "@packages/shared/components/Typography/Text";
+import {
+  BoldLink,
+  ImportantSmallText,
+} from "@packages/shared/components/Typography/Text";
 
 const ExploreDropdownLinks = [
   {
@@ -37,14 +40,14 @@ const NavbarExploreDropdown = () => (
     </DropdownMenu.Trigger>
     <DropdownMenu.Portal>
       <DropdownContent>
-        <NavDropdownContainer>
+        <NavDropdownContainer className="drop-shadow-2xl">
           {ExploreDropdownLinks.map((link) => (
             <Link key={link.link} href={link.link}>
-              <BoldLink className="w-full h-full">
-                <NavDropdownItem className="px-4 py-2">
-                  {link.label}
+              <a>
+                <NavDropdownItem>
+                  <ImportantSmallText> {link.label}</ImportantSmallText>
                 </NavDropdownItem>
-              </BoldLink>
+              </a>
             </Link>
           ))}
         </NavDropdownContainer>
