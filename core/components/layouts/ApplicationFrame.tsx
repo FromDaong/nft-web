@@ -51,7 +51,10 @@ const Frame = styled("div", {
   position: "relative",
 });
 
-export default function ApplicationFrame({ children }: ComponentBasicProps) {
+export default function ApplicationFrame({
+  children,
+  layout,
+}: ComponentBasicProps & { layout: "normal" | "collapse" }) {
   const tabs = [
     {
       label: "Discover",
@@ -77,64 +80,72 @@ export default function ApplicationFrame({ children }: ComponentBasicProps) {
 
   return (
     <Frame className="relative flex max-w-6xl mx-auto">
-      <Sidebar className="sticky top-0 divide-y">
-        <div className="flex flex-col w-full gap-4 py-2">
-          {tabs.map((t) => (
-            <Link key={t.href} href={`/discover${t.href}`}>
-              <a
-                key={t.href}
-                className={`px-4 py-1 rounded-xl ${
-                  isActive(t.href) ? "text-pink-600" : ""
-                } hover:bg-gray-100 flex items-center gap-4 text-2xl font-bold`}
-              >
-                {t.icon}
-                <span>{t.label}</span>
-              </a>
-            </Link>
-          ))}
-        </div>
-        <FeaturedFrame>
-          <h4 className="font-semibold">
-            <MutedText>Featured trit creators</MutedText>
-          </h4>
-          {new Array(5).fill(5).map((i) => (
-            <div key={i} className="flex items-center gap-4">
-              <Avatar />
-              <div>
-                <Username>@kamfeskaya</Username>
-                <MutedText>
-                  <SmallText>Tatenda Christopher</SmallText>
-                </MutedText>
-              </div>
-            </div>
-          ))}
-          <div className="mt-2">
-            <BoldLink className="text-pink-500">See more</BoldLink>
+      {layout === "normal" && (
+        <Sidebar className="sticky top-0 divide-y">
+          <div className="flex flex-col w-full gap-4 py-2">
+            {tabs.map((t) => (
+              <Link key={t.href} href={`/discover${t.href}`}>
+                <a
+                  key={t.href}
+                  className={`px-4 py-1 rounded-xl ${
+                    isActive(t.href) ? "text-pink-600" : ""
+                  } hover:bg-gray-100 flex items-center gap-4 text-2xl font-bold`}
+                >
+                  {t.icon}
+                  <span>{t.label}</span>
+                </a>
+              </Link>
+            ))}
           </div>
-        </FeaturedFrame>
-        <FeaturedFrame>
-          <h4 className="font-semibold">
-            <MutedText>Trending livestreams</MutedText>
-          </h4>
-          {new Array(5).fill(5).map((i) => (
-            <div key={i} className="flex items-center gap-4">
-              <LivestreamingAvatar />
-              <div className="w-2/3">
-                <p className="ellipsis truncate ...">
-                  <BoldLink>Come hang out with your boy on this thing</BoldLink>
-                </p>
-                <MutedText>
-                  <SmallText>@kamfeskaya</SmallText>
-                </MutedText>
+          <FeaturedFrame>
+            <h4 className="font-semibold">
+              <MutedText>Featured trit creators</MutedText>
+            </h4>
+            {new Array(5).fill(5).map((i) => (
+              <div key={i} className="flex items-center gap-4">
+                <Avatar />
+                <div>
+                  <Username>@kamfeskaya</Username>
+                  <MutedText>
+                    <SmallText>Tatenda Christopher</SmallText>
+                  </MutedText>
+                </div>
               </div>
+            ))}
+            <div className="mt-2">
+              <BoldLink className="text-pink-500">See more</BoldLink>
             </div>
-          ))}
-          <div className="mt-2">
-            <BoldLink className="text-pink-500">See more</BoldLink>
-          </div>
-        </FeaturedFrame>
-      </Sidebar>
-      <Main>
+          </FeaturedFrame>
+          <FeaturedFrame>
+            <h4 className="font-semibold">
+              <MutedText>Trending livestreams</MutedText>
+            </h4>
+            {new Array(5).fill(5).map((i) => (
+              <div key={i} className="flex items-center gap-4">
+                <LivestreamingAvatar />
+                <div className="w-2/3">
+                  <p className="ellipsis truncate ...">
+                    <BoldLink>
+                      Come hang out with your boy on this thing
+                    </BoldLink>
+                  </p>
+                  <MutedText>
+                    <SmallText>@kamfeskaya</SmallText>
+                  </MutedText>
+                </div>
+              </div>
+            ))}
+            <div className="mt-2">
+              <BoldLink className="text-pink-500">See more</BoldLink>
+            </div>
+          </FeaturedFrame>
+        </Sidebar>
+      )}
+      {layout === "collapse" && <></>}
+      <Main
+        className="flex-1"
+        style={layout === "collapse" && { maxWidth: "100%" }}
+      >
         <ApplicationChildrenContainer className="divide-y divide-gray-100">
           {children}
         </ApplicationChildrenContainer>

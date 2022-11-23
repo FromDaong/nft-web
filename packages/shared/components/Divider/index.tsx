@@ -20,11 +20,11 @@ export const ShortDivider = ({ dir }: { dir: "vertical" | "horizontal" }) => {
 
 export const Divider = ({ dir }: { dir: "vertical" | "horizontal" }) => {
   return (
-    <div className="w-full py-2">
+    <div className="w-full my-2">
       <StraightLine
         className={`${
           dir === "horizontal"
-            ? "w-full my-auto border-l border"
+            ? "w-full my-auto border-t my-8"
             : "w-full mx-auto border-t"
         }`}
       />

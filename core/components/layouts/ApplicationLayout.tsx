@@ -2,9 +2,7 @@ import { Container } from "@packages/shared/components/Container";
 import { styled } from "@styles/theme";
 import { ComponentBasicProps } from "core/TreatCore";
 
-const ApplicationChildrenContainer = styled("div", {
-  marginTop: "12px",
-});
+const ApplicationChildrenContainer = styled("div", {});
 
 export default function ApplicationLayout({ children }: ComponentBasicProps) {
   return (

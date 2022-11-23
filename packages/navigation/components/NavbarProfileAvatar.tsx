@@ -42,7 +42,7 @@ const NavbarProfileAvatar = () => {
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownContent>
-          <DropdownContainer>
+          <DropdownContainer className="drop-shadow-2xl">
             <DropdownMenu.DropdownMenuGroup>
               <DropdownMenu.DropdownMenuItem>
                 <WalletConnectButton />
