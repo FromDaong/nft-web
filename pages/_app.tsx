@@ -16,6 +16,7 @@ import { SessionProvider } from "next-auth/react";
 import { useDeveloperTools } from "@packages/hooks";
 import { useEffect } from "react";
 import Onboarding from "@packages/ikaros/onboarding";
+import FollowersModal from "@packages/modals/FollowersModal";
 
 const progress = new ProgressBar({
   size: 3,
@@ -63,6 +64,9 @@ function MyApp({
                 content="Treat is an exclusive platform for creators to sell NFTs. Hold $TREAT to have a say on which creators are chosen & new platform features."
               />
             </Head>
+            {
+              // /<FollowersModal />
+            }
             <UniversalCommandbar />
             <Onboarding config={{}} isOpen={false} />
             <Navbar />

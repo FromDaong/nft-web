@@ -49,7 +49,7 @@ const NavbarProfileAvatar = () => {
               </DropdownMenu.DropdownMenuItem>
             </DropdownMenu.DropdownMenuGroup>
             <DropdownMenu.DropdownMenuGroup className="py-2 mt-2">
-              <Link href={"/account/upgrade"}>
+              <Link href={"/settings/upgrade"}>
                 <a>
                   <DropdownMenu.Item className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
                     <div className="flex items-center gap-4">

@@ -9,7 +9,10 @@ import dynamic from "next/dynamic";
 import NavbarExploreDropdown from "./components/NavbarExploreDropdown";
 
 import { styled } from "@styles/theme";
-import { BoldLink } from "@packages/shared/components/Typography/Text";
+import {
+  BoldLink,
+  ImportantSmallText,
+} from "@packages/shared/components/Typography/Text";
 
 const NavbarProfileAvatar = dynamic(
   () => import("./components/NavbarProfileAvatar")
@@ -68,15 +71,21 @@ export default function Navbar() {
 
             <div className="items-center hidden gap-8 md:flex">
               <Link href="/discover">
-                <BoldLink className="font-medium">Trits</BoldLink>
+                <a>
+                  <BoldLink className="font-medium">Trits</BoldLink>
+                </a>
               </Link>
               <Link href="#">
-                <BoldLink className="font-medium">
+                <ImportantSmallText className="font-medium">
                   <NavbarExploreDropdown />
-                </BoldLink>
+                </ImportantSmallText>
               </Link>
               <Link href="/magazine">
-                <BoldLink className="font-medium">Magazine</BoldLink>
+                <a>
+                  <ImportantSmallText className="font-medium">
+                    Magazine
+                  </ImportantSmallText>
+                </a>
               </Link>
             </div>
           </div>

@@ -127,9 +127,9 @@ export default function ProfileLayout(props: ComponentBasicProps) {
 
             <>
               <Text appearance={"hiContrast"} weight={"bold"}>
-                ${user.earnings}
+                {user.earnings}
               </Text>
-              <JustifiedSpan>Earnings</JustifiedSpan>
+              <JustifiedSpan>Collectors</JustifiedSpan>
             </>
           </Container>
           <Container variant={"unstyled"}>

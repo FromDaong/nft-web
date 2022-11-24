@@ -15,7 +15,7 @@ export default function PostType() {
     <ApplicationLayout>
       <SEOHead title="Create a new post" />
       <div className="grid max-w-6xl grid-cols-3 pt-12 mx-auto">
-        <PostMediaBox className="col-span-3 lg:col-span-2">
+        <PostMediaBox className="col-span-3 lg:col-span-2 shadow">
           <Heading size="sm" className="mb-4">
             Let's create trits for you subscribers.
           </Heading>
