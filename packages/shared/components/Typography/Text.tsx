@@ -59,7 +59,7 @@ export const LegibleText = styled("span", {
 
 export const Text = styled("span", {
   fontSize: "15px",
-  color: "$text",
+  color: "$textContrast",
 
   variants: {
     appearance: {
@@ -91,6 +91,7 @@ export const ImportantSmallText = styled("span", {
 export const Username = styled("span", {
   color: "#121212",
   fontWeight: "600",
+  cursor: "pointer",
 });
 
 export const Span = styled("span", {

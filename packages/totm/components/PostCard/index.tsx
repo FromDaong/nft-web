@@ -12,6 +12,7 @@ import { BoldLink } from "@packages/shared/components/Typography/Text";
 import { useState } from "react";
 import Avatar from "@packages/shared/components/Avatar";
 import { ChatAltIcon, SaveIcon } from "@heroicons/react/outline";
+import Link from "next/link";
 
 export type Post = {
   id: string;
@@ -152,10 +153,12 @@ export default function PostCard() {
             style={{ display: "flex", columnGap: "12px", alignItems: "center" }}
           >
             <div>
-              <Username>@tate2301</Username>
-              <MutedParagraph>
-                <SmallText>12 min ago</SmallText>
-              </MutedParagraph>
+              <Link href={"/tate2301"}>
+                <a>
+                  <Username>@tate2301</Username>
+                </a>
+              </Link>
+              <SmallText>12 min ago</SmallText>
             </div>
           </div>
         </PostCardCreatorInfoContainer>
@@ -190,23 +193,7 @@ export default function PostCard() {
       </div>
 
       <div className="w-16 pb-16">
-        <div className="flex flex-col justify-between h-full gap-6">
-          <div className="flex flex-col items-center gap-6">
-            <PostCardAction>
-              <button className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                <BoldLink>
-                  <DotsHorizontalIcon className="w-6 h-6" />
-                </BoldLink>
-              </button>
-            </PostCardAction>
-            <PostCardAction>
-              <button className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                <BoldLink>
-                  <GiftIcon className="w-6 h-6" />
-                </BoldLink>
-              </button>
-            </PostCardAction>
-          </div>
+        <div className="flex flex-col justify-end h-full gap-6">
           <div className="flex flex-col items-center gap-6">
             <PostCardAction>
               <button className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
@@ -218,14 +205,14 @@ export default function PostCard() {
             <PostCardAction>
               <button className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
                 <BoldLink>
-                  <ChatAltIcon className="w-6 h-6" />
+                  <GiftIcon className="w-6 h-6" />
                 </BoldLink>
               </button>
             </PostCardAction>
             <PostCardAction>
               <button className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
                 <BoldLink>
-                  <SaveIcon className="w-6 h-6" />
+                  <DotsHorizontalIcon className="w-6 h-6" />
                 </BoldLink>
               </button>
             </PostCardAction>

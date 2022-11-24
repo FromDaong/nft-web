@@ -32,6 +32,7 @@ export const Overlay = styled("div", {
   height: "100%",
   borderRadius: "30px",
   backdropFilter: "blur(204px)",
+  zIndex: 300,
 });
 
 export const BenefitsCard = ({ title, description, user_type }) => {

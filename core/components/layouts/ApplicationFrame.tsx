@@ -54,7 +54,7 @@ const Frame = styled("div", {
 export default function ApplicationFrame({
   children,
   layout,
-}: ComponentBasicProps & { layout: "normal" | "collapse" }) {
+}: ComponentBasicProps & { layout?: "normal" | "collapse" }) {
   const tabs = [
     {
       label: "Discover",
@@ -80,7 +80,9 @@ export default function ApplicationFrame({
 
   return (
     <Frame className="relative flex max-w-6xl mx-auto">
-      {layout === "normal" && (
+      {layout === "collapse" ? (
+        <></>
+      ) : (
         <Sidebar className="sticky top-0 divide-y">
           <div className="flex flex-col w-full gap-4 py-2">
             {tabs.map((t) => (
@@ -141,10 +143,9 @@ export default function ApplicationFrame({
           </FeaturedFrame>
         </Sidebar>
       )}
-      {layout === "collapse" && <></>}
       <Main
         className="flex-1"
-        style={layout === "collapse" && { maxWidth: "100%" }}
+        style={layout === "collapse" ? { maxWidth: "100%" } : {}}
       >
         <ApplicationChildrenContainer className="divide-y divide-gray-100">
           {children}

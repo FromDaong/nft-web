@@ -71,7 +71,7 @@ class MyDocument extends Document {
             }}
           />
         </Head>
-        <Body>
+        <Body className="antialised">
           <Main />
           <NextScript />
           {false && (

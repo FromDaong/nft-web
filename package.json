@@ -12,7 +12,12 @@
     "prisma-studio": "prisma studio",
     "db:update-schema": "prisma db push",
     "db:get-schema": "prisma db pull",
-    "commit": "cz"
+    "commit": "cz",
+    "docz:dev": "docz dev",
+    "docz:build": "docz build",
+    "docz:serve": "docz build && docz serve",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@ably-labs/react-hooks": "^2.0.9",
@@ -156,6 +161,15 @@
     "zod": "^3.19.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.20.2",
+    "@storybook/addon-actions": "^6.5.13",
+    "@storybook/addon-essentials": "^6.5.13",
+    "@storybook/addon-interactions": "^6.5.13",
+    "@storybook/addon-links": "^6.5.13",
+    "@storybook/builder-webpack5": "^6.5.13",
+    "@storybook/manager-webpack5": "^6.5.13",
+    "@storybook/react": "^6.5.13",
+    "@storybook/testing-library": "^0.0.13",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
     "@types/jest": "^27.5.1",
@@ -164,6 +178,7 @@
     "@typescript-eslint/parser": "^5.12.1",
     "autoprefixer": "^10.4.2",
     "babel-jest": "^28.1.0",
+    "babel-loader": "^8.3.0",
     "commitizen": "^4.2.5",
     "eslint": "<8.0.0",
     "identity-obj-proxy": "^3.0.0",
