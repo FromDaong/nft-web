@@ -84,7 +84,6 @@ export const AvatarGroup = ({
         style={{
           borderRadius: "50%",
           border: "2px solid $subtleBorder",
-          marginLeft: "-6px",
           backgroundColor: "$elementOnSurface",
         }}
       />

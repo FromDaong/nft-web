@@ -78,7 +78,7 @@ export const Text = styled("span", {
   },
 });
 
-export const SmallText = styled("p", {
+export const SmallText = styled("span", {
   fontSize: "12px",
 });
 

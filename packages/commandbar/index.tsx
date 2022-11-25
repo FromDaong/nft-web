@@ -1,4 +1,5 @@
 import { ApplicationTheme } from "@packages/theme";
+import { styled } from "@styles/theme";
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 import { useDisclosure } from "../hooks";
@@ -71,6 +72,10 @@ export function UniversalCommandbar() {
   );
 }
 
+export default function Commandbar({ isOpen, onClose }: CommandbarProps) {
+  return <>{isOpen ? <CommandbarBase onClose={onClose} /> : null}</>;
+}
+
 export function CommandbarBase({ onClose }: { onClose: () => void }) {
   return (
     <div className="relative top-0 z-50">
@@ -79,6 +84,13 @@ export function CommandbarBase({ onClose }: { onClose: () => void }) {
   );
 }
 
-export default function Commandbar({ isOpen, onClose }: CommandbarProps) {
-  return <>{isOpen ? <CommandbarBase onClose={onClose} /> : null}</>;
-}
+export const useCommandbar = () => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
+  return {
+    Commandbar: <Commandbar isOpen={isOpen} onClose={onClose} />,
+    isOpen,
+    onClose,
+    onOpen,
+  };
+};

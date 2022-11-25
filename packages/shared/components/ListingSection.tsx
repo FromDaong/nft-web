@@ -16,7 +16,7 @@ export default function ListingSection({ title, href, children }) {
           </Link>
         </div>
       </div>
-      <div className="grid grid-cols-1 gap-8 mt-12 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 mt-12 md:grid-cols-2 lg:grid-cols-3">
         {children}
       </div>
     </div>

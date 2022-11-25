@@ -21,7 +21,13 @@ export class CommandbarSearch implements SearchManager {
     this.search_endpoints.fulltext = fulltext;
     this.search_endpoints.quick_search = quick_search;
   }
+
   quick_search(text: string): any[] {
     throw new Error("Method not implemented.");
   }
 }
+
+export const quick_actions: Array<{
+  label: string;
+  action: () => any;
+}> = [];

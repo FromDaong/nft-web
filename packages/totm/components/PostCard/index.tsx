@@ -11,7 +11,6 @@ import { DotsHorizontalIcon, GiftIcon } from "@heroicons/react/solid";
 import { BoldLink } from "@packages/shared/components/Typography/Text";
 import { useState } from "react";
 import Avatar from "@packages/shared/components/Avatar";
-import { ChatAltIcon, SaveIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 
 export type Post = {
