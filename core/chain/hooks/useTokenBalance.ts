@@ -6,13 +6,13 @@ import useBlock from "./useBlock";
 import { useMoralis } from "react-moralis";
 
 const useTokenBalance = (tokenAddress: string) => {
-  const [balance, setBalance] = useState(new BigNumber(0));
+  const [balance, setBalance] = useState(BigNumber.from(0));
   const { account, provider } = useMoralis();
   const block = useBlock();
 
   const fetchBalance = useCallback(async () => {
     const balance = await getBalance(provider as any, tokenAddress, account);
-    setBalance(new BigNumber(balance));
+    setBalance(BigNumber.from(balance));
   }, [account, provider, tokenAddress]);
 
   useEffect(() => {

@@ -18,8 +18,8 @@ const useSubscribe = (
 
   const treatSubscriptionContract = getTreatSubscriptionContract(treat);
 
-  const totalPrice = new BigNumber(totalSubUnits).multipliedBy(
-    new BigNumber(subPrice)
+  const totalPrice = BigNumber.from(totalSubUnits).multipliedBy(
+    BigNumber.from(subPrice)
   );
 
   const handleSubscribe = useCallback(async () => {

@@ -2,7 +2,6 @@ import * as Types from "./types";
 
 import { SUBTRACT_GAS_LIMIT, contractAddresses } from "./constants";
 
-import BigNumber from "bignumber.js/bignumber";
 import CreatorMartAbi from "./abi/creatormart.json";
 import GenericBep20 from "./abi/erc20.json";
 import MasterMelonFarmerAbi from "./abi/mastermelonfarmer.json";
@@ -245,7 +244,7 @@ export class Contracts implements Types.IContracts {
     }
 
     if (txOptions.value) {
-      txOptions.value = new BigNumber(txOptions.value).toFixed(0);
+      txOptions.value = BigNumber.from(txOptions.value).toFixed(0);
     } else {
       txOptions.value = "0";
     }

@@ -8,14 +8,14 @@ import BigNumber from "bignumber.js";
 import useTreat from "./useTreat";
 
 const useGetSubscriptionCost = (address: string) => {
-  const [subscriptionCost, setSubscriptionCost] = useState(new BigNumber(0));
+  const [subscriptionCost, setSubscriptionCost] = useState(BigNumber.from(0));
   const treat = useTreat();
   const subscriptionContract = getTreatSubscriptionContract(treat);
 
   const fetchSubCost = useCallback(async () => {
     const subscriptionCost = await getSubCost(subscriptionContract, address);
 
-    setSubscriptionCost(new BigNumber(subscriptionCost));
+    setSubscriptionCost(BigNumber.from(subscriptionCost));
   }, [address, treat]);
 
   useEffect(() => {

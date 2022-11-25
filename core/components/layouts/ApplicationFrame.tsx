@@ -91,11 +91,6 @@ export default function ApplicationFrame({
       icon: <ChatAltIcon className="w-5 h-5" />,
     },
     {
-      label: "Exchange",
-      href: "/dex",
-      icon: <CashIcon className="w-5 h-5" />,
-    },
-    {
       label: "Profile",
       href: `/${meta.username}`,
       icon: <UserIcon className="w-5 h-5" />,

@@ -8,13 +8,13 @@ import BigNumber from "bignumber.js";
 import useTreat from "./useTreat";
 
 const useGetSubscriberSetCost = (id: number) => {
-  const [nftSetCost, setNftSetCost] = useState(new BigNumber(0));
+  const [nftSetCost, setNftSetCost] = useState(BigNumber.from(0));
   const treat = useTreat();
   const subscriberMartContract = getSubscriberMartContract(treat);
 
   const fetchSetCost = useCallback(async () => {
     const nftSetCost = await getSubscriberSetPrice(subscriberMartContract, id);
-    setNftSetCost(new BigNumber(nftSetCost));
+    setNftSetCost(BigNumber.from(nftSetCost));
   }, [id, treat]);
 
   useEffect(() => {

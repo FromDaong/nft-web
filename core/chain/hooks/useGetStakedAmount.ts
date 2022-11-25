@@ -8,7 +8,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
 import useTreat from "./useTreat";
 
-const useGetStakedAmount = (pid: number, v1: boolean) => {
+const useGetStakedAmount = (pid: number, v1?: boolean) => {
   const { account } = useMoralis();
   const treat = useTreat();
   const [stakedAmount, setStakedAmount] = useState(null);

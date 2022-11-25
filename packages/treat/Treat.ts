@@ -1,6 +1,5 @@
-import { Account } from "./lib/accounts.js";
-import BigNumber from "bignumber.js";
-import { Contracts } from "./lib/contracts.js";
+import { Account } from "./lib/accounts";
+import { Contracts } from "./lib/contracts";
 import Web3 from "web3";
 import { contractAddresses } from "./lib/constants";
 
@@ -83,9 +82,5 @@ export class Treat {
         newAccount ? newAccount.address : null
       }`);
     }
-  }
-
-  toBigN(a) {
-    return new BigNumber(a);
   }
 }
