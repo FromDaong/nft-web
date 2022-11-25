@@ -37,6 +37,9 @@ export const Button = styled("button", {
       subtle: {
         backgroundColor: "$surfaceOnSurface",
       },
+      unstyled: {
+        padding: 0,
+      },
     },
     outlined: {
       true: {

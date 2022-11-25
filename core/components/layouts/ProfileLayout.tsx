@@ -19,21 +19,21 @@ import { useRouter } from "next/router";
 
 const tabs = [
   {
-    label: "Timeline",
+    label: "Subscription Content",
     href: "",
   },
-  {
+  /*{
     label: "Trits & mentions",
     href: "/trits",
-  },
+  },*/
   {
     label: "Marketplace",
     href: "/nfts",
   },
-  {
+  /*{
     label: "Curated",
     href: "/curated",
-  },
+  },*/
 ];
 
 const followers = [
@@ -55,7 +55,7 @@ const AvatarContainer = styled("div", {
   width: "128px",
   position: "absolute",
   bottom: "0",
-  transform: "translateY(36px)",
+  transform: "translate(36px, 36px)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -70,7 +70,6 @@ const UserHeader = () => {
         className="w-full"
         style={{
           height: "256px",
-          width: "100vw",
           background: "linear-gradient(220.55deg, #FFED46 0%, #FF7EC7 100%)",
         }}
       >
@@ -107,7 +106,7 @@ export default function ProfileLayout(props: ComponentBasicProps) {
       <UserHeader />
 
       <FluidContainer className="mt-[26px] flex justify-between">
-        <ContextualContainer className="flex flex-col max-w-lg gap-y-4">
+        <ContextualContainer className="flex flex-col max-w-lg gap-y-4 px-4">
           <Heading size="sm">{user.displayName}</Heading>
           <Container variant={"unstyled"} className="flex w-full">
             <>
@@ -138,7 +137,7 @@ export default function ProfileLayout(props: ComponentBasicProps) {
           <Text>{user.bio}</Text>
           <Container variant={"unstyled"}>
             <Container className="flex gap-x-4">
-              <ProfileDropdown />
+              <ProfileDropdown user={user} />
               <Button className="drop-shadow-xl">Follow</Button>
             </Container>
           </Container>
@@ -156,7 +155,7 @@ export default function ProfileLayout(props: ComponentBasicProps) {
           ))}
         </TabsContainer>
       </FluidContainer>
-      <FluidContainer justified className="flex mt-[26px]">
+      <FluidContainer justified className="flex flex-col mt-[26px]">
         {props.children}
       </FluidContainer>
     </>

@@ -1,21 +1,34 @@
-import CommandbarFooter from "./Footer";
+import { Text } from "@packages/shared/components/Typography/Text";
+import { styled } from "@styles/theme";
 import CommandbarResults from "./Results";
 import CommandbarSearch from "./Search";
+
+const CommandbarOverlay = styled("div", {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  height: "100vh",
+  width: "100vw",
+  backgroundColor: "$overlayContrast",
+});
 
 export default function CommandbarFrame({ onClose }: { onClose: () => void }) {
   return (
     <>
-      <div
-        className="fixed z-50 w-screen h-screen bg-gray-900/20 backdrop-blur-sm"
+      <CommandbarOverlay
+        className="backdrop-blur-sm"
         style={{ zIndex: 1000 }}
         onClick={onClose}
       />
       <div
-        className="fixed z-50 w-full max-w-xl bg-white border divide-y rounded-xl"
+        className="fixed w-full max-w-xl bg-white border divide-y rounded-xl shadow-xl"
         style={{
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
+          zIndex: 2000,
         }}
       >
         <div className="">
@@ -23,15 +36,12 @@ export default function CommandbarFrame({ onClose }: { onClose: () => void }) {
             <CommandbarSearch />
           </div>
           <div className="flex flex-col w-full gap-2 p-4" id="results">
-            <h6 className="text-sm text-gray-900/40">Content</h6>
+            <Text>Content</Text>
             <CommandbarResults label="Content" />
-            <h6 className="text-sm text-gray-900/40">Creators</h6>
+            <Text>Creators</Text>
             <CommandbarResults label="Creators" />
-            <h6 className="text-sm text-gray-900/40">Commands</h6>
+            <Text>Commands</Text>
             <CommandbarResults label="Commands" />
-          </div>
-          <div className="w-full p-3 text-sm" id="footer">
-            <CommandbarFooter />
           </div>
         </div>
       </div>

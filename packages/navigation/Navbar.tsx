@@ -13,6 +13,9 @@ import {
   BoldLink,
   ImportantSmallText,
 } from "@packages/shared/components/Typography/Text";
+import { Button } from "@packages/shared/components/Button";
+import { SearchCircleIcon, SearchIcon } from "@heroicons/react/outline";
+import SearchTrigger from "@packages/commandbar/components/SearchTrigger";
 
 const NavbarProfileAvatar = dynamic(
   () => import("./components/NavbarProfileAvatar")
@@ -58,7 +61,7 @@ export default function Navbar() {
         <div className="absolute top-0 left-0 z-20 w-full h-full" />
         <div className="relative z-30 flex items-center justify-between max-w-6xl py-3 mx-auto">
           <div className="flex items-center gap-8">
-            <Link href="/">
+            <Link href={isConnected ? "/discover" : "/"}>
               <a className="relative w-8 h-8 text-3xl font-medium">
                 <Image
                   src={Logo}
@@ -69,32 +72,34 @@ export default function Navbar() {
               </a>
             </Link>
 
-            <div className="items-center hidden gap-8 md:flex">
-              <Link href="/discover">
-                <a>
-                  <BoldLink className="font-medium">Trits</BoldLink>
-                </a>
-              </Link>
-              <Link href="#">
-                <ImportantSmallText className="font-medium">
-                  <NavbarExploreDropdown />
-                </ImportantSmallText>
-              </Link>
-              <Link href="/magazine">
-                <a>
+            {false && (
+              <div className="items-center hidden gap-8 md:flex">
+                <Link href="/discover">
+                  <a>
+                    <BoldLink className="font-medium">Trits</BoldLink>
+                  </a>
+                </Link>
+                <Link href="#">
                   <ImportantSmallText className="font-medium">
-                    Magazine
+                    <NavbarExploreDropdown />
                   </ImportantSmallText>
-                </a>
-              </Link>
+                </Link>
+                <Link href="/magazine">
+                  <a>
+                    <ImportantSmallText className="font-medium">
+                      Magazine
+                    </ImportantSmallText>
+                  </a>
+                </Link>
+              </div>
+            )}
+          </div>
+
+          <div className="gap-4 flex">
+            <SearchTrigger trigger="navbar" />
+            <div className="flex md:hidden">
+              <HamburgerMenuIcon className="w-8 h-8 p-2 border-2 rounded-full" />
             </div>
-          </div>
-
-          <div className="flex md:hidden">
-            <HamburgerMenuIcon className="w-8 h-8 p-2 border-2 rounded-full" />
-          </div>
-
-          <div className="hidden gap-4 md:flex">
             {
               // eslint-disable-next-line no-constant-condition
               isConnected ? (

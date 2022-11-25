@@ -185,8 +185,10 @@ export const darkTheme = createTheme("dark", {
 export const lightTheme = createTheme("light", {
   colors: {
     ...baseColors,
-    overlay: "#0000000a",
+    overlay: "#00000053",
     overlayContrast: "#696969de",
+    overlayInvert: "#ffffff0a",
+    overlayInvertContrast: "#ffffff2a",
     shadow:
       "0px 0px 2px rgba(0, 0, 0, 0.15), 0px 2px 5px rgba(0, 0, 0, 0.05), 0px 8px 40px rgba(0, 0, 0, 0.04)",
     accentBase: "$purple1",

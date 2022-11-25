@@ -1,9 +1,11 @@
 import { ChevronDownIcon } from "@heroicons/react/outline";
 import { DropdownContent } from "@packages/navigation/components/DropdownContainer";
+import { profile_utils } from "@packages/profile";
 import { Button } from "@packages/shared/components/Button";
 import { ImportantSmallText } from "@packages/shared/components/Typography/Text";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { styled } from "@styles/theme";
+import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
 
 export const DropdownMenuItem = styled(DropdownMenu.Item, {
@@ -15,7 +17,14 @@ export const DropdownMenuItem = styled(DropdownMenu.Item, {
   },
 });
 
-export const ProfileDropdown = () => {
+export const ProfileDropdown = (user: { username: string }) => {
+  const { address } = useAccount();
+  const router = useRouter();
+  const share_profile = () => {
+    return console.log(
+      profile_utils(router.query.username).share_profile(address)
+    );
+  };
   return (
     <>
       <DropdownMenu.Root>
@@ -44,7 +53,7 @@ export const ProfileDropdown = () => {
               <DropdownMenuItem>
                 <ImportantSmallText>Send a tip</ImportantSmallText>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={share_profile}>
                 <ImportantSmallText>Share</ImportantSmallText>
               </DropdownMenuItem>
             </DropdownMenu.Group>

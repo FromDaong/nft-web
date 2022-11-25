@@ -1,10 +1,14 @@
 import { CuratedNFt } from "@packages/post/CuratedPost";
 import { Post } from "@packages/post/types";
 import { SEOHead } from "@packages/seo/page";
+import {
+  BoldLink,
+  DisabledLink,
+} from "@packages/shared/components/Typography/Text";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
-import ApplicationLayout from "core/components/layouts/ApplicationLayout";
-import ProfileLayout from "core/components/layouts/ProfileLayout";
-import { useRouter } from "next/router";
+import Link from "next/link";
+import NFTDropdownSort from "packages/navigation/components/NFTDropdownFilter";
+import { InfinityScrollListing } from "packages/shared/components/ListingSection";
 
 const newCurated: Post = {
   name: "Welcome to the Tritters",
@@ -36,18 +40,19 @@ const newCurated: Post = {
   timestamp: 782898893,
 };
 
-export default function UserProfile() {
-  const router = useRouter();
+export default function NFTS() {
   return (
-    <ApplicationLayout>
-      <ApplicationFrame>
-        <ProfileLayout>
-          <SEOHead title={router.query.username + " - Trit"} />
-          <div className="flex flex-noshrink flex-wrap">
-            <CuratedNFt {...newCurated} />
-          </div>
-        </ProfileLayout>
-      </ApplicationFrame>
-    </ApplicationLayout>
+    <ApplicationFrame>
+      <SEOHead title="Explore NFTs" />
+      <div className="w-full py-8">
+        <InfinityScrollListing>
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
+            <div key={i} className="col-span-1">
+              <CuratedNFt inGrid {...newCurated} />
+            </div>
+          ))}
+        </InfinityScrollListing>
+      </div>
+    </ApplicationFrame>
   );
 }

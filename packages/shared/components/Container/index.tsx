@@ -2,8 +2,6 @@ import { styled } from "@styles/theme";
 import { ReactNode } from "react";
 
 export const Container = styled("div", {
-  margin: "auto",
-
   variants: {
     variant: {
       unstyled: {
@@ -22,11 +20,6 @@ export const Container = styled("div", {
       },
     },
   },
-  compoundVariants: [
-    {
-      variant: "unstyled",
-    },
-  ],
 });
 
 export const ContextualContainer = styled("div", {
@@ -83,7 +76,7 @@ export const FluidContainerBase = ({
   state?: "invert" | "normal";
   fullscreen?: boolean;
 }) => {
-  return <div className={"max-w-6xl mx-auto " + className}>{children}</div>;
+  return <div className={"max-w-6xl" + className}>{children}</div>;
 };
 
 export const FluidContainer = styled(FluidContainerBase, {
