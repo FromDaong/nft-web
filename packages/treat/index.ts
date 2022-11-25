@@ -1,9 +1,4 @@
-import BigNumber from "bignumber.js/bignumber";
+import { BigNumber } from "ethers";
 
-BigNumber.config({
-  EXPONENTIAL_AT: 1000,
-  DECIMAL_PLACES: 80,
-});
-
-export { Treat } from "./Treat.js";
+export { Treat } from "./Treat";
 export { BigNumber };

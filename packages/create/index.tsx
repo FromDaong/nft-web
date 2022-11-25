@@ -1,8 +1,4 @@
-import {
-  CurrencyDollarIcon,
-  IdentificationIcon,
-  LockClosedIcon,
-} from "@heroicons/react/outline";
+import { CurrencyDollarIcon, LockClosedIcon } from "@heroicons/react/outline";
 import CreateOptionCard from "./CreateOptionCard";
 
 export const types_of_posts = [
@@ -19,13 +15,6 @@ export const types_of_posts = [
       "Create video, music and picture collectibles and list them on the Trit Marketplace. ",
     url: "/create/collectible",
     icon: <CurrencyDollarIcon className="w-12 h-12" />,
-  },
-  {
-    title: "Trit collection",
-    description:
-      "Create special edition trits that can be used as passes for events or promotions you host.",
-    url: "/create/collection",
-    icon: <IdentificationIcon className="w-12 h-12" />,
   },
 ];
 

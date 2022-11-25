@@ -72,27 +72,20 @@ export default function Navbar() {
               </a>
             </Link>
 
-            {false && (
-              <div className="items-center hidden gap-8 md:flex">
-                <Link href="/discover">
-                  <a>
-                    <BoldLink className="font-medium">Trits</BoldLink>
-                  </a>
-                </Link>
-                <Link href="#">
+            <div className="items-center hidden gap-8 md:flex">
+              <Link href="https://treatdao.com/farms">
+                <a>
+                  <BoldLink className="font-medium">Farms</BoldLink>
+                </a>
+              </Link>
+              <Link href="/magazine">
+                <a>
                   <ImportantSmallText className="font-medium">
-                    <NavbarExploreDropdown />
+                    Magazine
                   </ImportantSmallText>
-                </Link>
-                <Link href="/magazine">
-                  <a>
-                    <ImportantSmallText className="font-medium">
-                      Magazine
-                    </ImportantSmallText>
-                  </a>
-                </Link>
-              </div>
-            )}
+                </a>
+              </Link>
+            </div>
           </div>
 
           <div className="gap-4 flex">

@@ -24,7 +24,7 @@ const useGetNftV1Balance = (nftArray) => {
         id
       );
       // @ts-ignore
-      setBalance(new BigNumber(balance));
+      setBalance(BigNumber.from(balance));
     },
     [account, treat]
   );

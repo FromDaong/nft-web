@@ -1,3 +1,8 @@
+import useApproveContract from "@hooks/approveContract";
+import useGetPendingMelons from "@hooks/useGetPendingMelons";
+import useGetStakedAmount from "@hooks/useGetStakedAmount";
+import useStakeFarms from "@hooks/useStakeFarms";
+import useUnstakeFarms from "@hooks/useUnstakeFarms";
 import { Input } from "@packages/form";
 import { Button } from "@packages/shared/components/Button";
 import { Container } from "@packages/shared/components/Container";
@@ -6,8 +11,49 @@ import {
   ImportantSmallText,
   Text,
 } from "@packages/shared/components/Typography/Headings";
+import { hasApprovedContract } from "@packages/treat/utils";
+import { useState } from "react";
 
-export default function StakeTreat() {
+export default function StakeTreat({ contract, treatBal, title, pid }) {
+  const hasApproved = contract && hasApprovedContract(pid);
+  const { onReward } = contract && useHarvestFarms(pid);
+  const { onApprove } = contract && useApproveContract(pid);
+  const { onStake } = contract && useStakeFarms(pid);
+  const { onUnstake: onV1Unstake } = contract && useUnstakeFarms(pid, true);
+  const { onUnstake } = contract && useUnstakeFarms(pid);
+  const pendingMelons = useGetPendingMelons(pid);
+  const v1StakedAmount = useGetStakedAmount(pid, true);
+  const stakedAmount = useGetStakedAmount(pid) || 0;
+  const [showPendingModal, setShowPendingModal] = useState(null);
+  const [showCompleteModal, setShowCompleteModal] = useState(null);
+  const [unstakeAmount, setUnstakeAmount] = useState(0);
+  const [stakeAmount, setStakeAmount] = useState(0);
+
+  const formattedV1StakedAmount =
+    v1StakedAmount && getBalanceNumber(v1StakedAmount);
+
+  const approveContract = () => {
+    setShowPendingModal(true);
+    onApprove()
+      .then((s) => {
+        setShowPendingModal(false);
+        if (s) {
+          setShowCompleteModal(true);
+        }
+      })
+      .catch((e) => console.error({ e }));
+  };
+
+  const actionWithModal = (action, param) => {
+    setShowPendingModal(true);
+    action(param)
+      .then(() => {
+        setShowPendingModal(false);
+        setShowCompleteModal(true);
+      })
+      .catch((e) => console.error({ e }));
+  };
+
   return (
     <Container
       css={{ border: "1px solid $subtleBorder", borderRadius: "30px" }}

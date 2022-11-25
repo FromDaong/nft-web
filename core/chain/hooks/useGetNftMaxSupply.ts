@@ -8,13 +8,13 @@ import BigNumber from "bignumber.js";
 import useTreat from "./useTreat";
 
 const useGetNftMaxSupply = (id: number) => {
-  const [maxSupply, setMaxSupply] = useState(new BigNumber(0));
+  const [maxSupply, setMaxSupply] = useState(BigNumber.from(0));
   const treat = useTreat();
   const treatNFTMinterContract = getTreatNFTMinterContract(treat);
 
   const fetchBalance = useCallback(async () => {
     const maxSupply = await getNftMaxSupply(treatNFTMinterContract, id);
-    setMaxSupply(new BigNumber(maxSupply));
+    setMaxSupply(BigNumber.from(maxSupply));
   }, [id, treat]);
 
   useEffect(() => {

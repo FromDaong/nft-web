@@ -114,7 +114,7 @@ export const getTreatMarketplaceAddress = (treat) => {
 };
 
 export const getTreatSupply = async (treat) => {
-  return new BigNumber(
+  return BigNumber.from(
     await treat.contracts.treat.methods.totalSupply().call()
   );
 };
@@ -127,23 +127,23 @@ export const getFreeTreatsContract = (treat) => {
 };
 
 export const getTreatNftCost = async (treatMartContract, nftId) => {
-  return new BigNumber(await treatMartContract.methods.nftCosts(nftId).call());
+  return BigNumber.from(await treatMartContract.methods.nftCosts(nftId).call());
 };
 
 export const getSubscriberNftCost = async (subscriberMartContract, nftId) => {
-  return new BigNumber(
+  return BigNumber.from(
     await subscriberMartContract.methods.nftCosts(nftId).call()
   );
 };
 
 export const getCreatorNftCost = async (creatorMartContract, nftId) => {
-  return new BigNumber(
+  return BigNumber.from(
     await creatorMartContract.methods.nftCosts(nftId).call()
   );
 };
 
 export const getSubCost = async (treatSubscriptionContract, creatorAddress) => {
-  return new BigNumber(
+  return BigNumber.from(
     await treatSubscriptionContract.methods
       .creatorSubscriptionCost(creatorAddress)
       .call()
@@ -648,9 +648,9 @@ export const getNftBalance = async (treatNFTMinter, account, nftId) => {
     const amount = await treatNFTMinter.methods
       .balanceOf(account, nftId)
       .call();
-    return new BigNumber(amount);
+    return BigNumber.from(amount);
   } catch {
-    return new BigNumber(0);
+    return BigNumber.from(0);
   }
 };
 
@@ -659,9 +659,9 @@ export const getNftV1Balance = async (treatNFTMinterV1, account, nftId) => {
     const amount = await treatNFTMinterV1.methods
       .balanceOf(account, nftId)
       .call();
-    return new BigNumber(amount);
+    return BigNumber.from(amount);
   } catch {
-    return new BigNumber(0);
+    return BigNumber.from(0);
   }
 };
 
@@ -723,7 +723,7 @@ export const addReferrerToMinter = async (
 export const getNftMaxSupply = async (treatNFTMinter, nftId) => {
   try {
     const amount = await treatNFTMinter.methods.tokenMaxSupply(nftId).call();
-    if (amount) return new BigNumber(amount);
+    if (amount) return BigNumber.from(amount);
     return null;
   } catch {
     return null;
@@ -733,9 +733,9 @@ export const getNftMaxSupply = async (treatNFTMinter, nftId) => {
 export const getNftTotalSupply = async (treatNFTMinter, nftId) => {
   try {
     const amount = await treatNFTMinter.methods.tokenSupply(nftId).call();
-    return new BigNumber(amount);
+    return BigNumber.from(amount);
   } catch {
-    return new BigNumber(0);
+    return BigNumber.from(0);
   }
 };
 
@@ -950,9 +950,9 @@ export const getNftRangeBalance = async (
     const amount = await treatMarketReaderContract.methods
       .readNftRangeBalance(account, startNftId, endNftId)
       .call();
-    return new BigNumber(amount);
+    return BigNumber.from(amount);
   } catch {
-    return new BigNumber(0);
+    return BigNumber.from(0);
   }
 };
 
@@ -1057,7 +1057,7 @@ export const stakeFarm = async (
   amount,
   account
 ) => {
-  // const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString();
+  // const value = BigNumber.from(amount).times(DEFAULT_TOKEN_DECIMAL).toString();
   const value = Web3.utils.toWei(amount.toString());
   if (pid === 0) {
     const tx = await masterMelonFarmerContract.methods
@@ -1079,9 +1079,9 @@ export const getStaked = async (masterMelonFarmerContract, pid, account) => {
     const { amount } = await masterMelonFarmerContract.methods
       .userInfo(pid, account)
       .call();
-    return new BigNumber(amount);
+    return BigNumber.from(amount);
   } catch {
-    return new BigNumber(0);
+    return BigNumber.from(0);
   }
 };
 
@@ -1095,9 +1095,9 @@ export const getPendingMelons = async (
       .pendingMelon(pid, account)
       .call();
 
-    return new BigNumber(amount);
+    return BigNumber.from(amount);
   } catch {
-    return new BigNumber(0);
+    return BigNumber.from(0);
   }
 };
 
@@ -1107,7 +1107,7 @@ export const unstakeFarm = async (
   amount,
   account
 ) => {
-  // const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString();
+  // const value = BigNumber.from(amount).times(DEFAULT_TOKEN_DECIMAL).toString();
   const value = Web3.utils.toWei(amount.toString());
   if (pid === 0) {
     const tx = await masterMelonFarmerContract.methods

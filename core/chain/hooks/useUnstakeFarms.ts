@@ -7,7 +7,7 @@ import {
 import { useCallback } from "react";
 import useTreat from "./useTreat";
 
-const useUnstakeFarms = (pid: number, v1: boolean) => {
+const useUnstakeFarms = (pid: number, v1?: boolean) => {
   const treat = useTreat();
   const masterMelonFarmerContract = getMasterMelonFarmerContract(treat);
   const v1MasterMelonFarmerContract = getV1MasterMelonFarmerContract(treat);
