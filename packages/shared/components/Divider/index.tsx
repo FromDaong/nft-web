@@ -24,7 +24,7 @@ export const Divider = ({ dir }: { dir: "vertical" | "horizontal" }) => {
       <StraightLine
         className={`${
           dir === "horizontal"
-            ? "w-full my-auto border-t my-8"
+            ? "w-full border-t my-4"
             : "w-full mx-auto border-t"
         }`}
       />

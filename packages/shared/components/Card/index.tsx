@@ -3,7 +3,7 @@ import { styled } from "@styles/theme";
 import { Container } from "core/components";
 
 export const HeadlessCard = styled("div", {
-  borderRadius: "30px",
+  borderRadius: "16px",
   padding: "42px",
   backgroundColor: "$white",
   position: "relative",
@@ -28,7 +28,7 @@ export const HeadlessCard = styled("div", {
 export const CardDetailSection = styled("div", {
   display: "flex",
   flexDirection: "column",
-  marginBottom: "30px",
+  marginBottom: "16px",
 });
 
 export default function Card(props: ComponentThemeProps) {

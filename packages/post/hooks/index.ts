@@ -1,3 +1,5 @@
+import { useRouter } from "next/router";
+
 export const usePostActions = (post_id) => {
   const likePost = () => {};
 
@@ -119,4 +121,13 @@ export const usePostData = (post_id) => {
     viewers,
     tx_history,
   };
+};
+
+export const useCreatePost = () => {
+  const router = useRouter();
+  const { post_type } = router.query as {
+    post_type: "subscription" | "collectible";
+  };
+
+  return { post_type };
 };

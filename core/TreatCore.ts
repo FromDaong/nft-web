@@ -31,6 +31,10 @@ export default class TreatCore {
     const log_event = { id: "", created_at: Date.now(), metadata: meta };
     console.log({ event_type, metadata: JSON.stringify(metadata) });
   }
+
+  static getFormattedNumber = (value: number): string => {
+    return Intl.NumberFormat().format(value);
+  };
 }
 
 export type ComponentBasicProps = {

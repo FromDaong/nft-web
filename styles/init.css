@@ -1,6 +1,6 @@
 * {
   font-size: 14px;
-  font-family: "Manrope", sans-serif !important;
+  font-family: "Inter", sans-serif !important;
   overscroll-behavior: none;
 }
 
@@ -9,7 +9,7 @@ button {
 }
 
 p {
-  font-family: "Manrope", -apple-system, system-ui, sans-serif !important;
+  font-family: "Inter", -apple-system, system-ui, sans-serif !important;
   font-weight: 400;
 }
 

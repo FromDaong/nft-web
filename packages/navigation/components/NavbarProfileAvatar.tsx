@@ -11,7 +11,11 @@ import * as Avatar from "@radix-ui/react-avatar";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import Link from "next/link";
 import { useAccount } from "wagmi";
-import { DropdownContainer, DropdownContent } from "./DropdownContainer";
+import {
+  DropdownContainer,
+  DropdownContent,
+  NavDropdownItem,
+} from "./DropdownContainer";
 import WalletConnectButton from "./WalletConnectButton";
 
 const NavbarProfileAvatar = () => {
@@ -51,7 +55,7 @@ const NavbarProfileAvatar = () => {
             <DropdownMenu.DropdownMenuGroup className="py-2 mt-2">
               <Link href={"/settings/upgrade"}>
                 <a>
-                  <DropdownMenu.Item className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
+                  <NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
                     <div className="flex items-center gap-4">
                       <Text className="p-2 rounded-full">
                         <ShoppingBagIcon className="w-5 h-5 " />
@@ -59,10 +63,10 @@ const NavbarProfileAvatar = () => {
                       <BoldLink>Become a Tritter</BoldLink>
                     </div>
                     <ArrowRightIcon className="w-5 h-5 " />
-                  </DropdownMenu.Item>
+                  </NavDropdownItem>
                 </a>
               </Link>
-              <DropdownMenu.Item className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
+              <NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
                 <div className="flex items-center gap-4">
                   <Text className="p-2 rounded-full">
                     <CurrencyDollarIcon className="w-5 h-5 " />
@@ -70,17 +74,8 @@ const NavbarProfileAvatar = () => {
                   <BoldLink>Buy crypto</BoldLink>
                 </div>
                 <ArrowRightIcon className="w-5 h-5 " />
-              </DropdownMenu.Item>
-              <DropdownMenu.Item className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
-                <div className="flex items-center gap-4">
-                  <Text className="p-2 rounded-full">
-                    <UserCircleIcon className="w-5 h-5 " />
-                  </Text>
-                  <BoldLink>Profile & account</BoldLink>
-                </div>
-                <ArrowRightIcon className="w-5 h-5 " />
-              </DropdownMenu.Item>
-              <DropdownMenu.Item className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
+              </NavDropdownItem>
+              <NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
                 <div className="flex items-center gap-4">
                   <Text className="p-2 rounded-full">
                     <CogIcon className="w-5 h-5 " />
@@ -88,16 +83,16 @@ const NavbarProfileAvatar = () => {
                   <BoldLink>Settings & privacy</BoldLink>
                 </div>
                 <ArrowRightIcon className="w-5 h-5 " />
-              </DropdownMenu.Item>
-              <DropdownMenu.Item className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
+              </NavDropdownItem>
+              <NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
                 <div className="flex items-center gap-4">
                   <Text className="p-2 rounded-full">
                     <DesktopComputerIcon className="w-5 h-5 " />
                   </Text>
-                  <BoldLink>Display & accessibility</BoldLink>
+                  <BoldLink>Change theme</BoldLink>
                 </div>
                 <ArrowRightIcon className="w-5 h-5 " />
-              </DropdownMenu.Item>
+              </NavDropdownItem>
             </DropdownMenu.DropdownMenuGroup>
           </DropdownContainer>
         </DropdownContent>

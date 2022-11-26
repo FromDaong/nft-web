@@ -2,24 +2,24 @@ import { styled } from "@styles/theme";
 
 export const PostCardContainer = styled("div", {
   flexShrink: "0",
-  borderBottom: "1px solid $subtleBorder",
 });
 
 export const LiveMediaPostContainer = styled("div", {
-  width: "100%",
+  width: "fit-content",
   height: "80vh",
   position: "relative",
 });
 
 export const PostMediaContainer = styled("div", {
-  height: "max-content",
+  height: "fit-content",
   overflow: "hidden",
   position: "relative",
+  width: "100%",
 });
 
 export const PostVisualMediaWrapper = styled("div", {
-  width: "360px",
-  height: "520px",
+  width: "100%",
+  height: "auto",
   position: "relative",
 });
 
@@ -31,7 +31,7 @@ export const PostCardCreatorInfoContainer = styled("div", {
 });
 
 export const PostCardMetaContainer = styled("div", {
-  padding: "4px 0",
+  marginBottom: "16px",
   display: "flex",
   flexDirection: "column",
 });

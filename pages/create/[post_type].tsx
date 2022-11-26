@@ -9,6 +9,12 @@ import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { ethers } from "ethers";
+import ApplicationFrame, {
+  FullscreenApplicationFrame,
+} from "core/components/layouts/ApplicationFrame";
+import { useCreatePost } from "@packages/post/hooks";
+import CreateSubscriptionContentPage from "@packages/post/pages/subscription";
+import CreateCollectiblePage from "@packages/post/pages/collectible";
 
 export type PostType = {
   type: "livestream" | "nft";
@@ -25,6 +31,7 @@ export default function PostType() {
   const [showPendingModal, setShowPendingModal] = useState(null);
   const [showCompleteModal, setShowCompleteModal] = useState(null);
 
+  /*
   const uploadFilesToCDNThenIPFS = () => {
     return;
   };
@@ -201,24 +208,20 @@ export default function PostType() {
       console.error(error);
     }
   };
+  */
+
+  const { post_type } = useCreatePost();
+  const Page =
+    post_type === "subscription"
+      ? CreateSubscriptionContentPage
+      : CreateCollectiblePage;
 
   return (
     <ApplicationLayout>
       <SEOHead title="Create a new post" />
-      <div className="grid max-w-6xl grid-cols-3 pt-12 mx-auto">
-        <PostMediaBox className="col-span-3 lg:col-span-2 shadow">
-          <Heading size="sm" className="mb-4">
-            Let's create trits for you subscribers.
-          </Heading>
-          <Text>
-            Deploy a standard NFT contract that you can mint to at anytime. The
-            following details are used to create your own smart contract. They
-            will be added to the blockchain and cannot be edited. Learn more
-            about smart contracts.
-          </Text>
-          <ContextualContainer></ContextualContainer>
-        </PostMediaBox>
-      </div>
+      <ApplicationFrame>
+        <Page />
+      </ApplicationFrame>
     </ApplicationLayout>
   );
 }

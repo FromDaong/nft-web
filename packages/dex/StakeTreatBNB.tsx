@@ -11,7 +11,7 @@ import { styled } from "@styles/theme";
 export default function StakeTreatBNB() {
   return (
     <Container
-      css={{ border: "1px solid $subtleBorder", borderRadius: "30px" }}
+      css={{ border: "1px solid $subtleBorder", borderRadius: "16px" }}
       className="w-full p-8 gap-8 flex flex-col"
     >
       <Container className="flex justify-center">

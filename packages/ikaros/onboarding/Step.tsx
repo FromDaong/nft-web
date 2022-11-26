@@ -6,7 +6,7 @@ import { ReactNode } from "react";
 
 const Surface = styled("div", {
   backgroundColor: "$elementOnSurface",
-  borderRadius: "30px",
+  borderRadius: "16px",
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",

@@ -9,7 +9,7 @@ export const TriggerButton = styled("p", {
 });
 
 export const Button = styled("button", {
-  padding: "10px 20px",
+  padding: "4px 16px",
   alignItems: "center",
   gap: "8px",
   display: "flex",
@@ -58,6 +58,12 @@ export const Button = styled("button", {
         backgroundColor: "transparent",
         color: "$textContrast",
         padding: 0,
+      },
+    },
+    size: {
+      sm: {
+        fontSize: "14px",
+        padding: "4px 8px",
       },
     },
   },

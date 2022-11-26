@@ -2,7 +2,9 @@ import { Blurhash as NativeBlurhash } from "react-blurhash";
 import { isBlurhashValid } from "blurhash";
 import { EyeOffIcon } from "@heroicons/react/outline";
 import { Container } from "@packages/shared/components/Container";
-import { Text } from "@packages/shared/components/Typography/Text";
+import { SmallText, Text } from "@packages/shared/components/Typography/Text";
+import { Heading } from "@packages/shared/components/Typography/Headings";
+import { CardOverlay } from "@packages/shared/components/Card/MarketingPages/BenefitsCard";
 
 export default function Blurhash(props: {
   blurhash: string;
@@ -10,6 +12,7 @@ export default function Blurhash(props: {
 }) {
   return isBlurhashValid(props.blurhash).result ? (
     <div className="absolute top-0 left-0 right-0 bottom-0 h-full w-full z-1">
+      <CardOverlay />
       <div className="relative h-full w-full">
         <NativeBlurhash
           resolutionX={32}
@@ -29,20 +32,21 @@ export default function Blurhash(props: {
           top: 0,
           left: 0,
           width: "100%",
+          height: "100%",
         }}
       >
-        <Container
-          css={{
-            backgroundColor: "$surface",
-            borderRadius: "30px",
-          }}
-          className="flex flex-col items-center p-8"
-        >
-          <Text>
+        <Container className="flex flex-col items-center h-full p-8">
+          <Text css={{ color: "$surface" }}>
             <EyeOffIcon className="h-8 w-8" />
           </Text>
-          <Text>
-            <div>{props.overrideText ?? "Purchase to View"}</div>
+          <Heading css={{ color: "$surface" }} className="mt-4" size="xs">
+            Protected content
+          </Heading>
+          <Text
+            css={{ color: "$surfaceOnSurface" }}
+            className="text-center mt-2"
+          >
+            <SmallText>{props.overrideText ?? "Purchase to View"}</SmallText>
           </Text>
         </Container>
       </Container>

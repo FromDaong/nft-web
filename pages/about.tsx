@@ -25,7 +25,7 @@ const cards_info = [
 
 export default function About() {
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-7xl mx-auto">
       <SEOHead title={"Treat - About Us"} />
       <div className="max-w-4xl p-4 mx-auto lg:p-0">
         <div className="flex flex-col max-w-3xl py-16 mx-auto">

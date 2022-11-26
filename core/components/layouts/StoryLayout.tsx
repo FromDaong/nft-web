@@ -6,7 +6,7 @@ export const StoryPreviewLayout = ({ children }: ComponentBasicProps) => (
 );
 
 export const StoryListLayout = ({ children }: ComponentBasicProps) => (
-  <Container className="max-w-6xl mx-auto overflow-x-auto">
+  <Container className="max-w-7xl mx-auto overflow-x-auto">
     {children}
   </Container>
 );

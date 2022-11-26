@@ -3,7 +3,7 @@ import { Container } from "@packages/shared/components/Container";
 
 export default function Privacy() {
   return (
-    <Container className="max-w-6xl mx-auto">
+    <Container className="max-w-7xl mx-auto">
       <SEOHead title={"Treat Privacy Policy"} />
       <div className="max-w-4xl p-4 mx-auto lg:p-0">
         <div className="flex flex-col max-w-xl gap-4 py-16 mx-auto text-center">

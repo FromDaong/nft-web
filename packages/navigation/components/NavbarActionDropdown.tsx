@@ -2,10 +2,15 @@ import { UploadIcon } from "@radix-ui/react-icons";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import Kbd, { ctrl_button_emoji } from "@packages/shared/components/Kbd";
 import { VideoCameraIcon } from "@heroicons/react/solid";
-import { DropdownContainer, DropdownContent } from "./DropdownContainer";
+import {
+  DropdownContainer,
+  DropdownContent,
+  NavDropdownItem,
+} from "./DropdownContainer";
 import Link from "next/link";
 import {
   BoldLink,
+  ImportantText,
   LegibleText,
   Text,
 } from "@packages/shared/components/Typography/Text";
@@ -20,15 +25,15 @@ const NavbarActionDropdown = () => (
     </DropdownMenu.Trigger>
     <DropdownMenu.Portal>
       <DropdownContent>
-        <DropdownContainer>
+        <DropdownContainer className="shadow-xl">
           <Link href={"/create/"}>
-            <BoldLink>
-              <DropdownMenu.Item className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
+            <a>
+              <NavDropdownItem className="flex items-center justify-between p-1 rounded-xl hover:cursor-pointer">
                 <div className="flex items-center gap-4">
                   <LegibleText className="p-2 rounded-full">
                     <UploadIcon className="w-4 h-4" />
                   </LegibleText>
-                  <Text appearance={"hiContrast"}>Create new trit</Text>
+                  <ImportantText>Create new trit</ImportantText>
                 </div>
                 <span className="flex gap-2 text-sm">
                   <LegibleText>
@@ -38,17 +43,17 @@ const NavbarActionDropdown = () => (
                     <Kbd>P</Kbd>
                   </LegibleText>
                 </span>
-              </DropdownMenu.Item>
-            </BoldLink>
+              </NavDropdownItem>
+            </a>
           </Link>
           <Link href={"/create/live"}>
-            <BoldLink>
-              <DropdownMenu.Item className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
+            <a>
+              <NavDropdownItem className="flex items-center justify-between p-1 rounded-xl hover:cursor-pointer">
                 <div className="flex items-center gap-4">
                   <LegibleText className="p-2 rounded-full">
                     <VideoCameraIcon className="w-4 h-4" />
                   </LegibleText>
-                  <Text appearance={"hiContrast"}>Start livestream</Text>
+                  <ImportantText>Start livestream</ImportantText>
                 </div>
                 <span className="flex gap-2 text-sm">
                   <LegibleText>
@@ -58,8 +63,8 @@ const NavbarActionDropdown = () => (
                     <Kbd>L</Kbd>
                   </LegibleText>
                 </span>{" "}
-              </DropdownMenu.Item>
-            </BoldLink>
+              </NavDropdownItem>
+            </a>
           </Link>
         </DropdownContainer>
       </DropdownContent>

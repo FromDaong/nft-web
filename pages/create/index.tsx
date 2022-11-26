@@ -11,7 +11,7 @@ export default function Create() {
   return (
     <ApplicationLayout>
       <SEOHead title="Create a new post" />
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <ContextualHeadingContainer>
           <ContextualHeading>
             What type of trit do you want to create today?

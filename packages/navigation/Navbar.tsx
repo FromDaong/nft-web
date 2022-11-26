@@ -11,11 +11,16 @@ import NavbarExploreDropdown from "./components/NavbarExploreDropdown";
 import { styled } from "@styles/theme";
 import {
   BoldLink,
-  ImportantSmallText,
+  ImportantText,
 } from "@packages/shared/components/Typography/Text";
 import { Button } from "@packages/shared/components/Button";
-import { SearchCircleIcon, SearchIcon } from "@heroicons/react/outline";
+import {
+  ChatIcon,
+  SearchCircleIcon,
+  SearchIcon,
+} from "@heroicons/react/outline";
 import SearchTrigger from "@packages/commandbar/components/SearchTrigger";
+import { Container } from "@packages/shared/components/Container";
 
 const NavbarProfileAvatar = dynamic(
   () => import("./components/NavbarProfileAvatar")
@@ -59,7 +64,7 @@ export default function Navbar() {
     <Nav className="fixed top-0 left-0 z-30 w-full lg:px-0 h-[60px]">
       <div className="relative w-full h-full px-4">
         <div className="absolute top-0 left-0 z-20 w-full h-full" />
-        <div className="relative z-30 flex items-center justify-between max-w-6xl py-3 mx-auto">
+        <div className="relative z-30 flex items-center justify-between max-w-7xl py-3 mx-auto">
           <div className="flex items-center gap-8">
             <Link href={isConnected ? "/discover" : "/"}>
               <a className="relative w-8 h-8 text-3xl font-medium">
@@ -73,23 +78,25 @@ export default function Navbar() {
             </Link>
 
             <div className="items-center hidden gap-8 md:flex">
-              <Link href="https://treatdao.com/farms">
+              <Link href="/discover">
                 <a>
-                  <BoldLink className="font-medium">Farms</BoldLink>
+                  <BoldLink className="font-medium">Discover</BoldLink>
                 </a>
               </Link>
-              <Link href="/magazine">
-                <a>
-                  <ImportantSmallText className="font-medium">
-                    Magazine
-                  </ImportantSmallText>
-                </a>
-              </Link>
+              <NavbarExploreDropdown />
             </div>
           </div>
+          <Container className="max-w-md w-full">
+            <input
+              className="w-full py-2 px-8 rounded-full border"
+              placeholder="Search content"
+            />
+          </Container>
 
           <div className="gap-4 flex">
-            <SearchTrigger trigger="navbar" />
+            <div className="flex p-2 border-2 rounded-full">
+              <ChatIcon className="w-5 h-5 " />
+            </div>
             <div className="flex md:hidden">
               <HamburgerMenuIcon className="w-8 h-8 p-2 border-2 rounded-full" />
             </div>

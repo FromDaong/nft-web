@@ -2,7 +2,7 @@ import { ComponentBasicProps } from "core/TreatCore";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Container } from "../Container";
-import { BoldLink, ImportantSmallText } from "../Typography/Text";
+import { BoldLink, ImportantText } from "../Typography/Text";
 
 export const TabsContainer = ({ children }: ComponentBasicProps) => {
   return (
@@ -29,11 +29,9 @@ export const Tab = ({ label, href }: { label: string; href: string }) => {
     >
       <Link href={href}>
         <a>
-          <ImportantSmallText
-            css={{ color: isActive ? "$accentText" : "$text" }}
-          >
+          <ImportantText css={{ color: isActive ? "$accentText" : "$text" }}>
             {label}
-          </ImportantSmallText>
+          </ImportantText>
         </a>
       </Link>
     </Container>
