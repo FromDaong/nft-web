@@ -59,7 +59,7 @@ export const PublicFluidContainer = ({
   return (
     <ThemedContainer state={state}>
       <div
-        className={className + fullscreen ? "w-screen" : "max-w-6xl mx-auto"}
+        className={className + fullscreen ? "w-screen" : "max-w-7xl mx-auto"}
       >
         {children}
       </div>
@@ -76,7 +76,7 @@ export const FluidContainerBase = ({
   state?: "invert" | "normal";
   fullscreen?: boolean;
 }) => {
-  return <div className={"max-w-6xl" + className}>{children}</div>;
+  return <div className={"max-w-7xl" + className}>{children}</div>;
 };
 
 export const FluidContainer = styled(FluidContainerBase, {

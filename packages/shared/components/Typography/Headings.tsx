@@ -1,6 +1,6 @@
 import { styled } from "@styles/theme";
 import {
-  ImportantSmallText,
+  ImportantText,
   MutedActionText,
   SmallText,
   Text,
@@ -24,7 +24,7 @@ export const Heading = styled("h1", {
         fontSize: "48px",
       },
       sm: {
-        fontSize: "32px",
+        fontSize: "18px",
       },
       xs: {
         fontSize: "16px",
@@ -56,7 +56,6 @@ export const Heading = styled("h1", {
 
 export const ContextualHeading = styled("h3", {
   fontSize: "32px",
-  marginBottom: "12px",
   marginTop: "4px",
   color: "$textContrast",
   fontWeight: "600",
@@ -87,7 +86,7 @@ export const ContextualHeadingContainer = styled("div", {
 export {
   Username,
   MutedText as MutedParagraph,
-  ImportantSmallText,
+  ImportantText as ImportantSmallText,
   Text,
   SmallText,
   MutedActionText,

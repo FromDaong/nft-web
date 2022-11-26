@@ -45,7 +45,7 @@ const image = (
             boxShadow: "2px 4px 34px 7px rgba(17, 34, 17, 0.07)",
             padding: "28px",
             position: "relative",
-            borderRadius: "30px",
+            borderRadius: "16px",
             marginBottom: "20px",
             display: "flex",
           }}

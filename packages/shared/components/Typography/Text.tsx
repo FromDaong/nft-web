@@ -82,8 +82,7 @@ export const SmallText = styled("span", {
   fontSize: "12px",
 });
 
-export const ImportantSmallText = styled("span", {
-  fontSize: "14px",
+export const ImportantText = styled("span", {
   color: "#121212",
   fontWeight: "700",
 });

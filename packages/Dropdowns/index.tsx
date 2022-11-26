@@ -2,7 +2,7 @@ import { ChevronDownIcon } from "@heroicons/react/outline";
 import { DropdownContent } from "@packages/navigation/components/DropdownContainer";
 import { profile_utils } from "@packages/profile";
 import { Button } from "@packages/shared/components/Button";
-import { ImportantSmallText } from "@packages/shared/components/Typography/Text";
+import { ImportantText } from "@packages/shared/components/Typography/Text";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { styled } from "@styles/theme";
 import { useRouter } from "next/router";
@@ -51,22 +51,22 @@ export const ProfileDropdown = (user: { username: string }) => {
           >
             <DropdownMenu.Group>
               <DropdownMenuItem>
-                <ImportantSmallText>Send a tip</ImportantSmallText>
+                <ImportantText>Send a tip</ImportantText>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={share_profile}>
-                <ImportantSmallText>Share</ImportantSmallText>
+                <ImportantText>Share</ImportantText>
               </DropdownMenuItem>
             </DropdownMenu.Group>
             <DropdownMenu.Group>
               <DropdownMenuItem>
-                <ImportantSmallText css={{ color: "$errorText" }}>
+                <ImportantText css={{ color: "$errorText" }}>
                   Block
-                </ImportantSmallText>
+                </ImportantText>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <ImportantSmallText css={{ color: "$errorText" }}>
+                <ImportantText css={{ color: "$errorText" }}>
                   Report
-                </ImportantSmallText>
+                </ImportantText>
               </DropdownMenuItem>
             </DropdownMenu.Group>
           </DropdownContent>

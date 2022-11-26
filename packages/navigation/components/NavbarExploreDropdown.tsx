@@ -9,17 +9,13 @@ import {
 } from "./DropdownContainer";
 import {
   BoldLink,
-  ImportantSmallText,
+  ImportantText,
 } from "@packages/shared/components/Typography/Text";
 
 const ExploreDropdownLinks = [
   {
     label: "Sweetshop",
-    link: "/marketplace/nft",
-  },
-  {
-    label: "Creators",
-    link: "/discover/creator",
+    link: "/sweetshop",
   },
   {
     label: "Farm",
@@ -40,12 +36,12 @@ const NavbarExploreDropdown = () => (
     </DropdownMenu.Trigger>
     <DropdownMenu.Portal>
       <DropdownContent>
-        <NavDropdownContainer className="drop-shadow-2xl">
+        <NavDropdownContainer className="drop-shadow-2xl p-2">
           {ExploreDropdownLinks.map((link) => (
             <Link key={link.link} href={link.link}>
               <a>
                 <NavDropdownItem>
-                  <ImportantSmallText> {link.label}</ImportantSmallText>
+                  <ImportantText> {link.label}</ImportantText>
                 </NavDropdownItem>
               </a>
             </Link>

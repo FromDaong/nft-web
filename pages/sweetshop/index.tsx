@@ -16,12 +16,11 @@ const newCurated: Post = {
     name: "Tritters",
     totalSupply: 10,
     minted: 4,
-    avatar:
-      "https://images.pexels.com/photos/13664674/pexels-photo-13664674.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    avatar: "/assets/cherieCover.jpg",
   },
   /*image: {
-    cdn: "https://images.pexels.com/photos/13664674/pexels-photo-13664674.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    ipfs: "https://images.pexels.com/photos/13664674/pexels-photo-13664674.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    cdn: "/assets/cherieCover.jpg",
+    ipfs: "/assets/cherieCover.jpg",
   },*/
   price: {
     value: 0.99,

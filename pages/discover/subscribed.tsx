@@ -7,8 +7,8 @@ import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 const newCurated: Post = {
   name: "Welcome to the Tritters",
   image: {
-    cdn: "https://images.pexels.com/photos/13664674/pexels-photo-13664674.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    ipfs: "https://images.pexels.com/photos/13664674/pexels-photo-13664674.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    cdn: "/assets/cherieCover.jpg",
+    ipfs: "/assets/cherieCover.jpg",
   },
   text: "Woke up feeling sexy :)",
   price: {

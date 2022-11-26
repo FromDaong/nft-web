@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/future/image";
 
 const gumletLoader = ({ src, width, quality }) => {
   return `https://treatnfts.gumlet.io${src}?w=${width}&q=${
@@ -13,23 +13,25 @@ type OptimizedImageProps = {
   height?: number;
   quality?: number;
   className?: string;
-  layout?: "fill" | "fixed" | "intrinsic" | "responsive";
+  fill?: boolean;
+  objectFit?: "contain" | "cover" | "fill";
+  sizes?: string;
 };
 
 const OptimizedImage = (props: OptimizedImageProps) => {
   return (
-    <div className="image-container">
-      <Image
-        loader={gumletLoader}
-        quality={props.quality}
-        src={props.src}
-        alt={props.alt}
-        width={props.height}
-        height={props.height}
-        className={props.className + " object-cover"}
-        layout={props.layout}
-      />
-    </div>
+    <Image
+      loader={gumletLoader}
+      quality={props.quality}
+      src={props.src}
+      alt={props.alt}
+      width={props.height}
+      height={props.height}
+      className={props.className}
+      fill={props.fill}
+      sizes={props.sizes}
+      style={{ objectFit: props.objectFit }}
+    />
   );
 };
 

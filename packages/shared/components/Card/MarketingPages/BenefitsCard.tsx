@@ -14,13 +14,24 @@ const background_positions = {
 };
 
 const Card = styled("div", {
-  borderRadius: "30px",
+  borderRadius: "16px",
   padding: "48px",
   minHeight: "480px",
   textAlign: "center !important",
   justifyContent: "space-between",
   position: "relative",
   display: "flex",
+});
+
+export const CardOverlay = styled("div", {
+  position: "absolute",
+  backgroundColor: "$overlay",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  backdropFilter: "blur(204px)",
+  zIndex: 5,
 });
 
 export const Overlay = styled("div", {
@@ -30,7 +41,6 @@ export const Overlay = styled("div", {
   left: 0,
   width: "100%",
   height: "100%",
-  borderRadius: "30px",
   backdropFilter: "blur(204px)",
   zIndex: 300,
 });

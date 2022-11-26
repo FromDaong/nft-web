@@ -1,7 +1,3 @@
-import Artworker from "./components";
+import { create } from "./lib/doka.esm.min";
 
-export type ArtworkerConfig = {
-  theme: "system" | "light" | "dark";
-};
-
-export default Artworker;
+export default create;

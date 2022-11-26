@@ -173,7 +173,7 @@ export const darkTheme = createTheme("dark", {
   borderWidths: {},
   borderStyles: {},
   radii: {
-    base: "30px",
+    base: "16px",
     tight: "8px",
     full: "50%",
   },
@@ -275,7 +275,7 @@ export const lightTheme = createTheme("light", {
   borderWidths: {},
   borderStyles: {},
   radii: {
-    base: "30px",
+    base: "16px",
     tight: "8px",
     full: "50%",
   },
@@ -354,7 +354,7 @@ export const ogPinkTheme = createTheme("pink", {
   borderWidths: {},
   borderStyles: {},
   radii: {
-    base: "30px",
+    base: "16px",
     tight: "8px",
     full: "50%",
   },

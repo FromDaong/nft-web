@@ -81,7 +81,7 @@ export default function MagazinePage({
       </div>
       <ShortDivider dir="vertical" />
       <div className="py-16">
-        <div className="w-full max-w-6xl mx-auto">
+        <div className="w-full max-w-7xl mx-auto">
           <h2 className="mb-0 text-2xl font-medium">Latest Treat Magazines</h2>
           <p className="mb-8 text-[18px] font-regular">
             Browse the collection featuring all the 2022 Treat of The Month

@@ -26,7 +26,7 @@ export default function i(props: { media: Array<string>; error?: string }) {
   }, [link]);
 
   return (
-    <div className="grid w-full max-w-6xl grid-cols-4 gap-12 py-12 mx-auto">
+    <div className="grid w-full max-w-7xl grid-cols-4 gap-12 py-12 mx-auto">
       <div className="col-span-3">
         <div className="w-full h-[80vh] my-auto bg-slate-900">
           <video controls autoPlay>

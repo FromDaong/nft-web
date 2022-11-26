@@ -21,11 +21,12 @@ import {
   PostMediaContainer,
   PostVisualMediaWrapper,
 } from "./blocks";
+import { BookmarkIcon } from "@heroicons/react/outline";
 
 export const SubscriptionContentPost = (props: Post) => {
   const imageUrl = props.image?.cdn;
   return (
-    <PostCardContainer className="py-8">
+    <PostCardContainer>
       <Container
         css={{
           display: "flex",
@@ -55,9 +56,7 @@ export const SubscriptionContentPost = (props: Post) => {
                 <div>
                   <Link href={props.author.username}>
                     <a>
-                      <Text css={{ fontWeight: "700" }}>
-                        {props.author.display_name}
-                      </Text>{" "}
+                      <Text>{props.author.display_name}</Text>{" "}
                       <SmallText>@{props.author.username}</SmallText> <br />
                     </a>
                   </Link>
@@ -66,7 +65,16 @@ export const SubscriptionContentPost = (props: Post) => {
             </PostCardCreatorInfoContainer>
             {props.text && (
               <PostCardMetaContainer>
-                <Text>{props.text}</Text>
+                <Text>
+                  <ImportantSmallText>Uploaded</ImportantSmallText> to their
+                  timeline.{" "}
+                  <ImportantSmallText>{props.text}</ImportantSmallText>
+                </Text>
+              </PostCardMetaContainer>
+            )}
+            {props.text && (
+              <PostCardMetaContainer>
+                <Text></Text>
               </PostCardMetaContainer>
             )}
           </Container>
@@ -75,90 +83,88 @@ export const SubscriptionContentPost = (props: Post) => {
           <Button>Follow</Button>
         </Container>
       </Container>
-
-      <div className="flex gap-x-4 mt-4">
-        <Container css={{ width: "48px" }} />
-        <Container className="flex gap-x-8">
-          <div>
-            <PostMediaContainer>
-              <PostVisualMediaWrapper>
-                <PostMediaContent
-                  imageUrl={imageUrl}
-                  blurhash={props.blurhash}
-                  overrideText={"Subscribe to view"}
-                />
-              </PostVisualMediaWrapper>
-            </PostMediaContainer>
-            {props.post_type === "colletible" && props.collected?.length > 0 && (
-              <PostCardMetaContainer>
-                <PostCardCollectorsContainer>
-                  <Text>
-                    Collected by{" "}
-                    <ImportantSmallText className="mx-1">
-                      {props.collected[0]?.user.username}
-                    </ImportantSmallText>{" "}
-                    {props.collected?.length > 0 && (
-                      <>
-                        and
-                        <ImportantSmallText className="mx-1">
-                          others
-                        </ImportantSmallText>
-                      </>
-                    )}
-                  </Text>
-                </PostCardCollectorsContainer>
-              </PostCardMetaContainer>
-            )}
-            {props.post_type === "subscription" && props.likes?.length > 0 && (
-              <PostCardMetaContainer>
-                <PostCardCollectorsContainer>
-                  <Text>
-                    Liked by{" "}
-                    <ImportantSmallText className="mx-1">
-                      {props.likes[0]?.user.username}
-                    </ImportantSmallText>{" "}
-                    {props.likes?.length > 0 && (
-                      <>
-                        and
-                        <ImportantSmallText className="mx-1">
-                          others
-                        </ImportantSmallText>
-                      </>
-                    )}
-                  </Text>
-                </PostCardCollectorsContainer>
-              </PostCardMetaContainer>
-            )}
-          </div>
-          <div className="w-16">
-            <div className="flex flex-col justify-end h-full gap-6">
-              <div className="flex flex-col items-center gap-6">
-                <PostCardAction>
-                  <button className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                    <BoldLink>
-                      <HeartIcon className="w-6 h-6" />
-                    </BoldLink>
-                  </button>
-                </PostCardAction>
-                <PostCardAction>
-                  <button className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                    <BoldLink>
-                      <GiftIcon className="w-6 h-6" />
-                    </BoldLink>
-                  </button>
-                </PostCardAction>
-                <PostCardAction>
-                  <button className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
-                    <BoldLink>
-                      <DotsHorizontalIcon className="w-6 h-6" />
-                    </BoldLink>
-                  </button>
-                </PostCardAction>
-              </div>
-            </div>
-          </div>
+      <Container
+        className="mt-4 drop-shadow"
+        css={{
+          borderRadius: "16px",
+          overflow: "hidden",
+          border: "1px solid $subtleBorder",
+          padding: "12px",
+          position: "relative",
+          height: "420px",
+          width: "360px",
+          backgroundColor: "$surface",
+        }}
+      >
+        <Container
+          className="relative h-full w-full "
+          css={{ borderRadius: "8px", overflow: "hidden" }}
+        >
+          <PostMediaContent
+            imageUrl={imageUrl}
+            blurhash={props.blurhash}
+            overrideText={"Subscribe to view"}
+            caption={props.text}
+          />
         </Container>
-      </div>
+      </Container>
+      <Container className="py-2 flex gap-8 mt-4">
+        <PostCardAction>
+          <button>
+            <HeartIcon className="w-6 h-6" />
+          </button>
+        </PostCardAction>
+        <PostCardAction>
+          <button>
+            <GiftIcon className="w-6 h-6" />
+          </button>
+        </PostCardAction>
+        <PostCardAction>
+          <button>
+            <BookmarkIcon className="w-6 h-6" />
+          </button>
+        </PostCardAction>
+      </Container>
+      {props.post_type === "colletible" && props.collected?.length > 0 && (
+        <PostCardMetaContainer>
+          <PostCardCollectorsContainer>
+            <Text>
+              Collected by{" "}
+              <ImportantSmallText className="mx-1">
+                {props.collected[0]?.user.username}
+              </ImportantSmallText>{" "}
+              {props.collected?.length > 0 && (
+                <>
+                  and
+                  <ImportantSmallText className="mx-1">
+                    others
+                  </ImportantSmallText>
+                </>
+              )}
+            </Text>
+          </PostCardCollectorsContainer>
+        </PostCardMetaContainer>
+      )}
+      {props.post_type === "subscription" && props.likes?.length > 0 && (
+        <PostCardMetaContainer>
+          <PostCardCollectorsContainer>
+            <Text>
+              Liked by{" "}
+              <ImportantSmallText className="mx-1">
+                {props.likes[0]?.user.username}
+              </ImportantSmallText>{" "}
+              {props.likes?.length > 0 && (
+                <>
+                  and
+                  <ImportantSmallText className="mx-1">
+                    others
+                  </ImportantSmallText>
+                </>
+              )}
+            </Text>
+          </PostCardCollectorsContainer>
+        </PostCardMetaContainer>
+      )}
     </PostCardContainer>
   );
 };

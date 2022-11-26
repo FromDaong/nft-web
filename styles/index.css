@@ -1,6 +1,6 @@
 @import "./init.css";
 @import "./overrides.css";
-
+@import "./pic-editor.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -41,4 +41,12 @@ html {
 
 .scheme-pink {
   color-scheme: pink;
+}
+
+.filepond--credits {
+  display: none !important;
+}
+
+.filepond--action-edit-item {
+  background-color: #000000 !important;
 }

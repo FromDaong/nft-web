@@ -33,7 +33,7 @@ const FooterComponent = styled("footer", {
 export default function Footer() {
   return (
     <FooterComponent className="w-full px-4 pt-16 border-t md:px-8 lg:px-0">
-      <div className="grid max-w-6xl grid-cols-1 gap-8 mx-auto md:grid-cols-4">
+      <div className="grid max-w-7xl grid-cols-1 gap-8 mx-auto md:grid-cols-4">
         <div className="col-span-1">
           <img
             src={"/assets/hero-logo.png"}

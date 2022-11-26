@@ -10,7 +10,7 @@ export const LivestreamingPostCard = (props: LivestreamPost) => {
   return (
     <LiveMediaPostContainer className="py-8">
       <LivestreamMediaContainer
-        css={{ position: "relative", display: "flex", borderRadius: "30px" }}
+        css={{ position: "relative", display: "flex", borderRadius: "16px" }}
       >
         <Container
           className="p-12"
@@ -31,6 +31,7 @@ export const LivestreamingPostCard = (props: LivestreamPost) => {
           imageUrl={imageUrl}
           blurhash={props.blurhash}
           overrideText={"Subscribe to join livestream"}
+          caption={props.text}
         />
       </LivestreamMediaContainer>
     </LiveMediaPostContainer>

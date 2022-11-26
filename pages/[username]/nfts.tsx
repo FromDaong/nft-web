@@ -12,12 +12,11 @@ const newCurated: Post = {
     name: "Tritters",
     totalSupply: 10,
     minted: 4,
-    avatar:
-      "https://images.pexels.com/photos/13664674/pexels-photo-13664674.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    avatar: "/assets/cherieCover.jpg",
   },
   /*image: {
-    cdn: "https://images.pexels.com/photos/13664674/pexels-photo-13664674.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    ipfs: "https://images.pexels.com/photos/13664674/pexels-photo-13664674.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    cdn: "/assets/cherieCover.jpg",
+    ipfs: "/assets/cherieCover.jpg",
   },*/
   price: {
     value: 0.99,
@@ -43,7 +42,9 @@ export default function UserProfile() {
       <ApplicationFrame>
         <ProfileLayout>
           <SEOHead title={router.query.username + " - Trit"} />
-          <div className="flex flex-noshrink flex-wrap">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <CuratedNFt {...newCurated} />
+            <CuratedNFt {...newCurated} />
             <CuratedNFt {...newCurated} />
           </div>
         </ProfileLayout>
