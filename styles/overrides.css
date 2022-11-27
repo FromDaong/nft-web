@@ -8,3 +8,7 @@
   position: relative !important;
   height: unset !important;
 }
+
+.shadow {
+  box-shadow: drop-shadow(0 0px 8px rgb(0 0 0 / 0.15)) !important;
+}

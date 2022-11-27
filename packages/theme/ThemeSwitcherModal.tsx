@@ -104,7 +104,7 @@ export default function ThemeSwitcherModal({ isOpen, onClose }) {
               </Text>
             </Container>
             <Text>
-              <XIcon className="w-5 x-5" />
+              <XIcon onClick={onClose} className="w-5 x-5" />
             </Text>
           </Container>
           <Container className="flex gap-8">
