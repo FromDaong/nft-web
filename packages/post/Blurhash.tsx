@@ -42,10 +42,7 @@ export default function Blurhash(props: {
           <Heading css={{ color: "$surface" }} className="mt-4" size="xs">
             Protected content
           </Heading>
-          <Text
-            css={{ color: "$surfaceOnSurface" }}
-            className="text-center mt-2"
-          >
+          <Text css={{ color: "$surface" }} className="text-center mt-2">
             <SmallText>{props.overrideText ?? "Purchase to View"}</SmallText>
           </Text>
         </Container>

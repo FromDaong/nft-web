@@ -7,6 +7,7 @@ import {
 import {
   BoldLink,
   ImportantText,
+  Text,
 } from "@packages/shared/components/Typography/Text";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import Link from "next/link";
@@ -45,7 +46,9 @@ export default function PostUserDropdown() {
               <Link key={link.link} href={link.link}>
                 <a>
                   <NavDropdownItem>
-                    <ImportantText> {link.label}</ImportantText>
+                    <Text>
+                      <ImportantText> {link.label}</ImportantText>
+                    </Text>
                   </NavDropdownItem>
                 </a>
               </Link>

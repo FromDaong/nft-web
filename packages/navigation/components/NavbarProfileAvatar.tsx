@@ -11,6 +11,7 @@ import { BoldLink, Text } from "@packages/shared/components/Typography/Text";
 import ThemeSwitcherModal from "@packages/theme/ThemeSwitcherModal";
 import * as Avatar from "@radix-ui/react-avatar";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import UserAvatar from "core/auth/components/Avatar";
 import Link from "next/link";
 import { useAccount } from "wagmi";
 import {
@@ -26,8 +27,6 @@ const NavbarProfileAvatar = () => {
   const { address, isConnected } = useAccount();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  console.log({ address, isConnected });
-
   if (!isConnected) {
     return null;
   }
@@ -37,17 +36,7 @@ const NavbarProfileAvatar = () => {
       <ThemeSwitcherModal isOpen={isOpen} onClose={onClose} />
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
-          <Avatar.Root className="rounded-full shadow">
-            <Avatar.Image
-              className="object-cover w-10 h-10 rounded-full shadow-md"
-              src="https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?&w=128&h=128&dpr=2&q=80"
-            />
-            <Avatar.Fallback className="rounded-full shadow-xl ">
-              <Text className="flex items-center justify-center w-10 h-10 border rounded-full">
-                TR
-              </Text>
-            </Avatar.Fallback>
-          </Avatar.Root>
+          <UserAvatar size={32} value={address} />
         </DropdownMenu.Trigger>
         <DropdownMenu.Portal>
           <DropdownContent>
