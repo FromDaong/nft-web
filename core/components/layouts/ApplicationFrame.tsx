@@ -77,7 +77,7 @@ export default function ApplicationFrame({
   layout,
 }: ComponentBasicProps & { layout?: "normal" | "collapse" }) {
   return (
-    <Frame className="relative flex max-w-7xl mx-auto">
+    <Frame className="relative flex flex-col max-w-7xl mx-auto">
       <Main>
         <ApplicationChildrenContainer className="px-4">
           {children}

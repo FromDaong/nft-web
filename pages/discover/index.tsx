@@ -7,6 +7,7 @@ import { SEOHead } from "@packages/seo/page";
 import { Container } from "@packages/shared/components/Container";
 import { Divider } from "@packages/shared/components/Divider";
 import { Heading } from "@packages/shared/components/Typography/Headings";
+import { BoldLink } from "@packages/shared/components/Typography/Text";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import ContentSidebar from "core/components/layouts/ContentSidebar";
@@ -48,8 +49,15 @@ export default function ForYouPage() {
       <SEOHead title="For you - Tritt" />
       <ApplicationFrame>
         <Container className="flex gap-12">
-          <Container className="flex-1 flex">
-            <Container className="max-w-xl mx-auto flex flex-col gap-4 pt-12">
+          <Container className="flex-1 flex flex-col gap-8 pt-12">
+            <Container
+              className="flex mx-auto p-2 px-8 gap-4 rounded-full"
+              css={{ border: "1px solid $subtleBorder", boxShadow: "$shadow" }}
+            >
+              <BoldLink>Discover</BoldLink>
+              <BoldLink>Subscribed</BoldLink>
+            </Container>
+            <Container className="max-w-xl mx-auto flex flex-col gap-4">
               <Container className="p-4">
                 <TimelineActivity
                   actionMeta={{

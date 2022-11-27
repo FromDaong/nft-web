@@ -83,7 +83,6 @@ export const SmallText = styled("span", {
 });
 
 export const ImportantText = styled("span", {
-  color: "#121212",
   fontWeight: "700",
 });
 
