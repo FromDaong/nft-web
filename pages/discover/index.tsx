@@ -51,11 +51,21 @@ export default function ForYouPage() {
         <Container className="flex gap-12">
           <Container className="flex-1 flex flex-col gap-8 pt-12">
             <Container
-              className="flex mx-auto p-2 px-8 gap-4 rounded-full"
-              css={{ border: "1px solid $subtleBorder", boxShadow: "$shadow" }}
+              className="flex mx-auto gap-4 rounded-full shadow"
+              css={{
+                border: "1px solid $subtleBorder",
+                boxShadow: "$shadow",
+                overflow: "hidden",
+                padding: "2px",
+              }}
             >
-              <BoldLink>Discover</BoldLink>
-              <BoldLink>Subscribed</BoldLink>
+              <BoldLink
+                className="px-8 py-2 rounded-full"
+                css={{ backgroundColor: "$textContrast", color: "$surface" }}
+              >
+                Discover
+              </BoldLink>
+              <BoldLink className="px-8 py-2">Subscribed</BoldLink>
             </Container>
             <Container className="max-w-xl mx-auto flex flex-col gap-4">
               <Container className="p-4">
