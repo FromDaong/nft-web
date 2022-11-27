@@ -52,7 +52,7 @@ export const TimelineActivity = (
           display: "flex",
           justifyContent: "space-between",
           width: "100%",
-          padding: "12px",
+          padding: "12px 0",
         }}
       >
         <Container className="gap-x-4" css={{ display: "flex" }}>
@@ -112,10 +112,9 @@ export const TimelineActivity = (
       </Container>
 
       <Container
-        className="drop-shadow"
         css={{
-          border: "1px solid $subtleBorder",
-          borderRadius: "16px",
+          //border: "1px solid $subtleBorder",
+          // borderRadius: "16px",
           backgroundColor: "$surface",
           overflow: "hidden",
           width: "fit-content",
@@ -128,12 +127,15 @@ export const TimelineActivity = (
             height: "640px",
             width: "470px",
             backgroundColor: "$surface",
-            padding: "12px",
+            //padding: "12px",
           }}
         >
           <Container
             className="relative h-full w-full "
-            css={{ overflow: "hidden", borderRadius: "8px" }}
+            css={{
+              overflow: "hidden",
+              // borderRadius: "8px",
+            }}
           >
             <PostMediaContent
               imageUrl={imageUrl}
@@ -143,9 +145,6 @@ export const TimelineActivity = (
             />
           </Container>
         </Container>
-      </Container>
-      <Container className="mt-4">
-        <Button>Make offer</Button>
       </Container>
     </PostCardContainer>
   );

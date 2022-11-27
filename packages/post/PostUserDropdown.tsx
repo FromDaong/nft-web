@@ -17,6 +17,10 @@ const PostDropdownOptions = [
     link: "/sweetshop",
   },
   {
+    label: "Copy link to post",
+    link: "/sweetshop",
+  },
+  {
     label: "Send tip",
     link: "/farm",
   },

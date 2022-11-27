@@ -3,6 +3,7 @@ import {
   lightTheme,
   connectorsForWallets,
   DisclaimerComponent,
+  darkTheme,
 } from "@rainbow-me/rainbowkit";
 import {
   injectedWallet,
@@ -19,6 +20,7 @@ import {
   RainbowKitSiweNextAuthProvider,
   GetSiweMessageOptions,
 } from "core/auth/components/AuthenticationProvider";
+import { useTheme } from "@packages/theme";
 
 const binance: Chain = {
   id: 56,
@@ -83,6 +85,20 @@ const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
 );
 
 const WagmiWrapper = ({ children }: { children: ReactNode }) => {
+  const { theme } = useTheme();
+
+  const themes = {
+    light: lightTheme({
+      accentColor: "#121212",
+      accentColorForeground: "white",
+    }),
+    dark: darkTheme(),
+    pink: lightTheme({
+      accentColor: "#121212",
+      accentColorForeground: "white",
+    }),
+  };
+
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitSiweNextAuthProvider
@@ -96,10 +112,7 @@ const WagmiWrapper = ({ children }: { children: ReactNode }) => {
           }}
           showRecentTransactions={true}
           chains={[binance]}
-          theme={lightTheme({
-            accentColor: "#121212",
-            accentColorForeground: "white",
-          })}
+          theme={themes[theme]}
         >
           {children}
         </RainbowKitProvider>

@@ -3,7 +3,7 @@ import { styled } from "@styles/theme";
 import CommandbarResults from "./Results";
 import CommandbarSearch from "./Search";
 
-const CommandbarOverlay = styled("div", {
+export const FullscreenOverlay = styled("div", {
   position: "fixed",
   top: 0,
   left: 0,
@@ -12,12 +12,13 @@ const CommandbarOverlay = styled("div", {
   height: "100vh",
   width: "100vw",
   backgroundColor: "$overlayContrast",
+  zIndex: 1000,
 });
 
 export default function CommandbarFrame({ onClose }: { onClose: () => void }) {
   return (
     <>
-      <CommandbarOverlay
+      <FullscreenOverlay
         className="backdrop-blur-sm"
         style={{ zIndex: 1000 }}
         onClick={onClose}
