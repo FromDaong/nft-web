@@ -29,17 +29,18 @@
 
 * {
   font-size: 14px;
-  font-family: "Satoshi", sans-serif !important;
+  font-family: "Outfit", sans-serif !important;
   overscroll-behavior: none;
   font-weight: 600;
 }
 
 button {
   font-family: "Satoshi", sans-serif !important;
+  font-size: 600 !important;
 }
 
 p {
-  font-family: "Satoshi", -apple-system, system-ui, sans-serif !important;
+  font-family: "Outfit", -apple-system, system-ui, sans-serif !important;
 }
 
 h1,
@@ -49,7 +50,7 @@ h4,
 h5,
 h6 {
   margin: 0;
-  font-family: "Satoshi", -apple-system, system-ui, sans-serif !important;
+  font-family: "Outfit", -apple-system, system-ui, sans-serif !important;
   font-family: 700;
 }
 
