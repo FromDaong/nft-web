@@ -68,9 +68,9 @@ export default function ForYouPage() {
       <SEOHead title="For you - Tritt" />
       <ApplicationFrame>
         <Container className="flex gap-12">
-          <Container className="flex-1 flex flex-col gap-8 pt-12">
+          <Container className="flex-1 flex flex-col gap-8">
             <Container
-              className="flex mx-auto gap-4 rounded-full shadow"
+              className="flex mx-auto gap-4 rounded-full shadow mt-6 sticky"
               css={{
                 boxShadow: "$shadow",
                 overflow: "hidden",
@@ -94,6 +94,7 @@ export default function ForYouPage() {
                 <p>Subscribed</p>
               </BoldLink>
             </Container>
+
             <Container className="max-w-xl mx-auto flex flex-col gap-4">
               <Container className="p-4">
                 <TimelineActivity
