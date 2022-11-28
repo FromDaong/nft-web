@@ -9,8 +9,8 @@ export default function SuggestedCreatorsSection(props: {
 }) {
   return (
     <Container
-      css={{ backgroundColor: "$surfaceOnSurface", borderRadius: "16px" }}
-      className="grid gap-4 grid-cols-1 p-4"
+      css={{ backgroundColor: "$elementSurface", borderRadius: "16px" }}
+      className="grid gap-4 grid-cols-1 p-4 shadow"
     >
       <Container>
         <Text>

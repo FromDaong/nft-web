@@ -53,15 +53,18 @@ export default function ForYouPage() {
             <Container
               className="flex mx-auto gap-4 rounded-full shadow"
               css={{
-                border: "1px solid $subtleBorder",
                 boxShadow: "$shadow",
                 overflow: "hidden",
-                padding: "2px",
+                padding: "4px",
+                backgroundColor: "$elementSurface",
               }}
             >
               <BoldLink
                 className="px-8 py-2 rounded-full"
-                css={{ backgroundColor: "$textContrast", color: "$surface" }}
+                css={{
+                  backgroundColor: "$elementOnSurface",
+                  color: "$textContrast",
+                }}
               >
                 Discover
               </BoldLink>

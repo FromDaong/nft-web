@@ -1,7 +1,7 @@
 import { styled } from "@styles/theme";
 
 export const TriggerButton = styled("p", {
-  fontWeight: "500",
+  fontWeight: 600,
   padding: "8px 16px",
   alignItems: "center",
   gap: "6px",
@@ -16,7 +16,7 @@ export const Button = styled("button", {
   borderRadius: "12px",
   boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.01)",
   fontFamily: "'Helvetica', sans-serif",
-  fontWeight: "600",
+  fontWeight: "700",
   justifyContent: "center",
   alignContent: "center",
 
