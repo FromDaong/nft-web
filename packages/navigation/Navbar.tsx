@@ -7,6 +7,7 @@ import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import NavbarExploreDropdown from "./components/NavbarExploreDropdown";
+import NavbarSearchDropdown from "./components/NavbarSearchDropdown";
 
 import { styled } from "@styles/theme";
 import {
@@ -86,12 +87,9 @@ export default function Navbar() {
               <NavbarExploreDropdown />
             </div>
           </div>
-          <Container className="max-w-md w-full">
-            <input
-              className="w-full py-2 px-8 rounded-full border"
-              placeholder="Search content"
-            />
-          </Container>
+          <div className="max-w-md w-full items-center hidden gap-8 md:flex">
+            <NavbarSearchDropdown />
+          </div>
 
           <div className="gap-4 flex">
             <div className="flex md:hidden">
