@@ -30,6 +30,23 @@ export const unlike_post = (req: NextApiRequest, res: NextApiResponse) => {
 
 export const create_post = (req: NextApiRequest, res: NextApiResponse) => {};
 
+export const create_trit_nft_collection = (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {};
+
+export const buy_trit_nft = (req: NextApiRequest, res: NextApiResponse) => {};
+
+export const buy_trit_nft_collection = (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {};
+
+export const list_trit_nft_for_resale = (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {};
+
 export const archive_post = (req: NextApiRequest, res: NextApiResponse) => {};
 
 export const tip_post = (req: NextApiRequest, res: NextApiResponse) => {};
