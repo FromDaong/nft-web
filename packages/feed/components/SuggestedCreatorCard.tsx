@@ -7,6 +7,7 @@ import {
   SmallText,
   Text,
 } from "@packages/shared/components/Typography/Text";
+import UserAvatar from "core/auth/components/Avatar";
 
 type SuggestedCreatorData = {
   username: string;
@@ -29,11 +30,7 @@ const CollapseSuggestedCreatorCard = (props: SuggestedCreatorData) => {
   return (
     <Container className="w-full flex justify-between">
       <Container className="flex gap-4">
-        <Avatar
-          imageSrc={props.avatar}
-          size={{ width: "40px", height: "40px" }}
-          name={props.display_name}
-        />
+        <UserAvatar size={40} value={props.display_name} />
         <Container className="gap-2">
           <Container>
             <p>

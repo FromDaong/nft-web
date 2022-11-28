@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import Link from "next/link";
@@ -46,9 +46,16 @@ const ExploreDropdownLinks = [
 
 const NavbarSearchDropdown = () => {
   const [searchText, setSearchText] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (searchText) {
+      setIsOpen(true);
+    }
+  }, [searchText]);
 
   return (
-    <div>
+    <div onBlur={() => setIsOpen(false)}>
       <div className="max-w-md w-full items-center hidden md:flex">
         <input
           className="max-w-md w-full py-2 px-8 rounded-full border"
@@ -56,7 +63,7 @@ const NavbarSearchDropdown = () => {
           onChange={(e) => setSearchText(e.target.value)}
         />
       </div>
-      {searchText !== "" ? (
+      {isOpen ? (
         <Container
           css={{
             backgroundColor: "$elementSurface",
@@ -65,11 +72,11 @@ const NavbarSearchDropdown = () => {
           }}
           className="max-w-md w-full grid gap-4 grid-cols-1 p-4 shadow mt-2"
         >
-          <Container>
+          <Container className="flex flex-col gap-2">
             <Text>
               <MutedText>Search Results</MutedText>
             </Text>
-            <div>
+            <Container className="grid grid-cols-1 gap-2">
               {ExploreDropdownLinks.filter((item) => {
                 const keyword = searchText.toLocaleLowerCase();
                 const fullname = item.fname.toLocaleLowerCase();
@@ -86,7 +93,7 @@ const NavbarSearchDropdown = () => {
                   isPromoted
                 />
               ))}
-            </div>
+            </Container>
           </Container>
         </Container>
       ) : null}
