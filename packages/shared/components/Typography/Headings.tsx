@@ -21,7 +21,7 @@ export const Heading = styled("h1", {
         fontSize: "64px",
       },
       md: {
-        fontSize: "48px",
+        fontSize: "32px",
       },
       sm: {
         fontSize: "18px",

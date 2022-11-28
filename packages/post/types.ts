@@ -11,6 +11,7 @@ export type Post = {
     display_name: string;
     username: string;
     avatar: string;
+    bio?: string;
   };
   subscription?: {
     id: string;
