@@ -6,7 +6,7 @@ import { MutedText } from "@packages/shared/components/Typography/Text";
 import Avvvatars from "avvvatars-react";
 
 export default function UserAvatar(props: {
-  data: {
+  data?: {
     username: string;
     display_name?: string;
     avatar: string;
