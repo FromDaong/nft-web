@@ -10,6 +10,7 @@ import {
 import {
   BoldLink,
   ImportantText,
+  Text,
 } from "@packages/shared/components/Typography/Text";
 
 const ExploreDropdownLinks = [
@@ -41,7 +42,9 @@ const NavbarExploreDropdown = () => (
             <Link key={link.link} href={link.link}>
               <a>
                 <NavDropdownItem>
-                  <ImportantText> {link.label}</ImportantText>
+                  <Text>
+                    <ImportantText> {link.label}</ImportantText>
+                  </Text>
                 </NavDropdownItem>
               </a>
             </Link>

@@ -32,7 +32,7 @@ const AvatarFallback = styled(Fallback, {
   color: "$hiContrast",
   fontSize: "15px",
   lineHeight: 1,
-  fontWeight: 500,
+  fontWeight: 700,
 });
 
 type AvatarProps = {

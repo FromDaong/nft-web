@@ -1,7 +1,7 @@
 import { styled } from "@styles/theme";
 
 export const BoldLink = styled("a", {
-  fontWeight: "600 !important",
+  fontWeight: "700 !important",
   color: "$textContrast",
   cursor: "pointer",
   variants: {
@@ -31,7 +31,7 @@ export const AccentText = styled("p", {
   fontSize: "14px",
   color: "#858585",
   display: "flex",
-  fontWeight: "500",
+  fontWeight: 600,
 
   variants: {
     appearance: {

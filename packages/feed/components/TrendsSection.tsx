@@ -17,8 +17,8 @@ type Trend = {
 export default function TrendsSection(props: { data: Array<Trend> }) {
   return (
     <Container
-      css={{ backgroundColor: "$surfaceOnSurface", borderRadius: "16px" }}
-      className="grid grid-cols-1 py-2"
+      css={{ backgroundColor: "$elementSurface", borderRadius: "16px" }}
+      className="grid grid-cols-1 py-2 shadow"
     >
       <Container className="py-2 px-4">
         <Text>

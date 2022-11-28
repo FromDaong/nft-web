@@ -94,9 +94,6 @@ export default function Navbar() {
           </Container>
 
           <div className="gap-4 flex">
-            <div className="flex p-2 border-2 rounded-full">
-              <ChatIcon className="w-5 h-5 " />
-            </div>
             <div className="flex md:hidden">
               <HamburgerMenuIcon className="w-8 h-8 p-2 border-2 rounded-full" />
             </div>
@@ -104,7 +101,19 @@ export default function Navbar() {
               // eslint-disable-next-line no-constant-condition
               isConnected ? (
                 <>
-                  {<NavbarNotifications notifications={notifications} />}
+                  <Container>
+                    <Container
+                      css={{
+                        width: "32px",
+                        height: "32px",
+                        backgroundColor: "$surface",
+                        borderColor: "$subtleBorder",
+                      }}
+                      className="flex items-center justify-center border rounded-full"
+                    >
+                      <ChatIcon className="w-5 h-5" />
+                    </Container>
+                  </Container>
                   <NavbarProfileAvatar />
                   {true && <NavbarActionDropdown />}
                 </>

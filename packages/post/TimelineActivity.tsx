@@ -21,6 +21,7 @@ import {
 } from "./blocks";
 import { BookmarkIcon } from "@heroicons/react/outline";
 import PostUserDropdown from "./PostUserDropdown";
+import UserAvatar from "core/auth/components/Avatar";
 
 export const TimelineActivity = (
   props: Post & {
@@ -58,11 +59,7 @@ export const TimelineActivity = (
         <Container className="gap-x-4" css={{ display: "flex" }}>
           <Link href={props.author.username}>
             <a>
-              <Avatar
-                imageSrc={props.author.avatar}
-                size={{ height: "32px", width: "32px" }}
-                name={props.author.display_name}
-              />
+              <UserAvatar size={40} value={props.author.display_name} />
             </a>
           </Link>
           <Container>
@@ -92,11 +89,11 @@ export const TimelineActivity = (
               {props.actionMeta && (
                 <PostCardMetaContainer>
                   <Text>
-                    <ImportantSmallText>
+                    <ImportantSmallText css={{ color: "$accentText" }}>
                       {props.actionMeta.verb}
                     </ImportantSmallText>{" "}
                     {props.actionMeta.joining_phrase}{" "}
-                    <ImportantSmallText>
+                    <ImportantSmallText css={{ color: "$accentText" }}>
                       {props.actionMeta.subject.name}.
                     </ImportantSmallText>{" "}
                     <p>{props.text}</p>

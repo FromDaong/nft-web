@@ -1,6 +1,12 @@
 import { Button } from "@packages/shared/components/Button";
+import { Container } from "@packages/shared/components/Container";
 import { Heading } from "@packages/shared/components/Typography/Headings";
-import { BoldLink, Text } from "@packages/shared/components/Typography/Text";
+import {
+  BoldLink,
+  MutedText,
+  SmallText,
+  Text,
+} from "@packages/shared/components/Typography/Text";
 import * as Avatar from "@radix-ui/react-avatar";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { getChainNameById } from "core/chain";
@@ -38,28 +44,27 @@ export default function WalletConnectButton() {
 
               return (
                 <div className="pb-2 rounded-xl">
-                  <div
-                    style={{ display: "flex" }}
-                    className="flex items-center justify-between py-2 rounded-xl hover:cursor-pointer"
+                  <Button
+                    onClick={openAccountModal}
+                    className="flex justify-start items-center py-4 mb-2 gap-x-3"
+                    css={{ backgroundColor: "$surface" }}
+                    fullWidth
                   >
-                    <Button
-                      onClick={openAccountModal}
-                      className="flex items-center py-4 mb-2 gap-x-3"
-                      appearance={"surface"}
-                      fullWidth
-                    >
-                      <Avatar.Root className="rounded-full">
-                        <Avatar.Image
-                          className="object-cover w-10 h-10 rounded-full shadow-md"
-                          src="https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?&w=128&h=128&dpr=2&q=80"
-                        />
-                      </Avatar.Root>
-                      <div className="w-full">
-                        <Heading size="xs">Terry Rivers</Heading>
-                        <Text>{account.displayName}</Text>
-                      </div>
-                    </Button>
-                  </div>
+                    <Avatar.Root className="rounded-full">
+                      <Avatar.Image
+                        className="object-cover w-10 h-10 rounded-full shadow-md"
+                        src="https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?&w=128&h=128&dpr=2&q=80"
+                      />
+                    </Avatar.Root>
+                    <Container>
+                      <Heading size="xs">Terry Rivers</Heading>
+                      <Text>
+                        <MutedText>
+                          <SmallText>{account.displayName}</SmallText>
+                        </MutedText>
+                      </Text>
+                    </Container>
+                  </Button>
                   {chain.unsupported ? (
                     <div
                       onClick={openChainModal}

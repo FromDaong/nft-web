@@ -3,7 +3,7 @@ import { styled } from "@styles/theme";
 
 export const DropdownContainer = styled("div", {
   width: "320px",
-  backgroundColor: "$surfaceOnSurface",
+  backgroundColor: "$elementSurface",
   border: "1px solid $border",
   borderRadius: "16px",
   padding: "8px",
@@ -12,8 +12,8 @@ export const DropdownContainer = styled("div", {
 
 export const NavDropdownContainer = styled("div", {
   width: "fit-content",
-  background: "$surfaceOnSurface",
-  border: "1px solid $border",
+  background: "$elementSurface",
+
   borderRadius: "8px",
   zIndex: "100",
   padding: "4px",

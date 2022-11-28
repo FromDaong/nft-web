@@ -56,7 +56,9 @@ const NavbarProfileAvatar = () => {
                         </Text>
                         <BoldLink>Become a Tritter</BoldLink>
                       </div>
-                      <ArrowRightIcon className="w-5 h-5 " />
+                      <Text>
+                        <ArrowRightIcon className="w-5 h-5 " />
+                      </Text>
                     </NavDropdownItem>
                   </a>
                 </Link>
@@ -67,17 +69,25 @@ const NavbarProfileAvatar = () => {
                     </Text>
                     <BoldLink>Buy crypto</BoldLink>
                   </div>
-                  <ArrowRightIcon className="w-5 h-5 " />
+                  <Text>
+                    <ArrowRightIcon className="w-5 h-5 " />
+                  </Text>
                 </NavDropdownItem>
-                <NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
-                  <div className="flex items-center gap-4">
-                    <Text className="p-2 rounded-full">
-                      <CogIcon className="w-5 h-5 " />
-                    </Text>
-                    <BoldLink>Settings & privacy</BoldLink>
-                  </div>
-                  <ArrowRightIcon className="w-5 h-5 " />
-                </NavDropdownItem>
+                <Link href={"/account"}>
+                  <a>
+                    <NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
+                      <div className="flex items-center gap-4">
+                        <Text className="p-2 rounded-full">
+                          <CogIcon className="w-5 h-5 " />
+                        </Text>
+                        <BoldLink>Manage account</BoldLink>
+                      </div>
+                      <Text>
+                        <ArrowRightIcon className="w-5 h-5 " />
+                      </Text>
+                    </NavDropdownItem>
+                  </a>
+                </Link>
                 <NavDropdownItem
                   onClick={onOpen}
                   className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
@@ -88,7 +98,9 @@ const NavbarProfileAvatar = () => {
                     </Text>
                     <BoldLink>Change theme</BoldLink>
                   </div>
-                  <ArrowRightIcon className="w-5 h-5 " />
+                  <Text>
+                    <ArrowRightIcon className="w-5 h-5 " />
+                  </Text>
                 </NavDropdownItem>
               </DropdownMenu.DropdownMenuGroup>
             </DropdownContainer>
