@@ -15,11 +15,13 @@ import {
   Text,
 } from "@packages/shared/components/Typography/Text";
 import { Button } from "@packages/shared/components/Button";
+import { SparklesIcon } from "@heroicons/react/outline";
 
 const NavbarActionDropdown = () => (
   <DropdownMenu.Root>
     <DropdownMenu.Trigger>
-      <Button className="flex items-center gap-4 px-4 py-2 rounded-xl">
+      <Button className="flex items-center gap-2 px-4 py-2 rounded-xl">
+        <SparklesIcon width={14} height={14} />
         Create
       </Button>
     </DropdownMenu.Trigger>
