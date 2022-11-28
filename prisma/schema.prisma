@@ -63,19 +63,20 @@ model Preference {
 }
 
 model Profile {
-  id          String   @id
-  bio         String?  @db.VarChar(300)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
-  banner_pic  String?
-  banner_pic_blurhash String?
-  profile_pic String?
+  id                   String   @id
+  bio                  String?  @db.VarChar(300)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @default(now())
+  banner_pic           String?
+  banner_pic_blurhash  String?
+  profile_pic          String?
   profile_pic_blurhash String?
-  posts       Post[]
-  totm        TOTM?
+  posts                Post[]
+  totm                 TOTM?
 
   user   User   @relation(fields: [userId], references: [id])
   userId String @unique
+  Like   Like[]
 
   @@index([id, userId])
 }
@@ -91,17 +92,18 @@ model Post {
   updatedAt DateTime  @default(now())
   profile   Profile   @relation(fields: [profileId], references: [id])
   profileId String
+  Like      Like[]
 
   @@index([text, id])
 }
 
 model Media {
-  id     String    @id
-  type   MediaType
-  url    String
+  id       String    @id
+  type     MediaType
+  url      String
   blurhash String?
-  post   Post      @relation(fields: [postId], references: [id])
-  postId String
+  post     Post      @relation(fields: [postId], references: [id])
+  postId   String
 }
 
 model Comment {
@@ -113,8 +115,17 @@ model Comment {
   postId    String
 }
 
+model Like {
+  id        String   @id
+  actorId   String
+  actor     Profile  @relation(fields: [actorId], references: [id])
+  post      Post?    @relation(fields: [postId], references: [id])
+  postId    String
+  updatedAt DateTime @default(now())
+}
+
 model Tag {
-  name   String @id
+  name String @id
 
   @@index([name])
 }
@@ -195,16 +206,16 @@ model AnalyticsEvent {
 }
 
 model Magazine {
-  id String @id
-  title String
-  href String
-  cover String
+  id         String @id
+  title      String
+  href       String
+  cover      String
   month_year Int
 }
 
 model NewsletterSubscribers {
-  id String @id
-  email String @unique
+  id        String   @id
+  email     String   @unique
   createdAt DateTime @default(now())
 }
 
