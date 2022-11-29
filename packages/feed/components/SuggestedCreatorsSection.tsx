@@ -18,10 +18,10 @@ export default function SuggestedCreatorsSection(props: {
         </Text>
       </Container>
       <Container className="grid grid-cols-1 gap-4">
-        {[1, 2, 3].map((i) => (
+        {["kamfeska", "putinih", "tatenda"].map((i) => (
           <SuggestedCreatorCard
             key={i}
-            username="kamfeskaya"
+            username={i}
             display_name="Tatenda Chris"
             avatar=""
             bio="Mystery SEV. Suddenly, the site goes dark. The dashboard is red. Everything seems fucked. There's no indication why."
