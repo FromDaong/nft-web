@@ -10,6 +10,8 @@ import NavbarExploreDropdown from "./components/NavbarExploreDropdown";
 
 import { styled } from "@styles/theme";
 import { BoldLink } from "@packages/shared/components/Typography/Text";
+import { useEffect } from "react";
+import { init } from "commandbar";
 
 const NavbarProfileAvatar = dynamic(
   () => import("./components/NavbarProfileAvatar")
@@ -27,10 +29,24 @@ const Nav = styled("nav", {
 
 export default function Navbar() {
   const { status } = useSession();
-  const { isConnected: connected } = useAccount();
+  const { isConnected: connected, address } = useAccount();
 
   const isConnected =
     connected && status !== "loading" && status === "authenticated";
+
+    useEffect(() => {
+      if(typeof(window) !== "undefined") {
+        init('27f44475');
+      }
+    }, [])
+
+    useEffect(() => {
+      if(typeof(window) !=="undefined" && isConnected && address) {
+        const loggedInUserId = address; // example
+        window.CommandBar.boot(loggedInUserId);
+
+      }
+    }, [isConnected, address])
 
   const notifications = [
     {
