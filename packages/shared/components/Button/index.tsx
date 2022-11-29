@@ -1,5 +1,6 @@
 import { styled } from "@styles/theme";
 
+
 export const TriggerButton = styled("p", {
   fontWeight: "500",
   padding: "8px 16px",
