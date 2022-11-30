@@ -22,13 +22,14 @@ const tabs = [
     label: "Subscription Content",
     href: "",
   },
-  /*{
-    label: "Trits & mentions",
-    href: "/trits",
-  },*/
+ 
   {
     label: "Marketplace",
     href: "/nfts",
+  },
+  {
+    label: "Collected",
+    href: "/collected",
   },
   /*{
     label: "Curated",
