@@ -7,7 +7,7 @@ import {HamburgerMenuIcon} from "@radix-ui/react-icons";
 import {useSession} from "next-auth/react";
 import dynamic from "next/dynamic";
 import NavbarExploreDropdown from "./components/NavbarExploreDropdown";
-import NavbarSearchDropdown from "./components/NavbarSearchDropdown";
+import NavbarSearchDropdown from "../search/NavbarSearchDropdown";
 
 import {styled} from "@styles/theme";
 import {
