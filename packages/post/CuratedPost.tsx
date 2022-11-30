@@ -16,6 +16,7 @@ import { PostCardAction } from "./blocks";
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import { PostMediaContent } from "./PostMediaContent";
 import Avatar from "@packages/shared/components/AvatarNew";
+import UserAvatar from "core/auth/components/Avatar";
 
 export const CuratedNFt = (props: Post) => {
   const imageUrl = props.image?.cdn;
@@ -31,10 +32,9 @@ export const CuratedNFt = (props: Post) => {
             <Link href={`/${props.author.username}/nfts`}>
               <a>
                 <Container className="rounded-full bg-gray-100">
-                  <Avatar
-                    size={{ width: "40px", height: "40px" }}
-                    imageSrc={props.author.avatar}
-                    name={props.author.display_name}
+                  <UserAvatar
+                    size={40}
+                    value={props.author.display_name}
                   />
                 </Container>
               </a>
@@ -43,9 +43,9 @@ export const CuratedNFt = (props: Post) => {
               <Link href={`/${props.author.username}/nfts`}>
                 <a>
                   <p>
-                    <ImportantSmallText>
+                    <Text>
                       {props.author.display_name}
-                    </ImportantSmallText>
+                    </Text>
                   </p>
                   <p>
                     <MutedText>

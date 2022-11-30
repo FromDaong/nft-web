@@ -13,7 +13,7 @@ import {
   PostCardCreatorInfoContainer,
   PostCardMetaContainer,
 } from "./blocks";
-import { ChatAltIcon, GiftIcon } from "@heroicons/react/outline";
+import { ChatAltIcon, CheckIcon, GiftIcon } from "@heroicons/react/outline";
 import PostUserDropdown from "./PostUserDropdown";
 import UserAvatar from "core/auth/components/Avatar";
 import { ImportantText } from "@packages/shared/components/Typography/Text";
@@ -175,7 +175,7 @@ export const TimelineActivity = (
             </button>
           </Container>
           <Container>
-            <Button>Collect</Button>
+            {false ? <Button>Collect</Button> : <Button css={{backgroundColor: "$teal11"}} disabled className="flex items-center gap-1"><CheckIcon width={16} height={16} /> Sold out</Button>}
           </Container>
         </Container>
         <Container className="flex gap-2">
