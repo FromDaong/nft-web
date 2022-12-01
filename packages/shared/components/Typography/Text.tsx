@@ -21,7 +21,8 @@ export const DisabledLink = styled("span", {
 });
 
 export const MutedText = styled("span", {
-  color: "$text",
+  fontSize: "14px",
+  color: "$mutedText",
   display: "flex",
   gap: "3px",
 });
@@ -79,7 +80,6 @@ export const Text = styled("span", {
 
 export const SmallText = styled("span", {
   fontSize: "12px",
-  
 });
 
 export const ImportantText = styled("span", {

@@ -1,38 +1,27 @@
-import Link from "next/link";
-import {CardDetailSection, HeadlessCard} from "..";
-import {Button} from "../../Button";
-import {Container} from "../../Container";
-import {ContextualHeading, Text} from "../../Typography/Headings";
-import {Overlay} from "./BenefitsCard";
+import { CardDetailSection, HeadlessCard } from "..";
+import { Button } from "../../Button";
+import { ContextualHeading, Text } from "../../Typography/Headings";
+import { Overlay } from "./BenefitsCard";
 
 export default function MonthlyMagazine() {
-	return (
-		<HeadlessCard appearance={"gradient"}>
-			<Container
-				className="flex flex-col gap-8"
-				style={{maxWidth: "60%"}}
-			>
-				<Container className="flex flex-col gap-4">
-					<ContextualHeading>
-						Guess what. We have a magazine we think you'll love
-					</ContextualHeading>
-					<Text>
-						TreatDAO is a community owned project built to life easier for
-						content creators. All the contracts used on TreatDAO projects are
-						open source and verified on supported blockchains.
-					</Text>
-				</Container>
+  return (
+    <HeadlessCard appearance={"gradient"}>
+      <Overlay />
 
-				<Container>
-					<Link href={"/magazine"}>
-						<a>
-							<Button css={{padding: "12px 24px"}}>
-								Explore TreatDAO magazines
-							</Button>
-						</a>
-					</Link>
-				</Container>
-			</Container>
-		</HeadlessCard>
-	);
+      <div style={{ maxWidth: "60%", display: "block", zIndex: 1 }}>
+        <CardDetailSection>
+          <ContextualHeading>
+            Guess what. We have a magazine we think you'll love
+          </ContextualHeading>
+          <Text>
+            TreatDAO is a community owned project built to life easier for
+            content creators. All the contracts used on TreatDAO projects are
+            open source and verified on supported blockchains.
+          </Text>
+        </CardDetailSection>
+
+        <Button>Explore TreatDAO magazines</Button>
+      </div>
+    </HeadlessCard>
+  );
 }

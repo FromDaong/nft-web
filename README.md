@@ -18,3 +18,9 @@ Its basically just the TikTok for you page, still really debating on whether to 
 ## What to put in the featured tab?
 
 ## What to put in the explore page?
+
+## Commits
+
+- feat: New feature
+- fix: Bugfix
+- refactor: Change code structure

@@ -1,10 +1,24 @@
-import {SubscriptionContentPost} from "@packages/post/SubscriptionContentPost";
-import {TPost} from "@packages/post/types";
+import {GlobeAltIcon} from "@heroicons/react/outline";
+import SuggestedCreatorsSection from "@packages/feed/components/SuggestedCreatorsSection";
+import TrendsSection from "@packages/feed/components/TrendsSection";
+import NavTab from "@packages/navigation/components/DiscoverNavTab";
+import {TimelineActivity} from "@packages/post/TimelineActivity";
+import {Post} from "@packages/post/types";
 import {SEOHead} from "@packages/seo/page";
+import {Container} from "@packages/shared/components/Container";
+import {Divider} from "@packages/shared/components/Divider";
+import {
+	BoldLink,
+	ImportantText,
+} from "@packages/shared/components/Typography/Text";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
+import ContentSidebar from "core/components/layouts/ContentSidebar";
+import Link from "next/link";
+import {useRouter} from "next/router";
+import {ReactElement, ReactNode} from "react";
 
-const newCurated: TPost = {
+const newCurated: Post = {
 	name: "Welcome to the Tritters",
 	image: {
 		cdn: "/assets/cherieCover.jpg",
@@ -35,19 +49,61 @@ const newCurated: TPost = {
 	},
 };
 
-export default function Subscribed() {
+export default function SubscribedPage() {
 	return (
 		<ApplicationLayout>
-			<SEOHead title="Subscribed - Trit" />
+			<SEOHead title="For you - Tritt" />
 			<ApplicationFrame>
-				{[0, 1, 2, 3, 4, 5].map((i) => (
-					<div
-						key={i}
-						className="col-span-1"
-					>
-						<SubscriptionContentPost {...newCurated} />
-					</div>
-				))}
+				<Container className="flex gap-12">
+					<Container className="flex-1 flex flex-col gap-8">
+						<NavTab />
+
+						<Container className="max-w-xl mx-auto flex flex-col gap-4">
+							<Container className="p-4">
+								<TimelineActivity
+									actionMeta={{
+										verb: "Created content",
+										joining_phrase: "on their",
+										subject: {
+											name: "subscription timeline",
+											url: "/kamfeskaya",
+										},
+									}}
+									{...newCurated}
+								/>
+							</Container>
+							<Divider dir="horizontal" />
+							<Container className="p-4">
+								<TimelineActivity
+									actionMeta={{
+										verb: "Collected",
+										joining_phrase: "from",
+										subject: {
+											name: "kamfeskaya",
+											url: "/kamfeskaya",
+										},
+									}}
+									{...newCurated}
+								/>
+							</Container>
+						</Container>
+					</Container>
+					<ContentSidebar>
+						<SuggestedCreatorsSection
+							title="Creators you might like"
+							data={[]}
+						/>
+						<TrendsSection
+							data={[
+								{
+									channel: "Trending",
+									topic: "NSFW Art",
+									totalPosts: 1400,
+								},
+							]}
+						/>
+					</ContentSidebar>
+				</Container>
 			</ApplicationFrame>
 		</ApplicationLayout>
 	);
