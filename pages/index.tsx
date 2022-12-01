@@ -103,9 +103,9 @@ export default function Index() {
 						</Container>
 					</Container>
 				</PublicFluidContainer>
-
+				<ShortDivider dir={"vertical"} />
 				<PublicFluidContainer>
-					<div className="grid grid-cols-2 gap-8 px-4 my-24 md:px-8 lg:px-0">
+					<div className="grid grid-cols-2 gap-8 px-4 md:px-8 lg:px-0">
 						<div className="col-span-2 px-4 mb-12 md:px-8 lg:px-0">
 							<FeaturesCard />
 						</div>
