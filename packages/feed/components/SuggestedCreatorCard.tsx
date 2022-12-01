@@ -31,7 +31,7 @@ const CollapseSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 	return (
 		<Link href={`/${props.username}`}>
 			<a>
-				<Container className="w-full flex justify-between">
+				<Container className="flex justify-between w-full">
 					<Container className="flex gap-4">
 						<Link href={props.username}>
 							<a>
@@ -70,7 +70,7 @@ const CollapseSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 	return (
 		<Container>
-			<Container className="w-full flex justify-between gap-4">
+			<Container className="flex justify-between w-full gap-4">
 				<Container css={{width: "40px", height: "40px"}}>
 					<UserAvatar
 						size={40}
