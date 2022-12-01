@@ -1,3 +1,4 @@
+import { prisma } from "@db/engine";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { getCsrfToken } from "next-auth/react";
@@ -32,9 +33,40 @@ export default async function auth(req: any, res: any) {
             nonce: await getCsrfToken({ req }),
           });
 
+          let user;
+
+          user = await prisma.user.findFirst({
+            where: {
+              address: siwe.address
+            }
+          })
+
+          if(!user) {
+            const temporaryUser = await prisma.temporaryUser.findFirst({
+              where: {
+                address: siwe.address
+              }
+            })
+
+            if(!temporaryUser) {
+              user = {
+                ...await prisma.temporaryUser.create({
+                  data: {
+                    address: siwe.address
+                  }
+                })
+                ,
+                isTemporary: true
+              }
+            }
+            user = {...temporaryUser, isTemporary: true}
+          }
+          
+
           if (result.success) {
             return {
               id: siwe.address,
+              ...user
             };
           }
           return null;
