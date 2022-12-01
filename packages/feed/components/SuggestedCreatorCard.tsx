@@ -1,3 +1,4 @@
+import Avatar from "@packages/shared/components/AvatarNew";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {
@@ -8,6 +9,7 @@ import {
 } from "@packages/shared/components/Typography/Text";
 import UserAvatar from "core/auth/components/Avatar";
 import Link from "next/link";
+import LiveTag from "./LiveTag";
 
 type SuggestedCreatorData = {
 	username: string;
@@ -15,8 +17,9 @@ type SuggestedCreatorData = {
 	avatar: string;
 	isPromoted?: boolean;
 	isExpanded?: boolean;
+	border?: boolean;
+	live?: boolean;
 	bio: string;
-	noFollowButton?: boolean;
 };
 
 export default function SuggestedCreatorCard(props: SuggestedCreatorData) {
@@ -29,90 +32,105 @@ export default function SuggestedCreatorCard(props: SuggestedCreatorData) {
 
 const CollapseSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 	return (
-		<Link href={`/${props.username}`}>
-			<a>
-				<Container className="flex justify-between w-full">
-					<Container className="flex gap-4">
-						<Link href={props.username}>
-							<a>
-								<UserAvatar
-									size={40}
-									value={props.username}
-								/>
-							</a>
-						</Link>
-						<Container className="gap-2">
-							<Container>
-								<p>
-									<Text>
-										<ImportantText>{props.display_name}</ImportantText>
-									</Text>
-								</p>
-								<p>
-									<MutedText>
-										<SmallText>@{props.username}</SmallText>
-									</MutedText>
-								</p>
-							</Container>
-						</Container>
+		<Container
+			css={{
+				border: `1px ${props.border ? "solid" : null} $subtleBorder`,
+				padding: props.border ? "16px" : null,
+				borderRadius: "16px",
+			}}
+			className="flex justify-between w-full"
+		>
+			<Container className="flex gap-4">
+				<UserAvatar
+					size={40}
+					value={props.username}
+				/>
+				<Container className="gap-2">
+					<Container>
+						<p>
+							<Text>
+								<ImportantText>{props.display_name}</ImportantText>
+							</Text>
+						</p>
+						<p>
+							<MutedText>
+								<SmallText>@{props.username}</SmallText>
+							</MutedText>
+						</p>
 					</Container>
-					{!props.noFollowButton && (
-						<Container>
-							<Button>Follow</Button>
-						</Container>
-					)}
 				</Container>
-			</a>
-		</Link>
+			</Container>
+			<Container>
+				<Button>Follow</Button>
+			</Container>
+		</Container>
 	);
 };
 
 const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 	return (
-		<Container>
-			<Container className="flex justify-between w-full gap-4">
-				<Container css={{width: "40px", height: "40px"}}>
-					<UserAvatar
-						size={40}
-						value={props.username}
-					/>
-				</Container>
-				<Container className="flex flex-col gap-2">
-					<Container className="flex justify-between w-full gap-2">
-						<Container>
-							<p>
-								<Text>
-									<ImportantText>{props.display_name}</ImportantText>
-								</Text>
-							</p>
-							<p>
-								<MutedText>
-									<SmallText>@{props.username}</SmallText>
-								</MutedText>
-							</p>
+		<Link href={`/${props.username}`}>
+			<a>
+				<Container
+					css={{
+						border: `1px ${props.border ? "solid" : null} $subtleBorder`,
+						padding: props.border ? "16px" : null,
+						borderRadius: "16px",
+					}}
+				>
+					<Container className="flex justify-between w-full gap-4">
+						<Container css={{width: "40px", height: "40px"}}>
+							<UserAvatar
+								size={40}
+								value={props.username}
+							/>
 						</Container>
-						{props.noFollowButton && (
-							<Container>
-								<Button>Follow</Button>
+						<Container className="flex flex-col gap-8">
+							<Container className="flex justify-between w-full gap-2">
+								<Container>
+									<Container>
+										<Container className="flex items-center gap-4">
+											<Text>
+												<ImportantText>{props.display_name}</ImportantText>
+											</Text>
+											{props.live && <LiveTag />}
+										</Container>
+									</Container>
+									<p>
+										<MutedText>
+											<SmallText>@{props.username}</SmallText>
+										</MutedText>
+									</p>
+								</Container>
 							</Container>
-						)}
-					</Container>
-					<Container>
-						{props.isExpanded && (
-							<p>
-								<Text className="line-clamp-2">{props.bio}</Text>
-							</p>
-						)}
-						{props.isPromoted && (
-							<p>
-								<MutedText>
-									<SmallText>Promoted</SmallText>
-								</MutedText>
-							</p>
-						)}
+							<Container className="flex flex-col gap-4">
+								{props.isExpanded && (
+									<p>
+										<Text className="line-clamp-4">{props.bio}</Text>
+									</p>
+								)}
+								<Container className="flex gap-4">
+									<Text className="flex items-baseline gap-1">
+										<ImportantText>45k</ImportantText>
+										<>Followers</>
+									</Text>
+									<Text className="flex items-baseline gap-1">
+										<ImportantText>10k</ImportantText>
+										<>Subscribers</>
+									</Text>
+								</Container>
+								{props.isPromoted && (
+									<p>
+										<MutedText>
+											<SmallText>Promoted</SmallText>
+										</MutedText>
+									</p>
+								)}
+							</Container>
+						</Container>
 					</Container>
 				</Container>
-			</Container>
-		</Container>
+			</a>
+		</Link>
 	);
 };
