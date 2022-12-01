@@ -1,5 +1,6 @@
 import {styled} from "@styles/theme";
 import {Button} from "../../Button";
+import {Container} from "../../Container";
 import {ContextualHeading} from "../../Typography/Headings";
 import {MutedText, Text} from "../../Typography/Text";
 
@@ -49,22 +50,25 @@ export const BenefitsCard = ({title, description, user_type}) => {
 	return (
 		<Card
 			css={{
-				backgroundImage: backgrounds[user_type],
 				backgroundPosition: background_positions[user_type],
 				backgroundSize: "cover",
+				backgroundColor: "$elementSurface",
 			}}
+			className="drop-shadow-lg"
 		>
-			<Overlay />
-			<div
-				style={{zIndex: "1"}}
-				className="flex flex-col justify-between w-full h-full"
-			>
+			<div className="flex flex-col justify-between w-full h-full">
 				<div className="flex flex-col items-center w-full text-center">
 					<MutedText>FOR {user_type}S</MutedText>
 					<ContextualHeading>{title}</ContextualHeading>
 					<Text>{description}</Text>
 				</div>
-				<Button>Sign in with your wallet</Button>
+				<Container className="flex justify-center">
+					<Button css={{padding: "12px 24px"}}>
+						<span>
+							Get started as a <span className="lowercase">{user_type}</span>
+						</span>
+					</Button>
+				</Container>
 			</div>
 		</Card>
 	);
