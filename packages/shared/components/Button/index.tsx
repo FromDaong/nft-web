@@ -9,7 +9,7 @@ export const TriggerButton = styled("p", {
 });
 
 export const Button = styled("button", {
-	padding: "4px 16px",
+	padding: "8px 16px",
 	alignItems: "center",
 	gap: "8px",
 	display: "flex",

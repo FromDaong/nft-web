@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {CardDetailSection, HeadlessCard} from "..";
 import {Button} from "../../Button";
 import {Container} from "../../Container";
@@ -23,9 +24,13 @@ export default function MonthlyMagazine() {
 				</Container>
 
 				<Container>
-					<Button css={{padding: "12px 24px"}}>
-						Explore TreatDAO magazines
-					</Button>
+					<Link href={"/magazine"}>
+						<a>
+							<Button css={{padding: "12px 24px"}}>
+								Explore TreatDAO magazines
+							</Button>
+						</a>
+					</Link>
 				</Container>
 			</Container>
 		</HeadlessCard>

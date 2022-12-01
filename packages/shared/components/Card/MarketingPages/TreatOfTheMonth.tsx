@@ -41,11 +41,11 @@ export default function TreatOfTheMonth() {
 					<div className="flex mt-8">
 						<div className="flex items-center w-1/2 gap-4">
 							<UserAvatar
-								value={"cherie"}
+								value={"TreatDAOOfficial"}
 								size={48}
 							/>
 							<div>
-								<MutedText>Creator</MutedText>
+								<MutedText>Featuring</MutedText>
 								<BoldLink>Cherie Noel</BoldLink>
 							</div>
 						</div>
@@ -57,7 +57,10 @@ export default function TreatOfTheMonth() {
 						</div>
 					</div>
 					<div className="w-full mt-8">
-						<Button className="flex justify-center w-full text-center">
+						<Button
+							css={{padding: "12px 24px"}}
+							className="flex justify-center w-full text-center"
+						>
 							Purchase set for 5.0 BNB
 						</Button>
 					</div>
