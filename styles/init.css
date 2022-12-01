@@ -1,45 +1,45 @@
 @font-face {
-  font-family: "Satoshi";
-  src: url("../public/fonts/Satoshi-Black.woff2") format("woff2");
-  font-weight: 900;
-  font-style: normal;
-  font-display: block;
+	font-family: "Satoshi";
+	src: url("../public/fonts/Satoshi-Black.woff2") format("woff2");
+	font-weight: 900;
+	font-style: normal;
+	font-display: block;
 }
 @font-face {
-  font-family: "Satoshi";
-  src: url("../public/fonts/Satoshi-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: block;
+	font-family: "Satoshi";
+	src: url("../public/fonts/Satoshi-Regular.woff2") format("woff2");
+	font-weight: 400;
+	font-style: normal;
+	font-display: block;
 }
 @font-face {
-  font-family: "Satoshi";
-  src: url("../public/fonts/Satoshi-Medium.woff2") format("woff2");
-  font-weight: 600;
-  font-style: normal;
-  font-display: block;
+	font-family: "Satoshi";
+	src: url("../public/fonts/Satoshi-Medium.woff2") format("woff2");
+	font-weight: 600;
+	font-style: normal;
+	font-display: block;
 }
 @font-face {
-  font-family: "Satoshi";
-  src: url("../public/fonts/Satoshi-Bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: block;
+	font-family: "Satoshi";
+	src: url("../public/fonts/Satoshi-Bold.woff2") format("woff2");
+	font-weight: 700;
+	font-style: normal;
+	font-display: block;
 }
 
 * {
-  font-size: 14px;
-  font-family: "Outfit", sans-serif !important;
-  overscroll-behavior: none;
-  font-weight: 600;
+	font-size: 14px;
+	font-family: "Outfit", sans-serif !important;
+	overscroll-behavior: none;
 }
 
 button {
-  font-size: 600 !important;
+	font-family: "Satoshi", sans-serif !important;
+	font-size: 600 !important;
 }
 
 p {
-  font-family: "Outfit", -apple-system, system-ui, sans-serif !important;
+	font-family: "Outfit", -apple-system, system-ui, sans-serif !important;
 }
 
 h1,
@@ -48,12 +48,12 @@ h3,
 h4,
 h5,
 h6 {
-  margin: 0;
-  font-family: "Outfit", -apple-system, system-ui, sans-serif !important;
-  font-family: 700;
+	margin: 0;
+	font-family: "Outfit", -apple-system, system-ui, sans-serif !important;
+	font-family: 700;
 }
 
 * {
-  outline: none !important;
-  box-sizing: border-box !important;
+	outline: none !important;
+	box-sizing: border-box !important;
 }

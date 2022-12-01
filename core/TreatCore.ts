@@ -1,5 +1,6 @@
 import {ReactNode, useEffect, useRef} from "react";
 import {PrismaClient} from "@prisma/client";
+import {prisma} from "@db/engine";
 
 export type Context = {prisma: PrismaClient; currentUserEmail: string};
 
@@ -11,17 +12,6 @@ export default class TreatCore {
 		feed: process.env.FEED_SERVICE,
 		trit: process.env.TREAT_SERVICE,
 	};
-
-	static paginate(req) {
-		const limit = parseInt((req.query.limit as string) ?? "10");
-		const page = parseInt((req.query.page as string) ?? "1");
-		const skip = (page - 1) * limit;
-
-		return {
-			skip,
-			limit,
-		};
-	}
 
 	/**
 	 * @description Trigger analytics event & logger then sync.
