@@ -41,7 +41,6 @@ model User {
   role             Role           @default(ANON_ROLE)
   profile          Profile?
   preference       Preference?
-  temporaryProfile TemporaryUser?
   ClientActor      ClientActor?
 
   @@index([email, address, username])
@@ -49,8 +48,6 @@ model User {
 
 model TemporaryUser {
   address String @id
-  user    User   @relation(fields: [userId], references: [id])
-  userId  String @unique
 
   @@index([address])
 }
@@ -132,10 +129,8 @@ model Tag {
 
 model SubscriptionPackage {
   id String @id
-}
-
-model SubscriptionOffer {
-  id String @id
+  value Number
+  currency String
 }
 
 model Livestream {
@@ -162,16 +157,22 @@ model Reaction {
 
 model Tip {
   id String @id
+  value Number
+  currency String
+  tx String
 }
 
 model Notification {
   id String @id
+  data String
 }
 
 model TOTM {
   id        String  @id
   profile   Profile @relation(fields: [profileId], references: [id])
   profileId String  @unique
+  createdAt DateTime @default(now())
+  validUntil DateTime @default(now())
 }
 
 model NFT {
@@ -180,6 +181,9 @@ model NFT {
 
 model Ban {
   id String @id
+  actorId String
+  actor   Profile @relation(fields: [actorId], references: [id])
+  bannedUserId String
 }
 
 model Block {
@@ -231,7 +235,6 @@ enum Theme {
   LIGHT
   DARK
   PINK
-  SYSTEM
 }
 
 enum MediaType {
