@@ -33,11 +33,6 @@
 	overscroll-behavior: none;
 }
 
-button {
-	font-family: "Satoshi", sans-serif !important;
-	font-size: 600 !important;
-}
-
 p {
 	font-family: "Outfit", -apple-system, system-ui, sans-serif !important;
 }
