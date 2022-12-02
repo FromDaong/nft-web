@@ -1,4 +1,9 @@
-import {ChevronDownIcon} from "@heroicons/react/solid";
+import ApplicationLayout from "core/components/layouts/ApplicationLayout";
+import ApplicationFrame from "core/components/layouts/ApplicationFrame";
+import {SEOHead} from "@packages/seo/page";
+import {useRouter} from "next/router";
+import PersonalInformationForm from "@packages/settings/components/ProfileForms";
+import {LinksForm} from "@packages/settings/components/ProfileForms";
 import {ProfileDropdown} from "@packages/Dropdowns";
 import Avatar, {AvatarGroup} from "@packages/shared/components/AvatarNew";
 import {Button} from "@packages/shared/components/Button";
@@ -12,27 +17,8 @@ import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {Bull, JustifiedSpan} from "@packages/shared/components/Typography/Text";
 import {styled} from "@styles/theme";
 import {ComponentBasicProps} from "core/TreatCore";
-import {useRouter} from "next/router";
 
-const tabs = [
-	{
-		label: "Subscription Content",
-		href: "",
-	},
-
-	{
-		label: "Marketplace",
-		href: "/nfts",
-	},
-	{
-		label: "Collected",
-		href: "/collected",
-	},
-	/*{
-    label: "Curated",
-    href: "/curated",
-  },*/
-];
+// TODO: Use intersection observer to change navbar color.
 
 const followers = [
 	{
@@ -85,7 +71,7 @@ const UserHeader = () => {
 	);
 };
 
-export default function ProfileLayout(props: ComponentBasicProps) {
+export default function Settings() {
 	const router = useRouter();
 	const query = router.query;
 
@@ -98,82 +84,16 @@ export default function ProfileLayout(props: ComponentBasicProps) {
 		earnings: 47.0,
 		address: "0x0eEd1d0Aa085a1C41aDf5184FAE07025217bF44c",
 	};
-
 	return (
-		<>
-			<UserHeader />
+		<ApplicationLayout>
+			<ApplicationFrame>
+				<UserHeader />
 
-			<FluidContainer className="mt-[26px] flex justify-between">
-				<ContextualContainer className="flex flex-col max-w-lg gap-y-4 px-4">
-					<Heading size="sm">{user.displayName}</Heading>
-					<Container
-						variant={"unstyled"}
-						className="flex w-full"
-					>
-						<>
-							<Text
-								appearance={"hiContrast"}
-								weight={"bold"}
-							>
-								{user.following}
-							</Text>{" "}
-							<JustifiedSpan>Following</JustifiedSpan>
-						</>
-						<Bull />
-						<>
-							<Text
-								appearance={"hiContrast"}
-								weight={"bold"}
-							>
-								{user.followers}
-							</Text>
-							<JustifiedSpan>Followers</JustifiedSpan>
-						</>
-						<Bull />
-
-						<>
-							<Text
-								appearance={"hiContrast"}
-								weight={"bold"}
-							>
-								{user.earnings}
-							</Text>
-							<JustifiedSpan>Collectors</JustifiedSpan>
-						</>
-					</Container>
-					<Container variant={"unstyled"}>
-						<AvatarGroup people={followers} />
-					</Container>
-					<Text>{user.bio}</Text>
-					<Container variant={"unstyled"}>
-						<Container className="flex gap-x-4">
-							<ProfileDropdown user={user} />
-							<Button className="drop-shadow-xl">Follow</Button>
-						</Container>
-					</Container>
-				</ContextualContainer>
-			</FluidContainer>
-
-			<FluidContainer
-				justified
-				className="flex mt-[26px]"
-			>
-				<TabsContainer>
-					{tabs.map((tab) => (
-						<Tab
-							key={tab.href}
-							href={`/${user.username}${tab.href}`}
-							label={tab.label}
-						/>
-					))}
-				</TabsContainer>
-			</FluidContainer>
-			<FluidContainer
-				justified
-				className="flex flex-col mt-[26px]"
-			>
-				{props.children}
-			</FluidContainer>
-		</>
+				<Container className="flex flex-col gap-12 mt-16">
+					<PersonalInformationForm />
+					<LinksForm />
+				</Container>
+			</ApplicationFrame>
+		</ApplicationLayout>
 	);
 }

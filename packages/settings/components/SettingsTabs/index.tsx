@@ -9,7 +9,7 @@ export default function ProfileTabs() {
 		<Container>
 			<Tabs.Root
 				className="TabsRoot"
-				defaultValue="SettingsTab"
+				defaultValue="settingsTab"
 			>
 				<Tabs.TabsList>
 					<Tabs.Trigger

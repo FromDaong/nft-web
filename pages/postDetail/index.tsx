@@ -22,12 +22,14 @@ import {Divider} from "@packages/shared/components/Divider";
 import {Heading} from "@packages/shared/components/Typography/Headings";
 import UserAvatar from "core/auth/components/Avatar";
 import {Button} from "@packages/shared/components/Button";
+import CommentsAndCollectorsTabs from "@packages/comments/components/CommentsTab";
+import Link from "next/link";
 
 export default function PostDetail() {
 	return (
 		<ApplicationLayout>
-			<ApplicationFrame>
-				<Container className="grid p-8 grid-cols-5">
+			<Container className="px-24">
+				<Container className="grid p-16 grid-cols-5">
 					<Container className="col-span-4">
 						<Container className="flex items-center justify-between my-2">
 							<Container>
@@ -40,7 +42,9 @@ export default function PostDetail() {
 									}}
 									className="flex items-center justify-center border rounded-full"
 								>
-									<Cross1Icon className="w-5 h-5" />
+									<Link href="/discover">
+										<Cross1Icon className="w-5 h-5" />
+									</Link>
 								</Container>
 							</Container>
 							<Container className="flex gap-2">
@@ -68,11 +72,11 @@ export default function PostDetail() {
 								</Container>
 							</Container>
 						</Container>
-						<Container className="flex gap-2 items-center">
+						<Container className="flex gap-2 items-center justify-center">
 							<img
 								src="https://i.pinimg.com/originals/7c/d5/3d/7cd53d36d121d839da9600ca055b01db.gif"
-								height="90%"
-								width="90%"
+								height="60%"
+								width="60%"
 							/>
 							<Container className="grid grid-cols-1 gap-6">
 								<Container
@@ -159,9 +163,12 @@ export default function PostDetail() {
 						<Container className="my-8">
 							<Button fullWidth>Collect</Button>
 						</Container>
+						<Container>
+							<CommentsAndCollectorsTabs />
+						</Container>
 					</Container>
 				</Container>
-			</ApplicationFrame>
+			</Container>
 		</ApplicationLayout>
 	);
 }
