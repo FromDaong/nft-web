@@ -1,12 +1,12 @@
 import {CuratedNFt} from "@packages/post/CuratedPost";
-import {Post} from "@packages/post/types";
+import {TPost} from "@packages/post/types";
 import {SEOHead} from "@packages/seo/page";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import ProfileLayout from "core/components/layouts/ProfileLayout";
 import {useRouter} from "next/router";
 
-const newCurated: Post = {
+const newCurated: TPost = {
 	name: "Welcome to the Tritters",
 	collection: {
 		name: "Tritters",
