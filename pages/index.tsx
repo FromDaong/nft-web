@@ -71,7 +71,7 @@ export default function Index() {
 					<Container className="flex justify-between">
 						<Heading size="md">Trending creators</Heading>
 					</Container>
-					<Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+					<Container className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 						{["kamfeska", "putinih", "khaks"].map((i) => (
 							<SuggestedCreatorCard
 								key={i}
