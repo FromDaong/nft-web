@@ -52,11 +52,11 @@ export default function NFTS() {
 			<ApplicationFrame>
 				<SEOHead title="Explore NFTs" />
 				<Container className="flex flex-col gap-12 py-12">
-					<Container className="flex flex-col gap-4">
+					<Container className="flex flex-col">
 						<Heading size="md">Browse sweetshop trits</Heading>
 						<Divider dir="horizontal" />
 						<Container>
-							<Container className="flex justify-between">
+							<Container className="flex flex-col md:flex-row gap-4 md:justify-between">
 								<Container className="flex gap-2">
 									<SelectableTag>
 										<Text>Free</Text>

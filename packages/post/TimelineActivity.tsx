@@ -143,18 +143,17 @@ export const TimelineActivity = (
 					// borderRadius: "16px",
 					backgroundColor: "$surface",
 					overflow: "hidden",
-					width: "fit-content",
+					width: "100%",
 				}}
 				className="flex flex-col gap-4"
 			>
 				<Container
+					className="w-full lg:w-[470px]"
 					css={{
 						overflow: "hidden",
 						position: "relative",
 						height: "640px",
-						width: "470px",
 						backgroundColor: "$surface",
-						//padding: "12px",
 					}}
 				>
 					<Container

@@ -57,25 +57,21 @@ export default function Index() {
 	return (
 		<>
 			<LandingPageHeader />
+			<ShortDivider dir="vertical" />
 			<PublicFluidContainer>
-				<Container className="flex flex-col gap-8">
-					<Container className="flex justify-between items-center">
+				<Container className="flex flex-col gap-8 px-4 lg:px-0">
+					<Container className="flex flex-col md:flex-row justify-between gap-4 md:gap-0 md:items-center">
 						<Heading size="md">December Treat Of The Month</Heading>
-						<Link href={"/magazine"}>
-							<a>
-								<Button appearance={"surface"}>View the magazine</Button>
-							</a>
-						</Link>
 					</Container>
 					<TreatOfTheMonthCollectionSection collectionItems={[newCurated]} />
 				</Container>
 			</PublicFluidContainer>
 			<PublicFluidContainer>
-				<Container className="flex flex-col w-full gap-8">
+				<Container className="flex flex-col w-full gap-8 px-4 lg:px-0">
 					<Container className="flex justify-between">
 						<Heading size="md">Trending creators</Heading>
 					</Container>
-					<Container className="grid grid-cols-3 gap-8">
+					<Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 						{["kamfeska", "putinih", "khaks"].map((i) => (
 							<SuggestedCreatorCard
 								key={i}
@@ -94,8 +90,8 @@ export default function Index() {
 			</PublicFluidContainer>
 			<ShortDivider dir={"vertical"} />
 			<PublicFluidContainer>
-				<Container className="flex flex-col w-full gap-8">
-					<Container className="flex justify-between">
+				<Container className="flex flex-col w-full gap-8 px-8 lg:px-0">
+					<Container className="flex flex-col md:flex-row justify-between items-baseline gap-4">
 						<Heading size="md">Trending trits</Heading>
 						<Link href={"/sweetshop"}>
 							<a>
@@ -109,7 +105,7 @@ export default function Index() {
 							</a>
 						</Link>
 					</Container>
-					<Container className="grid grid-cols-3 gap-4">
+					<Container className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-4">
 						{[1, 2, 3].map((i) => (
 							<TritPost
 								key={i}
@@ -122,8 +118,8 @@ export default function Index() {
 			</PublicFluidContainer>
 			<ShortDivider dir={"vertical"} />
 			<PublicFluidContainer>
-				<Container className="grid grid-cols-2 gap-8 px-4 md:px-8 lg:px-0">
-					<Container className="col-span-2 px-4 mb-12 md:px-8 lg:px-0">
+				<Container className="grid grid-cols-1 lg:grid-cols-2 gap-8 px-4 md:px-8 lg:px-0">
+					<Container className="col-span-1 lg:col-span-2 px-4 mb-12 md:px-8 lg:px-0">
 						<FeaturesCard />
 					</Container>
 

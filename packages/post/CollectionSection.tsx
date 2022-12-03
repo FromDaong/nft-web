@@ -37,7 +37,7 @@ export default function TreatOfTheMonthCollectionSection(props: {
 						{props.collectionItems[0].collection.name}
 					</Heading>
 				</Container>
-				<Container className="flex justify-between">
+				<Container className="flex flex-col gap-4 md:flex-row justify-between">
 					<Button
 						appearance={"surface"}
 						className="flex gap-2 items-center"
