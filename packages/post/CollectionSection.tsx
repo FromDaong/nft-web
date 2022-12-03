@@ -3,6 +3,7 @@ import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Heading} from "@packages/shared/components/Typography/Headings";
 import UserAvatar from "core/auth/components/Avatar";
+import {PostMediaContent} from "./PostMediaContent";
 import {FrostyBackgroundContainer} from "./TritPost";
 import {TPost} from "./types";
 
@@ -14,19 +15,25 @@ export default function TreatOfTheMonthCollectionSection(props: {
 	collectionItems: Array<TPost>;
 }) {
 	return (
-		<Container className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+		<Container className="grid grid-cols-1 gap-8 lg:grid-cols-2">
 			<Container
-				className="rounded-xl drop-shadow"
+				className="overflow-hidden rounded-xl drop-shadow bg-gradient-to-r from-purple-500 to-pink-500"
 				css={{minHeight: "560px", backgroundColor: "$elementSurface"}}
 			></Container>
 			<Container
-				className="rounded-xl drop-shadow h-auto p-8 flex flex-col gap-8"
+				className="flex flex-col h-auto gap-8 p-8 rounded-xl drop-shadow"
 				css={{backgroundColor: "$elementSurface"}}
 			>
-				<Container className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-					{props.collectionItems.map((item) => (
-						<CollectionItem key={item.id} />
-					))}
+				<Container css={{height: "360px"}}>
+					<Container className="grid grid-cols-1 gap-4 lg:grid-cols-2 ">
+						{[1, 2, 3, 4].map((item) => (
+							<Container
+								key={item}
+								className="overflow-hidden rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500"
+								css={{height: "180px", backgroundColor: "red"}}
+							></Container>
+						))}
+					</Container>
 				</Container>
 				<Container className="flex items-center gap-2">
 					<UserAvatar
@@ -40,7 +47,7 @@ export default function TreatOfTheMonthCollectionSection(props: {
 				<Container className="flex flex-col gap-4 md:flex-row justify-between">
 					<Button
 						appearance={"surface"}
-						className="flex gap-2 items-center"
+						className="flex items-center gap-2"
 					>
 						<span>View TreatDAO magazine</span>
 						<ArrowRightIcon
@@ -50,7 +57,7 @@ export default function TreatOfTheMonthCollectionSection(props: {
 					</Button>
 					<Button
 						appearance={"surface"}
-						className="flex gap-2 items-center"
+						className="flex items-center gap-2"
 					>
 						<span>View the Ethereum collection</span>
 						<ArrowRightIcon
