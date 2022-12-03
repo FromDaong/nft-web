@@ -52,7 +52,7 @@ export default function NFTS() {
 			<ApplicationFrame>
 				<SEOHead title="Explore NFTs" />
 				<Container className="flex flex-col gap-12 py-12">
-					<Container className="flex flex-col">
+					<Container className="flex flex-col px-4 lg:px-0">
 						<Heading size="md">Browse sweetshop trits</Heading>
 						<Divider dir="horizontal" />
 						<Container>
@@ -79,19 +79,21 @@ export default function NFTS() {
 						</Container>
 					</Container>
 
-					<InfinityScrollListing>
-						{[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
-							<div
-								key={i}
-								className="col-span-1"
-							>
-								<TritPost
-									inGrid
-									{...newCurated}
-								/>
-							</div>
-						))}
-					</InfinityScrollListing>
+					<Container className="px-4 lg:px-0">
+						<InfinityScrollListing>
+							{[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
+								<div
+									key={i}
+									className="col-span-1"
+								>
+									<TritPost
+										inGrid
+										{...newCurated}
+									/>
+								</div>
+							))}
+						</InfinityScrollListing>
+					</Container>
 				</Container>
 			</ApplicationFrame>
 		</ApplicationLayout>

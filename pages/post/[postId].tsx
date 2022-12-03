@@ -24,14 +24,16 @@ import UserAvatar from "core/auth/components/Avatar";
 import {Button} from "@packages/shared/components/Button";
 import CommentsAndCollectorsTabs from "@packages/comments/components/CommentsTab";
 import Link from "next/link";
+import {PaperAirplaneIcon} from "@heroicons/react/outline";
+import {Input} from "@packages/shared/components/Input";
 
 export default function PostDetail() {
 	return (
 		<ApplicationLayout>
 			<ApplicationFrame>
 				<Container>
-					<Container className="grid grid-cols-4 gap-8">
-						<Container className="col-span-3">
+					<Container className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+						<Container className="col-span-1 lg:col-span-3">
 							<Container className="flex items-center justify-between my-2">
 								<Container>
 									<Container
@@ -106,7 +108,7 @@ export default function PostDetail() {
 							</Container>
 						</Container>
 
-						<Container className="col-span-1 flex flex-col gap-8 py-8">
+						<Container className="col-span-1 flex flex-col gap-8 py-8 px-4 lg:px-0">
 							<Container className="flex items-center gap-2">
 								<UserAvatar
 									size={36}
@@ -150,6 +152,28 @@ export default function PostDetail() {
 							</Container>
 							<Container>
 								<CommentsAndCollectorsTabs />
+								<Container
+									className="fixed left-0 md:relative w-full flex justify-between items-center gap-2 py-4 px-4"
+									style={{
+										bottom: "12px",
+									}}
+								>
+									<Input
+										className="max-w-md w-full py-2 px-8 rounded-full border"
+										placeholder="Add a comment..."
+									/>
+									<Container
+										css={{
+											width: "32px",
+											height: "32px",
+											backgroundColor: "$surface",
+											borderColor: "$subtleBorder",
+										}}
+										className="flex items-center justify-center border rounded-full"
+									>
+										<PaperAirplaneIcon className="w-5 h-5" />
+									</Container>
+								</Container>
 							</Container>
 						</Container>
 					</Container>

@@ -21,6 +21,7 @@ type SuggestedCreatorData = {
 	live?: boolean;
 	noFollowButton?: boolean;
 	bio: string;
+	noBg?: boolean;
 };
 
 export default function SuggestedCreatorCard(props: SuggestedCreatorData) {
@@ -81,7 +82,7 @@ const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 						border: `1px ${props.border ? "solid" : null} $subtleBorder`,
 						padding: props.border ? "16px" : null,
 						borderRadius: "16px",
-						backgroundColor: "$elementSurface",
+						backgroundColor: !props.noBg ? "$elementSurface" : "transparent",
 						height: "100%",
 					}}
 				>

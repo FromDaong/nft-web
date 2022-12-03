@@ -4,6 +4,7 @@ import {Container} from "@packages/shared/components/Container";
 import UserAvatar from "core/auth/components/Avatar";
 import {ImportantSmallText} from "@packages/shared/components/Typography/Headings";
 import {
+	ImportantText,
 	MutedText,
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
@@ -65,15 +66,15 @@ export default function CommentsAndCollectorsTabs() {
 						>
 							<Text>Collectors</Text>
 							<Container>
-								<Container
-									className="rounded-full p-1"
+								<SmallText
+									className="rounded-full p-2"
 									css={{
 										backgroundColor: "$gray3",
 										borderRadius: "50%",
 									}}
 								>
-									<SmallText>10</SmallText>
-								</Container>
+									<ImportantText>10</ImportantText>
+								</SmallText>
 							</Container>
 						</Tabs.Trigger>
 					</Container>
@@ -98,29 +99,6 @@ export default function CommentsAndCollectorsTabs() {
 							</Container>
 						)}
 					</Container>
-					<Container
-						className="flex justify-between items-center gap-2 py-4"
-						style={{
-							position: "absolute",
-							bottom: 0,
-						}}
-					>
-						<input
-							className="max-w-md w-full py-2 px-8 rounded-full border"
-							placeholder="Add a comment..."
-						/>
-						<Container
-							css={{
-								width: "32px",
-								height: "32px",
-								backgroundColor: "$surface",
-								borderColor: "$subtleBorder",
-							}}
-							className="flex items-center justify-center border rounded-full"
-						>
-							<PaperAirplaneIcon className="w-5 h-5" />
-						</Container>
-					</Container>
 				</Tabs.Content>
 				<Tabs.Content value="collected">
 					<Container className="grid grid-cols-1 gap-6">
@@ -133,6 +111,7 @@ export default function CommentsAndCollectorsTabs() {
 									avatar=""
 									bio="Mystery SEV. Suddenly, the site goes dark. The dashboard is red. Everything seems fucked. There's no indication why"
 									noFollowButton
+									noBg
 								/>
 							))
 						) : (
