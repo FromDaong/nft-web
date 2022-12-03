@@ -4,7 +4,7 @@ import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 
 import "../styles/index.css";
 
-import {Router} from "next/router";
+import {Router, useRouter} from "next/router";
 import Head from "next/head";
 import ProgressBar from "@badrap/bar-of-progress";
 import Navbar from "packages/navigation/Navbar";
@@ -39,9 +39,17 @@ function MyApp({
 	session: Session;
 }>) {
 	const {toggleDesignMode} = useDeveloperTools();
+	const router = useRouter();
 
 	useEffect(() => {
 		toggleDesignMode(false);
+	}, []);
+	useEffect(() => {
+		const theme = localStorage.getItem("theme");
+		if (!theme) {
+			localStorage.setItem("theme", "light");
+			router.reload();
+		}
 	}, []);
 
 	return (
