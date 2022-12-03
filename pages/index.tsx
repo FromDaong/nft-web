@@ -17,6 +17,9 @@ import {TPost} from "@packages/post/types";
 import {TritPost} from "@packages/post/TritPost";
 import SuggestedCreatorCard from "@packages/feed/components/SuggestedCreatorCard";
 import Link from "next/link";
+import {ImportantText} from "@packages/shared/components/Typography/Text";
+import {ArrowRightIcon} from "@heroicons/react/outline";
+import TreatOfTheMonthCollectionSection from "@packages/post/CollectionSection";
 
 // TODO: Use intersection observer to change navbar color.
 
@@ -55,6 +58,19 @@ export default function Index() {
 		<>
 			<LandingPageHeader />
 			<PublicFluidContainer>
+				<Container className="flex flex-col gap-8">
+					<Container className="flex justify-between items-center">
+						<Heading size="md">December Treat Of The Month</Heading>
+						<Link href={"/magazine"}>
+							<a>
+								<Button appearance={"surface"}>View the magazine</Button>
+							</a>
+						</Link>
+					</Container>
+					<TreatOfTheMonthCollectionSection collectionItems={[newCurated]} />
+				</Container>
+			</PublicFluidContainer>
+			<PublicFluidContainer>
 				<Container className="flex flex-col w-full gap-8">
 					<Container className="flex justify-between">
 						<Heading size="md">Trending creators</Heading>
@@ -82,7 +98,13 @@ export default function Index() {
 						<Heading size="md">Trending trits</Heading>
 						<Link href={"/sweetshop"}>
 							<a>
-								<Text>View all on sweetshop</Text>
+								<Text className="flex gap-2 items-center">
+									<ImportantText>View all on sweetshop</ImportantText>
+									<ArrowRightIcon
+										width={16}
+										height={16}
+									/>
+								</Text>
 							</a>
 						</Link>
 					</Container>
@@ -120,19 +142,7 @@ export default function Index() {
 					/>
 				</Container>
 			</PublicFluidContainer>
-			<ShortDivider dir={"vertical"} />
-			<PublicFluidContainer>
-				<div className="px-4 md:px-8 lg:px-0">
-					<MonthlyMagazine />
-				</div>
-			</PublicFluidContainer>
 
-			<ShortDivider dir={"vertical"} />
-			<PublicFluidContainer>
-				<div className="px-4 md:px-8 lg:px-0">
-					<SmartContracts />
-				</div>
-			</PublicFluidContainer>
 			<div className="px-4 my-24 md:px-8 lg:px-0">
 				<Footer />
 			</div>

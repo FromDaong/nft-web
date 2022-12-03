@@ -49,6 +49,8 @@ export type TPost = {
 		avatar: string;
 	};
 	inGrid?: boolean;
+	protected?: boolean;
+	totm?: boolean;
 };
 
 export type LivestreamPost = {

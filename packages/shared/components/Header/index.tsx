@@ -17,7 +17,7 @@ const TextContainer = styled("div", {
 export default function LandingPageHeader() {
 	return (
 		<div
-			className="flex items-center justify-center w-full p-4 md:p-8 py-12 lg:py-24 min-h-[80vh]"
+			className="flex items-center justify-center w-full p-4 md:p-8 py-12 lg:py-24 min-h-[520px]"
 			style={{
 				background: "url('/assets/hero-background.svg')",
 				backgroundPosition: "center",

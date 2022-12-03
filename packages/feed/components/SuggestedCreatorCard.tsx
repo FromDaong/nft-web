@@ -37,6 +37,8 @@ const CollapseSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 				border: `1px ${props.border ? "solid" : null} $subtleBorder`,
 				padding: props.border ? "16px" : null,
 				borderRadius: "16px",
+				backgroundColor: "$elementSurface",
+				height: "auto",
 			}}
 			className="flex justify-between w-full"
 		>
@@ -76,6 +78,8 @@ const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 						border: `1px ${props.border ? "solid" : null} $subtleBorder`,
 						padding: props.border ? "16px" : null,
 						borderRadius: "16px",
+						backgroundColor: "$elementSurface",
+						height: "100%",
 					}}
 				>
 					<Container className="flex justify-between w-full gap-4">
