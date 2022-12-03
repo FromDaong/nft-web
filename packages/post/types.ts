@@ -12,6 +12,7 @@ export type TPost = {
 		username: string;
 		avatar: string;
 		bio?: string;
+		live?: boolean;
 	};
 	subscription?: {
 		id: string;
