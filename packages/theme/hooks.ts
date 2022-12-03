@@ -1,19 +1,19 @@
-import { useState } from "react";
+import {useState} from "react";
 
 export function useTheme(default_theme: "light" | "pink" | "dark" = "light") {
-  const [theme, setTheme] = useState<"light" | "pink" | "dark">(default_theme);
+	const [theme, setTheme] = useState<"light" | "pink" | "dark">(default_theme);
 
-  const updateTheme = (theme: "light" | "pink" | "dark") => {
-    setTheme(theme);
-  };
+	const updateTheme = (theme: "light" | "pink" | "dark") => {
+		setTheme(theme);
+	};
 
-  return {
-    theme,
-    updateTheme,
-  };
+	return {
+		theme,
+		updateTheme,
+	};
 }
 
 export const useUpdateTheme = () => {
-  const theme = useTheme();
-  return { theme: theme.theme, updateTheme: theme.updateTheme };
+	const theme = useTheme("light");
+	return {theme: theme.theme, updateTheme: theme.updateTheme};
 };
