@@ -14,14 +14,6 @@ const ApplicationContext = createContext<{
 });
 
 export const ApplicationProvider = ({children}) => {
-	const theme = useContext(ApplicationTheme);
-
-	useEffect(() => {
-		if (theme.theme === "undefined") {
-			theme.updateTheme("light");
-		}
-	}, [theme.theme]);
-
 	return (
 		<ApplicationContext.Provider value={{acceptedCookies: []}}>
 			<FpjsProvider

@@ -4,15 +4,10 @@ import {
 } from "packages/shared/components/Container";
 import LandingPageHeader from "packages/shared/components/Header";
 import FeaturesCard from "@packages/shared/components/Card/MarketingPages/FeaturesCard";
-import MonthlyMagazine from "@packages/shared/components/Card/MarketingPages/MonthlyMagazineCard";
-import SubscriptionsCard from "@packages/shared/components/Card/MarketingPages/SubscriptionsCard";
-import SmartContracts from "@packages/shared/components/Card/MarketingPages/SmartContractsCard";
 import {BenefitsCard} from "@packages/shared/components/Card/MarketingPages/BenefitsCard";
 import Footer from "@packages/shared/components/Footer";
 import {ShortDivider} from "@packages/shared/components/Divider";
-import TreatOfTheMonth from "@packages/shared/components/Card/MarketingPages/TreatOfTheMonth";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
-import {Button} from "@packages/shared/components/Button";
 import {TPost} from "@packages/post/types";
 import {TritPost} from "@packages/post/TritPost";
 import SuggestedCreatorCard from "@packages/feed/components/SuggestedCreatorCard";
@@ -59,7 +54,7 @@ export default function Index() {
 			<LandingPageHeader />
 			<ShortDivider dir="vertical" />
 			<PublicFluidContainer>
-				<Container className="flex flex-col gap-8 px-4 lg:px-0">
+				<Container className="flex flex-col gap-8 px-4 xl:px-0">
 					<Container className="flex flex-col md:flex-row justify-between gap-4 md:gap-0 md:items-center">
 						<Heading size="md">December Treat Of The Month</Heading>
 					</Container>
@@ -67,7 +62,7 @@ export default function Index() {
 				</Container>
 			</PublicFluidContainer>
 			<PublicFluidContainer>
-				<Container className="flex flex-col w-full gap-8 px-4 lg:px-0">
+				<Container className="flex flex-col w-full gap-8 px-4 xl:px-0">
 					<Container className="flex justify-between">
 						<Heading size="md">Trending creators</Heading>
 					</Container>
@@ -90,7 +85,7 @@ export default function Index() {
 			</PublicFluidContainer>
 			<ShortDivider dir={"vertical"} />
 			<PublicFluidContainer>
-				<Container className="flex flex-col w-full gap-8 px-8 lg:px-0">
+				<Container className="flex flex-col w-full gap-8 px-8 xl:px-0">
 					<Container className="flex flex-col md:flex-row justify-between items-baseline gap-4">
 						<Heading size="md">Trending trits</Heading>
 						<Link href={"/sweetshop"}>
@@ -118,8 +113,8 @@ export default function Index() {
 			</PublicFluidContainer>
 			<ShortDivider dir={"vertical"} />
 			<PublicFluidContainer>
-				<Container className="grid grid-cols-1 lg:grid-cols-2 gap-8 px-4 md:px-8 lg:px-0">
-					<Container className="col-span-1 lg:col-span-2 px-4 mb-12 md:px-8 lg:px-0">
+				<Container className="grid grid-cols-1 lg:grid-cols-2 gap-8 px-4 md:px-8 xl:px-0">
+					<Container className="col-span-1 lg:col-span-2 px-4 mb-12 md:px-8 xl:px-0">
 						<FeaturesCard />
 					</Container>
 					<BenefitsCard
@@ -138,7 +133,7 @@ export default function Index() {
 					/>
 				</Container>
 			</PublicFluidContainer>
-			<div className="px-4 my-24 md:px-8 lg:px-0">
+			<div className="px-4 my-24 md:px-8 xl:px-0">
 				<Footer />
 			</div>
 		</>

@@ -108,7 +108,7 @@ export default function PostDetail() {
 							</Container>
 						</Container>
 
-						<Container className="col-span-1 flex flex-col gap-8 py-8 px-4 lg:px-0">
+						<Container className="col-span-1 flex flex-col gap-8 py-8 px-4 xl:px-0">
 							<Container className="flex items-center gap-2">
 								<UserAvatar
 									size={36}

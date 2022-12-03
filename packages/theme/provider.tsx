@@ -51,7 +51,7 @@ export default function ThemeProvider({children}: {children: ReactNode}) {
 		if (typeof window !== "undefined") {
 			try {
 				const theme = localStorage.getItem("theme");
-				updateTheme(theme as "dark" | "pink" | "light");
+				updateTheme((theme as "dark" | "pink" | "light") ?? "light");
 			} catch (err) {
 				console.error("[x] Error reading theme from local");
 			}
