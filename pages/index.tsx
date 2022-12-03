@@ -85,6 +85,7 @@ export default function Index() {
 								bio="Mystery SEV. Suddenly, the site goes dark. The dashboard is red. Everything seems fucked. There's no indication why."
 								isExpanded
 								border
+								isPromoted={i === "putinih"}
 								live={i === "putinih"}
 							/>
 						))}

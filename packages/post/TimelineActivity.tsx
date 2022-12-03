@@ -125,8 +125,8 @@ export const TimelineActivity = (
 										<ImportantSmallText css={{color: "$accentText"}}>
 											{props.actionMeta.subject.name}.
 										</ImportantSmallText>{" "}
-										<p>{props.text}</p>
 									</Text>
+									<Text>{props.text}</Text>
 								</PostCardMetaContainer>
 							)}
 						</Container>
@@ -145,6 +145,7 @@ export const TimelineActivity = (
 					overflow: "hidden",
 					width: "fit-content",
 				}}
+				className="flex flex-col gap-4"
 			>
 				<Container
 					css={{
@@ -171,24 +172,24 @@ export const TimelineActivity = (
 						/>
 					</Container>
 				</Container>
-				<Container className="flex justify-between py-4">
+				<Container className="flex justify-between">
 					<Container className="flex gap-4">
 						<button>
 							<Text className="flex gap-1 items-center">
 								<HeartIcon
 									width={20}
-									height={24}
+									height={20}
 								/>
-								<span>12</span>
+								<Text css={{fontSize: "16px"}}>12</Text>
 							</Text>
 						</button>
 						<button>
 							<Text className="flex gap-1 items-center">
 								<ChatBubbleIcon
 									width={20}
-									height={24}
+									height={20}
 								/>
-								<span>6</span>
+								<Text css={{fontSize: "16px"}}>6</Text>
 							</Text>
 						</button>
 						<button>
@@ -200,33 +201,35 @@ export const TimelineActivity = (
 							</Text>
 						</button>
 					</Container>
-					<Container>
-						<Button>Collect</Button>
+				</Container>
+				<Container>
+					<Container className="flex gap-2">
+						<Container className="flex items-center">
+							<UserAvatar
+								value={"chris"}
+								size={20}
+							/>
+							<UserAvatar
+								value={"tatenda"}
+								size={20}
+							/>
+							<UserAvatar
+								value={"putin"}
+								size={20}
+							/>
+							<UserAvatar
+								value={"kamfes"}
+								size={20}
+							/>
+						</Container>
+						<Text>
+							Collected by <ImportantText>kamfeskaya</ImportantText> and{" "}
+							<ImportantText>10 others</ImportantText>
+						</Text>
 					</Container>
 				</Container>
-				<Container className="flex gap-2">
-					<Container className="flex items-center">
-						<UserAvatar
-							value={"chris"}
-							size={20}
-						/>
-						<UserAvatar
-							value={"tatenda"}
-							size={20}
-						/>
-						<UserAvatar
-							value={"putin"}
-							size={20}
-						/>
-						<UserAvatar
-							value={"kamfes"}
-							size={20}
-						/>
-					</Container>
-					<Text>
-						Collected by <ImportantText>kamfeskaya</ImportantText> and{" "}
-						<ImportantText>10 others</ImportantText>
-					</Text>
+				<Container>
+					<Button>Collect</Button>
 				</Container>
 			</Container>
 		</PostCardContainer>

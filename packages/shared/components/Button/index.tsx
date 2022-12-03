@@ -40,6 +40,9 @@ export const Button = styled("button", {
 			unstyled: {
 				padding: 0,
 			},
+			danger: {
+				backgroundColor: "$red2",
+			},
 		},
 		outlined: {
 			true: {

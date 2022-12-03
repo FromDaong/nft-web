@@ -1,9 +1,7 @@
-import { chains_map } from "./constants";
-
-export {};
+import {chains_map} from "./constants";
 
 export const getChainNameById = (id: number): string => {
-  return chains_map.find((chain) => chain.id === id)?.name || "Unknown network";
+	return chains_map.find((chain) => chain.id === id)?.name || "Unknown network";
 };
 
 // TODO: Look at subscriptions

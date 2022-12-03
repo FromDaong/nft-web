@@ -1,3 +1,4 @@
+import {FpjsProvider} from "@fingerprintjs/fingerprintjs-pro-react";
 import TreatState from "core/state";
 import {createContext} from "react";
 
@@ -14,7 +15,14 @@ const ApplicationContext = createContext<{
 export const ApplicationProvider = ({children}) => {
 	return (
 		<ApplicationContext.Provider value={{acceptedCookies: []}}>
-			{children}
+			<FpjsProvider
+				loadOptions={{
+					apiKey: "5LG7UBlESl7pJPHsQjiI",
+					region: "eu",
+				}}
+			>
+				{children}
+			</FpjsProvider>
 		</ApplicationContext.Provider>
 	);
 };

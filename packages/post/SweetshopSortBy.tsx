@@ -14,16 +14,24 @@ export default function SweetshopSortBy() {
 					<Select.Viewport>
 						<Select.Group>
 							<Select.Label>Sort by date</Select.Label>
-							<Select.Item>
-								<Select.ItemText />
+							<Select.Item value="latest-first">
+								<Select.ItemText>Latest first</Select.ItemText>
+								<Select.ItemIndicator />
+							</Select.Item>
+							<Select.Item value="oldest-first">
+								<Select.ItemText>Latest first</Select.ItemText>
 								<Select.ItemIndicator />
 							</Select.Item>
 						</Select.Group>
 
 						<Select.Group>
 							<Select.Label>Sort by price</Select.Label>
-							<Select.Item>
-								<Select.ItemText />
+							<Select.Item value="cheapest-first">
+								<Select.ItemText>Lowest first</Select.ItemText>
+								<Select.ItemIndicator />
+							</Select.Item>
+							<Select.Item value="expensive-first">
+								<Select.ItemText>Highest first</Select.ItemText>
 								<Select.ItemIndicator />
 							</Select.Item>
 						</Select.Group>

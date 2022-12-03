@@ -39,7 +39,7 @@ export default class TreatCore {
 }
 
 export type ComponentBasicProps = {
-	children: ReactNode;
+	children?: ReactNode;
 };
 
 export type AnalyticsEvent = {

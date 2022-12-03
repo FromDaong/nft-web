@@ -52,45 +52,38 @@ function MyApp({
 			>
 				<ApplicationProvider>
 					<WagmiWrapper>
-						<FpjsProvider
-							loadOptions={{
-								apiKey: "5LG7UBlESl7pJPHsQjiI",
-								region: "eu",
-							}}
-						>
-							<Head>
-								<title>Treat DAO</title>
-								<meta
-									name="title"
-									content="Treat DAO"
-								/>
-								<meta
-									name="image"
-									content="https://i.imgur.com/OEiuwp4.jpg"
-								/>
-								<meta
-									property="og:image"
-									content="https://i.imgur.com/OEiuwp4.jpg"
-								/>
-
-								<meta
-									name="description"
-									content="Treat is an exclusive platform for creators to sell NFTs. Hold $TREAT to have a say on which creators are chosen & new platform features."
-								/>
-							</Head>
-							{
-								// /<FollowersModal />
-							}
-							<UniversalCommandbar />
-							<Onboarding
-								config={{}}
-								isOpen={false}
+						<Head>
+							<title>Treat DAO</title>
+							<meta
+								name="title"
+								content="Treat DAO"
 							/>
-							<Navbar />
-							<main className="mt-[60px]">
-								<Component {...pageProps} />
-							</main>
-						</FpjsProvider>
+							<meta
+								name="image"
+								content="https://i.imgur.com/OEiuwp4.jpg"
+							/>
+							<meta
+								property="og:image"
+								content="https://i.imgur.com/OEiuwp4.jpg"
+							/>
+
+							<meta
+								name="description"
+								content="Treat is an exclusive platform for creators to sell NFTs. Hold $TREAT to have a say on which creators are chosen & new platform features."
+							/>
+						</Head>
+						{
+							// /<FollowersModal />
+						}
+						<UniversalCommandbar />
+						<Onboarding
+							config={{}}
+							isOpen={false}
+						/>
+						<Navbar />
+						<main className="mt-[60px]">
+							<Component {...pageProps} />
+						</main>
 					</WagmiWrapper>
 				</ApplicationProvider>
 			</SessionProvider>

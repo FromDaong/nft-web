@@ -95,7 +95,7 @@ export default function ProfileLayout(props: ComponentBasicProps) {
 	const query = router.query;
 
 	const user = {
-		username: query.username,
+		username: query.username as string,
 		displayName: "Kamfeskaya",
 		bio: "Latino Artist. Author. Producer. Daddy. Hand-drawn 1:1s capturing the energy of a moment. Life is beautiful.",
 		followers: 241,
@@ -161,7 +161,7 @@ export default function ProfileLayout(props: ComponentBasicProps) {
 					<Text>{user.bio}</Text>
 					<Container variant={"unstyled"}>
 						<Container className="flex gap-x-4">
-							<ProfileDropdown user={user} />
+							<ProfileDropdown username={user.username} />
 							<Button className="drop-shadow-xl">Follow</Button>
 						</Container>
 					</Container>
