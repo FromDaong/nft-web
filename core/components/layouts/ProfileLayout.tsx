@@ -108,8 +108,8 @@ export default function ProfileLayout(props: ComponentBasicProps) {
 		<>
 			<UserHeader />
 
-			<FluidContainer className="mt-[26px] flex justify-between">
-				<ContextualContainer className="flex flex-col max-w-lg gap-y-4 px-4">
+			<FluidContainer className="mt-[26px] flex justify-between px-4">
+				<ContextualContainer className="flex flex-col max-w-lg gap-y-4">
 					<Container>
 						<Heading
 							size="sm"
@@ -184,7 +184,7 @@ export default function ProfileLayout(props: ComponentBasicProps) {
 			</FluidContainer>
 			<FluidContainer
 				justified
-				className="flex flex-col mt-[26px]"
+				className="flex flex-col mt-[26px] px-4"
 			>
 				{props.children}
 			</FluidContainer>

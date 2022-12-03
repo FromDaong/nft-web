@@ -42,7 +42,7 @@ export const ProfileDropdown = (props: {username: string}) => {
 					<DropdownContent
 						className="drop-shadow-2xl"
 						css={{
-							backgroundColor: "$surface",
+							backgroundColor: "$elementSurface",
 							padding: "4px",
 							borderRadius: "21px",
 							minWidth: "180px",
