@@ -14,7 +14,7 @@ import TreatOfTheMonth from "@packages/shared/components/Card/MarketingPages/Tre
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {Button} from "@packages/shared/components/Button";
 import {TPost} from "@packages/post/types";
-import {CuratedNFt} from "@packages/post/CuratedPost";
+import {TritPost} from "@packages/post/TritPost";
 import SuggestedCreatorCard from "@packages/feed/components/SuggestedCreatorCard";
 import Link from "next/link";
 
@@ -88,7 +88,7 @@ export default function Index() {
 					</Container>
 					<Container className="grid grid-cols-3 gap-4">
 						{[1, 2, 3].map((i) => (
-							<CuratedNFt
+							<TritPost
 								key={i}
 								inGrid
 								{...newCurated}

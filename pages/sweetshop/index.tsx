@@ -1,4 +1,4 @@
-import {CuratedNFt} from "@packages/post/CuratedPost";
+import {TritPost} from "@packages/post/TritPost";
 import {TPost} from "@packages/post/types";
 import {SEOHead} from "@packages/seo/page";
 import {
@@ -50,7 +50,7 @@ export default function NFTS() {
 							key={i}
 							className="col-span-1"
 						>
-							<CuratedNFt
+							<TritPost
 								inGrid
 								{...newCurated}
 							/>

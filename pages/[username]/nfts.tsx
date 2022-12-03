@@ -1,4 +1,4 @@
-import {CuratedNFt} from "@packages/post/CuratedPost";
+import {TritPost} from "@packages/post/TritPost";
 import {TPost} from "@packages/post/types";
 import {SEOHead} from "@packages/seo/page";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
@@ -43,9 +43,9 @@ export default function UserProfile() {
 				<ProfileLayout>
 					<SEOHead title={router.query.username + " - Trit"} />
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-						<CuratedNFt {...newCurated} />
-						<CuratedNFt {...newCurated} />
-						<CuratedNFt {...newCurated} />
+						<TritPost {...newCurated} />
+						<TritPost {...newCurated} />
+						<TritPost {...newCurated} />
 					</div>
 				</ProfileLayout>
 			</ApplicationFrame>

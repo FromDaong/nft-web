@@ -1,4 +1,4 @@
-import {CuratedNFt} from "./CuratedPost";
+import {TritPost} from "./TritPost";
 import {SubscriptionContentPost} from "./SubscriptionContentPost";
 import {TPost} from "./types";
 
@@ -8,7 +8,7 @@ export default function Trit(post: TPost) {
 			{post.post_type === "subscription" ? (
 				<SubscriptionContentPost {...post} />
 			) : (
-				<CuratedNFt {...post} />
+				<TritPost {...post} />
 			)}
 		</>
 	);
