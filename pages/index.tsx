@@ -59,7 +59,7 @@ export default function Index() {
 			<LandingPageHeader />
 			<PublicFluidContainer>
 				<Container className="flex flex-col gap-8">
-					<Container className="flex justify-between items-center">
+					<Container className="flex items-center justify-between">
 						<Heading size="md">December Treat Of The Month</Heading>
 						<Link href={"/magazine"}>
 							<a>
@@ -98,7 +98,7 @@ export default function Index() {
 						<Heading size="md">Trending trits</Heading>
 						<Link href={"/sweetshop"}>
 							<a>
-								<Text className="flex gap-2 items-center">
+								<Text className="flex items-center gap-2">
 									<ImportantText>View all on sweetshop</ImportantText>
 									<ArrowRightIcon
 										width={16}
@@ -125,7 +125,6 @@ export default function Index() {
 					<Container className="col-span-2 px-4 mb-12 md:px-8 lg:px-0">
 						<FeaturesCard />
 					</Container>
-
 					<BenefitsCard
 						title={"Connect with all your favorite creators."}
 						user_type="FAN"
@@ -142,7 +141,6 @@ export default function Index() {
 					/>
 				</Container>
 			</PublicFluidContainer>
-
 			<div className="px-4 my-24 md:px-8 lg:px-0">
 				<Footer />
 			</div>
