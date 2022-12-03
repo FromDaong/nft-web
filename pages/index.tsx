@@ -53,93 +53,86 @@ const newCurated: TPost = {
 export default function Index() {
 	return (
 		<>
-			<>
-				<LandingPageHeader />
-				<PublicFluidContainer state={"normal"}>
-					<Container className="my-12 md:px-8 lg:px-0">
-						<TreatOfTheMonth />
+			<LandingPageHeader />
+			<PublicFluidContainer>
+				<Container className="flex flex-col w-full gap-8">
+					<Container className="flex justify-between">
+						<Heading size="md">Trending creators</Heading>
 					</Container>
-				</PublicFluidContainer>
-				<PublicFluidContainer>
-					<Container className="flex flex-col w-full gap-8">
-						<Container className="flex justify-between">
-							<Heading size="md">Trending creators</Heading>
-						</Container>
-						<Container className="grid grid-cols-3 gap-8">
-							{["kamfeska", "putinih", "khaks"].map((i) => (
-								<SuggestedCreatorCard
-									key={i}
-									username={i}
-									display_name="Tatenda Chris"
-									avatar=""
-									bio="Mystery SEV. Suddenly, the site goes dark. The dashboard is red. Everything seems fucked. There's no indication why."
-									isExpanded
-									border
-									live={i === "putinih"}
-								/>
-							))}
-						</Container>
+					<Container className="grid grid-cols-3 gap-8">
+						{["kamfeska", "putinih", "khaks"].map((i) => (
+							<SuggestedCreatorCard
+								key={i}
+								username={i}
+								display_name="Tatenda Chris"
+								avatar=""
+								bio="Mystery SEV. Suddenly, the site goes dark. The dashboard is red. Everything seems fucked. There's no indication why."
+								isExpanded
+								border
+								live={i === "putinih"}
+							/>
+						))}
 					</Container>
-				</PublicFluidContainer>
-				<ShortDivider dir={"vertical"} />
-				<PublicFluidContainer>
-					<Container className="flex flex-col w-full gap-8">
-						<Container className="flex justify-between">
-							<Heading size="md">Trending trits</Heading>
-							<Link href={"/sweetshop"}>
-								<a>
-									<Text>View all on sweetshop</Text>
-								</a>
-							</Link>
-						</Container>
-						<Container className="grid grid-cols-3 gap-4">
-							{[1, 2, 3].map((i) => (
-								<CuratedNFt
-									key={i}
-									inGrid
-									{...newCurated}
-								/>
-							))}
-						</Container>
+				</Container>
+			</PublicFluidContainer>
+			<ShortDivider dir={"vertical"} />
+			<PublicFluidContainer>
+				<Container className="flex flex-col w-full gap-8">
+					<Container className="flex justify-between">
+						<Heading size="md">Trending trits</Heading>
+						<Link href={"/sweetshop"}>
+							<a>
+								<Text>View all on sweetshop</Text>
+							</a>
+						</Link>
 					</Container>
-				</PublicFluidContainer>
-				<ShortDivider dir={"vertical"} />
-				<PublicFluidContainer>
-					<Container className="grid grid-cols-2 gap-8 px-4 md:px-8 lg:px-0">
-						<Container className="col-span-2 px-4 mb-12 md:px-8 lg:px-0">
-							<FeaturesCard />
-						</Container>
+					<Container className="grid grid-cols-3 gap-4">
+						{[1, 2, 3].map((i) => (
+							<CuratedNFt
+								key={i}
+								inGrid
+								{...newCurated}
+							/>
+						))}
+					</Container>
+				</Container>
+			</PublicFluidContainer>
+			<ShortDivider dir={"vertical"} />
+			<PublicFluidContainer>
+				<Container className="grid grid-cols-2 gap-8 px-4 md:px-8 lg:px-0">
+					<Container className="col-span-2 px-4 mb-12 md:px-8 lg:px-0">
+						<FeaturesCard />
+					</Container>
 
-						<BenefitsCard
-							title={"Connect with all your favorite creators."}
-							user_type="FAN"
-							description={
-								"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris."
-							}
-						/>
-						<BenefitsCard
-							title={"Unlimited tools to monetize your content."}
-							user_type="CREATOR"
-							description={
-								"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris."
-							}
-						/>
-					</Container>
-				</PublicFluidContainer>
-				<ShortDivider dir={"vertical"} />
-				<PublicFluidContainer>
-					<div className="px-4 md:px-8 lg:px-0">
-						<MonthlyMagazine />
-					</div>
-				</PublicFluidContainer>
+					<BenefitsCard
+						title={"Connect with all your favorite creators."}
+						user_type="FAN"
+						description={
+							"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris."
+						}
+					/>
+					<BenefitsCard
+						title={"Unlimited tools to monetize your content."}
+						user_type="CREATOR"
+						description={
+							"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris."
+						}
+					/>
+				</Container>
+			</PublicFluidContainer>
+			<ShortDivider dir={"vertical"} />
+			<PublicFluidContainer>
+				<div className="px-4 md:px-8 lg:px-0">
+					<MonthlyMagazine />
+				</div>
+			</PublicFluidContainer>
 
-				<ShortDivider dir={"vertical"} />
-				<PublicFluidContainer>
-					<div className="px-4 md:px-8 lg:px-0">
-						<SmartContracts />
-					</div>
-				</PublicFluidContainer>
-			</>
+			<ShortDivider dir={"vertical"} />
+			<PublicFluidContainer>
+				<div className="px-4 md:px-8 lg:px-0">
+					<SmartContracts />
+				</div>
+			</PublicFluidContainer>
 			<div className="px-4 my-24 md:px-8 lg:px-0">
 				<Footer />
 			</div>

@@ -17,6 +17,17 @@ import {DotsHorizontalIcon} from "@heroicons/react/outline";
 import {PostMediaContent} from "./PostMediaContent";
 import Avatar from "@packages/shared/components/AvatarNew";
 
+const Media = (props, imageUrl) => (
+	<PostMediaContent
+		imageUrl={imageUrl}
+		blurhash={props.blurhash}
+		caption={props.text}
+		overrideText={
+			"The creator wants you to collect this trit before you can preview the content"
+		}
+	/>
+);
+
 export const CuratedNFt = (props: TPost) => {
 	const imageUrl = props.image?.cdn;
 
@@ -24,87 +35,13 @@ export const CuratedNFt = (props: TPost) => {
 		<Link href={`/post/${props.id}`}>
 			<a>
 				<Container
-					className="flex flex-col border"
-					css={{borderColor: "$subtleBorder", borderRadius: "16px"}}
-				>
-					<Container className="flex p-4 gap-4">
-						<Link href={`/${props.author.username}/nfts`}>
-							<a>
-								<Container className="rounded-full bg-gray-100">
-									<Avatar
-										size={{width: "40px", height: "40px"}}
-										imageSrc={props.author.avatar}
-										name={props.author.display_name}
-									/>
-								</Container>
-							</a>
-						</Link>
-						<Container className="flex-1">
-							<Link href={`/${props.author.username}/nfts`}>
-								<a>
-									<p>
-										<ImportantSmallText>
-											{props.author.display_name}
-										</ImportantSmallText>
-									</p>
-									<p>
-										<MutedText>
-											<SmallText>@{props.author.username}</SmallText>
-										</MutedText>
-									</p>
-								</a>
-							</Link>
-						</Container>
-						<Container>
-							<PostCardAction>
-								<Text>
-									<DotsHorizontalIcon className="w-5 h-5" />
-								</Text>
-							</PostCardAction>
-						</Container>
-					</Container>
-					<Container
-						className="shadow relative"
-						style={{
-							height: props.inGrid ? "360px" : "420px",
-							width: "100%",
-							overflow: "hidden",
-							display: "flex",
-						}}
-					>
-						<PostMediaContent
-							imageUrl={imageUrl}
-							blurhash={props.blurhash}
-							caption={props.text}
-							overrideText={
-								"The creator wants you to collect this trit before you can preview the content"
-							}
-						/>
-					</Container>
-					<Container className="p-4 flex justify-between">
-						<Container className="flex-1">
-							<p>
-								<SmallText>
-									Remaining {props.collection.minted}/
-									{props.collection.totalSupply}
-								</SmallText>
-							</p>
-							<p>
-								<Heading size="xs">{props.collection.name}</Heading>
-							</p>
-						</Container>
-						<Container className="flex-noshrink text-right">
-							<p>
-								<MutedText>
-									<SmallText>Price</SmallText>
-								</MutedText>
-							</p>
-							<Heading size="xs">
-								{props.price.value} {props.price.currency}
-							</Heading>
-						</Container>
-					</Container>
-				</Container>
+					className="flex border shadow relative overflow-hidden"
+					css={{
+						borderColor: "$subtleBorder",
+						borderRadius: "16px",
+						backgroundColor: "$surface",
+					}}
+				></Container>
 			</a>
 		</Link>
 	);

@@ -3,11 +3,7 @@ import SuggestedCreatorsSection from "@packages/feed/components/SuggestedCreator
 import TrendsSection from "@packages/feed/components/TrendsSection";
 import NavTab from "@packages/navigation/components/DiscoverNavTab";
 import {TimelineActivity} from "@packages/post/TimelineActivity";
-<<<<<<< HEAD
-import {Post} from "@packages/post/types";
-=======
 import {TPost} from "@packages/post/types";
->>>>>>> origin/features
 import {SEOHead} from "@packages/seo/page";
 import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";

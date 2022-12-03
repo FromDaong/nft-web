@@ -1,7 +1,6 @@
 import "@rainbow-me/rainbowkit/styles.css";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
-import "react-loading-skeleton/dist/skeleton.css";
 
 import "../styles/index.css";
 
@@ -21,6 +20,7 @@ import {useDeveloperTools} from "@packages/hooks";
 import {useEffect} from "react";
 import Onboarding from "@packages/ikaros/onboarding";
 import FollowersModal from "@packages/modals/FollowersModal";
+import {ApplicationProvider} from "core/provider";
 
 const progress = new ProgressBar({
 	size: 3,
@@ -50,47 +50,49 @@ function MyApp({
 				session={pageProps.session}
 				refetchInterval={0}
 			>
-				<WagmiWrapper>
-					<FpjsProvider
-						loadOptions={{
-							apiKey: "5LG7UBlESl7pJPHsQjiI",
-							region: "eu",
-						}}
-					>
-						<Head>
-							<title>Treat DAO</title>
-							<meta
-								name="title"
-								content="Treat DAO"
-							/>
-							<meta
-								name="image"
-								content="https://i.imgur.com/OEiuwp4.jpg"
-							/>
-							<meta
-								property="og:image"
-								content="https://i.imgur.com/OEiuwp4.jpg"
-							/>
+				<ApplicationProvider>
+					<WagmiWrapper>
+						<FpjsProvider
+							loadOptions={{
+								apiKey: "5LG7UBlESl7pJPHsQjiI",
+								region: "eu",
+							}}
+						>
+							<Head>
+								<title>Treat DAO</title>
+								<meta
+									name="title"
+									content="Treat DAO"
+								/>
+								<meta
+									name="image"
+									content="https://i.imgur.com/OEiuwp4.jpg"
+								/>
+								<meta
+									property="og:image"
+									content="https://i.imgur.com/OEiuwp4.jpg"
+								/>
 
-							<meta
-								name="description"
-								content="Treat is an exclusive platform for creators to sell NFTs. Hold $TREAT to have a say on which creators are chosen & new platform features."
+								<meta
+									name="description"
+									content="Treat is an exclusive platform for creators to sell NFTs. Hold $TREAT to have a say on which creators are chosen & new platform features."
+								/>
+							</Head>
+							{
+								// /<FollowersModal />
+							}
+							<UniversalCommandbar />
+							<Onboarding
+								config={{}}
+								isOpen={false}
 							/>
-						</Head>
-						{
-							// /<FollowersModal />
-						}
-						<UniversalCommandbar />
-						<Onboarding
-							config={{}}
-							isOpen={false}
-						/>
-						<Navbar />
-						<main className="mt-[60px]">
-							<Component {...pageProps} />
-						</main>
-					</FpjsProvider>
-				</WagmiWrapper>
+							<Navbar />
+							<main className="mt-[60px]">
+								<Component {...pageProps} />
+							</main>
+						</FpjsProvider>
+					</WagmiWrapper>
+				</ApplicationProvider>
 			</SessionProvider>
 		</ThemeProvider>
 	);

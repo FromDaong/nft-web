@@ -18,6 +18,7 @@ import {Button} from "@packages/shared/components/Button";
 import {ChatIcon, SearchCircleIcon, SearchIcon} from "@heroicons/react/outline";
 import SearchTrigger from "@packages/commandbar/components/SearchTrigger";
 import {Container} from "@packages/shared/components/Container";
+import {useDisclosure} from "@packages/hooks";
 
 const NavbarProfileAvatar = dynamic(
 	() => import("./components/NavbarProfileAvatar")
@@ -31,6 +32,7 @@ const NavbarNotifications = dynamic(
 
 const Nav = styled("nav", {
 	backgroundColor: "$surfaceOnSurface",
+	zIndex: 30,
 });
 
 export default function Navbar() {
@@ -58,7 +60,7 @@ export default function Navbar() {
 	];
 
 	return (
-		<Nav className="fixed top-0 left-0 z-30 w-full lg:px-0 h-[60px] shadow">
+		<Nav className="fixed top-0 left-0 w-full lg:px-0 h-[60px] shadow">
 			<div className="relative w-full h-full px-4">
 				<div className="absolute top-0 left-0 z-20 w-full h-full" />
 				<div className="relative z-30 flex items-center justify-between max-w-7xl py-3 mx-auto">

@@ -9,7 +9,12 @@ import {
 } from "@packages/shared/components/Container";
 import {Tab, TabsContainer} from "@packages/shared/components/Tabs";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
-import {Bull, JustifiedSpan} from "@packages/shared/components/Typography/Text";
+import {
+	Bull,
+	JustifiedSpan,
+	MutedText,
+} from "@packages/shared/components/Typography/Text";
+import VerifiedBadge from "@packages/shared/components/VerifiedBadge";
 import {styled} from "@styles/theme";
 import {ComponentBasicProps} from "core/TreatCore";
 import {useRouter} from "next/router";
@@ -105,7 +110,16 @@ export default function ProfileLayout(props: ComponentBasicProps) {
 
 			<FluidContainer className="mt-[26px] flex justify-between">
 				<ContextualContainer className="flex flex-col max-w-lg gap-y-4 px-4">
-					<Heading size="sm">{user.displayName}</Heading>
+					<Container>
+						<Heading
+							size="sm"
+							className="flex gap-1 items-center"
+						>
+							<span>{user.displayName}</span>
+							<VerifiedBadge size={16} />
+						</Heading>
+						<MutedText>@kamfeskaya</MutedText>
+					</Container>
 					<Container
 						variant={"unstyled"}
 						className="flex w-full"
