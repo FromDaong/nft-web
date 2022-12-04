@@ -6,7 +6,7 @@ import {Input} from "@packages/shared/components/Input";
 import {styled} from "@styles/theme";
 import Avatar from "@packages/shared/components/AvatarNew";
 import {useDisclosure} from "@packages/hooks";
-import CropPhotoModal from "../CropPhotoModal/CropPhotoModal";
+import CropPhotoModal from "../../../modals/CropPhotoModal/CropPhotoModal";
 import {useState, useEffect} from "react";
 
 const AvatarContainer = styled("div", {

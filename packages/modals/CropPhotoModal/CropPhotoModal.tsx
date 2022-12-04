@@ -25,14 +25,32 @@ const SliderRoot = styled(Slider.Root, {
 	alignItems: "center",
 	userSelect: "none",
 	touchAction: "none",
-	width: "200px",
+	width: "100%",
+	height: "200px",
 });
 
-const SliderTrack = styled(Slider.Track, {});
+const SliderTrack = styled(Slider.Track, {
+	backgroundColor: "var(--blackA10)",
+	position: "relative",
+	flexGrow: "1",
+	borderRadius: "9999px",
+});
 
-const SliderRange = styled(Slider.Range, {});
+const SliderRange = styled(Slider.Range, {
+	position: "absolute",
+	backgroundColor: "white",
+	borderRadius: "9999px",
+	height: "100%",
+});
 
-const SliderThumb = styled(Slider.Thumb, {});
+const SliderThumb = styled(Slider.Thumb, {
+	display: "block",
+	width: "20px",
+	height: "20px",
+	backgroundColor: "white",
+	boxShadow: "0 2px 10px var(--blackA7)",
+	borderRadius: "10px",
+});
 
 export default function CropPhotoModal({isOpen, onClose, image}) {
 	const [crop, setCrop] = useState({x: 0, y: 0});
