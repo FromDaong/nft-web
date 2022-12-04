@@ -2,7 +2,7 @@ import {styled} from "@styles/theme";
 
 export const Input = styled("input", {
 	padding: "12px",
-	backgroundColor: "$elementOnSurface",
+	backgroundColor: "$surfaceOnSurface",
 	color: "$textContrast",
 	width: "100%",
 	borderRadius: "8px",

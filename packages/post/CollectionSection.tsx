@@ -24,27 +24,31 @@ export default function TreatOfTheMonthCollectionSection(props: {
 				className="flex flex-col h-auto gap-8 p-8 rounded-xl drop-shadow"
 				css={{backgroundColor: "$elementSurface"}}
 			>
-				<Container css={{height: "360px"}}>
-					<Container className="grid grid-cols-1 gap-4 lg:grid-cols-2 ">
-						{[1, 2, 3, 4].map((item) => (
-							<Container
-								key={item}
-								className="overflow-hidden rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500"
-								css={{height: "180px", backgroundColor: "red"}}
-							></Container>
-						))}
-					</Container>
+				<Container className="grid grid-cols-1 gap-8 lg:grid-cols-2 ">
+					{[1, 2, 3, 4].map((item) => (
+						<Container
+							key={item}
+							className="overflow-hidden rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500"
+							css={{height: "180px", backgroundColor: "red"}}
+						></Container>
+					))}
 				</Container>
 				<Container className="flex items-center gap-2">
-					<UserAvatar
-						value={props.collectionItems[0].author.username}
-						size={32}
-					/>
-					<Heading size="sm">
-						{props.collectionItems[0].collection.name}
-					</Heading>
+					<Container className="flex">
+						<UserAvatar
+							value={props.collectionItems[0].author.username}
+							size={32}
+						/>
+						<Container css={{marginLeft: "-16px"}}>
+							<UserAvatar
+								value={props.collectionItems[0].author.display_name}
+								size={32}
+							/>
+						</Container>
+					</Container>
+					<Heading size="sm">TOTM ft Kamfeskaya</Heading>
 				</Container>
-				<Container className="flex justify-between">
+				<Container className="flex flex-col gap-4 md:flex-row justify-between">
 					<Button
 						appearance={"surface"}
 						className="flex items-center gap-2"
@@ -59,7 +63,7 @@ export default function TreatOfTheMonthCollectionSection(props: {
 						appearance={"surface"}
 						className="flex items-center gap-2"
 					>
-						<span>View the Ethereum collection</span>
+						<span>Take me to the collection</span>
 						<ArrowRightIcon
 							width={16}
 							height={16}

@@ -47,7 +47,7 @@ export const Modal = ({
 	children,
 }: {
 	isOpen: boolean;
-	onClose: (props?: object) => any;
+	onClose: (props?: any) => any;
 	children: ReactNode;
 }) => {
 	return (

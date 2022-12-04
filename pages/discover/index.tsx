@@ -46,12 +46,12 @@ export default function ForYouPage() {
 		<ApplicationLayout>
 			<SEOHead title="For you - Tritt" />
 			<ApplicationFrame>
-				<Container className="flex gap-12">
+				<Container className="flex flex-col gap-12 lg:flex-row">
 					<Container className="flex flex-col flex-1 gap-8">
 						<NavTab />
 
 						<Container className="flex flex-col max-w-xl gap-4 mx-auto">
-							<Container className="p-4">
+							<Container className="p-0 lg:p-4">
 								<TimelineActivity
 									actionMeta={{
 										verb: "Created content",

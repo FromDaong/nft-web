@@ -19,7 +19,9 @@ type SuggestedCreatorData = {
 	isExpanded?: boolean;
 	border?: boolean;
 	live?: boolean;
+	noFollowButton?: boolean;
 	bio: string;
+	noBg?: boolean;
 };
 
 export default function SuggestedCreatorCard(props: SuggestedCreatorData) {
@@ -62,9 +64,11 @@ const CollapseSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 					</Container>
 				</Container>
 			</Container>
-			<Container>
-				<Button>Follow</Button>
-			</Container>
+			{!props.noFollowButton && (
+				<Container>
+					<Button>Follow</Button>
+				</Container>
+			)}
 		</Container>
 	);
 };
@@ -78,7 +82,7 @@ const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 						border: `1px ${props.border ? "solid" : null} $subtleBorder`,
 						padding: props.border ? "16px" : null,
 						borderRadius: "16px",
-						backgroundColor: "$elementSurface",
+						backgroundColor: !props.noBg ? "$elementSurface" : "transparent",
 						height: "100%",
 					}}
 				>
@@ -125,7 +129,7 @@ const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 								</Container>
 								{props.isPromoted && (
 									<p>
-										<MutedText>
+										<MutedText css={{color: "$accentText"}}>
 											<SmallText>Promoted</SmallText>
 										</MutedText>
 									</p>

@@ -18,6 +18,7 @@ import {
 import {Container} from "@packages/shared/components/Container";
 import NFTSearchResult, {NFTSearchResultProps} from "./NFTSearchResult";
 import {QuestionMarkCircleIcon} from "@heroicons/react/outline";
+import {Input} from "@packages/shared/components/Input";
 
 const creatorResultsData = [
 	{
@@ -121,7 +122,11 @@ const NavbarSearchDropdown = () => {
 	return (
 		<div onBlur={() => setIsOpen(false)}>
 			<div className="max-w-md w-full items-center hidden md:flex">
-				<input
+				<Input
+					css={{
+						borderColor: "$subtleBorder",
+						backgroundColor: "$surface",
+					}}
 					className="max-w-md w-full py-2 px-8 rounded-full border"
 					placeholder="Search content"
 					onChange={(e) => setSearchText(e.target.value)}

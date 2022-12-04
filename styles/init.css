@@ -29,12 +29,12 @@
 
 * {
 	font-size: 14px;
-	font-family: "Outfit", sans-serif !important;
+	font-family: "Inter", sans-serif !important;
 	overscroll-behavior: none;
 }
 
 p {
-	font-family: "Outfit", -apple-system, system-ui, sans-serif !important;
+	font-family: "Inter", -apple-system, system-ui, sans-serif !important;
 }
 
 h1,
@@ -44,7 +44,7 @@ h4,
 h5,
 h6 {
 	margin: 0;
-	font-family: "Outfit", -apple-system, system-ui, sans-serif !important;
+	font-family: "Inter", -apple-system, system-ui, sans-serif !important;
 	font-family: 700;
 }
 
