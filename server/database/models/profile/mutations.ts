@@ -1,4 +1,4 @@
-import {neodeDB} from "@db/engine";
+import {neodeDB} from "server/database/engine";
 import Profile from ".";
 
 const ProfileModel = neodeDB.model("Profile", Profile);

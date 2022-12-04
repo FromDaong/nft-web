@@ -1,4 +1,3 @@
-import {GlobeAltIcon} from "@heroicons/react/outline";
 import SuggestedCreatorsSection from "@packages/feed/components/SuggestedCreatorsSection";
 import TrendsSection from "@packages/feed/components/TrendsSection";
 import NavTab from "@packages/navigation/components/DiscoverNavTab";
@@ -7,16 +6,9 @@ import {TPost} from "@packages/post/types";
 import {SEOHead} from "@packages/seo/page";
 import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
-import {
-	BoldLink,
-	ImportantText,
-} from "@packages/shared/components/Typography/Text";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import ContentSidebar from "core/components/layouts/ContentSidebar";
-import Link from "next/link";
-import {useRouter} from "next/router";
-import {ReactElement, ReactNode} from "react";
 
 const newCurated: TPost = {
 	name: "Welcome to the Tritters",
@@ -55,10 +47,10 @@ export default function ForYouPage() {
 			<SEOHead title="For you - Tritt" />
 			<ApplicationFrame>
 				<Container className="flex gap-12">
-					<Container className="flex-1 flex flex-col gap-8">
+					<Container className="flex flex-col flex-1 gap-8">
 						<NavTab />
 
-						<Container className="max-w-xl mx-auto flex flex-col gap-4">
+						<Container className="flex flex-col max-w-xl gap-4 mx-auto">
 							<Container className="p-4">
 								<TimelineActivity
 									actionMeta={{

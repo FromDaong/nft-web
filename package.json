@@ -106,6 +106,7 @@
     "graphql-iso-date": "^3.6.1",
     "graphql-yoga": "^3.0.0-next.10",
     "image-palette-core": "^0.2.2",
+    "inngest": "^0.8.5",
     "ipfs": "^0.57.0",
     "ipfs-http-client": "^52.0.0",
     "isomorphic-unfetch": "^3.1.0",

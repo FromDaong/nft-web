@@ -1,4 +1,4 @@
-import {prisma} from "@db/engine";
+import {prisma} from "server/database/engine";
 import {SEOHead} from "@packages/seo/page";
 import {Button} from "@packages/shared/components/Button";
 import {ShortDivider} from "@packages/shared/components/Divider";

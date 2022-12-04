@@ -1,6 +1,6 @@
 import {ReactNode, useEffect, useRef} from "react";
 import {PrismaClient} from "@prisma/client";
-import {prisma} from "@db/engine";
+import {prisma} from "server/database/engine";
 
 export type Context = {prisma: PrismaClient; currentUserEmail: string};
 
