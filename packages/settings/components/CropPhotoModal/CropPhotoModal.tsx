@@ -17,6 +17,22 @@ import {useContext, useState} from "react";
 import Cropper from "react-easy-crop";
 import {useCallback} from "react";
 import {SliderIcon} from "@radix-ui/react-icons";
+import * as Slider from "@radix-ui/react-slider";
+
+const SliderRoot = styled(Slider.Root, {
+	position: "relative",
+	display: "flex",
+	alignItems: "center",
+	userSelect: "none",
+	touchAction: "none",
+	width: "200px",
+});
+
+const SliderTrack = styled(Slider.Track, {});
+
+const SliderRange = styled(Slider.Range, {});
+
+const SliderThumb = styled(Slider.Thumb, {});
 
 export default function CropPhotoModal({isOpen, onClose, image}) {
 	const [crop, setCrop] = useState({x: 0, y: 0});
@@ -66,6 +82,19 @@ export default function CropPhotoModal({isOpen, onClose, image}) {
 							onZoomChange={setZoom}
 						/>
 					</Container>
+				</Container>
+				<Container>
+					<SliderRoot
+						defaultValue={[1]}
+						max={100}
+						step={1}
+						aria-label="Zoom"
+					>
+						<SliderTrack>
+							<SliderRange />
+						</SliderTrack>
+						<SliderThumb />
+					</SliderRoot>
 				</Container>
 			</Container>
 		</Container>
