@@ -54,9 +54,6 @@ export default function Index() {
 				<Container className="flex flex-col gap-12 md:gap-16 lg:gap-24 px-2">
 					<Container className="pt-12">
 						<Container className="flex flex-col gap-8 px-4 xl:px-0">
-							<Container className="flex flex-col md:flex-row justify-between gap-4 md:gap-0 md:items-center">
-								<Heading size="md">December Treat Of The Month</Heading>
-							</Container>
 							<TreatOfTheMonthCollectionSection
 								collectionItems={[newCurated]}
 							/>
@@ -134,11 +131,11 @@ export default function Index() {
 							/>
 						</Container>
 					</Container>
-					<div className="px-4 my-24 md:px-8 xl:px-0">
-						<Footer />
-					</div>
 				</Container>
 			</ApplicationFrame>
+			<Container className="pb-12">
+				<Footer />
+			</Container>
 		</ApplicationLayout>
 	);
 }
