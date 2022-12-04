@@ -60,13 +60,13 @@ export default function CommentsAndCollectorsTabs() {
 							<Text>Comments</Text>
 						</Tabs.Trigger>
 						<Tabs.Trigger
-							className="px-4 flex gap-2 items-baseline"
+							className="flex items-baseline gap-2 px-4"
 							value="collected"
 						>
 							<Text>Collectors</Text>
 							<Container>
 								<Container
-									className="rounded-full p-1"
+									className="p-1 rounded-full"
 									css={{
 										backgroundColor: "$gray3",
 										borderRadius: "50%",
@@ -80,45 +80,46 @@ export default function CommentsAndCollectorsTabs() {
 				</Tabs.TabsList>
 				<Divider dir="horizontal" />
 				<Tabs.Content value="comments">
-					<Container className="grid grid-cols-1 gap-6">
-						{comments ? (
-							comments.map((comment, i) => (
-								<CommentCard
-									key={i}
-									username={comment.username}
-									content={comment.content}
-									likes={comment.likes}
-									replies={comment.replies}
-									posted_date={comment.posted_date}
-								/>
-							))
-						) : (
-							<Container className="grid grid-cols-1 items-center justify-center">
-								<Text> No Comments</Text>
-							</Container>
-						)}
-					</Container>
-					<Container
-						className="flex justify-between items-center gap-2 py-4"
-						style={{
-							position: "absolute",
-							bottom: 0,
-						}}
-					>
-						<input
-							className="max-w-md w-full py-2 px-8 rounded-full border"
-							placeholder="Add a comment..."
-						/>
+					<Container>
+						<Container className="grid grid-cols-1 gap-6">
+							{comments ? (
+								comments.map((comment, i) => (
+									<CommentCard
+										key={i}
+										username={comment.username}
+										content={comment.content}
+										likes={comment.likes}
+										replies={comment.replies}
+										posted_date={comment.posted_date}
+									/>
+								))
+							) : (
+								<Container className="grid items-center justify-center grid-cols-1">
+									<Text> No Comments</Text>
+								</Container>
+							)}
+						</Container>
 						<Container
-							css={{
-								width: "32px",
-								height: "32px",
-								backgroundColor: "$surface",
-								borderColor: "$subtleBorder",
+							className="flex items-center justify-between gap-2 py-4"
+							style={{
+								position: "absolute",
 							}}
-							className="flex items-center justify-center border rounded-full"
 						>
-							<PaperAirplaneIcon className="w-5 h-5" />
+							<input
+								className="w-full max-w-md px-8 py-2 border rounded-full"
+								placeholder="Add a comment..."
+							/>
+							<Container
+								css={{
+									width: "32px",
+									height: "32px",
+									backgroundColor: "$surface",
+									borderColor: "$subtleBorder",
+								}}
+								className="flex items-center justify-center border rounded-full"
+							>
+								<PaperAirplaneIcon className="w-5 h-5" />
+							</Container>
 						</Container>
 					</Container>
 				</Tabs.Content>
@@ -132,7 +133,6 @@ export default function CommentsAndCollectorsTabs() {
 									display_name={user.displayname}
 									avatar=""
 									bio="Mystery SEV. Suddenly, the site goes dark. The dashboard is red. Everything seems fucked. There's no indication why"
-									noFollowButton
 								/>
 							))
 						) : (

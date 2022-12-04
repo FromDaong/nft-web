@@ -11,6 +11,7 @@ import UserAvatar from "core/auth/components/Avatar";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import Link from "next/link";
+import {PaperAirplaneIcon} from "@heroicons/react/outline";
 
 export default function Messages() {
 	return (
@@ -26,17 +27,17 @@ export default function Messages() {
 					}}
 				>
 					<Container
-						className="col-span-1 grid grid-cols-4 shadow divide-x overflow-hidden"
+						className="grid grid-cols-4 col-span-1 overflow-hidden divide-x shadow"
 						css={{backgroundColor: "$elementSurface", borderRadius: "16px"}}
 					>
 						<Container
-							className="col-span-1 flex flex-col divide-y"
+							className="flex flex-col col-span-1 divide-y"
 							css={{
 								backgroundColor: "$elementSurface",
 								borderColor: "$subtleBorder",
 							}}
 						>
-							<Container className="py-4 px-8">
+							<Container className="px-8 py-4">
 								<Heading size="sm">Messages</Heading>
 							</Container>
 							<Container className="flex flex-col divide-y">
@@ -48,17 +49,17 @@ export default function Messages() {
 							</Container>
 						</Container>
 						<Container
-							className="col-span-3 flex flex-col"
+							className="flex flex-col col-span-3"
 							css={{
 								backgroundColor: "$elementSurface",
 								borderColor: "$subtleBorder",
 							}}
 						>
 							<Container
-								className="border-b flex justify-between"
+								className="flex justify-between border-b"
 								css={{borderColor: "$subtleBorder"}}
 							>
-								<Container className="flex gap-2">
+								<Container className="flex items-center gap-2 p-4">
 									<UserAvatar
 										size={64}
 										value={"Andi Lane"}
@@ -72,7 +73,7 @@ export default function Messages() {
 													backgroundColor: "$purple3",
 													color: "$purple10",
 												}}
-												className="p-1 rounded-full border"
+												className="p-1 border rounded-full"
 											>
 												Online
 											</Container>
@@ -82,25 +83,58 @@ export default function Messages() {
 										</MutedText>
 									</Container>
 								</Container>
-								<Container className="flex gap-2">
+								<Container className="flex items-center gap-2 p-4">
 									<Button>Call</Button>
 									<Button>Archive</Button>
 									<Button>View profile</Button>
 								</Container>
 							</Container>
-							<Container className="flex-1 overflow-y-auto flex flex-col">
+							<Container
+								className="flex flex-col flex-1 p-4 overflow-y-auto"
+								style={{
+									position: "relative",
+								}}
+							>
 								<Container className="flex flex-col gap-4">
-                  <MessageItem 
-                  isMine={false} 
-                  sender={"Andi Lane"} 
-                  text={"Hey Olivia, I’ve finished with the requirements doc! I made some notes in the gdoc as well for Phoenix to look over."} 
-                  />
-                  <MessageItem 
-                  isMine={true} 
-                  sender={"Andi Lane"} 
-                  text={"Hey Olivia, I’ve finished with the requirements doc! I made some notes in the gdoc as well for Phoenix to look over."} 
-                  />
-                </Container>
+									<MessageItem
+										isMine={false}
+										sender={"Andi Lane"}
+										text={
+											"Hey Olivia, I’ve finished with the requirements doc! I made some notes in the gdoc as well for Phoenix to look over."
+										}
+									/>
+									<MessageItem
+										isMine={true}
+										sender={"Andi Lane"}
+										text={
+											"Hey Olivia, I’ve finished with the requirements doc! I made some notes in the gdoc as well for Phoenix to look over."
+										}
+									/>
+								</Container>
+								<Container
+									className="flex items-center gap-4 py-4"
+									style={{
+										position: "absolute",
+										bottom: 0,
+										width: "80%",
+									}}
+								>
+									<input
+										className="w-full max-w-md px-8 py-2 border rounded-full"
+										placeholder="Add a comment..."
+									/>
+									<Container
+										css={{
+											width: "32px",
+											height: "32px",
+											backgroundColor: "$surface",
+											borderColor: "$subtleBorder",
+										}}
+										className="flex items-center justify-center border rounded-full"
+									>
+										<PaperAirplaneIcon className="w-5 h-5" />
+									</Container>
+								</Container>
 							</Container>
 						</Container>
 					</Container>
@@ -115,21 +149,26 @@ const MessageItem = ({isMine, text, sender}) => {
 		<Container
 			className={`w-full flex ${isMine ? "flex-row-reverse" : "flex-row"}`}
 		>
-			<Container className="w-2/3 flex">
+			<Container className="flex w-2/3">
 				<Container className="flex flex-col gap-2">
-					<Container className="flex justify-between">
+					<Container className="flex ">
 						<Text>{isMine ? "You" : sender}</Text>
-						<MutedText>Thursday 11:41AM</MutedText>
 					</Container>
 					<Container
 						css={{
 							backgroundColor: isMine ? "$purple9" : "$elementOnSurface",
+							borderRadius: isMine
+								? "16px 0px 16px 16px"
+								: "0px 16px 16px 16px",
 						}}
 						className="p-2"
 					>
 						<Text css={{color: isMine ? "$surface" : "$textContrast"}}>
 							{text}
 						</Text>
+					</Container>
+					<Container className="flex justify-end">
+						<MutedText>Thursday 11:41AM</MutedText>
 					</Container>
 				</Container>
 			</Container>
@@ -142,11 +181,11 @@ const ChatListItem = () => {
 		<Link href={"#"}>
 			<a>
 				<Container
-					className="p-4 flex gap-2"
+					className="flex gap-2 p-4"
 					css={{borderColor: "$subtleBorder"}}
 				>
 					<Container
-						className="rounded-full h-1 p-1 mt-4"
+						className="h-1 p-1 mt-4 rounded-full"
 						css={{backgroundColor: "$purple9"}}
 					/>
 					<Container className="flex flex-col gap-4">
