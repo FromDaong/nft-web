@@ -1,7 +1,6 @@
 import {FpjsProvider} from "@fingerprintjs/fingerprintjs-pro-react";
-import {ApplicationTheme} from "@packages/theme";
 import TreatState from "core/state";
-import {createContext, useContext, useEffect} from "react";
+import {createContext} from "react";
 
 export default class TreatProvider {
 	state: TreatState;
