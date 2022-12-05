@@ -55,7 +55,7 @@ export default function UserProfile() {
 				<ProfileLayout>
 					<SEOHead title={router.query.username + " - Trit"} />
 					<Container className="flex justify-between gap-12">
-						<Container className="max-w-xl flex flex-col gap-4 ">
+						<Container className="max-w-xl flex flex-1 flex-col gap-4 ">
 							<TimelineActivity
 								actionMeta={{
 									verb: "Created content",

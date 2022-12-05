@@ -204,7 +204,7 @@ export default function ProfileLayout(props: ComponentBasicProps) {
 	const query = router.query;
 
 	const user = {
-		username: query.username,
+		username: query.username as string,
 		displayName: "Kamfeskaya",
 		bio: "Latino Artist. Author. Producer. Daddy. Hand-drawn 1:1s capturing the energy of a moment. Life is beautiful.",
 		followers: 241,
@@ -217,8 +217,13 @@ export default function ProfileLayout(props: ComponentBasicProps) {
 		<>
 			<UserHeader />
 
+<<<<<<< HEAD
 			<FluidContainer className="mt-[26px] flex justify-between">
 				<ContextualContainer className="flex flex-col max-w-lg px-4 gap-y-4">
+=======
+			<FluidContainer className="mt-[26px] flex justify-between px-4">
+				<ContextualContainer className="flex flex-col max-w-lg gap-y-4">
+>>>>>>> 53cc61681e2787a9d948a6e8a4d58aa3caf1e594
 					<Container>
 						<Heading
 							size="sm"
@@ -270,7 +275,7 @@ export default function ProfileLayout(props: ComponentBasicProps) {
 					<Text>{user.bio}</Text>
 					<Container variant={"unstyled"}>
 						<Container className="flex gap-x-4">
-							<ProfileDropdown user={user} />
+							<ProfileDropdown username={user.username} />
 							<Button className="drop-shadow-xl">Follow</Button>
 						</Container>
 					</Container>
@@ -293,7 +298,7 @@ export default function ProfileLayout(props: ComponentBasicProps) {
 			</FluidContainer>
 			<FluidContainer
 				justified
-				className="flex flex-col mt-[26px]"
+				className="flex flex-col mt-[26px] px-4"
 			>
 				{props.children}
 			</FluidContainer>

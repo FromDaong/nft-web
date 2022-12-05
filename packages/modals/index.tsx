@@ -50,7 +50,7 @@ const Modal = ({
 	children,
 }: {
 	isOpen: boolean;
-	onClose: () => any;
+	onClose: (props?: any) => any;
 	children: ReactNode;
 }) => {
 	return (

@@ -13,26 +13,46 @@ export const Heading = styled("h1", {
 	color: "$textContrast",
 	padding: 0,
 	margin: 0,
+	fontSize: "56px",
+
+	"@sm": {
+		fontSize: "36px",
+	},
+	"@md": {
+		fontSize: "44px",
+	},
+	"@xl": {
+		fontSize: "48px",
+	},
 
 	variants: {
 		size: {
 			xl: {
-				fontSize: "80px",
+				fontSize: "56px",
 			},
 			lg: {
-				fontSize: "64px",
+				fontSize: "44px",
 			},
 			md: {
-				fontSize: "32px",
+				fontSize: "36px",
+				"@sm": {
+					fontSize: "20px",
+				},
+				"@md": {
+					fontSize: "28px",
+				},
+				"@xl": {
+					fontSize: "36px",
+				},
 			},
 			sm: {
-				fontSize: "18px",
+				fontSize: "28px",
 			},
 			xs: {
-				fontSize: "16px",
+				fontSize: "20px",
 			},
 			xss: {
-				fontSize: "12px",
+				fontSize: "16px",
 			},
 		},
 		weight: {

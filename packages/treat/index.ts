@@ -1,4 +1,4 @@
-import { BigNumber } from "ethers";
+import BigNumber from "bignumber.js";
 
-export { Treat } from "./Treat";
-export { BigNumber };
+export {Treat} from "./Treat";
+export {BigNumber};
