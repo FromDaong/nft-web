@@ -1,9 +1,14 @@
 import {PrismaClient} from "@prisma/client";
 import mongoose from "mongoose";
+import Redis from "ioredis";
 
 const MONGODB_URI = process.env.MONGODB_URI;
+const REDIS_URL = process.env.REDIS_URL;
+
 let cached = global.mongoose;
 const prisma = new PrismaClient();
+
+const redisClient = new Redis(REDIS_URL);
 
 if (!MONGODB_URI) {
 	throw new Error(
@@ -15,7 +20,7 @@ if (!cached) {
 	cached = global.mongoose = {conn: null, promise: null};
 }
 
-async function connectMongoDB(url?: string) {
+const connectMongoDB = async (url?: string) => {
 	if (cached.conn) {
 		return cached.conn;
 	}
@@ -33,6 +38,31 @@ async function connectMongoDB(url?: string) {
 	}
 	cached.conn = await cached.promise;
 	return cached.conn;
-}
+};
 
-export {connectMongoDB, prisma};
+const getStringFromRedisCache = async (key: string): Promise<object> => {
+	return JSON.parse(await redisClient.get(key));
+};
+
+const setStringToRedisCache = async (key: string, value: any) => {
+	if (typeof value === "object") {
+		value = JSON.stringify(value);
+	}
+	if (typeof value !== "string") {
+		value = new String(value).toString();
+	}
+	await redisClient.set(key, value);
+};
+
+const invalidateRedisCache = async (key: string) => {
+	await redisClient.del(key);
+};
+
+export {
+	connectMongoDB,
+	prisma,
+	redisClient,
+	getStringFromRedisCache,
+	setStringToRedisCache,
+	invalidateRedisCache,
+};
