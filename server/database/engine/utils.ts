@@ -1,3 +1,4 @@
+import {NextApiResponse} from "next";
 import {Model, model, Schema} from "mongoose";
 
 // Simple Generic Function for reusability
@@ -24,3 +25,30 @@ export default function createModel<T, TModel = Model<T>>(
 	}
 	return createdModel;
 }
+
+export const returnWithError = (
+	message,
+	statusCode,
+	res
+): {
+	message: string;
+	statusCode: number;
+	res: NextApiResponse;
+} => {
+	return res.status(statusCode).json({
+		error: true,
+		message,
+	});
+};
+
+export const returnWithSuccess = (
+	data,
+	res
+): {
+	data: any;
+	res: NextApiResponse;
+} => {
+	return res.status(200).json({
+		data,
+	});
+};

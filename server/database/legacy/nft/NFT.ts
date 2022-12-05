@@ -96,16 +96,6 @@ const NFTSchema = new mongoose.Schema(
 NFTSchema.plugin(paginate);
 NFTSchema.plugin(aggregatePaginate);
 
-// NFTSchema.path("discount_codes")
-//   .schema.path("newPrice")
-//   .set(function (num) {
-//     return num * 100;
-//   });
-
-// NFTSchema.path("price").set(function (num) {
-//   return num * 100;
-// });
-
 NFTSchema.plugin(require("mongoose-beautiful-unique-validation"));
 
 const LegacyNFTModel = createModel("NFT", NFTSchema);
