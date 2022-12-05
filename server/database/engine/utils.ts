@@ -3,7 +3,7 @@ import {Model, model, Schema} from "mongoose";
 
 // Simple Generic Function for reusability
 // Feel free to modify however you like
-export default function createModel<T, TModel = Model<T>>(
+export default function createMongoDBModel<T, TModel = Model<T>>(
 	modelName: string,
 	schema: Schema<T>
 ): TModel {

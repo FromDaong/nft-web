@@ -1,4 +1,4 @@
-import createModel from "server/database/engine/utils";
+import createMongoDBModel from "server/database/engine/utils";
 import mongoose from "mongoose";
 const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 const paginate = require("mongoose-paginate-v2");
@@ -98,6 +98,6 @@ NFTSchema.plugin(aggregatePaginate);
 
 NFTSchema.plugin(require("mongoose-beautiful-unique-validation"));
 
-const LegacyNFTModel = createModel("NFT", NFTSchema);
+const LegacyNFTModel = createMongoDBModel("NFT", NFTSchema);
 
 export default LegacyNFTModel;
