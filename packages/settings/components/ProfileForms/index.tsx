@@ -38,6 +38,8 @@ export default function PersonalInformationForm() {
 				isOpen={isOpen}
 				onClose={onClose}
 				image={newImage}
+				width={1}
+				height={1}
 			/>
 			<Container className="grid grid-cols-1 gap-8 lg:grid-cols-2">
 				<Container className="col-span-1 px-1 py-1 mt-4">

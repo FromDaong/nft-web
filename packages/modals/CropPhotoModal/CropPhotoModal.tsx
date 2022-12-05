@@ -26,14 +26,15 @@ const SliderRoot = styled(Slider.Root, {
 	userSelect: "none",
 	touchAction: "none",
 	width: "100%",
-	height: "200px",
+	height: "6px",
 });
 
 const SliderTrack = styled(Slider.Track, {
-	backgroundColor: "var(--blackA10)",
+	backgroundColor: "$surfaceOnSurface",
 	position: "relative",
 	flexGrow: "1",
 	borderRadius: "9999px",
+	height: "100%",
 });
 
 const SliderRange = styled(Slider.Range, {
@@ -52,7 +53,13 @@ const SliderThumb = styled(Slider.Thumb, {
 	borderRadius: "10px",
 });
 
-export default function CropPhotoModal({isOpen, onClose, image}) {
+export default function CropPhotoModal({
+	isOpen,
+	onClose,
+	image,
+	width,
+	height,
+}) {
 	const [crop, setCrop] = useState({x: 0, y: 0});
 	const [zoom, setZoom] = useState(1);
 
@@ -70,7 +77,7 @@ export default function CropPhotoModal({isOpen, onClose, image}) {
 		>
 			<FullscreenOverlay onClick={onClose} />
 			<Container
-				className="fixed w-1/2 p-8 divide-y shadow-xl h-1/2 rounded-xl"
+				className="fixed flex flex-col w-1/2 gap-4 p-8 shadow-xl h-1/2 rounded-xl"
 				css={{
 					top: "50%",
 					left: "50%",
@@ -94,7 +101,7 @@ export default function CropPhotoModal({isOpen, onClose, image}) {
 							image={image}
 							crop={crop}
 							zoom={zoom}
-							aspect={1 / 1}
+							aspect={width / height}
 							onCropChange={setCrop}
 							onCropComplete={onCropComplete}
 							onZoomChange={setZoom}
@@ -104,9 +111,10 @@ export default function CropPhotoModal({isOpen, onClose, image}) {
 				<Container>
 					<SliderRoot
 						defaultValue={[1]}
-						max={100}
-						step={1}
+						max={3}
+						step={0.1}
 						aria-label="Zoom"
+						onValueChange={(val) => setZoom(Number(val))}
 					>
 						<SliderTrack>
 							<SliderRange />

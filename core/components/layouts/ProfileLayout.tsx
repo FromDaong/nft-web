@@ -18,6 +18,11 @@ import VerifiedBadge from "@packages/shared/components/VerifiedBadge";
 import {styled} from "@styles/theme";
 import {ComponentBasicProps} from "core/TreatCore";
 import {useRouter} from "next/router";
+import {Pencil1Icon} from "@radix-ui/react-icons";
+import EditCoverPhoto from "@packages/modals/CropPhotoModal/CropPhotoModal";
+import EditProfilePhoto from "@packages/modals/CropPhotoModal/CropPhotoModal";
+import {useEffect, useState} from "react";
+import {useDisclosure} from "@packages/hooks";
 
 const tabs = [
 	{
@@ -67,8 +72,50 @@ const AvatarContainer = styled("div", {
 });
 
 const UserHeader = () => {
+	const {
+		isOpen: isCoverEditorOpen,
+		onClose: onCoverEditorOpen,
+		onOpen: onCoverEditorClose,
+	} = useDisclosure();
+	const {
+		isOpen: isEditPhotoOpen,
+		onClose: onEditPhotoOpen,
+		onOpen: onEditPhotoClose,
+	} = useDisclosure();
+
+	const [coverImage, setCoverImage] = useState(null);
+	const [profileImage, setProfileImage] = useState(null);
+
+	useEffect(() => {
+		if (coverImage) {
+			console.log(coverImage);
+			onCoverEditorOpen();
+		}
+	}, [coverImage]);
+
+	useEffect(() => {
+		if (profileImage) {
+			console.log(profileImage);
+			onEditPhotoOpen();
+		}
+	}, [profileImage]);
+
 	return (
 		<div className="w-full">
+			<EditCoverPhoto
+				isOpen={isCoverEditorOpen}
+				onClose={onCoverEditorClose}
+				image={coverImage}
+				width={5}
+				height={2}
+			/>
+			<EditProfilePhoto
+				isOpen={isEditPhotoOpen}
+				onClose={onEditPhotoClose}
+				image={profileImage}
+				width={1}
+				height={1}
+			/>
 			<div
 				className="w-full"
 				style={{
@@ -77,6 +124,29 @@ const UserHeader = () => {
 				}}
 			>
 				<FluidContainer className="relative flex h-full">
+					<Container className="flex items-center justify-center w-full gap-1 transition-opacity duration-75 delay-75 opacity-0 bg-gray-800/20 hover:opacity-100">
+						<Container
+							className="flex items-center justify-center rounded-full"
+							style={{
+								width: "32px",
+								height: "32px",
+								backgroundColor: "#00000090",
+								position: "relative",
+							}}
+						>
+							<Pencil1Icon />
+							<input
+								type={"file"}
+								style={{
+									opacity: 0,
+									position: "absolute",
+								}}
+								onChange={(e) =>
+									setCoverImage(window.URL.createObjectURL(e.target.files[0]))
+								}
+							/>
+						</Container>
+					</Container>
 					<AvatarContainer className="drop-shadow">
 						<Avatar
 							name="Tatenda Chris"
@@ -84,6 +154,45 @@ const UserHeader = () => {
 							size={{width: "128px", height: "128px"}}
 						/>
 					</AvatarContainer>
+					<Container
+						style={{
+							borderRadius: "50%",
+							height: "128px",
+							width: "128px",
+							position: "absolute",
+							bottom: "0",
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "center",
+							overflow: "hidden",
+							border: "8px solid $surface",
+							left: 35,
+						}}
+					>
+						<Container
+							className="flex items-center justify-center transition-opacity duration-75 delay-75 rounded-full opacity-0 bg-gray-800/20 hover:opacity-100"
+							style={{
+								width: "32px",
+								height: "32px",
+								backgroundColor: "#00000090",
+								borderColor: "$subtleBorder",
+								position: "relative",
+								top: 35,
+							}}
+						>
+							<Pencil1Icon />
+							<input
+								type={"file"}
+								style={{
+									opacity: 0,
+									position: "absolute",
+								}}
+								onChange={(e) =>
+									setProfileImage(window.URL.createObjectURL(e.target.files[0]))
+								}
+							/>
+						</Container>
+					</Container>
 				</FluidContainer>
 			</div>
 		</div>
@@ -109,11 +218,11 @@ export default function ProfileLayout(props: ComponentBasicProps) {
 			<UserHeader />
 
 			<FluidContainer className="mt-[26px] flex justify-between">
-				<ContextualContainer className="flex flex-col max-w-lg gap-y-4 px-4">
+				<ContextualContainer className="flex flex-col max-w-lg px-4 gap-y-4">
 					<Container>
 						<Heading
 							size="sm"
-							className="flex gap-1 items-center"
+							className="flex items-center gap-1"
 						>
 							<span>{user.displayName}</span>
 							<VerifiedBadge size={16} />
