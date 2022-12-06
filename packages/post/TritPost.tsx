@@ -22,7 +22,7 @@ import {CardOverlay} from "@packages/shared/components/Card/MarketingPages/Benef
 import {styled} from "@styles/theme";
 import ContentLoader from "react-content-loader";
 
-const StyledLoader = styled(ContentLoader, {
+export const StyledLoader = styled(ContentLoader, {
 	backgroundColor: "$surface",
 	foreGroundColor: "$elementSurface",
 });

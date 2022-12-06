@@ -23,16 +23,14 @@ type SuggestedCreatorData = {
 	noBg?: boolean;
 };
 
-import ContentLoader from "react-content-loader";
+import {StyledLoader} from "@packages/post/TritPost";
 
 export const SkeletonExpandedSuggestedCreatorCard = (props) => (
-	<ContentLoader
+	<StyledLoader
 		speed={1}
 		width={320}
 		height={180}
 		viewBox="0 0 320 180"
-		backgroundColor="#f3f3f3"
-		foregroundColor="#ededed"
 		{...props}
 	>
 		<circle
@@ -72,7 +70,7 @@ export const SkeletonExpandedSuggestedCreatorCard = (props) => (
 			width="317"
 			height="21"
 		/>
-	</ContentLoader>
+	</StyledLoader>
 );
 
 export default function SuggestedCreatorCard(props: SuggestedCreatorData) {
