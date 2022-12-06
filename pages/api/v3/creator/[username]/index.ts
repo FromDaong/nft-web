@@ -1,4 +1,4 @@
-import {MongoModelCreator} from "@db/models/creator";
+import {MongoModelCreator} from "server/database/models/creator";
 import {connectMongoDB} from "server/database/engine";
 import {NextApiResponse} from "next";
 import {NextApiRequest} from "next";

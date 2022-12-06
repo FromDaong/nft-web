@@ -8,10 +8,10 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	const {id} = req.query;
+	const {username} = req.query;
 	const {data} = req.body;
 
-	if (!id) {
+	if (!username) {
 		return returnWithError("No ID provided", 400, res);
 	}
 
@@ -25,13 +25,13 @@ export default async function handler(
 			delete data.username;
 		}
 
-		const nft = await MongoModelCreator.findOneAndUpdate(
-			{id},
+		const creator = await MongoModelCreator.findOneAndUpdate(
+			{username},
 			{...data},
 			{new: true}
 		);
 
-		return returnWithSuccess(nft, res);
+		return returnWithSuccess(creator, res);
 	} catch (err) {
 		return returnWithError(err, 400, res);
 	}

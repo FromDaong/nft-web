@@ -1,4 +1,4 @@
-import {MongoModelProfile} from "@db/models/creator";
+import {MongoModelProfile} from "server/database/models/creator";
 import {MongoModelCreator} from "./../../../../../server/database/models/creator/index";
 import {connectMongoDB} from "server/database/engine";
 import {NextApiResponse} from "next";
@@ -9,11 +9,11 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	const {id} = req.query;
+	const {username} = req.query;
 	const {data} = req.body;
 
-	if (!id) {
-		return returnWithError("No ID provided", 400, res);
+	if (!username) {
+		return returnWithError("No username provided", 400, res);
 	}
 
 	await connectMongoDB();
@@ -26,13 +26,13 @@ export default async function handler(
 			delete data.username;
 		}
 
-		const nft = await MongoModelProfile.findOneAndUpdate(
-			{id},
+		const profile = await MongoModelProfile.findOneAndUpdate(
+			{username},
 			{...data},
 			{new: true}
 		);
 
-		return returnWithSuccess(nft, res);
+		return returnWithSuccess(profile, res);
 	} catch (err) {
 		return returnWithError(err, 400, res);
 	}

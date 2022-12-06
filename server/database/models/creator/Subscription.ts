@@ -1,4 +1,4 @@
-import createMongoDBModel from "@db/engine/utils";
+import createMongoDBModel from "server/database/engine/utils";
 import {Document, Schema} from "mongoose";
 
 export type TSubscriptionPackage<Document> = {

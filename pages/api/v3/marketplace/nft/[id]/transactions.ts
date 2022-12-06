@@ -6,7 +6,7 @@ import {
 import {NextApiResponse} from "next";
 import {NextApiRequest} from "next";
 import {returnWithError, returnWithSuccess} from "server/database/engine/utils";
-import ModelTransaction from "@db/models/transaction";
+import ModelTransaction from "server/database/models/transaction";
 
 export default async function handler(
 	req: NextApiRequest,

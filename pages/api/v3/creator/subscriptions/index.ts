@@ -1,13 +1,10 @@
-import {MongoModelCreator, MongoSubscriptionModel} from "@db/models/creator";
 import {
-	connectMongoDB,
-	getFromRedisCache,
-	redisClient,
-	setStringToRedisCache,
-} from "server/database/engine";
+	MongoModelCreator,
+	MongoSubscriptionModel,
+} from "server/database/models/creator";
+import {connectMongoDB} from "server/database/engine";
 import {NextApiResponse} from "next";
 import {NextApiRequest} from "next";
-import LegacyNFTModel from "server/database/legacy/nft/NFT";
 import {returnWithSuccess} from "server/database/engine/utils";
 
 export default async function handler(
@@ -16,25 +13,21 @@ export default async function handler(
 ) {
 	await connectMongoDB();
 
-	const {username} = req.query;
+	// TODO: Add pagination to prevent perfomance hit on $in query to creators
+	const subscriptions = await MongoSubscriptionModel.find();
+	const creatorIds = subscriptions.map(
+		(subscription) => subscription.creatorId
+	);
 
-	if (!username) {
-		return res.status(400).json({error: "No username provided"});
-	}
+	const creators = await MongoModelCreator.find({creatorId: {$in: creatorIds}});
 
-	let creatorIds = await getFromRedisCache(`subscription_packages:creatorIds`);
+	const creatorsWithSubscriptions = creators.map((creator) => {
+		creator.subscription =
+			subscriptions.find(
+				(subscription) => subscription.creatorId === creator.id
+			) ?? null;
+		return creator;
+	});
 
-	if (!creatorIds) {
-		const subscriptions = await MongoSubscriptionModel.find();
-		creatorIds = subscriptions.map((subscription) => subscription.creatorId);
-		await setStringToRedisCache(`subscription_packages:creatorIds`, creatorIds);
-	}
-
-	const creator = await MongoModelCreator.find({id: {$in: creatorIds}});
-
-	if (!creator) {
-		return res.status(404).json({error: "Creator not found"});
-	}
-
-	return returnWithSuccess(creator, res);
+	return returnWithSuccess(creatorsWithSubscriptions, res);
 }

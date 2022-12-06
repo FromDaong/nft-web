@@ -1,4 +1,4 @@
-import createMongoDBModel from "@db/engine/utils";
+import createMongoDBModel from "server/database/engine/utils";
 import mongoose from "mongoose";
 
 const TransactionSchema = new mongoose.Schema(

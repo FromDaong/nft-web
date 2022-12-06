@@ -1,6 +1,6 @@
-import {connectMongoDB} from "@db/engine";
-import {returnWithError, returnWithSuccess} from "@db/engine/utils";
-import LegacyNFTModel from "@db/legacy/nft/NFT";
+import {connectMongoDB} from "server/database/engine";
+import {returnWithError, returnWithSuccess} from "server/database/engine/utils";
+import LegacyNFTModel from "server/database/legacy/nft/NFT";
 
 export default async function handler(req, res) {
 	await connectMongoDB();
