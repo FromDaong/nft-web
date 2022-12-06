@@ -1,4 +1,5 @@
 import Image from "next/future/image";
+import {uploadcareLoader} from "@uploadcare/nextjs-loader";
 
 const gumletLoader = ({src, width, quality}) => {
 	return `https://treatnfts.gumlet.io${src}?w=${width}&q=${
@@ -22,7 +23,7 @@ type OptimizedImageProps = {
 const OptimizedImage = (props: OptimizedImageProps) => {
 	return (
 		<Image
-			loader={gumletLoader}
+			loader={uploadcareLoader}
 			quality={props.quality}
 			src={props.src}
 			alt={props.alt}

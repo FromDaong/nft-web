@@ -8482,6 +8482,11 @@
     "@typescript-eslint/types" "5.42.1"
     eslint-visitor-keys "^3.3.0"
 
+"@uploadcare/nextjs-loader@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@uploadcare/nextjs-loader/-/nextjs-loader-1.0.0.tgz#e30224480d76f602c03e4d0893a78025ae9f0457"
+  integrity sha512-zLTMW21VgRKenOfQ5uAWVMMjimnsaawXncqOwwedd/ysp3t9tmjVrAg6Mo5K8bk0rtoBTTrh0LKxLIaQj1xBUQ==
+
 "@uploadcare/upload-client@^2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@uploadcare/upload-client/-/upload-client-2.2.0.tgz#5f61368e0c2c81e092a73f40165962d6ea066a1b"

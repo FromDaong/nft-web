@@ -30,6 +30,9 @@ module.exports =
 			defaultLocale: "en",
 			localeDetection: false,
 		},
+		images: {
+			loader: "custom",
+		},
 		/*pwa: {
     disable: process.env.NODE_ENV !== "production",
     dest: "public",
