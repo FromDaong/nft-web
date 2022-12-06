@@ -83,6 +83,7 @@
     "commandbar": "^1.7.1",
     "connectkit": "^0.0.2",
     "cross-env": "^7.0.3",
+    "date-fns": "^2.29.3",
     "domcolor": "^1.0.1",
     "dotenv": "^16.0.0",
     "eslint-plugin-react": "^7.28.0",

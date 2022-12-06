@@ -1,6 +1,10 @@
 import BigNumber from "bignumber.js";
 import {MathUtil} from "./math";
 import {ReactUtil} from "./react";
+import {formatDistance} from "date-fns";
+
+export const timeFromNow = (date: string) =>
+	formatDistance(new Date(date), new Date(), {addSuffix: true});
 
 export {default as formatAddress} from "./formatAddress";
 
