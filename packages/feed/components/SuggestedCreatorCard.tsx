@@ -91,7 +91,7 @@ const CollapseSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 				backgroundColor: "$elementSurface",
 				height: "auto",
 			}}
-			className="flex w-full"
+			className="flex items-center justify-between w-full"
 		>
 			<Container className="flex gap-2">
 				<UserAvatar

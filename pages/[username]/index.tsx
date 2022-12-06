@@ -15,6 +15,7 @@ import {Button} from "@packages/shared/components/Button";
 import SuggestedCreatorsSection from "@packages/feed/components/SuggestedCreatorsSection";
 import TrendsSection from "@packages/feed/components/TrendsSection";
 import ContentSidebar from "core/components/layouts/ContentSidebar";
+import {NextPageContext} from "next";
 
 const newCurated: TPost = {
 	name: "Welcome to the Tritters",
@@ -55,7 +56,7 @@ export default function UserProfile() {
 				<ProfileLayout>
 					<SEOHead title={router.query.username + " - Trit"} />
 					<Container className="flex justify-between gap-12">
-						<Container className="max-w-xl flex flex-1 flex-col gap-4 ">
+						<Container className="flex flex-col flex-1 max-w-xl gap-4 ">
 							<TimelineActivity
 								actionMeta={{
 									verb: "Created content",
@@ -101,3 +102,10 @@ export default function UserProfile() {
 		</ApplicationLayout>
 	);
 }
+
+export const getServerSideProps = async (ctx: NextPageContext) => {
+	// Find the profile by username and check if the user is a creator
+	return {
+		props: {},
+	};
+};
