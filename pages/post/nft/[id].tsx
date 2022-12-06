@@ -12,24 +12,27 @@ import {
 	ImportantText,
 	MutedText,
 } from "@packages/shared/components/Typography/Text";
+import {timeFromNow} from "@utils/index";
 import UserAvatar from "core/auth/components/Avatar";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import Link from "next/link";
 
 export default function NFT(props: {notFound?: boolean; data: any}) {
-	if (props.notFound) {
-		return <Error404 />;
-	}
-
-	const data = JSON.parse(props.data);
-	const {nft} = data;
-
 	const {
 		isOpen: isFullscreenPreviewOpen,
 		onOpen: onOpenFullscreenPreview,
 		onClose: onCloseFullscreenPreview,
 	} = useDisclosure();
+
+	if (props.notFound) {
+		return <Error404 />;
+	}
+
+	const data = JSON.parse(props.data);
+	const {nft, mints} = data;
+
+	console.log({mints});
 
 	return (
 		<>
@@ -111,8 +114,47 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 										<Heading size="md">{nft.list_price} BNB</Heading>
 									</Container>
 									<Container>
-										<Button fullWidth>Buy now</Button>
+										{nft.mints?.length === Number(nft.max_supply) ? (
+											<Button
+												fullWidth
+												appearance={"subtle"}
+												disabled
+											>
+												Sold out
+											</Button>
+										) : (
+											<Button fullWidth>Buy now</Button>
+										)}
 									</Container>
+								</Container>
+							</Container>
+							<Container className="flex flex-col gap-4">
+								<Heading size="xs">Purchase history</Heading>
+								<Container className="grid grid-cols-1 gap-6">
+									{mints.map((tx) => (
+										<Link
+											key={tx.txHash}
+											href={`https://bscscan.com/tx/${tx.txHash}`}
+										>
+											<a>
+												<Container className="flex gap-2">
+													<UserAvatar
+														value={tx.metadata.balanceSender}
+														size={24}
+													/>
+													<Container className="flex flex-col gap-1">
+														<Text>
+															<ImportantText>
+																{tx.metadata.balanceSender} purchased for{" "}
+																{tx.amount} BNB
+															</ImportantText>
+														</Text>
+														<MutedText>{timeFromNow(tx.timestamp)}</MutedText>
+													</Container>
+												</Container>
+											</a>
+										</Link>
+									))}
 								</Container>
 							</Container>
 						</Container>
@@ -137,9 +179,7 @@ export const getServerSideProps = async (context) => {
 	}
 
 	const transactions = await ModelTransaction.find({
-		metadata: {
-			nftId: id,
-		},
+		"metadata.nftId": id,
 	});
 
 	const returnObj = {
@@ -147,8 +187,6 @@ export const getServerSideProps = async (context) => {
 		mints: transactions,
 		nft: nft,
 	};
-
-	console.log({returnObj});
 
 	return {
 		props: {
