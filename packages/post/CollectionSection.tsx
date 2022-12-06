@@ -54,7 +54,6 @@ export default function TreatOfTheMonthCollectionSection(props: {
 							className="overflow-hidden rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500"
 							css={{
 								height: "180px",
-								backgroundColor: "red",
 								backgroundImage: `url(${item.image.cdn ?? item.image.ipfs})`,
 								backgroundSize: "cover",
 								backgroundPosition: "center",
