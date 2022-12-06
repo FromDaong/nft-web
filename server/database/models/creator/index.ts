@@ -1,7 +1,5 @@
-import Creator from "./Creator";
+import LegacyCreatorModel from "server/database/legacy/creator/Creator";
 
-const ModelCreator = {
-  creator: Creator,
-};
-
-export default ModelCreator;
+export const ModelUser = LegacyCreatorModel;
+export const ModelProfile = LegacyCreatorModel;
+export const ModelCreator = LegacyCreatorModel;
