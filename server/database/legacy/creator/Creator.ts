@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import createModel from "server/database/engine/utils";
+import createMongoDBModel from "server/database/engine/utils";
 const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 const paginate = require("mongoose-paginate-v2");
 
@@ -126,5 +126,5 @@ ModelSchema.plugin(aggregatePaginate);
 ModelSchema.plugin(paginate);
 ModelSchema.plugin(require("mongoose-beautiful-unique-validation"));
 
-const LegacyCreatorModel = createModel("Model", ModelSchema);
+const LegacyCreatorModel = createMongoDBModel("Model", ModelSchema);
 export default LegacyCreatorModel;

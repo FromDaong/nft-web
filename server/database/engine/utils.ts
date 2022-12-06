@@ -3,7 +3,7 @@ import {Model, model, Schema} from "mongoose";
 
 // Simple Generic Function for reusability
 // Feel free to modify however you like
-export default function createModel<T, TModel = Model<T>>(
+export default function createMongoDBModel<T, TModel = Model<T>>(
 	modelName: string,
 	schema: Schema<T>
 ): TModel {
@@ -50,5 +50,18 @@ export const returnWithSuccess = (
 } => {
 	return res.status(200).json({
 		data,
+	});
+};
+
+export const enforcePrivacyForNFTs = (nfts: Array<any>) => {
+	return nfts.map((nft) => {
+		nft.mints = nft.mints.length;
+		delete nft.identity_access_key;
+
+		if (nft.blurhash || nft.ownersOnly) {
+			delete nft.image;
+			delete nft.daoCdnUrl;
+		}
+		return nft;
 	});
 };

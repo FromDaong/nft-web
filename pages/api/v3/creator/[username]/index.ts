@@ -1,7 +1,7 @@
+import {ModelCreator} from "@db/models/creator";
 import {connectMongoDB} from "server/database/engine";
 import {NextApiResponse} from "next";
 import {NextApiRequest} from "next";
-import LegacyCreatorModel from "server/database/legacy/creator/Creator";
 import LegacyNFTModel from "server/database/legacy/nft/NFT";
 import {
 	enforcePrivacyForNFTs,
@@ -20,7 +20,7 @@ export default async function handler(
 		return res.status(400).json({error: "No username provided"});
 	}
 
-	const Creator = await LegacyCreatorModel.findOne({username});
+	const Creator = await ModelCreator.findOne({username});
 
 	if (!Creator) {
 		return res.status(404).json({error: "Creator not found"});
