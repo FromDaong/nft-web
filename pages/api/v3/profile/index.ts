@@ -2,6 +2,7 @@ import {connectMongoDB} from "server/database/engine";
 import {returnWithError, returnWithSuccess} from "server/database/engine/utils";
 import {MongoModelProfile} from "server/database/models/creator";
 import {NextApiRequest, NextApiResponse} from "next";
+import LegacyCreatorModel from "server/database/legacy/profile/Creator";
 
 export default async function handler(
 	req: NextApiRequest,
@@ -10,9 +11,10 @@ export default async function handler(
 	await connectMongoDB();
 
 	try {
-		const creators = MongoModelProfile.find();
+		const creators = await /*MongoModelProfile*/ LegacyCreatorModel.find();
 		return returnWithSuccess(creators, res);
 	} catch (err) {
+		console.log({err});
 		return returnWithError(err, 400, res);
 	}
 }

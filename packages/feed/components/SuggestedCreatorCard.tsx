@@ -1,4 +1,3 @@
-import Avatar from "@packages/shared/components/AvatarNew";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {
@@ -24,6 +23,56 @@ type SuggestedCreatorData = {
 	noBg?: boolean;
 };
 
+import {StyledLoader} from "@packages/post/TritPost";
+
+export const SkeletonExpandedSuggestedCreatorCard = (props) => (
+	<StyledLoader
+		speed={1}
+		width={320}
+		height={180}
+		viewBox="0 0 320 180"
+		{...props}
+	>
+		<circle
+			cx="29"
+			cy="37"
+			r="22"
+		/>
+		<rect
+			x="66"
+			y="18"
+			rx="2"
+			ry="2"
+			width="133"
+			height="14"
+		/>
+		<rect
+			x="66"
+			y="37"
+			rx="2"
+			ry="2"
+			width="135"
+			height="15"
+		/>
+		<rect
+			x="67"
+			y="72"
+			rx="2"
+			ry="2"
+			width="317"
+			height="51"
+		/>
+		<rect
+			x="66"
+			y="139"
+			rx="2"
+			ry="2"
+			width="317"
+			height="21"
+		/>
+	</StyledLoader>
+);
+
 export default function SuggestedCreatorCard(props: SuggestedCreatorData) {
 	return props.isExpanded ? (
 		<ExpandSuggestedCreatorCard {...props} />
@@ -42,9 +91,9 @@ const CollapseSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 				backgroundColor: "$elementSurface",
 				height: "auto",
 			}}
-			className="flex justify-between w-full"
+			className="flex w-full"
 		>
-			<Container className="flex gap-4">
+			<Container className="flex gap-2">
 				<UserAvatar
 					size={40}
 					value={props.username}
@@ -86,15 +135,15 @@ const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 						height: "100%",
 					}}
 				>
-					<Container className="flex justify-between w-full gap-4">
+					<Container className="flex w-full gap-4">
 						<Container css={{width: "40px", height: "40px"}}>
 							<UserAvatar
 								size={40}
 								value={props.username}
 							/>
 						</Container>
-						<Container className="flex flex-col gap-8">
-							<Container className="flex justify-between w-full gap-2">
+						<Container className="flex flex-col gap-4">
+							<Container className="flex w-full gap-2">
 								<Container>
 									<Container>
 										<Container className="flex items-center gap-4">
@@ -111,7 +160,7 @@ const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 									</p>
 								</Container>
 							</Container>
-							<Container className="flex flex-col gap-4">
+							<Container className="flex flex-col gap-2">
 								{props.isExpanded && (
 									<p>
 										<Text className="line-clamp-4">{props.bio}</Text>

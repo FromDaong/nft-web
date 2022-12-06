@@ -37,7 +37,7 @@ export type TPost = {
 		tx: string;
 		timestamp: number;
 	}>;
-	timestamp: number;
+	timestamp?: number;
 	post_type: "colletible" | "subscription";
 	price?: {
 		value: number;
