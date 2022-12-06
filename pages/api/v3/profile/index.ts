@@ -11,9 +11,10 @@ export default async function handler(
 	await connectMongoDB();
 
 	try {
-		const creators = /*MongoModelProfile*/ LegacyCreatorModel.find();
+		const creators = await /*MongoModelProfile*/ LegacyCreatorModel.find();
 		return returnWithSuccess(creators, res);
 	} catch (err) {
+		console.log({err});
 		return returnWithError(err, 400, res);
 	}
 }

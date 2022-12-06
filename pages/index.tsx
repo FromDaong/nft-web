@@ -7,8 +7,10 @@ import Footer from "@packages/shared/components/Footer";
 import {ShortDivider} from "@packages/shared/components/Divider";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {TPost} from "@packages/post/types";
-import {TritPost} from "@packages/post/TritPost";
-import SuggestedCreatorCard from "@packages/feed/components/SuggestedCreatorCard";
+import {SkeletonTritCollectiblePost, TritPost} from "@packages/post/TritPost";
+import SuggestedCreatorCard, {
+	SkeletonExpandedSuggestedCreatorCard,
+} from "@packages/feed/components/SuggestedCreatorCard";
 import Link from "next/link";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
 import {ArrowRightIcon} from "@heroicons/react/outline";
@@ -163,20 +165,32 @@ export default function Index() {
 									<Heading size="md">Trending creators</Heading>
 								</Container>
 								<Container className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-									{!trendingCreatorError &&
-										!trendingCreatorsLoading &&
-										trendingCreators.data.slice(0, 4).map((creator) => (
-											<SuggestedCreatorCard
-												key={creator._id}
-												username={creator.username}
-												display_name={creator.display_name}
-												avatar={creator.profile_picture}
-												bio={creator.bio}
-												isExpanded
-												border
-												live={creator.livestream_active}
-											/>
-										))}
+									{!trendingCreatorError && !trendingCreatorsLoading
+										? trendingCreators.data.slice(0, 3).map((creator) => (
+												<SuggestedCreatorCard
+													key={creator._id}
+													username={creator.username}
+													display_name={creator.display_name}
+													avatar={creator.profile_picture}
+													bio={creator.bio}
+													isExpanded
+													border
+													live={creator.livestream_active}
+												/>
+										  ))
+										: [0, 1, 2].map((i) => (
+												<Container
+													key={i}
+													className="col-span-1 border"
+													css={{
+														borderColor: "$subtleBorder",
+														padding: "16px",
+														borderRadius: "16px",
+													}}
+												>
+													<SkeletonExpandedSuggestedCreatorCard />
+												</Container>
+										  ))}
 								</Container>
 							</Container>
 						</Container>
@@ -198,15 +212,27 @@ export default function Index() {
 									</Link>
 								</Container>
 								<Container className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-4">
-									{!trendingNFTError &&
-										!trendingNFTsLoading &&
-										trendingNFTs.map((item) => (
-											<TritPost
-												key={item}
-												inGrid
-												{...item}
-											/>
-										))}
+									{!trendingNFTError && !trendingNFTsLoading
+										? trendingNFTs.map((item) => (
+												<TritPost
+													key={item}
+													inGrid
+													{...item}
+												/>
+										  ))
+										: [0, 1, 2].map((i) => (
+												<Container
+													key={i}
+													className="col-span-1 border"
+													css={{
+														borderColor: "$subtleBorder",
+														padding: "8px",
+														borderRadius: "16px",
+													}}
+												>
+													<SkeletonTritCollectiblePost />
+												</Container>
+										  ))}
 								</Container>
 							</Container>
 						</Container>
