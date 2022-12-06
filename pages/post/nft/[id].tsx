@@ -1,4 +1,4 @@
-import {connectMongoDB} from "@db/engine";
+import {pagePropsConnectMongoDB} from "@db/engine/pagePropsDB";
 import LegacyNFTModel from "@db/legacy/nft/NFT";
 import ModelTransaction from "@db/models/transaction";
 import Error404 from "@packages/error/404";
@@ -168,7 +168,7 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 export const getServerSideProps = async (context) => {
 	const {id} = context.params;
 
-	await connectMongoDB();
+	await pagePropsConnectMongoDB();
 
 	const nft = await LegacyNFTModel.findOne({id});
 
