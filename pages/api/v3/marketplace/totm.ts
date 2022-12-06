@@ -3,7 +3,7 @@ import {NextApiResponse} from "next";
 import {NextApiRequest} from "next";
 import {
 	connectMongoDB,
-	getStringFromRedisCache,
+	getFromRedisCache,
 	setStringToRedisCache,
 } from "server/database/engine";
 import {returnWithSuccess} from "server/database/engine/utils";
@@ -11,7 +11,7 @@ import LegacyCreatorModel from "@db/legacy/profile/Creator";
 import LegacyNFTModel from "server/database/legacy/nft/NFT";
 
 export default async function totm(req: NextApiRequest, res: NextApiResponse) {
-	const cached_totm = await getStringFromRedisCache("totm");
+	const cached_totm = await getFromRedisCache("totm");
 	if (cached_totm) {
 		return returnWithSuccess(cached_totm, res);
 	}

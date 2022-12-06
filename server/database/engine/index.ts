@@ -40,7 +40,7 @@ const connectMongoDB = async (url?: string) => {
 	return cached.conn;
 };
 
-const getStringFromRedisCache = async (key: string): Promise<object> => {
+const getFromRedisCache = async (key: string): Promise<object> => {
 	return JSON.parse(await redisClient.get(key));
 };
 
@@ -62,7 +62,7 @@ export {
 	connectMongoDB,
 	prisma,
 	redisClient,
-	getStringFromRedisCache,
+	getFromRedisCache,
 	setStringToRedisCache,
 	invalidateRedisCache,
 };

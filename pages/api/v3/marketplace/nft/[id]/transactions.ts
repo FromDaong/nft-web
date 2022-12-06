@@ -1,6 +1,6 @@
 import {
 	connectMongoDB,
-	getStringFromRedisCache,
+	getFromRedisCache,
 	setStringToRedisCache,
 } from "server/database/engine";
 import {NextApiResponse} from "next";
@@ -19,7 +19,7 @@ export default async function handler(
 
 	await connectMongoDB();
 
-	const cached_totm = await getStringFromRedisCache(`transactions:${id}`);
+	const cached_totm = await getFromRedisCache(`transactions:${id}`);
 	if (cached_totm) {
 		return returnWithSuccess(cached_totm, res);
 	}

@@ -1,3 +1,4 @@
+import createMongoDBModel from "@db/engine/utils";
 import {Document, Schema} from "mongoose";
 
 export type TSubscriptionPackage<Document> = {
@@ -33,4 +34,9 @@ export const HSubscriptionPackage: Schema = new Schema(
 	}
 );
 
-export const SubscriptionPackage = {};
+const ModelSubscriptionPackage = createMongoDBModel(
+	"Subscription",
+	HSubscriptionPackage
+);
+
+export default ModelSubscriptionPackage;
