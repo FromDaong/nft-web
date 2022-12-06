@@ -117,6 +117,8 @@ export default function Index() {
 													isExpanded
 													border
 													live={creator.livestream_active}
+													followers={creator.followers}
+													subscribers={creator.following}
 												/>
 										  ))
 										: [0, 1, 2].map((i) => (

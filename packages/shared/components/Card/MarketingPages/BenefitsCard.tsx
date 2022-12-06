@@ -27,11 +27,11 @@ const Card = styled("div", {
 export const CardOverlay = styled("div", {
 	position: "absolute",
 	backgroundColor: "$overlay",
+	backdropFilter: "blur(204px)",
 	top: 0,
 	left: 0,
 	width: "100%",
 	height: "100%",
-	backdropFilter: "blur(204px)",
 	zIndex: 5,
 });
 
