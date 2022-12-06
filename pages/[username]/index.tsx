@@ -12,6 +12,9 @@ import ContentSidebar from "core/components/layouts/ContentSidebar";
 import {beforePageLoadGetUserProfile} from "server/page/userProfile";
 import Error404 from "@packages/error/404";
 import Error500 from "@packages/error/500";
+import axios from "axios";
+import {apiEndpoint} from "@utils/index";
+import TreatCore from "core/TreatCore";
 
 const newCurated: TPost = {
 	name: "Welcome to the Tritters",
@@ -44,6 +47,11 @@ const newCurated: TPost = {
 	},
 };
 
+const getTrendingCreators = async () => {
+	const res = await axios.get(`${apiEndpoint}/profile`);
+	return res.data;
+};
+
 export default function UserProfile(props: {
 	error: boolean;
 	notFound: boolean;
@@ -59,6 +67,20 @@ export default function UserProfile(props: {
 
 	const data = JSON.parse(props.data);
 	const {username} = data;
+
+	const {
+		isLoading: trendingCreatorsLoading,
+		error: trendingCreatorError,
+		data: trendingCreatorsData,
+	} = TreatCore.useQuery({
+		queryKey: ["trendingCreators"],
+		queryFn: getTrendingCreators,
+	});
+
+	const trendingCreators =
+		trendingCreatorsLoading || trendingCreatorError
+			? []
+			: trendingCreatorsData?.data.slice(0, 5);
 
 	return (
 		<ApplicationLayout>
@@ -92,10 +114,12 @@ export default function UserProfile(props: {
 							/>
 						</Container>
 						<ContentSidebar>
-							<SuggestedCreatorsSection
-								title="Creators you might like"
-								data={[]}
-							/>
+							{trendingCreators.length > 0 && (
+								<SuggestedCreatorsSection
+									title="Creators you might like"
+									data={trendingCreators}
+								/>
+							)}
 							<TrendsSection
 								data={[
 									{

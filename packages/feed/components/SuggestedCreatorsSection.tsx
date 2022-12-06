@@ -1,16 +1,15 @@
-import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {MutedText, Text} from "@packages/shared/components/Typography/Text";
 import SuggestedCreatorCard from "./SuggestedCreatorCard";
 
 export default function SuggestedCreatorsSection(props: {
 	title: string;
-	data: Array<object>;
+	data: Array<any>;
 }) {
 	return (
 		<Container
 			css={{backgroundColor: "$elementSurface", borderRadius: "16px"}}
-			className="grid gap-4 grid-cols-1 p-4 shadow"
+			className="grid grid-cols-1 gap-4 p-4 shadow"
 		>
 			<Container>
 				<Text>
@@ -18,14 +17,13 @@ export default function SuggestedCreatorsSection(props: {
 				</Text>
 			</Container>
 			<Container className="grid grid-cols-1 gap-4">
-				{["kamfeska", "putinih", "tatenda"].map((i) => (
+				{props.data.map((i) => (
 					<SuggestedCreatorCard
-						key={i}
-						username={i}
-						display_name="Tatenda Chris"
-						avatar=""
-						bio="Mystery SEV. Suddenly, the site goes dark. The dashboard is red. Everything seems fucked. There's no indication why."
-						isPromoted
+						key={i.username}
+						username={i.username}
+						display_name={i.display_name}
+						avatar={i.profile_picture}
+						bio={i.bio}
 					/>
 				))}
 			</Container>

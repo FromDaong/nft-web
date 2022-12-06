@@ -85,42 +85,46 @@ export default function SuggestedCreatorCard(props: SuggestedCreatorData) {
 
 const CollapseSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 	return (
-		<Container
-			css={{
-				border: `1px ${props.border ? "solid" : null} $subtleBorder`,
-				padding: props.border ? "16px" : null,
-				borderRadius: "16px",
-				backgroundColor: "$elementSurface",
-				height: "auto",
-			}}
-			className="flex justify-between w-full"
-		>
-			<Container className="flex gap-2">
-				<UserAvatar
-					size={40}
-					value={props.username}
-				/>
-				<Container className="gap-2">
-					<Container>
-						<p>
-							<Text>
-								<ImportantText>{props.display_name}</ImportantText>
-							</Text>
-						</p>
-						<p>
-							<MutedText>
-								<SmallText>@{props.username}</SmallText>
-							</MutedText>
-						</p>
+		<Link href={`/${props.username}`}>
+			<a>
+				<Container
+					css={{
+						border: `1px ${props.border ? "solid" : null} $subtleBorder`,
+						padding: props.border ? "16px" : null,
+						borderRadius: "16px",
+						backgroundColor: "$elementSurface",
+						height: "auto",
+					}}
+					className="flex justify-between w-full"
+				>
+					<Container className="flex gap-2">
+						<UserAvatar
+							size={40}
+							value={props.username}
+						/>
+						<Container className="gap-2">
+							<Container>
+								<p>
+									<Text>
+										<ImportantText>{props.display_name}</ImportantText>
+									</Text>
+								</p>
+								<p className="text-ellipsis overflow-hidden ... w-[100px]">
+									<MutedText>
+										<SmallText>@{props.username}</SmallText>
+									</MutedText>
+								</p>
+							</Container>
+						</Container>
 					</Container>
+					{!props.noFollowButton && (
+						<Container>
+							<Button>Follow</Button>
+						</Container>
+					)}
 				</Container>
-			</Container>
-			{!props.noFollowButton && (
-				<Container>
-					<Button>Follow</Button>
-				</Container>
-			)}
-		</Container>
+			</a>
+		</Link>
 	);
 };
 
