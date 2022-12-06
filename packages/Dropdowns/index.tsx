@@ -17,7 +17,7 @@ export const DropdownMenuItem = styled(DropdownMenu.Item, {
 	},
 });
 
-export const ProfileDropdown = (props: {username: string}) => {
+export const ProfileDropdown = (props: {username: string; address: string}) => {
 	const {address} = useAccount();
 	const router = useRouter();
 	const share_profile = () => {
@@ -30,11 +30,13 @@ export const ProfileDropdown = (props: {username: string}) => {
 			<DropdownMenu.Root>
 				<DropdownMenu.Trigger asChild>
 					<Button
-						css={{backgroundColor: "$surface"}}
+						css={{backgroundColor: "$surface", borderColor: "$subtleBorder"}}
 						outlined
-						className="flex items-center drop-shadow-xl"
+						className="flex items-center border"
 					>
-						0x0093...0832
+						{props.address.slice(0, 4) +
+							"..." +
+							props.address.slice(address.length - 4)}
 						<ChevronDownIcon className="w-4 h-4" />
 					</Button>
 				</DropdownMenu.Trigger>

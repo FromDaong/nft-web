@@ -126,7 +126,7 @@ export const TritPost = (props: TPost) => {
 	const imageUrl = props.image?.cdn;
 
 	return (
-		<Link href={`/post/${props.id}`}>
+		<Link href={`/post/nft/${props.id}`}>
 			<a>
 				<Container
 					className="relative flex overflow-hidden border shadow"
@@ -151,19 +151,20 @@ export const TritPost = (props: TPost) => {
 						css={{zIndex: 10}}
 					>
 						<Container className="flex justify-between">
-							<FrostyBackgroundContainer
-								css={{borderRadius: "calc(8px + 16px)", padding: "8px"}}
-							>
-								<Container
-									css={{
-										height: "80px",
-										width: "80px",
-										backgroundImage:
-											"url('https://f8n-production.imgix.net/collections/gl58ysacv.gif?q=45&w=96&h=96&fit=crop&dpr=2')",
-										borderRadius: "calc(16px)",
-									}}
-								/>
-							</FrostyBackgroundContainer>
+							{false && (
+								<FrostyBackgroundContainer
+									css={{borderRadius: "calc(8px + 16px)", padding: "8px"}}
+								>
+									<Container
+										css={{
+											height: "80px",
+											width: "80px",
+
+											borderRadius: "calc(16px)",
+										}}
+									/>
+								</FrostyBackgroundContainer>
+							)}
 							{props.protected ||
 								props.collection.minted === props.collection.totalSupply ||
 								(props.totm && (

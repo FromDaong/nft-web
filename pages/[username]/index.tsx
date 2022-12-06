@@ -1,23 +1,17 @@
 import {TimelineActivity} from "@packages/post/TimelineActivity";
-import {SubscriptionContentPost} from "@packages/post/SubscriptionContentPost";
 import {TPost} from "@packages/post/types";
 import {SEOHead} from "@packages/seo/page";
 import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
-import {Heading, Text} from "@packages/shared/components/Typography/Headings";
-import {MutedText} from "@packages/shared/components/Typography/Text";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import ProfileLayout from "core/components/layouts/ProfileLayout";
-import {useRouter} from "next/router";
-import SuggestedCreatorCard from "@packages/feed/components/SuggestedCreatorCard";
-import {Button} from "@packages/shared/components/Button";
 import SuggestedCreatorsSection from "@packages/feed/components/SuggestedCreatorsSection";
 import TrendsSection from "@packages/feed/components/TrendsSection";
 import ContentSidebar from "core/components/layouts/ContentSidebar";
-import {apiEndpoint} from "@utils/index";
-import axios from "axios";
-import {useEffect, useState} from "react";
+import {beforePageLoadGetUserProfile} from "server/page/userProfile";
+import Error404 from "@packages/error/404";
+import Error500 from "@packages/error/500";
 
 const newCurated: TPost = {
 	name: "Welcome to the Tritters",
@@ -50,27 +44,27 @@ const newCurated: TPost = {
 	},
 };
 
-export default function UserProfile() {
-	const router = useRouter();
-	const {username} = router.query;
+export default function UserProfile(props: {
+	error: boolean;
+	notFound: boolean;
+	data: any;
+}) {
+	if (props.notFound) {
+		return <Error404 />;
+	}
 
-	const [userProfile, setUserProfile] = useState(null);
-	const getUserProfile = async (username) => {
-		const res = await axios.get(`${apiEndpoint}/profile/${username}`);
-		setUserProfile(res.data.data);
-	};
+	if (props.error) {
+		return <Error500 />;
+	}
 
-	useEffect(() => {
-		if (!userProfile) {
-			getUserProfile(username);
-		}
-	}, [userProfile]);
+	const data = JSON.parse(props.data);
+	const {username} = data;
 
 	return (
 		<ApplicationLayout>
 			<ApplicationFrame>
-				<ProfileLayout userProfile={userProfile}>
-					<SEOHead title={router.query.username + " - Trit"} />
+				<ProfileLayout userProfile={data}>
+					<SEOHead title={username + " - Trit"} />
 					<Container className="flex justify-between gap-12">
 						<Container className="flex flex-col flex-1 max-w-xl gap-4 ">
 							<TimelineActivity
@@ -118,3 +112,5 @@ export default function UserProfile() {
 		</ApplicationLayout>
 	);
 }
+
+export const getServerSideProps = beforePageLoadGetUserProfile;

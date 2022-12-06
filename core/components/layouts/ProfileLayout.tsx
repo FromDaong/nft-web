@@ -1,5 +1,6 @@
 import {ChevronDownIcon} from "@heroicons/react/solid";
 import {ProfileDropdown} from "@packages/Dropdowns";
+import {SEOHead} from "@packages/seo/page";
 import Avatar, {AvatarGroup} from "@packages/shared/components/AvatarNew";
 import {Button} from "@packages/shared/components/Button";
 import {
@@ -16,7 +17,9 @@ import {
 } from "@packages/shared/components/Typography/Text";
 import VerifiedBadge from "@packages/shared/components/VerifiedBadge";
 import {styled} from "@styles/theme";
-import {ComponentBasicProps} from "core/TreatCore";
+import {apiEndpoint} from "@utils/index";
+import axios from "axios";
+import TreatCore, {ComponentBasicProps} from "core/TreatCore";
 import {useRouter} from "next/router";
 import {useEffect} from "react";
 
@@ -92,34 +95,38 @@ const UserHeader = ({profile_pic}) => {
 };
 
 type ProfileLayoutProps = ComponentBasicProps & {
-	userProfile: {
+	userProfile?: {
 		username: string;
 		display_name: string;
 		bio: string;
 		following: number;
+		followers: number;
 		earnings: number;
 		address: string;
-		profilePicCdnUrl: string;
+		profile_picture?: string;
+		profilePicCdnUrl?: string;
 	};
 };
 
 export default function ProfileLayout(props: ProfileLayoutProps) {
-	const router = useRouter();
-	const query = router.query;
-
+	const profile = props.userProfile;
 	const user = {
-		username: props.userProfile ? props.userProfile.username : "",
-		displayName: props.userProfile ? props.userProfile.display_name : "",
-		bio: props.userProfile ? props.userProfile.bio : "",
-		followers: 241,
-		following: 245,
-		earnings: 47.0,
-		address: props.userProfile ? props.userProfile.address : "",
-		profile_pic: props.userProfile ? props.userProfile.profilePicCdnUrl : "",
+		username: profile.username,
+		displayName: profile ? profile.display_name : "",
+		bio: profile ? profile.bio : "",
+		followers: profile.followers ?? 0,
+		following: profile.following ?? 0,
+		earnings: profile.earnings ?? 0,
+		address: profile ? profile.address : "",
+		profile_pic: profile
+			? profile.profile_picture ?? profile.profilePicCdnUrl
+			: "",
 	};
 
 	return (
 		<>
+			<SEOHead title={profile.username + " - Trit"} />
+
 			<UserHeader profile_pic={user.profile_pic} />
 
 			<FluidContainer className="mt-[26px] flex justify-between px-4">
@@ -129,7 +136,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 							size="sm"
 							className="flex items-center gap-1"
 						>
-							<span>{user.displayName}</span>
+							<span>{user.displayName ?? "Loading profile details"}</span>
 							<VerifiedBadge size={16} />
 						</Heading>
 						<MutedText>{user.username}</MutedText>
@@ -173,10 +180,13 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 					<Container variant={"unstyled"}>
 						<AvatarGroup people={followers} />
 					</Container>
-					<Text>{user.bio}</Text>
+					<Text>{user.bio ?? "Loading profile details"}</Text>
 					<Container variant={"unstyled"}>
 						<Container className="flex gap-x-4">
-							<ProfileDropdown username={user.username} />
+							<ProfileDropdown
+								address={user.address}
+								username={user.username}
+							/>
 							<Button className="drop-shadow-xl">Follow</Button>
 						</Container>
 					</Container>
