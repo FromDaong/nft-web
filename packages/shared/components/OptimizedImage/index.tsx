@@ -24,7 +24,7 @@ const OptimizedImage = (props: OptimizedImageProps) => {
 		<Image
 			loader={gumletLoader}
 			quality={props.quality}
-			src={props.src}
+			src={`/api/v3/image?default=${props.src}`}
 			alt={props.alt}
 			width={props.height}
 			height={props.height}

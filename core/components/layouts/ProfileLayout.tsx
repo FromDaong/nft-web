@@ -1,5 +1,6 @@
 import {ChevronDownIcon} from "@heroicons/react/solid";
 import {ProfileDropdown} from "@packages/Dropdowns";
+import {SEOHead} from "@packages/seo/page";
 import Avatar, {AvatarGroup} from "@packages/shared/components/AvatarNew";
 import {Button} from "@packages/shared/components/Button";
 import {
@@ -16,8 +17,11 @@ import {
 } from "@packages/shared/components/Typography/Text";
 import VerifiedBadge from "@packages/shared/components/VerifiedBadge";
 import {styled} from "@styles/theme";
-import {ComponentBasicProps} from "core/TreatCore";
+import {apiEndpoint} from "@utils/index";
+import axios from "axios";
+import TreatCore, {ComponentBasicProps} from "core/TreatCore";
 import {useRouter} from "next/router";
+import {useEffect} from "react";
 
 const tabs = [
 	{
@@ -66,7 +70,7 @@ const AvatarContainer = styled("div", {
 	border: "8px solid $surface",
 });
 
-const UserHeader = () => {
+const UserHeader = ({profile_pic}) => {
 	return (
 		<div className="w-full">
 			<div
@@ -80,7 +84,7 @@ const UserHeader = () => {
 					<AvatarContainer className="drop-shadow">
 						<Avatar
 							name="Tatenda Chris"
-							imageSrc="https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?&w=128&h=128&dpr=2&q=90"
+							imageSrc={profile_pic}
 							size={{width: "128px", height: "128px"}}
 						/>
 					</AvatarContainer>
@@ -90,35 +94,52 @@ const UserHeader = () => {
 	);
 };
 
-export default function ProfileLayout(props: ComponentBasicProps) {
-	const router = useRouter();
-	const query = router.query;
+type ProfileLayoutProps = ComponentBasicProps & {
+	userProfile?: {
+		username: string;
+		display_name: string;
+		bio: string;
+		following: number;
+		followers: number;
+		earnings: number;
+		address: string;
+		profile_picture?: string;
+		profilePicCdnUrl?: string;
+	};
+};
 
+export default function ProfileLayout(props: ProfileLayoutProps) {
+	const profile = props.userProfile;
 	const user = {
-		username: query.username as string,
-		displayName: "Kamfeskaya",
-		bio: "Latino Artist. Author. Producer. Daddy. Hand-drawn 1:1s capturing the energy of a moment. Life is beautiful.",
-		followers: 241,
-		following: 245,
-		earnings: 47.0,
-		address: "0x0eEd1d0Aa085a1C41aDf5184FAE07025217bF44c",
+		username: profile.username,
+		displayName: profile ? profile.display_name : "",
+		bio: profile ? profile.bio : "",
+		followers: profile.followers ?? 0,
+		following: profile.following ?? 0,
+		earnings: profile.earnings ?? 0,
+		address: profile ? profile.address : "",
+		profile_pic: profile
+			? profile.profile_picture ?? profile.profilePicCdnUrl
+			: "",
 	};
 
 	return (
 		<>
-			<UserHeader />
+			<SEOHead title={profile.username + " - Trit"} />
+
+			<UserHeader profile_pic={user.profile_pic} />
 
 			<FluidContainer className="mt-[26px] flex justify-between px-4">
 				<ContextualContainer className="flex flex-col max-w-lg gap-y-4">
 					<Container>
 						<Heading
 							size="sm"
-							className="flex gap-1 items-center"
+							className="flex items-center gap-1"
 						>
-							<span>{user.displayName}</span>
+							<span>{user.displayName ?? "Loading profile details"}</span>
 							<VerifiedBadge size={16} />
 						</Heading>
-						<MutedText>@kamfeskaya</MutedText>
+						<MutedText>{user.username}</MutedText>
 					</Container>
 					<Container
 						variant={"unstyled"}
@@ -130,7 +151,8 @@ export default function ProfileLayout(props: ComponentBasicProps) {
 								weight={"bold"}
 							>
 								{user.following}
-							</Text>{" "}
+							</Text>
+							{""}
 							<JustifiedSpan>Following</JustifiedSpan>
 						</>
 						<Bull />
@@ -158,10 +180,13 @@ export default function ProfileLayout(props: ComponentBasicProps) {
 					<Container variant={"unstyled"}>
 						<AvatarGroup people={followers} />
 					</Container>
-					<Text>{user.bio}</Text>
+					<Text>{user.bio ?? "Loading profile details"}</Text>
 					<Container variant={"unstyled"}>
 						<Container className="flex gap-x-4">
-							<ProfileDropdown username={user.username} />
+							<ProfileDropdown
+								address={user.address}
+								username={user.username}
+							/>
 							<Button className="drop-shadow-xl">Follow</Button>
 						</Container>
 					</Container>

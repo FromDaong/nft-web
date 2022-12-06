@@ -15,10 +15,8 @@ import {
 	Text,
 	SmallText,
 	MutedText,
-	ImportantText,
 } from "@packages/shared/components/Typography/Text";
 import {ImportantSmallText} from "@packages/shared/components/Typography/Headings";
-import {Divider} from "@packages/shared/components/Divider";
 import {Heading} from "@packages/shared/components/Typography/Headings";
 import UserAvatar from "core/auth/components/Avatar";
 import {Button} from "@packages/shared/components/Button";
@@ -32,7 +30,7 @@ export default function PostDetail() {
 		<ApplicationLayout>
 			<ApplicationFrame>
 				<Container>
-					<Container className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+					<Container className="grid grid-cols-1 gap-8 lg:grid-cols-4">
 						<Container className="col-span-1 lg:col-span-3">
 							<Container className="flex items-center justify-between my-2">
 								<Container>
@@ -75,7 +73,7 @@ export default function PostDetail() {
 									</Container>
 								</Container>
 							</Container>
-							<Container className="flex gap-2 items-center justify-center">
+							<Container className="flex items-center justify-center gap-2">
 								<img
 									src="https://i.pinimg.com/originals/7c/d5/3d/7cd53d36d121d839da9600ca055b01db.gif"
 									height="60%"
@@ -108,7 +106,7 @@ export default function PostDetail() {
 							</Container>
 						</Container>
 
-						<Container className="col-span-1 flex flex-col gap-8 py-8 px-4 xl:px-0">
+						<Container className="flex flex-col col-span-1 gap-8 px-4 py-8 xl:px-0">
 							<Container className="flex items-center gap-2">
 								<UserAvatar
 									size={36}
@@ -153,13 +151,13 @@ export default function PostDetail() {
 							<Container>
 								<CommentsAndCollectorsTabs />
 								<Container
-									className="fixed left-0 md:relative w-full flex justify-between items-center gap-2 py-4 px-4"
+									className="fixed left-0 flex items-center justify-between w-full gap-2 px-4 py-4 md:relative"
 									style={{
 										bottom: "12px",
 									}}
 								>
 									<Input
-										className="max-w-md w-full py-2 px-8 rounded-full border"
+										className="w-full max-w-md px-8 py-2 border rounded-full"
 										placeholder="Add a comment..."
 									/>
 									<Container
