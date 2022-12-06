@@ -52,3 +52,16 @@ export const returnWithSuccess = (
 		data,
 	});
 };
+
+export const enforcePrivacyForNFTs = (nfts: Array<any>) => {
+	return nfts.map((nft) => {
+		nft.mints = nft.mints.length;
+		delete nft.identity_access_key;
+
+		if (nft.blurhash || nft.ownersOnly) {
+			delete nft.image;
+			delete nft.daoCdnUrl;
+		}
+		return nft;
+	});
+};

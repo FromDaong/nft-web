@@ -13,7 +13,7 @@ export default async function handler(
 ) {
 	await connectMongoDB();
 
-	const NFTs = await LegacyNFTModel.find();
+	const nfts = await LegacyNFTModel.findOne({melon_nft: true});
 
-	return returnWithSuccess(enforcePrivacyForNFTs(NFTs), res);
+	return returnWithSuccess(enforcePrivacyForNFTs(nfts), res);
 }

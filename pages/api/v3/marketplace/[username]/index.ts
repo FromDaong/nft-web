@@ -3,7 +3,10 @@ import {NextApiResponse} from "next";
 import {NextApiRequest} from "next";
 import LegacyCreatorModel from "server/database/legacy/creator/Creator";
 import LegacyNFTModel from "server/database/legacy/nft/NFT";
-import {returnWithSuccess} from "server/database/engine/utils";
+import {
+	enforcePrivacyForNFTs,
+	returnWithSuccess,
+} from "server/database/engine/utils";
 
 export default async function handler(
 	req: NextApiRequest,
@@ -27,5 +30,5 @@ export default async function handler(
 		model_handle: Creator.username,
 	});
 
-	return returnWithSuccess(CreatorNFTS, res);
+	return returnWithSuccess(enforcePrivacyForNFTs(CreatorNFTS), res);
 }
