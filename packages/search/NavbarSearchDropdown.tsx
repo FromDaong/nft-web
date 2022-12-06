@@ -121,13 +121,17 @@ const NavbarSearchDropdown = () => {
 
 	return (
 		<div onBlur={() => setIsOpen(false)}>
-			<div className="max-w-md w-full items-center hidden md:flex">
+			<div className="items-center hidden w-full max-w-md md:flex">
 				<Input
 					css={{
 						borderColor: "$subtleBorder",
-						backgroundColor: "$surface",
+						backgroundColor: "$elementSurface",
+						margin: 0,
+						padding: "8px",
+						paddingX: "12px",
+						borderRadius: "9999px",
 					}}
-					className="max-w-md w-full py-2 px-8 rounded-full border"
+					className="w-full max-w-md border"
 					placeholder="Search content"
 					onChange={(e) => setSearchText(e.target.value)}
 				/>
@@ -139,7 +143,7 @@ const NavbarSearchDropdown = () => {
 						borderRadius: "16px",
 						position: "absolute",
 					}}
-					className="max-w-md w-full grid gap-4 grid-cols-1 p-4 shadow mt-2"
+					className="grid w-full max-w-md grid-cols-1 gap-4 p-4 mt-2 shadow"
 				>
 					{creatorResults.length > 0 && (
 						<Container className="flex flex-col gap-2">
@@ -177,7 +181,7 @@ const NavbarSearchDropdown = () => {
 						</Container>
 					)}
 					{!(creatorResults.length > 0 || nftResults.length > 0) && (
-						<Container className="py-4 gap-4 flex flex-col justify-center items-center">
+						<Container className="flex flex-col items-center justify-center gap-4 py-4">
 							<QuestionMarkCircleIcon
 								height={24}
 								width={24}

@@ -1,3 +1,4 @@
+import {QueryClient, useQuery} from "react-query";
 import {ReactNode, useEffect, useRef} from "react";
 import {PrismaClient} from "@prisma/client";
 import {prisma} from "server/database/engine";
@@ -12,6 +13,9 @@ export default class TreatCore {
 		feed: process.env.FEED_SERVICE,
 		trit: process.env.TREAT_SERVICE,
 	};
+
+	static queryClient = new QueryClient();
+	static useQuery = useQuery;
 
 	/**
 	 * @description Trigger analytics event & logger then sync.

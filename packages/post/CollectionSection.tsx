@@ -3,6 +3,7 @@ import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Heading} from "@packages/shared/components/Typography/Headings";
 import UserAvatar from "core/auth/components/Avatar";
+import Link from "next/link";
 import {PostMediaContent} from "./PostMediaContent";
 import {FrostyBackgroundContainer} from "./TritPost";
 import {TPost} from "./types";
@@ -13,42 +14,78 @@ const CollectionItem = () => {
 
 export default function TreatOfTheMonthCollectionSection(props: {
 	collectionItems: Array<TPost>;
+	title: string;
+	author: Array<{
+		username: string;
+		display_name: string;
+	}>;
 }) {
 	return (
 		<Container className="grid grid-cols-1 gap-8 lg:grid-cols-2">
 			<Container
 				className="overflow-hidden rounded-xl drop-shadow bg-gradient-to-r from-purple-500 to-pink-500"
-				css={{minHeight: "560px", backgroundColor: "$elementSurface"}}
-			></Container>
+				css={{
+					minHeight: "560px",
+					backgroundColor: "$elementSurface",
+					height: "auto",
+					backgroundImage: `url(${
+						props.collectionItems[props.collectionItems.length - 1].image.cdn ??
+						props.collectionItems[props.collectionItems.length - 1].image.ipfs
+					})`,
+					backgroundSize: "cover",
+					backgroundPosition: "center",
+				}}
+			/>
 			<Container
 				className="flex flex-col h-auto gap-8 p-8 rounded-xl drop-shadow"
-				css={{backgroundColor: "$elementSurface"}}
+				css={{
+					backgroundColor: "$elementSurface",
+				}}
 			>
 				<Container className="grid grid-cols-1 gap-8 lg:grid-cols-2 ">
-					{[1, 2, 3, 4].map((item) => (
+					{props.collectionItems.slice(2, 6).map((item) => (
 						<Container
-							key={item}
+							key={item.id}
 							className="overflow-hidden rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500"
-							css={{height: "180px", backgroundColor: "red"}}
+							css={{
+								height: "180px",
+								backgroundColor: "red",
+								backgroundImage: `url(${item.image.cdn ?? item.image.ipfs})`,
+								backgroundSize: "cover",
+								backgroundPosition: "center",
+							}}
 						></Container>
 					))}
 				</Container>
 				<Container className="flex items-center gap-2">
 					<Container className="flex">
-						<UserAvatar
-							value={props.collectionItems[0].author.username}
-							size={32}
-						/>
-						<Container css={{marginLeft: "-16px"}}>
-							<UserAvatar
-								value={props.collectionItems[0].author.display_name}
-								size={32}
-							/>
-						</Container>
+						<Link href={`/${props.author[0].username}`}>
+							<a>
+								<UserAvatar
+									value={props.author[0].username}
+									size={32}
+								/>
+							</a>
+						</Link>
+						{props.author.slice(1, props.author.length).map((author) => (
+							<Container
+								key={author.username}
+								css={{marginLeft: "-16px"}}
+							>
+								<Link href={`/${author.username}`}>
+									<a>
+										<UserAvatar
+											value={author.username}
+											size={32}
+										/>
+									</a>
+								</Link>
+							</Container>
+						))}
 					</Container>
-					<Heading size="sm">TOTM ft Kamfeskaya</Heading>
+					<Heading size="sm">{props.title}</Heading>
 				</Container>
-				<Container className="flex flex-col gap-4 md:flex-row justify-between">
+				<Container className="flex flex-col justify-between gap-4 md:flex-row">
 					<Button
 						appearance={"surface"}
 						className="flex items-center gap-2"
