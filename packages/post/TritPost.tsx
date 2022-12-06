@@ -123,7 +123,7 @@ export const UserBadge = (props: {username: string; avatar: string}) => {
 };
 
 export const TritPost = (props: TPost) => {
-	const imageUrl = props.image?.cdn ?? props.image?.url;
+	const imageUrl = props.image?.cdn ?? props.image?.ipfs;
 
 	return (
 		<Link href={`/post/nft/${props.id}`}>

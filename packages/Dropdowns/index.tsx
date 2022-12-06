@@ -36,7 +36,7 @@ export const ProfileDropdown = (props: {username: string; address: string}) => {
 					>
 						{props.address.slice(0, 4) +
 							"..." +
-							props.address.slice(address.length - 4)}
+							props.address.slice(props.address.length - 4)}
 						<ChevronDownIcon className="w-4 h-4" />
 					</Button>
 				</DropdownMenu.Trigger>
