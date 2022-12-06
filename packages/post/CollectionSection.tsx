@@ -21,8 +21,9 @@ export default function TreatOfTheMonthCollectionSection(props: {
 					minHeight: "420px",
 					height: "auto",
 					backgroundColor: "$elementSurface",
+					borderColor: "$accentBorder",
 				}}
-				className="flex flex-col overflow-hidden rounded-xl drop-shadow"
+				className="flex flex-col overflow-hidden border-2 rounded-xl drop-shadow"
 			>
 				<Container
 					className="flex-1"
@@ -42,9 +43,10 @@ export default function TreatOfTheMonthCollectionSection(props: {
 				</Container>
 			</Container>
 			<Container
-				className="flex flex-col h-auto gap-8 p-8 rounded-xl drop-shadow"
+				className="flex flex-col h-auto gap-8 p-8 border-2 rounded-xl drop-shadow"
 				css={{
 					backgroundColor: "$elementSurface",
+					borderColor: "$accentBorder",
 				}}
 			>
 				<Container className="grid grid-cols-1 gap-8 lg:grid-cols-2 ">
@@ -102,7 +104,10 @@ export default function TreatOfTheMonthCollectionSection(props: {
 							height={16}
 						/>
 					</Button>
-					<Button className="flex items-center gap-2">
+					<Button
+						css={{backgroundColor: "$accentText"}}
+						className="flex items-center gap-2"
+					>
 						<span>Take me to the collection</span>
 						<ArrowRightIcon
 							width={16}

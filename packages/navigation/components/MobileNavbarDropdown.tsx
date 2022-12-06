@@ -22,8 +22,8 @@ const ExploreDropdownLinks = [
 		link: "/farm",
 	},
 	{
-		label: "Buy BNB",
-		link: "/swap",
+		label: "Buy Crypto",
+		link: "/dex/ramp",
 	},
 ];
 
@@ -32,7 +32,7 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => (
 		<DropdownMenu.Trigger>
 			<Container>
 				<Container
-					className="border drop-shadow rounded-full grid place-items-center p-2"
+					className="grid p-2 border rounded-full drop-shadow place-items-center"
 					css={{
 						backgroundColor: "$elementSurface",
 						borderColor: "$subtleBorder",
@@ -47,7 +47,7 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => (
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Portal>
 			<DropdownContent>
-				<NavDropdownContainer className="drop-shadow-2xl p-2">
+				<NavDropdownContainer className="p-2 drop-shadow-2xl">
 					{ExploreDropdownLinks.map((link) => (
 						<Link
 							key={link.link}

@@ -1,12 +1,10 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import {Container} from "packages/shared/components/Container";
-import LandingPageHeader from "packages/shared/components/Header";
 import FeaturesCard from "@packages/shared/components/Card/MarketingPages/FeaturesCard";
 import {BenefitsCard} from "@packages/shared/components/Card/MarketingPages/BenefitsCard";
 import Footer from "@packages/shared/components/Footer";
 import {ShortDivider} from "@packages/shared/components/Divider";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
-import {TPost} from "@packages/post/types";
 import {SkeletonTritCollectiblePost, TritPost} from "@packages/post/TritPost";
 import SuggestedCreatorCard, {
 	SkeletonExpandedSuggestedCreatorCard,
