@@ -4,13 +4,7 @@ import {Container} from "@packages/shared/components/Container";
 import {Heading} from "@packages/shared/components/Typography/Headings";
 import UserAvatar from "core/auth/components/Avatar";
 import Link from "next/link";
-import {PostMediaContent} from "./PostMediaContent";
-import {FrostyBackgroundContainer} from "./TritPost";
 import {TPost} from "./types";
-
-const CollectionItem = () => {
-	return <Container css={{height: "360px"}}></Container>;
-};
 
 export default function TreatOfTheMonthCollectionSection(props: {
 	collectionItems: Array<TPost>;
@@ -23,19 +17,30 @@ export default function TreatOfTheMonthCollectionSection(props: {
 	return (
 		<Container className="grid grid-cols-1 gap-8 lg:grid-cols-2">
 			<Container
-				className="overflow-hidden rounded-xl drop-shadow bg-gradient-to-r from-purple-500 to-pink-500"
 				css={{
-					minHeight: "560px",
-					backgroundColor: "$elementSurface",
+					minHeight: "420px",
 					height: "auto",
-					backgroundImage: `url(${
-						props.collectionItems[props.collectionItems.length - 1].image.cdn ??
-						props.collectionItems[props.collectionItems.length - 1].image.ipfs
-					})`,
-					backgroundSize: "cover",
-					backgroundPosition: "center",
+					backgroundColor: "$elementSurface",
 				}}
-			/>
+				className="flex flex-col overflow-hidden rounded-xl drop-shadow"
+			>
+				<Container
+					className="flex-1"
+					css={{
+						backgroundImage: `url(${
+							props.collectionItems[props.collectionItems.length - 1]?.image
+								.cdn ??
+							props.collectionItems[props.collectionItems.length - 1]?.image
+								.ipfs
+						})`,
+						backgroundSize: "cover",
+						backgroundPosition: "center",
+					}}
+				/>
+				<Container className="p-4">
+					<Heading size="sm">{props.collectionItems[0]?.name}</Heading>
+				</Container>
+			</Container>
 			<Container
 				className="flex flex-col h-auto gap-8 p-8 rounded-xl drop-shadow"
 				css={{
@@ -59,10 +64,10 @@ export default function TreatOfTheMonthCollectionSection(props: {
 				</Container>
 				<Container className="flex items-center gap-2">
 					<Container className="flex">
-						<Link href={`/${props.author[0].username}`}>
+						<Link href={`/${props.author[0]?.username}`}>
 							<a>
 								<UserAvatar
-									value={props.author[0].username}
+									value={props.author[0]?.username}
 									size={32}
 								/>
 							</a>
@@ -96,10 +101,7 @@ export default function TreatOfTheMonthCollectionSection(props: {
 							height={16}
 						/>
 					</Button>
-					<Button
-						appearance={"surface"}
-						className="flex items-center gap-2"
-					>
+					<Button className="flex items-center gap-2">
 						<span>Take me to the collection</span>
 						<ArrowRightIcon
 							width={16}

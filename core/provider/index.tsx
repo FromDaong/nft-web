@@ -1,7 +1,7 @@
 import {FpjsProvider} from "@fingerprintjs/fingerprintjs-pro-react";
 import TreatCore from "core/TreatCore";
 import {createContext} from "react";
-import {QueryClientProvider} from "react-query";
+import {QueryClientProvider} from "@tanstack/react-query";
 
 export default class TreatProvider {}
 

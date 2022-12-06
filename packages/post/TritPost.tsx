@@ -41,7 +41,7 @@ export const UserBadge = (props: {username: string; avatar: string}) => {
 	return (
 		<Link href={`/${props.username}`}>
 			<a>
-				<FrostyBackgroundContainer className="rounded-full py-2 pl-2 pr-4 flex gap-2 ">
+				<FrostyBackgroundContainer className="flex gap-2 py-2 pl-2 pr-4 rounded-full ">
 					<UserAvatar
 						size={24}
 						value={props.username}
@@ -62,7 +62,7 @@ export const TritPost = (props: TPost) => {
 		<Link href={`/post/${props.id}`}>
 			<a>
 				<Container
-					className="flex border shadow relative overflow-hidden"
+					className="relative flex overflow-hidden border shadow"
 					css={{
 						borderColor: "$subtleBorder",
 						borderRadius: "16px",
@@ -80,7 +80,7 @@ export const TritPost = (props: TPost) => {
 						}
 					/>
 					<Container
-						className="w-full h-full p-8 flex flex-col justify-between"
+						className="flex flex-col justify-between w-full h-full p-8"
 						css={{zIndex: 10}}
 					>
 						<Container className="flex justify-between">
@@ -97,41 +97,46 @@ export const TritPost = (props: TPost) => {
 									}}
 								/>
 							</FrostyBackgroundContainer>
-							<Container>
-								<FrostyBackgroundContainer
-									className="py-1 px-3 rounded-full"
-									css={{}}
-								>
-									{props.totm && (
-										<Text css={{color: "#ffffff"}}>
-											<ImportantText>TOTM</ImportantText>
-										</Text>
-									)}
-
-									{props.protected ||
-										(!imageUrl && (
-											<Container className="flex gap-2 items-center justify-center">
+							{props.protected ||
+								props.collection.minted === props.collection.totalSupply ||
+								(props.totm && (
+									<Container>
+										<FrostyBackgroundContainer
+											className="px-3 py-1 rounded-full"
+											css={{}}
+										>
+											{props.totm && (
 												<Text css={{color: "#ffffff"}}>
-													<EyeOffIcon
-														width={20}
-														height={20}
-													/>
+													<ImportantText>TOTM</ImportantText>
 												</Text>
-												<Text css={{color: "#ffffff"}}>
-													<ImportantText>Protected</ImportantText>
-												</Text>
-											</Container>
-										))}
+											)}
 
-									{props.collection.minted === props.collection.totalSupply && (
-										<Container className="flex gap-2 items-center justify-center">
-											<Text css={{color: "#ffffff"}}>
-												<ImportantText>Sold out</ImportantText>
-											</Text>
-										</Container>
-									)}
-								</FrostyBackgroundContainer>
-							</Container>
+											{props.protected ||
+												(!imageUrl && (
+													<Container className="flex items-center justify-center gap-2">
+														<Text css={{color: "#ffffff"}}>
+															<EyeOffIcon
+																width={20}
+																height={20}
+															/>
+														</Text>
+														<Text css={{color: "#ffffff"}}>
+															<ImportantText>Protected</ImportantText>
+														</Text>
+													</Container>
+												))}
+
+											{props.collection.minted ===
+												props.collection.totalSupply && (
+												<Container className="flex items-center justify-center gap-2">
+													<Text css={{color: "#ffffff"}}>
+														<ImportantText>Sold out</ImportantText>
+													</Text>
+												</Container>
+											)}
+										</FrostyBackgroundContainer>
+									</Container>
+								))}
 						</Container>
 						<Container className="flex flex-col gap-4">
 							<Heading
@@ -170,7 +175,7 @@ export const TritPost = (props: TPost) => {
 									username={props.author.username}
 									avatar={props.author.avatar}
 								/>
-								<FrostyBackgroundContainer className="rounded-full py-2 px-4">
+								<FrostyBackgroundContainer className="px-4 py-2 rounded-full">
 									<Text css={{color: "#ffffff"}}>
 										<ImportantText>
 											{props.price.value} {props.price.currency}

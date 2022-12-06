@@ -23,7 +23,7 @@
 			"@utils/*": ["./utils/*"],
 			"@hooks/*": ["core/chain/hooks/*"],
 			"@models/*": ["server/data/models/*"],
-			"@db/*": ["server/data/*"],
+			"@db/*": ["server/database/*"],
 			"@packages/*": ["./packages/*"],
 			"@constants/*": ["core/constants/*"],
 			"@treat/*": ["packages/treat/*"],

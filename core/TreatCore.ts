@@ -1,4 +1,4 @@
-import {QueryClient, useQuery} from "react-query";
+import {QueryClient, useQuery} from "@tanstack/react-query";
 import {ReactNode, useEffect, useRef} from "react";
 import {PrismaClient} from "@prisma/client";
 import {prisma} from "server/database/engine";
