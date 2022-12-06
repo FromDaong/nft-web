@@ -9,6 +9,7 @@ export const DialogOverlay = styled("div", {
 	inset: 0,
 	animation: "overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1)",
 	zIndex: 1100,
+	backdropFilter: "blur(8px)",
 });
 
 export const DialogContent = styled(Dialog.Panel, {

@@ -15,6 +15,7 @@ import type {Session} from "next-auth";
 import {SessionProvider} from "next-auth/react";
 import Onboarding from "@packages/ikaros/onboarding";
 import {ApplicationProvider} from "core/provider";
+import AcceptAgeModal from "@packages/modals/AcceptAgeModal";
 
 const progress = new ProgressBar({
 	size: 3,
@@ -64,6 +65,7 @@ function MyApp({
 							config={{}}
 							isOpen={false}
 						/>
+						<AcceptAgeModal />
 						<Navbar />
 						<main className="mt-[60px]">
 							<Component {...pageProps} />
