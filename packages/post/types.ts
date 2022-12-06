@@ -82,5 +82,5 @@ export type LivestreamPost = {
 		};
 		timestamp: number;
 	}>;
-	timestamp: number;
+	timestamp?: number;
 };
