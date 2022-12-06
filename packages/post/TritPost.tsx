@@ -22,14 +22,17 @@ import {CardOverlay} from "@packages/shared/components/Card/MarketingPages/Benef
 import {styled} from "@styles/theme";
 import ContentLoader from "react-content-loader";
 
+const StyledLoader = styled(ContentLoader, {
+	backgroundColor: "$surface",
+	foreGroundColor: "$elementSurface",
+});
+
 export const SkeletonTritCollectiblePost = (props) => (
-	<ContentLoader
+	<StyledLoader
 		speed={1}
 		width={320}
 		height={400}
 		viewBox="0 0 320 400"
-		backgroundColor="#f3f3f3"
-		foregroundColor="#ededed"
 		{...props}
 	>
 		<rect
@@ -88,7 +91,7 @@ export const SkeletonTritCollectiblePost = (props) => (
 			width="255"
 			height="186"
 		/>
-	</ContentLoader>
+	</StyledLoader>
 );
 
 export const FrostyBackgroundContainer = styled(Container, {
