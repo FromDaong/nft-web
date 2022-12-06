@@ -1,6 +1,6 @@
 import {connectMongoDB} from "server/database/engine";
 import {returnWithError, returnWithSuccess} from "@db/engine/utils";
-import {ModelProfile} from "@db/models/creator";
+import {MongoModelProfile} from "@db/models/creator";
 import {NextApiRequest, NextApiResponse} from "next";
 
 export default async function handler(
@@ -10,7 +10,7 @@ export default async function handler(
 	await connectMongoDB();
 
 	try {
-		const creators = ModelProfile.find();
+		const creators = MongoModelProfile.find();
 		return returnWithSuccess(creators, res);
 	} catch (err) {
 		return returnWithError(err, 400, res);

@@ -1,5 +1,7 @@
-import LegacyCreatorModel from "server/database/legacy/creator/Creator";
+import ModelCreator from "./Creator";
+import ModelProfile from "./Profile";
+import ModelUser from "./User";
 
-export const ModelUser = LegacyCreatorModel;
-export const ModelProfile = LegacyCreatorModel;
-export const ModelCreator = LegacyCreatorModel;
+export const MongoModelUser = ModelUser;
+export const MongoModelProfile = ModelProfile;
+export const MongoModelCreator = ModelCreator;

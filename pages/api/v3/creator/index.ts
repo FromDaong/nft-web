@@ -1,6 +1,6 @@
 import {connectMongoDB} from "server/database/engine";
 import {returnWithError, returnWithSuccess} from "@db/engine/utils";
-import {ModelCreator, ModelProfile} from "@db/models/creator";
+import {MongoModelCreator, MongoModelProfile} from "@db/models/creator";
 import {NextApiRequest, NextApiResponse} from "next";
 
 export default async function handler(
@@ -16,13 +16,13 @@ export default async function handler(
 	await connectMongoDB();
 
 	try {
-		const profile = ModelProfile.find({address: data.address});
+		const profile = MongoModelProfile.find({address: data.address});
 
 		if (!profile) {
 			return returnWithError("No profile found", 400, res);
 		}
 
-		const creatorProfile = await ModelCreator.findOne({
+		const creatorProfile = await MongoModelCreator.findOne({
 			address: data.address,
 		});
 

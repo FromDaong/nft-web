@@ -116,11 +116,6 @@ const ModelSchema = new mongoose.Schema(
 			type: Boolean,
 			default: false,
 		},
-		subscriptions_enabled: {
-			type: Boolean,
-			required: true,
-			default: false,
-		},
 	},
 	{
 		timestamps: {createdAt: true, updatedAt: true},
@@ -131,5 +126,5 @@ ModelSchema.plugin(aggregatePaginate);
 ModelSchema.plugin(paginate);
 ModelSchema.plugin(require("mongoose-beautiful-unique-validation"));
 
-const ModelCreator = createMongoDBModel("Model", ModelSchema);
-export default ModelCreator;
+const ModelProfile = createMongoDBModel("Model", ModelSchema);
+export default ModelProfile;

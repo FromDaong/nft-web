@@ -1,6 +1,6 @@
 import {connectMongoDB} from "server/database/engine";
 import {returnWithError, returnWithSuccess} from "@db/engine/utils";
-import {ModelProfile} from "@db/models/creator";
+import {MongoModelProfile} from "@db/models/creator";
 import {NextApiRequest, NextApiResponse} from "next";
 
 export default async function handler(
@@ -16,9 +16,11 @@ export default async function handler(
 	await connectMongoDB();
 
 	try {
-		const usernameExists = await ModelProfile.find({username: data.username});
-		const emailExists = await ModelProfile.find({email: data.email});
-		const addressExists = await ModelProfile.find({address: data.address});
+		const usernameExists = await MongoModelProfile.find({
+			username: data.username,
+		});
+		const emailExists = await MongoModelProfile.find({email: data.email});
+		const addressExists = await MongoModelProfile.find({address: data.address});
 
 		if (usernameExists.length > 0) {
 			return returnWithError("Username already exists", 400, res);
@@ -32,7 +34,7 @@ export default async function handler(
 			return returnWithError("Address already exists", 400, res);
 		}
 
-		const newProfile = new ModelProfile(data);
+		const newProfile = new MongoModelProfile(data);
 		await newProfile.save();
 		return returnWithSuccess(newProfile, res);
 	} catch (err) {

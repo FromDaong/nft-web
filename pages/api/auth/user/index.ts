@@ -1,7 +1,7 @@
 import {connectMongoDB} from "server/database/engine";
 import {returnWithError, returnWithSuccess} from "@db/engine/utils";
 import {NextApiRequest, NextApiResponse} from "next";
-import {ModelUser} from "@db/models/creator";
+import {MongoModelUser} from "@db/models/creator";
 
 export default async function handler(
 	req: NextApiRequest,
@@ -16,7 +16,7 @@ export default async function handler(
 	await connectMongoDB();
 
 	try {
-		const user = ModelUser.find({address: data.address});
+		const user = MongoModelUser.find({address: data.address});
 		return returnWithSuccess(user, res);
 	} catch (err) {
 		return returnWithError(err, 400, res);

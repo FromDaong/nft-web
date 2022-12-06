@@ -1,7 +1,7 @@
 import {connectMongoDB} from "server/database/engine";
 import {NextApiResponse} from "next";
 import {NextApiRequest} from "next";
-import LegacyCreatorModel from "server/database/legacy/creator/Creator";
+import LegacyCreatorModel from "@db/legacy/profile/Creator";
 import LegacyNFTModel from "server/database/legacy/nft/NFT";
 import {
 	enforcePrivacyForNFTs,

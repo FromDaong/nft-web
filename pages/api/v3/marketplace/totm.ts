@@ -7,7 +7,7 @@ import {
 	setStringToRedisCache,
 } from "server/database/engine";
 import {returnWithSuccess} from "server/database/engine/utils";
-import LegacyCreatorModel from "server/database/legacy/creator/Creator";
+import LegacyCreatorModel from "@db/legacy/profile/Creator";
 import LegacyNFTModel from "server/database/legacy/nft/NFT";
 
 export default async function totm(req: NextApiRequest, res: NextApiResponse) {
