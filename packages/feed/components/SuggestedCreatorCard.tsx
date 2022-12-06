@@ -21,6 +21,8 @@ type SuggestedCreatorData = {
 	noFollowButton?: boolean;
 	bio: string;
 	noBg?: boolean;
+	followers?: number;
+	subscribers?: number;
 };
 
 import {StyledLoader} from "@packages/post/TritPost";
@@ -168,11 +170,17 @@ const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 								)}
 								<Container className="flex gap-4">
 									<Text className="flex items-baseline gap-1">
-										<ImportantText>45k</ImportantText>
+										<ImportantText>
+											{Intl.NumberFormat("en-US").format(props.followers ?? 0)}
+										</ImportantText>
 										<>Followers</>
 									</Text>
 									<Text className="flex items-baseline gap-1">
-										<ImportantText>10k</ImportantText>
+										<ImportantText>
+											{Intl.NumberFormat("en-US").format(
+												props.subscribers ?? 0
+											)}
+										</ImportantText>
 										<>Subscribers</>
 									</Text>
 								</Container>

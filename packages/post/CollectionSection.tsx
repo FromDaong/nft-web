@@ -27,12 +27,12 @@ export default function TreatOfTheMonthCollectionSection(props: {
 				<Container
 					className="flex-1"
 					css={{
-						backgroundImage: `url(${
+						backgroundImage: `url('https://treatnfts.gumlet.io/api/v3/image?default=${
 							props.collectionItems[props.collectionItems.length - 1]?.image
 								.cdn ??
 							props.collectionItems[props.collectionItems.length - 1]?.image
 								.ipfs
-						})`,
+						}')`,
 						backgroundSize: "cover",
 						backgroundPosition: "center",
 					}}
@@ -54,7 +54,9 @@ export default function TreatOfTheMonthCollectionSection(props: {
 							className="overflow-hidden rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500"
 							css={{
 								height: "180px",
-								backgroundImage: `url(${item.image.cdn ?? item.image.ipfs})`,
+								backgroundImage: `url('https://treatnfts.gumlet.io/api/v3/image?default=${
+									item.image.cdn ?? item.image.ipfs
+								}')`,
 								backgroundSize: "cover",
 								backgroundPosition: "center",
 							}}

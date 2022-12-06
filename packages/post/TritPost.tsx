@@ -123,7 +123,7 @@ export const UserBadge = (props: {username: string; avatar: string}) => {
 };
 
 export const TritPost = (props: TPost) => {
-	const imageUrl = props.image?.cdn ?? props.image?.ipfs;
+	const imageUrl = props.image?.ipfs; // ?? props.image?.ipfs;
 
 	return (
 		<Link href={`/post/nft/${props.id}`}>
@@ -137,7 +137,12 @@ export const TritPost = (props: TPost) => {
 						height: "440px",
 					}}
 				>
-					<CardOverlay />
+					<CardOverlay
+						css={{
+							backgroundColor: "$overlay",
+							backdropFilter: !imageUrl ? "blur(204px)" : "none",
+						}}
+					/>
 					<PostMediaContent
 						imageUrl={imageUrl}
 						blurhash={props.blurhash}
@@ -206,12 +211,13 @@ export const TritPost = (props: TPost) => {
 									</Container>
 								))}
 						</Container>
-						<Container className="flex flex-col gap-4">
+						<Container className="flex flex-col gap-2">
 							<Heading
 								css={{color: "#ffffff"}}
-								size="sm"
+								size="xss"
+								className="line-clamp-1"
 							>
-								{props.collection.name}
+								{props.name}
 							</Heading>
 							<Container className="flex flex-col gap-2">
 								<Container className="flex justify-between">
