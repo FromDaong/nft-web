@@ -90,3 +90,21 @@ html {
 	line-height: 1;
 	user-select: none;
 }
+
+@media (max-width: 1600px) {
+	.nft-preview {
+		height: 80vh;
+	}
+}
+
+@media (max-width: 1200px) {
+	.nft-preview {
+		height: 90vh;
+	}
+}
+
+@media (max-width: 768px) {
+	.nft-preview {
+		height: calc(100vh - 64px);
+	}
+}
