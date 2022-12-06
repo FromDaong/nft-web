@@ -15,6 +15,9 @@ import {Button} from "@packages/shared/components/Button";
 import SuggestedCreatorsSection from "@packages/feed/components/SuggestedCreatorsSection";
 import TrendsSection from "@packages/feed/components/TrendsSection";
 import ContentSidebar from "core/components/layouts/ContentSidebar";
+import {apiEndpoint} from "@utils/index";
+import axios from "axios";
+import {useEffect, useState} from "react";
 
 const newCurated: TPost = {
 	name: "Welcome to the Tritters",
@@ -49,13 +52,27 @@ const newCurated: TPost = {
 
 export default function UserProfile() {
 	const router = useRouter();
+	const {username} = router.query;
+
+	const [userProfile, setUserProfile] = useState(null);
+	const getUserProfile = async (username) => {
+		const res = await axios.get(`${apiEndpoint}/profile/${username}`);
+		setUserProfile(res.data.data);
+	};
+
+	useEffect(() => {
+		if (!userProfile) {
+			getUserProfile(username);
+		}
+	}, [userProfile]);
+
 	return (
 		<ApplicationLayout>
 			<ApplicationFrame>
-				<ProfileLayout>
+				<ProfileLayout userProfile={userProfile}>
 					<SEOHead title={router.query.username + " - Trit"} />
 					<Container className="flex justify-between gap-12">
-						<Container className="max-w-xl flex flex-1 flex-col gap-4 ">
+						<Container className="flex flex-col flex-1 max-w-xl gap-4 ">
 							<TimelineActivity
 								actionMeta={{
 									verb: "Created content",

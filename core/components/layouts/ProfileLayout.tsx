@@ -18,6 +18,7 @@ import VerifiedBadge from "@packages/shared/components/VerifiedBadge";
 import {styled} from "@styles/theme";
 import {ComponentBasicProps} from "core/TreatCore";
 import {useRouter} from "next/router";
+import {useEffect} from "react";
 
 const tabs = [
 	{
@@ -66,7 +67,7 @@ const AvatarContainer = styled("div", {
 	border: "8px solid $surface",
 });
 
-const UserHeader = () => {
+const UserHeader = ({profile_pic}) => {
 	return (
 		<div className="w-full">
 			<div
@@ -80,7 +81,7 @@ const UserHeader = () => {
 					<AvatarContainer className="drop-shadow">
 						<Avatar
 							name="Tatenda Chris"
-							imageSrc="https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?&w=128&h=128&dpr=2&q=90"
+							imageSrc={profile_pic}
 							size={{width: "128px", height: "128px"}}
 						/>
 					</AvatarContainer>
@@ -90,35 +91,48 @@ const UserHeader = () => {
 	);
 };
 
-export default function ProfileLayout(props: ComponentBasicProps) {
+type ProfileLayoutProps = ComponentBasicProps & {
+	userProfile: {
+		username: string;
+		display_name: string;
+		bio: string;
+		following: number;
+		earnings: number;
+		address: string;
+		profilePicCdnUrl: string;
+	};
+};
+
+export default function ProfileLayout(props: ProfileLayoutProps) {
 	const router = useRouter();
 	const query = router.query;
 
 	const user = {
-		username: query.username as string,
-		displayName: "Kamfeskaya",
-		bio: "Latino Artist. Author. Producer. Daddy. Hand-drawn 1:1s capturing the energy of a moment. Life is beautiful.",
+		username: props.userProfile ? props.userProfile.username : "",
+		displayName: props.userProfile ? props.userProfile.display_name : "",
+		bio: props.userProfile ? props.userProfile.bio : "",
 		followers: 241,
 		following: 245,
 		earnings: 47.0,
-		address: "0x0eEd1d0Aa085a1C41aDf5184FAE07025217bF44c",
+		address: props.userProfile ? props.userProfile.address : "",
+		profile_pic: props.userProfile ? props.userProfile.profilePicCdnUrl : "",
 	};
 
 	return (
 		<>
-			<UserHeader />
+			<UserHeader profile_pic={user.profile_pic} />
 
 			<FluidContainer className="mt-[26px] flex justify-between px-4">
 				<ContextualContainer className="flex flex-col max-w-lg gap-y-4">
 					<Container>
 						<Heading
 							size="sm"
-							className="flex gap-1 items-center"
+							className="flex items-center gap-1"
 						>
 							<span>{user.displayName}</span>
 							<VerifiedBadge size={16} />
 						</Heading>
-						<MutedText>@kamfeskaya</MutedText>
+						<MutedText>{user.username}</MutedText>
 					</Container>
 					<Container
 						variant={"unstyled"}
@@ -130,7 +144,8 @@ export default function ProfileLayout(props: ComponentBasicProps) {
 								weight={"bold"}
 							>
 								{user.following}
-							</Text>{" "}
+							</Text>
+							{""}
 							<JustifiedSpan>Following</JustifiedSpan>
 						</>
 						<Bull />
