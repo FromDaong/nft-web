@@ -8,15 +8,9 @@ import {
 import Link from "next/link";
 import {Container} from "@packages/shared/components/Container";
 import {TPost} from "./types";
-import {
-	ImportantText,
-	MutedText,
-	SmallText,
-} from "@packages/shared/components/Typography/Text";
-import {PostCardAction} from "./blocks";
-import {DotsHorizontalIcon, EyeOffIcon} from "@heroicons/react/outline";
+import {ImportantText} from "@packages/shared/components/Typography/Text";
+import {EyeOffIcon} from "@heroicons/react/outline";
 import {PostMediaContent} from "./PostMediaContent";
-import Avatar from "@packages/shared/components/AvatarNew";
 import UserAvatar from "core/auth/components/Avatar";
 import {CardOverlay} from "@packages/shared/components/Card/MarketingPages/BenefitsCard";
 import {styled} from "@styles/theme";
@@ -24,7 +18,7 @@ import ContentLoader from "react-content-loader";
 
 export const StyledLoader = styled(ContentLoader, {
 	backgroundColor: "$surface",
-	foreGroundColor: "$elementSurface",
+	foreGroundColor: "$elementOnSurface",
 });
 
 export const SkeletonTritCollectiblePost = (props) => (

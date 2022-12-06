@@ -19,68 +19,9 @@ import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import TreatCore from "core/TreatCore";
 import axios from "axios";
-import {apiEndpoint} from "@utils/index";
+import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 
 // TODO: Use intersection observer to change navbar color.
-
-const newCurated: TPost = {
-	name: "Welcome to the Tritters",
-	collection: {
-		name: "Tritters",
-		totalSupply: 10,
-		minted: 4,
-		avatar: "/assets/cherieCover.jpg",
-	},
-	image: {
-		cdn: "/assets/cherieCover.jpg",
-		ipfs: "/assets/cherieCover.jpg",
-	},
-	price: {
-		value: 0.99,
-		currency: "BNB",
-	},
-	id: "1",
-	blurhash:
-		"-qIFGCoMs:WBayay_NRjayj[ayj[IUWBayayj[fQIUt7j[ayayayj@WBRjoffkj[xuWBWCayj[ayWAt7fQj[ayayM{WBofj[j[fQ",
-	post_type: "colletible",
-	author: {
-		username: "kamfeskaya",
-		display_name: "Kamfes",
-		live: true,
-		avatar:
-			"https://images.pexels.com/users/avatars/50964441/feyza-yildirim-157.jpeg?auto=compress&fit=crop&h=50&w=50&dpr=1",
-	},
-	timestamp: 782898893,
-};
-
-const legacy_nft_to_new = (post: any): TPost => ({
-	name: post.name,
-	image: {
-		cdn: post.daoCdnUrl,
-		ipfs: post.image,
-	},
-	price: {
-		value: post.list_price,
-		currency: "BNB",
-	},
-	id: post.id,
-	blurhash:
-		post.blurhash ||
-		"-qIFGCoMs:WBayay_NRjayj[ayj[IUWBayayj[fQIUt7j[ayayayj@WBRjoffkj[xuWBWCayj[ayWAt7fQj[ayayM{WBofj[j[fQ",
-	post_type: "colletible",
-	author: {
-		username: post.model_handle,
-		display_name: post.model_name,
-		live: true,
-		avatar: post.model_profile_picture,
-	},
-	collection: {
-		name: post.collection_name,
-		totalSupply: Number(post.max_supply),
-		minted: post.mints?.length,
-		avatar: post.collection_avatar,
-	},
-});
 
 const getTrendingNFTs = async () => {
 	const res = await axios.get(`${apiEndpoint}/marketplace`);

@@ -1,3 +1,4 @@
+import {TPost} from "@packages/post/types";
 import BigNumber from "bignumber.js";
 import {MathUtil} from "./math";
 import {ReactUtil} from "./react";
@@ -11,6 +12,35 @@ export const bnToDec = (bn: BigNumber, decimals = 18): number => {
 export const decToBn = (dec: number, decimals = 18) => {
 	return new BigNumber(dec).multipliedBy(new BigNumber(10).pow(decimals));
 };
+
+export const legacy_nft_to_new = (post: any): TPost => ({
+	name: post.name,
+	image: {
+		cdn: post.daoCdnUrl,
+		ipfs: post.image,
+	},
+	price: {
+		value: post.list_price,
+		currency: "BNB",
+	},
+	id: post.id,
+	blurhash:
+		post.blurhash ||
+		"-qIFGCoMs:WBayay_NRjayj[ayj[IUWBayayj[fQIUt7j[ayayayj@WBRjoffkj[xuWBWCayj[ayWAt7fQj[ayayM{WBofj[j[fQ",
+	post_type: "colletible",
+	author: {
+		username: post.model_handle,
+		display_name: post.model_name,
+		live: true,
+		avatar: post.model_profile_picture,
+	},
+	collection: {
+		name: post.collection_name,
+		totalSupply: Number(post.max_supply),
+		minted: post.mints?.length,
+		avatar: post.collection_avatar,
+	},
+});
 
 export const apiEndpoint = "/api/v3";
 
