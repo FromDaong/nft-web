@@ -64,7 +64,7 @@ model Preference {
 
 model Profile {
   id                   String   @id
-  bio                  String?  @db.VarChar(300)
+  bio                  String?  server/database.VarChar(300)
   createdAt            DateTime @default(now())
   updatedAt            DateTime @default(now())
   banner_pic           String?

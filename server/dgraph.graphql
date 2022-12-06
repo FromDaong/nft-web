@@ -1,0 +1,80 @@
+type Profile {
+	id: ID!
+	user: User!
+	following: [Profile]
+	subscribers: [Profile]
+	blocked: [Profile]
+}
+
+type User {
+	username: String! @search(by: [hash]) @id
+	profile: Profile
+}
+
+type BlockedProfile {
+	actor: Profile
+	profile: Profile
+}
+
+type Subscriptions {
+	id: ID!
+	tx: Transaction!
+	actor: Profile!
+	author: Profile!
+}
+
+type Transaction {
+	id: ID!
+	actor: User!
+}
+
+type TokenTransaction {
+	id: ID!
+	tx: Transaction!
+}
+
+type Post {
+	id: ID!
+	actor: Profile
+}
+
+type Comment {
+	id: ID!
+	actor: Profile!
+	post: Post!
+}
+
+type Like {
+	id: ID!
+	actor: Profile!
+	post: Post!
+}
+
+type NFT {
+	id: ID!
+	owner: Profile!
+	creator: Profile!
+	txHistory: [TokenTransaction]
+}
+
+type Tip {
+	id: ID!
+	tx: Transaction
+	tippedProfile: Profile
+}
+
+type ReferralCode {
+	id: ID!
+	parentCode: ReferralCode
+	owner: Profile
+}
+
+type ReferralCodeRedeem {
+	id: ID!
+	code: ReferralCode
+}
+
+type ContentTag {
+	id: ID!
+	posts: [Post]
+}

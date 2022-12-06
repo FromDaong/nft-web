@@ -1,4 +1,4 @@
-import {prisma} from "@db/engine";
+import {prisma} from "server/database/engine";
 import {SEOHead} from "@packages/seo/page";
 import {Button} from "@packages/shared/components/Button";
 import {ShortDivider} from "@packages/shared/components/Divider";
@@ -7,7 +7,6 @@ import MagazineCard from "@packages/shared/components/MagazineCard";
 import OptimizedImage from "@packages/shared/components/OptimizedImage";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {Magazine} from "@prisma/client";
-import {ArrowRightIcon} from "@radix-ui/react-icons";
 import Link from "next/link";
 
 export default function MagazinePage({

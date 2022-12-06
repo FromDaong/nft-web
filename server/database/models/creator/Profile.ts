@@ -5,30 +5,80 @@ const paginate = require("mongoose-paginate-v2");
 
 const ModelSchema = new mongoose.Schema(
 	{
-		creatorId: {
+		display_name: {
 			type: String,
-			required: true,
+			default: "",
 		},
 		username: {
 			type: String,
 			unique: "Username is already taken",
 			required: [true, "Please add a Model username"],
 		},
-		address: {
+		bio: {
 			type: String,
-			required: true,
+			required: [true, "Please add a Model bio"],
+		},
+		isModel: {
+			type: Boolean,
+			// Default to show creator flag
+			default: true,
 		},
 		totm: {
 			type: Boolean,
 		},
-		totm_end: {
+		totw: {
+			type: Boolean,
+		},
+		totw_end: {
 			type: Date,
+		},
+		profile_pic: {
+			type: String,
+			default: "",
+		},
+		profilePicCdnUrl: {
+			type: String,
+		},
+		daoProfilePicCdnUrl: {
+			type: String,
+		},
+		banner_pic: {
+			type: String,
+			default:
+				"https://treatdao.mypinata.cloud/ipfs/QmdRewQfGbQP95hcyabRwRnXKWFH8Lyrr8ak6xc2y4uWTP",
+		},
+		social_account: {
+			type: String,
+			default: "",
+		},
+		address: {
+			type: String,
+			required: true,
+		},
+		email: {
+			type: String,
+		},
+		pending: {
+			type: Boolean,
+		},
+		rejected: {
+			type: Boolean,
+		},
+		hidden: {
+			type: Boolean,
+		},
+		referrer_address: {
+			type: String,
 		},
 		identity_access_key: {
 			type: String,
 		},
 		bundle_id: {
 			type: String,
+		},
+		live_chat_enabled: {
+			type: Boolean,
+			default: false,
 		},
 		live: {
 			stream_id: String,
@@ -40,6 +90,16 @@ const ModelSchema = new mongoose.Schema(
 				},
 			],
 		},
+		nfts: [
+			{
+				id: String,
+			},
+		],
+		sub_nfts: [
+			{
+				id: String,
+			},
+		],
 		subscription: {
 			price: {
 				type: Number,
@@ -51,13 +111,9 @@ const ModelSchema = new mongoose.Schema(
 				type: Boolean,
 			},
 		},
+		referred: [],
 		livestream_active: {
 			type: Boolean,
-			default: false,
-		},
-		subscriptions_enabled: {
-			type: Boolean,
-			required: true,
 			default: false,
 		},
 	},
@@ -70,5 +126,5 @@ ModelSchema.plugin(aggregatePaginate);
 ModelSchema.plugin(paginate);
 ModelSchema.plugin(require("mongoose-beautiful-unique-validation"));
 
-const ModelCreator = createMongoDBModel("Model", ModelSchema);
-export default ModelCreator;
+const ModelProfile = createMongoDBModel("Model", ModelSchema);
+export default ModelProfile;
