@@ -20,7 +20,7 @@ export default async function handler(
 		return res.status(400).json({error: "No username provided"});
 	}
 
-	const Creator = await MongoModelCreator.findOne({username});
+	const Creator = await LegacyCreatorModel.findOne({username});
 
 	if (!Creator) {
 		return res.status(404).json({error: "Creator not found"});
