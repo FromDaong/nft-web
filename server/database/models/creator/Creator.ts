@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import createMongoDBModel from "server/database/engine/utils";
+import createMongoDBModel from "@db/engine/utils";
 const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 const paginate = require("mongoose-paginate-v2");
 
