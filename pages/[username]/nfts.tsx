@@ -53,7 +53,7 @@ export default function UserProfile(props: {
 		<ApplicationLayout>
 			<ApplicationFrame>
 				<ProfileLayout userProfile={data}>
-					<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+					<Container className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 						{!creatorNFTError || !creatorNFTsLoading
 							? creatorNFTs?.map((post: TPost) => (
 									<TritPost
@@ -61,7 +61,7 @@ export default function UserProfile(props: {
 										{...post}
 									/>
 							  ))
-							: [0, 1, 2].map((i) => (
+							: new Array(9).fill(0).map((i) => (
 									<Container
 										key={i}
 										className="col-span-1 border"
@@ -74,7 +74,7 @@ export default function UserProfile(props: {
 										<SkeletonTritCollectiblePost />
 									</Container>
 							  ))}
-					</div>
+					</Container>
 				</ProfileLayout>
 			</ApplicationFrame>
 		</ApplicationLayout>

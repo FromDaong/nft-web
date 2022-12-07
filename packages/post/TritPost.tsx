@@ -124,6 +124,7 @@ export const UserBadge = (props: {username: string; avatar: string}) => {
 
 export const TritPost = (props: TPost) => {
 	const imageUrl = props.image?.ipfs; // ?? props.image?.ipfs;
+	const soldOut = props.collection.minted === props.collection.totalSupply;
 
 	return (
 		<Link href={`/post/nft/${props.id}`}>
@@ -170,43 +171,49 @@ export const TritPost = (props: TPost) => {
 									/>
 								</FrostyBackgroundContainer>
 							)}
-							{(props.protected ||
-								props.collection.minted === props.collection.totalSupply ||
-								props.totm) && (
-								<Container>
-									<FrostyBackgroundContainer
-										className="px-3 py-1 rounded-full"
-										css={{}}
-									>
-										{props.totm && (
-											<Text css={{color: "#ffffff"}}>
-												<ImportantText>TOTM</ImportantText>
-											</Text>
-										)}
-
-										{props.protected && (
-											<Container className="flex items-center justify-center gap-2">
-												<Text css={{color: "#ffffff"}}>
-													<EyeOffIcon
-														width={20}
-														height={20}
-													/>
+							{(props.protected || soldOut || props.totm) && (
+								<Container className="flex justify-between w-full">
+									{props.protected && (
+										<FrostyBackgroundContainer
+											className="px-3 py-1 rounded-full"
+											css={{}}
+										>
+											{props.protected && (
+												<Container className="flex items-center justify-center gap-2">
+													<Text css={{color: "#ffffff"}}>
+														<EyeOffIcon
+															width={20}
+															height={20}
+														/>
+													</Text>
+													<Text css={{color: "#ffffff"}}>
+														<ImportantText>Protected</ImportantText>
+													</Text>
+												</Container>
+											)}
+										</FrostyBackgroundContainer>
+									)}
+									{props.totm && (
+										<FrostyBackgroundContainer
+											className="px-3 py-1 rounded-full"
+											css={{}}
+										>
+											{props.totm && (
+												<Text css={{color: "$accentText"}}>
+													<ImportantText>TOTM</ImportantText>
 												</Text>
-												<Text css={{color: "#ffffff"}}>
-													<ImportantText>Protected</ImportantText>
-												</Text>
-											</Container>
-										)}
-
-										{props.collection.minted ===
-											props.collection.totalSupply && (
+											)}
+										</FrostyBackgroundContainer>
+									)}
+									{soldOut && (
+										<FrostyBackgroundContainer className="px-3 py-1 rounded-full">
 											<Container className="flex items-center justify-center gap-2">
-												<Text css={{color: "#ffffff"}}>
+												<Text css={{color: "$red6"}}>
 													<ImportantText>Sold out</ImportantText>
 												</Text>
 											</Container>
-										)}
-									</FrostyBackgroundContainer>
+										</FrostyBackgroundContainer>
+									)}
 								</Container>
 							)}
 						</Container>

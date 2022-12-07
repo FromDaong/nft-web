@@ -7,6 +7,7 @@ import {
 	returnWithSuccess,
 } from "server/database/engine/utils";
 import {MongoModelCreator} from "server/database/models/creator";
+import LegacyCreatorModel from "@db/legacy/profile/Creator";
 
 export default async function handler(
 	req: NextApiRequest,

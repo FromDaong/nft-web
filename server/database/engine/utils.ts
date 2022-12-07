@@ -65,3 +65,13 @@ export const enforcePrivacyForNFTs = (nfts: Array<any>) => {
 		return nft;
 	});
 };
+
+export const findOrCreate = async (model, query: any, data?: any) => {
+	let item = await model.findOne({...query});
+	if (!item) {
+		item = new model(data);
+		await model.save();
+	}
+
+	return item;
+};
