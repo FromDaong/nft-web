@@ -11,9 +11,12 @@ import {
 	BoldLink,
 	ImportantText,
 } from "@packages/shared/components/Typography/Text";
+import {apiEndpoint} from "@utils/index";
+import axios from "axios";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import ContentSidebar from "core/components/layouts/ContentSidebar";
+import TreatCore from "core/TreatCore";
 import Link from "next/link";
 import {useRouter} from "next/router";
 import {ReactElement, ReactNode} from "react";
@@ -49,16 +52,34 @@ const newCurated: TPost = {
 	},
 };
 
+const getTrendingCreators = async () => {
+	const res = await axios.get(`${apiEndpoint}/profile`);
+	return res.data;
+};
+
 export default function SubscribedPage() {
+	const {
+		isLoading: trendingCreatorsLoading,
+		error: trendingCreatorError,
+		data: trendingCreatorsData,
+	} = TreatCore.useQuery({
+		queryKey: ["trendingCreators"],
+		queryFn: getTrendingCreators,
+	});
+
+	const trendingCreators =
+		trendingCreatorsLoading || trendingCreatorError
+			? []
+			: trendingCreatorsData?.data.slice(0, 5);
 	return (
 		<ApplicationLayout>
 			<SEOHead title="For you - Tritt" />
 			<ApplicationFrame>
 				<Container className="flex gap-12">
-					<Container className="flex-1 flex flex-col gap-8">
+					<Container className="flex flex-col flex-1 gap-8">
 						<NavTab />
 
-						<Container className="max-w-xl mx-auto flex flex-col gap-4">
+						<Container className="flex flex-col max-w-xl gap-4 mx-auto">
 							<Container className="p-4">
 								<TimelineActivity
 									actionMeta={{
@@ -89,10 +110,12 @@ export default function SubscribedPage() {
 						</Container>
 					</Container>
 					<ContentSidebar>
-						<SuggestedCreatorsSection
-							title="Creators you might like"
-							data={[]}
-						/>
+						{trendingCreators.length > 0 && (
+							<SuggestedCreatorsSection
+								title="Creators you might like"
+								data={trendingCreators}
+							/>
+						)}
 						<TrendsSection
 							data={[
 								{

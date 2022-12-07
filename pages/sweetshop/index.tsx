@@ -35,6 +35,8 @@ export default function NFTS() {
 					.slice(0, 20)
 					.map((post) => legacy_nft_to_new(post));
 
+	console.log({nfts});
+
 	return (
 		<ApplicationLayout>
 			<ApplicationFrame>

@@ -140,7 +140,7 @@ export const TritPost = (props: TPost) => {
 					<CardOverlay
 						css={{
 							backgroundColor: "$overlay",
-							backdropFilter: !imageUrl ? "blur(204px)" : "none",
+							backdropFilter: props.protected ? "blur(20px)" : "none",
 						}}
 					/>
 					<PostMediaContent
@@ -170,46 +170,45 @@ export const TritPost = (props: TPost) => {
 									/>
 								</FrostyBackgroundContainer>
 							)}
-							{props.protected ||
+							{(props.protected ||
 								props.collection.minted === props.collection.totalSupply ||
-								(props.totm && (
-									<Container>
-										<FrostyBackgroundContainer
-											className="px-3 py-1 rounded-full"
-											css={{}}
-										>
-											{props.totm && (
+								props.totm) && (
+								<Container>
+									<FrostyBackgroundContainer
+										className="px-3 py-1 rounded-full"
+										css={{}}
+									>
+										{props.totm && (
+											<Text css={{color: "#ffffff"}}>
+												<ImportantText>TOTM</ImportantText>
+											</Text>
+										)}
+
+										{props.protected && (
+											<Container className="flex items-center justify-center gap-2">
 												<Text css={{color: "#ffffff"}}>
-													<ImportantText>TOTM</ImportantText>
+													<EyeOffIcon
+														width={20}
+														height={20}
+													/>
 												</Text>
-											)}
+												<Text css={{color: "#ffffff"}}>
+													<ImportantText>Protected</ImportantText>
+												</Text>
+											</Container>
+										)}
 
-											{props.protected ||
-												(!imageUrl && (
-													<Container className="flex items-center justify-center gap-2">
-														<Text css={{color: "#ffffff"}}>
-															<EyeOffIcon
-																width={20}
-																height={20}
-															/>
-														</Text>
-														<Text css={{color: "#ffffff"}}>
-															<ImportantText>Protected</ImportantText>
-														</Text>
-													</Container>
-												))}
-
-											{props.collection.minted ===
-												props.collection.totalSupply && (
-												<Container className="flex items-center justify-center gap-2">
-													<Text css={{color: "#ffffff"}}>
-														<ImportantText>Sold out</ImportantText>
-													</Text>
-												</Container>
-											)}
-										</FrostyBackgroundContainer>
-									</Container>
-								))}
+										{props.collection.minted ===
+											props.collection.totalSupply && (
+											<Container className="flex items-center justify-center gap-2">
+												<Text css={{color: "#ffffff"}}>
+													<ImportantText>Sold out</ImportantText>
+												</Text>
+											</Container>
+										)}
+									</FrostyBackgroundContainer>
+								</Container>
+							)}
 						</Container>
 						<Container className="flex flex-col gap-2">
 							<Heading
