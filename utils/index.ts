@@ -44,6 +44,7 @@ export const legacy_nft_to_new = (post: any): TPost => ({
 		minted: post.mints?.length,
 		avatar: post.collection_avatar,
 	},
+	protected: post.protected,
 });
 
 export const apiEndpoint = "/api/v3";
