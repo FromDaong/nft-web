@@ -29,10 +29,8 @@ export default function TreatOfTheMonthCollectionSection(props: {
 					className="flex-1"
 					css={{
 						backgroundImage: `url('https://treatnfts.gumlet.io/api/v3/image?default=${
-							props.collectionItems[props.collectionItems.length - 1]?.image
-								.cdn ??
-							props.collectionItems[props.collectionItems.length - 1]?.image
-								.ipfs
+							props.collectionItems[0]?.image.cdn ??
+							props.collectionItems[0]?.image.ipfs
 						}')`,
 						backgroundSize: "cover",
 						backgroundPosition: "center",
