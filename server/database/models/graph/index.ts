@@ -1,15 +1,15 @@
 import {Schema} from "mongoose";
 import createMongoDBModel from "server/database/engine/utils";
 
-export const FollowRelationship = createMongoDBModel(
-	"FollowRelationship",
+export const Followers = createMongoDBModel(
+	"Follower",
 	new Schema(
 		{
 			actor: {
 				type: Schema.Types.ObjectId,
 				required: true,
 			},
-			followedProfile: {
+			followedBy: {
 				type: Schema.Types.ObjectId,
 				required: true,
 			},
@@ -23,8 +23,30 @@ export const FollowRelationship = createMongoDBModel(
 	)
 );
 
-export const SubscribeRelationship = createMongoDBModel(
-	"SubscribeRelationship",
+export const Following = createMongoDBModel(
+	"Following",
+	new Schema(
+		{
+			actor: {
+				type: Schema.Types.ObjectId,
+				required: true,
+			},
+			following: {
+				type: Schema.Types.ObjectId,
+				required: true,
+			},
+		},
+		{
+			timestamps: {
+				createdAt: true,
+				updatedAt: true,
+			},
+		}
+	)
+);
+
+export const SubscriberBy = createMongoDBModel(
+	"Subscriber",
 	new Schema(
 		{
 			subscriptionId: {
@@ -35,7 +57,37 @@ export const SubscribeRelationship = createMongoDBModel(
 				type: Schema.Types.ObjectId,
 				required: true,
 			},
-			subscriptionCreator: {
+			subscribedBy: {
+				type: Schema.Types.ObjectId,
+				required: true,
+			},
+			tx: {
+				type: Schema.Types.ObjectId,
+				required: true,
+			},
+		},
+		{
+			timestamps: {
+				createdAt: true,
+				updatedAt: true,
+			},
+		}
+	)
+);
+
+export const SubscribedTo = createMongoDBModel(
+	"Subscribed",
+	new Schema(
+		{
+			subscriptionId: {
+				type: Schema.Types.ObjectId,
+				required: true,
+			},
+			actor: {
+				type: Schema.Types.ObjectId,
+				required: true,
+			},
+			subscribedTo: {
 				type: Schema.Types.ObjectId,
 				required: true,
 			},

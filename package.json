@@ -186,7 +186,8 @@
 		"web3-utils": "^1.4.0",
 		"web3modal": "^1.9.3",
 		"yup": "^0.32.11",
-		"zod": "^3.19.1"
+		"zod": "^3.19.1",
+		"treat-database": "https://github.com/TreatDAODev/database"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.20.2",

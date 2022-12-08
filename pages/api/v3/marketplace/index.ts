@@ -7,16 +7,18 @@ import {
 	returnWithSuccess,
 } from "server/database/engine/utils";
 
+import database from "treat-database";
+
 export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
 	const {market_only} = req.query;
 
-	await connectMongoDB();
+	await database.engine.connectMongo();
 
 	if (market_only) {
-		const market_nfts = await LegacyNFTModel.find({
+		const market_nfts = await database.models.MongoModelNFT.find({
 			old_totw: false,
 			old_totm: false,
 			melon_nft: false,
