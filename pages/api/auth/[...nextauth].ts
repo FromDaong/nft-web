@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import {connectMongoDB} from "@db/engine";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -42,7 +43,6 @@ export default async function auth(req: any, res: any) {
 					}
 					return null;
 				} catch (e) {
-					console.log({e});
 					return null;
 				}
 			},
@@ -82,11 +82,13 @@ export default async function auth(req: any, res: any) {
 
 				console.log({user, profile});
 				session.address = token.sub;
-				session.profile = {
-					username: profile.username,
-					profile_picture: profile.profile_picture,
-					bio: profile.bio,
-				};
+				session.profile = profile
+					? {
+							username: profile.username,
+							profile_picture: profile.profile_picture,
+							bio: profile.bio,
+					  }
+					: null;
 				session.user = user.toObject();
 
 				return session;
