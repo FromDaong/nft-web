@@ -1,9 +1,7 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
-import {connectMongoDB} from "@db/engine";
+import axios from "axios";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import {getCsrfToken} from "next-auth/react";
-import {MongoModelProfile, MongoModelUser} from "server/helpers/models";
 import {SiweMessage} from "siwe";
 
 export default async function auth(req: any, res: any) {
@@ -38,7 +36,7 @@ export default async function auth(req: any, res: any) {
 
 					if (result.success) {
 						return {
-							id: siwe.address.toLowerCase(),
+							id: siwe.address,
 						};
 					}
 					return null;
@@ -64,33 +62,9 @@ export default async function auth(req: any, res: any) {
 		secret: process.env.NEXTAUTH_SECRET,
 		callbacks: {
 			async session({session, token}: {session: any; token: any}) {
-				await connectMongoDB();
-
-				let user = await MongoModelUser.findOne({
-					address: token.sub,
-				});
-
-				if (!user) {
-					user = await MongoModelUser.create({
-						address: token.sub,
-					});
-				}
-
-				const profile = await MongoModelProfile.findOne({
-					address: token.sub,
-				});
-
-				console.log({user, profile});
 				session.address = token.sub;
-				session.profile = profile
-					? {
-							username: profile.username,
-							profile_picture: profile.profile_picture,
-							bio: profile.bio,
-					  }
-					: null;
-				session.user = user.toObject();
-
+				session.user.name = token.sub;
+				session.user.image = "https://www.fillmurray.com/128/128";
 				return session;
 			},
 		},
