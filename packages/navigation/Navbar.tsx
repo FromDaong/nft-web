@@ -2,33 +2,22 @@ import Link from "next/link";
 import * as Logo from "../../public/brand/logo_mono.svg";
 import Image from "next/image";
 import {useAccount} from "wagmi";
-import {ConnectButton} from "@rainbow-me/rainbowkit";
-import {HamburgerMenuIcon} from "@radix-ui/react-icons";
-import {useSession} from "next-auth/react";
 import dynamic from "next/dynamic";
 import NavbarExploreDropdown from "./components/NavbarExploreDropdown";
 import NavbarSearchDropdown from "../search/NavbarSearchDropdown";
 
 import {styled} from "@styles/theme";
-import {
-	BoldLink,
-	ImportantText,
-} from "@packages/shared/components/Typography/Text";
-import {Button} from "@packages/shared/components/Button";
-import {ChatIcon, SearchCircleIcon, SearchIcon} from "@heroicons/react/outline";
-import SearchTrigger from "@packages/commandbar/components/SearchTrigger";
+import {BoldLink} from "@packages/shared/components/Typography/Text";
+import {ChatIcon} from "@heroicons/react/outline";
 import {Container} from "@packages/shared/components/Container";
-import {useDisclosure} from "@packages/hooks";
 import MobileNavbarDropdown from "./components/MobileNavbarDropdown";
+import ThemedConnectButton from "core/chain/ConnectButton";
 
 const NavbarProfileAvatar = dynamic(
 	() => import("./components/NavbarProfileAvatar")
 );
 const NavbarActionDropdown = dynamic(
 	() => import("./components/NavbarActionDropdown")
-);
-const NavbarNotifications = dynamic(
-	() => import("./components/NavbarNotifications")
 );
 
 const Nav = styled("nav", {
@@ -37,28 +26,10 @@ const Nav = styled("nav", {
 });
 
 export default function Navbar() {
-	const {status} = useSession();
-	const {isConnected: connected} = useAccount();
+	const {isConnected: connected, status} = useAccount();
 
 	const isConnected =
-		connected && status !== "loading" && status === "authenticated";
-
-	const notifications = [
-		{
-			text: "subscribed to your trits for 0.09 BNB",
-			actor: "hitta",
-			timestamp: Date.now(),
-			url: "/c/hitta",
-			audience: ["tate2301"],
-		},
-		{
-			text: "followed you",
-			timestamp: Date.now(),
-			actor: "kamfeskaya",
-			url: "/c/hitta",
-			audience: ["tate2301"],
-		},
-	];
+		connected && status !== "reconnecting" && status === "connected";
 
 	return (
 		<Container>
@@ -114,11 +85,7 @@ export default function Navbar() {
 										{true && <NavbarActionDropdown />}
 									</>
 								) : (
-									<ConnectButton
-										label="Sign in"
-										chainStatus="icon"
-										showBalance={false}
-									/>
+									<ThemedConnectButton />
 								)
 							}
 						</div>

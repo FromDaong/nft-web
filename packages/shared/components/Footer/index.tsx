@@ -45,7 +45,7 @@ export default function Footer() {
 						style={{maxWidth: 150}}
 					/>
 				</div>
-				<div className="col-span-1">
+				<div className="col-span-1 flex flex-col gap-2">
 					<Heading
 						size="xs"
 						className="mb-2 md:mb-4"
@@ -86,7 +86,7 @@ export default function Footer() {
 						</ListLinkItem>
 					</Ul>
 				</div>
-				<div className="col-span-1">
+				<div className="col-span-1 flex flex-col gap-2">
 					<Heading
 						size="xs"
 						className="mb-2 md:mb-4"
@@ -131,7 +131,7 @@ export default function Footer() {
 						</ListLinkItem>
 					</Ul>
 				</div>
-				<div className="col-span-1">
+				<div className="col-span-1 flex flex-col gap-2">
 					<Heading
 						size="xs"
 						className="mb-2 md:mb-4"

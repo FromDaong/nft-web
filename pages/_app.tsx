@@ -12,7 +12,6 @@ import {ThemeProvider} from "packages/theme";
 import WagmiWrapper from "core/chain/connect";
 import {AppProps} from "next/app";
 import type {Session} from "next-auth";
-import {SessionProvider} from "next-auth/react";
 import Onboarding from "@packages/ikaros/onboarding";
 import {ApplicationProvider} from "core/provider";
 import AcceptAgeModal from "@packages/modals/AcceptAgeModal";
@@ -35,44 +34,39 @@ function MyApp({
 }>) {
 	return (
 		<ThemeProvider>
-			<SessionProvider
-				session={pageProps.session}
-				refetchInterval={0}
-			>
-				<ApplicationProvider>
-					<WagmiWrapper>
-						<Head>
-							<title>Treat DAO</title>
-							<meta
-								name="title"
-								content="Treat DAO"
-							/>
-							<meta
-								name="image"
-								content="https://i.imgur.com/OEiuwp4.jpg"
-							/>
-							<meta
-								property="og:image"
-								content="https://i.imgur.com/OEiuwp4.jpg"
-							/>
-
-							<meta
-								name="description"
-								content="Treat is an exclusive platform for creators to sell NFTs. Hold $TREAT to have a say on which creators are chosen & new platform features."
-							/>
-						</Head>
-						<Onboarding
-							config={{}}
-							isOpen={false}
+			<ApplicationProvider>
+				<WagmiWrapper>
+					<Head>
+						<title>Treat DAO</title>
+						<meta
+							name="title"
+							content="Treat DAO"
 						/>
-						<AcceptAgeModal />
-						<Navbar />
-						<main className="mt-[60px]">
-							<Component {...pageProps} />
-						</main>
-					</WagmiWrapper>
-				</ApplicationProvider>
-			</SessionProvider>
+						<meta
+							name="image"
+							content="https://i.imgur.com/OEiuwp4.jpg"
+						/>
+						<meta
+							property="og:image"
+							content="https://i.imgur.com/OEiuwp4.jpg"
+						/>
+
+						<meta
+							name="description"
+							content="Treat is an exclusive platform for creators to sell NFTs. Hold $TREAT to have a say on which creators are chosen & new platform features."
+						/>
+					</Head>
+					<Onboarding
+						config={{}}
+						isOpen={false}
+					/>
+					<AcceptAgeModal />
+					<Navbar />
+					<main className="mt-[60px]">
+						<Component {...pageProps} />
+					</main>
+				</WagmiWrapper>
+			</ApplicationProvider>
 		</ThemeProvider>
 	);
 }

@@ -26,6 +26,7 @@ const NavbarProfileAvatar = () => {
 	// TODO: Implement theme customization
 	// const { updateTheme, nextTheme } = useApplicationTheme();
 	const {address, isConnected} = useAccount();
+
 	const {isOpen, onClose, onOpen} = useDisclosure();
 	const {
 		isOpen: upgradeToCreatorIsOpen,
