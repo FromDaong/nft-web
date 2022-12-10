@@ -52,6 +52,7 @@ export type TPost = {
 	inGrid?: boolean;
 	protected?: boolean;
 	totm?: boolean;
+	noPrice?: boolean;
 };
 
 export type LivestreamPost = {

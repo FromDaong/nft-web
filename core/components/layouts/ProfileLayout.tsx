@@ -17,11 +17,7 @@ import {
 } from "@packages/shared/components/Typography/Text";
 import VerifiedBadge from "@packages/shared/components/VerifiedBadge";
 import {styled} from "@styles/theme";
-import {apiEndpoint} from "@utils/index";
-import axios from "axios";
 import TreatCore, {ComponentBasicProps} from "core/TreatCore";
-import {useRouter} from "next/router";
-import {useEffect} from "react";
 
 const tabs = [
 	{
@@ -34,7 +30,7 @@ const tabs = [
 		href: "/nfts",
 	},
 	{
-		label: "Collected",
+		label: "Portfolio",
 		href: "/collected",
 	},
 	/*{

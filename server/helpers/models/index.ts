@@ -1,10 +1,11 @@
 import {
-  LikePost,
-  LikeNFT,
-  BlockProfile,
-  FollowTag as Interests,
+	LikePost,
+	LikeNFT,
+	BlockProfile,
+	FollowTag as Interests,
+	Collection,
 } from "./graph/index";
-import { Followers, Following, SubscribedBy, SubscribedTo } from "./graph";
+import {Followers, Following, SubscribedBy, SubscribedTo} from "./graph";
 import ModelCreator from "./users/creator";
 import ModelProfile from "./users/profile";
 import ModelSubscriptionPackage from "./users/subscription";
@@ -28,3 +29,4 @@ export const MongoModelFollowingTag = Interests;
 export const MongoModelNFT = NFTModel;
 export const MongModelPost = Post;
 export const MongoModelTransaction = ModelTransaction;
+export const MongoModelCollection = Collection;

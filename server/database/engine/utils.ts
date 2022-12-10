@@ -1,5 +1,6 @@
 import {NextApiResponse} from "next";
 import {Model, model, Schema} from "mongoose";
+import {MongoModelProfile} from "server/helpers/models";
 
 // Simple Generic Function for reusability
 // Feel free to modify however you like
@@ -126,3 +127,19 @@ export function generatePaginationQuery(query, sort, nextKey) {
 
 	return {paginatedQuery, nextKeyFn};
 }
+
+export const populateNFTsWithProfile = async (nfts) => {
+	return Promise.all(
+		nfts.map(async (nft) => {
+			const profile_id = nft.creator.profile;
+			const profile = await MongoModelProfile.findById(profile_id);
+			return {
+				...nft.toObject(),
+				creator: {
+					...nft.creator.toObject(),
+					profile_pic: profile.profile_pic,
+				},
+			};
+		})
+	);
+};

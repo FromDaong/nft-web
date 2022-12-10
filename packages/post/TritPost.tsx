@@ -255,13 +255,15 @@ export const TritPost = (props: TPost) => {
 									username={props.author.username}
 									avatar={props.author.avatar}
 								/>
-								<FrostyBackgroundContainer className="px-4 py-2 rounded-full">
-									<Text css={{color: "#ffffff"}}>
-										<ImportantText>
-											{props.price.value} {props.price.currency}
-										</ImportantText>
-									</Text>
-								</FrostyBackgroundContainer>
+								{!props.noPrice && (
+									<FrostyBackgroundContainer className="px-4 py-2 rounded-full">
+										<Text css={{color: "#ffffff"}}>
+											<ImportantText>
+												{props.price.value} {props.price.currency}
+											</ImportantText>
+										</Text>
+									</FrostyBackgroundContainer>
+								)}
 							</Container>
 						</Container>
 					</Container>

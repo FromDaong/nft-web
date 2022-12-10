@@ -1,37 +1,48 @@
-import { PostMediaBox } from "@packages/create/components";
-import { SEOHead } from "@packages/seo/page";
-import { ContextualContainer } from "@packages/shared/components/Container";
-import { Heading } from "@packages/shared/components/Typography/Headings";
-import { Text } from "@packages/shared/components/Typography/Text";
+import {PostMediaBox} from "@packages/create/components";
+import {SEOHead} from "@packages/seo/page";
+import {
+	Container,
+	ContextualContainer,
+} from "@packages/shared/components/Container";
+import {Heading} from "@packages/shared/components/Typography/Headings";
+import {
+	ImportantText,
+	MutedText,
+	SmallText,
+	Text,
+} from "@packages/shared/components/Typography/Text";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { useFormik } from "formik";
+import {useRouter} from "next/router";
+import {useEffect, useState} from "react";
+import {useFormik} from "formik";
 import * as Yup from "yup";
-import { ethers } from "ethers";
+import {ethers} from "ethers";
 import ApplicationFrame, {
-  FullscreenApplicationFrame,
+	FullscreenApplicationFrame,
 } from "core/components/layouts/ApplicationFrame";
-import { useCreatePost } from "@packages/post/hooks";
+import {useCreatePost} from "@packages/post/hooks";
 import CreateSubscriptionContentPage from "@packages/post/pages/subscription";
 import CreateCollectiblePage from "@packages/post/pages/collectible";
+import {Button} from "@packages/shared/components/Button";
+import {Input, Textarea} from "@packages/shared/components/Input";
+import * as Switch from "@radix-ui/react-switch";
 
 export type PostType = {
-  type: "livestream" | "nft";
+	type: "livestream" | "nft";
 };
 
 export default function PostType() {
-  const creatorProfile: any = {};
-  const postData: any = {};
-  const [ipfsFiles, setIpfsFiles] = useState([]);
-  const router = useRouter();
-  const [sentWithoutIds, setSentWithoutIds] = useState(false);
-  const [sentWithIds, setSentWithIds] = useState(false);
+	const creatorProfile: any = {};
+	const postData: any = {};
+	const [ipfsFiles, setIpfsFiles] = useState([]);
+	const router = useRouter();
+	const [sentWithoutIds, setSentWithoutIds] = useState(false);
+	const [sentWithIds, setSentWithIds] = useState(false);
 
-  const [showPendingModal, setShowPendingModal] = useState(null);
-  const [showCompleteModal, setShowCompleteModal] = useState(null);
+	const [showPendingModal, setShowPendingModal] = useState(null);
+	const [showCompleteModal, setShowCompleteModal] = useState(null);
 
-  /*
+	/*
   const uploadFilesToCDNThenIPFS = () => {
     return;
   };
@@ -210,18 +221,148 @@ export default function PostType() {
   };
   */
 
-  const { post_type } = useCreatePost();
-  const Page =
-    post_type === "subscription"
-      ? CreateSubscriptionContentPage
-      : CreateCollectiblePage;
+	const {step, next, prev} = useStep(["upload", "detail"]);
 
-  return (
-    <ApplicationLayout>
-      <SEOHead title="Create a new post" />
-      <ApplicationFrame>
-        <Page />
-      </ApplicationFrame>
-    </ApplicationLayout>
-  );
+	return (
+		<ApplicationLayout>
+			<SEOHead title="Create a new post" />
+			<ApplicationFrame>
+				<Container className="py-12 px-4">
+					{step === "upload" ? (
+						<UploadMedia next={next} />
+					) : (
+						<AddNFTDetails
+							prev={prev}
+							data={[]}
+						/>
+					)}
+				</Container>
+			</ApplicationFrame>
+		</ApplicationLayout>
+	);
 }
+
+const UploadMedia = ({next}) => {
+	return (
+		<Container
+			className="border p-8 shadow flex flex-col gap-8"
+			css={{background: "$elementSurface", borderRadius: "16px"}}
+		>
+			<Container className="flex flex-col gap-2">
+				<Heading size="sm">Drag and drop media here</Heading>
+				<Text>
+					Add image, or video files here. Accepted formats are JPG, PNG, JPEG,
+					GIF & MP4
+				</Text>
+			</Container>
+			<Container className="flex justify-end">
+				<Button onClick={next}>Save and continue</Button>
+			</Container>
+		</Container>
+	);
+};
+
+const AddNFTDetails = ({prev, data}) => {
+	return (
+		<Container className="grid grid-cols-1 gap-8">
+			<Container
+				className="border p-8 shadow flex flex-col gap-8"
+				css={{background: "$elementSurface", borderRadius: "16px"}}
+			>
+				<Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+					<Container className="min-h-[320px] rounded-xl bg-gray-200 col-span-1" />
+
+					<Container className="col-span-1 lg:col-span-2">
+						<Container className="grid grid-cols-2 gap-4">
+							<Container className="col-span-2 flex flex-col gap-1">
+								<Text>
+									<ImportantText>Name</ImportantText>
+								</Text>
+								<Input />
+							</Container>
+							<Container className="col-span-2 flex flex-col gap-1">
+								<Text>
+									<ImportantText>Description</ImportantText>
+								</Text>
+								<Textarea />
+							</Container>
+							<Container className="col-span-1 flex flex-col gap-1">
+								<Text>
+									<ImportantText>Price</ImportantText>
+								</Text>
+								<Input />
+							</Container>
+							<Container className="col-span-1 flex flex-col gap-1">
+								<Text>
+									<ImportantText>Maximum supply</ImportantText>
+								</Text>
+								<Input />
+							</Container>
+							<Container className="flex items-center justify-between gap-8 col-span-2">
+								<Container className="flex flex-col">
+									<Text>
+										<ImportantText>Protected content</ImportantText>
+									</Text>
+									<Text>
+										<MutedText>
+											Only owners of this trit can view its content.
+										</MutedText>
+									</Text>
+								</Container>
+								<Container>
+									<Switch.Root
+										className="SwitchRoot"
+										id="airplane-mode"
+									>
+										<Switch.Thumb className="SwitchThumb" />
+									</Switch.Root>
+								</Container>
+							</Container>
+							<Container className="flex items-center justify-between gap-8 col-span-2">
+								<Container className="flex flex-col">
+									<Text>
+										<ImportantText>Subscription content</ImportantText>
+									</Text>
+									<Text>
+										<MutedText>Only show to your subscribers</MutedText>
+									</Text>
+								</Container>
+								<Container>
+									<Switch.Root
+										className="SwitchRoot"
+										id="airplane-mode"
+									>
+										<Switch.Thumb className="SwitchThumb" />
+									</Switch.Root>
+								</Container>
+							</Container>
+						</Container>
+					</Container>
+				</Container>
+			</Container>
+			<Container className="justify-end py-8 flex flex-col gap-8">
+				<Container className="flex justify-end">
+					<Button>Publish</Button>
+				</Container>
+			</Container>
+		</Container>
+	);
+};
+
+const useStep = (steps: Array<string>) => {
+	const [step, setStage] = useState(steps[0]);
+
+	const next = () =>
+		steps.indexOf(step) !== steps.length - 1 && [
+			setStage(steps[steps.indexOf(step) + 1]),
+		];
+
+	const prev = () =>
+		steps.indexOf(step) !== 0 && [setStage(steps[steps.indexOf(step) - 1])];
+
+	return {
+		step,
+		next,
+		prev,
+	};
+};

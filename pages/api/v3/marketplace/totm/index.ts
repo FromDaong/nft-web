@@ -1,4 +1,7 @@
-import {returnWithError} from "server/database/engine/utils";
+import {
+	populateNFTsWithProfile,
+	returnWithError,
+} from "server/database/engine/utils";
 import {NextApiResponse} from "next";
 import {NextApiRequest} from "next";
 import {
@@ -7,8 +10,7 @@ import {
 	setStringToRedisCache,
 } from "server/database/engine";
 import {returnWithSuccess} from "server/database/engine/utils";
-import LegacyCreatorModel from "server/database/legacy/profile/Creator";
-import LegacyNFTModel from "server/database/legacy/nft/NFT";
+import {MongoModelCreator, MongoModelNFT} from "server/helpers/models";
 
 export default async function totm(req: NextApiRequest, res: NextApiResponse) {
 	const cached_totm = await getFromRedisCache("totm");
@@ -17,17 +19,24 @@ export default async function totm(req: NextApiRequest, res: NextApiResponse) {
 	}
 
 	await connectMongoDB();
-	const totm_model = await LegacyCreatorModel.findOne({totm: true});
+	const totm_model = await MongoModelCreator.findOne({"totm.current": true});
 
 	if (!totm_model) {
 		return returnWithError("No TOTM model found", 404, res);
 	}
+	const NFTs = await MongoModelNFT.find({
+		creator: totm_model._id,
+	})
+		.populate({
+			path: "creator",
+			select: "username address bio profile",
+			model: MongoModelCreator,
+		})
+		.limit(20);
 
-	const totm_nfts = await LegacyNFTModel.find({
-		model_handle: totm_model.username,
-	});
+	const nftsWithDp = await populateNFTsWithProfile(NFTs);
 
-	await setStringToRedisCache("totm", totm_nfts);
+	await setStringToRedisCache("totm", nftsWithDp);
 
-	return returnWithSuccess(totm_nfts, res);
+	return returnWithSuccess(nftsWithDp, res);
 }
