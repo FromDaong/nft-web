@@ -115,6 +115,7 @@
 		"ioredis": "^5.2.4",
 		"ipfs": "^0.57.0",
 		"ipfs-http-client": "^52.0.0",
+		"iron-session": "^6.3.1",
 		"isomorphic-unfetch": "^3.1.0",
 		"jose": "^4.8.1",
 		"jotai": "^1.9.2",
