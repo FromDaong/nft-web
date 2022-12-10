@@ -11,7 +11,7 @@ import useTreat from "./useTreat";
 
 const useGetNftV1Balance = (nftArray) => {
 	const [totalNftBalances, setBalance] = useState([]);
-	const {address: account}: {account: string} = useMoralis();
+	const {address: account} = useAccount();
 	const treat = useTreat();
 	const treatNFTMinterV1Contract = getTreatNFTMinterV1Contract(treat);
 	const block = useBlock();

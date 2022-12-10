@@ -1,5 +1,4 @@
-import BigNumber from "bignumber.js";
-import {useCallback, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useAccount} from "wagmi";
 import {
 	getTreatNFTMinterContract,
@@ -8,18 +7,16 @@ import {
 	getOpenOrdersForSeller,
 	getTreatNFTMinterV1Contract,
 } from "@packages/chain/utils";
-import useBlock from "./useBlock";
 import useTreat from "./useTreat";
 
 const useGetNftBalance = (nftArray) => {
 	const [totalNftBalances, setBalance] = useState([]);
-	const {address: account}: {account: string} = useMoralis();
+	const {address: account} = useAccount();
 	const treat = useTreat();
 	const treatNFTMinterContract = getTreatNFTMinterContract(treat);
 	const treatMarketplaceContract = getTreatMarketplaceContract(treat);
 	const treatMarketplaceV1Contract = getTreatNFTMinterV1Contract(treat);
 	const [loading, setLoading] = useState(false);
-	const block = useBlock();
 
 	useEffect(() => {
 		(async () => {

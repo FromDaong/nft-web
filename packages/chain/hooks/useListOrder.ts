@@ -11,12 +11,7 @@ const useListOrder = () => {
 	const treatMarketplaceContract = getTreatMarketplaceContract(treat);
 
 	const handleListOrder = useCallback(
-		async (
-			nftId: number,
-			quantity: number,
-			price: number,
-			expiresDate: number
-		) => {
+		async (nftId: number, quantity: number, price: number) => {
 			const txHash = await listOrder(
 				treatMarketplaceContract,
 				account,

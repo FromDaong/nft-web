@@ -1,27 +1,32 @@
-import { useCallback, useEffect, useState } from "react";
+import {useCallback, useEffect, useState} from "react";
 
 import BigNumber from "bignumber.js";
-import { getBalance } from "../utils/erc20";
 import useBlock from "./useBlock";
-import { useMoralis } from "react-moralis";
+import {getBalance} from "@utils/erc20";
+import {useAccount} from "wagmi";
+import web3 from "@utils/web3";
 
 const useTokenBalance = (tokenAddress: string) => {
-  const [balance, setBalance] = useState(new BigNumber(0));
-  const { account, provider } = useMoralis();
-  const block = useBlock();
+	const [balance, setBalance] = useState(new BigNumber(0));
+	const {address: account} = useAccount();
+	const block = useBlock();
 
-  const fetchBalance = useCallback(async () => {
-    const balance = await getBalance(provider as any, tokenAddress, account);
-    setBalance(new BigNumber(balance));
-  }, [account, provider, tokenAddress]);
+	const fetchBalance = useCallback(async () => {
+		const balance = await getBalance(
+			web3.currentProvider as any,
+			tokenAddress,
+			account
+		);
+		setBalance(new BigNumber(balance));
+	}, [account, tokenAddress]);
 
-  useEffect(() => {
-    if (account && provider) {
-      fetchBalance();
-    }
-  }, [account, provider, setBalance, block, tokenAddress]);
+	useEffect(() => {
+		if (account) {
+			fetchBalance();
+		}
+	}, [account, setBalance, block, tokenAddress]);
 
-  return balance;
+	return balance;
 };
 
 export default useTokenBalance;

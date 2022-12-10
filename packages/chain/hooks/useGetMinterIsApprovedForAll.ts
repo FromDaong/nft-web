@@ -4,14 +4,14 @@ import {
 } from "@packages/chain/utils";
 import {useCallback, useEffect, useState} from "react";
 
-import {getIsApprovedForAll} from "../utils/erc1155";
 import useBlock from "./useBlock";
 import {useAccount} from "wagmi";
 import useTreat from "./useTreat";
+import {getIsApprovedForAll} from "@utils/erc1155";
 
 const useGetMinterIsApprovedForAll = (tokenAddress: string) => {
 	const [allowance, setAllowance] = useState(false);
-	const {account, provider: ethereum} = useMoralis();
+	const {address: account} = useAccount();
 	const block = useBlock();
 
 	const treat = useTreat();
@@ -28,13 +28,13 @@ const useGetMinterIsApprovedForAll = (tokenAddress: string) => {
 			);
 			setAllowance(_allowance);
 		}
-	}, [account, ethereum, tokenAddress]);
+	}, [account, tokenAddress]);
 
 	useEffect(() => {
-		if (account && ethereum) {
+		if (account) {
 			fetchAllowance();
 		}
-	}, [account, ethereum, setAllowance, block, tokenAddress]);
+	}, [account, setAllowance, block, tokenAddress]);
 
 	return allowance;
 };

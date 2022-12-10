@@ -18,6 +18,7 @@ const useApproveFarm = (lpContract: Contract, pid: number) => {
 		try {
 			if (pid == 0) {
 				const tx = await approveTreatStaking(
+					treat,
 					masterMelonFarmerContract,
 					account
 				);
@@ -25,6 +26,7 @@ const useApproveFarm = (lpContract: Contract, pid: number) => {
 				return tx;
 			} else {
 				const tx = await approveTreatPancakeLPStaking(
+					treat,
 					masterMelonFarmerContract,
 					account
 				);

@@ -1,3 +1,4 @@
+import {useAccount} from "wagmi";
 import {
 	getMasterMelonFarmerContract,
 	getV1MasterMelonFarmerContract,
@@ -9,6 +10,7 @@ import useTreat from "./useTreat";
 
 const useUnstakeFarms = (pid: number, v1: boolean) => {
 	const treat = useTreat();
+	const {address: account} = useAccount();
 	const masterMelonFarmerContract = getMasterMelonFarmerContract(treat);
 	const v1MasterMelonFarmerContract = getV1MasterMelonFarmerContract(treat);
 
@@ -17,7 +19,8 @@ const useUnstakeFarms = (pid: number, v1: boolean) => {
 			await unstakeFarm(
 				v1 ? v1MasterMelonFarmerContract : masterMelonFarmerContract,
 				pid,
-				amount
+				amount,
+				account
 			);
 		},
 		[masterMelonFarmerContract, pid]

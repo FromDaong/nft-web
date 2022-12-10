@@ -416,7 +416,7 @@ export const addSubscriberNft = async (
 	subscriberMartContract,
 	account,
 	nftIds,
-	nftCosts
+	nftCosts?: any
 ) => {
 	try {
 		return await subscriberMartContract.methods
@@ -431,7 +431,7 @@ export const addCreatorNft = async (
 	creatorMartContract,
 	account,
 	nftIds,
-	nftCosts
+	nftCosts?: any
 ) => {
 	try {
 		return await creatorMartContract.methods
@@ -447,7 +447,7 @@ export const addSubscriberFreeTreat = async (
 	subscriberMartContract,
 	account,
 	nftIds,
-	nftCosts
+	nftCosts?: any
 ) => {
 	try {
 		return await subscriberMartContract.methods
@@ -462,7 +462,7 @@ export const addCreatorFreeTreat = async (
 	creatorMartContract,
 	account,
 	nftIds,
-	nftCosts
+	nftCosts?: any
 ) => {
 	try {
 		return await creatorMartContract.methods
@@ -473,12 +473,7 @@ export const addCreatorFreeTreat = async (
 	}
 };
 
-export const mintFreeTreat = async (
-	treatMartContract,
-	account,
-	nftId,
-	nftCost
-) => {
+export const mintFreeTreat = async (treatMartContract, account, nftId) => {
 	try {
 		return await treatMartContract.methods
 			.redeemFreeTreat(nftId)
@@ -491,8 +486,7 @@ export const mintFreeTreat = async (
 export const mintFreeSubscriberTreat = async (
 	subscriberMartContract,
 	account,
-	nftId,
-	nftCost
+	nftId
 ) => {
 	try {
 		return await subscriberMartContract.methods
@@ -506,8 +500,7 @@ export const mintFreeSubscriberTreat = async (
 export const mintFreeCreatorTreat = async (
 	creatorMartContract,
 	account,
-	nftId,
-	nftCost
+	nftId
 ) => {
 	try {
 		return await creatorMartContract.methods
@@ -857,8 +850,7 @@ export const listOrder = async (
 	account,
 	nftId,
 	quantity,
-	price,
-	expiresDate
+	price
 ) => {
 	try {
 		const priceBn = BigNumber.isBigNumber(price) ? price : decToBn(price);

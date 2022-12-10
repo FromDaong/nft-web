@@ -6,7 +6,7 @@ import useTreat from "./useTreat";
 
 const useGetNftCreator = (nftArray) => {
 	const [nftCreatorAddress, setNftCreatorAddress] = useState([]);
-	const {address: account}: {account: string} = useMoralis();
+	const {address: account} = useAccount();
 	const treat = useTreat();
 	const treatNFTMinterContract = getTreatNFTMinterContract(treat);
 
