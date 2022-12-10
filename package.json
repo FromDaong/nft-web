@@ -175,7 +175,6 @@
 		"styled-components": "^5.3.1",
 		"swiper": "^8.0.6",
 		"swr": "^0.3.11",
-		"treat-database": "https://github.com/TreatDAODev/database",
 		"use-wallet": "0.10",
 		"uuid": "^8.3.2",
 		"validator": "^13.6.0",

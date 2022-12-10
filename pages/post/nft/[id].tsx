@@ -1,6 +1,5 @@
 import {pagePropsConnectMongoDB} from "@db/engine/pagePropsDB";
 import LegacyNFTModel from "@db/legacy/nft/NFT";
-import ModelTransaction from "@db/models/transaction";
 import Error404 from "@packages/error/404";
 import {useDisclosure} from "@packages/hooks";
 import FullScreenImagePreview from "@packages/modals/FullScreenImagePreview";
@@ -17,6 +16,7 @@ import UserAvatar from "core/auth/components/Avatar";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import Link from "next/link";
+import {MongoModelTransaction} from "server/helpers/models";
 
 export default function NFT(props: {notFound?: boolean; data: any}) {
 	const {
@@ -178,7 +178,7 @@ export const getServerSideProps = async (context) => {
 		};
 	}
 
-	const transactions = await ModelTransaction.find({
+	const transactions = await MongoModelTransaction.find({
 		"metadata.nftId": id,
 	});
 

@@ -6,7 +6,7 @@ import {
 import {NextApiResponse} from "next";
 import {NextApiRequest} from "next";
 import {returnWithError, returnWithSuccess} from "server/database/engine/utils";
-import ModelTransaction from "server/database/models/transaction";
+import {MongoModelTransaction} from "server/helpers/models";
 
 export default async function handler(
 	req: NextApiRequest,
@@ -24,7 +24,7 @@ export default async function handler(
 		return returnWithSuccess(cached_totm, res);
 	}
 
-	const transactions = await ModelTransaction.findOne({
+	const transactions = await MongoModelTransaction.findOne({
 		metadata: {
 			nftId: id,
 		},

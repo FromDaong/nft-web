@@ -6,7 +6,7 @@ import {
 	returnWithSuccess,
 } from "@db/engine/utils";
 import {NextApiRequest, NextApiResponse} from "next";
-import treatDatabase from "treat-database";
+import treatDatabase from "server/helpers";
 
 export default async function handler(
 	req: NextApiRequest,
