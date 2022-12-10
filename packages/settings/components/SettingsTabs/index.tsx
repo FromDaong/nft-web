@@ -55,43 +55,22 @@ export default function ProfileTabs() {
 				<Container className="pt-8">
 					<Tabs.Content value="personal">
 						<Container className="flex flex-col gap-12">
-							<Container>
-								<Heading size="md">Profile</Heading>
-								<Text>Manage your personal profile details</Text>
-							</Container>
 							<PersonalInformationForm />
 							<LinksForm />
 						</Container>
 					</Tabs.Content>
 					<Tabs.Content value="wallet">
 						<Container className="flex flex-col gap-12">
-							<Container>
-								<Heading size="md">Wallet & Subscriptions</Heading>
-								<Text>Manage subscriptions and your connected wallets.</Text>
-							</Container>
 							<WalletPreferences />
 						</Container>
 					</Tabs.Content>
 					<Tabs.Content value="notifications">
 						<Container className="flex flex-col gap-12">
-							<Container>
-								<Heading size="md">Notifications</Heading>
-								<Text>
-									We may still send you important notifications about your
-									account, outside your preferences.
-								</Text>
-							</Container>
 							<NotificationPreferences />
 						</Container>
 					</Tabs.Content>
 					<Tabs.Content value="security">
 						<Container className="flex flex-col gap-12">
-							<Container>
-								<Heading size="md">Settings & privacy</Heading>
-								<Text>
-									Manage your account status and privacy options here.
-								</Text>
-							</Container>
 							<SettingsAndPrivacy />
 						</Container>
 					</Tabs.Content>

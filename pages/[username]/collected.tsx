@@ -60,7 +60,7 @@ export default function UserProfile(props: {
 	const {username} = data;
 
 	const getcreatorNFTs = async () => {
-		const res = await axios.get(`${apiEndpoint}/creator/${username}/nfts`);
+		const res = await axios.get(`${apiEndpoint}/profile/${username}/collected`);
 		return res.data;
 	};
 	const {
@@ -71,6 +71,8 @@ export default function UserProfile(props: {
 		queryKey: [`profileCollected:${username}`],
 		queryFn: getcreatorNFTs,
 	});
+
+	console.log({creatorNFTsData});
 
 	const creatorNFTs =
 		creatorNFTsLoading || creatorNFTError
@@ -87,6 +89,7 @@ export default function UserProfile(props: {
 									<TritPost
 										key={post.id}
 										{...post}
+										noPrice
 									/>
 							  ))
 							: [0, 1, 2].map((i) => (

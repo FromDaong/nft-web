@@ -1,4 +1,3 @@
-import {PrismaClient} from "@prisma/client";
 import mongoose from "mongoose";
 import Redis from "ioredis";
 
@@ -6,7 +5,6 @@ const MONGODB_URI = process.env.MONGODB_URI;
 const REDIS_URL = process.env.REDIS_URL;
 
 let cached = global.mongoose;
-const prisma = new PrismaClient();
 
 const redisClient = new Redis(REDIS_URL);
 
@@ -31,7 +29,7 @@ const connectMongoDB = async (url?: string) => {
 		};
 
 		cached.promise = mongoose
-			.connect(url ? url : MONGODB_URI, opts)
+			.connect(url ? url : MONGODB_URI, {...opts})
 			.then((mongoose) => {
 				return mongoose;
 			});
@@ -60,7 +58,6 @@ const invalidateRedisCache = async (key: string) => {
 
 export {
 	connectMongoDB,
-	prisma,
 	redisClient,
 	getFromRedisCache,
 	setStringToRedisCache,

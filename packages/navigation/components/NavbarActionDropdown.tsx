@@ -40,15 +40,15 @@ const NavbarActionDropdown = () => {
 			<DropdownMenu.Portal>
 				<DropdownContent>
 					<DropdownContainer className="shadow-xl">
-						<Link href={"#"}>
-							<a onClick={onOpen}>
+						<Link href={"/create"}>
+							<a>
 								<NavDropdownItem className="flex items-center justify-between p-1 rounded-xl hover:cursor-pointer">
-									<div className="flex items-center gap-4">
+									<Text className="flex items-center gap-4">
 										<LegibleText className="p-2 rounded-full">
 											<UploadIcon className="w-4 h-4" />
 										</LegibleText>
 										<ImportantText>Create new trit</ImportantText>
-									</div>
+									</Text>
 									<span className="flex gap-2 text-sm">
 										<LegibleText>
 											<Kbd>{ctrl_button_emoji}</Kbd>
@@ -63,12 +63,12 @@ const NavbarActionDropdown = () => {
 						<Link href={"/create/live"}>
 							<a>
 								<NavDropdownItem className="flex items-center justify-between p-1 rounded-xl hover:cursor-pointer">
-									<div className="flex items-center gap-4">
+									<Text className="flex items-center gap-4">
 										<LegibleText className="p-2 rounded-full">
 											<VideoCameraIcon className="w-4 h-4" />
 										</LegibleText>
 										<ImportantText>Start livestream</ImportantText>
-									</div>
+									</Text>
 									<span className="flex gap-2 text-sm">
 										<LegibleText>
 											<Kbd>{ctrl_button_emoji}</Kbd>

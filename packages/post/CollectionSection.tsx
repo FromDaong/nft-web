@@ -17,30 +17,6 @@ export default function TreatOfTheMonthCollectionSection(props: {
 	return (
 		<Container className="grid grid-cols-1 gap-8 lg:grid-cols-2">
 			<Container
-				css={{
-					minHeight: "420px",
-					height: "auto",
-					backgroundColor: "$elementSurface",
-					borderColor: "$accentBorder",
-				}}
-				className="flex flex-col overflow-hidden border-2 rounded-xl drop-shadow"
-			>
-				<Container
-					className="flex-1"
-					css={{
-						backgroundImage: `url('https://treatnfts.gumlet.io/api/v3/image?default=${
-							props.collectionItems[0]?.image.cdn ??
-							props.collectionItems[0]?.image.ipfs
-						}')`,
-						backgroundSize: "cover",
-						backgroundPosition: "center",
-					}}
-				/>
-				<Container className="p-4">
-					<Heading size="sm">{props.collectionItems[0]?.name}</Heading>
-				</Container>
-			</Container>
-			<Container
 				className="flex flex-col h-auto gap-8 p-8 border-2 rounded-xl drop-shadow"
 				css={{
 					backgroundColor: "$elementSurface",
@@ -107,6 +83,52 @@ export default function TreatOfTheMonthCollectionSection(props: {
 						className="flex items-center gap-2"
 					>
 						<span>Take me to the collection</span>
+						<ArrowRightIcon
+							width={16}
+							height={16}
+						/>
+					</Button>
+				</Container>
+			</Container>
+			<Container
+				className="flex flex-col h-auto gap-8 p-8 rounded-xl drop-shadow"
+				css={{
+					backgroundColor: "$elementSurface",
+					borderColor: "$accentBorder",
+				}}
+			>
+				<Container className="grid grid-cols-1 gap-8 lg:grid-cols-2 ">
+					{props.collectionItems.slice(4, 8).map((item) => (
+						<Container
+							key={item.id}
+							className="overflow-hidden rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500"
+							css={{
+								height: "180px",
+								backgroundImage: `url('https://treatnfts.gumlet.io/api/v3/image?default=${
+									item.image.cdn ?? item.image.ipfs
+								}')`,
+								backgroundSize: "cover",
+								backgroundPosition: "center",
+							}}
+						></Container>
+					))}
+				</Container>
+				<Container className="flex items-center gap-2">
+					<Container className="flex">
+						<Link href={`/devan`}>
+							<a>
+								<UserAvatar
+									value={"devan"}
+									size={32}
+								/>
+							</a>
+						</Link>
+					</Container>
+					<Heading size="sm">Featured Creator</Heading>
+				</Container>
+				<Container className="flex flex-col justify-between gap-4 md:flex-row">
+					<Button className="flex items-center gap-2">
+						<span>View profile</span>
 						<ArrowRightIcon
 							width={16}
 							height={16}

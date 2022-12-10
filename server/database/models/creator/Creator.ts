@@ -68,7 +68,6 @@ const ModelSchema = new mongoose.Schema(
 
 ModelSchema.plugin(aggregatePaginate);
 ModelSchema.plugin(paginate);
-ModelSchema.plugin(require("mongoose-beautiful-unique-validation"));
 
-const ModelCreator = createMongoDBModel("Model", ModelSchema);
+const ModelCreator = createMongoDBModel("Creator", ModelSchema);
 export default ModelCreator;

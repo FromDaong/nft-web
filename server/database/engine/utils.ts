@@ -1,5 +1,6 @@
 import {NextApiResponse} from "next";
 import {Model, model, Schema} from "mongoose";
+import {MongoModelProfile} from "server/helpers/models";
 
 // Simple Generic Function for reusability
 // Feel free to modify however you like
@@ -64,4 +65,81 @@ export const enforcePrivacyForNFTs = (nfts: Array<any>) => {
 		}
 		return nft;
 	});
+};
+
+export const findOrCreate = async (model, query: any, data?: any) => {
+	let item = await model.findOne({...query});
+	if (!item) {
+		item = new model(data);
+		await model.save();
+	}
+
+	return item;
+};
+
+export const profileSelectList = "username display_name profile_pic address";
+
+export function generatePaginationQuery(query, sort, nextKey) {
+	const sortField = sort == null ? null : sort[0];
+
+	function nextKeyFn(items) {
+		if (items.length === 0) {
+			return null;
+		}
+
+		const item = items[items.length - 1];
+
+		if (sortField == null) {
+			return {_id: item._id};
+		}
+
+		return {_id: item._id, [sortField]: item[sortField]};
+	}
+
+	if (nextKey == null) {
+		return {paginatedQuery: query, nextKeyFn};
+	}
+
+	let paginatedQuery = query;
+
+	if (sort == null) {
+		paginatedQuery._id = {$gt: nextKey._id};
+		return {paginatedQuery, nextKey};
+	}
+
+	const sortOperator = sort[1] === 1 ? "$gt" : "$lt";
+
+	const paginationQuery = [
+		{[sortField]: {[sortOperator]: nextKey[sortField]}},
+		{
+			$and: [
+				{[sortField]: nextKey[sortField]},
+				{_id: {[sortOperator]: nextKey._id}},
+			],
+		},
+	];
+
+	if (paginatedQuery.$or == null) {
+		paginatedQuery.$or = paginationQuery;
+	} else {
+		paginatedQuery = {$and: [query, {$or: paginationQuery}]};
+	}
+
+	return {paginatedQuery, nextKeyFn};
+}
+
+export const populateNFTsWithProfile = async (nfts) => {
+	return Promise.all(
+		nfts.map(async (nft) => {
+			const profile_id = nft.creator.profile;
+			const profile = await MongoModelProfile.findById(profile_id);
+			return {
+				...nft.toObject(),
+				creator: {
+					...nft.creator.toObject(),
+					profile_pic: profile.profile_pic,
+				},
+			};
+		})
+	);
 };

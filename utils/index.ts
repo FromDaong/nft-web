@@ -20,8 +20,8 @@ export const decToBn = (dec: number, decimals = 18) => {
 export const legacy_nft_to_new = (post: any): TPost => ({
 	name: post.name,
 	image: {
-		cdn: post.daoCdnUrl,
-		ipfs: post.image,
+		cdn: post.image.cdn,
+		ipfs: post.image.ipfs,
 	},
 	price: {
 		value: post.list_price,
@@ -33,10 +33,10 @@ export const legacy_nft_to_new = (post: any): TPost => ({
 		"-qIFGCoMs:WBayay_NRjayj[ayj[IUWBayayj[fQIUt7j[ayayayj@WBRjoffkj[xuWBWCayj[ayWAt7fQj[ayayM{WBofj[j[fQ",
 	post_type: "colletible",
 	author: {
-		username: post.model_handle,
-		display_name: post.model_name,
+		username: post.creator.username,
+		display_name: post.creator.display_name,
 		live: true,
-		avatar: post.model_profile_picture,
+		avatar: post.creator.profile_picture,
 	},
 	collection: {
 		name: post.collection_name,
