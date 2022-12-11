@@ -85,7 +85,37 @@ export default function UserProfile(props: {
 	return (
 		<ApplicationLayout>
 			<ApplicationFrame>
-				<ProfileLayout userProfile={data}>
+				<ProfileLayout
+					userProfile={{
+						...data,
+						badges: [
+							{
+								color: "purple",
+								name: "TOTM Collector",
+							},
+							{
+								color: "teal",
+								name: "Melon",
+							},
+							{
+								color: "pink",
+								name: "Hodlr",
+							},
+							{
+								color: "amber",
+								name: "Gold Treator",
+							},
+							{
+								color: "sky",
+								name: "Diamond Treator",
+							},
+							{
+								color: "gray",
+								name: "Silver Treator",
+							},
+						],
+					}}
+				>
 					<SEOHead title={username + " - Trit"} />
 					<Container className="flex justify-between gap-12">
 						<Container className="flex flex-col flex-1 max-w-xl gap-4 ">

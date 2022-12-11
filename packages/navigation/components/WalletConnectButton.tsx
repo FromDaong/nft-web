@@ -9,9 +9,12 @@ import {
 } from "@packages/shared/components/Typography/Text";
 import * as Avatar from "@radix-ui/react-avatar";
 import {ConnectButton} from "@rainbow-me/rainbowkit";
+import useUser from "core/auth/useUser";
 import {getChainNameById} from "core/chain";
 
 export default function WalletConnectButton() {
+	const {user} = useUser();
+
 	return (
 		<ConnectButton.Custom>
 			{({
@@ -58,12 +61,12 @@ export default function WalletConnectButton() {
 											/>
 										</Avatar.Root>
 										<Container>
-											<Heading size="xss">Terry Rivers</Heading>
-											<Text>
-												<MutedText>
-													<SmallText>{account.displayName}</SmallText>
-												</MutedText>
-											</Text>
+											<Heading size="xss">{user?.profile?.displayName}</Heading>
+											<Container className="text-left">
+												<Text>
+													<SmallText>@{user?.profile?.username}</SmallText>
+												</Text>
+											</Container>
 										</Container>
 									</button>
 									{chain.unsupported ? (

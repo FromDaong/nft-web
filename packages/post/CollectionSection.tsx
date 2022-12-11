@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import {ArrowRightIcon} from "@heroicons/react/outline";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
@@ -14,29 +15,39 @@ export default function TreatOfTheMonthCollectionSection(props: {
 		display_name: string;
 	}>;
 }) {
+	const totmItems = !props.collectionItems
+		? props.collectionItems.slice(2, 6)
+		: new Array(4).fill(0);
+	const featuredCreatorItems = !props.collectionItems
+		? props.author.slice(1, props.author.length)
+		: new Array(4).fill(0);
+
 	return (
 		<Container className="grid grid-cols-1 gap-8 lg:grid-cols-2">
 			<Container
-				className="flex flex-col h-auto gap-8 p-8 border-2 rounded-xl drop-shadow"
+				className="flex flex-col h-auto gap-4 p-4 border-2 rounded-xl drop-shadow"
 				css={{
 					backgroundColor: "$elementSurface",
 					borderColor: "$accentBorder",
 				}}
 			>
-				<Container className="grid grid-cols-1 gap-8 lg:grid-cols-2 ">
-					{props.collectionItems.slice(2, 6).map((item) => (
+				<Container className="grid grid-cols-1 gap-4 lg:grid-cols-2 ">
+					{totmItems.map((item) => (
 						<Container
 							key={item.id}
-							className="overflow-hidden rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500"
+							className="overflow-hidden"
 							css={{
-								height: "180px",
-								backgroundImage: `url('https://treatnfts.gumlet.io/api/v3/image?default=${
-									item.image.cdn ?? item.image.ipfs
-								}')`,
+								height: "220px",
+								background: item.image
+									? `url('https://treatnfts.gumlet.io/api/v3/image?default=${
+											item.image.cdn ?? item.image.ipfs
+									  }')`
+									: "$surfaceOnSurface",
 								backgroundSize: "cover",
 								backgroundPosition: "center",
+								borderRadius: "16px",
 							}}
-						></Container>
+						/>
 					))}
 				</Container>
 				<Container className="flex items-center gap-2">
@@ -49,7 +60,7 @@ export default function TreatOfTheMonthCollectionSection(props: {
 								/>
 							</a>
 						</Link>
-						{props.author.slice(1, props.author.length).map((author) => (
+						{featuredCreatorItems.map((author) => (
 							<Container
 								key={author.username}
 								css={{marginLeft: "-16px"}}
@@ -67,31 +78,9 @@ export default function TreatOfTheMonthCollectionSection(props: {
 					</Container>
 					<Heading size="sm">{props.title}</Heading>
 				</Container>
-				<Container className="flex flex-col justify-between gap-4 md:flex-row">
-					<Button
-						appearance={"surface"}
-						className="flex items-center gap-2"
-					>
-						<span>View TreatDAO magazine</span>
-						<ArrowRightIcon
-							width={16}
-							height={16}
-						/>
-					</Button>
-					<Button
-						css={{backgroundColor: "$accentText"}}
-						className="flex items-center gap-2"
-					>
-						<span>Take me to the collection</span>
-						<ArrowRightIcon
-							width={16}
-							height={16}
-						/>
-					</Button>
-				</Container>
 			</Container>
 			<Container
-				className="flex flex-col h-auto gap-8 p-8 rounded-xl drop-shadow"
+				className="flex flex-col h-auto gap-4 p-4 rounded-xl drop-shadow"
 				css={{
 					backgroundColor: "$elementSurface",
 					borderColor: "$accentBorder",
@@ -101,16 +90,19 @@ export default function TreatOfTheMonthCollectionSection(props: {
 					{props.collectionItems.slice(4, 8).map((item) => (
 						<Container
 							key={item.id}
-							className="overflow-hidden rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500"
+							className="overflow-hidden"
 							css={{
-								height: "180px",
-								backgroundImage: `url('https://treatnfts.gumlet.io/api/v3/image?default=${
-									item.image.cdn ?? item.image.ipfs
-								}')`,
+								height: "220px",
+								background: item.image
+									? `url('https://treatnfts.gumlet.io/api/v3/image?default=${
+											item.image.cdn ?? item.image.ipfs
+									  }')`
+									: "$surfaceOnSurface",
 								backgroundSize: "cover",
 								backgroundPosition: "center",
+								borderRadius: "16px",
 							}}
-						></Container>
+						/>
 					))}
 				</Container>
 				<Container className="flex items-center gap-2">
@@ -125,15 +117,6 @@ export default function TreatOfTheMonthCollectionSection(props: {
 						</Link>
 					</Container>
 					<Heading size="sm">Featured Creator</Heading>
-				</Container>
-				<Container className="flex flex-col justify-between gap-4 md:flex-row">
-					<Button className="flex items-center gap-2">
-						<span>View profile</span>
-						<ArrowRightIcon
-							width={16}
-							height={16}
-						/>
-					</Button>
 				</Container>
 			</Container>
 		</Container>

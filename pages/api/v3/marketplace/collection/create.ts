@@ -1,21 +1,30 @@
 // create collection endpoint
 
 import {returnWithError, returnWithSuccess} from "@db/engine/utils";
+import {ironOptions} from "@utils/index";
+import {withIronSessionApiRoute} from "iron-session/next";
 import {NextApiRequest, NextApiResponse} from "next";
+import {connectMongoDB} from "server/helpers/core";
 import {
 	MongoModelCollection,
 	MongoModelCreator,
 	MongoModelProfile,
 } from "server/helpers/models";
-import {protectedAPIRoute} from "server/utils";
-
-// Path: pages\api\v3\marketplace\collection\create.ts
+import {requireApiAuth} from "server/utils";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const {name} = req.body;
 
+	if (!name) {
+		return returnWithError({name: "Name is required"}, 500, res);
+	}
+
+	requireApiAuth(req, res);
+
+	await connectMongoDB();
+
 	const profile = await MongoModelProfile.findOne({
-		address: req.session.address.toLowerCase(),
+		address: req.session.siwe?.address.toLowerCase(),
 	});
 
 	if (!profile) {
@@ -23,11 +32,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 	}
 
 	const creator = await MongoModelCreator.findOne({
-		username: profile._id,
+		profile: profile._id,
 	});
 
-	if (!name) {
-		return returnWithError("Missing data", 500, res);
+	if (!creator) {
+		return returnWithError("Creator not found", 404, res);
 	}
 
 	const collection = new MongoModelCollection({
@@ -40,4 +49,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 	return returnWithSuccess({id: collection._id}, res);
 }
 
-export default protectedAPIRoute(handler);
+export default withIronSessionApiRoute(handler, ironOptions);

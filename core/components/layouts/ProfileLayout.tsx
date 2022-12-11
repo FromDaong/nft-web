@@ -12,8 +12,10 @@ import {Tab, TabsContainer} from "@packages/shared/components/Tabs";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {
 	Bull,
+	ImportantText,
 	JustifiedSpan,
 	MutedText,
+	SmallText,
 } from "@packages/shared/components/Typography/Text";
 import VerifiedBadge from "@packages/shared/components/VerifiedBadge";
 import {styled} from "@styles/theme";
@@ -101,6 +103,7 @@ type ProfileLayoutProps = ComponentBasicProps & {
 		address: string;
 		profile_picture?: string;
 		profilePicCdnUrl?: string;
+		badges: Array<{color: string; name: string}>;
 	};
 };
 
@@ -136,6 +139,21 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 							<VerifiedBadge size={16} />
 						</Heading>
 						<MutedText>{user.username}</MutedText>
+					</Container>
+					<Container className="flex gap-4 flex-row flex-wrap">
+						{props.userProfile.badges?.map((badge) => (
+							<Container
+								key={badge.name}
+								css={{backgroundColor: `$${badge.color}3`}}
+								className="px-2 py-1 rounded-xl"
+							>
+								<Text css={{color: `$${badge.color}10`}}>
+									<ImportantText>
+										<SmallText>{badge.name}</SmallText>
+									</ImportantText>
+								</Text>
+							</Container>
+						))}
 					</Container>
 					<Container
 						variant={"unstyled"}

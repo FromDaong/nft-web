@@ -10,7 +10,6 @@ import {useDisclosure} from "@packages/hooks";
 import BecomeCreatorModal from "@packages/onboarding/BecomeCreatorModal";
 import {BoldLink, Text} from "@packages/shared/components/Typography/Text";
 import ThemeSwitcherModal from "@packages/theme/ThemeSwitcherModal";
-import * as Avatar from "@radix-ui/react-avatar";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import UserAvatar from "core/auth/components/Avatar";
 import Link from "next/link";
@@ -23,8 +22,6 @@ import {
 import WalletConnectButton from "./WalletConnectButton";
 
 const NavbarProfileAvatar = () => {
-	// TODO: Implement theme customization
-	// const { updateTheme, nextTheme } = useApplicationTheme();
 	const {address, isConnected} = useAccount();
 
 	const {isOpen, onClose, onOpen} = useDisclosure();
