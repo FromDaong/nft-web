@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import {pagePropsConnectMongoDB} from "@db/engine/pagePropsDB";
 import LegacyNFTModel from "@db/legacy/nft/NFT";
 import useGetCreatorNftCost from "@packages/chain/hooks/useGetCreatorNftCost";
@@ -17,6 +18,7 @@ import {getCreatorNftCost, getSubscriberNftCost} from "@packages/chain/utils";
 import Error404 from "@packages/error/404";
 import {useDisclosure} from "@packages/hooks";
 import FullScreenImagePreview from "@packages/modals/FullScreenImagePreview";
+import {SkeletonTritCollectiblePost, TritPost} from "@packages/post/TritPost";
 import {TPost} from "@packages/post/types";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
@@ -26,15 +28,22 @@ import {
 	ImportantText,
 	MutedText,
 } from "@packages/shared/components/Typography/Text";
-import {timeFromNow} from "@utils/index";
+import {apiEndpoint, legacy_nft_to_new, timeFromNow} from "@utils/index";
+import axios from "axios";
 import BigNumber from "bignumber.js";
 import UserAvatar from "core/auth/components/Avatar";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
+import TreatCore from "core/TreatCore";
 import Link from "next/link";
 import {useState} from "react";
 import {MongoModelTransaction} from "server/helpers/models";
 import {useAccount} from "wagmi";
+
+const getTrendingNFTs = async () => {
+	const res = await axios.get(`${apiEndpoint}/marketplace`);
+	return res.data.data.docs;
+};
 
 export default function NFT(props: {notFound?: boolean; data: any}) {
 	const {
@@ -43,12 +52,26 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 		onClose: onCloseFullscreenPreview,
 	} = useDisclosure();
 
+	const {
+		isLoading: trendingNFTsLoading,
+		error: trendingNFTError,
+		data: trendingNFTsData,
+	} = TreatCore.useQuery({
+		queryKey: ["trendingNFTs"],
+		queryFn: getTrendingNFTs,
+	});
+
 	if (props.notFound) {
 		return <Error404 />;
 	}
 
 	const data = JSON.parse(props.data);
 	const {nft, mints} = data;
+
+	const trendingNFTs =
+		trendingNFTError || trendingNFTsLoading
+			? []
+			: trendingNFTsData?.map((post) => legacy_nft_to_new(post));
 
 	return (
 		<>
@@ -62,7 +85,7 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 				className="w-full 2xl:h-[80vh] lg:h-[90vh] h-[calc(100vh-64px)] flex items-center justify-center"
 				css={{backgroundColor: "$surfaceOnSurface"}}
 			>
-				<Container className="flex-1 h-full py-32 max-w-7xl">
+				<Container className="flex-1 h-full py-32 container">
 					<Container
 						className="relative w-full h-full"
 						onClick={onOpenFullscreenPreview}
@@ -80,98 +103,209 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 			</Container>
 			<ApplicationLayout>
 				<ApplicationFrame>
-					<Container className="grid grid-cols-1 gap-8 px-4 lg:grid-cols-2 xl:px-0">
-						<Container className="flex flex-col gap-12 py-8">
+					<Container className="flex flex-col gap-24">
+						<Container className="grid grid-cols-1 gap-8 px-4 lg:grid-cols-2 xl:px-0">
+							<Container className="flex flex-col gap-12 py-8">
+								<Container className="flex flex-col gap-4">
+									<MutedText>
+										<ImportantText>
+											Remaining: {nft.max_supply - (nft.mints?.length ?? 0)} /{" "}
+											{nft.max_supply}
+										</ImportantText>
+									</MutedText>
+									<Heading size="sm">{nft.name}</Heading>
+									<Link href={`/${nft.model_handle}`}>
+										<a>
+											<Container className="flex">
+												<Container
+													className="flex items-center gap-2 px-4 py-2 border rounded-full"
+													css={{
+														borderColor: "$subtleBorder",
+														backgroundColor: "$surfaceOnSurface",
+													}}
+												>
+													<UserAvatar
+														value={nft.model_handle}
+														size={24}
+													/>
+													<Text>
+														<ImportantText>@{nft.model_handle}</ImportantText>
+													</Text>
+												</Container>
+											</Container>
+										</a>
+									</Link>
+								</Container>
+								<Container className="flex flex-col gap-4">
+									<Heading size="xs">Description</Heading>
+									<Text>{nft.description}</Text>
+								</Container>
+								<Container className="flex flex-col gap-4">
+									<Heading size="xs">Tags</Heading>
+									<Text>{nft.description}</Text>
+								</Container>
+								<Container className="flex flex-col gap-4">
+									<Heading size="xs">NFT Details</Heading>
+									<Text>{nft.description}</Text>
+								</Container>
+							</Container>
+							<Container className="flex flex-col gap-12 py-8">
+								<Container
+									className="p-4 border"
+									css={{borderColor: "$subtleBorder", borderRadius: "16px"}}
+								>
+									<Container className="flex flex-col gap-8">
+										<Container className="flex flex-col gap-1">
+											<Text>
+												<MutedText>List price</MutedText>
+											</Text>
+											<Heading size="md">{nft.list_price} BNB</Heading>
+										</Container>
+										<Container>
+											{nft.mints?.length === Number(nft.max_supply) ? (
+												<Button
+													fullWidth
+													appearance={"subtle"}
+													disabled
+												>
+													Sold out
+												</Button>
+											) : (
+												<Button fullWidth>Buy now</Button>
+											)}
+										</Container>
+									</Container>
+								</Container>
+								<Container className="flex flex-col gap-4">
+									<Heading size="xs">Listed for resale</Heading>
+									<Container className="grid grid-cols-1 gap-6">
+										{mints.slice(0, 4).map((tx) => (
+											<Link
+												key={tx.txHash}
+												href={`https://bscscan.com/tx/${tx.txHash}`}
+											>
+												<a>
+													<Container className="flex gap-2">
+														<UserAvatar
+															value={tx.metadata.balanceSender}
+															size={24}
+														/>
+														<Container className="flex flex-col gap-1">
+															<Text>
+																<ImportantText>
+																	{tx.metadata.balanceSender} purchased for{" "}
+																	{tx.amount} BNB
+																</ImportantText>
+															</Text>
+															<MutedText>{timeFromNow(tx.timestamp)}</MutedText>
+														</Container>
+													</Container>
+												</a>
+											</Link>
+										))}
+									</Container>
+								</Container>
+							</Container>
+						</Container>
+						<Container className="flex flex-col gap-12">
 							<Container className="flex flex-col gap-4">
-								<MutedText>
-									<ImportantText>
-										Remaining: {nft.max_supply - (nft.mints?.length ?? 0)} /{" "}
-										{nft.max_supply}
-									</ImportantText>
-								</MutedText>
-								<Heading size="sm">{nft.name}</Heading>
-								<Link href={`/${nft.model_handle}`}>
-									<a>
-										<Container className="flex">
+								<Heading size="sm">People also bought</Heading>
+							</Container>
+							<Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+								{!trendingNFTError && !trendingNFTsLoading
+									? trendingNFTs.slice(0, 4).map((item) => (
+											<TritPost
+												key={item}
+												inGrid
+												{...item}
+											/>
+									  ))
+									: [0, 1, 2, 3].map((i) => (
 											<Container
-												className="flex items-center gap-2 px-4 py-2 border rounded-full"
+												key={i}
+												className="col-span-1 border"
 												css={{
 													borderColor: "$subtleBorder",
-													backgroundColor: "$surfaceOnSurface",
+													padding: "8px",
+													borderRadius: "16px",
 												}}
 											>
-												<UserAvatar
-													value={nft.model_handle}
-													size={24}
-												/>
-												<Text>
-													<ImportantText>@{nft.model_handle}</ImportantText>
-												</Text>
+												<SkeletonTritCollectiblePost />
 											</Container>
+									  ))}
+							</Container>
+						</Container>
+						<Container className="flex flex-col gap-12">
+							<Container className="flex flex-col gap-4">
+								<Heading size="sm">More from this creator</Heading>
+							</Container>
+							<Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+								<Link href={`/${nft.model_handle}`}>
+									<a>
+										<Container className="flex flex-col gap-8">
+											<UserAvatar
+												value={nft.model_handle}
+												size={80}
+											/>
+
+											<Container className="flex flex-col gap-2">
+												<Heading size="sm">{nft.name} </Heading>
+												<Text>@{nft.model_handle}</Text>
+											</Container>
+											<Text>{nft.description}</Text>
 										</Container>
 									</a>
 								</Link>
-							</Container>
-							<Container className="flex flex-col gap-4">
-								<Heading size="xs">Description</Heading>
-								<Text>{nft.description}</Text>
+								{!trendingNFTError && !trendingNFTsLoading
+									? trendingNFTs.slice(0, 3).map((item) => (
+											<TritPost
+												key={item}
+												inGrid
+												{...item}
+											/>
+									  ))
+									: [0, 1, 2].map((i) => (
+											<Container
+												key={i}
+												className="col-span-1 border"
+												css={{
+													borderColor: "$subtleBorder",
+													padding: "8px",
+													borderRadius: "16px",
+												}}
+											>
+												<SkeletonTritCollectiblePost />
+											</Container>
+									  ))}
 							</Container>
 						</Container>
-						<Container className="flex flex-col gap-12 py-8">
-							<Container
-								className="p-4 border"
-								css={{borderColor: "$subtleBorder", borderRadius: "16px"}}
-							>
-								<Container className="flex flex-col gap-8">
-									<Container className="flex flex-col gap-1">
-										<Text>
-											<MutedText>List price</MutedText>
-										</Text>
-										<Heading size="md">{nft.list_price} BNB</Heading>
-									</Container>
-									<Container>
-										{nft.mints?.length === Number(nft.max_supply) ? (
-											<Button
-												fullWidth
-												appearance={"subtle"}
-												disabled
-											>
-												Sold out
-											</Button>
-										) : (
-											<Button fullWidth>Buy now</Button>
-										)}
-									</Container>
-								</Container>
-							</Container>
-							<Container className="flex flex-col gap-4">
-								<Heading size="xs">Purchase history</Heading>
-								<Container className="grid grid-cols-1 gap-6">
-									{mints.map((tx) => (
-										<Link
-											key={tx.txHash}
-											href={`https://bscscan.com/tx/${tx.txHash}`}
-										>
-											<a>
-												<Container className="flex gap-2">
-													<UserAvatar
-														value={tx.metadata.balanceSender}
-														size={24}
-													/>
-													<Container className="flex flex-col gap-1">
-														<Text>
-															<ImportantText>
-																{tx.metadata.balanceSender} purchased for{" "}
-																{tx.amount} BNB
-															</ImportantText>
-														</Text>
-														<MutedText>{timeFromNow(tx.timestamp)}</MutedText>
-													</Container>
+						<Container className="flex flex-col gap-4">
+							<Heading size="xs">Purchase history</Heading>
+							<Container className="grid grid-cols-1 gap-6">
+								{mints.map((tx) => (
+									<Link
+										key={tx.txHash}
+										href={`https://bscscan.com/tx/${tx.txHash}`}
+									>
+										<a>
+											<Container className="flex gap-2">
+												<UserAvatar
+													value={tx.metadata.balanceSender}
+													size={24}
+												/>
+												<Container className="flex flex-col gap-1">
+													<Text>
+														<ImportantText>
+															{tx.metadata.balanceSender} purchased for{" "}
+															{tx.amount} BNB
+														</ImportantText>
+													</Text>
+													<MutedText>{timeFromNow(tx.timestamp)}</MutedText>
 												</Container>
-											</a>
-										</Link>
-									))}
-								</Container>
+											</Container>
+										</a>
+									</Link>
+								))}
 							</Container>
 						</Container>
 					</Container>

@@ -37,7 +37,7 @@ export default async function handler(
 	 */
 
 	await connectMongoDB();
-	const {page, market} = req.query;
+	const {page, market, sort} = req.query;
 
 	const get_page = Number(page ?? 1) || 1;
 	const options = {
@@ -46,6 +46,10 @@ export default async function handler(
 	};
 
 	let query = {};
+	const sortQuery = {
+		createdAt: sort !== "latest" ? 1 : -1,
+		price: sort === "price" ? 1 : -1,
+	};
 
 	let NFTs;
 

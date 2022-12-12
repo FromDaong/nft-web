@@ -53,27 +53,43 @@ export default function UserProfile(props: {
 		<ApplicationLayout>
 			<ApplicationFrame>
 				<ProfileLayout userProfile={data}>
-					<Container className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-						{!creatorNFTError || !creatorNFTsLoading
-							? creatorNFTs?.map((post: TPost) => (
-									<TritPost
-										key={post.id}
-										{...post}
-									/>
-							  ))
-							: new Array(9).fill(0).map((i) => (
-									<Container
-										key={i}
-										className="col-span-1 border"
-										css={{
-											borderColor: "$subtleBorder",
-											padding: "16px",
-											borderRadius: "16px",
-										}}
-									>
-										<SkeletonTritCollectiblePost />
-									</Container>
-							  ))}
+					<Container className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+						{creatorNFTsLoading &&
+							[0, 1, 2, 3].map((i) => (
+								<Container
+									key={i}
+									className="col-span-1 border"
+									css={{
+										borderColor: "$subtleBorder",
+										padding: "16px",
+										borderRadius: "16px",
+									}}
+								>
+									<SkeletonTritCollectiblePost />
+								</Container>
+							))}
+						{creatorNFTs?.length > 0 && !creatorNFTsLoading ? (
+							creatorNFTs?.map((post: TPost) => (
+								<TritPost
+									key={post.id}
+									{...post}
+									noPrice
+								/>
+							))
+						) : (
+							<Container className="col-span-4 py-12 flex flex-col gap-2 items-center">
+								<Heading size={"sm"}>Eish, not a treator.</Heading>
+								<Text>This profile has not created any Treat NFT's yet.</Text>
+							</Container>
+						)}
+						{creatorNFTError && (
+							<Container className="col-span-4 py-12 flex flex-col gap-2 items-center">
+								<Heading size={"sm"}>Eish, an error!</Heading>
+								<Text>
+									That was an error. Please reload the page and try again.
+								</Text>
+							</Container>
+						)}
 					</Container>
 				</ProfileLayout>
 			</ApplicationFrame>

@@ -36,7 +36,7 @@ export default function Navbar() {
 			<Nav className="hidden md:block fixed top-0 left-0 w-full xl:px-0 h-[60px] shadow">
 				<Container className=" relative w-full h-full px-8 xl:px-0">
 					<div className="absolute top-0 left-0 z-20 w-full h-full" />
-					<div className="relative z-30 flex items-center justify-between max-w-7xl py-3 mx-auto">
+					<div className="relative z-30 flex items-center justify-between container py-3 mx-auto">
 						<div className="flex items-center gap-8">
 							<Link href={isConnected ? "/discover" : "/"}>
 								<a className="relative w-8 h-8 text-3xl font-medium">

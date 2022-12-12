@@ -5,6 +5,7 @@ import {SkeletonTritCollectiblePost, TritPost} from "@packages/post/TritPost";
 import {TPost} from "@packages/post/types";
 import {SEOHead} from "@packages/seo/page";
 import {Container} from "@packages/shared/components/Container";
+import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
@@ -59,7 +60,7 @@ export default function UserProfile(props: {
 	const data = JSON.parse(props.data);
 	const {username} = data;
 
-	const getcreatorNFTs = async () => {
+	const getCollectedNFTs = async () => {
 		const res = await axios.get(`${apiEndpoint}/profile/${username}/collected`);
 		return res.data;
 	};
@@ -69,12 +70,10 @@ export default function UserProfile(props: {
 		data: creatorNFTsData,
 	} = TreatCore.useQuery({
 		queryKey: [`profileCollected:${username}`],
-		queryFn: getcreatorNFTs,
+		queryFn: getCollectedNFTs,
 	});
 
-	console.log({creatorNFTsData});
-
-	const creatorNFTs =
+	const collectedNFTs =
 		creatorNFTsLoading || creatorNFTError
 			? []
 			: creatorNFTsData?.data.map((post) => legacy_nft_to_new(post));
@@ -83,28 +82,43 @@ export default function UserProfile(props: {
 		<ApplicationLayout>
 			<ApplicationFrame>
 				<ProfileLayout userProfile={data}>
-					<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-						{!creatorNFTError || !creatorNFTsLoading
-							? creatorNFTs?.map((post: TPost) => (
-									<TritPost
-										key={post.id}
-										{...post}
-										noPrice
-									/>
-							  ))
-							: [0, 1, 2].map((i) => (
-									<Container
-										key={i}
-										className="col-span-1 border"
-										css={{
-											borderColor: "$subtleBorder",
-											padding: "16px",
-											borderRadius: "16px",
-										}}
-									>
-										<SkeletonTritCollectiblePost />
-									</Container>
-							  ))}
+					<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+						{creatorNFTsLoading &&
+							[0, 1, 2, 3].map((i) => (
+								<Container
+									key={i}
+									className="col-span-1 border"
+									css={{
+										borderColor: "$subtleBorder",
+										padding: "16px",
+										borderRadius: "16px",
+									}}
+								>
+									<SkeletonTritCollectiblePost />
+								</Container>
+							))}
+						{collectedNFTs?.length > 0 && !creatorNFTsLoading ? (
+							collectedNFTs?.map((post: TPost) => (
+								<TritPost
+									key={post.id}
+									{...post}
+									noPrice
+								/>
+							))
+						) : (
+							<Container className="col-span-4 py-12 flex flex-col gap-2 items-center">
+								<Heading size={"sm"}>Eish, not a collector.</Heading>
+								<Text>This profile has not collected any Treat NFT's yet.</Text>
+							</Container>
+						)}
+						{creatorNFTError && (
+							<Container className="col-span-4 py-12 flex flex-col gap-2 items-center">
+								<Heading size={"sm"}>Eish, an error!</Heading>
+								<Text>
+									That was an error. Please reload the page and try again.
+								</Text>
+							</Container>
+						)}
 					</div>
 				</ProfileLayout>
 			</ApplicationFrame>

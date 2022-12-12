@@ -32,10 +32,6 @@ const filtersList = [
 		value: "free",
 	},
 	{
-		label: "Sold out",
-		value: "sold_out",
-	},
-	{
 		label: "TOTM NFT",
 		value: "totm_nft",
 	},
@@ -50,13 +46,19 @@ export default function NFTS(props) {
 	const [market_filter, setFilters] = useState(props.query.market);
 	const router = useRouter();
 
-	const {data, isFetchingNextPage, fetchNextPage, hasNextPage, refetch} =
-		TreatCore.useInfiniteQuery({
-			queryKey: ["sweetshopNFTsInfinite"],
-			queryFn: ({pageParam = 1}) => getSweetshopNFTs(pageParam, market_filter),
-			getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
-			getPreviousPageParam: (firstPage) => firstPage.prevPage ?? undefined,
-		});
+	const {
+		data,
+		isFetchingNextPage,
+		fetchNextPage,
+		hasNextPage,
+		refetch,
+		isFetching,
+	} = TreatCore.useInfiniteQuery({
+		queryKey: ["sweetshopNFTsInfinite"],
+		queryFn: ({pageParam = 1}) => getSweetshopNFTs(pageParam, market_filter),
+		getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
+		getPreviousPageParam: (firstPage) => firstPage.prevPage ?? undefined,
+	});
 
 	const pages = data ? data.pages : [];
 
@@ -127,33 +129,35 @@ export default function NFTS(props) {
 					</Container>
 
 					<Container className="px-4 xl:px-0 flex flex-col gap-8">
-						<InfinityScrollListing>
-							{posts.length > 0
-								? posts.map((nft) => (
-										<div
-											key={nft.id}
-											className="col-span-1"
-										>
-											<TritPost
-												inGrid
-												{...nft}
-											/>
-										</div>
-								  ))
-								: new Array(20).fill(20).map((_, i) => (
-										<Container
-											key={i}
-											className="col-span-1 border"
-											css={{
-												borderColor: "$subtleBorder",
-												padding: "16px",
-												borderRadius: "16px",
-											}}
-										>
-											<SkeletonTritCollectiblePost />
-										</Container>
-								  ))}
-						</InfinityScrollListing>
+						<Container className={isFetching ? "opacity-80" : ""}>
+							<InfinityScrollListing>
+								{posts.length > 0
+									? posts.map((nft) => (
+											<div
+												key={nft.id}
+												className="col-span-1"
+											>
+												<TritPost
+													inGrid
+													{...nft}
+												/>
+											</div>
+									  ))
+									: new Array(20).fill(20).map((_, i) => (
+											<Container
+												key={i}
+												className="col-span-1 border"
+												css={{
+													borderColor: "$subtleBorder",
+													padding: "16px",
+													borderRadius: "16px",
+												}}
+											>
+												<SkeletonTritCollectiblePost />
+											</Container>
+									  ))}
+							</InfinityScrollListing>
+						</Container>
 						<Container className="flex w-full justify-center">
 							<Button
 								appearance={"surface"}
