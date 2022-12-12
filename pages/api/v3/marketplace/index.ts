@@ -42,7 +42,7 @@ export default async function handler(
 	const get_page = Number(page ?? 1) || 1;
 	const options = {
 		page: get_page,
-		limit: 21,
+		limit: 24,
 	};
 
 	let query = {};
