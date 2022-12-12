@@ -58,8 +58,10 @@ export default async function handler(
 			[(market as string) === "free" ? "price" : (market as string)]:
 				market === "free" ? 0 : true,
 		};
+		// @ts-ignore
 		NFTs = await MongoModelNFT.paginate(query, options);
 	} else {
+		// @ts-ignore
 		NFTs = await MongoModelNFT.paginate({}, options);
 	}
 

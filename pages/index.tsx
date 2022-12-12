@@ -3,7 +3,7 @@ import {Container} from "packages/shared/components/Container";
 import FeaturesCard from "@packages/shared/components/Card/MarketingPages/FeaturesCard";
 import {BenefitsCard} from "@packages/shared/components/Card/MarketingPages/BenefitsCard";
 import Footer from "@packages/shared/components/Footer";
-import {ShortDivider} from "@packages/shared/components/Divider";
+import {Divider, ShortDivider} from "@packages/shared/components/Divider";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {SkeletonTritCollectiblePost, TritPost} from "@packages/post/TritPost";
 import SuggestedCreatorCard, {
@@ -22,13 +22,13 @@ import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 // TODO: Use intersection observer to change navbar color.
 
 const getTrendingNFTs = async () => {
-	const res = await axios.get(`${apiEndpoint}/marketplace`);
-	return res.data;
+	const res = await axios.get(`${apiEndpoint}/marketplace/trending`);
+	return res.data.data;
 };
 
 const getTrendingCreators = async () => {
-	const res = await axios.get(`${apiEndpoint}/profile`);
-	return res.data;
+	const res = await axios.get(`${apiEndpoint}/profile/discover`);
+	return res.data.data;
 };
 
 const getTOTM = async () => {
@@ -57,7 +57,7 @@ export default function Index() {
 		error: trendingNFTError,
 		data: trendingNFTsData,
 	} = TreatCore.useQuery({
-		queryKey: ["trendingNFTs"],
+		queryKey: ["trendingNFTsLanding"],
 		queryFn: getTrendingNFTs,
 	});
 
@@ -69,9 +69,9 @@ export default function Index() {
 	const trendingNFTs =
 		totmIsLoading || totmError
 			? []
-			: trendingNFTsData?.data
-					.slice(0, 3)
-					.map((post) => legacy_nft_to_new(post));
+			: trendingNFTsData?.map((post) => legacy_nft_to_new(post));
+
+	console.log({trendingCreators});
 
 	return (
 		<ApplicationLayout>
@@ -98,20 +98,21 @@ export default function Index() {
 								}
 							</Container>
 						</Container>
+						<Divider dir={"horizontal"} />
 						<Container>
 							<Container className="flex flex-col w-full gap-8 px-4 xl:px-0">
 								<Container className="flex justify-between">
-									<Heading size="md">Trending creators</Heading>
+									<Heading size="sm">Discover Treat creators</Heading>
 								</Container>
-								<Container className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+								<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
 									{!trendingCreatorError && !trendingCreatorsLoading
-										? trendingCreators.data.slice(0, 3).map((creator) => (
+										? trendingCreators?.slice(0, 4).map((creator) => (
 												<SuggestedCreatorCard
 													key={creator._id}
 													username={creator.username}
-													display_name={creator.display_name}
-													avatar={creator.profile_picture}
-													bio={creator.bio}
+													display_name={creator.profile.display_name}
+													avatar={creator.profile.profile_picture}
+													bio={creator.profile.bio}
 													isExpanded
 													border
 													live={creator.livestream_active}
@@ -119,7 +120,7 @@ export default function Index() {
 													subscribers={creator.following}
 												/>
 										  ))
-										: [0, 1, 2].map((i) => (
+										: [0, 1, 2, 4].map((i) => (
 												<Container
 													key={i}
 													className="col-span-1 border"
@@ -135,11 +136,11 @@ export default function Index() {
 								</Container>
 							</Container>
 						</Container>
-						<ShortDivider dir={"vertical"} />
+						<Divider dir={"horizontal"} />
 						<Container>
 							<Container className="flex flex-col w-full gap-8 px-8 xl:px-0">
 								<Container className="flex flex-col items-baseline justify-between gap-4 md:flex-row">
-									<Heading size="md">Trending trits</Heading>
+									<Heading size="sm">Discover sweetshop NFTs</Heading>
 									<Link href={"/sweetshop"}>
 										<a>
 											<Text className="flex items-center gap-2">
@@ -152,7 +153,7 @@ export default function Index() {
 										</a>
 									</Link>
 								</Container>
-								<Container className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-4">
+								<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4 lg:gap-4">
 									{!trendingNFTError && !trendingNFTsLoading
 										? trendingNFTs.map((item) => (
 												<TritPost
@@ -175,28 +176,6 @@ export default function Index() {
 												</Container>
 										  ))}
 								</Container>
-							</Container>
-						</Container>
-						<ShortDivider dir={"vertical"} />
-						<Container>
-							<Container className="grid grid-cols-1 gap-8 px-4 lg:grid-cols-2 md:px-8 xl:px-0">
-								<Container className="col-span-1 px-4 mb-12 lg:col-span-2 md:px-8 xl:px-0">
-									<FeaturesCard />
-								</Container>
-								<BenefitsCard
-									title={"Connect with all your favorite creators."}
-									user_type="FAN"
-									description={
-										"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris."
-									}
-								/>
-								<BenefitsCard
-									title={"Unlimited tools to monetize your content."}
-									user_type="CREATOR"
-									description={
-										"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris."
-									}
-								/>
 							</Container>
 						</Container>
 					</Container>

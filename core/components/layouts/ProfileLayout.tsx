@@ -103,13 +103,14 @@ type ProfileLayoutProps = ComponentBasicProps & {
 		followers: number;
 		earnings: number;
 		address: string;
-		profile_picture?: string;
+		profile_pic?: string;
 		profilePicCdnUrl?: string;
 		badges: Array<{color: string; name: string}>;
 	};
 };
 
 export default function ProfileLayout(props: ProfileLayoutProps) {
+	console.log({props});
 	const profile = props.userProfile;
 	const user = {
 		username: profile.username,
@@ -119,9 +120,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 		following: profile.following ?? 0,
 		earnings: profile.earnings ?? 0,
 		address: profile ? profile.address : "",
-		profile_pic: profile
-			? profile.profile_picture ?? profile.profilePicCdnUrl
-			: "",
+		profile_pic: profile.profile_pic,
 	};
 
 	return (

@@ -32,6 +32,9 @@ import {Player} from "@livepeer/react";
 import useUser from "core/auth/useUser";
 import {encode} from "blurhash";
 import useSWR from "swr";
+import {ethers} from "ethers";
+import useCreateAndAddNFTs from "@packages/chain/hooks/useCreateAndAddNFTs";
+import useCreateAndAddSubscriberNFTs from "@packages/chain/hooks/useCreateAndAddSubscriberNFTs";
 
 registerPlugin(
 	FilePondPluginImageExifOrientation,
@@ -84,7 +87,7 @@ export default function PostType(props: {collection: string}) {
 		<ApplicationLayout>
 			<SEOHead title={`Create ${title} Collection - Trit`} />
 			<ApplicationFrame>
-				<Container className="py-12 px-4 flex flex-col gap-12">
+				<Container className="flex flex-col gap-12 px-4 py-12">
 					<Heading
 						css={{
 							minHeight: "32px",
@@ -197,7 +200,7 @@ const UploadMedia = ({next}) => {
 
 	return (
 		<Container
-			className="border p-8 shadow flex flex-col gap-8 max-w-2xl"
+			className="flex flex-col max-w-2xl gap-8 p-8 border shadow"
 			css={{background: "$elementSurface", borderRadius: "16px"}}
 		>
 			<Container className="flex flex-col gap-4">
@@ -323,19 +326,22 @@ const AddNFTDetails = ({
 		},
 	});
 
-	/*
-	const useCreateAndAddNFTs = (maxSupplyArray, amountsArray, ad = "0x") => {};
 	const {
 		onCreateAndAddNFTs,
 		data: createNFTResult,
 		txHash,
 	} = useCreateAndAddNFTs(maxSupplyArray, amountsArray, "0x");
 
-  useEffect(() => {
-		const maxSupplies = formik.values.nfts.map((n) => n.max_supply);
+	const {onCreateAndAddSubscriberNFTs} = useCreateAndAddSubscriberNFTs(
+		maxSupplyArray,
+		amountsArray,
+		"0x"
+	);
+
+	useEffect(() => {
+		const maxSupplies = formik.values.nfts.map((n) => n.maxSupply);
 		const amounts = formik.values.nfts.map(
-			(n) =>
-				n.list_price && ethers.utils.formatUnits(n.list_price.toString(), "wei")
+			(n) => n.price && ethers.utils.formatUnits(n.price.toString(), "wei")
 		);
 
 		setMaxSupplyArray(maxSupplies);
@@ -343,7 +349,7 @@ const AddNFTDetails = ({
 	}, [formik.values.nfts]);
 
 	useEffect(() => {
-		if (!showPendingModal || !txHash || sentWithoutIds) return;
+		if (!txHash) return;
 
 		(async () => {
 			// Create NFTs without NFT IDs
@@ -353,7 +359,7 @@ const AddNFTDetails = ({
 				blurhash: nftData.blurhash ? nftData.blurhash : null,
 			}));
 
-			const res = await fetch(`/api/model/create-nfts-without-ids`, {
+			const res = await fetch(`/api/model/create-temporary`, {
 				method: "POST",
 				headers: {
 					Accept: "application/json",
@@ -376,15 +382,13 @@ const AddNFTDetails = ({
 			}
 
 			if (resJSON.success) {
-				setSentWithoutIds(true);
-				setShowPendingModal(false);
-				setShowCompleteModal(true);
+				// TODO: do something here
 			}
 		})();
 	}, [txHash]);
 
 	useEffect(() => {
-		if (!createNFTResult || sentWithIds) return;
+		if (!createNFTResult) return;
 
 		(async () => {
 			// Create NFTs without NFT IDs
@@ -396,7 +400,7 @@ const AddNFTDetails = ({
 
 			// Show a modal that we are creating nfts, now they being sent to backend
 
-			const res = await fetch(`/api/model/create-nfts`, {
+			const res = await fetch(`/api/v3/marketplace/create`, {
 				method: "POST",
 				headers: {
 					Accept: "application/json",
@@ -411,7 +415,7 @@ const AddNFTDetails = ({
 			const resJSON = await res.json();
 
 			if (resJSON.error && resJSON.error.errors) {
-        // We caught an error, do something
+				// We caught an error, do something
 				console.error(resJSON.error);
 				const ogErrors = Object.assign({}, resJSON.error.errors);
 				Object.keys(ogErrors).map((e) => {
@@ -425,14 +429,15 @@ const AddNFTDetails = ({
 		})();
 	}, [createNFTResult]);
 
-	const SubmitToServer = async () => {
+	const submitToCreateNFTsOnServer = async () => {
 		try {
-			const createNFTResult = await onCreateAndAddNFTs();
+			// TODO: Create subscription nfts if user selects that
+			await onCreateAndAddNFTs();
 		} catch (error) {
 			console.error(error);
 		}
 	};
-*/
+
 	return (
 		<Formik
 			initialValues={{
@@ -460,13 +465,13 @@ const AddNFTDetails = ({
 								return props.values.nfts.map((file, index) => (
 									<Container
 										key={file.cdn}
-										className="border p-8 shadow flex flex-col gap-8"
+										className="flex flex-col gap-8 p-8 border shadow"
 										css={{
 											background: "$elementSurface",
 											borderRadius: "16px",
 										}}
 									>
-										<Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+										<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
 											<Container className="min-h-[320px] h-auto col-span-1">
 												{file.type === "image" ? (
 													<Container
@@ -476,14 +481,14 @@ const AddNFTDetails = ({
 															backgroundSize: "cover",
 															backgroundColor: "$surfaceOnSurface",
 														}}
-														className=" rounded-xl bg-gray-200 w-full h-full"
+														className="w-full h-full bg-gray-200 rounded-xl"
 													/>
 												) : (
 													<Container
 														css={{
 															backgroundColor: "$surfaceOnSurface",
 														}}
-														className=" rounded-xl bg-gray-200 w-full h-full overflow-hidden"
+														className="w-full h-full overflow-hidden bg-gray-200 rounded-xl"
 													>
 														<video
 															width="100%"
@@ -512,7 +517,7 @@ const AddNFTDetails = ({
 
 											<Container className="col-span-1 lg:col-span-2">
 												<Container className="grid grid-cols-2 gap-4">
-													<Container className="col-span-2 flex flex-col gap-1">
+													<Container className="flex flex-col col-span-2 gap-1">
 														<Text>
 															<ImportantText>Name</ImportantText>
 														</Text>
@@ -532,7 +537,7 @@ const AddNFTDetails = ({
 															)}
 														</Field>
 													</Container>
-													<Container className="col-span-2 flex flex-col gap-1">
+													<Container className="flex flex-col col-span-2 gap-1">
 														<Text>
 															<ImportantText>Description</ImportantText>
 														</Text>
@@ -552,7 +557,7 @@ const AddNFTDetails = ({
 															)}
 														</Field>
 													</Container>
-													<Container className="col-span-1 flex flex-col gap-1">
+													<Container className="flex flex-col col-span-1 gap-1">
 														<Text>
 															<ImportantText>Price in BNB</ImportantText>
 														</Text>
@@ -575,7 +580,7 @@ const AddNFTDetails = ({
 															)}
 														</Field>
 													</Container>
-													<Container className="col-span-1 flex flex-col gap-1">
+													<Container className="flex flex-col col-span-1 gap-1">
 														<Text>
 															<ImportantText>Maximum supply</ImportantText>
 														</Text>
@@ -598,7 +603,7 @@ const AddNFTDetails = ({
 															)}
 														</Field>
 													</Container>
-													<Container className="flex items-center justify-between gap-8 col-span-2">
+													<Container className="flex items-center justify-between col-span-2 gap-8">
 														<Container className="flex flex-col">
 															<Text>
 																<ImportantText>Protected content</ImportantText>
@@ -618,7 +623,7 @@ const AddNFTDetails = ({
 															</Switch.Root>
 														</Container>
 													</Container>
-													<Container className="flex items-center justify-between gap-8 col-span-2">
+													<Container className="flex items-center justify-between col-span-2 gap-8">
 														<Container className="flex flex-col">
 															<Text>
 																<ImportantText>
@@ -647,7 +652,7 @@ const AddNFTDetails = ({
 								));
 							}}
 						</FieldArray>
-						<Container className="justify-end py-8 flex flex-col gap-8">
+						<Container className="flex flex-col justify-end gap-8 py-8">
 							<Container className="flex justify-end">
 								<Button onClick={prev}>Previous</Button>
 							</Container>
@@ -673,13 +678,13 @@ const NFTDetailsForm = ({
 	return (
 		<Container
 			key={file.cdn}
-			className="border p-8 shadow flex flex-col gap-8"
+			className="flex flex-col gap-8 p-8 border shadow"
 			css={{
 				background: "$elementSurface",
 				borderRadius: "16px",
 			}}
 		>
-			<Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+			<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
 				<Container className="min-h-[320px] h-auto col-span-1">
 					{file.type === "image" ? (
 						<Container
@@ -689,14 +694,14 @@ const NFTDetailsForm = ({
 								backgroundSize: "cover",
 								backgroundColor: "$surfaceOnSurface",
 							}}
-							className=" rounded-xl bg-gray-200 w-full h-full"
+							className="w-full h-full bg-gray-200 rounded-xl"
 						/>
 					) : (
 						<Container
 							css={{
 								backgroundColor: "$surfaceOnSurface",
 							}}
-							className=" rounded-xl bg-gray-200 w-full h-full overflow-hidden"
+							className="w-full h-full overflow-hidden bg-gray-200 rounded-xl"
 						>
 							<video
 								width="100%"
@@ -725,7 +730,7 @@ const NFTDetailsForm = ({
 
 				<Container className="col-span-1 lg:col-span-2">
 					<Container className="grid grid-cols-2 gap-4">
-						<Container className="col-span-2 flex flex-col gap-1">
+						<Container className="flex flex-col col-span-2 gap-1">
 							<Text>
 								<ImportantText>Name</ImportantText>
 							</Text>
@@ -745,7 +750,7 @@ const NFTDetailsForm = ({
 								)}
 							</Field>
 						</Container>
-						<Container className="col-span-2 flex flex-col gap-1">
+						<Container className="flex flex-col col-span-2 gap-1">
 							<Text>
 								<ImportantText>Description</ImportantText>
 							</Text>
@@ -765,7 +770,7 @@ const NFTDetailsForm = ({
 								)}
 							</Field>
 						</Container>
-						<Container className="col-span-1 flex flex-col gap-1">
+						<Container className="flex flex-col col-span-1 gap-1">
 							<Text>
 								<ImportantText>Price in BNB</ImportantText>
 							</Text>
@@ -796,7 +801,7 @@ const NFTDetailsForm = ({
 								)}
 							</Field>
 						</Container>
-						<Container className="col-span-1 flex flex-col gap-1">
+						<Container className="flex flex-col col-span-1 gap-1">
 							<Text>
 								<ImportantText>Maximum supply</ImportantText>
 							</Text>
@@ -819,7 +824,7 @@ const NFTDetailsForm = ({
 								)}
 							</Field>
 						</Container>
-						<Container className="flex items-center justify-between gap-8 col-span-2">
+						<Container className="flex items-center justify-between col-span-2 gap-8">
 							<Container className="flex flex-col">
 								<Text>
 									<ImportantText>Protected content</ImportantText>
@@ -846,7 +851,7 @@ const NFTDetailsForm = ({
 								/>
 							</Container>
 						</Container>
-						<Container className="flex items-center justify-between gap-8 col-span-2">
+						<Container className="flex items-center justify-between col-span-2 gap-8">
 							<Container className="flex flex-col">
 								<Text>
 									<ImportantText>Subscription content</ImportantText>

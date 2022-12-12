@@ -40,9 +40,9 @@ import {useState} from "react";
 import {MongoModelTransaction} from "server/helpers/models";
 import {useAccount} from "wagmi";
 
-const getTrendingNFTs = async () => {
-	const res = await axios.get(`${apiEndpoint}/marketplace`);
-	return res.data.data.docs;
+const getYouMightAlsoLike = async () => {
+	const res = await axios.get(`${apiEndpoint}/marketplace/trending`);
+	return res.data.data;
 };
 
 export default function NFT(props: {notFound?: boolean; data: any}) {
@@ -53,12 +53,12 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 	} = useDisclosure();
 
 	const {
-		isLoading: trendingNFTsLoading,
-		error: trendingNFTError,
-		data: trendingNFTsData,
+		isLoading: youMightAlsoLikeLoading,
+		error: youMightAlsoLikeError,
+		data: youMightAlsoLikeData,
 	} = TreatCore.useQuery({
-		queryKey: ["trendingNFTs"],
-		queryFn: getTrendingNFTs,
+		queryKey: ["youMightAlsoLikeNFTs"],
+		queryFn: getYouMightAlsoLike,
 	});
 
 	if (props.notFound) {
@@ -69,9 +69,9 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 	const {nft, mints} = data;
 
 	const trendingNFTs =
-		trendingNFTError || trendingNFTsLoading
+		youMightAlsoLikeError || youMightAlsoLikeLoading
 			? []
-			: trendingNFTsData?.map((post) => legacy_nft_to_new(post));
+			: youMightAlsoLikeData?.map((post) => legacy_nft_to_new(post));
 
 	return (
 		<>
@@ -85,7 +85,7 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 				className="w-full 2xl:h-[80vh] lg:h-[90vh] h-[calc(100vh-64px)] flex items-center justify-center"
 				css={{backgroundColor: "$surfaceOnSurface"}}
 			>
-				<Container className="flex-1 h-full py-32 container">
+				<Container className="container flex-1 h-full py-32">
 					<Container
 						className="relative w-full h-full"
 						onClick={onOpenFullscreenPreview}
@@ -107,12 +107,6 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 						<Container className="grid grid-cols-1 gap-8 px-4 lg:grid-cols-2 xl:px-0">
 							<Container className="flex flex-col gap-12 py-8">
 								<Container className="flex flex-col gap-4">
-									<MutedText>
-										<ImportantText>
-											Remaining: {nft.max_supply - (nft.mints?.length ?? 0)} /{" "}
-											{nft.max_supply}
-										</ImportantText>
-									</MutedText>
 									<Heading size="sm">{nft.name}</Heading>
 									<Link href={`/${nft.model_handle}`}>
 										<a>
@@ -150,32 +144,16 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 								</Container>
 							</Container>
 							<Container className="flex flex-col gap-12 py-8">
-								<Container
-									className="p-4 border"
-									css={{borderColor: "$subtleBorder", borderRadius: "16px"}}
-								>
-									<Container className="flex flex-col gap-8">
-										<Container className="flex flex-col gap-1">
-											<Text>
-												<MutedText>List price</MutedText>
-											</Text>
-											<Heading size="md">{nft.list_price} BNB</Heading>
-										</Container>
-										<Container>
-											{nft.mints?.length === Number(nft.max_supply) ? (
-												<Button
-													fullWidth
-													appearance={"subtle"}
-													disabled
-												>
-													Sold out
-												</Button>
-											) : (
-												<Button fullWidth>Buy now</Button>
-											)}
-										</Container>
-									</Container>
+								<Container className="flex flex-col w-full max-w-lg gap-2">
+									<MutedText>
+										<ImportantText>
+											Remaining: {nft.max_supply - (nft.mints?.length ?? 0)} /{" "}
+											{nft.max_supply}
+										</ImportantText>
+									</MutedText>
+									<Button>Buy now for {nft.list_price} BNB</Button>
 								</Container>
+
 								<Container className="flex flex-col gap-4">
 									<Heading size="xs">Listed for resale</Heading>
 									<Container className="grid grid-cols-1 gap-6">
@@ -211,8 +189,8 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 							<Container className="flex flex-col gap-4">
 								<Heading size="sm">People also bought</Heading>
 							</Container>
-							<Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-								{!trendingNFTError && !trendingNFTsLoading
+							<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+								{!youMightAlsoLikeError && !youMightAlsoLikeLoading
 									? trendingNFTs.slice(0, 4).map((item) => (
 											<TritPost
 												key={item}
@@ -239,7 +217,7 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 							<Container className="flex flex-col gap-4">
 								<Heading size="sm">More from this creator</Heading>
 							</Container>
-							<Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+							<Container className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
 								<Link href={`/${nft.model_handle}`}>
 									<a>
 										<Container className="flex flex-col gap-8">
@@ -256,7 +234,7 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 										</Container>
 									</a>
 								</Link>
-								{!trendingNFTError && !trendingNFTsLoading
+								{!youMightAlsoLikeError && !youMightAlsoLikeLoading
 									? trendingNFTs.slice(0, 3).map((item) => (
 											<TritPost
 												key={item}
@@ -436,7 +414,7 @@ const RedeemButton = ({onMintNft, remainingNfts, nftData}) => {
 
 	return (
 		<Button
-			className="bg-primary text-white font-bold"
+			className="font-bold text-white bg-primary"
 			fullWidth
 			css={{borderRadius: "16px"}}
 			appearance={redeemDisabled ? "disabled" : "primary"}

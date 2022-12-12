@@ -87,32 +87,6 @@ export default function UserProfile(props: {
 			<ProfileLayout
 				userProfile={{
 					...data,
-					badges: [
-						{
-							color: "purple",
-							name: "TOTM Collector",
-						},
-						{
-							color: "teal",
-							name: "Melon",
-						},
-						{
-							color: "pink",
-							name: "Hodlr",
-						},
-						{
-							color: "amber",
-							name: "Gold Treator",
-						},
-						{
-							color: "sky",
-							name: "Diamond Treator",
-						},
-						{
-							color: "gray",
-							name: "Silver Treator",
-						},
-					],
 				}}
 			>
 				<Container className="container mx-auto">

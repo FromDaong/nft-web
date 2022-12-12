@@ -5,41 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="13ddaae3-483e-427b-8a07-e5e133fac976" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/data/legacy/sql/migration.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/models/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/models/post/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/models/post/mutation.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/models/post/queries.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/models/profile/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/engine/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/data/engine/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/engine/queries.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/models/chat/Message.ts" beforeDir="false" afterPath="$PROJECT_DIR$/data/legacy/models/chat/Message.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/models/chat/Notification.ts" beforeDir="false" afterPath="$PROJECT_DIR$/data/legacy/models/chat/Notification.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/models/chat/Reaction.ts" beforeDir="false" afterPath="$PROJECT_DIR$/data/legacy/models/chat/Reaction.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/models/chat/Tip.ts" beforeDir="false" afterPath="$PROJECT_DIR$/data/legacy/models/chat/Tip.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/models/creator/Creator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/data/legacy/models/creator/Creator.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/models/creator/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/data/legacy/models/creator/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/models/nft/NFT.js" beforeDir="false" afterPath="$PROJECT_DIR$/data/legacy/models/nft/NFT.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/models/nft/PendingNFT.js" beforeDir="false" afterPath="$PROJECT_DIR$/data/legacy/models/nft/PendingNFT.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/models/nft/ResaleNFT.js" beforeDir="false" afterPath="$PROJECT_DIR$/data/legacy/models/nft/ResaleNFT.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/models/nft/image.ts" beforeDir="false" afterPath="$PROJECT_DIR$/data/legacy/models/nft/image.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/models/nft/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/data/legacy/models/nft/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/models/nft/video.ts" beforeDir="false" afterPath="$PROJECT_DIR$/data/legacy/models/nft/video.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/models/privacy/Ban.ts" beforeDir="false" afterPath="$PROJECT_DIR$/data/legacy/models/privacy/Ban.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/models/privacy/Block.ts" beforeDir="false" afterPath="$PROJECT_DIR$/data/legacy/models/privacy/Block.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/models/privacy/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/data/legacy/models/privacy/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/models/profile/Profile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/data/legacy/models/profile/Profile.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/models/profile/User.js" beforeDir="false" afterPath="$PROJECT_DIR$/data/legacy/models/profile/User.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/sql/migration.sql" beforeDir="false" afterPath="$PROJECT_DIR$/data/engine/sample.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/sql/models/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/data/legacy/sql/models/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/auth/[...nextauth].ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/auth/[...nextauth].ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/graphql.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/graphql.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/schema.prisma" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/components/layouts/ProfileLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/core/components/layouts/ProfileLayout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/[username]/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/[username]/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/id.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/v3/marketplace/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/v3/marketplace/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/create/create.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/post/nft/[id].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/post/nft/[id].tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/page/userProfile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/page/userProfile.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/init.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/init.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,6 +42,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
   <component name="ProjectId" id="2AZ9Ft6pfJni4M98013CmZhg2Az" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -75,26 +53,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/work/codeslayer/freelance/nft-web&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
-    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/lucamarchal/code/treat-next/node_modules/prettier&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;D:\\work\\codeslayer\\freelance\\nft-web\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "D:/work/codeslayer/freelance/treatdao/web",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "yarn",
+    "prettierjs.PrettierConfiguration.Package": "/Users/lucamarchal/code/treat-next/node_modules/prettier",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "ts.external.directory.path": "D:\\work\\codeslayer\\freelance\\treatdao\\web\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\work\codeslayer\freelance\nft-web\data" />
@@ -119,6 +98,7 @@
       <workItem from="1657102526445" duration="1841000" />
       <workItem from="1669844364892" duration="483000" />
       <workItem from="1669844867208" duration="5102000" />
+      <workItem from="1670810616528" duration="835000" />
     </task>
     <servers />
   </component>
