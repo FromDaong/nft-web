@@ -136,7 +136,9 @@ export default function TreatOfTheMonthCollectionSection(props: {
 						></Container>
 					) : (
 						<Heading size="xs">
-							{featuredCreator?.profile[0].display_name}
+							{featuredCreator?.profile[0].display_name === ""
+								? featuredCreator?.profile[0].username
+								: featuredCreator?.profile[0].display_name}
 						</Heading>
 					)}
 				</Container>
