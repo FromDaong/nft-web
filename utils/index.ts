@@ -25,7 +25,7 @@ export const legacy_nft_to_new = (post: any): TPost => ({
 		ipfs: post.image.ipfs,
 	},
 	price: {
-		value: post.list_price,
+		value: post.price,
 		currency: "BNB",
 	},
 	id: post.id,

@@ -53,6 +53,12 @@ const ModelSchema = new mongoose.Schema(
 				id: String,
 			},
 		],
+		badges: [
+			{
+				label: String,
+				color: String,
+			},
+		],
 		referred: [],
 		user: {
 			type: mongoose.Schema.Types.ObjectId,

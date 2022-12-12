@@ -1,41 +1,79 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import SweetshopSortBy from "@packages/post/SweetshopSortBy";
 import {SkeletonTritCollectiblePost, TritPost} from "@packages/post/TritPost";
 import {SEOHead} from "@packages/seo/page";
+import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
 import SelectableTag from "@packages/shared/components/Selectabletag";
 import {Heading} from "@packages/shared/components/Typography/Headings";
-import {Text} from "@packages/shared/components/Typography/Text";
+import {
+	ImportantText,
+	MutedText,
+	Text,
+} from "@packages/shared/components/Typography/Text";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import TreatCore from "core/TreatCore";
 import {InfinityScrollListing} from "packages/shared/components/ListingSection";
+import {useEffect, useMemo} from "react";
+import {useInView} from "react-intersection-observer";
 
-const getSweetshopNFTs = async () => {
-	const res = await axios.get(`${apiEndpoint}/marketplace`);
-	return res.data;
+const getSweetshopNFTs = async (page: number) => {
+	const res = await axios.get(`${apiEndpoint}/marketplace?page=${page ?? 1}`);
+	return res.data.data;
 };
 
 export default function NFTS() {
+	const {ref, inView} = useInView();
+
 	const {
-		isLoading: sweetshopNFTsLoading,
-		error: sweetshopNFTsError,
-		data: sweetshopNFTsData,
-	} = TreatCore.useQuery({
-		queryKey: ["trendingNFTs"],
-		queryFn: getSweetshopNFTs,
+		status,
+		data,
+		error,
+		isFetching,
+		isFetchingNextPage,
+		isFetchingPreviousPage,
+		fetchNextPage,
+		fetchPreviousPage,
+		hasNextPage,
+		hasPreviousPage,
+	} = TreatCore.useInfiniteQuery({
+		queryKey: ["sweetshopNFTsInfinite"],
+		queryFn: ({pageParam = 1}) => getSweetshopNFTs(pageParam),
+		getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
+		getPreviousPageParam: (firstPage) => firstPage.prevPage ?? undefined,
 	});
 
+	/*
 	const nfts =
 		sweetshopNFTsLoading || sweetshopNFTsError
 			? []
 			: sweetshopNFTsData?.data
 					.slice(0, 20)
 					.map((post) => legacy_nft_to_new(post));
+	*/
 
-	console.log({nfts});
+	const pages = data ? data.pages : [];
+
+	const posts = useMemo(() => {
+		if (pages.length > 0) {
+			return pages
+				.map((page) => page.docs)
+				.flat()
+				.map((post) => legacy_nft_to_new(post));
+		} else {
+			return [];
+		}
+	}, [pages]);
+
+	useEffect(() => {
+		if (inView) {
+			fetchNextPage();
+		}
+	}, [inView]);
 
 	return (
 		<ApplicationLayout>
@@ -49,16 +87,24 @@ export default function NFTS() {
 							<Container className="flex flex-col gap-4 md:flex-row md:justify-between">
 								<Container className="flex gap-2">
 									<SelectableTag>
-										<Text>Free</Text>
+										<Text>
+											<ImportantText>Free</ImportantText>
+										</Text>
 									</SelectableTag>
 									<SelectableTag>
-										<Text>Sold out</Text>
+										<Text>
+											<ImportantText>Sold out</ImportantText>
+										</Text>
 									</SelectableTag>
 									<SelectableTag>
-										<Text>1 of 1</Text>
+										<Text>
+											<ImportantText>TOTM NFT</ImportantText>
+										</Text>
 									</SelectableTag>
 									<SelectableTag>
-										<Text>TOTM</Text>
+										<Text>
+											<ImportantText>Subscription NFT</ImportantText>
+										</Text>
 									</SelectableTag>
 								</Container>
 								<Container className="flex gap-4">
@@ -69,10 +115,10 @@ export default function NFTS() {
 						</Container>
 					</Container>
 
-					<Container className="px-4 xl:px-0">
+					<Container className="px-4 xl:px-0 flex flex-col gap-8">
 						<InfinityScrollListing>
-							{!sweetshopNFTsLoading && !sweetshopNFTsError
-								? nfts.map((nft) => (
+							{posts.length > 0
+								? posts.map((nft) => (
 										<div
 											key={nft.id}
 											className="col-span-1"
@@ -97,6 +143,20 @@ export default function NFTS() {
 										</Container>
 								  ))}
 						</InfinityScrollListing>
+						<Container className="flex w-full justify-center">
+							<Button
+								appearance={"surface"}
+								ref={ref}
+								onClick={() => fetchNextPage()}
+								disabled={!hasNextPage || isFetchingNextPage}
+							>
+								{isFetchingNextPage
+									? "Loading more..."
+									: hasNextPage
+									? "Load Newer"
+									: "Nothing more to load"}
+							</Button>
+						</Container>
 					</Container>
 				</Container>
 			</ApplicationFrame>

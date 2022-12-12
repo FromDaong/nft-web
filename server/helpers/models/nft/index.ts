@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import createMongoDBModel from "../../utils";
 import paginate from "mongoose-paginate-v2";
+import aggregatePaginate  from "mongoose-aggregate-paginate-v2";
 
 const NFTSchema = new mongoose.Schema(
 	{
@@ -88,6 +89,7 @@ const NFTSchema = new mongoose.Schema(
 );
 
 NFTSchema.plugin(paginate);
+NFTSchema.plugin(aggregatePaginate)
 
 const NFTModel = createMongoDBModel("MarketplaceNFT", NFTSchema);
 

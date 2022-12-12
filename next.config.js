@@ -1,6 +1,8 @@
 // const withPWA = require("next-pwa");
 // const runtimeCaching = require("next-pwa/cache");
 
+const withTM = require("next-transpile-modules")(["pintura", "react-pintura"]);
+
 const securityHeaders = () => [
 	{
 		key: "X-Content-Type-Options",
@@ -16,26 +18,24 @@ const securityHeaders = () => [
 	},
 ];
 
-module.exports =
-	//withPWA(
-	{
-		eslint: {
-			// Warning: This allows production builds to successfully complete even if
-			// your project has ESLint errors.
-			ignoreDuringBuilds: true,
-		},
-		reactStrictMode: true,
-		i18n: {
-			locales: ["en", "nl"],
-			defaultLocale: "en",
-			localeDetection: false,
-		},
+module.exports = withTM({
+	eslint: {
+		// Warning: This allows production builds to successfully complete even if
+		// your project has ESLint errors.
+		ignoreDuringBuilds: true,
+	},
+	reactStrictMode: true,
+	i18n: {
+		locales: ["en", "nl"],
+		defaultLocale: "en",
+		localeDetection: false,
+	},
 
-		/*pwa: {
+	/*pwa: {
     disable: process.env.NODE_ENV !== "production",
     dest: "public",
     runtimeCaching,
     buildExcludes: [/middleware-manifest.json$/],
   },*/
-	};
+});
 //);

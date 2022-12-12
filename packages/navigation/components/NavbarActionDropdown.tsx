@@ -60,26 +60,28 @@ const NavbarActionDropdown = () => {
 								</NavDropdownItem>
 							</a>
 						</Link>
-						<Link href={"/create/live"}>
-							<a>
-								<NavDropdownItem className="flex items-center justify-between p-1 rounded-xl hover:cursor-pointer">
-									<Text className="flex items-center gap-4">
-										<LegibleText className="p-2 rounded-full">
-											<VideoCameraIcon className="w-4 h-4" />
-										</LegibleText>
-										<ImportantText>Start livestream</ImportantText>
-									</Text>
-									<span className="flex gap-2 text-sm">
-										<LegibleText>
-											<Kbd>{ctrl_button_emoji}</Kbd>
-										</LegibleText>
-										<LegibleText>
-											<Kbd>L</Kbd>
-										</LegibleText>
-									</span>{" "}
-								</NavDropdownItem>
-							</a>
-						</Link>
+						{false && (
+							<Link href={"/create/live"}>
+								<a>
+									<NavDropdownItem className="flex items-center justify-between p-1 rounded-xl hover:cursor-pointer">
+										<Text className="flex items-center gap-4">
+											<LegibleText className="p-2 rounded-full">
+												<VideoCameraIcon className="w-4 h-4" />
+											</LegibleText>
+											<ImportantText>Start livestream</ImportantText>
+										</Text>
+										<span className="flex gap-2 text-sm">
+											<LegibleText>
+												<Kbd>{ctrl_button_emoji}</Kbd>
+											</LegibleText>
+											<LegibleText>
+												<Kbd>L</Kbd>
+											</LegibleText>
+										</span>{" "}
+									</NavDropdownItem>
+								</a>
+							</Link>
+						)}
 					</DropdownContainer>
 				</DropdownContent>
 			</DropdownMenu.Portal>

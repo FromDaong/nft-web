@@ -1,6 +1,7 @@
 import "@rainbow-me/rainbowkit/styles.css";
 import "filepond/dist/filepond.min.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
+import "pintura/pintura.css";
 
 import "../styles/index.css";
 

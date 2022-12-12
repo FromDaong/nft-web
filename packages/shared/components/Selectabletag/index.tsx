@@ -3,10 +3,11 @@ import {styled} from "@styles/theme";
 import {ReactNode} from "react";
 
 const ThemedToggle = styled(ToggleItem.Root, {
-	border: "2px solid $border",
+	border: "1px solid $border",
 	padding: "4px 12px",
 	borderRadius: "9999px",
-	backgroundColor: "$elementOnSurface",
+	backgroundColor: "$elementSurface",
+	boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.02)",
 });
 
 const SelectableTag = (props: {children: ReactNode}) => (

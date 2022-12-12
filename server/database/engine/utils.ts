@@ -1,3 +1,4 @@
+import {MongoModelCreator} from "./../../helpers/models/index";
 import {NextApiResponse} from "next";
 import {Model, model, Schema} from "mongoose";
 import {MongoModelProfile} from "server/helpers/models";
@@ -131,12 +132,13 @@ export function generatePaginationQuery(query, sort, nextKey) {
 export const populateNFTsWithProfile = async (nfts) => {
 	return Promise.all(
 		nfts.map(async (nft) => {
-			const profile_id = nft.creator.profile;
-			const profile = await MongoModelProfile.findById(profile_id);
+			const creator_id = nft.creator;
+			const creator = await MongoModelCreator.findById(creator_id);
+			const profile = await MongoModelProfile.findById(creator.profile);
 			return {
 				...nft.toObject(),
 				creator: {
-					...nft.creator.toObject(),
+					...creator.toObject(),
 					profile_pic: profile.profile_pic,
 				},
 			};

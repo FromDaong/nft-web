@@ -37,15 +37,15 @@ export default async function handler(
 	 */
 
 	await connectMongoDB();
+	const {page} = req.query;
+	const get_page = Number(page ?? 1) || 1;
+	const options = {
+		page: get_page,
+		limit: 21,
+	};
 
-	const NFTs = await MongoModelNFT.find()
-		.populate({
-			path: "creator",
-			select: "username address bio profile",
-			model: MongoModelCreator,
-		})
-		.limit(20);
-	const nftsWithDp = await populateNFTsWithProfile(NFTs);
+	const NFTs = await MongoModelNFT.paginate({}, options);
+	NFTs.docs = await populateNFTsWithProfile(NFTs.docs);
 
-	return returnWithSuccess(nftsWithDp, res);
+	return returnWithSuccess(NFTs, res);
 }
