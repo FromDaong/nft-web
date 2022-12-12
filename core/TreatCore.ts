@@ -1,8 +1,7 @@
 import {QueryClient, useInfiniteQuery, useQuery} from "@tanstack/react-query";
 import {ReactNode, useEffect, useRef} from "react";
-import {PrismaClient} from "@prisma/client";
 
-export type Context = {prisma: PrismaClient; currentUserEmail: string};
+export type Context = {currentUserEmail: string};
 
 export default class TreatCore {
 	web3: TreatWeb3Engine;
