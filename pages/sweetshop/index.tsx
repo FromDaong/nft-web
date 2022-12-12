@@ -39,6 +39,10 @@ const filtersList = [
 		label: "Subscription NFT",
 		value: "subscription_nft",
 	},
+	{
+		label: "Resale Market",
+		value: "resale_market",
+	},
 ];
 
 export default function NFTS(props) {
@@ -128,7 +132,7 @@ export default function NFTS(props) {
 						</Container>
 					</Container>
 
-					<Container className="px-4 xl:px-0 flex flex-col gap-8">
+					<Container className="flex flex-col gap-8 px-4 xl:px-0">
 						<Container className={isFetching ? "opacity-80" : ""}>
 							<InfinityScrollListing>
 								{posts.length > 0
@@ -158,7 +162,7 @@ export default function NFTS(props) {
 									  ))}
 							</InfinityScrollListing>
 						</Container>
-						<Container className="flex w-full justify-center">
+						<Container className="flex justify-center w-full">
 							<Button
 								appearance={"surface"}
 								ref={ref}

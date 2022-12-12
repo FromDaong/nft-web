@@ -1,56 +1,19 @@
-import {TimelineActivity} from "@packages/post/TimelineActivity";
+/* eslint-disable no-mixed-spaces-and-tabs */
+import Error404 from "@packages/error/404";
+import Error500 from "@packages/error/500";
+import {SkeletonTritCollectiblePost, TritPost} from "@packages/post/TritPost";
 import {TPost} from "@packages/post/types";
 import {SEOHead} from "@packages/seo/page";
 import {Container} from "@packages/shared/components/Container";
-import {Divider} from "@packages/shared/components/Divider";
+import {Heading, Text} from "@packages/shared/components/Typography/Headings";
+import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
+import axios from "axios";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import ProfileLayout from "core/components/layouts/ProfileLayout";
-import SuggestedCreatorsSection from "@packages/feed/components/SuggestedCreatorsSection";
-import TrendsSection from "@packages/feed/components/TrendsSection";
-import ContentSidebar from "core/components/layouts/ContentSidebar";
-import {beforePageLoadGetUserProfile} from "server/page/userProfile";
-import Error404 from "@packages/error/404";
-import Error500 from "@packages/error/500";
-import axios from "axios";
-import {apiEndpoint} from "@utils/index";
 import TreatCore from "core/TreatCore";
-
-const newCurated: TPost = {
-	name: "Welcome to the Tritters",
-	image: {
-		cdn: "/assets/cherieCover.jpg",
-		ipfs: "/assets/cherieCover.jpg",
-	},
-	text: "Woke up feeling sexy :)",
-	price: {
-		value: 0.99,
-		currency: "BNB",
-	},
-	id: "1",
-	blurhash:
-		"-qIFGCoMs:WBayay_NRjayj[ayj[IUWBayayj[fQIUt7j[ayayayj@WBRjoffkj[xuWBWCayj[ayWAt7fQj[ayayM{WBofj[j[fQ",
-	post_type: "subscription",
-	author: {
-		username: "kamfeskaya",
-		display_name: "Kamfes",
-		avatar:
-			"https://images.pexels.com/users/avatars/50964441/feyza-yildirim-157.jpeg?auto=compress&fit=crop&h=50&w=50&dpr=1",
-	},
-	timestamp: 782898893,
-	subscription: {
-		id: "8373",
-		price: {
-			value: 0.2,
-			currency: "BNB",
-		},
-	},
-};
-
-const getTrendingCreators = async () => {
-	const res = await axios.get(`${apiEndpoint}/profile`);
-	return res.data;
-};
+import {useRouter} from "next/router";
+import {beforePageLoadGetUserProfile} from "server/page/userProfile";
 
 export default function UserProfile(props: {
 	error: boolean;
@@ -68,75 +31,68 @@ export default function UserProfile(props: {
 	const data = JSON.parse(props.data);
 	const {username} = data;
 
+	const getcreatorNFTs = async () => {
+		const res = await axios.get(`${apiEndpoint}/creator/${username}/nfts`);
+		return res.data;
+	};
 	const {
-		isLoading: trendingCreatorsLoading,
-		error: trendingCreatorError,
-		data: trendingCreatorsData,
+		isLoading: creatorNFTsLoading,
+		error: creatorNFTError,
+		data: creatorNFTsData,
 	} = TreatCore.useQuery({
-		queryKey: ["trendingCreators"],
-		queryFn: getTrendingCreators,
+		queryKey: [`subscriptionNFTs:${username}`],
+		queryFn: getcreatorNFTs,
 	});
 
-	const trendingCreators =
-		trendingCreatorsLoading || trendingCreatorError
+	const creatorNFTs =
+		creatorNFTsLoading || creatorNFTError
 			? []
-			: trendingCreatorsData?.data.slice(0, 5);
+			: creatorNFTsData?.data.map((post) => legacy_nft_to_new(post));
 
 	return (
 		<ApplicationLayout>
-			<ProfileLayout
-				userProfile={{
-					...data,
-				}}
-			>
-				<Container className="container mx-auto">
-					<SEOHead title={username + " - Trit"} />
-					<Container className="flex justify-between gap-12">
-						<Container className="flex flex-col flex-1 max-w-xl gap-4 ">
-							<TimelineActivity
-								actionMeta={{
-									verb: "Created content",
-									joining_phrase: "on their",
-									subject: {
-										name: "subscription timeline",
-										url: "/kamfeskaya",
-									},
-								}}
-								{...newCurated}
-							/>
-							<Divider dir="horizontal" />
-							<TimelineActivity
-								actionMeta={{
-									verb: "Collected",
-									joining_phrase: "from",
-									subject: {
-										name: "kamfeskaya",
-										url: "/kamfeskaya",
-									},
-								}}
-								{...newCurated}
-							/>
-						</Container>
-						<ContentSidebar>
-							{trendingCreators.length > 0 && (
-								<SuggestedCreatorsSection
-									title="Creators you might like"
-									data={trendingCreators}
+			<ApplicationFrame>
+				<ProfileLayout userProfile={data}>
+					<Container className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+						{creatorNFTsLoading &&
+							[0, 1, 2, 3].map((i) => (
+								<Container
+									key={i}
+									className="col-span-1 border"
+									css={{
+										borderColor: "$subtleBorder",
+										padding: "16px",
+										borderRadius: "16px",
+									}}
+								>
+									<SkeletonTritCollectiblePost />
+								</Container>
+							))}
+						{creatorNFTs?.length > 0 && !creatorNFTsLoading ? (
+							creatorNFTs?.map((post: TPost) => (
+								<TritPost
+									key={post.id}
+									{...post}
+									noPrice
 								/>
-							)}
-							<TrendsSection
-								data={[
-									{
-										channel: "Trending",
-										topic: "NSFW Art",
-										totalPosts: 1400,
-									},
-								]}
-							/>
-						</ContentSidebar>
+							))
+						) : (
+							<Container className="flex flex-col items-center col-span-4 gap-2 py-12">
+								<Heading size={"sm"}>Eish, not a treator.</Heading>
+								<Text>This profile has not created any Treat NFT's yet.</Text>
+							</Container>
+						)}
+						{creatorNFTError && (
+							<Container className="flex flex-col items-center col-span-4 gap-2 py-12">
+								<Heading size={"sm"}>Eish, an error!</Heading>
+								<Text>
+									That was an error. Please reload the page and try again.
+								</Text>
+							</Container>
+						)}
 					</Container>
-				</Container>
-			</ProfileLayout>
+				</ProfileLayout>
+			</ApplicationFrame>
 		</ApplicationLayout>
 	);
 }

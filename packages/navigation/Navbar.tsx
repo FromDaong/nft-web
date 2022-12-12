@@ -34,9 +34,9 @@ export default function Navbar() {
 	return (
 		<Container>
 			<Nav className="hidden md:block fixed top-0 left-0 w-full xl:px-0 h-[60px] shadow">
-				<Container className=" relative w-full h-full px-8 xl:px-0">
+				<Container className="relative w-full h-full px-8  xl:px-0">
 					<div className="absolute top-0 left-0 z-20 w-full h-full" />
-					<div className="relative z-30 flex items-center justify-between container py-3 mx-auto">
+					<div className="container relative z-30 flex items-center justify-between py-3 mx-auto">
 						<div className="flex items-center gap-8">
 							<Link href={isConnected ? "/discover" : "/"}>
 								<a className="relative w-8 h-8 text-3xl font-medium">
@@ -50,19 +50,19 @@ export default function Navbar() {
 							</Link>
 
 							<div className="items-center hidden gap-8 md:flex">
-								<Link href="/discover">
+								<Link href="/sweetshop">
 									<a>
-										<BoldLink className="font-medium">Discover</BoldLink>
+										<BoldLink className="font-medium">Sweetshop</BoldLink>
 									</a>
 								</Link>
 								<NavbarExploreDropdown />
 							</div>
 						</div>
-						<div className="max-w-md w-full items-center hidden gap-8 md:flex">
+						<div className="items-center hidden w-full max-w-md gap-8 md:flex">
 							<NavbarSearchDropdown />
 						</div>
 
-						<div className="gap-4 flex">
+						<div className="flex gap-4">
 							<div className="flex md:hidden"></div>
 							{
 								// eslint-disable-next-line no-constant-condition
@@ -92,9 +92,9 @@ export default function Navbar() {
 					</div>
 				</Container>
 			</Nav>
-			<Nav className="fixed md:hidden top-0 left-0 w-full py-4 shadow">
-				<Container className="flex flex-col gap-2 px-8 h-full">
-					<Container className="flex justify-between items-center">
+			<Nav className="fixed top-0 left-0 w-full py-4 shadow md:hidden">
+				<Container className="flex flex-col h-full gap-2 px-8">
+					<Container className="flex items-center justify-between">
 						<Link href={isConnected ? "/discover" : "/"}>
 							<a className="relative w-8 h-8 text-3xl font-medium">
 								<Image
