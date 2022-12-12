@@ -13,13 +13,11 @@ const ThemedToggle = styled(ToggleItem.Root, {
 
 const SelectableTag = (props: {
 	toggle: any;
-	selected: Array<string>;
+	selected: string;
 	value: string;
 	label: string;
 }) => {
-	console.log({props});
-	const isSelected =
-		props.selected.filter((item) => item === props.value).length > 0;
+	const isSelected = props.selected === props.value;
 	return (
 		<ThemedToggle
 			className="Toggle"

@@ -7,11 +7,6 @@ import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
 import SelectableTag from "@packages/shared/components/Selectabletag";
 import {Heading} from "@packages/shared/components/Typography/Headings";
-import {
-	ImportantText,
-	MutedText,
-	Text,
-} from "@packages/shared/components/Typography/Text";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
@@ -25,7 +20,7 @@ import {useInView} from "react-intersection-observer";
 const getSweetshopNFTs = async (page: number, filterString: string) => {
 	const res = await axios.get(
 		`${apiEndpoint}/marketplace?page=${page ?? 1}${
-			filterString ? "&" + filterString : ""
+			filterString ? "&market=" + filterString : ""
 		}`
 	);
 	return res.data.data;
@@ -52,27 +47,16 @@ const filtersList = [
 
 export default function NFTS(props) {
 	const {ref, inView} = useInView();
-	const [filters, setFilters] = useState([]);
+	const [market_filter, setFilters] = useState(props.query.market);
 	const router = useRouter();
-	const filterString = useMemo(() => filters.join("&"), [filters]);
 
-	const {
-		status,
-		data,
-		error,
-		isFetching,
-		isFetchingNextPage,
-		isFetchingPreviousPage,
-		fetchNextPage,
-		fetchPreviousPage,
-		hasNextPage,
-		hasPreviousPage,
-	} = TreatCore.useInfiniteQuery({
-		queryKey: ["sweetshopNFTsInfinite"],
-		queryFn: ({pageParam = 1}) => getSweetshopNFTs(pageParam, filterString),
-		getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
-		getPreviousPageParam: (firstPage) => firstPage.prevPage ?? undefined,
-	});
+	const {data, isFetchingNextPage, fetchNextPage, hasNextPage, refetch} =
+		TreatCore.useInfiniteQuery({
+			queryKey: ["sweetshopNFTsInfinite"],
+			queryFn: ({pageParam = 1}) => getSweetshopNFTs(pageParam, market_filter),
+			getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
+			getPreviousPageParam: (firstPage) => firstPage.prevPage ?? undefined,
+		});
 
 	const pages = data ? data.pages : [];
 
@@ -89,30 +73,23 @@ export default function NFTS(props) {
 
 	const toggleFilter = (filter: string) => {
 		// add filter if it doesnt exist, remove if it does
-		if (filters.includes(filter)) {
-			setFilters(filters.filter((f) => f !== filter));
+		if (filter === market_filter) {
+			setFilters("");
 		} else {
-			setFilters([...filters, filter]);
+			setFilters(filter);
 		}
 	};
 
 	useEffect(() => {
-		if (filters.length > 0) {
-			router.push(`/sweetshop?${filterString}`, undefined, {shallow: true});
+		if (market_filter) {
+			router.push(`/sweetshop?market=${market_filter}`, undefined, {
+				shallow: true,
+			});
 		} else {
 			router.push(`/sweetshop`, undefined, {shallow: true});
 		}
-	}, [filters]);
-
-	useEffect(() => {
-		fetchPreviousPage();
-	}, [filterString]);
-
-	useEffect(() => {
-		Object.keys(props.query).forEach((key) => {
-			setFilters((filters) => [...filters, key]);
-		});
-	}, [props.query]);
+		refetch({refetchPage: (page, index) => index === 0});
+	}, [market_filter]);
 
 	useEffect(() => {
 		if (inView) {
@@ -135,7 +112,7 @@ export default function NFTS(props) {
 										<SelectableTag
 											toggle={toggleFilter}
 											key={f.value}
-											selected={filters}
+											selected={market_filter}
 											label={f.label}
 											value={f.value}
 										/>
