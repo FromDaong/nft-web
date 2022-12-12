@@ -73,5 +73,10 @@ const ModelSchema = new mongoose.Schema(
 
 ModelSchema.plugin(paginate);
 
+ModelSchema.pre("findOne", function (next) {
+	// Find badges and add them to the model
+	next();
+});
+
 const ModelProfile = createMongoDBModel("Profile", ModelSchema);
 export default ModelProfile;

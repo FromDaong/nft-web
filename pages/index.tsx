@@ -110,14 +110,14 @@ export default function Index() {
 												<SuggestedCreatorCard
 													key={creator._id}
 													username={creator.username}
-													display_name={creator.profile.display_name}
-													avatar={creator.profile.profile_picture}
-													bio={creator.profile.bio}
+													display_name={creator.profile[0].display_name}
+													avatar={creator.profile[0].profile_picture}
+													bio={creator.profile[0].bio}
 													isExpanded
 													border
 													live={creator.livestream_active}
-													followers={creator.followers}
-													subscribers={creator.following}
+													followers={creator.profile[0].followers}
+													subscribers={creator.profile[0].following}
 												/>
 										  ))
 										: [0, 1, 2, 4].map((i) => (
