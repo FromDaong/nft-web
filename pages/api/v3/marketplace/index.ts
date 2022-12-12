@@ -4,7 +4,7 @@ import {NextApiRequest} from "next";
 import LegacyNFTModel from "server/database/legacy/nft/NFT";
 import {
 	enforcePrivacyForNFTs,
-	populateNFTsWithProfile,
+	populateNFTsWithProfileAndTx,
 	returnWithSuccess,
 } from "server/database/engine/utils";
 import {MongoModelCreator, MongoModelNFT} from "server/helpers/models";
@@ -37,15 +37,37 @@ export default async function handler(
 	 */
 
 	await connectMongoDB();
+	const {page, market, sort} = req.query;
 
-	const NFTs = await MongoModelNFT.find()
-		.populate({
-			path: "creator",
-			select: "username address bio profile",
-			model: MongoModelCreator,
-		})
-		.limit(20);
-	const nftsWithDp = await populateNFTsWithProfile(NFTs);
+	const get_page = Number(page ?? 1) || 1;
+	const options = {
+		page: get_page,
+		limit: 21,
+	};
 
-	return returnWithSuccess(nftsWithDp, res);
+	let query = {};
+	const sortQuery = {
+		createdAt: sort !== "latest" ? 1 : -1,
+		price: sort === "price" ? 1 : -1,
+	};
+
+	let NFTs;
+
+	if (market) {
+		query = {
+			[(market as string) === "free" ? "price" : (market as string)]:
+				market === "free" ? 0 : true,
+		};
+		// @ts-ignore
+		NFTs = await MongoModelNFT.paginate(query, options);
+	} else {
+		// @ts-ignore
+		NFTs = await MongoModelNFT.paginate({}, options);
+	}
+
+	// @ts-ignore
+
+	NFTs.docs = await populateNFTsWithProfileAndTx(NFTs.docs);
+
+	return returnWithSuccess(NFTs, res);
 }

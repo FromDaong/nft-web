@@ -24,3 +24,29 @@ Its basically just the TikTok for you page, still really debating on whether to 
 - feat: New feature
 - fix: Bugfix
 - refactor: Change code structure
+
+Badges: [
+{
+color: "purple",
+name: "TOTM Collector",
+},
+{
+color: "teal",
+name: "Melon",
+},
+{
+color: "pink",
+name: "Hodlr",
+},
+{
+color: "amber",
+name: "Gold Treator",
+},
+{
+color: "sky",
+name: "Diamond Treator",
+},
+{
+color: "gray",
+name: "Silver Treator",
+},

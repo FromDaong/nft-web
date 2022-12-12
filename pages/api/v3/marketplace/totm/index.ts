@@ -1,5 +1,5 @@
 import {
-	populateNFTsWithProfile,
+	populateNFTsWithProfileAndTx,
 	returnWithError,
 } from "server/database/engine/utils";
 import {NextApiResponse} from "next";
@@ -34,7 +34,7 @@ export default async function totm(req: NextApiRequest, res: NextApiResponse) {
 		})
 		.limit(20);
 
-	const nftsWithDp = await populateNFTsWithProfile(NFTs);
+	const nftsWithDp = await populateNFTsWithProfileAndTx(NFTs);
 
 	await setStringToRedisCache("totm", nftsWithDp);
 

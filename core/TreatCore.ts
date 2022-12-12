@@ -1,4 +1,4 @@
-import {QueryClient, useQuery} from "@tanstack/react-query";
+import {QueryClient, useInfiniteQuery, useQuery} from "@tanstack/react-query";
 import {ReactNode, useEffect, useRef} from "react";
 import {PrismaClient} from "@prisma/client";
 
@@ -15,6 +15,7 @@ export default class TreatCore {
 
 	static queryClient = new QueryClient();
 	static useQuery = useQuery;
+	static useInfiniteQuery = useInfiniteQuery;
 
 	/**
 	 * @description Trigger analytics event & logger then sync.

@@ -3,6 +3,7 @@ import BigNumber from "bignumber.js";
 import {MathUtil} from "./math";
 import {ReactUtil} from "./react";
 import {formatDistance} from "date-fns";
+import {IronSessionOptions} from "iron-session";
 
 export const timeFromNow = (date: string) =>
 	formatDistance(new Date(date), new Date(), {addSuffix: true});
@@ -24,7 +25,7 @@ export const legacy_nft_to_new = (post: any): TPost => ({
 		ipfs: post.image.ipfs,
 	},
 	price: {
-		value: post.list_price,
+		value: post.price,
 		currency: "BNB",
 	},
 	id: post.id,
@@ -48,5 +49,13 @@ export const legacy_nft_to_new = (post: any): TPost => ({
 });
 
 export const apiEndpoint = "/api/v3";
+
+export const ironOptions: IronSessionOptions = {
+	cookieName: "siwe",
+	password: "complex_password_at_least_32_characters_long",
+	cookieOptions: {
+		secure: process.env.NODE_ENV === "production",
+	},
+};
 
 export {MathUtil, ReactUtil};

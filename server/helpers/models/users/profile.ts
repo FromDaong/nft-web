@@ -42,7 +42,8 @@ const ModelSchema = new mongoose.Schema(
 		},
 		address: {
 			type: String,
-			required: true,
+			required: [true, "Please add an address"],
+			unique: [true, "Address is already taken"],
 		},
 		referrer_address: {
 			type: String,
@@ -50,6 +51,12 @@ const ModelSchema = new mongoose.Schema(
 		collected_nfts: [
 			{
 				id: String,
+			},
+		],
+		badges: [
+			{
+				label: String,
+				color: String,
 			},
 		],
 		referred: [],

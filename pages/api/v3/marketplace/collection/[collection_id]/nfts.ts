@@ -1,5 +1,5 @@
 import {
-	populateNFTsWithProfile,
+	populateNFTsWithProfileAndTx,
 	returnWithError,
 	returnWithSuccess,
 } from "@db/engine/utils";
@@ -40,7 +40,7 @@ export default async function handler(
 	return returnWithSuccess(
 		{
 			collection: collection,
-			nfts: await populateNFTsWithProfile(nfts),
+			nfts: await populateNFTsWithProfileAndTx(nfts),
 		},
 		res
 	);

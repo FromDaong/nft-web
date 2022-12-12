@@ -12,12 +12,15 @@ import {Tab, TabsContainer} from "@packages/shared/components/Tabs";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {
 	Bull,
+	ImportantText,
 	JustifiedSpan,
 	MutedText,
+	SmallText,
 } from "@packages/shared/components/Typography/Text";
 import VerifiedBadge from "@packages/shared/components/VerifiedBadge";
 import {styled} from "@styles/theme";
 import TreatCore, {ComponentBasicProps} from "core/TreatCore";
+import ApplicationFrame from "./ApplicationFrame";
 
 const tabs = [
 	{
@@ -58,7 +61,7 @@ const AvatarContainer = styled("div", {
 	width: "128px",
 	position: "absolute",
 	bottom: "0",
-	transform: "translate(36px, 36px)",
+	transform: "translateY(36px)",
 	display: "flex",
 	alignItems: "center",
 	justifyContent: "center",
@@ -74,9 +77,10 @@ const UserHeader = ({profile_pic}) => {
 				style={{
 					height: "256px",
 					background: "linear-gradient(220.55deg, #FFED46 0%, #FF7EC7 100%)",
+					display: "flex",
 				}}
 			>
-				<FluidContainer className="relative flex h-full">
+				<Container className="relative flex h-full container mx-auto">
 					<AvatarContainer className="drop-shadow">
 						<Avatar
 							name="Tatenda Chris"
@@ -84,7 +88,7 @@ const UserHeader = ({profile_pic}) => {
 							size={{width: "128px", height: "128px"}}
 						/>
 					</AvatarContainer>
-				</FluidContainer>
+				</Container>
 			</div>
 		</div>
 	);
@@ -99,12 +103,14 @@ type ProfileLayoutProps = ComponentBasicProps & {
 		followers: number;
 		earnings: number;
 		address: string;
-		profile_picture?: string;
+		profile_pic?: string;
 		profilePicCdnUrl?: string;
+		badges: Array<{color: string; name: string}>;
 	};
 };
 
 export default function ProfileLayout(props: ProfileLayoutProps) {
+	console.log({props});
 	const profile = props.userProfile;
 	const user = {
 		username: profile.username,
@@ -114,9 +120,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 		following: profile.following ?? 0,
 		earnings: profile.earnings ?? 0,
 		address: profile ? profile.address : "",
-		profile_pic: profile
-			? profile.profile_picture ?? profile.profilePicCdnUrl
-			: "",
+		profile_pic: profile.profile_pic,
 	};
 
 	return (
@@ -125,84 +129,98 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 
 			<UserHeader profile_pic={user.profile_pic} />
 
-			<FluidContainer className="mt-[26px] flex justify-between px-4">
-				<ContextualContainer className="flex flex-col max-w-lg gap-y-4">
-					<Container>
-						<Heading
-							size="sm"
-							className="flex items-center gap-1"
-						>
-							<span>{user.displayName ?? "Loading profile details"}</span>
-							<VerifiedBadge size={16} />
-						</Heading>
-						<MutedText>{user.username}</MutedText>
-					</Container>
-					<Container
-						variant={"unstyled"}
-						className="flex w-full"
-					>
-						<>
-							<Text
-								appearance={"hiContrast"}
-								weight={"bold"}
+			<Container className="container mx-auto py-8 px-4 xl:px-0">
+				<FluidContainer className="mt-[26px] flex justify-between px-4">
+					<ContextualContainer className="flex flex-col max-w-2xl gap-y-4">
+						<Container>
+							<Heading
+								size="sm"
+								className="flex items-center gap-1"
 							>
-								{user.following}
-							</Text>
-							{""}
-							<JustifiedSpan>Following</JustifiedSpan>
-						</>
-						<Bull />
-						<>
-							<Text
-								appearance={"hiContrast"}
-								weight={"bold"}
-							>
-								{user.followers}
-							</Text>
-							<JustifiedSpan>Followers</JustifiedSpan>
-						</>
-						<Bull />
-
-						<>
-							<Text
-								appearance={"hiContrast"}
-								weight={"bold"}
-							>
-								{user.earnings}
-							</Text>
-							<JustifiedSpan>Collectors</JustifiedSpan>
-						</>
-					</Container>
-					<Container variant={"unstyled"}>
-						<AvatarGroup people={followers} />
-					</Container>
-					<Text>{user.bio ?? "Loading profile details"}</Text>
-					<Container variant={"unstyled"}>
-						<Container className="flex gap-x-4">
-							<ProfileDropdown
-								address={user.address}
-								username={user.username}
-							/>
-							<Button className="drop-shadow-xl">Follow</Button>
+								<span>{user.displayName ?? "Loading profile details"}</span>
+								<VerifiedBadge size={16} />
+							</Heading>
+							<MutedText>{user.username}</MutedText>
 						</Container>
-					</Container>
-				</ContextualContainer>
-			</FluidContainer>
+						<Container className="flex gap-4 flex-row flex-wrap">
+							{props.userProfile.badges?.map((badge) => (
+								<Container
+									key={badge.name}
+									css={{backgroundColor: `$${badge.color}3`}}
+									className="px-2 py-1 rounded-xl"
+								>
+									<Text css={{color: `$${badge.color}10`}}>
+										<ImportantText>
+											<SmallText>{badge.name}</SmallText>
+										</ImportantText>
+									</Text>
+								</Container>
+							))}
+						</Container>
+						<Container
+							variant={"unstyled"}
+							className="flex w-full"
+						>
+							<>
+								<Text
+									appearance={"hiContrast"}
+									weight={"bold"}
+								>
+									{user.following}
+								</Text>
+								{""}
+								<JustifiedSpan>Following</JustifiedSpan>
+							</>
+							<Bull />
+							<>
+								<Text
+									appearance={"hiContrast"}
+									weight={"bold"}
+								>
+									{user.followers}
+								</Text>
+								<JustifiedSpan>Followers</JustifiedSpan>
+							</>
+							<Bull />
 
-			<FluidContainer
-				justified
-				className="flex mt-[26px]"
-			>
-				<TabsContainer>
-					{tabs.map((tab) => (
-						<Tab
-							key={tab.href}
-							href={`/${user.username}${tab.href}`}
-							label={tab.label}
-						/>
-					))}
-				</TabsContainer>
-			</FluidContainer>
+							<>
+								<Text
+									appearance={"hiContrast"}
+									weight={"bold"}
+								>
+									{user.earnings}
+								</Text>
+								<JustifiedSpan>Collectors</JustifiedSpan>
+							</>
+						</Container>
+						<Text>{user.bio ?? "Loading profile details"}</Text>
+						<Container variant={"unstyled"}>
+							<Container className="flex gap-x-4">
+								<ProfileDropdown
+									address={user.address}
+									username={user.username}
+								/>
+								<Button className="drop-shadow-xl">Follow</Button>
+							</Container>
+						</Container>
+					</ContextualContainer>
+				</FluidContainer>
+
+				<FluidContainer
+					justified
+					className="flex mt-[26px]"
+				>
+					<TabsContainer>
+						{tabs.map((tab) => (
+							<Tab
+								key={tab.href}
+								href={`/${user.username}${tab.href}`}
+								label={tab.label}
+							/>
+						))}
+					</TabsContainer>
+				</FluidContainer>
+			</Container>
 			<FluidContainer
 				justified
 				className="flex flex-col mt-[26px] px-4"

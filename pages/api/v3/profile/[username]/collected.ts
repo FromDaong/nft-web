@@ -1,6 +1,6 @@
 import {connectMongoDB} from "@db/engine";
 import {
-	populateNFTsWithProfile,
+	populateNFTsWithProfileAndTx,
 	returnWithError,
 	returnWithSuccess,
 } from "@db/engine/utils";
@@ -50,7 +50,7 @@ export default async function handler(req, res) {
 		model: MongoModelCreator,
 	});
 
-	const nftsWithProfile = await populateNFTsWithProfile(nfts);
+	const nftsWithProfile = await populateNFTsWithProfileAndTx(nfts);
 
 	return returnWithSuccess(nftsWithProfile.flat(), res);
 }

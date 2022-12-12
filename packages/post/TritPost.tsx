@@ -141,7 +141,7 @@ export const TritPost = (props: TPost) => {
 					<CardOverlay
 						css={{
 							backgroundColor: "$overlay",
-							backdropFilter: props.protected ? "blur(20px)" : "none",
+							backdropFilter: props.protected ? "blur(12px)" : "none",
 						}}
 					/>
 					<PostMediaContent

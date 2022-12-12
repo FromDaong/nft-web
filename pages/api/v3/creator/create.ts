@@ -1,39 +1,42 @@
+import {withIronSessionApiRoute} from "iron-session/next";
 import {connectMongoDB} from "server/database/engine";
 import {returnWithError, returnWithSuccess} from "server/database/engine/utils";
-import {
-	MongoModelCreator,
-	MongoModelProfile,
-} from "server/database/models/creator";
 import {NextApiRequest, NextApiResponse} from "next";
+import {MongoModelCreator, MongoModelProfile} from "server/helpers/models";
+import {ironOptions} from "@utils/index";
+import {requireApiAuth} from "server/utils";
 
-export default async function handler(
-	req: NextApiRequest,
-	res: NextApiResponse
-) {
-	const {data} = req.body;
-
-	if (!data) {
-		return returnWithError("No data provided", 400, res);
-	}
-
+async function handler(req: NextApiRequest, res: NextApiResponse) {
 	await connectMongoDB();
+	requireApiAuth(req, res);
 
 	try {
-		const profile = MongoModelProfile.find({address: data.address});
+		const profile = await MongoModelProfile.findOne({
+			address: req.session.siwe?.address.toLowerCase(),
+		});
 
-		if (!profile) {
-			return returnWithError("No profile found", 400, res);
-		}
+		const creatorProfile = new MongoModelCreator({
+			username: profile.username,
+			address: profile.address,
+			profile: profile._id,
+			totm: {
+				current: false,
+			},
+			user: profile.user,
+		});
 
-		if (!data.subscription) {
-			return returnWithError("No subscription provided", 400, res);
-		}
-
-		const newCreatorProfile = new MongoModelCreator(data);
-		await newCreatorProfile.save();
-
-		return returnWithSuccess(newCreatorProfile, res);
+		await creatorProfile.save();
+		return returnWithSuccess(creatorProfile, res);
 	} catch (err) {
-		return returnWithError(err, 400, res);
+		console.log({err});
+		return returnWithError(
+			{
+				bio: "An error occurred while creating your profile. Please try again.",
+			},
+			400,
+			res
+		);
 	}
 }
+
+export default withIronSessionApiRoute(handler, ironOptions);

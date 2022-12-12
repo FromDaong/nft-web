@@ -84,8 +84,12 @@ export default function UserProfile(props: {
 
 	return (
 		<ApplicationLayout>
-			<ApplicationFrame>
-				<ProfileLayout userProfile={data}>
+			<ProfileLayout
+				userProfile={{
+					...data,
+				}}
+			>
+				<Container className="container mx-auto">
 					<SEOHead title={username + " - Trit"} />
 					<Container className="flex justify-between gap-12">
 						<Container className="flex flex-col flex-1 max-w-xl gap-4 ">
@@ -131,8 +135,8 @@ export default function UserProfile(props: {
 							/>
 						</ContentSidebar>
 					</Container>
-				</ProfileLayout>
-			</ApplicationFrame>
+				</Container>
+			</ProfileLayout>
 		</ApplicationLayout>
 	);
 }

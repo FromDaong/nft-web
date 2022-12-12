@@ -43,6 +43,10 @@ export const Button = styled("button", {
 			danger: {
 				backgroundColor: "$red2",
 			},
+			disabled: {
+				backgroundColor: "$surfaceOnSurface",
+				color: "$gray8",
+			},
 		},
 		outlined: {
 			true: {

@@ -1,10 +1,10 @@
 import {pagePropsConnectMongoDB} from "@db/engine/pagePropsDB";
-import LegacyCreatorModel from "@db/legacy/profile/Creator";
+import {MongoModelProfile} from "server/helpers/models";
 
 export const beforePageLoadGetUserProfile = async (ctx) => {
 	await pagePropsConnectMongoDB();
 	const {username} = ctx.query;
-	const profile = await LegacyCreatorModel.findOne({username});
+	const profile = await MongoModelProfile.findOne({username});
 
 	if (!profile) {
 		return {

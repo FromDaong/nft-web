@@ -1,3 +1,7 @@
+import {
+	MongoModelCreator,
+	MongoModelTransaction,
+} from "./../../helpers/models/index";
 import {NextApiResponse} from "next";
 import {Model, model, Schema} from "mongoose";
 import {MongoModelProfile} from "server/helpers/models";
@@ -128,18 +132,32 @@ export function generatePaginationQuery(query, sort, nextKey) {
 	return {paginatedQuery, nextKeyFn};
 }
 
-export const populateNFTsWithProfile = async (nfts) => {
+export const populateNFTsWithProfileAndTx = async (nfts, soldOut = true) => {
 	return Promise.all(
-		nfts.map(async (nft) => {
-			const profile_id = nft.creator.profile;
-			const profile = await MongoModelProfile.findById(profile_id);
-			return {
-				...nft.toObject(),
-				creator: {
-					...nft.creator.toObject(),
-					profile_pic: profile.profile_pic,
-				},
-			};
-		})
+		nfts
+			.map(async (nft) => {
+				const creator_id = nft.creator;
+				const creator = await MongoModelCreator.findById(creator_id);
+				const profile = await MongoModelProfile.findById(creator.profile);
+				const mints = await MongoModelTransaction.find({
+					"metadata.nftId": nft.id,
+				});
+
+				if (soldOut && mints.length === Number(nft.max_supply)) {
+					return null;
+				}
+
+				const returnObj = {
+					...nft.toObject(),
+					creator: {
+						...creator.toObject(),
+						profile_pic: profile.profile_pic,
+					},
+					mints,
+				};
+
+				return returnObj;
+			})
+			.filter((nft) => nft !== null)
 	);
 };

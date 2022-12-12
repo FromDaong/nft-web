@@ -10,7 +10,8 @@ const ModelSchema = new mongoose.Schema(
 		},
 		address: {
 			type: String,
-			required: true,
+			required: [true, "Please add an address"],
+			unique: [true, "Address is already taken"],
 		},
 		totm: {
 			current: {
