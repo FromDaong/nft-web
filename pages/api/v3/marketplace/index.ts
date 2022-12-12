@@ -44,6 +44,7 @@ export default async function handler(
 		limit: 21,
 	};
 
+	// @ts-ignore
 	const NFTs = await MongoModelNFT.paginate({}, options);
 	NFTs.docs = await populateNFTsWithProfile(NFTs.docs);
 

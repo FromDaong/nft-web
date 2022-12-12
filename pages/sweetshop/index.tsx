@@ -17,17 +17,44 @@ import axios from "axios";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import TreatCore from "core/TreatCore";
+import {useRouter} from "next/router";
 import {InfinityScrollListing} from "packages/shared/components/ListingSection";
-import {useEffect, useMemo} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {useInView} from "react-intersection-observer";
 
-const getSweetshopNFTs = async (page: number) => {
-	const res = await axios.get(`${apiEndpoint}/marketplace?page=${page ?? 1}`);
+const getSweetshopNFTs = async (page: number, filterString: string) => {
+	const res = await axios.get(
+		`${apiEndpoint}/marketplace?page=${page ?? 1}${
+			filterString ? "&" + filterString : ""
+		}`
+	);
 	return res.data.data;
 };
 
-export default function NFTS() {
+const filtersList = [
+	{
+		label: "Free",
+		value: "free",
+	},
+	{
+		label: "Sold out",
+		value: "sold_out",
+	},
+	{
+		label: "TOTM NFT",
+		value: "totm_nft",
+	},
+	{
+		label: "Subscription NFT",
+		value: "subscription_nft",
+	},
+];
+
+export default function NFTS(props) {
 	const {ref, inView} = useInView();
+	const [filters, setFilters] = useState([]);
+	const router = useRouter();
+	const filterString = useMemo(() => filters.join("&"), [filters]);
 
 	const {
 		status,
@@ -42,19 +69,10 @@ export default function NFTS() {
 		hasPreviousPage,
 	} = TreatCore.useInfiniteQuery({
 		queryKey: ["sweetshopNFTsInfinite"],
-		queryFn: ({pageParam = 1}) => getSweetshopNFTs(pageParam),
+		queryFn: ({pageParam = 1}) => getSweetshopNFTs(pageParam, filterString),
 		getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
 		getPreviousPageParam: (firstPage) => firstPage.prevPage ?? undefined,
 	});
-
-	/*
-	const nfts =
-		sweetshopNFTsLoading || sweetshopNFTsError
-			? []
-			: sweetshopNFTsData?.data
-					.slice(0, 20)
-					.map((post) => legacy_nft_to_new(post));
-	*/
 
 	const pages = data ? data.pages : [];
 
@@ -68,6 +86,33 @@ export default function NFTS() {
 			return [];
 		}
 	}, [pages]);
+
+	const toggleFilter = (filter: string) => {
+		// add filter if it doesnt exist, remove if it does
+		if (filters.includes(filter)) {
+			setFilters(filters.filter((f) => f !== filter));
+		} else {
+			setFilters([...filters, filter]);
+		}
+	};
+
+	useEffect(() => {
+		if (filters.length > 0) {
+			router.push(`/sweetshop?${filterString}`, undefined, {shallow: true});
+		} else {
+			router.push(`/sweetshop`, undefined, {shallow: true});
+		}
+	}, [filters]);
+
+	useEffect(() => {
+		fetchPreviousPage();
+	}, [filterString]);
+
+	useEffect(() => {
+		Object.keys(props.query).forEach((key) => {
+			setFilters((filters) => [...filters, key]);
+		});
+	}, [props.query]);
 
 	useEffect(() => {
 		if (inView) {
@@ -86,26 +131,15 @@ export default function NFTS() {
 						<Container>
 							<Container className="flex flex-col gap-4 md:flex-row md:justify-between">
 								<Container className="flex gap-2">
-									<SelectableTag>
-										<Text>
-											<ImportantText>Free</ImportantText>
-										</Text>
-									</SelectableTag>
-									<SelectableTag>
-										<Text>
-											<ImportantText>Sold out</ImportantText>
-										</Text>
-									</SelectableTag>
-									<SelectableTag>
-										<Text>
-											<ImportantText>TOTM NFT</ImportantText>
-										</Text>
-									</SelectableTag>
-									<SelectableTag>
-										<Text>
-											<ImportantText>Subscription NFT</ImportantText>
-										</Text>
-									</SelectableTag>
+									{filtersList.map((f) => (
+										<SelectableTag
+											toggle={toggleFilter}
+											key={f.value}
+											selected={filters}
+											label={f.label}
+											value={f.value}
+										/>
+									))}
 								</Container>
 								<Container className="flex gap-4">
 									<SweetshopSortBy />
@@ -163,3 +197,11 @@ export default function NFTS() {
 		</ApplicationLayout>
 	);
 }
+
+export const getServerSideProps = async (ctx) => {
+	return {
+		props: {
+			query: ctx.query,
+		},
+	};
+};
