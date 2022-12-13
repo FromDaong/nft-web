@@ -12,7 +12,13 @@ export default class TreatCore {
 		trit: process.env.TREAT_SERVICE,
 	};
 
-	static queryClient = new QueryClient();
+	static queryClient = new QueryClient({
+		defaultOptions: {
+			queries: {
+				refetchOnWindowFocus: false,
+			},
+		},
+	});
 	static useQuery = useQuery;
 	static useInfiniteQuery = useInfiniteQuery;
 

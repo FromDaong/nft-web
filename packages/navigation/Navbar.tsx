@@ -58,9 +58,11 @@ export default function Navbar() {
 								<NavbarExploreDropdown />
 							</div>
 						</div>
-						<div className="items-center hidden w-full max-w-md gap-8 md:flex">
-							<NavbarSearchDropdown />
-						</div>
+						{false && (
+							<div className="items-center hidden w-full max-w-md gap-8 md:flex">
+								<NavbarSearchDropdown />
+							</div>
+						)}
 
 						<div className="flex gap-4">
 							<div className="flex md:hidden"></div>
