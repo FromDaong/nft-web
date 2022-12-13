@@ -1,10 +1,4 @@
-import BackgroundImage from "@packages/post/BackgroundImage";
-import Blurhash from "@packages/post/Blurhash";
-import {
-	Heading,
-	ImportantSmallText,
-	Text,
-} from "@packages/shared/components/Typography/Headings";
+import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import Link from "next/link";
 import {Container} from "@packages/shared/components/Container";
 import {TPost} from "./types";
@@ -15,6 +9,7 @@ import UserAvatar from "core/auth/components/Avatar";
 import {CardOverlay} from "@packages/shared/components/Card/MarketingPages/BenefitsCard";
 import {styled} from "@styles/theme";
 import ContentLoader from "react-content-loader";
+import {Button} from "@packages/shared/components/Button";
 
 export const StyledLoader = styled(ContentLoader, {
 	backgroundColor: "$surface",
@@ -127,7 +122,7 @@ export const TritPost = (props: TPost) => {
 	const soldOut = props.collection.minted === props.collection.totalSupply;
 
 	return (
-		<Link href={`/post/nft/${props.id}`}>
+		<Link href={!props.isResale ? `/post/nft/${props.id}` : "#"}>
 			<a>
 				<Container
 					className="relative flex overflow-hidden border shadow"
@@ -218,38 +213,52 @@ export const TritPost = (props: TPost) => {
 							)}
 						</Container>
 						<Container className="flex flex-col gap-2">
-							<Heading
-								css={{color: "#ffffff"}}
-								size="xss"
-								className="line-clamp-1"
-							>
-								{props.name}
-							</Heading>
-							<Container className="flex flex-col gap-2">
-								<Container className="flex justify-between">
-									<Text css={{color: "#ffffff"}}>Supply</Text>
-									<Text css={{color: "#ffffff"}}>
-										{props.collection.minted}/{props.collection.totalSupply}
-									</Text>
+							{props.isResale && (
+								<Container className="py-2">
+									<Button
+										fullWidth
+										appearance={"surface"}
+									>
+										Purchase NFT
+									</Button>
 								</Container>
-								<FrostyBackgroundContainer
-									className="rounded-full"
-									css={{height: "10px"}}
-								>
-									<Container
-										className="rounded-full"
-										css={{
-											backgroundColor: "$surfaceOnSurface",
-											width: `${
-												(props.collection.minted /
-													props.collection.totalSupply) *
-												100
-											}%`,
-											height: "100%",
-										}}
-									/>
-								</FrostyBackgroundContainer>
-							</Container>
+							)}
+							{!props.isResale && (
+								<>
+									<Heading
+										css={{color: "#ffffff"}}
+										size="xss"
+										className="line-clamp-1"
+									>
+										{props.name}
+									</Heading>
+									<Container className="flex flex-col gap-2">
+										<Container className="flex justify-between">
+											<Text css={{color: "#ffffff"}}>Supply</Text>
+											<Text css={{color: "#ffffff"}}>
+												{props.collection.minted}/{props.collection.totalSupply}
+											</Text>
+										</Container>
+										<FrostyBackgroundContainer
+											className="rounded-full"
+											css={{height: "10px"}}
+										>
+											<Container
+												className="rounded-full"
+												css={{
+													backgroundColor: "$surfaceOnSurface",
+													width: `${
+														(props.collection.minted /
+															props.collection.totalSupply) *
+														100
+													}%`,
+													height: "100%",
+												}}
+											/>
+										</FrostyBackgroundContainer>
+									</Container>
+								</>
+							)}
 							<Container className="flex justify-between">
 								<UserBadge
 									username={props.author.username}

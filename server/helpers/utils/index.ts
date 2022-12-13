@@ -35,20 +35,6 @@ export const getFromRedisCache = async (
 	return JSON.parse(data);
 };
 
-export const setStringToRedisCache = async (key: string, value: any) => {
-	if (typeof value === "object") {
-		value = JSON.stringify(value);
-	}
-	if (typeof value !== "string") {
-		value = new String(value).toString();
-	}
-	await redisClient.set(key, value);
-};
-
-export const invalidateRedisCache = async (key: string) => {
-	await redisClient.del(key);
-};
-
 export const findAndPaginate = async (
 	model: any,
 	startId: string,
