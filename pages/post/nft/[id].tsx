@@ -50,9 +50,61 @@ import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import TreatCore from "core/TreatCore";
 import {BigNumber, ethers} from "ethers";
 import Link from "next/link";
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {MongoModelNFT, MongoModelTransaction} from "server/helpers/models";
 import {useAccount, useContractRead} from "wagmi";
+
+const exitFullScreen = () => {
+	if (document.exitFullscreen) {
+		document.exitFullscreen();
+	} else if (document["mozCancelFullScreen"]) {
+		document["mozCancelFullScreen"]();
+	} else if (document["webkitExitFullscreen"]) {
+		document["webkitExitFullscreen"]();
+	} else if (document["msExitFullscreen"]) {
+		document["msExitFullscreen"]();
+	}
+};
+
+export const useFullScreen = (
+	elementOrElementId: HTMLElement | string,
+	showFullScreen: boolean
+) =>
+	useEffect(() => {
+		const fullScreenElement =
+			document["fullscreenElement"] ||
+			document["webkitFullscreenElement"] ||
+			document["mozFullScreenElement"] ||
+			document["msFullscreenElement"];
+
+		// exit full screen
+		if (!showFullScreen) {
+			if (fullScreenElement) {
+				exitFullScreen();
+			}
+			return;
+		}
+
+		// get the element to make full screen
+		const element =
+			typeof elementOrElementId === "string"
+				? document.getElementById(elementOrElementId)
+				: elementOrElementId;
+
+		// if the current element is not already full screen, make it full screen
+		if (!fullScreenElement) {
+			if (element.requestFullscreen) {
+				element.requestFullscreen();
+			} else if (element["mozRequestFullScreen"]) {
+				element["mozRequestFullScreen"]();
+			} else if (element["webkitRequestFullscreen"]) {
+				// @ts-ignore
+				element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+			} else if (element["msRequestFullscreen"]) {
+				element["msRequestFullscreen"]();
+			}
+		}
+	}, [showFullScreen, elementOrElementId]);
 
 const getYouMightAlsoLike = async () => {
 	const res = await axios.get(`${apiEndpoint}/marketplace/trending`);
@@ -61,6 +113,8 @@ const getYouMightAlsoLike = async () => {
 
 export default function NFT(props: {notFound?: boolean; data: any}) {
 	const {address} = useAccount();
+	const [showFullScreen, setShowFullScreen] = useState(false);
+	useFullScreen("nft_image", showFullScreen);
 
 	const {
 		isOpen: isFullscreenPreviewOpen,
@@ -94,7 +148,7 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 			<FullScreenImagePreview
 				isOpen={isFullscreenPreviewOpen}
 				onClose={onCloseFullscreenPreview}
-				imageUrl={nft.image}
+				imageUrl={nft.image.cdn}
 				alt={nft.name}
 			/>
 			<Container
@@ -104,7 +158,8 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 				<Container className="container flex-1 h-full py-12">
 					<Container
 						className="relative w-full h-full"
-						onClick={onOpenFullscreenPreview}
+						onClick={() => setShowFullScreen(!showFullScreen)}
+						id={"nft_image"}
 					>
 						<OptimizedImage
 							src={nft.image.cdn}
@@ -200,37 +255,6 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 									  ))}
 							</Container>
 						</Container>
-						<Divider dir={"horizontal"} />
-
-						<Container className="flex flex-col gap-4">
-							<Heading size="xs">Purchase history</Heading>
-							<Container className="grid grid-cols-1 gap-6">
-								{mints.map((tx) => (
-									<Link
-										key={tx.txHash}
-										href={`https://bscscan.com/tx/${tx.txHash}`}
-									>
-										<a>
-											<Container className="flex gap-2">
-												<UserAvatar
-													value={tx.metadata.balanceSender}
-													size={24}
-												/>
-												<Container className="flex flex-col gap-1">
-													<Text>
-														<ImportantText>
-															{tx.metadata.balanceSender} purchased for{" "}
-															{tx.amount} BNB
-														</ImportantText>
-													</Text>
-													<MutedText>{timeFromNow(tx.timestamp)}</MutedText>
-												</Container>
-											</Container>
-										</a>
-									</Link>
-								))}
-							</Container>
-						</Container>
 					</Container>
 				</ApplicationFrame>
 			</ApplicationLayout>
@@ -238,14 +262,7 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 	);
 }
 
-const ViewNFT = ({
-	nft,
-	mints,
-}: {
-	nft: any;
-	account: string;
-	mints: Array<any>;
-}) => {
+const ViewNFT = ({nft}: {nft: any; account: string; mints: Array<any>}) => {
 	const {creatorCost} = useWagmiGetCreatorNftCost(nft.id);
 	const {treatCost} = useWagmiGetTreatOfTheMonthNftCost(nft.id);
 	const {subscriptionCost} = useWagmiGetSubscriberNftCost(nft.id);
@@ -282,8 +299,6 @@ const ViewNFT = ({
 	const floorResalePrice = ethers.utils.formatEther(
 		BigNumber.from(floorOrder.price)
 	);
-
-	console.log({openOrders, nft});
 
 	const onMintNft = async () => {
 		if (nft.subscription_nft) return onMintSubscriberNft();

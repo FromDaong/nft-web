@@ -187,9 +187,6 @@ export default function Index() {
 					</Container>
 				</ApplicationFrame>
 			}
-			<Container className="pb-12">
-				<Footer />
-			</Container>
 		</ApplicationLayout>
 	);
 }

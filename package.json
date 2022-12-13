@@ -73,6 +73,7 @@
 		"@web3auth/web3auth": "^0.3.2",
 		"@xstate/react": "^3.0.1",
 		"ably": "^1.2.30",
+		"add": "^2.0.6",
 		"apollo-server-micro": "^3.11.1",
 		"atropos": "^1.0.2",
 		"avvvatars-react": "^0.4.2",
@@ -161,6 +162,7 @@
 		"react-easy-crop": "^4.6.3",
 		"react-filepond": "^7.1.2",
 		"react-ga": "^3.3.0",
+		"react-hooks-full-screen": "^0.0.1",
 		"react-image-lightbox": "^5.1.4",
 		"react-intersection-observer": "^8.33.1",
 		"react-lazyload": "^3.2.0",
@@ -195,6 +197,7 @@
 		"web3": "^1.4.0",
 		"web3-utils": "^1.4.0",
 		"web3modal": "^1.9.3",
+		"yarn": "^1.22.19",
 		"yup": "^0.32.11",
 		"zod": "^3.19.1"
 	},

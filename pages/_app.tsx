@@ -19,6 +19,8 @@ import useUser from "core/auth/useUser";
 import CreateProfileModal from "@packages/onboarding/CreateProfileModal";
 import {useDisclosure} from "@packages/hooks";
 import {useEffect} from "react";
+import {Container} from "@packages/shared/components/Container";
+import Footer from "@packages/shared/components/Footer";
 
 const progress = new ProgressBar({
 	size: 3,
@@ -80,6 +82,9 @@ function MyApp({
 					<main className="mt-[60px]">
 						<Component {...pageProps} />
 					</main>
+					<Container className="pb-12">
+						<Footer />
+					</Container>
 				</WagmiWrapper>
 			</ApplicationProvider>
 		</ThemeProvider>
