@@ -153,14 +153,20 @@ export default function Index() {
 										</a>
 									</Link>
 								</Container>
-								<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4 lg:gap-4">
+								<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:gap-4">
 									{!trendingNFTError && !trendingNFTsLoading
-										? trendingNFTs.map((item) => (
-												<TritPost
+										? trendingNFTs.map((item, i) => (
+												<Container
 													key={item}
-													inGrid
-													{...item}
-												/>
+													className={
+														"flex " + (i > 3 ? "lg:hidden xl:flex" : "")
+													}
+												>
+													<TritPost
+														inGrid
+														{...item}
+													/>
+												</Container>
 										  ))
 										: [0, 1, 2].map((i) => (
 												<Container

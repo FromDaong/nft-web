@@ -53,6 +53,7 @@ export type TPost = {
 	protected?: boolean;
 	totm?: boolean;
 	noPrice?: boolean;
+	isResale?: boolean;
 };
 
 export type LivestreamPost = {

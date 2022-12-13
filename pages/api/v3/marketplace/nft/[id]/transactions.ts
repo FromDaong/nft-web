@@ -1,8 +1,4 @@
-import {
-	connectMongoDB,
-	getFromRedisCache,
-	setStringToRedisCache,
-} from "server/database/engine";
+import {connectMongoDB} from "server/database/engine";
 import {NextApiResponse} from "next";
 import {NextApiRequest} from "next";
 import {returnWithError, returnWithSuccess} from "server/database/engine/utils";
@@ -19,21 +15,11 @@ export default async function handler(
 
 	await connectMongoDB();
 
-	const cached_totm = await getFromRedisCache(`transactions:${id}`);
-	if (cached_totm) {
-		return returnWithSuccess(cached_totm, res);
-	}
-
 	const transactions = await MongoModelTransaction.findOne({
 		metadata: {
 			nftId: id,
 		},
 	});
-
-	await setStringToRedisCache(
-		`transactions:${id}`,
-		JSON.stringify(transactions)
-	);
 
 	return returnWithSuccess(transactions, res);
 }

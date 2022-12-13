@@ -38,28 +38,4 @@ const connectMongoDB = async (url?: string) => {
 	return cached.conn;
 };
 
-const getFromRedisCache = async (key: string): Promise<object> => {
-	return JSON.parse(await redisClient.get(key));
-};
-
-const setStringToRedisCache = async (key: string, value: any) => {
-	if (typeof value === "object") {
-		value = JSON.stringify(value);
-	}
-	if (typeof value !== "string") {
-		value = new String(value).toString();
-	}
-	await redisClient.set(key, value);
-};
-
-const invalidateRedisCache = async (key: string) => {
-	await redisClient.del(key);
-};
-
-export {
-	connectMongoDB,
-	redisClient,
-	getFromRedisCache,
-	setStringToRedisCache,
-	invalidateRedisCache,
-};
+export {connectMongoDB, redisClient};
