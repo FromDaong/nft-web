@@ -123,9 +123,9 @@ export const TritPost = (props: TPost) => {
 
 	return (
 		<Link href={!props.isResale ? `/post/nft/${props.id}` : "#"}>
-			<a>
+			<a className="p-2">
 				<Container
-					className="relative flex overflow-hidden border shadow"
+					className="relative flex overflow-hidden border shadow-lg"
 					css={{
 						borderColor: "$subtleBorder",
 						borderRadius: "16px",

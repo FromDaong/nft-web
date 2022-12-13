@@ -101,7 +101,7 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 				className="w-full 2xl:h-[80vh] lg:h-[90vh] h-[calc(100vh-64px)] flex items-center justify-center"
 				css={{backgroundColor: "$surfaceOnSurface"}}
 			>
-				<Container className="container flex-1 h-full py-32">
+				<Container className="container flex-1 h-full py-12">
 					<Container
 						className="relative w-full h-full"
 						onClick={onOpenFullscreenPreview}
@@ -305,7 +305,7 @@ const ViewNFT = ({
 
 	return (
 		<>
-			<Container className="grid grid-cols-1 gap-12 px-4 lg:grid-cols-2 xl:px-0">
+			<Container className="grid grid-cols-1 gap-12 px-4 lg:grid-cols-2">
 				<Container className="flex flex-col gap-12 py-8">
 					<Container className="flex flex-col gap-4">
 						<Heading size="sm">{nft.name}</Heading>
@@ -313,10 +313,10 @@ const ViewNFT = ({
 							<a>
 								<Container className="flex">
 									<Container
-										className="flex items-center gap-2 px-4 py-2 border rounded-full"
+										className="flex items-center gap-2 px-4 py-2 border rounded-full shadow"
 										css={{
 											borderColor: "$subtleBorder",
-											backgroundColor: "$surfaceOnSurface",
+											backgroundColor: "$elementSurface",
 										}}
 									>
 										<UserAvatar
@@ -337,7 +337,7 @@ const ViewNFT = ({
 					</Container>
 					<Container className="flex flex-col gap-4">
 						<Heading size="xs">Tags</Heading>
-						<Container className="flex flex-wrap gap-4">
+						<Container className="flex flex-wrap gap-4 p-2">
 							{nft.tags?.map((tag) => (
 								<Container
 									key={tag}
@@ -351,7 +351,7 @@ const ViewNFT = ({
 								</Container>
 							))}
 							<Container
-								className="px-3 py-1 border rounded-full shadow"
+								className="px-3 py-1 border rounded-full shadow-xl"
 								css={{
 									backgroundColor: "$elementSurface",
 									borderColor: "$subtleBorder",
@@ -364,9 +364,9 @@ const ViewNFT = ({
 						</Container>
 					</Container>
 				</Container>
-				<Container className="flex flex-col gap-12 py-8">
+				<Container className="flex flex-col gap-12 px-4 py-8">
 					<Container
-						className="flex flex-col w-full border shadow rounded-xl"
+						className="flex flex-col w-full border drop-shadow-lg rounded-xl"
 						css={{
 							backgroundColor: "$elementSurface",
 							borderColor: "$subtleBorder",
