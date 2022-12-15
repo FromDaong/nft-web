@@ -79,50 +79,46 @@ export default function UserProfile(props: {
 			: creatorNFTsData?.data.map((post) => legacy_nft_to_new(post));
 
 	return (
-		<ApplicationLayout>
-			<ApplicationFrame>
-				<ProfileLayout userProfile={data}>
-					<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-						{creatorNFTsLoading &&
-							[0, 1, 2, 3].map((i) => (
-								<Container
-									key={i}
-									className="col-span-1 border"
-									css={{
-										borderColor: "$subtleBorder",
-										padding: "16px",
-										borderRadius: "16px",
-									}}
-								>
-									<SkeletonTritCollectiblePost />
-								</Container>
-							))}
-						{collectedNFTs?.length > 0 && !creatorNFTsLoading ? (
-							collectedNFTs?.map((post: TPost) => (
-								<TritPost
-									key={post.id}
-									{...post}
-									noPrice
-								/>
-							))
-						) : (
-							<Container className="col-span-4 py-12 flex flex-col gap-2 items-center">
-								<Heading size={"sm"}>Eish, not a collector.</Heading>
-								<Text>This profile has not collected any Treat NFT's yet.</Text>
-							</Container>
-						)}
-						{creatorNFTError && (
-							<Container className="col-span-4 py-12 flex flex-col gap-2 items-center">
-								<Heading size={"sm"}>Eish, an error!</Heading>
-								<Text>
-									That was an error. Please reload the page and try again.
-								</Text>
-							</Container>
-						)}
-					</div>
-				</ProfileLayout>
-			</ApplicationFrame>
-		</ApplicationLayout>
+		<ProfileLayout userProfile={data}>
+			<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+				{creatorNFTsLoading &&
+					[0, 1, 2, 3].map((i) => (
+						<Container
+							key={i}
+							className="col-span-1 border"
+							css={{
+								borderColor: "$subtleBorder",
+								padding: "16px",
+								borderRadius: "16px",
+							}}
+						>
+							<SkeletonTritCollectiblePost />
+						</Container>
+					))}
+				{collectedNFTs?.length > 0 && !creatorNFTsLoading ? (
+					collectedNFTs?.map((post: TPost) => (
+						<TritPost
+							key={post.id}
+							{...post}
+							noPrice
+						/>
+					))
+				) : (
+					<Container className="col-span-4 py-12 flex flex-col gap-2 items-center">
+						<Heading size={"sm"}>Eish, not a collector.</Heading>
+						<Text>This profile has not collected any Treat NFT's yet.</Text>
+					</Container>
+				)}
+				{creatorNFTError && (
+					<Container className="col-span-4 py-12 flex flex-col gap-2 items-center">
+						<Heading size={"sm"}>Eish, an error!</Heading>
+						<Text>
+							That was an error. Please reload the page and try again.
+						</Text>
+					</Container>
+				)}
+			</div>
+		</ProfileLayout>
 	);
 }
 

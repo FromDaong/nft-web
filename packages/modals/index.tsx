@@ -22,7 +22,7 @@ export const DialogContent = styled(Dialog.Panel, {
 	left: "50%",
 	transform: "translate(-50%, -50%)",
 	width: "90vw",
-	maxWidth: "450px",
+	maxWidth: "640px",
 	height: "fit-content",
 	padding: "25px",
 	animation: "contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1)",

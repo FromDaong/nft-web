@@ -22,7 +22,7 @@ import TreatAbi from "./treat.json";
 
 export const ABI = {
 	treatMinter: TreatNFTMinterABI,
-	regularTreatNFTMinter: CreatorMartAbi,
+	creatorMart: CreatorMartAbi,
 	generic: GenericBep20,
 	masterMelonFarmer: MasterMelonFarmerAbi,
 	melon: MelonAbi,
@@ -34,8 +34,8 @@ export const ABI = {
 	totmMinter: TotwMinterHelperAbi,
 	treat: Treat2Abi,
 	treatMarketReader: TreatMarketReaderAbi,
-	treatNFTMarketplace: TreatMarketplaceAbi,
-	treatOfTheMonthMart: TreatMartAbi,
+	treatMarketplace: TreatMarketplaceAbi,
+	totmMart: TreatMartAbi,
 	treatSubscribtions: TreatSubscriptionsAbi,
 	treatTradeIn: TreatTradeInAbi,
 	treatV1ForV2: TreatV1ForV2Abi,

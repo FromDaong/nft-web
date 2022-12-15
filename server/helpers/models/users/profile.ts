@@ -13,6 +13,9 @@ const ModelSchema = new mongoose.Schema(
 			unique: "Username is already taken",
 			required: [true, "Please add a Model username"],
 		},
+		identity_access_key: {
+			type: String,
+		},
 		bio: {
 			type: String,
 			required: [true, "Please add a Model bio"],

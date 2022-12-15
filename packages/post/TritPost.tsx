@@ -1,12 +1,11 @@
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import Link from "next/link";
 import {Container} from "@packages/shared/components/Container";
-import {TPost} from "./types";
+import {TritPostProps} from "./types";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
 import {EyeOffIcon} from "@heroicons/react/outline";
 import {PostMediaContent} from "./PostMediaContent";
 import UserAvatar from "core/auth/components/Avatar";
-import {CardOverlay} from "@packages/shared/components/Card/MarketingPages/BenefitsCard";
 import {styled} from "@styles/theme";
 import ContentLoader from "react-content-loader";
 import {Button} from "@packages/shared/components/Button";
@@ -117,7 +116,13 @@ export const UserBadge = (props: {username: string; avatar: string}) => {
 	);
 };
 
-export const TritPost = (props: TPost) => {
+const useTritNFTUtils = (id: string) => {
+	const listNFTForResale = () => {};
+	const removeNFTFromResale = () => {};
+	const buyResaleNFT = () => {};
+};
+
+export const TritPost = (props: TritPostProps) => {
 	const imageUrl = props.image?.ipfs; // ?? props.image?.ipfs;
 	const soldOut = props.collection.minted === props.collection.totalSupply;
 
@@ -133,15 +138,10 @@ export const TritPost = (props: TPost) => {
 						height: "440px",
 					}}
 				>
-					<CardOverlay
-						css={{
-							backgroundColor: "$overlay",
-							backdropFilter: props.protected ? "blur(12px)" : "none",
-						}}
-					/>
 					<PostMediaContent
 						imageUrl={imageUrl}
 						blurhash={props.blurhash}
+						isProtected={props.protected}
 						caption={props.text}
 						overrideText={
 							"The creator wants you to collect this trit before you can preview the content"
@@ -219,7 +219,8 @@ export const TritPost = (props: TPost) => {
 										fullWidth
 										appearance={"surface"}
 									>
-										Purchase NFT
+										Purchase from{" "}
+										{props.author.username || props.author.display_name}
 									</Button>
 								</Container>
 							)}

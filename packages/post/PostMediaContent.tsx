@@ -1,15 +1,17 @@
 import BackgroundImage from "./BackgroundImage";
-import Blurhash from "./Blurhash";
 
 export const PostMediaContent = (props: {
-  imageUrl?: string;
-  blurhash?: string;
-  overrideText?: string;
-  caption: string;
+	imageUrl?: string;
+	blurhash?: string;
+	overrideText?: string;
+	caption: string;
+	isProtected?: boolean;
 }) => {
-  return props.imageUrl ? (
-    <BackgroundImage url={props.imageUrl} caption={props.caption} />
-  ) : (
-    <Blurhash overrideText={props.overrideText} blurhash={props.blurhash} />
-  );
+	return (
+		<BackgroundImage
+			isProtected={props.isProtected}
+			url={props.imageUrl}
+			caption={props.caption}
+		/>
+	);
 };

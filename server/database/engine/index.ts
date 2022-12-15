@@ -1,12 +1,8 @@
 import mongoose from "mongoose";
-import Redis from "ioredis";
 
 const MONGODB_URI = process.env.MONGODB_URI;
-const REDIS_URL = process.env.REDIS_URL;
 
 let cached = global.mongoose;
-
-const redisClient = new Redis(REDIS_URL);
 
 if (!MONGODB_URI) {
 	throw new Error(
@@ -38,4 +34,4 @@ const connectMongoDB = async (url?: string) => {
 	return cached.conn;
 };
 
-export {connectMongoDB, redisClient};
+export {connectMongoDB};

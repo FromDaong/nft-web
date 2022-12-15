@@ -70,7 +70,7 @@ export const contractAddresses = {
 		97: "0x0119b60DB932306Bea68414fbFb0ef4d9769AA2b",
 		"0x61": "0x0119b60DB932306Bea68414fbFb0ef4d9769AA2b",
 	},
-	treatMart: {
+	totmMart: {
 		56: "0xE6efd1c80e51C89506Eb91ed6C38CdAa657b8f46",
 		"0x38": "0xE6efd1c80e51C89506Eb91ed6C38CdAa657b8f46",
 		97: "0x250a0463D2A1C774Bbad4D667afda7ac6A38ab5C",

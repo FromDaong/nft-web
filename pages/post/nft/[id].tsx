@@ -1,6 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import {pagePropsConnectMongoDB} from "@db/engine/pagePropsDB";
 import LegacyNFTModel from "@db/legacy/nft/NFT";
+import {BadgeCheckIcon} from "@heroicons/react/outline";
 import {EvmNftMetadata} from "@moralisweb3/common-evm-utils";
 import {
 	useWagmiGetCreatorNftCost,
@@ -9,29 +10,22 @@ import {
 	useWagmiGetTreatOfTheMonthNftCost,
 	useWagmiGetNFTTotalSupply,
 	useWagmiGetResaleNFTsForNFT,
-} from "@packages/chain/hooks";
-import useGetCreatorNftCost from "@packages/chain/hooks/useGetCreatorNftCost";
-import useGetFreeCreatorTreat from "@packages/chain/hooks/useGetFreeCreatorTreat";
-import useGetFreeSubscriberTreat from "@packages/chain/hooks/useGetFreeSubscriberTreat";
-import useGetFreeTreat from "@packages/chain/hooks/useGetFreeTreat";
+	useWagmiMintFreeNFT,
+	useWagmiMintFreeTOTMNFT,
+	useWagmiMintFreeSubscriberNFT,
+	useWagmiMintTOTMNFT,
+	useWagmiMintCreatorNFT,
+	useWagmiMintSubscriberNFT,
+} from "@packages/chain/hooks/alpha";
 import useGetIsSubscribed from "@packages/chain/hooks/useGetIsSubscribed";
-import useGetNftCreator from "@packages/chain/hooks/useGetNftCreator";
-import useGetNftMaxSupply from "@packages/chain/hooks/useGetNftMaxSupply";
-import useGetNftTotalSupply from "@packages/chain/hooks/useGetNftTotalSupply";
-import useGetOpenOrdersForNft from "@packages/chain/hooks/useGetOpenOrdersForNft";
-import useGetSubscriberNftCost from "@packages/chain/hooks/useGetSubscriberNftCost";
-import useGetTreatNFTCost from "@packages/chain/hooks/useGetTreatNftCost";
-import useMintCreatorNft from "@packages/chain/hooks/useMintCreatorNft";
-import useMintNft from "@packages/chain/hooks/useMintNft";
-import useMintSubscriberNft from "@packages/chain/hooks/useMintSubscriberNft";
-import {getCreatorNftCost, getSubscriberNftCost} from "@packages/chain/utils";
 import Error404 from "@packages/error/404";
 import {useDisclosure} from "@packages/hooks";
+import {Modal} from "@packages/modals";
 import FullScreenImagePreview from "@packages/modals/FullScreenImagePreview";
 import {SkeletonTritCollectiblePost, TritPost} from "@packages/post/TritPost";
-import {TPost} from "@packages/post/types";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
+import CreatorBadge from "@packages/shared/components/CreatorBadget";
 import {Divider} from "@packages/shared/components/Divider";
 import OptimizedImage from "@packages/shared/components/OptimizedImage";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
@@ -39,12 +33,10 @@ import {
 	ImportantText,
 	MutedText,
 } from "@packages/shared/components/Typography/Text";
-import {ABI} from "@packages/treat/lib/abi";
-import {contractAddresses} from "@packages/treat/lib/constants";
-import {getBalanceNumber} from "@utils/formatBalance";
 import {apiEndpoint, legacy_nft_to_new, timeFromNow} from "@utils/index";
 import axios from "axios";
 import UserAvatar from "core/auth/components/Avatar";
+import useUser from "core/auth/useUser";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import TreatCore from "core/TreatCore";
@@ -52,7 +44,7 @@ import {BigNumber, ethers} from "ethers";
 import Link from "next/link";
 import {useEffect, useMemo, useState} from "react";
 import {MongoModelNFT, MongoModelTransaction} from "server/helpers/models";
-import {useAccount, useContractRead} from "wagmi";
+import {useAccount, useContractRead, useWaitForTransaction} from "wagmi";
 
 const exitFullScreen = () => {
 	if (document.exitFullscreen) {
@@ -145,12 +137,6 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 
 	return (
 		<>
-			<FullScreenImagePreview
-				isOpen={isFullscreenPreviewOpen}
-				onClose={onCloseFullscreenPreview}
-				imageUrl={nft.image.cdn}
-				alt={nft.name}
-			/>
 			<Container
 				className="w-full 2xl:h-[80vh] lg:h-[90vh] h-[calc(100vh-64px)] flex items-center justify-center"
 				css={{backgroundColor: "$surfaceOnSurface"}}
@@ -162,7 +148,7 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 						id={"nft_image"}
 					>
 						<OptimizedImage
-							src={nft.image.cdn}
+							src={`${nft.image.cdn}&blur=${nft.protected ? 30 : 0}&`}
 							className="cursor-zoom-in"
 							sizes="100vw"
 							fill
@@ -216,17 +202,17 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 								<Heading size="sm">More from this creator</Heading>
 							</Container>
 							<Container className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-								<Link href={`/${nft.model_handle}`}>
+								<Link href={`/${nft.creator.username}`}>
 									<a>
 										<Container className="flex flex-col gap-8">
 											<UserAvatar
-												value={nft.model_handle}
+												value={nft.creator.username}
 												size={80}
 											/>
 
 											<Container className="flex flex-col gap-2">
 												<Heading size="sm">{nft.name} </Heading>
-												<Text>@{nft.model_handle}</Text>
+												<Text>@{nft.creator.username}</Text>
 											</Container>
 											<Text>{nft.description}</Text>
 										</Container>
@@ -270,21 +256,24 @@ const ViewNFT = ({nft}: {nft: any; account: string; mints: Array<any>}) => {
 	let nftCost: any = nft.subscription_nft ? subscriptionCost : creatorCost;
 	nftCost = nft.totm_nft ? treatCost : nftCost;
 
-	const {onMintNft: onMintTOTMNft} = useMintNft(nft.id, nftCost);
-	const {onMintCreatorNft} = useMintCreatorNft(nft.id, nftCost);
-	const {onMintSubscriberNft} = useMintSubscriberNft(nft.id, nftCost);
+	const {mintNFT: onMintTOTMNft} = useWagmiMintTOTMNFT(nft.id, nftCost);
+	const {mintNFT: onMintCreatorNft} = useWagmiMintCreatorNFT(nft.id, nftCost);
+	const {mintNFT: onMintSubscriberNft} = useWagmiMintSubscriberNFT(
+		nft.id,
+		nftCost
+	);
 
-	const {onGetFreeTreat} = useGetFreeTreat(nft.id, nftCost);
-	const {onGetFreeCreatorTreat} = useGetFreeCreatorTreat(nft.id, nftCost);
-	const {onGetFreeSubscriberTreat} = useGetFreeSubscriberTreat(nft.id, nftCost);
+	const {mintFreeNFT: onMintFreeTOTM} = useWagmiMintFreeTOTMNFT(nft.id);
+	const {mintFreeNFT: onMintFreeCreatorTreat} = useWagmiMintFreeNFT(nft.id);
+	const {mintFreeNFT: onMintFreeSubscriberTreat} =
+		useWagmiMintFreeSubscriberNFT(nft.id);
 
 	const maxNftSupply = useWagmiGetNFTMaxSupply(nft.id);
 	const mintedNfts = useWagmiGetNFTTotalSupply(nft.id);
-	const listedOnResale = useGetOpenOrdersForNft(nft.id) ?? [];
 
 	const remainingNfts = maxNftSupply - mintedNfts;
 
-	const {openOrders, isLoading} = useWagmiGetResaleNFTsForNFT(nft.id);
+	const {openOrders} = useWagmiGetResaleNFTsForNFT(nft.id);
 
 	const floorOrder = openOrders.reduce(
 		(lowest, order, index) => {
@@ -300,7 +289,7 @@ const ViewNFT = ({nft}: {nft: any; account: string; mints: Array<any>}) => {
 		BigNumber.from(floorOrder.price)
 	);
 
-	const onMintNft = async () => {
+	const mintNFT = async () => {
 		if (nft.subscription_nft) return onMintSubscriberNft();
 		if (nft.totm_nft) {
 			return await onMintTOTMNft();
@@ -309,12 +298,12 @@ const ViewNFT = ({nft}: {nft: any; account: string; mints: Array<any>}) => {
 		}
 	};
 
-	const onMintFreeNft = async () => {
-		if (nft.subscription_nft) return onGetFreeSubscriberTreat();
+	const mintFreeNFT = async () => {
+		if (nft.subscription_nft) return onMintFreeSubscriberTreat();
 		if (nft.totm_nft) {
-			return await onGetFreeTreat();
+			return await onMintFreeTOTM();
 		} else {
-			return await onGetFreeCreatorTreat();
+			return await onMintFreeCreatorTreat();
 		}
 	};
 
@@ -324,7 +313,7 @@ const ViewNFT = ({nft}: {nft: any; account: string; mints: Array<any>}) => {
 				<Container className="flex flex-col gap-12 py-8">
 					<Container className="flex flex-col gap-4">
 						<Heading size="sm">{nft.name}</Heading>
-						<Link href={`/${nft.model_handle}`}>
+						<Link href={`/${nft.creator.username}`}>
 							<a>
 								<Container className="flex">
 									<Container
@@ -335,11 +324,12 @@ const ViewNFT = ({nft}: {nft: any; account: string; mints: Array<any>}) => {
 										}}
 									>
 										<UserAvatar
-											value={nft.model_handle}
+											value={nft.creator.username}
 											size={24}
 										/>
-										<Text>
-											<ImportantText>@{nft.model_handle}</ImportantText>
+										<Text className="flex items-center gap-2">
+											<ImportantText>@{nft.creator.username}</ImportantText>
+											<CreatorBadge />
 										</Text>
 									</Container>
 								</Container>
@@ -379,7 +369,7 @@ const ViewNFT = ({nft}: {nft: any; account: string; mints: Array<any>}) => {
 						</Container>
 					</Container>
 				</Container>
-				<Container className="flex flex-col gap-12 px-4 py-8">
+				<Container className="flex flex-col gap-8 px-4 py-8">
 					<Container
 						className="flex flex-col w-full border drop-shadow-lg rounded-xl"
 						css={{
@@ -405,9 +395,10 @@ const ViewNFT = ({nft}: {nft: any; account: string; mints: Array<any>}) => {
 								</Heading>
 							</Container>
 						</Container>
+						<Divider dir={"horizontal"} />
 						<Container className="p-8">
 							<RedeemButton
-								onMintNft={nft.price === 0 ? onMintFreeNft : onMintNft}
+								mintNFT={nft.price === 0 ? mintFreeNFT : mintNFT}
 								remainingNfts={remainingNfts}
 								nftData={nft}
 							/>
@@ -471,85 +462,203 @@ const ViewNFT = ({nft}: {nft: any; account: string; mints: Array<any>}) => {
 	);
 };
 
-const RedeemButton = ({onMintNft, remainingNfts, nftData}) => {
-	const {address: account} = useAccount();
+const RedeemButton = ({mintNFT, remainingNfts, nftData}) => {
+	const {address} = useAccount();
+	const session = useUser();
 	const {isOpen, onOpen, onClose} = useDisclosure();
-
 	const [loading, setLoading] = useState(false);
-	const [confirmWallet, setConfirmWallet] = useState(false);
+	const [mintTx, setMintTx] = useState(null);
+	const [showConfirmWallet, setShowConfirmWallet] = useState(false);
+	const [savedTx, setSavedTx] = useState(false);
+
+	const {isSuccess: isTxConfirmed, data} = useWaitForTransaction({
+		hash: mintTx?.txHash,
+	});
+
+	useEffect(() => {
+		if (isTxConfirmed && data) {
+			submitTransaction().then(() => {
+				setShowConfirmWallet(false);
+				setLoading(false);
+				setSavedTx(true);
+			});
+		}
+	}, [isTxConfirmed, data]);
+
 	// TODO: Change @param this to creator address
-	const isSubscribed = useGetIsSubscribed(nftData.model_bnb_address || "");
+
+	const isSubscribed = useGetIsSubscribed(address);
 
 	const nftsRemaining = remainingNfts;
 	const nftSoldOut = remainingNfts === 0 || remainingNfts < 0;
 	const isTOTMNFT = nftData.totm_nft;
-	const isSubscriptionNFT = nftData.subscription_nft;
+	const isSubscriptionNFT = !!nftData.subscription_nft;
 	const isRegularNFTBuyEnabled =
 		!nftSoldOut && !isTOTMNFT && !isSubscriptionNFT;
 
-	const redeemDisabled =
+	const isRedeemDisabled = !!(
 		loading ||
 		nftSoldOut ||
-		remainingNfts === 0 ||
-		isTOTMNFT ||
-		(isSubscriptionNFT && !isSubscribed);
+		nftSoldOut ||
+		(isSubscriptionNFT && !isSubscribed)
+	);
 
 	const redeemNFT = async () => {
-		setLoading(true);
-		setConfirmWallet(true);
+		try {
+			setLoading(true);
+			setShowConfirmWallet(true);
+			setSavedTx(false);
+			onOpen();
 
-		const txHash = await onMintNft();
+			const tx = await mintNFT();
 
-		if (!txHash) {
+			if (!tx) {
+				setLoading(false);
+				setShowConfirmWallet(false);
+				onClose();
+				return;
+			}
+
+			const transactionData = {
+				txHash: tx.hash,
+			};
+
+			setMintTx(transactionData);
+			setShowConfirmWallet(false);
+		} catch (err) {
+			console.log(err);
 			setLoading(false);
-			return;
+			setShowConfirmWallet(false);
+			onClose();
 		}
+	};
 
-		setConfirmWallet(false);
-		onOpen();
-
-		const mint = {
-			transactionHash: txHash.transactionHash,
-			nftId: nftData.id,
-			buyer: account,
-			price: nftData.list_price,
+	const submitTransaction = async () => {
+		return axios.post(`${apiEndpoint}/tx/create`, {
+			txHash: data.transactionHash,
+			metadata: {
+				nftId: nftData.id,
+				balanceSender: address,
+				balanceReceiver: nftData.creator?.address,
+			},
+			type: "mint",
+			amount: nftData.price,
 			timestamp: new Date(),
-		};
-		localStorage.setItem("tx", JSON.stringify(mint));
-		setLoading(false);
+		});
 	};
 
 	if (nftData.melon_nft) return null;
 
 	return (
-		<Button
-			className="font-bold text-white bg-primary"
-			fullWidth
-			css={{borderRadius: "16px", padding: "16px 0"}}
-			appearance={redeemDisabled ? "disabled" : "primary"}
-			disabled={redeemDisabled}
-			onClick={redeemNFT}
-		>
-			{loading ? (
-				confirmWallet ? (
-					"Please confirm in your wallet and wait"
-				) : (
-					"Please wait..."
-				)
+		<>
+			{isSubscriptionNFT && !isSubscribed ? (
+				<Container className="flex flex-col gap-4">
+					<Container className="flex flex-col gap-1">
+						<Heading size="xs">Subscription Content</Heading>
+						<Text>
+							You need to be subscribed to this creator to redeem this NFT
+						</Text>
+					</Container>
+					<Button css={{borderRadius: "16px", padding: "16px 0"}}>
+						Subscribe for 0.01 BNB
+					</Button>
+				</Container>
 			) : (
-				<ImportantText>
-					{nftSoldOut || isNaN(nftsRemaining) ? (
-						<>Sold Out</>
+				<>
+					<Modal
+						isOpen={isOpen}
+						onClose={onClose}
+					>
+						<Container className="min-w-[360px]">
+							{showConfirmWallet && (
+								<Container className="flex flex-col gap-2 p-8">
+									<Heading
+										size="md"
+										className="mb-4"
+									>
+										Wallet authorization
+									</Heading>
+									<Text className="mb-4">
+										Please confirm the transaction in your wallet
+									</Text>
+								</Container>
+							)}
+							{!showConfirmWallet && !savedTx && (
+								<Container className="flex flex-col gap-2 p-8">
+									<Heading
+										size="md"
+										className="mb-4"
+									>
+										Confirming transaction
+									</Heading>
+									<Text className="mb-4">
+										Please wait while we confirm your purchase.
+									</Text>
+								</Container>
+							)}
+
+							{savedTx && (
+								<Container className="flex flex-col gap-8 p-8">
+									<Container className="flex flex-col gap-2">
+										<Heading
+											size="md"
+											className="mb-4"
+										>
+											Purchase Complete
+										</Heading>
+										<Text className="mb-4">
+											Congratulations on your purchase! You can view your NFT in
+											your portfolio or even sell it.
+										</Text>
+									</Container>
+									<Container className="flex flex-row justify-end gap-4">
+										<Link href={`${session.user.profile.username}`}>
+											<a>
+												<Button>Go to my portfolio</Button>
+											</a>
+										</Link>
+									</Container>
+								</Container>
+							)}
+						</Container>
+					</Modal>
+					{!nftSoldOut ? (
+						<Button
+							className="font-bold text-white"
+							fullWidth
+							css={{borderRadius: "16px", padding: "16px 0"}}
+							appearance={isRedeemDisabled ? "disabled" : "primary"}
+							disabled={isRedeemDisabled}
+							onClick={redeemNFT}
+						>
+							{loading ? (
+								showConfirmWallet ? (
+									"Please confirm in your wallet and wait"
+								) : (
+									"Please wait..."
+								)
+							) : (
+								<ImportantText>
+									{nftSoldOut || isNaN(nftsRemaining) ? (
+										<>Sold Out</>
+									) : (
+										<>
+											{isRegularNFTBuyEnabled && `Buy now`}
+											{isTOTMNFT && `Buy TOTM NFT`}
+											{isSubscriptionNFT &&
+												!nftSoldOut &&
+												`Buy Subscription NFT`}
+										</>
+									)}
+								</ImportantText>
+							)}
+						</Button>
 					) : (
-						<>
-							{isRegularNFTBuyEnabled && `Buy now`}
-							{isTOTMNFT && `Buy TOTM NFT`}
-							{isSubscriptionNFT && !nftSoldOut && `Buy Subscription NFT`}
-						</>
+						<></>
 					)}
-				</ImportantText>
+				</>
 			)}
-		</Button>
+		</>
 	);
 };
 
@@ -558,7 +667,7 @@ export const getServerSideProps = async (context) => {
 
 	await pagePropsConnectMongoDB();
 
-	const nft = await MongoModelNFT.findOne({id});
+	const nft = await MongoModelNFT.findOne({id}).populate("creator");
 
 	if (!nft) {
 		return {

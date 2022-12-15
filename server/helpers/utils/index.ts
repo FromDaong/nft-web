@@ -1,5 +1,4 @@
 import {Model, model, Schema} from "mongoose";
-import {redisClient} from "../core";
 
 // Simple Generic Function for reusability
 // Feel free to modify however you like
@@ -25,15 +24,6 @@ export default function createMongoDBModel<T, TModel = Model<T>>(
 	}
 	return createdModel;
 }
-
-export const getFromRedisCache = async (
-	key: string
-): Promise<object | null> => {
-	const data = await redisClient.get(key);
-	if (!data) return null;
-
-	return JSON.parse(data);
-};
 
 export const findAndPaginate = async (
 	model: any,

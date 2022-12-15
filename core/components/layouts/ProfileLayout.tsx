@@ -8,6 +8,9 @@ import {
 	ContextualContainer,
 	FluidContainer,
 } from "@packages/shared/components/Container";
+import CreatorBadge, {
+	BriefcaseBadge,
+} from "@packages/shared/components/CreatorBadget";
 import {Tab, TabsContainer} from "@packages/shared/components/Tabs";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {
@@ -56,7 +59,7 @@ const followers = [
 ];
 
 const AvatarContainer = styled("div", {
-	borderRadius: "50%",
+	borderRadius: "16px",
 	height: "128px",
 	width: "128px",
 	position: "absolute",
@@ -67,29 +70,29 @@ const AvatarContainer = styled("div", {
 	justifyContent: "center",
 	overflow: "hidden",
 	border: "8px solid $surface",
+	backgroundColor: "$surface",
+	padding: "8px",
 });
 
 const UserHeader = ({profile_pic}) => {
 	return (
-		<div className="w-full">
-			<div
-				className="w-full"
-				style={{
-					height: "256px",
-					background: "linear-gradient(220.55deg, #FFED46 0%, #FF7EC7 100%)",
-					display: "flex",
-				}}
-			>
-				<Container className="relative flex h-full container mx-auto">
-					<AvatarContainer className="drop-shadow">
-						<Avatar
-							name="Tatenda Chris"
-							imageSrc={profile_pic}
-							size={{width: "128px", height: "128px"}}
-						/>
-					</AvatarContainer>
-				</Container>
-			</div>
+		<div
+			className="w-full"
+			style={{
+				height: "360px",
+				background: "linear-gradient(220.55deg, #FFED46 0%, #FF7EC7 100%)",
+				display: "flex",
+			}}
+		>
+			<Container className="relative flex h-full container mx-auto">
+				<AvatarContainer className="drop-shadow">
+					<Avatar
+						name="Tatenda Chris"
+						imageSrc={profile_pic}
+						size={{width: "100%", height: "100%"}}
+					/>
+				</AvatarContainer>
+			</Container>
 		</div>
 	);
 };
@@ -132,15 +135,31 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 			<Container className="container mx-auto py-8 px-4 xl:px-0">
 				<FluidContainer className="mt-[26px] flex justify-between px-4">
 					<ContextualContainer className="flex flex-col max-w-2xl gap-y-4">
-						<Container>
-							<Heading
-								size="sm"
-								className="flex items-center gap-1"
-							>
-								<span>{user.displayName ?? "Loading profile details"}</span>
-								<VerifiedBadge size={16} />
-							</Heading>
-							<MutedText>{user.username}</MutedText>
+						<Container className="flex flex-col gap-1">
+							<Container>
+								<Heading
+									size="sm"
+									className="flex items-center gap-1"
+								>
+									<span>{user.displayName ?? "Loading profile details"}</span>
+									<VerifiedBadge size={16} />
+								</Heading>
+								<MutedText>@{user.username}</MutedText>
+							</Container>
+							<Container className="flex gap-4 items-center mt-2">
+								<Text className="flex gap-1 items-center">
+									<CreatorBadge />
+									<ImportantText>Verified Creator</ImportantText>
+								</Text>
+								<Text className="h-full">&bull;</Text>
+								<Text className="flex gap-1 items-center">
+									<BriefcaseBadge />
+									<ImportantText>TreatDAO Team</ImportantText>
+								</Text>
+							</Container>
+							<Text className="mt-2">
+								{user.bio ?? "Loading profile details"}
+							</Text>
 						</Container>
 						<Container className="flex gap-4 flex-row flex-wrap">
 							{props.userProfile.badges?.map((badge) => (
@@ -159,7 +178,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 						</Container>
 						<Container
 							variant={"unstyled"}
-							className="flex w-full"
+							className="flex w-full mb-4"
 						>
 							<>
 								<Text
@@ -193,14 +212,10 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 								<JustifiedSpan>Collectors</JustifiedSpan>
 							</>
 						</Container>
-						<Text>{user.bio ?? "Loading profile details"}</Text>
 						<Container variant={"unstyled"}>
 							<Container className="flex gap-x-4">
-								<ProfileDropdown
-									address={user.address}
-									username={user.username}
-								/>
 								<Button className="drop-shadow-xl">Follow</Button>
+								<Button appearance={"surface"}>Share profile</Button>
 							</Container>
 						</Container>
 					</ContextualContainer>
@@ -221,12 +236,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 					</TabsContainer>
 				</FluidContainer>
 			</Container>
-			<FluidContainer
-				justified
-				className="flex flex-col mt-[26px] px-4"
-			>
-				{props.children}
-			</FluidContainer>
+			<ApplicationFrame>{props.children}</ApplicationFrame>
 		</>
 	);
 }

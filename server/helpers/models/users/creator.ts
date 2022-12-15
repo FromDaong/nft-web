@@ -28,9 +28,6 @@ const ModelSchema = new mongoose.Schema(
 		bundle_id: {
 			type: String,
 		},
-		identity_access_key: {
-			type: String,
-		},
 		livestreaming_detail: {
 			stream_id: String,
 			playback_id: String,

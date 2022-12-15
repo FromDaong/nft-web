@@ -1,7 +1,7 @@
 import Image from "next/future/image";
 
 const gumletLoader = ({src, width, quality}) => {
-	return `https://treatnfts.gumlet.io${src}?w=${width}&q=${
+	return `https://treatnfts.gumlet.io${src}w=${width}&q=${
 		quality || 75
 	}&format=auto`;
 };

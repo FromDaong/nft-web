@@ -35,6 +35,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 			: null;
 		req.session.user = user.toObject();
 
+		// Add ids of owned nfts 
+
 		return returnWithSuccess(req.session, res);
 	} catch (err) {
 		console.log({err});

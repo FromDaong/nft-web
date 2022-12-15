@@ -52,9 +52,11 @@ export const ProfileDropdown = (props: {username: string; address: string}) => {
 						}}
 					>
 						<DropdownMenu.Group>
-							<DropdownMenuItem>
-								<ImportantText>Send a tip</ImportantText>
-							</DropdownMenuItem>
+							{false && (
+								<DropdownMenuItem>
+									<ImportantText>Send a tip</ImportantText>
+								</DropdownMenuItem>
+							)}
 							<DropdownMenuItem onClick={share_profile}>
 								<ImportantText>Share</ImportantText>
 							</DropdownMenuItem>

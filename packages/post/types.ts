@@ -1,4 +1,4 @@
-export type TPost = {
+export type TritPostProps = {
 	id: string;
 	name?: string;
 	text?: string;
@@ -49,11 +49,13 @@ export type TPost = {
 		totalSupply: number;
 		avatar: string;
 	};
-	inGrid?: boolean;
 	protected?: boolean;
 	totm?: boolean;
 	noPrice?: boolean;
+	inGrid?: boolean;
 	isResale?: boolean;
+	isMine?: boolean;
+	isSoldOut?: boolean;
 };
 
 export type LivestreamPost = {
