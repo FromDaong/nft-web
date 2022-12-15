@@ -10,16 +10,12 @@ import {styled} from "@styles/theme";
 import ContentLoader from "react-content-loader";
 import {Button} from "@packages/shared/components/Button";
 import {HeartFilledIcon} from "@radix-ui/react-icons";
-import {useAccount} from "wagmi";
-import axios from "axios";
-import {apiEndpoint} from "@utils/index";
-import {useEffect, useState} from "react";
-import useUser from "core/auth/useUser";
 import {useDisclosure} from "@packages/hooks";
-import GenericChainModal from "@packages/modals/GenericChainModal";
-import {useRouter} from "next/router";
 import {useTritNFTUtils} from "./hooks";
 import TransferNFTModal from "@packages/modals/TransferNFTModal";
+import CancelOrderModal from "@packages/modals/CancelOrderModal";
+import ListOrderModal from "@packages/modals/ListOrderModal";
+import PurchaseResaleNFTModal from "@packages/modals/PurchaseResaleNFTModal";
 
 export const StyledLoader = styled(ContentLoader, {
 	backgroundColor: "$surface",
@@ -74,19 +70,53 @@ export const LikeIcon = styled(HeartIcon, {
 });
 
 export const TritPost = (props: TritPostProps) => {
-	const {liked, likeNFT, isListedOnResale} = useTritNFTUtils(props);
-	const listNFTModalProps = useDisclosure();
+	const {
+		liked,
+		likeNFT,
+		isListedOnResale,
+		listNFTModalProps,
+		transferNFTModalProps,
+		cancelOrderModalProps,
+		buyResaleNFTModalProps,
+	} = useTritNFTUtils(props);
 
 	const imageUrl = props.image?.ipfs;
 	const soldOut = props.collection?.minted === props.collection?.totalSupply;
 
 	return (
 		<>
-			<TransferNFTModal
-				isOpen={listNFTModalProps.isOpen}
-				onClose={listNFTModalProps.onClose}
-				nft={props}
-			/>
+			{!props.isMine && (
+				<>
+					{!props.isResale && (
+						<>
+							<TransferNFTModal
+								isOpen={transferNFTModalProps.isOpen}
+								onClose={transferNFTModalProps.onClose}
+								nft={props}
+							/>
+							<ListOrderModal
+								isOpen={listNFTModalProps.isOpen}
+								onClose={listNFTModalProps.onClose}
+								nft={props}
+							/>
+						</>
+					)}
+					{(props.isResale || isListedOnResale) && (
+						<CancelOrderModal
+							isOpen={cancelOrderModalProps.isOpen}
+							onClose={buyResaleNFTModalProps.onClose}
+							nft={props}
+						/>
+					)}
+				</>
+			)}
+			{props.isResale && (
+				<PurchaseResaleNFTModal
+					isOpen={cancelOrderModalProps.isOpen}
+					onClose={buyResaleNFTModalProps.onClose}
+					nft={props}
+				/>
+			)}
 			<Link href={!props.isResale ? `/post/nft/${props.id}` : "#"}>
 				<a className="w-full p-2">
 					<Container
@@ -182,11 +212,12 @@ export const TritPost = (props: TritPostProps) => {
 								</Container>
 							</Container>
 							<Container className="flex flex-col gap-2">
-								{props.isResale && (
+								{props.isResale && !props.isMine && (
 									<Container className="py-2">
 										<Button
 											fullWidth
 											appearance={"surface"}
+											onClick={buyResaleNFTModalProps.onOpen}
 										>
 											Purchase from{" "}
 											{props.author.username || props.author.display_name}
@@ -194,24 +225,41 @@ export const TritPost = (props: TritPostProps) => {
 									</Container>
 								)}
 								{props.isMine && (
-									<Container className="py-2">
-										<Button
-											fullWidth
-											appearance={"surface"}
-										>
-											Resell
-										</Button>
-									</Container>
-								)}
+									<Container className="grid grid-cols-2 w-full gap-4">
+										{!props.isResale && !isListedOnResale && (
+											<>
+												<Container className="py-2">
+													<Button
+														fullWidth
+														appearance={"surface"}
+														onClick={listNFTModalProps.onOpen}
+													>
+														Resell
+													</Button>
+												</Container>
+												<Container className="py-2">
+													<Button
+														fullWidth
+														appearance={"surface"}
+														onClick={listNFTModalProps.onOpen}
+													>
+														Transfer
+													</Button>
+												</Container>
+											</>
+										)}
 
-								{props.isMine && isListedOnResale && (
-									<Container className="py-2">
-										<Button
-											fullWidth
-											appearance={"surface"}
-										>
-											Remove your listing
-										</Button>
+										{props.isResale && isListedOnResale && (
+											<Container className="py-2">
+												<Button
+													fullWidth
+													appearance={"surface"}
+													onClick={cancelOrderModalProps.onOpen}
+												>
+													Remove your listing
+												</Button>
+											</Container>
+										)}
 									</Container>
 								)}
 

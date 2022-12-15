@@ -14,6 +14,8 @@ export const useTritNFTUtils = (nft: any) => {
 	const listNFTModalProps = useDisclosure();
 	const cancelOrderModalProps = useDisclosure();
 	const transferNFTModalProps = useDisclosure();
+	const buyResaleNFTModalProps = useDisclosure();
+
 	const isListedOnResale = useGetResaleOrder(nft.id);
 
 	useEffect(() => {
@@ -42,6 +44,7 @@ export const useTritNFTUtils = (nft: any) => {
 		listNFTModalProps,
 		cancelOrderModalProps,
 		transferNFTModalProps,
+		buyResaleNFTModalProps,
 	};
 };
 
@@ -51,7 +54,7 @@ export const useTransferNFTs = () => {
 
 	const treatMarketplaceContract = useContract({
 		addressOrName: contractAddresses.treatMarketplace[56],
-		contractInterface: ABI.treatSubscribtions,
+		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});
 
@@ -79,7 +82,7 @@ export const useListOrder = () => {
 
 	const treatMarketplaceContract = useContract({
 		addressOrName: contractAddresses.treatMarketplace[56],
-		contractInterface: ABI.treatSubscribtions,
+		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});
 
@@ -116,7 +119,7 @@ export const useApproveMarketplace = () => {
 	});
 
 	const approveMarketplace = useCallback(async () => {
-		return treatMinterContract.subscribe(
+		return treatMinterContract.setApprovalForAll(
 			contractAddresses.treatMarketplace[56],
 			true,
 			{
@@ -135,15 +138,16 @@ export const useGetMinterIsApprovedForAll = () => {
 	const {address} = useAccount();
 	const {data: signer} = useSigner();
 
-	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplace[56],
-		contractInterface: ABI.treatSubscribtions,
+	const treatMinterContract = useContract({
+		addressOrName: contractAddresses.treatNFTMinter[56],
+		contractInterface: ABI.treatMinter,
 		signerOrProvider: signer,
 	});
+
 	const treatMarketplaceAddress = contractAddresses.treatMarketplace[56];
 
 	const fetchAllowance = useCallback(async () => {
-		const _allowance = await treatMarketplaceContract.isApprovedForAll(
+		const _allowance = await treatMinterContract.isApprovedForAll(
 			address,
 			treatMarketplaceAddress
 		);
@@ -219,12 +223,12 @@ export const useCancelOrder = (id) => {
 
 	const treatMarketplaceContract = useContract({
 		addressOrName: contractAddresses.treatMarketplace[56],
-		contractInterface: ABI.treatSubscribtions,
+		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});
 
 	const removeListingFromResale = useCallback(async () => {
-		return treatMarketplaceContract.subscribe(id, address);
+		return treatMarketplaceContract.cancelOrder(id, address);
 	}, [address, treatMarketplaceContract]);
 
 	return {
@@ -238,7 +242,7 @@ export const useBuyFromResale = () => {
 
 	const treatMarketplaceContract = useContract({
 		addressOrName: contractAddresses.treatMarketplace[56],
-		contractInterface: ABI.treatSubscribtions,
+		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});
 
@@ -254,5 +258,40 @@ export const useBuyFromResale = () => {
 
 	return {
 		buyFromResale,
+	};
+};
+
+export const useContracts = () => {
+	const {data: signer} = useSigner();
+
+	const treatMarketplaceContract = useContract({
+		addressOrName: contractAddresses.treatMarketplace[56],
+		contractInterface: ABI.treatMarketplace,
+		signerOrProvider: signer,
+	});
+
+	const treatSubscriptionsContract = useContract({
+		addressOrName: contractAddresses.treatSubscriptions[56],
+		contractInterface: ABI.treatSubscribtions,
+		signerOrProvider: signer,
+	});
+
+	const treatMinterContract = useContract({
+		addressOrName: contractAddresses.treatNFTMinter[56],
+		contractInterface: ABI.treatMinter,
+		signerOrProvider: signer,
+	});
+
+	const creatorMartContract = useContract({
+		addressOrName: contractAddresses.creatorMart[56],
+		contractInterface: ABI.creatorMart,
+		signerOrProvider: signer,
+	});
+
+	return {
+		treatMarketplaceContract,
+		treatSubscriptionsContract,
+		treatMinterContract,
+		creatorMartContract,
 	};
 };

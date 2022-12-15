@@ -35,6 +35,8 @@ import useSWR from "swr";
 import {ethers} from "ethers";
 import useCreateAndAddNFTs from "@packages/chain/hooks/useCreateAndAddNFTs";
 import useCreateAndAddSubscriberNFTs from "@packages/chain/hooks/useCreateAndAddSubscriberNFTs";
+import {useContracts} from "@packages/post/hooks";
+import {useWaitForTransaction} from "wagmi";
 
 registerPlugin(
 	FilePondPluginImageExifOrientation,
@@ -65,7 +67,7 @@ export default function PostType(props: {collection: string}) {
 	const proceedWithFiles = (
 		files: Array<{
 			cdn: string;
-			ipfs: string;
+			ipfs?: string;
 			type: "image" | "video";
 			videoInfo?: any;
 			blurhash: string;
@@ -80,8 +82,6 @@ export default function PostType(props: {collection: string}) {
 			prev();
 		}
 	}, [files]);
-
-	console.log({files});
 
 	return (
 		<ApplicationLayout>
@@ -104,7 +104,7 @@ export default function PostType(props: {collection: string}) {
 					) : (
 						<AddNFTDetails
 							prev={prev}
-							data={files}
+							nft_data={files}
 						/>
 					)}
 				</Container>
@@ -131,35 +131,9 @@ const UploadMedia = ({next}) => {
 
 					const cdn = await uploadcareClient.uploadFile(file.file);
 
-					const ipfs = await axios.post(
-						"https://api.pinata.cloud/pinning/pinFileToIPFS",
-						formData,
-						{
-							headers: {
-								"Content-Type": `multipart/form-data`,
-								pinata_api_key: "b949556813c4f284c550",
-								pinata_secret_api_key:
-									"7a7b755c9c067dedb142c2cb9e9c077aebf561b552c440bf67b87331bac32939",
-							},
-						}
-					);
-
-					// Add to uploaded files array
-					setUploadedFiles((uploaded) => [
-						...uploaded,
-						{
-							filename: file.file.name,
-							index: index,
-							cdn: cdn.cdnUrl,
-							ipfs: `https://treatdao.mypinata.cloud/ipfs/${ipfs.data.IpfsHash}`,
-						},
-					]);
-
-					// TODO: Don't forget to generate blurhash + poster image for videos
-
 					return {
 						cdn: cdn.cdnUrl,
-						ipfs: `https://treatdao.mypinata.cloud/ipfs/${ipfs.data.IpfsHash}`,
+						// ipfs: `https://treatdao.mypinata.cloud/ipfs/${ipfs.data.IpfsHash}`,
 						type: cdn.isImage ? "image" : "video",
 						videoInfo: !cdn.isImage
 							? {
@@ -260,29 +234,40 @@ const UploadMedia = ({next}) => {
 
 const AddNFTDetails = ({
 	prev,
-	data,
+	nft_data,
 }: {
 	prev: any;
-	data: Array<{
+	nft_data: Array<{
 		cdn: string;
-		ipfs: string;
+		ipfs?: string;
 		type: "image" | "video";
 		videoInfo?: any;
 		blurhash: string;
 	}>;
 }) => {
 	const {user} = useUser();
+	const {creatorMartContract} = useContracts();
 	const {data: bnbPrice, error: bnbError} = useSWR(
 		`https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT`
 	);
 	const [maxSupplyArray, setMaxSupplyArray] = useState(null);
 	const [amountsArray, setAmountsArray] = useState(null);
+	const [basicTxHash, setBasicTxHash] = useState("");
+	const [subscriptionTxHash, setSubscriptionTxHash] = useState("");
 
-	console.log({data});
+	const {isSuccess: isBasicTxConfirmed, data: basicTxData} =
+		useWaitForTransaction({
+			hash: basicTxHash,
+		});
+
+	const {isSuccess: isSubscriptionTxSuccess, data: subscriptionData} =
+		useWaitForTransaction({
+			hash: basicTxHash,
+		});
 
 	const formik = useFormik({
 		initialValues: {
-			nfts: data.map((file) => ({
+			nfts: nft_data.map((file) => ({
 				name: "",
 				description: "",
 				file: file,
@@ -293,7 +278,7 @@ const AddNFTDetails = ({
 				protected: false,
 				subscription_nft: false,
 				cdn: file.cdn,
-				ipfs: file.ipfs,
+				ipfs: "",
 				blurhash: file.blurhash,
 			})),
 		},
@@ -326,113 +311,62 @@ const AddNFTDetails = ({
 		},
 	});
 
-	const {
-		onCreateAndAddNFTs,
-		data: createNFTResult,
-		txHash,
-	} = useCreateAndAddNFTs(maxSupplyArray, amountsArray, "0x");
+	const createBasicNFTs = async (nfts) => {
+		const amounts_and_supply = {
+			amounts: nfts.map((n) => n.maxSupply),
+			maxSupplys: nfts.map((n) => n.price),
+		};
 
-	const {onCreateAndAddSubscriberNFTs} = useCreateAndAddSubscriberNFTs(
-		maxSupplyArray,
-		amountsArray,
-		"0x"
-	);
-
-	useEffect(() => {
-		const maxSupplies = formik.values.nfts.map((n) => n.maxSupply);
-		const amounts = formik.values.nfts.map(
-			(n) => n.price && ethers.utils.formatUnits(n.price.toString(), "wei")
+		const tx = await creatorMartContract.createAndAddNFTs(
+			amounts_and_supply.maxSupplys,
+			amounts_and_supply.amounts,
+			amounts_and_supply.amounts.map(() => false),
+			"0x"
 		);
+	};
 
-		setMaxSupplyArray(maxSupplies);
-		setAmountsArray(amounts);
-	}, [formik.values.nfts]);
+	const createSubscriberNFTs = async (nfts) => {
+		const amounts_and_supply = {
+			amounts: nfts.map((n) => n.maxSupply),
+			maxSupplys: nfts.map((n) => n.price),
+		};
 
-	useEffect(() => {
-		if (!txHash) return;
-
-		(async () => {
-			// Create NFTs without NFT IDs
-			const submitValues = formik.values.nfts.map((nftData, i) => ({
-				...nftData,
-				tx_hash: txHash,
-				blurhash: nftData.blurhash ? nftData.blurhash : null,
-			}));
-
-			const res = await fetch(`/api/model/create-temporary`, {
-				method: "POST",
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					nfts: submitValues,
-					address: user.user.address,
-				}),
-			});
-			const resJSON = await res.json();
-
-			if (resJSON.error && resJSON.error.errors) {
-				const ogErrors = Object.assign({}, resJSON.error.errors);
-				Object.keys(ogErrors).map((e) => {
-					ogErrors[e] = resJSON.error.errors[e].message;
-				});
-				formik.setErrors(ogErrors);
-				formik.setSubmitting(false);
-			}
-
-			if (resJSON.success) {
-				// TODO: do something here
-			}
-		})();
-	}, [txHash]);
-
-	useEffect(() => {
-		if (!createNFTResult) return;
-
-		(async () => {
-			// Create NFTs without NFT IDs
-			const submitValues = formik.values.nfts.map((nftData: any, i) => ({
-				...nftData,
-				id: createNFTResult.nftIds[i],
-				blurhash: nftData.blurhash ? nftData.blurhash : null,
-			}));
-
-			// Show a modal that we are creating nfts, now they being sent to backend
-
-			const res = await fetch(`/api/v3/marketplace/create`, {
-				method: "POST",
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					nfts: submitValues,
-					address: user.user.address,
-				}),
-			});
-
-			const resJSON = await res.json();
-
-			if (resJSON.error && resJSON.error.errors) {
-				// We caught an error, do something
-				console.error(resJSON.error);
-				const ogErrors = Object.assign({}, resJSON.error.errors);
-				Object.keys(ogErrors).map((e) => {
-					ogErrors[e] = resJSON.error.errors[e].message;
-				});
-			}
-
-			if (resJSON.success) {
-				// Success, redirect user to collection page
-			}
-		})();
-	}, [createNFTResult]);
+		const tx = await creatorMartContract.createAndAddNFTs(
+			amounts_and_supply.maxSupplys,
+			amounts_and_supply.amounts,
+			amounts_and_supply.amounts.map(() => false),
+			"0x"
+		);
+	};
 
 	const submitToCreateNFTsOnServer = async () => {
 		try {
-			// TODO: Create subscription nfts if user selects that
-			await onCreateAndAddNFTs();
+			const nfts = formik.values.nfts;
+
+			// Get Tx Hash
+
+			setBasicTxHash(tx.hash);
+
+			const nftValues = nfts.map(async (nft) => {
+				const ipfs = await axios.post(
+					"https://api.pinata.cloud/pinning/pinFileToIPFS",
+					nft.cdn,
+					{
+						headers: {
+							"Content-Type": `multipart/form-data`,
+							pinata_api_key: "b949556813c4f284c550",
+							pinata_secret_api_key:
+								"7a7b755c9c067dedb142c2cb9e9c077aebf561b552c440bf67b87331bac32939",
+						},
+					}
+				);
+				return {
+					...nft,
+					ipfs,
+				};
+			});
+
+			// TODO: Create NFTs on Server
 		} catch (error) {
 			console.error(error);
 		}
@@ -441,7 +375,7 @@ const AddNFTDetails = ({
 	return (
 		<Formik
 			initialValues={{
-				nfts: data.map((file) => ({
+				nfts: nft_data.map((file) => ({
 					name: "",
 					description: "",
 					file: file,

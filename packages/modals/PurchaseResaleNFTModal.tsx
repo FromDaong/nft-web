@@ -6,7 +6,7 @@ import {BigNumber, ethers} from "ethers";
 import {useState} from "react";
 import GenericChainModal from "./GenericChainModal";
 
-export default function CancelOrderModal(props: {
+export default function PurchaseResaleNFTModal(props: {
 	onClose: any;
 	isOpen: any;
 	nft: TritPostProps;
