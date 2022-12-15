@@ -1,15 +1,9 @@
-import {
-	useCancelOrder,
-	useGetRemainingOrderBalance,
-	useGetResaleOrder,
-	useTritNFTUtils,
-} from "@packages/post/hooks";
+import {useBuyFromResale} from "@packages/post/hooks";
 import {TritPostProps} from "@packages/post/types";
-import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
-import {Heading, Text} from "@packages/shared/components/Typography/Headings";
+import {Text} from "@packages/shared/components/Typography/Headings";
+import {BigNumber, ethers} from "ethers";
 import {useState} from "react";
-import {Modal} from ".";
 import GenericChainModal from "./GenericChainModal";
 
 export default function CancelOrderModal(props: {
@@ -18,13 +12,23 @@ export default function CancelOrderModal(props: {
 	nft: TritPostProps;
 }) {
 	const [loading, setLoading] = useState(false);
-	const {removeListingFromResale} = useCancelOrder(props.nft.id);
+	const {buyFromResale} = useBuyFromResale();
 
-	const cancelOrderAction = async () => {
-		removeListingFromResale().then((x) => {
-			setLoading(false);
-			props.onClose();
-		});
+	const cost = ethers.utils.formatEther(BigNumber.from(props.nft.price.value));
+
+	const purchaseNFT = async () => {
+		setLoading(true);
+		buyFromResale(
+			props.nft.id,
+			1,
+			props.nft.seller,
+			Number(props.nft.price.value)
+		)
+			.then(() => {
+				setLoading(false);
+				props.onClose();
+			})
+			.catch((err) => console.error(err));
 
 		setLoading(false);
 		props.onClose();
@@ -33,15 +37,12 @@ export default function CancelOrderModal(props: {
 	return (
 		<>
 			<GenericChainModal
-				title={"Remove NFT Listing ❌"}
+				title={"Purchase NFT 🛒"}
 				onClose={props.onClose}
 				isOpen={props.isOpen}
-				subtitle={
-					"Transfer your NFT to another wallet. Please make sure both walletsare on the Binance Smart Chain."
-				}
-				buttonLabel={"Remove listing"}
-				hideClose
-				action={cancelOrderAction}
+				subtitle={`You are buying the NFT ${props.nft.name} for ${cost}BNB from the Resale Market`}
+				buttonLabel={"Purchase NFT"}
+				action={purchaseNFT}
 				loading={loading}
 			>
 				<Container className="flex flex-col gap-4">

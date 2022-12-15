@@ -26,73 +26,6 @@ export const StyledLoader = styled(ContentLoader, {
 	foreGroundColor: "$elementOnSurface",
 });
 
-export const SkeletonTritCollectiblePost = (props) => (
-	<StyledLoader
-		speed={1}
-		width={320}
-		height={400}
-		viewBox="0 0 320 400"
-		{...props}
-	>
-		<rect
-			x="39"
-			y="26"
-			rx="2"
-			ry="2"
-			width="58"
-			height="57"
-		/>
-		<rect
-			x="34"
-			y="332"
-			rx="9"
-			ry="9"
-			width="262"
-			height="9"
-		/>
-		<rect
-			x="33"
-			y="356"
-			rx="14"
-			ry="14"
-			width="93"
-			height="30"
-		/>
-		<rect
-			x="207"
-			y="355"
-			rx="14"
-			ry="14"
-			width="93"
-			height="30"
-		/>
-		<rect
-			x="37"
-			y="313"
-			rx="2"
-			ry="2"
-			width="92"
-			height="8"
-		/>
-		<rect
-			x="200"
-			y="312"
-			rx="2"
-			ry="2"
-			width="92"
-			height="8"
-		/>
-		<rect
-			x="41"
-			y="105"
-			rx="0"
-			ry="0"
-			width="255"
-			height="186"
-		/>
-	</StyledLoader>
-);
-
 export const FrostyBackgroundContainer = styled(Container, {
 	backgroundColor: "#ffffff33",
 	backdropFilter: "blur(10px)",
@@ -342,3 +275,70 @@ export const TritPost = (props: TritPostProps) => {
 		</>
 	);
 };
+
+export const SkeletonTritCollectiblePost = (props) => (
+	<StyledLoader
+		speed={1}
+		width={320}
+		height={400}
+		viewBox="0 0 320 400"
+		{...props}
+	>
+		<rect
+			x="39"
+			y="26"
+			rx="2"
+			ry="2"
+			width="58"
+			height="57"
+		/>
+		<rect
+			x="34"
+			y="332"
+			rx="9"
+			ry="9"
+			width="262"
+			height="9"
+		/>
+		<rect
+			x="33"
+			y="356"
+			rx="14"
+			ry="14"
+			width="93"
+			height="30"
+		/>
+		<rect
+			x="207"
+			y="355"
+			rx="14"
+			ry="14"
+			width="93"
+			height="30"
+		/>
+		<rect
+			x="37"
+			y="313"
+			rx="2"
+			ry="2"
+			width="92"
+			height="8"
+		/>
+		<rect
+			x="200"
+			y="312"
+			rx="2"
+			ry="2"
+			width="92"
+			height="8"
+		/>
+		<rect
+			x="41"
+			y="105"
+			rx="0"
+			ry="0"
+			width="255"
+			height="186"
+		/>
+	</StyledLoader>
+);

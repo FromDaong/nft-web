@@ -1,16 +1,20 @@
+import {useDisclosure} from "@packages/hooks";
 import {ABI} from "@packages/treat/lib/abi";
 import {contractAddresses} from "@packages/treat/lib/constants";
 import {apiEndpoint} from "@utils/index";
 import axios from "axios";
 import useUser from "core/auth/useUser";
 import {BigNumber, ethers} from "ethers";
-import {useRouter} from "next/router";
 import {useCallback, useEffect, useState} from "react";
 import {useAccount, useContract, useSigner} from "wagmi";
 
 export const useTritNFTUtils = (nft: any) => {
 	const {user} = useUser();
 	const [liked, setLikedNFT] = useState<undefined | boolean>(false);
+	const listNFTModalProps = useDisclosure();
+	const cancelOrderModalProps = useDisclosure();
+	const transferNFTModalProps = useDisclosure();
+	const isListedOnResale = useGetResaleOrder(nft.id);
 
 	useEffect(() => {
 		if (user?.profile && liked !== undefined) {
@@ -21,14 +25,6 @@ export const useTritNFTUtils = (nft: any) => {
 			}
 		}
 	}, [nft.likedBy, user]);
-
-	const isApprovedForAll = useGetMinterIsApprovedForAll();
-	const {onApprove} = useApproveMarketplace();
-
-	const listNFTForResale = () => {};
-	const removeNFTFromResale = () => {};
-	const buyResaleNFT = () => {};
-	const isListedOnResale = () => {};
 
 	const likeNFT = (e) => {
 		e.preventDefault();
@@ -43,7 +39,9 @@ export const useTritNFTUtils = (nft: any) => {
 		liked,
 		likeNFT,
 		isListedOnResale,
-		listNFTForResale,
+		listNFTModalProps,
+		cancelOrderModalProps,
+		transferNFTModalProps,
 	};
 };
 
@@ -52,7 +50,7 @@ export const useTransferNFTs = () => {
 	const {address} = useAccount();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatSubscriptions[56],
+		addressOrName: contractAddresses.treatMarketplace[56],
 		contractInterface: ABI.treatSubscribtions,
 		signerOrProvider: signer,
 	});
@@ -80,7 +78,7 @@ export const useListOrder = () => {
 	const {address} = useAccount();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatSubscriptions[56],
+		addressOrName: contractAddresses.treatMarketplace[56],
 		contractInterface: ABI.treatSubscribtions,
 		signerOrProvider: signer,
 	});
@@ -138,7 +136,7 @@ export const useGetMinterIsApprovedForAll = () => {
 	const {data: signer} = useSigner();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatSubscriptions[56],
+		addressOrName: contractAddresses.treatMarketplace[56],
 		contractInterface: ABI.treatSubscribtions,
 		signerOrProvider: signer,
 	});
@@ -166,8 +164,8 @@ export const useGetResaleOrder = (id) => {
 	const [orders, setOrders] = useState([]);
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatSubscriptions[56],
-		contractInterface: ABI.treatSubscribtions,
+		addressOrName: contractAddresses.treatMarketplace[56],
+		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});
 
@@ -196,8 +194,8 @@ export const useGetRemainingOrderBalance = (id) => {
 	const {data: signer} = useSigner();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatSubscriptions[56],
-		contractInterface: ABI.treatSubscribtions,
+		addressOrName: contractAddresses.treatMarketplace[56],
+		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});
 
@@ -215,22 +213,19 @@ export const useGetRemainingOrderBalance = (id) => {
 	return ethers.utils.formatEther(BigNumber.from(balance));
 };
 
-export const useCancelOrder = () => {
+export const useCancelOrder = (id) => {
 	const {data: signer} = useSigner();
 	const {address} = useAccount();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatSubscriptions[56],
+		addressOrName: contractAddresses.treatMarketplace[56],
 		contractInterface: ABI.treatSubscribtions,
 		signerOrProvider: signer,
 	});
 
-	const removeListingFromResale = useCallback(
-		async (id) => {
-			return treatMarketplaceContract.subscribe(id, address);
-		},
-		[address, treatMarketplaceContract]
-	);
+	const removeListingFromResale = useCallback(async () => {
+		return treatMarketplaceContract.subscribe(id, address);
+	}, [address, treatMarketplaceContract]);
 
 	return {
 		removeListingFromResale,
@@ -242,7 +237,7 @@ export const useBuyFromResale = () => {
 	const {address} = useAccount();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatSubscriptions[56],
+		addressOrName: contractAddresses.treatMarketplace[56],
 		contractInterface: ABI.treatSubscribtions,
 		signerOrProvider: signer,
 	});

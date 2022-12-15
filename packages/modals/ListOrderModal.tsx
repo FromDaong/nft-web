@@ -5,18 +5,16 @@ import {
 	useGetRemainingOrderBalance,
 	useGetResaleOrder,
 	useListOrder,
-	useTritNFTUtils,
 } from "@packages/post/hooks";
 import {TritPostProps} from "@packages/post/types";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Input} from "@packages/shared/components/Input";
-import {Heading, Text} from "@packages/shared/components/Typography/Headings";
+import {Text} from "@packages/shared/components/Typography/Headings";
 import {MutedText} from "@packages/shared/components/Typography/Text";
 import Spinner from "@packages/shared/icons/Spinner";
 import {BigNumber, ethers} from "ethers";
 import {useState} from "react";
-import {Modal} from ".";
 import GenericChainModal from "./GenericChainModal";
 
 export default function ListOrderModal(props: {
@@ -38,8 +36,6 @@ export default function ListOrderModal(props: {
 	const balance = useGetRemainingOrderBalance(props.nft.id);
 
 	const {approveMarketplace} = useApproveMarketplace();
-
-	const {liked, likeNFT, isListedOnResale} = useTritNFTUtils(props);
 
 	const lowestOpenOrder = BigNumber.from(
 		openOrders.reduce(
