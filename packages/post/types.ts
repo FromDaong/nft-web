@@ -49,6 +49,7 @@ export type TritPostProps = {
 		totalSupply: number;
 		avatar: string;
 	};
+	likedBy: Array<string>;
 	protected?: boolean;
 	totm?: boolean;
 	noPrice?: boolean;

@@ -45,6 +45,7 @@ export const legacy_nft_to_new = (post: any): TPost => ({
 		minted: post.mints?.length,
 		avatar: post.collection_avatar,
 	},
+	likedBy: post.likedBy,
 	protected: post.protected,
 });
 

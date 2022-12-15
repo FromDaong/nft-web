@@ -1,20 +1,23 @@
-import useGetIsSubscribed from "@packages/chain/hooks/useGetIsSubscribed";
+import {useSubscriptionData} from "@packages/chain/hooks/alpha";
 import {useDisclosure} from "@packages/hooks";
 import {Modal} from "@packages/modals";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Heading} from "@packages/shared/components/Typography/Headings";
 import {ImportantText, Text} from "@packages/shared/components/Typography/Text";
+import Spinner from "@packages/shared/icons/Spinner";
 import {apiEndpoint} from "@utils/index";
 import axios from "axios";
 import useUser from "core/auth/useUser";
 import Link from "next/link";
+import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
 import {useAccount, useWaitForTransaction} from "wagmi";
 
 const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 	const {address} = useAccount();
 	const session = useUser();
+	const router = useRouter();
 	const {isOpen, onOpen, onClose} = useDisclosure();
 	const [loading, setLoading] = useState(false);
 	const [mintTx, setMintTx] = useState(null);
@@ -35,9 +38,7 @@ const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 		}
 	}, [isTxConfirmed, data]);
 
-	// TODO: Change @param this to creator address
-
-	const isSubscribed = useGetIsSubscribed(address);
+	const subscription = useSubscriptionData(nftData.creator.address);
 
 	const nftsRemaining = remainingNfts;
 	const nftSoldOut = remainingNfts === 0 || remainingNfts < 0;
@@ -46,12 +47,7 @@ const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 	const isRegularNFTBuyEnabled =
 		!nftSoldOut && !isTOTMNFT && !isSubscriptionNFT;
 
-	const isRedeemDisabled = !!(
-		loading ||
-		nftSoldOut ||
-		nftSoldOut ||
-		(isSubscriptionNFT && !isSubscribed)
-	);
+	const isRedeemDisabled = !!(loading || nftSoldOut || nftSoldOut);
 
 	const redeemNFT = async () => {
 		try {
@@ -84,24 +80,26 @@ const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 	};
 
 	const submitTransaction = async () => {
-		return axios.post(`${apiEndpoint}/tx/create`, {
-			txHash: data.transactionHash,
-			metadata: {
-				nftId: nftData.id,
-				balanceSender: address,
-				balanceReceiver: nftData.creator?.address,
-			},
-			type: "mint",
-			amount: nftData.price,
-			timestamp: new Date(),
-		});
+		return axios
+			.post(`${apiEndpoint}/tx/create`, {
+				txHash: data.transactionHash,
+				metadata: {
+					nftId: nftData.id,
+					balanceSender: address,
+					balanceReceiver: nftData.creator?.address,
+				},
+				type: "mint",
+				amount: nftData.price,
+				timestamp: new Date(),
+			})
+			.then(() => router.reload());
 	};
 
 	if (nftData.melon_nft) return null;
 
 	return (
 		<>
-			{isSubscriptionNFT && !isSubscribed ? (
+			{isSubscriptionNFT && !subscription.isSubscribed ? (
 				<Container className="flex flex-col gap-4">
 					<Container className="flex flex-col gap-1">
 						<Heading size="xs">Subscription Content</Heading>
@@ -109,9 +107,11 @@ const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 							You need to be subscribed to this creator to redeem this NFT
 						</Text>
 					</Container>
-					<Button css={{borderRadius: "16px", padding: "16px 0"}}>
-						Subscribe for 0.01 BNB
-					</Button>
+
+					<SubscribeToCreatorButton
+						subscription={subscription}
+						creator_address={nftData.creator.address}
+					/>
 				</Container>
 			) : (
 				<>
@@ -181,6 +181,7 @@ const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 							disabled={isRedeemDisabled}
 							onClick={redeemNFT}
 						>
+							{loading && <Spinner />}
 							{loading ? (
 								showConfirmWallet ? (
 									"Please confirm in your wallet and wait"
@@ -193,18 +194,16 @@ const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 										<>Sold Out</>
 									) : (
 										<>
-											{isRegularNFTBuyEnabled && `Buy now`}
+											{isRegularNFTBuyEnabled ||
+												(isSubscriptionNFT && `Purchase NFT`)}
 											{isTOTMNFT && `Buy TOTM NFT`}
-											{isSubscriptionNFT &&
-												!nftSoldOut &&
-												`Buy Subscription NFT`}
 										</>
 									)}
 								</ImportantText>
 							)}
 						</Button>
 					) : (
-						<></>
+						<>Sold Out</>
 					)}
 				</>
 			)}
@@ -212,8 +211,34 @@ const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 	);
 };
 
-export const SubscribeToCreatorButton = () => {
-	return <Button>Subscribe</Button>;
+export const SubscribeToCreatorButton = (props: {
+	creator_address: string;
+	subscription: any;
+}) => {
+	const [isLoading, setIsLoading] = useState(false);
+	const router = useRouter();
+
+	const subscribeToCreator = async () => {
+		setIsLoading(true);
+		props.subscription.subscribe().then(() => router.reload());
+	};
+
+	return (
+		<Button
+			fullWidth
+			onClick={subscribeToCreator}
+			appearance={
+				props.subscription.isLoading || isLoading ? "disabled" : "primary"
+			}
+			disabled={props.subscription.isLoading || isLoading}
+			css={{padding: "16px"}}
+		>
+			{(props.subscription.isLoading || isLoading) && <Spinner />}
+			{props.subscription.isLoading || isLoading
+				? "Please wait..."
+				: `Subscribe to creator for ${props.subscription.subscriptionPrice} BNB`}
+		</Button>
+	);
 };
 
 export default BuyNFTButton;

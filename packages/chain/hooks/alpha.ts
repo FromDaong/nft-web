@@ -322,6 +322,8 @@ export const useWagmiMintSubscriberNFT = (id: number, treatCost: number) => {
 // END MINT NFT
 
 export const useSubscriptionData = (creator_address: string) => {
+	const [isSubscribed, setIsSubscribed] = useState(false);
+	const [loadingIsSubscribed, setLoadingIsSubscribed] = useState(true);
 	const {data: signer} = useSigner();
 	const {address} = useAccount();
 
@@ -338,9 +340,17 @@ export const useSubscriptionData = (creator_address: string) => {
 		signerOrProvider: signer,
 	});
 
-	const isSubscribed = useCallback(async () => {
-		return subscriptionContract.getIsSubscribedNow(address, creator_address);
-	}, [address, subscriptionContract]);
+	useEffect(() => {
+		setLoadingIsSubscribed(true);
+		if (subscriptionContract && signer) {
+			subscriptionContract
+				.getIsSubscribedNow(address, creator_address)
+				.then(() => setIsSubscribed(true))
+				.then(() => setLoadingIsSubscribed(false));
+		} else {
+			setIsSubscribed(false);
+		}
+	}, [address, subscriptionContract, signer]);
 
 	const subscribe = useCallback(async () => {
 		return subscriptionContract.subscribe(creator_address, BigNumber.from(1), {
@@ -357,5 +367,6 @@ export const useSubscriptionData = (creator_address: string) => {
 		isLoading,
 		isSubscribed,
 		subscribe,
+		loadingIsSubscribed,
 	};
 };

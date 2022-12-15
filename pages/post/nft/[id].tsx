@@ -22,7 +22,14 @@ import Error404 from "@packages/error/404";
 import {useDisclosure} from "@packages/hooks";
 import {Modal} from "@packages/modals";
 import FullScreenImagePreview from "@packages/modals/FullScreenImagePreview";
-import {SkeletonTritCollectiblePost, TritPost} from "@packages/post/TritPost";
+import BuyNFTButton from "@packages/post/BuyNFTButton";
+import {useTritNFTUtils} from "@packages/post/hooks";
+import {
+	DislikeIcon,
+	LikeIcon,
+	SkeletonTritCollectiblePost,
+	TritPost,
+} from "@packages/post/TritPost";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import CreatorBadge from "@packages/shared/components/CreatorBadget";
@@ -33,6 +40,11 @@ import {
 	ImportantText,
 	MutedText,
 } from "@packages/shared/components/Typography/Text";
+import {
+	EnterFullScreenIcon,
+	HeartFilledIcon,
+	HeartIcon,
+} from "@radix-ui/react-icons";
 import {apiEndpoint, legacy_nft_to_new, timeFromNow} from "@utils/index";
 import axios from "axios";
 import UserAvatar from "core/auth/components/Avatar";
@@ -104,9 +116,29 @@ const getYouMightAlsoLike = async () => {
 };
 
 export default function NFT(props: {notFound?: boolean; data: any}) {
+	const data = JSON.parse(props.data);
+	const {nft, mints} = data;
+	const postUtils = useTritNFTUtils(nft);
+
 	const {address} = useAccount();
 	const [showFullScreen, setShowFullScreen] = useState(false);
 	useFullScreen("nft_image", showFullScreen);
+
+	const getMoreNFTsFromCreator = async () => {
+		const res = await axios.get(
+			`${apiEndpoint}/creator/${nft.creator.username}/sample`
+		);
+		return res.data.data;
+	};
+
+	const {
+		isLoading: moreNFTSLoading,
+		error: moreNFTSError,
+		data: moreNFTs,
+	} = TreatCore.useQuery({
+		queryKey: [`moreNFTS:${nft.creator._id}`],
+		queryFn: getMoreNFTsFromCreator,
+	});
 
 	const {
 		isOpen: isFullscreenPreviewOpen,
@@ -126,9 +158,6 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 	if (props.notFound) {
 		return <Error404 />;
 	}
-
-	const data = JSON.parse(props.data);
-	const {nft, mints} = data;
 
 	const trendingNFTs =
 		youMightAlsoLikeError || youMightAlsoLikeLoading
@@ -155,6 +184,30 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 							objectFit="contain"
 							alt={nft.name}
 						/>
+						<Container className="flex gap-4 absolute bottom-4 right-4">
+							<Button onClick={() => setShowFullScreen(!showFullScreen)}>
+								<EnterFullScreenIcon
+									height={16}
+									width={16}
+								/>
+							</Button>
+							<Button onClick={postUtils.likeNFT}>
+								{postUtils.liked ? (
+									<>
+										<HeartFilledIcon
+											width={20}
+											height={20}
+										/>
+									</>
+								) : (
+									<HeartIcon
+										width={20}
+										height={20}
+									/>
+								)}
+								<span>Like</span>
+							</Button>
+						</Container>
 					</Container>
 				</Container>
 			</Container>
@@ -218,14 +271,16 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 										</Container>
 									</a>
 								</Link>
-								{!youMightAlsoLikeError && !youMightAlsoLikeLoading
-									? trendingNFTs.slice(0, 3).map((item) => (
-											<TritPost
-												key={item}
-												inGrid
-												{...item}
-											/>
-									  ))
+								{!moreNFTSError && !moreNFTSLoading
+									? moreNFTs
+											.map((post) => legacy_nft_to_new(post))
+											.map((item) => (
+												<TritPost
+													key={item}
+													inGrid
+													{...item}
+												/>
+											))
 									: [0, 1, 2].map((i) => (
 											<Container
 												key={i}
@@ -342,17 +397,19 @@ const ViewNFT = ({nft}: {nft: any; account: string; mints: Array<any>}) => {
 					</Container>
 					<Container className="flex flex-col gap-4">
 						<Heading size="xs">Tags</Heading>
-						<Container className="flex flex-wrap gap-4 p-2">
+						<Container className="flex flex-wrap gap-4 py-2">
 							{nft.tags?.map((tag) => (
 								<Container
 									key={tag}
-									className="px-3 py-1 border rounded-full"
+									className="px-3 py-1 border rounded-full shadow-xl"
 									css={{
 										backgroundColor: "$elementSurface",
 										borderColor: "$subtleBorder",
 									}}
 								>
-									<Text>{tag}</Text>
+									<Text>
+										<ImportantText>{tag}</ImportantText>
+									</Text>
 								</Container>
 							))}
 							<Container
@@ -395,14 +452,18 @@ const ViewNFT = ({nft}: {nft: any; account: string; mints: Array<any>}) => {
 								</Heading>
 							</Container>
 						</Container>
-						<Divider dir={"horizontal"} />
-						<Container className="p-8">
-							<RedeemButton
-								mintNFT={nft.price === 0 ? mintFreeNFT : mintNFT}
-								remainingNfts={remainingNfts}
-								nftData={nft}
-							/>
-						</Container>
+						{remainingNfts !== 0 && (
+							<>
+								<Divider dir={"horizontal"} />
+								<Container className="p-8">
+									<BuyNFTButton
+										mintNFT={nft.price === 0 ? mintFreeNFT : mintNFT}
+										remainingNfts={remainingNfts}
+										nftData={nft}
+									/>
+								</Container>
+							</>
+						)}
 						{openOrders?.length > 0 && (
 							<>
 								<Divider dir={"horizontal"} />
@@ -434,6 +495,7 @@ const ViewNFT = ({nft}: {nft: any; account: string; mints: Array<any>}) => {
 											inGrid
 											isResale
 											{...nft}
+											likedBy={nft.likedBy}
 											price={{
 												value: ethers.utils.formatEther(order.price),
 												currency: "BNB",
@@ -462,212 +524,12 @@ const ViewNFT = ({nft}: {nft: any; account: string; mints: Array<any>}) => {
 	);
 };
 
-const RedeemButton = ({mintNFT, remainingNfts, nftData}) => {
-	const {address} = useAccount();
-	const session = useUser();
-	const {isOpen, onOpen, onClose} = useDisclosure();
-	const [loading, setLoading] = useState(false);
-	const [mintTx, setMintTx] = useState(null);
-	const [showConfirmWallet, setShowConfirmWallet] = useState(false);
-	const [savedTx, setSavedTx] = useState(false);
-
-	const {isSuccess: isTxConfirmed, data} = useWaitForTransaction({
-		hash: mintTx?.txHash,
-	});
-
-	useEffect(() => {
-		if (isTxConfirmed && data) {
-			submitTransaction().then(() => {
-				setShowConfirmWallet(false);
-				setLoading(false);
-				setSavedTx(true);
-			});
-		}
-	}, [isTxConfirmed, data]);
-
-	// TODO: Change @param this to creator address
-
-	const isSubscribed = useGetIsSubscribed(address);
-
-	const nftsRemaining = remainingNfts;
-	const nftSoldOut = remainingNfts === 0 || remainingNfts < 0;
-	const isTOTMNFT = nftData.totm_nft;
-	const isSubscriptionNFT = !!nftData.subscription_nft;
-	const isRegularNFTBuyEnabled =
-		!nftSoldOut && !isTOTMNFT && !isSubscriptionNFT;
-
-	const isRedeemDisabled = !!(
-		loading ||
-		nftSoldOut ||
-		nftSoldOut ||
-		(isSubscriptionNFT && !isSubscribed)
-	);
-
-	const redeemNFT = async () => {
-		try {
-			setLoading(true);
-			setShowConfirmWallet(true);
-			setSavedTx(false);
-			onOpen();
-
-			const tx = await mintNFT();
-
-			if (!tx) {
-				setLoading(false);
-				setShowConfirmWallet(false);
-				onClose();
-				return;
-			}
-
-			const transactionData = {
-				txHash: tx.hash,
-			};
-
-			setMintTx(transactionData);
-			setShowConfirmWallet(false);
-		} catch (err) {
-			console.log(err);
-			setLoading(false);
-			setShowConfirmWallet(false);
-			onClose();
-		}
-	};
-
-	const submitTransaction = async () => {
-		return axios.post(`${apiEndpoint}/tx/create`, {
-			txHash: data.transactionHash,
-			metadata: {
-				nftId: nftData.id,
-				balanceSender: address,
-				balanceReceiver: nftData.creator?.address,
-			},
-			type: "mint",
-			amount: nftData.price,
-			timestamp: new Date(),
-		});
-	};
-
-	if (nftData.melon_nft) return null;
-
-	return (
-		<>
-			{isSubscriptionNFT && !isSubscribed ? (
-				<Container className="flex flex-col gap-4">
-					<Container className="flex flex-col gap-1">
-						<Heading size="xs">Subscription Content</Heading>
-						<Text>
-							You need to be subscribed to this creator to redeem this NFT
-						</Text>
-					</Container>
-					<Button css={{borderRadius: "16px", padding: "16px 0"}}>
-						Subscribe for 0.01 BNB
-					</Button>
-				</Container>
-			) : (
-				<>
-					<Modal
-						isOpen={isOpen}
-						onClose={onClose}
-					>
-						<Container className="min-w-[360px]">
-							{showConfirmWallet && (
-								<Container className="flex flex-col gap-2 p-8">
-									<Heading
-										size="md"
-										className="mb-4"
-									>
-										Wallet authorization
-									</Heading>
-									<Text className="mb-4">
-										Please confirm the transaction in your wallet
-									</Text>
-								</Container>
-							)}
-							{!showConfirmWallet && !savedTx && (
-								<Container className="flex flex-col gap-2 p-8">
-									<Heading
-										size="md"
-										className="mb-4"
-									>
-										Confirming transaction
-									</Heading>
-									<Text className="mb-4">
-										Please wait while we confirm your purchase.
-									</Text>
-								</Container>
-							)}
-
-							{savedTx && (
-								<Container className="flex flex-col gap-8 p-8">
-									<Container className="flex flex-col gap-2">
-										<Heading
-											size="md"
-											className="mb-4"
-										>
-											Purchase Complete
-										</Heading>
-										<Text className="mb-4">
-											Congratulations on your purchase! You can view your NFT in
-											your portfolio or even sell it.
-										</Text>
-									</Container>
-									<Container className="flex flex-row justify-end gap-4">
-										<Link href={`${session.user.profile.username}`}>
-											<a>
-												<Button>Go to my portfolio</Button>
-											</a>
-										</Link>
-									</Container>
-								</Container>
-							)}
-						</Container>
-					</Modal>
-					{!nftSoldOut ? (
-						<Button
-							className="font-bold text-white"
-							fullWidth
-							css={{borderRadius: "16px", padding: "16px 0"}}
-							appearance={isRedeemDisabled ? "disabled" : "primary"}
-							disabled={isRedeemDisabled}
-							onClick={redeemNFT}
-						>
-							{loading ? (
-								showConfirmWallet ? (
-									"Please confirm in your wallet and wait"
-								) : (
-									"Please wait..."
-								)
-							) : (
-								<ImportantText>
-									{nftSoldOut || isNaN(nftsRemaining) ? (
-										<>Sold Out</>
-									) : (
-										<>
-											{isRegularNFTBuyEnabled && `Buy now`}
-											{isTOTMNFT && `Buy TOTM NFT`}
-											{isSubscriptionNFT &&
-												!nftSoldOut &&
-												`Buy Subscription NFT`}
-										</>
-									)}
-								</ImportantText>
-							)}
-						</Button>
-					) : (
-						<></>
-					)}
-				</>
-			)}
-		</>
-	);
-};
-
 export const getServerSideProps = async (context) => {
 	const {id} = context.params;
 
 	await pagePropsConnectMongoDB();
 
-	const nft = await MongoModelNFT.findOne({id}).populate("creator");
+	const nft = await MongoModelNFT.findOne({id}).populate("creator").exec();
 
 	if (!nft) {
 		return {

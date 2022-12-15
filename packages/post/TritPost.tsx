@@ -3,12 +3,23 @@ import Link from "next/link";
 import {Container} from "@packages/shared/components/Container";
 import {TritPostProps} from "./types";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
-import {EyeOffIcon} from "@heroicons/react/outline";
+import {EyeOffIcon, HeartIcon} from "@heroicons/react/outline";
 import {PostMediaContent} from "./PostMediaContent";
 import UserAvatar from "core/auth/components/Avatar";
 import {styled} from "@styles/theme";
 import ContentLoader from "react-content-loader";
 import {Button} from "@packages/shared/components/Button";
+import {HeartFilledIcon} from "@radix-ui/react-icons";
+import {useAccount} from "wagmi";
+import axios from "axios";
+import {apiEndpoint} from "@utils/index";
+import {useEffect, useState} from "react";
+import useUser from "core/auth/useUser";
+import {useDisclosure} from "@packages/hooks";
+import GenericChainModal from "@packages/modals/GenericChainModal";
+import {useRouter} from "next/router";
+import {useTritNFTUtils} from "./hooks";
+import TransferNFTModal from "@packages/modals/TransferNFTModal";
 
 export const StyledLoader = styled(ContentLoader, {
 	backgroundColor: "$surface",
@@ -116,169 +127,218 @@ export const UserBadge = (props: {username: string; avatar: string}) => {
 	);
 };
 
-const useTritNFTUtils = (id: string) => {
-	const listNFTForResale = () => {};
-	const removeNFTFromResale = () => {};
-	const buyResaleNFT = () => {};
-};
+export const DislikeIcon = styled(HeartFilledIcon, {
+	color: "$surface",
+	height: "24px",
+	width: "24px",
+});
+
+export const LikeIcon = styled(HeartIcon, {
+	color: "$surface",
+	fill: "$overlay",
+	height: "24px",
+	width: "24px",
+});
 
 export const TritPost = (props: TritPostProps) => {
-	const imageUrl = props.image?.ipfs; // ?? props.image?.ipfs;
-	const soldOut = props.collection.minted === props.collection.totalSupply;
+	const {liked, likeNFT, isListedOnResale} = useTritNFTUtils(props);
+	const listNFTModalProps = useDisclosure();
+
+	const imageUrl = props.image?.ipfs;
+	const soldOut = props.collection?.minted === props.collection?.totalSupply;
 
 	return (
-		<Link href={!props.isResale ? `/post/nft/${props.id}` : "#"}>
-			<a className="p-2">
-				<Container
-					className="relative flex overflow-hidden border shadow-lg"
-					css={{
-						borderColor: "$subtleBorder",
-						borderRadius: "16px",
-						backgroundColor: "$surface",
-						height: "440px",
-					}}
-				>
-					<PostMediaContent
-						imageUrl={imageUrl}
-						blurhash={props.blurhash}
-						isProtected={props.protected}
-						caption={props.text}
-						overrideText={
-							"The creator wants you to collect this trit before you can preview the content"
-						}
-					/>
+		<>
+			<TransferNFTModal
+				isOpen={listNFTModalProps.isOpen}
+				onClose={listNFTModalProps.onClose}
+				nft={props}
+			/>
+			<Link href={!props.isResale ? `/post/nft/${props.id}` : "#"}>
+				<a className="w-full p-2">
 					<Container
-						className="flex flex-col justify-between w-full h-full p-8"
-						css={{zIndex: 10}}
+						className="relative flex overflow-hidden border shadow-lg"
+						css={{
+							borderColor: "$subtleBorder",
+							borderRadius: "16px",
+							backgroundColor: "$surface",
+							height: "440px",
+						}}
 					>
-						<Container className="flex justify-between">
-							{false && (
-								<FrostyBackgroundContainer
-									css={{borderRadius: "calc(8px + 16px)", padding: "8px"}}
-								>
-									<Container
-										css={{
-											height: "80px",
-											width: "80px",
-
-											borderRadius: "calc(16px)",
-										}}
-									/>
-								</FrostyBackgroundContainer>
-							)}
-							{(props.protected || soldOut || props.totm) && (
-								<Container className="flex justify-between w-full">
-									{props.protected && (
+						<PostMediaContent
+							imageUrl={imageUrl}
+							blurhash={props.blurhash}
+							isProtected={props.protected}
+							caption={props.text}
+							overrideText={
+								"The creator wants you to collect this trit before you can preview the content"
+							}
+						/>
+						<Container
+							className="flex flex-col justify-between w-full h-full p-4"
+							css={{zIndex: 10}}
+						>
+							<Container className="flex items-center justify-between">
+								<Container className="flex gap-4">
+									{false && (
 										<FrostyBackgroundContainer
-											className="px-3 py-1 rounded-full"
-											css={{}}
-										>
-											{props.protected && (
-												<Container className="flex items-center justify-center gap-2">
-													<Text css={{color: "#ffffff"}}>
-														<EyeOffIcon
-															width={20}
-															height={20}
-														/>
-													</Text>
-													<Text css={{color: "#ffffff"}}>
-														<ImportantText>Protected</ImportantText>
-													</Text>
-												</Container>
-											)}
-										</FrostyBackgroundContainer>
-									)}
-									{props.totm && (
-										<FrostyBackgroundContainer
-											className="px-3 py-1 rounded-full"
-											css={{}}
-										>
-											{props.totm && (
-												<Text css={{color: "$accentText"}}>
-													<ImportantText>TOTM</ImportantText>
-												</Text>
-											)}
-										</FrostyBackgroundContainer>
-									)}
-									{soldOut && (
-										<FrostyBackgroundContainer className="px-3 py-1 rounded-full">
-											<Container className="flex items-center justify-center gap-2">
-												<Text css={{color: "$red6"}}>
-													<ImportantText>Sold out</ImportantText>
-												</Text>
-											</Container>
-										</FrostyBackgroundContainer>
-									)}
-								</Container>
-							)}
-						</Container>
-						<Container className="flex flex-col gap-2">
-							{props.isResale && (
-								<Container className="py-2">
-									<Button
-										fullWidth
-										appearance={"surface"}
-									>
-										Purchase from{" "}
-										{props.author.username || props.author.display_name}
-									</Button>
-								</Container>
-							)}
-							{!props.isResale && (
-								<>
-									<Heading
-										css={{color: "#ffffff"}}
-										size="xss"
-										className="line-clamp-1"
-									>
-										{props.name}
-									</Heading>
-									<Container className="flex flex-col gap-2">
-										<Container className="flex justify-between">
-											<Text css={{color: "#ffffff"}}>Supply</Text>
-											<Text css={{color: "#ffffff"}}>
-												{props.collection.minted}/{props.collection.totalSupply}
-											</Text>
-										</Container>
-										<FrostyBackgroundContainer
-											className="rounded-full"
-											css={{height: "10px"}}
+											css={{borderRadius: "calc(8px + 16px)", padding: "8px"}}
 										>
 											<Container
-												className="rounded-full"
 												css={{
-													backgroundColor: "$surfaceOnSurface",
-													width: `${
-														(props.collection.minted /
-															props.collection.totalSupply) *
-														100
-													}%`,
-													height: "100%",
+													height: "80px",
+													width: "80px",
+
+													borderRadius: "calc(16px)",
 												}}
 											/>
 										</FrostyBackgroundContainer>
+									)}
+									{(props.protected || soldOut || props.totm) && (
+										<Container className="flex justify-between w-full">
+											{props.protected && (
+												<FrostyBackgroundContainer
+													className="px-3 py-1 rounded-full"
+													css={{}}
+												>
+													{props.protected && (
+														<Container className="flex items-center justify-center gap-2">
+															<Text css={{color: "#ffffff"}}>
+																<EyeOffIcon
+																	width={20}
+																	height={20}
+																/>
+															</Text>
+															<Text css={{color: "#ffffff"}}>
+																<ImportantText>Protected</ImportantText>
+															</Text>
+														</Container>
+													)}
+												</FrostyBackgroundContainer>
+											)}
+											{props.totm && (
+												<FrostyBackgroundContainer
+													className="px-3 py-1 rounded-full"
+													css={{}}
+												>
+													{props.totm && (
+														<Text css={{color: "$accentText"}}>
+															<ImportantText>TOTM</ImportantText>
+														</Text>
+													)}
+												</FrostyBackgroundContainer>
+											)}
+											{soldOut && (
+												<FrostyBackgroundContainer className="px-3 py-1 rounded-full">
+													<Container className="flex items-center justify-center gap-2">
+														<Text css={{color: "$red6"}}>
+															<ImportantText>Sold out</ImportantText>
+														</Text>
+													</Container>
+												</FrostyBackgroundContainer>
+											)}
+										</Container>
+									)}
+								</Container>
+								<Container>
+									{liked ? (
+										<DislikeIcon onClick={likeNFT} />
+									) : (
+										<LikeIcon onClick={likeNFT} />
+									)}
+								</Container>
+							</Container>
+							<Container className="flex flex-col gap-2">
+								{props.isResale && (
+									<Container className="py-2">
+										<Button
+											fullWidth
+											appearance={"surface"}
+										>
+											Purchase from{" "}
+											{props.author.username || props.author.display_name}
+										</Button>
 									</Container>
-								</>
-							)}
-							<Container className="flex justify-between">
-								<UserBadge
-									username={props.author.username}
-									avatar={props.author.avatar}
-								/>
-								{!props.noPrice && (
-									<FrostyBackgroundContainer className="px-4 py-2 rounded-full">
-										<Text css={{color: "#ffffff"}}>
-											<ImportantText>
-												{props.price.value} {props.price.currency}
-											</ImportantText>
-										</Text>
-									</FrostyBackgroundContainer>
 								)}
+								{props.isMine && (
+									<Container className="py-2">
+										<Button
+											fullWidth
+											appearance={"surface"}
+										>
+											Resell
+										</Button>
+									</Container>
+								)}
+
+								{props.isMine && isListedOnResale && (
+									<Container className="py-2">
+										<Button
+											fullWidth
+											appearance={"surface"}
+										>
+											Remove your listing
+										</Button>
+									</Container>
+								)}
+
+								{!props.isResale && !props.isMine && (
+									<>
+										<Heading
+											css={{color: "#ffffff"}}
+											size="xss"
+											className="line-clamp-1"
+										>
+											{props.name}
+										</Heading>
+										<Container className="flex flex-col gap-2">
+											<Container className="flex justify-between">
+												<Text css={{color: "#ffffff"}}>Supply</Text>
+												<Text css={{color: "#ffffff"}}>
+													{props.collection?.minted}/
+													{props.collection?.totalSupply}
+												</Text>
+											</Container>
+											<FrostyBackgroundContainer
+												className="rounded-full"
+												css={{height: "10px"}}
+											>
+												<Container
+													className="rounded-full"
+													css={{
+														backgroundColor: "$surfaceOnSurface",
+														width: `${
+															(props.collection?.minted /
+																props.collection?.totalSupply) *
+															100
+														}%`,
+														height: "100%",
+													}}
+												/>
+											</FrostyBackgroundContainer>
+										</Container>
+									</>
+								)}
+								<Container className="flex justify-between">
+									<UserBadge
+										username={props.author.username}
+										avatar={props.author.avatar}
+									/>
+									{!props.noPrice && (
+										<FrostyBackgroundContainer className="px-4 py-2 rounded-full">
+											<Text css={{color: "#ffffff"}}>
+												<ImportantText>
+													{props.price.value} {props.price.currency}
+												</ImportantText>
+											</Text>
+										</FrostyBackgroundContainer>
+									)}
+								</Container>
 							</Container>
 						</Container>
 					</Container>
-				</Container>
-			</a>
-		</Link>
+				</a>
+			</Link>
+		</>
 	);
 };

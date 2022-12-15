@@ -31,11 +31,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 					profile_picture: profile.profile_picture,
 					bio: profile.bio,
 					displayName: profile.display_name,
+					_id: profile._id,
 			  }
 			: null;
 		req.session.user = user.toObject();
 
-		// Add ids of owned nfts 
+		// Add ids of owned nfts
 
 		return returnWithSuccess(req.session, res);
 	} catch (err) {

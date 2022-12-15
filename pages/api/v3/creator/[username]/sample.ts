@@ -1,13 +1,8 @@
 import {connectMongoDB} from "server/database/engine";
 import {NextApiResponse} from "next";
 import {NextApiRequest} from "next";
-import LegacyNFTModel from "server/database/legacy/nft/NFT";
-import {
-	enforcePrivacyForNFTs,
-	returnWithSuccess,
-} from "server/database/engine/utils";
+import {returnWithSuccess} from "server/database/engine/utils";
 import {MongoModelCreator} from "server/database/models/creator";
-import LegacyCreatorModel from "@db/legacy/profile/Creator";
 import {MongoModelNFT} from "server/helpers/models";
 
 export default async function handler(
@@ -19,11 +14,6 @@ export default async function handler(
 	const {page, username} = req.query;
 
 	const get_page = Number(page ?? 1) || 1;
-	const options = {
-		page: get_page,
-		limit: 24,
-	};
-
 	if (!username) {
 		return res.status(400).json({error: "No username provided"});
 	}
@@ -37,12 +27,12 @@ export default async function handler(
 	}
 
 	// @ts-ignore
-	const creatorNFTs = await MongoModelNFT.paginate(
-		{
-			creator: creator._id,
-		},
-		options
-	);
+	const creatorNFTs = await MongoModelNFT.find({
+		creator: creator._id,
+	})
+		.populate("creator")
+		.limit(3)
+		.exec();
 
 	return returnWithSuccess(creatorNFTs, res);
 }
