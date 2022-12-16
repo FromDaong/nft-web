@@ -38,6 +38,8 @@ import {useContracts} from "@packages/post/hooks";
 import {useAccount, useWaitForTransaction} from "wagmi";
 import {PencilIcon} from "@heroicons/react/outline";
 import PicEdtor from "@packages/shared/PicEditor";
+import ImagePreview from "@packages/shared/components/Preview/VideoPreview";
+import ImagePreviewWitEditor from "@packages/post/CreatePost/ImagePreview";
 
 registerPlugin(
 	FilePondPluginImageExifOrientation,
@@ -89,17 +91,22 @@ export default function PostType(props: {collection: string}) {
 			<SEOHead title={`Create ${title} Collection - Trit`} />
 			<ApplicationFrame>
 				<Container className="flex flex-col gap-12 px-4 py-12">
-					<Heading
-						css={{
-							minHeight: "16px",
-							borderRadius: "8px",
-							background: title ? "inherit" : "$elementOnSurface",
-							width: title ? "auto" : "400px",
-						}}
-						size="md"
-					>
-						{title}
-					</Heading>
+					<Container className="flex flex-col gap-2">
+						<Text css={{color: "$accentText"}}>
+							<ImportantText>Create collection</ImportantText>
+						</Text>
+						<Heading
+							css={{
+								minHeight: "16px",
+								borderRadius: "8px",
+								background: title ? "inherit" : "$elementOnSurface",
+								width: title ? "auto" : "400px",
+							}}
+							size="md"
+						>
+							{title}
+						</Heading>
+					</Container>
 					{step === "upload" ? (
 						<UploadMedia next={proceedWithFiles} />
 					) : (
@@ -406,34 +413,10 @@ const AddNFTDetails = ({
 										<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
 											<Container className="min-h-[320px] h-auto col-span-1">
 												{file.type === "image" ? (
-													<Container
-														css={{
-															backgroundImage: `url("${file.cdn}")`,
-															backgroundPosition: "center",
-															backgroundSize: "cover",
-															backgroundColor: "$surfaceOnSurface",
-														}}
-														className="flex items-center justify-center w-full h-full bg-gray-200 rounded-xl"
-													>
-														{openEditorId && (
-															<Container className="fixed top-0 left-0 w-screen h-screen">
-																<PicEdtor src={file.cdn} />
-															</Container>
-														)}
-
-														<Text
-															className="rounded-full shadow"
-															css={{
-																color: "$surface",
-															}}
-														>
-															<PencilIcon
-																width={24}
-																height={24}
-																onClick={() => setOpenEditorId(index)}
-															/>
-														</Text>
-													</Container>
+													<ImagePreviewWitEditor
+														image={file.cdn}
+														save={(image) => console.log({image})}
+													/>
 												) : (
 													<Container
 														css={{

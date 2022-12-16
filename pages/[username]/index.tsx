@@ -73,6 +73,10 @@ export default function UserProfile(props: {
 							key={post.id}
 							{...post}
 							noPrice
+							author={{
+								username: data.creator.username,
+								avatar: data.creator.avatar,
+							}}
 						/>
 					))
 				) : (

@@ -221,17 +221,17 @@ const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 							css={{borderRadius: "16px", padding: "16px 0"}}
 							appearance={
 								isRedeemDisabled ||
-								Number(accountBalance.formatted) < Number(nftData.price)
+								Number(accountBalance?.formatted) < Number(nftData.price)
 									? "disabled"
 									: "primary"
 							}
 							disabled={
 								isRedeemDisabled ||
-								Number(accountBalance.formatted) < Number(nftData.price)
+								Number(accountBalance?.formatted) < Number(nftData.price)
 							}
 							onClick={redeemNFT}
 						>
-							{Number(accountBalance.formatted) > Number(nftData.price) ? (
+							{Number(accountBalance?.formatted) > Number(nftData.price) ? (
 								<>
 									{loading && <Spinner />}
 									{loading ? (
