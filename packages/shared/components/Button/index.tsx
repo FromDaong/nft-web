@@ -47,6 +47,10 @@ export const Button = styled("button", {
 				backgroundColor: "$surfaceOnSurface",
 				color: "$gray8",
 			},
+			accent: {
+				backgroundColor: "$accentText",
+				color: "$accentBg",
+			},
 		},
 		outlined: {
 			true: {

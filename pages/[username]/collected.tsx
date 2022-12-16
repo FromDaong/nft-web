@@ -101,6 +101,7 @@ export default function UserProfile(props: {
 							key={post.id}
 							{...post}
 							noPrice
+							isMine
 						/>
 					))
 				) : (

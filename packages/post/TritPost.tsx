@@ -77,12 +77,11 @@ export const TritPost = (props: TritPostProps) => {
 		transferNFTModalProps,
 		cancelOrderModalProps,
 		buyResaleNFTModalProps,
+		isMine,
 	} = useTritNFTUtils(props);
 
 	const imageUrl = props.image?.ipfs;
 	const soldOut = props.collection?.minted === props.collection?.totalSupply;
-
-	console.log({props});
 
 	return (
 		<Container
@@ -95,7 +94,7 @@ export const TritPost = (props: TritPostProps) => {
 				backgroundColor: props.totm ? "$accentText" : "inherit",
 			}}
 		>
-			{props.isMine && (
+			{isMine && (
 				<>
 					{!props.isResale && (
 						<>
@@ -141,7 +140,7 @@ export const TritPost = (props: TritPostProps) => {
 						<PostMediaContent
 							imageUrl={imageUrl}
 							blurhash={props.blurhash}
-							isProtected={props.protected}
+							isProtected={!isMine && props.protected}
 							caption={props.text}
 							overrideText={
 								"The creator wants you to collect this trit before you can preview the content"
@@ -210,7 +209,7 @@ export const TritPost = (props: TritPostProps) => {
 								</Container>
 							</Container>
 							<Container className="flex flex-col gap-2">
-								{!props.isResale && !props.isMine && (
+								{!props.isResale && !isMine && (
 									<>
 										<Heading
 											css={{color: "#ffffff"}}
@@ -271,7 +270,7 @@ export const TritPost = (props: TritPostProps) => {
 				<Container className="py-2">
 					<Button
 						fullWidth
-						appearance={"surface"}
+						appearance={"accent"}
 						onClick={() => {
 							console.log("buying from resale");
 							buyResaleNFTModalProps.onOpen();
@@ -281,7 +280,7 @@ export const TritPost = (props: TritPostProps) => {
 					</Button>
 				</Container>
 			)}
-			{props.isMine && (
+			{isMine && props.isMine && (
 				<Container className="grid grid-cols-2 w-full gap-4">
 					{!props.isResale && !isListedOnResale && (
 						<>

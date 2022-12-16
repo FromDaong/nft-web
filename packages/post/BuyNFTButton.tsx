@@ -19,7 +19,7 @@ import {useAccount, useBalance, useWaitForTransaction} from "wagmi";
 const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 	const {address} = useAccount();
 	const {data: accountBalance, isLoading: balanceIsLoading} = useBalance({
-		addressOrName: "0x0000000000000000000000000000000000001000",
+		addressOrName: address,
 	});
 	const session = useSession();
 	// @ts-ignore
@@ -101,8 +101,6 @@ const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 
 	if (nftData.melon_nft) return null;
 
-	const bnbBalance = Number(ethers.utils.formatEther(accountBalance.value));
-
 	return (
 		<>
 			{isSubscriptionNFT && !subscription.isSubscribed ? (
@@ -117,7 +115,7 @@ const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 							</Container>
 
 							<SubscribeToCreatorButton
-								balance={bnbBalance}
+								balance={Number(accountBalance?.formatted ?? 0)}
 								subscription={subscription}
 								creator_address={nftData.creator.address}
 							/>
@@ -221,25 +219,39 @@ const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 							className="font-bold text-white"
 							fullWidth
 							css={{borderRadius: "16px", padding: "16px 0"}}
-							appearance={isRedeemDisabled ? "disabled" : "primary"}
-							disabled={isRedeemDisabled}
+							appearance={
+								isRedeemDisabled ||
+								Number(accountBalance.formatted) < Number(nftData.price)
+									? "disabled"
+									: "primary"
+							}
+							disabled={
+								isRedeemDisabled ||
+								Number(accountBalance.formatted) < Number(nftData.price)
+							}
 							onClick={redeemNFT}
 						>
-							{loading && <Spinner />}
-							{loading ? (
-								showConfirmWallet ? (
-									"Please confirm in your wallet and wait"
-								) : (
-									"Please wait..."
-								)
+							{Number(accountBalance.formatted) > Number(nftData.price) ? (
+								<>
+									{loading && <Spinner />}
+									{loading ? (
+										showConfirmWallet ? (
+											"Please confirm in your wallet and wait"
+										) : (
+											"Please wait..."
+										)
+									) : (
+										<ImportantText>
+											<>
+												{isRegularNFTBuyEnabled && `Purchase NFT`}
+												{isSubscriptionNFT && "Purchase NFT"}
+												{isTOTMNFT && `Buy TOTM NFT`}
+											</>
+										</ImportantText>
+									)}
+								</>
 							) : (
-								<ImportantText>
-									<>
-										{isRegularNFTBuyEnabled && `Purchase NFT`}
-										{isSubscriptionNFT && "Purchase NFT"}
-										{isTOTMNFT && `Buy TOTM NFT`}
-									</>
-								</ImportantText>
+								<>Insufficient balance. Cost is {nftData.price}</>
 							)}
 						</Button>
 					) : (
@@ -261,27 +273,29 @@ export const SubscribeToCreatorButton = (props: {
 
 	const subscribeToCreator = async () => {
 		setIsLoading(true);
-		props.subscription.subscribe().then(() => router.reload());
+		props.subscription
+			.subscribe()
+			.then(() => router.reload())
+			.catch((err) => {
+				console.log(err);
+				setIsLoading(false);
+			});
 	};
 
 	const insufficientBalance =
-		props.balance < parseInt(props.subscription.subscriptionPrice);
+		props.balance < Number(props.subscription.subscriptionPrice);
+
+	const disabled = insufficientBalance || isLoading;
 
 	return (
 		<Button
 			fullWidth
 			onClick={subscribeToCreator}
-			appearance={
-				props.subscription.isLoading || isLoading || insufficientBalance
-					? "disabled"
-					: "primary"
-			}
-			disabled={
-				props.subscription.isLoading || isLoading || insufficientBalance
-			}
+			appearance={disabled ? "disabled" : "primary"}
+			disabled={!!disabled}
 			css={{padding: "16px"}}
 		>
-			{insufficientBalance ? (
+			{!insufficientBalance ? (
 				<>
 					{(props.subscription.isLoading || isLoading) && <Spinner />}
 					{props.subscription.isLoading || isLoading

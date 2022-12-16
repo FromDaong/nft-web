@@ -40,6 +40,8 @@ export const useTritNFTUtils = (nft: any) => {
 			.catch(() => setLikedNFT(!liked));
 	};
 
+	const {isOwned, balance} = useGetIsNFTOwned(nft);
+
 	return {
 		liked,
 		likeNFT,
@@ -48,6 +50,8 @@ export const useTritNFTUtils = (nft: any) => {
 		cancelOrderModalProps,
 		transferNFTModalProps,
 		buyResaleNFTModalProps,
+		isMine: isOwned,
+		balance,
 	};
 };
 
