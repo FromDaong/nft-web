@@ -272,7 +272,7 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 				/>
 			</Button>
 			{menuOpen && (
-				<Container className="relative p-4">
+				<Container className="relative px-4 ">
 					<Container className="flex justify-end">
 						<Button css={{padding: "8px"}}>
 							<XIcon
@@ -283,7 +283,7 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 					</Container>
 					<NavDropdownContainer
 						css={{zIndex: 9999, width: "100vw !important"}}
-						className="fixed top-0 left-0 w-screen h-screen"
+						className="fixed top-0 left-0 w-screen h-screen py-8"
 					>
 						{!props.isConnected && (
 							<Container className="relative top-0 left-0 w-screen h-screen">
@@ -300,7 +300,7 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 										/>
 									</Button>
 								</Container>
-								<Container className="flex flex-col justify-between h-full px-8 py-12">
+								<Container className="flex flex-col gap-24 h-full px-8 py-12">
 									<Container className="flex flex-col gap-2">
 										<Heading size="xss">
 											<MutedText>NAVIGATION ACTIONS</MutedText>

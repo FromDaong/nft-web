@@ -54,14 +54,14 @@ export default function TreatOfTheMonthCollectionSection(props: {
 						.map((item, i) => (
 							<Container
 								key={item.id}
-								className={`overflow-hidden h-[140px] md:h-[210px] lg:h-[320px]  ${
+								className={`overflow-hidden h-[140px] md:h-[240px] lg:h-[320px] ${
 									i > 3 ? "hidden lg:flex" : "inherit"
 								}`}
 								css={{
 									background: item.image
 										? `url('https://treatnfts.gumlet.io/api/v3/image?default=${
 												item.image.cdn ?? item.image.ipfs
-										  }&blur=30')`
+										  }${item.protected ? "&blur=30" : ""}')`
 										: "$surfaceOnSurface",
 									backgroundColor: "$surfaceOnSurface",
 									backgroundSize: "cover",
@@ -86,7 +86,7 @@ export default function TreatOfTheMonthCollectionSection(props: {
 				</Container>
 			</Container>
 			<Container
-				className="flex flex-col h-auto gap-4 p-4 rounded-xl"
+				className="flex flex-col h-auto gap-4 p-4 rounded-xl border"
 				css={{
 					backgroundColor: "$elementSurface",
 					borderColor: "$accentBorder",
@@ -100,15 +100,14 @@ export default function TreatOfTheMonthCollectionSection(props: {
 					).map((item, i) => (
 						<Container
 							key={item.id}
-							className={`overflow-hidden ${
+							className={`overflow-hidden h-[140px] md:h-[240px] lg:h-[320px] ${
 								i > 3 ? "hidden lg:flex" : "inherit"
 							}`}
 							css={{
-								height: "220px",
 								background: item.image
 									? `url('https://treatnfts.gumlet.io/api/v3/image?default=${
 											item.image.cdn ?? item.image.ipfs
-									  }}&blur=30')`
+									  }${item.protected ? "&blur=30" : ""}')`
 									: "$surfaceOnSurface",
 								backgroundColor: "$surfaceOnSurface",
 								backgroundSize: "cover",

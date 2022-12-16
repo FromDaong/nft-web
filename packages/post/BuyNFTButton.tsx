@@ -251,7 +251,7 @@ const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 									)}
 								</>
 							) : (
-								<>Insufficient balance. Cost is {nftData.price}</>
+								<>Insufficient balance. Cost is {nftData.price} BNB</>
 							)}
 						</Button>
 					) : (

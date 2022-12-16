@@ -27,6 +27,7 @@ export const DialogContent = styled(Dialog.Panel, {
 	padding: "32px",
 	animation: "contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1)",
 	zIndex: 1200,
+	minWidth: "300px",
 });
 
 export const DialogTitle = styled(Dialog.Title, {

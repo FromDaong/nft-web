@@ -33,10 +33,10 @@ export default function AcceptAgeModal() {
 		>
 			<Container className="flex flex-col w-full gap-8">
 				<Container className="flex flex-col gap-2 text-center">
-					<Heading size="sm">Please confirm your age.</Heading>
+					<Heading size="xs"> Confirm your age.</Heading>
 					<Text>You must be 18+ to use TreatDAO.</Text>
 				</Container>
-				<Container className="grid w-full grid-cols-2 gap-4">
+				<Container className="grid w-full grid-cols-1 md:grid-cols-2 gap-4">
 					<Container>
 						<Button
 							appearance={"surface"}

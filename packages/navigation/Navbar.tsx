@@ -17,6 +17,7 @@ import {Container} from "@packages/shared/components/Container";
 import MobileNavbarDropdown from "./components/MobileNavbarDropdown";
 import ThemedConnectButton from "core/chain/ConnectButton";
 import {Button} from "@packages/shared/components/Button";
+import {useSession} from "next-auth/react";
 
 const NavbarProfileAvatar = dynamic(
 	() => import("./components/NavbarProfileAvatar")
@@ -50,10 +51,10 @@ const NotificationsIcon = (props) => {
 };
 
 export default function Navbar() {
-	const {isConnected: connected, status} = useAccount();
+	const {isConnected: connected} = useAccount();
+	const {status} = useSession();
 
-	const isConnected =
-		connected && status !== "reconnecting" && status === "connected";
+	const isConnected = status === "authenticated" && connected;
 
 	return (
 		<Container>
