@@ -36,6 +36,8 @@ import useCreateAndAddNFTs from "@packages/chain/hooks/useCreateAndAddNFTs";
 import useCreateAndAddSubscriberNFTs from "@packages/chain/hooks/useCreateAndAddSubscriberNFTs";
 import {useContracts} from "@packages/post/hooks";
 import {useAccount, useWaitForTransaction} from "wagmi";
+import {PencilIcon} from "@heroicons/react/outline";
+import PicEdtor from "@packages/shared/PicEditor";
 
 registerPlugin(
 	FilePondPluginImageExifOrientation,
@@ -247,6 +249,7 @@ const AddNFTDetails = ({
 	const {data: bnbPrice, error: bnbError} = useSWR(
 		`https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT`
 	);
+	const [openEditorId, setOpenEditorId] = useState<number | null>(null);
 	const {creatorMartContract, subscriptionsMart} = useContracts();
 	const {address} = useAccount();
 	const [basicTxHash, setBasicTxHash] = useState("");
@@ -367,8 +370,6 @@ const AddNFTDetails = ({
 		}
 	};
 
-	console.log({tx, nft_data});
-
 	return (
 		<Formik
 			initialValues={{
@@ -412,8 +413,27 @@ const AddNFTDetails = ({
 															backgroundSize: "cover",
 															backgroundColor: "$surfaceOnSurface",
 														}}
-														className="w-full h-full bg-gray-200 rounded-xl"
-													/>
+														className="flex items-center justify-center w-full h-full bg-gray-200 rounded-xl"
+													>
+														{openEditorId && (
+															<Container className="fixed top-0 left-0 w-screen h-screen">
+																<PicEdtor src={file.cdn} />
+															</Container>
+														)}
+
+														<Text
+															className="rounded-full shadow"
+															css={{
+																color: "$surface",
+															}}
+														>
+															<PencilIcon
+																width={24}
+																height={24}
+																onClick={() => setOpenEditorId(index)}
+															/>
+														</Text>
+													</Container>
 												) : (
 													<Container
 														css={{
@@ -583,9 +603,14 @@ const AddNFTDetails = ({
 								));
 							}}
 						</FieldArray>
-						<Container className="flex flex-col justify-end gap-8 py-8">
+						<Container className="flex justify-end gap-8 py-8">
 							<Container className="flex justify-end">
-								<Button onClick={prev}>Previous</Button>
+								<Button
+									appearance={"unstyled"}
+									onClick={prev}
+								>
+									Previous
+								</Button>
 							</Container>
 							<Container className="flex justify-end">
 								<Button>Publish</Button>

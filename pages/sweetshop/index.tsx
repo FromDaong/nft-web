@@ -113,15 +113,20 @@ export default function NFTS(props) {
 						<Divider dir="horizontal" />
 						<Container>
 							<Container className="flex flex-col gap-4 md:flex-row md:justify-between">
-								<Container className="flex gap-2">
+								<Container className="flex gap-2 overflow-x-auto flex-nowrap">
 									{filtersList.map((f) => (
-										<SelectableTag
-											toggle={toggleFilter}
+										<Container
 											key={f.value}
-											selected={market_filter}
-											label={f.label}
-											value={f.value}
-										/>
+											className="flex-shrink-0"
+										>
+											<SelectableTag
+												toggle={toggleFilter}
+												key={f.value}
+												selected={market_filter}
+												label={f.label}
+												value={f.value}
+											/>
+										</Container>
 									))}
 								</Container>
 								<Container className="flex gap-4">

@@ -97,7 +97,7 @@ const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 
 	if (nftData.melon_nft) return null;
 
-	console.log({isSubscriptionNFT, session});
+	console.log({isSubscriptionNFT, subscription});
 
 	return (
 		<>

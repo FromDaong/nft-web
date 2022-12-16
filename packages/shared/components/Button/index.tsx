@@ -27,7 +27,7 @@ export const Button = styled("button", {
 				color: "$textContrast",
 			},
 			primary: {
-				backgroundColor: "$textContrast",
+				backgroundColor: "$btnCallToAction",
 				color: "$surface",
 			},
 			surface: {

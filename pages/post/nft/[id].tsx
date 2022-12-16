@@ -66,6 +66,23 @@ import {
 	useWaitForTransaction,
 } from "wagmi";
 
+const RectangleStack = (props) => (
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		fill="none"
+		viewBox="0 0 24 24"
+		strokeWidth={1.5}
+		stroke="currentColor"
+		{...props}
+	>
+		<path
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			d="M6 6.878V6a2.25 2.25 0 012.25-2.25h7.5A2.25 2.25 0 0118 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 004.5 9v.878m13.5-3A2.25 2.25 0 0119.5 9v.878m0 0a2.246 2.246 0 00-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0121 12v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6c0-.98.626-1.813 1.5-2.122"
+		/>
+	</svg>
+);
+
 const exitFullScreen = () => {
 	if (document.exitFullscreen) {
 		document.exitFullscreen();
@@ -196,15 +213,21 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 							objectFit="contain"
 							alt={nft.name}
 						/>
-						<Container className="flex gap-4 absolute bottom-4 right-4">
-							<Button onClick={() => setShowFullScreen(!showFullScreen)}>
+						<Container className="absolute flex gap-4 bottom-4 right-4">
+							<Button
+								appearance={"surface"}
+								onClick={() => setShowFullScreen(!showFullScreen)}
+							>
 								<EnterFullScreenIcon
 									style={{strokeWidth: "2px"}}
 									height={16}
 									width={16}
 								/>
 							</Button>
-							<Button onClick={postUtils.likeNFT}>
+							<Button
+								appearance={"surface"}
+								onClick={postUtils.likeNFT}
+							>
 								{postUtils.liked ? (
 									<>
 										<HeartFilledIcon
@@ -227,10 +250,37 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 			<ApplicationLayout>
 				<ApplicationFrame>
 					<Container className="flex flex-col gap-12">
+						<Container className="flex mt-8">
+							<Container
+								className="py-4 px-8 flex gap-4 items-center"
+								css={{
+									backgroundColor: "$accentBg",
+									borderRadius: "16px",
+								}}
+							>
+								<Container>
+									<Text css={{color: "$accentText"}}>
+										<RectangleStack
+											width={32}
+											height={32}
+										/>
+									</Text>
+								</Container>
+								<Container>
+									<Heading
+										css={{color: "$accentText"}}
+										size="xs"
+									>
+										You own this NFT
+									</Heading>
+									<Text css={{color: "$accentText"}}>
+										You already own {balance} units of this NFT
+									</Text>
+								</Container>
+							</Container>
+						</Container>
 						<ViewNFT
 							nft={nft}
-							mints={mints}
-							account={address}
 							isOwned={isOwned}
 							balance={balance}
 						/>
@@ -324,7 +374,7 @@ const ViewNFT = ({
 	balance,
 }: {
 	nft: any;
-	isOwned: string;
+	isOwned: boolean;
 	balance: number;
 }) => {
 	const {creatorCost} = useWagmiGetCreatorNftCost(nft.id);
@@ -384,8 +434,6 @@ const ViewNFT = ({
 			return await onMintFreeCreatorTreat();
 		}
 	};
-
-	console.log({openOrders});
 
 	return (
 		<>
@@ -453,7 +501,7 @@ const ViewNFT = ({
 				</Container>
 				<Container className="flex flex-col gap-4 px-4 py-8">
 					<Container
-						className="flex flex-col w-full border drop-shadow-lg rounded-xl py-4"
+						className="flex flex-col w-full py-4 border drop-shadow-lg rounded-xl"
 						css={{
 							backgroundColor: "$elementSurface",
 							borderColor: "$subtleBorder",

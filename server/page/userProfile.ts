@@ -1,10 +1,10 @@
 import {pagePropsConnectMongoDB} from "@db/engine/pagePropsDB";
-import {MongoModelProfile} from "server/helpers/models";
+import {MongoModelCreator, MongoModelProfile} from "server/helpers/models";
 
 export const beforePageLoadGetUserProfile = async (ctx) => {
 	await pagePropsConnectMongoDB();
 	const {username} = ctx.query;
-	const profile = await MongoModelProfile.findOne({username});
+	const profile = await MongoModelProfile.findOne({username}).exec();
 
 	if (!profile) {
 		return {
@@ -15,9 +15,21 @@ export const beforePageLoadGetUserProfile = async (ctx) => {
 		};
 	}
 
+	const creator = await MongoModelCreator.findOne({username}).exec();
+	if (!creator) {
+		if (ctx.resolvedUrl === `/${username}`) {
+			return {
+				redirect: {
+					destination: `/${username}/collected`,
+					permanent: false,
+				},
+			};
+		}
+	}
+
 	return {
 		props: {
-			data: JSON.stringify(profile),
+			data: JSON.stringify({...profile.toObject(), creator}),
 		},
 	};
 };

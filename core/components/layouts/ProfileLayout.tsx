@@ -25,9 +25,10 @@ import VerifiedBadge from "@packages/shared/components/VerifiedBadge";
 import {SVG} from "@packages/shared/icons/Spinner";
 import {styled} from "@styles/theme";
 import TreatCore, {ComponentBasicProps} from "core/TreatCore";
+import {useSession} from "next-auth/react";
 import ApplicationFrame from "./ApplicationFrame";
 
-const tabs = [
+const creator_tabs = [
 	{
 		label: "Subscription Content",
 		href: "",
@@ -45,6 +46,17 @@ const tabs = [
     label: "Curated",
     href: "/curated",
   },*/
+];
+
+const profile_tabs = [
+	{
+		label: "Portfolio",
+		href: "/collected",
+	},
+	{
+		label: "Resale Marketplace",
+		href: "/nfts",
+	},
 ];
 
 const ArrowUp = () => (
@@ -134,11 +146,11 @@ type ProfileLayoutProps = ComponentBasicProps & {
 		profile_pic?: string;
 		profilePicCdnUrl?: string;
 		badges: Array<{color: string; name: string}>;
+		creator?: any;
 	};
 };
 
 export default function ProfileLayout(props: ProfileLayoutProps) {
-	console.log({props});
 	const profile = props.userProfile;
 	const user = {
 		username: profile.username,
@@ -149,6 +161,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 		earnings: profile.earnings ?? 0,
 		address: profile ? profile.address : "",
 		profile_pic: profile.profile_pic,
+		creator: profile.creator,
 	};
 
 	return (
@@ -239,7 +252,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 						</Container>
 						<Container variant={"unstyled"}>
 							<Container className="flex gap-x-4">
-								<Button className="drop-shadow-xl">
+								<Button>
 									<span>Follow</span>
 									<FollowUser />
 								</Button>
@@ -257,7 +270,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 					className="flex mt-[26px]"
 				>
 					<TabsContainer>
-						{tabs.map((tab) => (
+						{(user?.creator ? creator_tabs : profile_tabs).map((tab) => (
 							<Tab
 								key={tab.href}
 								href={`/${user.username}${tab.href}`}

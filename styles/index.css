@@ -108,3 +108,8 @@ html {
 		height: calc(100vh - 64px);
 	}
 }
+
+.drop-shadow-totm {
+	box-shadow: drop-shadow(0 20px 13px rgb(110 43 215 / 6%))
+		drop-shadow(0 8px 5px rgb(147 65 201 / 14%));
+}

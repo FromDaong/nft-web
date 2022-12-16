@@ -35,9 +35,12 @@ const NavbarExploreDropdown = () => (
 				Explore <ChevronDownIcon className="w-5 h-5" />
 			</BoldLink>
 		</DropdownMenu.Trigger>
-		<DropdownMenu.Portal>
+		<DropdownMenu.Portal className="p-2 max-w-[180px]">
 			<DropdownContent>
-				<NavDropdownContainer className="p-2 drop-shadow-2xl">
+				<NavDropdownContainer
+					className="p-4 drop-shadow-2xl"
+					css={{borderRadius: "20px"}}
+				>
 					{ExploreDropdownLinks.map((link) => (
 						<Link
 							key={link.link}
@@ -45,7 +48,7 @@ const NavbarExploreDropdown = () => (
 						>
 							<a>
 								<NavDropdownItem>
-									<Text>
+									<Text className="py-3">
 										<ImportantText> {link.label}</ImportantText>
 									</Text>
 								</NavDropdownItem>

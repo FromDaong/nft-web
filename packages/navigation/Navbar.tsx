@@ -7,11 +7,16 @@ import NavbarExploreDropdown from "./components/NavbarExploreDropdown";
 import NavbarSearchDropdown from "../search/NavbarSearchDropdown";
 
 import {styled} from "@styles/theme";
-import {BoldLink} from "@packages/shared/components/Typography/Text";
-import {ChatIcon} from "@heroicons/react/outline";
+import {
+	BoldLink,
+	ImportantText,
+	Text,
+} from "@packages/shared/components/Typography/Text";
+import {ChatIcon, PhotographIcon} from "@heroicons/react/outline";
 import {Container} from "@packages/shared/components/Container";
 import MobileNavbarDropdown from "./components/MobileNavbarDropdown";
 import ThemedConnectButton from "core/chain/ConnectButton";
+import {Button} from "@packages/shared/components/Button";
 
 const NavbarProfileAvatar = dynamic(
 	() => import("./components/NavbarProfileAvatar")
@@ -21,9 +26,28 @@ const NavbarActionDropdown = dynamic(
 );
 
 const Nav = styled("nav", {
-	backgroundColor: "$surfaceOnSurface",
+	backgroundColor: "$elementSurface",
 	zIndex: 30,
 });
+
+const NotificationsIcon = (props) => {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 24 24"
+			strokeWidth={1.5}
+			stroke="currentColor"
+			{...props}
+		>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0M3.124 7.5A8.969 8.969 0 015.292 3m13.416 0a8.969 8.969 0 012.168 4.5"
+			/>
+		</svg>
+	);
+};
 
 export default function Navbar() {
 	const {isConnected: connected, status} = useAccount();
@@ -34,7 +58,7 @@ export default function Navbar() {
 	return (
 		<Container>
 			<Nav className="hidden md:block fixed top-0 left-0 w-full xl:px-0 h-[60px] shadow">
-				<Container className="relative w-full h-full px-8  xl:px-0">
+				<Container className="relative w-full h-full px-8 xl:px-0">
 					<div className="absolute top-0 left-0 z-20 w-full h-full" />
 					<div className="container relative z-30 flex items-center justify-between py-3 mx-auto">
 						<div className="flex items-center gap-8">
@@ -55,7 +79,40 @@ export default function Navbar() {
 										<BoldLink className="font-medium">Sweetshop</BoldLink>
 									</a>
 								</Link>
-								<NavbarExploreDropdown />
+							</div>
+							<div className="items-center hidden gap-8 md:flex">
+								<Link href="/dex/farm">
+									<a>
+										<BoldLink className="font-medium">Farming</BoldLink>
+									</a>
+								</Link>
+							</div>
+							<div className="items-center hidden gap-8 md:flex">
+								<Link href="/dex/bridge">
+									<a>
+										<BoldLink className="font-medium">Bridge</BoldLink>
+									</a>
+								</Link>
+							</div>
+							<div className="items-center hidden gap-8 md:flex">
+								<Link href="/beta">
+									<a className="flex items-center gap-1">
+										<BoldLink className="font-medium">Beta</BoldLink>
+										<p>
+											<Text
+												css={{
+													backgroundColor: "$totmPurple",
+													color: "#fff",
+													padding: "4px 4px",
+													borderRadius: "4px",
+													fontSize: "10px",
+												}}
+											>
+												<ImportantText>NEW</ImportantText>
+											</Text>
+										</p>
+									</a>
+								</Link>
 							</div>
 						</div>
 						{false && (
@@ -69,23 +126,40 @@ export default function Navbar() {
 							{
 								// eslint-disable-next-line no-constant-condition
 								isConnected ? (
-									<>
-										<Container>
-											<Container
-												css={{
-													width: "16px",
-													height: "16px",
-													backgroundColor: "$surface",
-													borderColor: "$subtleBorder",
-												}}
-												className="flex items-center justify-center border rounded-full"
-											>
-												<ChatIcon className="w-5 h-5" />
-											</Container>
-										</Container>
+									<Container className="flex items-center gap-4">
+										<Link href={"/notifications"}>
+											<a>
+												<Button
+													css={{
+														borderRadius: "9999px",
+														padding: "8px !important",
+													}}
+													className="flex items-center justify-center rounded-full"
+													appearance={"danger"}
+												>
+													<NotificationsIcon
+														width={20}
+														height={20}
+													/>
+												</Button>
+											</a>
+										</Link>
+										<Link href={"/create"}>
+											<a>
+												<Button
+													css={{borderRadius: "9999px"}}
+													className="p-1 rounded-full"
+												>
+													<PhotographIcon
+														width={18}
+														height={18}
+													/>
+													<span>Create post</span>
+												</Button>
+											</a>
+										</Link>
 										<NavbarProfileAvatar />
-										{true && <NavbarActionDropdown />}
-									</>
+									</Container>
 								) : (
 									<ThemedConnectButton />
 								)

@@ -1,4 +1,4 @@
-import {TPost} from "@packages/post/types";
+import {TritPostProps} from "@packages/post/types";
 import BigNumber from "bignumber.js";
 import {MathUtil} from "./math";
 import {ReactUtil} from "./react";
@@ -18,7 +18,7 @@ export const decToBn = (dec: number, decimals = 18) => {
 	return new BigNumber(dec).multipliedBy(new BigNumber(10).pow(decimals));
 };
 
-export const legacy_nft_to_new = (post: any): TPost => ({
+export const legacy_nft_to_new = (post: any): TritPostProps => ({
 	name: post.name,
 	image: {
 		cdn: post.image.cdn,
@@ -47,6 +47,8 @@ export const legacy_nft_to_new = (post: any): TPost => ({
 	},
 	likedBy: post.likedBy,
 	protected: post.protected,
+	totm: post.totm_nft,
+	subscription_nft: post.subscription_nft,
 });
 
 export const apiEndpoint = "/api/v3";

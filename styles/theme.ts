@@ -152,6 +152,11 @@ export const darkTheme = createTheme("dark", {
 		mutedText: "$mauve11",
 		border: "$mauve7",
 		subtleBorder: "$mauve6",
+
+		btnCallToAction: "#ff6988",
+		btnCallToActionDisabled: "#ffc1d7",
+		accentCallToAction: "#9b22d3",
+		totmPurple: "#9c24ff",
 	},
 	space: {
 		1: "5px",
@@ -245,6 +250,11 @@ export const lightTheme = createTheme("light", {
 		mutedText: "$gray9",
 		border: "$gray7",
 		subtleBorder: "$gray6",
+
+		btnCallToAction: "#ff6988",
+		btnCallToActionDisabled: "#ffc1d7",
+		accentCallToAction: "#9b22d3",
+		totmPurple: "#9c24ff",
 	},
 	space: {
 		xs: "5px",
@@ -345,10 +355,10 @@ export const ogPinkTheme = createTheme("pink", {
 		errorText: "$red11",
 		errorTextContrast: "$red12",
 
-		surface: "$primary1",
-		surfaceOnSurface: "$primary2",
-		elementSurface: "#ffffff",
-		elementOnSurface: "$primary2",
+		surface: "#ffeef0",
+		surfaceOnSurface: "#fff1f3",
+		elementSurface: "#ffdde4",
+		elementOnSurface: "#ffffffa6",
 		hoveredElementSurface: "$primary3",
 		selectedElementSurface: "$primary4",
 		solidSurface: "$primary3",
@@ -356,8 +366,13 @@ export const ogPinkTheme = createTheme("pink", {
 		text: "$mauve12",
 		textContrast: "$gray12",
 		mutedText: "$gray11",
-		border: "$primary7",
-		subtleBorder: "$primary2",
+		border: "$primary3",
+		subtleBorder: "#ffdce0",
+
+		btnCallToAction: "#ff6988",
+		btnCallToActionDisabled: "#ffc1d7",
+		accentCallToAction: "#9b22d3",
+		totmPurple: "#9c24ff",
 	},
 	space: {
 		1: "5px",

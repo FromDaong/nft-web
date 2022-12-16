@@ -5,6 +5,7 @@ import {returnWithError, returnWithSuccess} from "server/database/engine/utils";
 import {MongoModelNFT, MongoModelProfile} from "server/helpers/models";
 import {withIronSessionApiRoute} from "iron-session/next";
 import {ironOptions} from "@utils/index";
+import {protectedAPIRoute} from "server/utils";
 
 async function create(req: NextApiRequest, res: NextApiResponse) {
 	await connectMongoDB();
@@ -13,7 +14,7 @@ async function create(req: NextApiRequest, res: NextApiResponse) {
 	const {session} = req;
 
 	const profile = await MongoModelProfile.findOne({
-		address: session.siwe?.address.toLowerCase(),
+		address: session.address.toLowerCase(),
 	}).exec();
 
 	const nft = await MongoModelNFT.findOne({
@@ -44,4 +45,4 @@ async function create(req: NextApiRequest, res: NextApiResponse) {
 	return returnWithSuccess(nft, res);
 }
 
-export default withIronSessionApiRoute(create, ironOptions);
+export default protectedAPIRoute(create);

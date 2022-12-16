@@ -55,6 +55,7 @@ export type TritPostProps = {
 	likedBy: Array<string>;
 	protected?: boolean;
 	totm?: boolean;
+	subscription_nft?: boolean;
 	noPrice?: boolean;
 	inGrid?: boolean;
 	isResale?: boolean;

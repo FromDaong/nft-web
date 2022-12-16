@@ -10,10 +10,10 @@ export default function CreatorMarket() {
 	return (
 		<ApplicationLayout>
 			<ApplicationFrame>
-				<SEOHead title={"Introducing the Creator Marketplace"} />
+				<SEOHead title={"Insiders - TreatDAO"} />
 				<Container className="flex flex-col max-w-4xl gap-12 px-4 py-12 mx-auto">
 					<Container className="flex flex-col gap-4 pt-24 text-center">
-						<Container className="flex items-center justify-center gap-1 mb-8">
+						<Container className="flex items-center justify-center gap-2 mb-8">
 							<BorderAvatar size={64} />
 							<BorderAvatar size={64} />
 							<BorderAvatar size={64} />
@@ -23,15 +23,17 @@ export default function CreatorMarket() {
 							<BorderAvatar size={64} />
 						</Container>
 						<Heading size="lg">
-							Introducing the TreatDAO Creator Collaboration Platform{" "}
+							Building next-gen tools for
+							<br /> adult content creators
 						</Heading>
-						<Text css={{fontSize: "21px"}}>
-							The TreatDAO Creator Collaboration Marketplace is a place where
-							creators can collaborate with other creators to create NFTs.
+						<Text css={{fontSize: "18px"}}>
+							TreatDAO insiders are members of the community who build, test and{" "}
+							<br />
+							suggest new features first before they are rolled out to everyone.
 						</Text>
 					</Container>
 					<Container className="flex justify-center">
-						<Button className="px-8 py-3">Join the waitlist</Button>
+						<Button css={{padding: "16px 48px"}}>Apply to be an insider</Button>
 					</Container>
 				</Container>
 			</ApplicationFrame>

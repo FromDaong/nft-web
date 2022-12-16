@@ -13,6 +13,7 @@ import PinkTheme from "../../public/assets/svg/PinkTheme.svg";
 import Image from "next/image";
 import {ApplicationTheme} from "./provider";
 import {useContext} from "react";
+import {Button} from "@packages/shared/components/Button";
 
 const ThemeCard = styled("div", {
 	width: "80px",
@@ -81,10 +82,10 @@ export default function ThemeSwitcherModal({isOpen, onClose}) {
 		return null;
 	}
 	return (
-		<Container className="fixed top-0 left-0 h-screen w-screen">
+		<Container className="fixed top-0 left-0 w-screen h-screen">
 			<FullscreenOverlay onClick={onClose} />
 			<Container
-				className="fixed w-full max-w-lg divide-y rounded-xl shadow-xl p-8"
+				className="fixed w-full max-w-lg p-4 divide-y shadow-xl rounded-xl"
 				css={{
 					top: "50%",
 					left: "50%",
@@ -94,37 +95,47 @@ export default function ThemeSwitcherModal({isOpen, onClose}) {
 					borderRadius: "16px",
 				}}
 			>
-				<Container className="flex flex-col gap-8">
-					<Container className="flex justify-between">
-						<Container className="flex flex-col gap-1">
-							<Heading size="sm">Theme</Heading>
-							<Text>
-								<MutedText>Select the theme you would like to use.</MutedText>
-							</Text>
-						</Container>
-						<Text>
+				<Container className="flex flex-col gap-2">
+					<Container className="flex justify-end w-full">
+						<Button
+							appearance={"subtle"}
+							css={{padding: "10px"}}
+							className="rounded-full"
+						>
 							<XIcon
 								onClick={onClose}
 								className="w-5 x-5"
 							/>
-						</Text>
+						</Button>
 					</Container>
-					<Container className="flex gap-8">
-						<ThemeOption
-							currentTheme={theme.theme}
-							updateTheme={theme.updateTheme}
-							name="light"
-						/>
-						<ThemeOption
-							currentTheme={theme.theme}
-							updateTheme={theme.updateTheme}
-							name="dark"
-						/>
-						<ThemeOption
-							currentTheme={theme.theme}
-							updateTheme={theme.updateTheme}
-							name="pink"
-						/>
+					<Container className="flex flex-col gap-12 p-4">
+						<Container className="flex justify-between">
+							<Container className="flex flex-col gap-1">
+								<Heading size="xs">Customize your look and feel</Heading>
+								<Text>
+									<MutedText>
+										Select any theme you would like to use on this device.
+									</MutedText>
+								</Text>
+							</Container>
+						</Container>
+						<Container className="flex gap-8">
+							<ThemeOption
+								currentTheme={theme.theme}
+								updateTheme={theme.updateTheme}
+								name="light"
+							/>
+							<ThemeOption
+								currentTheme={theme.theme}
+								updateTheme={theme.updateTheme}
+								name="dark"
+							/>
+							<ThemeOption
+								currentTheme={theme.theme}
+								updateTheme={theme.updateTheme}
+								name="pink"
+							/>
+						</Container>
 					</Container>
 				</Container>
 			</Container>

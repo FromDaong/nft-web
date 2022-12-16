@@ -71,6 +71,20 @@ class MyDocument extends Document {
 						href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
 						rel="stylesheet"
 					/>
+					<link
+						rel="preconnect"
+						href="https://fonts.cdnfonts.com"
+					/>
+					<link
+						rel="preconnect"
+						href="https://fonts.cdnfonts.com"
+						crossOrigin="true"
+					/>
+					<link
+						href="https://fonts.cdnfonts.com/css/helvetica-2"
+						rel="stylesheet"
+					/>
+
 					<meta
 						name="theme-color"
 						content="#333333"

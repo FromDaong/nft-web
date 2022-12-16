@@ -82,8 +82,19 @@ export const TritPost = (props: TritPostProps) => {
 	const imageUrl = props.image?.ipfs;
 	const soldOut = props.collection?.minted === props.collection?.totalSupply;
 
+	console.log({props});
+
 	return (
-		<Container className="grid grid-cols-1 gap-4 w-full">
+		<Container
+			className={`grid grid-cols-1 gap-4 w-full ${
+				props.totm ? "border-2" : ""
+			}`}
+			css={{
+				borderColor: "$accentText",
+				borderRadius: "20px",
+				backgroundColor: props.totm ? "$accentText" : "inherit",
+			}}
+		>
 			{props.isMine && (
 				<>
 					{!props.isResale && (
@@ -117,13 +128,13 @@ export const TritPost = (props: TritPostProps) => {
 				/>
 			)}
 			<Link href={!props.isResale ? `/post/nft/${props.id}` : "#"}>
-				<a className="w-full p-2">
+				<a className="w-full p-1">
 					<Container
 						className="relative flex overflow-hidden border shadow-lg"
 						css={{
 							borderColor: "$subtleBorder",
 							borderRadius: "16px",
-							backgroundColor: "$surface",
+							backgroundColor: "$textContrast",
 							height: "440px",
 						}}
 					>
@@ -175,18 +186,6 @@ export const TritPost = (props: TritPostProps) => {
 																<ImportantText>Protected</ImportantText>
 															</Text>
 														</Container>
-													)}
-												</FrostyBackgroundContainer>
-											)}
-											{props.totm && (
-												<FrostyBackgroundContainer
-													className="px-3 py-1 rounded-full"
-													css={{}}
-												>
-													{props.totm && (
-														<Text css={{color: "$accentText"}}>
-															<ImportantText>TOTM</ImportantText>
-														</Text>
 													)}
 												</FrostyBackgroundContainer>
 											)}

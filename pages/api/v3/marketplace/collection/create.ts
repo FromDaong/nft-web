@@ -1,8 +1,6 @@
 // create collection endpoint
 
 import {returnWithError, returnWithSuccess} from "@db/engine/utils";
-import {ironOptions} from "@utils/index";
-import {withIronSessionApiRoute} from "iron-session/next";
 import {NextApiRequest, NextApiResponse} from "next";
 import {connectMongoDB} from "server/helpers/core";
 import {
@@ -10,7 +8,7 @@ import {
 	MongoModelCreator,
 	MongoModelProfile,
 } from "server/helpers/models";
-import {requireApiAuth} from "server/utils";
+import {protectedAPIRoute} from "server/utils";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const {name} = req.body;
@@ -19,12 +17,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 		return returnWithError({name: "Name is required"}, 500, res);
 	}
 
-	requireApiAuth(req, res);
-
 	await connectMongoDB();
 
 	const profile = await MongoModelProfile.findOne({
-		address: req.session.siwe?.address.toLowerCase(),
+		address: req.session.address,
 	});
 
 	if (!profile) {
@@ -49,4 +45,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 	return returnWithSuccess({id: collection._id}, res);
 }
 
-export default withIronSessionApiRoute(handler, ironOptions);
+export default protectedAPIRoute(handler);

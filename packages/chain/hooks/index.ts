@@ -349,7 +349,9 @@ export const useSubscriptionData = (creator_address: string) => {
 		if (subscriptionContract && signer) {
 			subscriptionContract
 				.getIsSubscribedNow(address, creator_address)
-				.then(() => setIsSubscribed(true))
+				.then((result) => {
+					setIsSubscribed(result);
+				})
 				.then(() => setLoadingIsSubscribed(false));
 		} else {
 			setIsSubscribed(false);
@@ -362,6 +364,8 @@ export const useSubscriptionData = (creator_address: string) => {
 			value: data,
 		});
 	}, [address, subscriptionContract, data]);
+
+	console.log({creator_address, data});
 
 	return {
 		subscriptionPrice: data

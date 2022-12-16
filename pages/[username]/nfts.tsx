@@ -33,7 +33,7 @@ export default function UserProfile(props: {
 
 	const getcreatorNFTs = async () => {
 		const res = await axios.get(`${apiEndpoint}/creator/${username}/nfts`);
-		return res.data;
+		return res.data.data;
 	};
 	const {
 		isLoading: creatorNFTsLoading,
@@ -47,7 +47,7 @@ export default function UserProfile(props: {
 	const creatorNFTs =
 		creatorNFTsLoading || creatorNFTError
 			? []
-			: creatorNFTsData?.data.map((post) => legacy_nft_to_new(post));
+			: creatorNFTsData?.docs.map((post) => legacy_nft_to_new(post));
 
 	return (
 		<ProfileLayout userProfile={data}>

@@ -30,6 +30,8 @@ export default function UserProfile(props: {
 	const data = JSON.parse(props.data);
 	const {username} = data;
 
+	console.log({props});
+
 	const getcreatorNFTs = async () => {
 		const res = await axios.get(`${apiEndpoint}/creator/${username}/nfts`);
 		return res.data.data;
@@ -91,5 +93,7 @@ export default function UserProfile(props: {
 		</ProfileLayout>
 	);
 }
+
+// TODO: If username is not creator, redirect to collected immediately
 
 export const getServerSideProps = beforePageLoadGetUserProfile;

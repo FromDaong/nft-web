@@ -2,12 +2,13 @@ import {Content, Item} from "@radix-ui/react-dropdown-menu";
 import {styled} from "@styles/theme";
 
 export const DropdownContainer = styled("div", {
-	width: "320px",
+	width: "max-content",
 	backgroundColor: "$elementSurface",
 	border: "1px solid $border",
 	borderRadius: "16px",
 	padding: "8px",
 	zIndex: "100",
+	minWidth: "280px",
 });
 
 export const NavDropdownContainer = styled("div", {
@@ -17,14 +18,15 @@ export const NavDropdownContainer = styled("div", {
 	borderRadius: "8px",
 	zIndex: "100",
 	padding: "4px",
+	minWidth: "180px",
 });
 
 export const NavDropdownItem = styled(Item, {
-	minWidth: "200px",
+	minWidth: "120px",
 	borderRadius: "15px",
 	fontWeight: "600",
 
-	padding: "8px 16px",
+	padding: "12px 16px",
 	"&:hover": {
 		backgroundColor: "$elementOnSurface",
 		cursor: "pointer",

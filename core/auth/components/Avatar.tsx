@@ -1,6 +1,7 @@
 import {useDisclosure} from "@packages/hooks";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
+import OptimizedImage from "@packages/shared/components/OptimizedImage";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {MutedText} from "@packages/shared/components/Typography/Text";
 import Avvvatars from "avvvatars-react";
@@ -46,7 +47,7 @@ export default function UserAvatar(props: {
 			{isOpen && (
 				<Container
 					onMouseLeave={() => isOpen && onClose()}
-					className="absolute flex left-0 top-0  shadow"
+					className="absolute top-0 left-0 flex shadow"
 					css={{
 						backgroundColor: "$elementSurface",
 						borderRadius: "16px",
@@ -56,7 +57,7 @@ export default function UserAvatar(props: {
 					}}
 				>
 					<Container className="flex flex-col gap-4">
-						<Container className="flex justify-between items-center">
+						<Container className="flex items-center justify-between">
 							<Container>
 								<Avvvatars
 									border
@@ -96,3 +97,20 @@ export default function UserAvatar(props: {
 		</Container>
 	);
 }
+
+const DefaultAvatar = (props) => {
+	return (
+		<Container
+			className="p-2 border-2 rounded-full shadow"
+			css={{borderColor: "$teal9"}}
+		>
+			<OptimizedImage
+				width={props.width ?? 32}
+				height={props.height ?? 32}
+				alt={props.name}
+				src={props.src}
+				className={"border-2 border-white rounded-full"}
+			/>
+		</Container>
+	);
+};

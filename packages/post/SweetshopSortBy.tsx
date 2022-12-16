@@ -26,7 +26,7 @@ export default function SweetshopSortBy() {
 			</Select.Trigger>
 
 			<Select.Portal>
-				<SelectContent className="shadow p-2">
+				<SelectContent className="p-2 shadow">
 					<Select.ScrollUpButton />
 					<Select.Viewport>
 						<Select.Item
@@ -34,7 +34,9 @@ export default function SweetshopSortBy() {
 							value="latest-first"
 						>
 							<Select.ItemText>
-								<Text>Latest first</Text>
+								<Text>
+									<ImportantText>Latest first</ImportantText>
+								</Text>
 							</Select.ItemText>
 							<Select.ItemIndicator />
 						</Select.Item>
@@ -43,7 +45,7 @@ export default function SweetshopSortBy() {
 							value="oldest-first"
 						>
 							<Select.ItemText>
-								<Text>Oldest first</Text>
+								<ImportantText>Oldest first</ImportantText>
 							</Select.ItemText>
 							<Select.ItemIndicator />
 						</Select.Item>
@@ -52,7 +54,7 @@ export default function SweetshopSortBy() {
 							value="cheapest-first"
 						>
 							<Select.ItemText>
-								<Text>Price: Lowest first</Text>
+								<ImportantText>Price: Lowest first</ImportantText>
 							</Select.ItemText>
 							<Select.ItemIndicator />
 						</Select.Item>
@@ -61,7 +63,7 @@ export default function SweetshopSortBy() {
 							value="expensive-first"
 						>
 							<Select.ItemText>
-								<Text>Price: Highest first</Text>
+								<ImportantText>Price: Highest first</ImportantText>
 							</Select.ItemText>
 							<Select.ItemIndicator />
 						</Select.Item>

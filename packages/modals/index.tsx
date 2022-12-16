@@ -82,9 +82,12 @@ export const Modal = ({
 					leaveFrom="opacity-100"
 					leaveTo="opacity-0"
 				>
-					<DialogContent css={{width: compact ? "fit-content" : "auto"}}>
-						{children}
-					</DialogContent>
+					{
+						//@ts-ignore
+						<DialogContent css={{width: compact ? "fit-content" : "auto"}}>
+							{children}
+						</DialogContent>
+					}
 				</Transition.Child>
 			</Dialog>
 		</Transition>

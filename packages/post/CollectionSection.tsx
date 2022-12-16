@@ -38,33 +38,39 @@ export default function TreatOfTheMonthCollectionSection(props: {
 	return (
 		<Container className="grid grid-cols-1 gap-8 lg:grid-cols-2">
 			<Container
-				className="flex flex-col h-auto gap-4 p-4 border-2 rounded-xl drop-shadow"
+				className="flex flex-col h-auto gap-4 p-4 border-4 shadow-lg rounded-xl"
 				css={{
 					backgroundColor: "$elementSurface",
-					borderColor: "$accentBorder",
+					borderColor: "$totmPurple",
+					borderRadius: "32px",
 				}}
 			>
 				<Container className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 ">
-					{props.collectionItems.slice(0, 6).map((item, i) => (
-						<Container
-							key={item.id}
-							className={`overflow-hidden ${
-								i > 3 ? "hidden lg:flex" : "inherit"
-							}`}
-							css={{
-								height: "220px",
-								background: item.image
-									? `url('https://treatnfts.gumlet.io/api/v3/image?default=${
-											item.image.cdn ?? item.image.ipfs
-									  }')`
-									: "$surfaceOnSurface",
-								backgroundColor: "$surfaceOnSurface",
-								backgroundSize: "cover",
-								backgroundPosition: "center",
-								borderRadius: "16px",
-							}}
-						/>
-					))}
+					{(props.collectionItems && props.collectionItems.length > 0
+						? props.collectionItems
+						: new Array(6).fill(0)
+					)
+						.slice(0, 6)
+						.map((item, i) => (
+							<Container
+								key={item.id}
+								className={`overflow-hidden  ${
+									i > 3 ? "hidden lg:flex" : "inherit"
+								}`}
+								css={{
+									height: "220px",
+									background: item.image
+										? `url('https://treatnfts.gumlet.io/api/v3/image?default=${
+												item.image.cdn ?? item.image.ipfs
+										  }')`
+										: "$surfaceOnSurface",
+									backgroundColor: "$surfaceOnSurface",
+									backgroundSize: "cover",
+									backgroundPosition: "center",
+									borderRadius: "16px",
+								}}
+							/>
+						))}
 				</Container>
 				<Container className="flex items-center gap-2">
 					<Container className="flex">
@@ -81,10 +87,11 @@ export default function TreatOfTheMonthCollectionSection(props: {
 				</Container>
 			</Container>
 			<Container
-				className="flex flex-col h-auto gap-4 p-4 rounded-xl drop-shadow"
+				className="flex flex-col h-auto gap-4 p-4 drop-shadow-lg rounded-xl"
 				css={{
 					backgroundColor: "$elementSurface",
 					borderColor: "$accentBorder",
+					borderRadius: "32px",
 				}}
 			>
 				<Container className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
