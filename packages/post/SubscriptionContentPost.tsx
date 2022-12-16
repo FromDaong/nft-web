@@ -9,7 +9,7 @@ import {BoldLink} from "@packages/shared/components/Typography/Text";
 import Link from "next/link";
 import Avatar from "@packages/shared/components/AvatarNew";
 import {PostMediaContent} from "./PostMediaContent";
-import {TPost} from "./types";
+import {TritPostProps} from "./types";
 import {Container} from "@packages/shared/components/Container";
 import {Button} from "@packages/shared/components/Button";
 import {
@@ -23,7 +23,7 @@ import {
 } from "./blocks";
 import {BookmarkIcon} from "@heroicons/react/outline";
 
-export const SubscriptionContentPost = (props: TPost) => {
+export const SubscriptionContentPost = (props: TritPostProps) => {
 	const imageUrl = props.image?.cdn;
 	return (
 		<PostCardContainer>

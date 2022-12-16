@@ -3,7 +3,7 @@ import SuggestedCreatorsSection from "@packages/feed/components/SuggestedCreator
 import TrendsSection from "@packages/feed/components/TrendsSection";
 import NavTab from "@packages/navigation/components/DiscoverNavTab";
 import {TimelineActivity} from "@packages/post/TimelineActivity";
-import {TPost} from "@packages/post/types";
+import {TritPostProps} from "@packages/post/types";
 import {SEOHead} from "@packages/seo/page";
 import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
@@ -21,7 +21,7 @@ import Link from "next/link";
 import {useRouter} from "next/router";
 import {ReactElement, ReactNode} from "react";
 
-const newCurated: TPost = {
+const newCurated: TritPostProps = {
 	name: "Welcome to the Tritters",
 	image: {
 		cdn: "/assets/cherieCover.jpg",

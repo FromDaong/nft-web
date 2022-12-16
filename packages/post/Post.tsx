@@ -1,8 +1,8 @@
 import {TritPost} from "./TritPost";
 import {SubscriptionContentPost} from "./SubscriptionContentPost";
-import {TPost} from "./types";
+import {TritPostProps} from "./types";
 
-export default function Trit(post: TPost) {
+export default function Trit(post: TritPostProps) {
 	return (
 		<>
 			{post.post_type === "subscription" ? (

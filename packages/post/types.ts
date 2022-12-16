@@ -52,7 +52,7 @@ export type TritPostProps = {
 		avatar: string;
 	};
 	seller?: string;
-	likedBy: Array<string>;
+	likedBy?: Array<string>;
 	protected?: boolean;
 	totm?: boolean;
 	subscription_nft?: boolean;

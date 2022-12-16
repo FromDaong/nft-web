@@ -3,7 +3,7 @@ import TrendsSection from "@packages/feed/components/TrendsSection";
 import NFTDropdownSort from "@packages/navigation/components/NFTDropdownFilter";
 import {SubscriptionContentPost} from "@packages/post/SubscriptionContentPost";
 import {TimelineActivity} from "@packages/post/TimelineActivity";
-import {TPost} from "@packages/post/types";
+import {TritPostProps} from "@packages/post/types";
 import {SEOHead} from "@packages/seo/page";
 import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
@@ -25,7 +25,7 @@ import Link from "next/link";
   trit passes.
 */
 
-const newCurated: TPost = {
+const newCurated: any = {
 	name: "Welcome to the Tritters",
 	text: "Woke up feeling sexy :)",
 	price: {

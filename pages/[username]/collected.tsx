@@ -2,63 +2,30 @@
 import Error404 from "@packages/error/404";
 import Error500 from "@packages/error/500";
 import {SkeletonTritCollectiblePost, TritPost} from "@packages/post/TritPost";
-import {TPost} from "@packages/post/types";
+import {TritPostProps} from "@packages/post/types";
 import {SEOHead} from "@packages/seo/page";
 import {Container} from "@packages/shared/components/Container";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
+import Spinner from "@packages/shared/icons/Spinner";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import ProfileLayout from "core/components/layouts/ProfileLayout";
 import TreatCore from "core/TreatCore";
+import {useSession} from "next-auth/react";
 import {useRouter} from "next/router";
 import {beforePageLoadGetUserProfile} from "server/page/userProfile";
-
-const newCurated: TPost = {
-	name: "Welcome to the Tritters",
-	collection: {
-		name: "Tritters",
-		totalSupply: 10,
-		minted: 4,
-		avatar: "/assets/cherieCover.jpg",
-	},
-	/*image: {
-    cdn: "/assets/cherieCover.jpg",
-    ipfs: "/assets/cherieCover.jpg",
-  },*/
-	price: {
-		value: 0.99,
-		currency: "BNB",
-	},
-	id: "1",
-	blurhash:
-		"-qIFGCoMs:WBayay_NRjayj[ayj[IUWBayayj[fQIUt7j[ayayayj@WBRjoffkj[xuWBWCayj[ayWAt7fQj[ayayM{WBofj[j[fQ",
-	post_type: "colletible",
-	author: {
-		username: "kamfeskaya",
-		display_name: "Kamfes",
-		avatar:
-			"https://images.pexels.com/users/avatars/50964441/feyza-yildirim-157.jpeg?auto=compress&fit=crop&h=50&w=50&dpr=1",
-	},
-	timestamp: 782898893,
-};
 
 export default function UserProfile(props: {
 	error: boolean;
 	notFound: boolean;
 	data: any;
 }) {
-	if (props.notFound) {
-		return <Error404 />;
-	}
-
-	if (props.error) {
-		return <Error500 />;
-	}
-
+	const {data: session, status} = useSession();
 	const data = JSON.parse(props.data);
 	const {username} = data;
+	const {profile} = (session as any) ?? {profile: {}};
 
 	const getCollectedNFTs = async () => {
 		const res = await axios.get(`${apiEndpoint}/profile/${username}/collected`);
@@ -72,6 +39,47 @@ export default function UserProfile(props: {
 		queryKey: [`profileCollected:${username}`],
 		queryFn: getCollectedNFTs,
 	});
+
+	if (!session) {
+		if (status === "loading") {
+			return (
+				<ApplicationFrame>
+					<ApplicationLayout>
+						<Container className="flex flex-col items-center justify-center h-screen w-screen">
+							<Container className="flex flex-col items-center">
+								<Container>
+									<Spinner />
+								</Container>
+								<Heading className="text-2xl font-bold text-center">
+									Loading``
+								</Heading>
+							</Container>
+						</Container>
+					</ApplicationLayout>
+				</ApplicationFrame>
+			);
+		}
+
+		return (
+			<ApplicationFrame>
+				<ApplicationLayout>
+					<Container className="flex flex-col items-center justify-center h-full">
+						<Heading className="text-2xl font-bold text-center">
+							You need to be logged in to view this page
+						</Heading>
+					</Container>
+				</ApplicationLayout>
+			</ApplicationFrame>
+		);
+	}
+
+	if (props.notFound) {
+		return <Error404 />;
+	}
+
+	if (props.error) {
+		return <Error500 />;
+	}
 
 	const collectedNFTs =
 		creatorNFTsLoading || creatorNFTError
@@ -96,12 +104,12 @@ export default function UserProfile(props: {
 						</Container>
 					))}
 				{collectedNFTs?.length > 0 && !creatorNFTsLoading ? (
-					collectedNFTs?.map((post: TPost) => (
+					collectedNFTs?.map((post: TritPostProps) => (
 						<TritPost
 							key={post.id}
 							{...post}
 							noPrice
-							isMine
+							isMine={username === profile.username}
 						/>
 					))
 				) : (

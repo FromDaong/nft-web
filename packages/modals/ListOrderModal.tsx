@@ -52,7 +52,10 @@ export default function ListOrderModal(props: {
 		setApproveLoading(true);
 		approveMarketplace()
 			.then(() => setApproveLoading(false))
-			.then(() => onClose());
+			.then(() => onClose())
+			.catch((err) => {
+				console.log({err});
+			});
 	};
 
 	const listOrderAction = async () => {
@@ -74,33 +77,6 @@ export default function ListOrderModal(props: {
 	return (
 		<>
 			<GenericChainModal
-				isOpen={isOpen}
-				title={"Approve the Treat Marketplace"}
-				subtitle={
-					"In order to use the Treat resale marketplace, you must approve our smart contract on your wallet. The smart contract code is publicly available to view. Once complete, wait a few minutes for the transaction to confirm."
-				}
-				buttonLabel={"Approve in Wallet"}
-				action={approveAction}
-				onClose={onClose}
-				loading={approveLoading}
-			/>
-
-			<GenericChainModal
-				isOpen={listOrderPending}
-				subtitle={"Your NFT has been listed on the Resale Marketplace."}
-				hideClose
-				buttonLabel="Close"
-				action={() => {
-					onClose();
-					props.onClose();
-				}}
-				onClose={() => {
-					onClose();
-					props.onClose();
-				}}
-			/>
-
-			<GenericChainModal
 				title={"List NFT on Marketplace"}
 				onClose={props.onClose}
 				isOpen={props.isOpen}
@@ -109,6 +85,32 @@ export default function ListOrderModal(props: {
 				hideClose
 				noButton
 			>
+				<GenericChainModal
+					isOpen={isOpen}
+					title={"Approve the Treat Marketplace"}
+					subtitle={
+						"In order to use the Treat resale marketplace, you must approve our smart contract on your wallet. The smart contract code is publicly available to view. Once complete, wait a few minutes for the transaction to confirm."
+					}
+					buttonLabel={"Approve in Wallet"}
+					action={approveAction}
+					onClose={onClose}
+					loading={approveLoading}
+				/>
+
+				<GenericChainModal
+					isOpen={listOrderPending}
+					subtitle={"Your NFT has been listed on the Resale Marketplace."}
+					hideClose
+					buttonLabel="Close"
+					action={() => {
+						onClose();
+						props.onClose();
+					}}
+					onClose={() => {
+						onClose();
+						props.onClose();
+					}}
+				/>
 				<Container>
 					<Container>
 						<Text>List Price in BNB</Text>

@@ -1,5 +1,5 @@
 import {PostMediaContent} from "./PostMediaContent";
-import {LivestreamPost, TPost} from "./types";
+import {LivestreamPost, TritPostProps} from "./types";
 import {Container} from "@packages/shared/components/Container";
 import {Button} from "@packages/shared/components/Button";
 import {LiveMediaPostContainer} from "./blocks";

@@ -2,7 +2,7 @@
 import Error404 from "@packages/error/404";
 import Error500 from "@packages/error/500";
 import {SkeletonTritCollectiblePost, TritPost} from "@packages/post/TritPost";
-import {TPost} from "@packages/post/types";
+import {TritPostProps} from "@packages/post/types";
 import {SEOHead} from "@packages/seo/page";
 import {Container} from "@packages/shared/components/Container";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
@@ -67,7 +67,7 @@ export default function UserProfile(props: {
 						</Container>
 					))}
 				{creatorNFTs?.length > 0 && !creatorNFTsLoading ? (
-					creatorNFTs?.map((post: TPost) => (
+					creatorNFTs?.map((post: TritPostProps) => (
 						<TritPost
 							key={post.id}
 							{...post}

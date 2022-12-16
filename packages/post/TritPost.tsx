@@ -113,7 +113,7 @@ export const TritPost = (props: TritPostProps) => {
 					{(props.isResale || isListedOnResale) && (
 						<CancelOrderModal
 							isOpen={cancelOrderModalProps.isOpen}
-							onClose={buyResaleNFTModalProps.onClose}
+							onClose={cancelOrderModalProps.onClose}
 							nft={props}
 						/>
 					)}
@@ -297,7 +297,7 @@ export const TritPost = (props: TritPostProps) => {
 								<Button
 									fullWidth
 									appearance={"surface"}
-									onClick={listNFTModalProps.onOpen}
+									onClick={transferNFTModalProps.onOpen}
 								>
 									Transfer
 								</Button>

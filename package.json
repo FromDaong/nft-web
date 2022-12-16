@@ -187,6 +187,7 @@
 		"swr": "^0.3.11",
 		"uploadcare-widget-tab-effects": "^1.6.0",
 		"use-wallet": "0.10",
+		"usehooks-ts": "^2.9.1",
 		"uuid": "^8.3.2",
 		"validator": "^13.6.0",
 		"video.js": "^7.18.1",

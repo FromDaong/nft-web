@@ -6,7 +6,7 @@ import {
 import {HeartIcon} from "@radix-ui/react-icons";
 import Link from "next/link";
 import {PostMediaContent} from "./PostMediaContent";
-import {TPost} from "./types";
+import {TritPostProps} from "./types";
 import {Container} from "@packages/shared/components/Container";
 import {
 	PostCardContainer,
@@ -47,7 +47,7 @@ export const ChatBubbleIcon = ({
 );
 
 export const TimelineActivity = (
-	props: TPost & {
+	props: TritPostProps & {
 		actionMeta: {
 			verb:
 				| "Changed price"

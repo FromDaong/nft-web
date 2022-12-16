@@ -23,11 +23,11 @@ export default function GenericChainModal(props: {
 			onClose={props.onClose}
 		>
 			<Container className="flex flex-col gap-8">
-				<Container className="flex flex-col gap-1">
+				<Container className="flex flex-col gap-2 w-full">
 					<Heading size="xs">{props.title || "Action Complete ✅ 💝"}</Heading>
-					<Text className="w-2/3">{props.subtitle}</Text>
+					<Text>{props.subtitle}</Text>
 				</Container>
-				<Container>{props.children}</Container>
+				{props.children && <Container>{props.children}</Container>}
 				{!props.noButton && (
 					<Container className="flex justify-end gap-8">
 						{!props.hideClose && (

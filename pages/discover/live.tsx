@@ -1,11 +1,11 @@
 import {LivestreamingPostCard} from "@packages/post/Livestreaming";
 import {SubscriptionContentPost} from "@packages/post/SubscriptionContentPost";
-import {TPost} from "@packages/post/types";
+import {TritPostProps} from "@packages/post/types";
 import {SEOHead} from "@packages/seo/page";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 
-const newCurated: TPost = {
+const newCurated: TritPostProps = {
 	name: "Welcome to the Tritters",
 	text: "Woke up feeling sexy :)",
 	price: {
