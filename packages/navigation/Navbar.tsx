@@ -81,6 +81,13 @@ export default function Navbar() {
 								</Link>
 							</div>
 							<div className="items-center hidden gap-8 md:flex">
+								<Link href="/explore">
+									<a>
+										<BoldLink className="font-medium">Explore</BoldLink>
+									</a>
+								</Link>
+							</div>
+							<div className="items-center hidden gap-8 md:flex">
 								<Link href="/dex/farm">
 									<a>
 										<BoldLink className="font-medium">Farming</BoldLink>

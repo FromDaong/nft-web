@@ -62,7 +62,7 @@ export default function TreatOfTheMonthCollectionSection(props: {
 									background: item.image
 										? `url('https://treatnfts.gumlet.io/api/v3/image?default=${
 												item.image.cdn ?? item.image.ipfs
-										  }')`
+										  }&blur=30')`
 										: "$surfaceOnSurface",
 									backgroundColor: "$surfaceOnSurface",
 									backgroundSize: "cover",

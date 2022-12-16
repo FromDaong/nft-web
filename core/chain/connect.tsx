@@ -152,12 +152,14 @@ const SessionRequires = () => {
 		}
 	}, [data]);
 
+	// TODO: Discover creators modal
 	return (
 		<>
 			<CreateProfileModal
 				isOpen={isOpen}
 				onClose={onClose}
 			/>
+			Discover Creators, Discover Content
 		</>
 	);
 };
