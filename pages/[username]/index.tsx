@@ -2,7 +2,6 @@
 import Error404 from "@packages/error/404";
 import Error500 from "@packages/error/500";
 import {SkeletonTritCollectiblePost, TritPost} from "@packages/post/TritPost";
-import {TPost} from "@packages/post/types";
 import {SEOHead} from "@packages/seo/page";
 import {Container} from "@packages/shared/components/Container";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
@@ -33,7 +32,7 @@ export default function UserProfile(props: {
 
 	const getcreatorNFTs = async () => {
 		const res = await axios.get(`${apiEndpoint}/creator/${username}/nfts`);
-		return res.data;
+		return res.data.data;
 	};
 	const {
 		isLoading: creatorNFTsLoading,
@@ -47,7 +46,7 @@ export default function UserProfile(props: {
 	const creatorNFTs =
 		creatorNFTsLoading || creatorNFTError
 			? []
-			: creatorNFTsData?.data.map((post) => legacy_nft_to_new(post));
+			: creatorNFTsData?.docs.map((post) => legacy_nft_to_new(post));
 
 	return (
 		<ProfileLayout userProfile={data}>
@@ -67,7 +66,7 @@ export default function UserProfile(props: {
 						</Container>
 					))}
 				{creatorNFTs?.length > 0 && !creatorNFTsLoading ? (
-					creatorNFTs?.map((post: TPost) => (
+					creatorNFTs?.map((post) => (
 						<TritPost
 							key={post.id}
 							{...post}

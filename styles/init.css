@@ -23,4 +23,5 @@ h6 {
 * {
 	outline: none !important;
 	box-sizing: border-box !important;
+	font-family: "Inter", -apple-system, system-ui, sans-serif !important;
 }

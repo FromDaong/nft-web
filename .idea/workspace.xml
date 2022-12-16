@@ -6,15 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="13ddaae3-483e-427b-8a07-e5e133fac976" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/components/layouts/ProfileLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/core/components/layouts/ProfileLayout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/[username]/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/[username]/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/id.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/v3/marketplace/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/v3/marketplace/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/create/create.module.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/contexts/TreatProvider/TreatProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/core/contexts/TreatProvider/TreatProvider.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/chain/hooks/alpha.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/post/BuyNFTButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/post/BuyNFTButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/post/CollectionSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/post/CollectionSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/post/TritPost.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/post/TritPost.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/post/hooks/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/post/hooks/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/create/[collection_id].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/create/[collection_id].tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/post/nft/[id].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/post/nft/[id].tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/page/userProfile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/page/userProfile.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/init.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/init.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,27 +52,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "D:/work/codeslayer/freelance/treatdao/web",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "yarn",
-    "prettierjs.PrettierConfiguration.Package": "/Users/lucamarchal/code/treat-next/node_modules/prettier",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "ts.external.directory.path": "D:\\work\\codeslayer\\freelance\\treatdao\\web\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/work/codeslayer/freelance/treatdao/web&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/lucamarchal/code/treat-next/node_modules/prettier&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\work\\codeslayer\\freelance\\treatdao\\web\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\work\codeslayer\freelance\nft-web\data" />
@@ -99,11 +98,19 @@
       <workItem from="1669844364892" duration="483000" />
       <workItem from="1669844867208" duration="5102000" />
       <workItem from="1670810616528" duration="835000" />
+      <workItem from="1671145482857" duration="1222000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="javascript:npm:styled-components" />
+    <option featureType="dependencySupport" implementationName="javascript:npm:prettier" />
+    <option featureType="dependencySupport" implementationName="javascript:npm:tailwindcss" />
+    <option featureType="dependencySupport" implementationName="javascript:npm:next" />
+    <option featureType="dependencySupport" implementationName="javascript:npm:postcss" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

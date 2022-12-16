@@ -29,14 +29,13 @@ import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import {File} from "filepond";
 import uploadcareClient from "@utils/uploadcare";
 import {Player} from "@livepeer/react";
-import useUser from "core/auth/useUser";
 import {encode} from "blurhash";
 import useSWR from "swr";
 import {ethers} from "ethers";
 import useCreateAndAddNFTs from "@packages/chain/hooks/useCreateAndAddNFTs";
 import useCreateAndAddSubscriberNFTs from "@packages/chain/hooks/useCreateAndAddSubscriberNFTs";
 import {useContracts} from "@packages/post/hooks";
-import {useWaitForTransaction} from "wagmi";
+import {useAccount, useWaitForTransaction} from "wagmi";
 
 registerPlugin(
 	FilePondPluginImageExifOrientation,
@@ -90,7 +89,7 @@ export default function PostType(props: {collection: string}) {
 				<Container className="flex flex-col gap-12 px-4 py-12">
 					<Heading
 						css={{
-							minHeight: "32px",
+							minHeight: "16px",
 							borderRadius: "8px",
 							background: title ? "inherit" : "$elementOnSurface",
 							width: title ? "auto" : "400px",
@@ -245,15 +244,17 @@ const AddNFTDetails = ({
 		blurhash: string;
 	}>;
 }) => {
-	const {user} = useUser();
-	const {creatorMartContract} = useContracts();
 	const {data: bnbPrice, error: bnbError} = useSWR(
 		`https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT`
 	);
-	const [maxSupplyArray, setMaxSupplyArray] = useState(null);
-	const [amountsArray, setAmountsArray] = useState(null);
+	const {creatorMartContract, subscriptionsMart} = useContracts();
+	const {address} = useAccount();
 	const [basicTxHash, setBasicTxHash] = useState("");
 	const [subscriptionTxHash, setSubscriptionTxHash] = useState("");
+	const [tx, setTx] = useState({
+		basic: {},
+		sub: {},
+	});
 
 	const {isSuccess: isBasicTxConfirmed, data: basicTxData} =
 		useWaitForTransaction({
@@ -323,6 +324,9 @@ const AddNFTDetails = ({
 			amounts_and_supply.amounts.map(() => false),
 			"0x"
 		);
+
+		setBasicTxHash(tx.hash);
+		setTx({...tx, basic: tx});
 	};
 
 	const createSubscriberNFTs = async (nfts) => {
@@ -331,46 +335,39 @@ const AddNFTDetails = ({
 			maxSupplys: nfts.map((n) => n.price),
 		};
 
-		const tx = await creatorMartContract.createAndAddNFTs(
+		const tx = await subscriptionsMart.createAndAddNFTs(
 			amounts_and_supply.maxSupplys,
 			amounts_and_supply.amounts,
 			amounts_and_supply.amounts.map(() => false),
-			"0x"
+			"0x",
+			{from: address, value: 0}
 		);
+
+		setSubscriptionTxHash(tx.hash);
+		setTx({...tx, sub: tx});
 	};
 
 	const submitToCreateNFTsOnServer = async () => {
 		try {
 			const nfts = formik.values.nfts;
 
-			// Get Tx Hash
+			const basic_nfts = nfts.filter((n) => !n.subscription_nft);
+			const subscription_nfts = nfts.filter((n) => !n.subscription_nft);
 
-			setBasicTxHash(tx.hash);
+			const basic_tx = createBasicNFTs(basic_nfts);
+			const sub_tx = createSubscriberNFTs(subscription_nfts);
+			const fn_arr = [basic_tx, sub_tx];
 
-			const nftValues = nfts.map(async (nft) => {
-				const ipfs = await axios.post(
-					"https://api.pinata.cloud/pinning/pinFileToIPFS",
-					nft.cdn,
-					{
-						headers: {
-							"Content-Type": `multipart/form-data`,
-							pinata_api_key: "b949556813c4f284c550",
-							pinata_secret_api_key:
-								"7a7b755c9c067dedb142c2cb9e9c077aebf561b552c440bf67b87331bac32939",
-						},
-					}
-				);
-				return {
-					...nft,
-					ipfs,
-				};
-			});
+			const results_arr = await Promise.all(fn_arr);
+			console.log({results_arr});
 
 			// TODO: Create NFTs on Server
 		} catch (error) {
 			console.error(error);
 		}
 	};
+
+	console.log({tx, nft_data});
 
 	return (
 		<Formik

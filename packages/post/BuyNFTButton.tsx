@@ -1,4 +1,5 @@
-import {useSubscriptionData} from "@packages/chain/hooks/alpha";
+import {CheckCircleIcon} from "@heroicons/react/outline";
+import {useSubscriptionData} from "@packages/chain/hooks";
 import {useDisclosure} from "@packages/hooks";
 import {Modal} from "@packages/modals";
 import {Button} from "@packages/shared/components/Button";
@@ -8,7 +9,7 @@ import {ImportantText, Text} from "@packages/shared/components/Typography/Text";
 import Spinner from "@packages/shared/icons/Spinner";
 import {apiEndpoint} from "@utils/index";
 import axios from "axios";
-import useUser from "core/auth/useUser";
+import {useSession} from "next-auth/react";
 import Link from "next/link";
 import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
@@ -16,7 +17,9 @@ import {useAccount, useWaitForTransaction} from "wagmi";
 
 const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 	const {address} = useAccount();
-	const session = useUser();
+	const session = useSession();
+	// @ts-ignore
+	const {profile} = session.data ?? {};
 	const router = useRouter();
 	const {isOpen, onOpen, onClose} = useDisclosure();
 	const [loading, setLoading] = useState(false);
@@ -40,7 +43,6 @@ const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 
 	const subscription = useSubscriptionData(nftData.creator.address);
 
-	const nftsRemaining = remainingNfts;
 	const nftSoldOut = remainingNfts === 0 || remainingNfts < 0;
 	const isTOTMNFT = nftData.totm_nft;
 	const isSubscriptionNFT = !!nftData.subscription_nft;
@@ -80,22 +82,22 @@ const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 	};
 
 	const submitTransaction = async () => {
-		return axios
-			.post(`${apiEndpoint}/tx/create`, {
-				txHash: data.transactionHash,
-				metadata: {
-					nftId: nftData.id,
-					balanceSender: address,
-					balanceReceiver: nftData.creator?.address,
-				},
-				type: "mint",
-				amount: nftData.price,
-				timestamp: new Date(),
-			})
-			.then(() => router.reload());
+		return axios.post(`${apiEndpoint}/tx/create`, {
+			txHash: data.transactionHash,
+			metadata: {
+				nftId: nftData.id,
+				balanceSender: address,
+				balanceReceiver: nftData.creator?.address,
+			},
+			type: "mint",
+			amount: nftData.price,
+			timestamp: new Date(),
+		});
 	};
 
 	if (nftData.melon_nft) return null;
+
+	console.log({isSubscriptionNFT, session});
 
 	return (
 		<>
@@ -118,12 +120,13 @@ const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 					<Modal
 						isOpen={isOpen}
 						onClose={onClose}
+						compact={true}
 					>
 						<Container className="min-w-[360px]">
 							{showConfirmWallet && (
-								<Container className="flex flex-col gap-2 p-8">
+								<Container className="flex flex-col gap-2 p-8 items-center">
 									<Heading
-										size="md"
+										size="xs"
 										className="mb-4"
 									>
 										Wallet authorization
@@ -131,27 +134,43 @@ const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 									<Text className="mb-4">
 										Please confirm the transaction in your wallet
 									</Text>
+									<Button
+										appearance={"surface"}
+										className="mt-4 w-full"
+										onClick={() => setShowConfirmWallet(false)}
+									>
+										Cancel
+									</Button>
 								</Container>
 							)}
 							{!showConfirmWallet && !savedTx && (
-								<Container className="flex flex-col gap-2 p-8">
-									<Heading
-										size="md"
-										className="mb-4"
-									>
-										Confirming transaction
-									</Heading>
-									<Text className="mb-4">
-										Please wait while we confirm your purchase.
-									</Text>
+								<Container className="flex flex-col gap-4 p-8 items-center">
+									<Container className={"flex justify-center w-2/3"}>
+										<Spinner className="w-12 h-12" />
+									</Container>
+									<Container className="flex flex-col gap-2 p-8 items-center  text-center">
+										<Heading
+											size="xs"
+											className="mb-4"
+										>
+											Transaction pending
+										</Heading>
+										<Text className="mb-4">
+											You will be taken to the next step automagically when your
+											purchase has been confirmed on the blockchain.
+										</Text>
+									</Container>
 								</Container>
 							)}
 
 							{savedTx && (
-								<Container className="flex flex-col gap-8 p-8">
-									<Container className="flex flex-col gap-2">
+								<Container className="flex flex-col gap-4 p-8">
+									<Container className={"flex justify-center w-full"}>
+										<CheckCircleIcon className="w-12 h-12" />
+									</Container>
+									<Container className="flex flex-col gap-2 p-8 items-center text-center">
 										<Heading
-											size="md"
+											size="xs"
 											className="mb-4"
 										>
 											Purchase Complete
@@ -161,10 +180,10 @@ const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 											your portfolio or even sell it.
 										</Text>
 									</Container>
-									<Container className="flex flex-row justify-end gap-4">
-										<Link href={`${session.user.profile.username}`}>
+									<Container className="flex flex-col gap-4 w-full">
+										<Link href={`/${profile.username}`}>
 											<a>
-												<Button>Go to my portfolio</Button>
+												<Button fullWidth>Go to my portfolio</Button>
 											</a>
 										</Link>
 									</Container>
@@ -190,15 +209,11 @@ const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 								)
 							) : (
 								<ImportantText>
-									{nftSoldOut || isNaN(nftsRemaining) ? (
-										<>Sold Out</>
-									) : (
-										<>
-											{isRegularNFTBuyEnabled ||
-												(isSubscriptionNFT && `Purchase NFT`)}
-											{isTOTMNFT && `Buy TOTM NFT`}
-										</>
-									)}
+									<>
+										{isRegularNFTBuyEnabled && `Purchase NFT`}
+										{isSubscriptionNFT && "Purchase NFT"}
+										{isTOTMNFT && `Buy TOTM NFT`}
+									</>
 								</ImportantText>
 							)}
 						</Button>

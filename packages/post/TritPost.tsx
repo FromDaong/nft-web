@@ -10,7 +10,6 @@ import {styled} from "@styles/theme";
 import ContentLoader from "react-content-loader";
 import {Button} from "@packages/shared/components/Button";
 import {HeartFilledIcon} from "@radix-ui/react-icons";
-import {useDisclosure} from "@packages/hooks";
 import {useTritNFTUtils} from "./hooks";
 import TransferNFTModal from "@packages/modals/TransferNFTModal";
 import CancelOrderModal from "@packages/modals/CancelOrderModal";
@@ -84,8 +83,8 @@ export const TritPost = (props: TritPostProps) => {
 	const soldOut = props.collection?.minted === props.collection?.totalSupply;
 
 	return (
-		<>
-			{!props.isMine && (
+		<Container className="grid grid-cols-1 gap-4 w-full">
+			{props.isMine && (
 				<>
 					{!props.isResale && (
 						<>
@@ -112,7 +111,7 @@ export const TritPost = (props: TritPostProps) => {
 			)}
 			{props.isResale && (
 				<PurchaseResaleNFTModal
-					isOpen={cancelOrderModalProps.isOpen}
+					isOpen={buyResaleNFTModalProps.isOpen}
 					onClose={buyResaleNFTModalProps.onClose}
 					nft={props}
 				/>
@@ -212,57 +211,6 @@ export const TritPost = (props: TritPostProps) => {
 								</Container>
 							</Container>
 							<Container className="flex flex-col gap-2">
-								{props.isResale && !props.isMine && (
-									<Container className="py-2">
-										<Button
-											fullWidth
-											appearance={"surface"}
-											onClick={buyResaleNFTModalProps.onOpen}
-										>
-											Purchase from{" "}
-											{props.author.username || props.author.display_name}
-										</Button>
-									</Container>
-								)}
-								{props.isMine && (
-									<Container className="grid grid-cols-2 w-full gap-4">
-										{!props.isResale && !isListedOnResale && (
-											<>
-												<Container className="py-2">
-													<Button
-														fullWidth
-														appearance={"surface"}
-														onClick={listNFTModalProps.onOpen}
-													>
-														Resell
-													</Button>
-												</Container>
-												<Container className="py-2">
-													<Button
-														fullWidth
-														appearance={"surface"}
-														onClick={listNFTModalProps.onOpen}
-													>
-														Transfer
-													</Button>
-												</Container>
-											</>
-										)}
-
-										{props.isResale && isListedOnResale && (
-											<Container className="py-2">
-												<Button
-													fullWidth
-													appearance={"surface"}
-													onClick={cancelOrderModalProps.onOpen}
-												>
-													Remove your listing
-												</Button>
-											</Container>
-										)}
-									</Container>
-								)}
-
 								{!props.isResale && !props.isMine && (
 									<>
 										<Heading
@@ -320,7 +268,59 @@ export const TritPost = (props: TritPostProps) => {
 					</Container>
 				</a>
 			</Link>
-		</>
+			{props.isResale && !props.isMine && (
+				<Container className="py-2">
+					<Button
+						fullWidth
+						appearance={"surface"}
+						onClick={() => {
+							console.log("buying from resale");
+							buyResaleNFTModalProps.onOpen();
+						}}
+					>
+						Purchase from {props.author.username || props.author.display_name}
+					</Button>
+				</Container>
+			)}
+			{props.isMine && (
+				<Container className="grid grid-cols-2 w-full gap-4">
+					{!props.isResale && !isListedOnResale && (
+						<>
+							<Container className="py-2">
+								<Button
+									fullWidth
+									appearance={"surface"}
+									onClick={listNFTModalProps.onOpen}
+								>
+									Resell
+								</Button>
+							</Container>
+							<Container className="py-2">
+								<Button
+									fullWidth
+									appearance={"surface"}
+									onClick={listNFTModalProps.onOpen}
+								>
+									Transfer
+								</Button>
+							</Container>
+						</>
+					)}
+
+					{props.isResale && isListedOnResale && (
+						<Container className="py-2">
+							<Button
+								fullWidth
+								appearance={"surface"}
+								onClick={cancelOrderModalProps.onOpen}
+							>
+								Remove your listing
+							</Button>
+						</Container>
+					)}
+				</Container>
+			)}
+		</Container>
 	);
 };
 

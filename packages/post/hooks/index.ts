@@ -3,13 +3,13 @@ import {ABI} from "@packages/treat/lib/abi";
 import {contractAddresses} from "@packages/treat/lib/constants";
 import {apiEndpoint} from "@utils/index";
 import axios from "axios";
-import useUser from "core/auth/useUser";
 import {BigNumber, ethers} from "ethers";
+import {useSession} from "next-auth/react";
 import {useCallback, useEffect, useState} from "react";
 import {useAccount, useContract, useSigner} from "wagmi";
 
 export const useTritNFTUtils = (nft: any) => {
-	const {user} = useUser();
+	const {data: session} = useSession();
 	const [liked, setLikedNFT] = useState<undefined | boolean>(false);
 	const listNFTModalProps = useDisclosure();
 	const cancelOrderModalProps = useDisclosure();
@@ -19,14 +19,17 @@ export const useTritNFTUtils = (nft: any) => {
 	const isListedOnResale = useGetResaleOrder(nft.id);
 
 	useEffect(() => {
-		if (user?.profile && liked !== undefined) {
-			if (nft.likedBy?.includes(user.profile._id)) {
+		// @ts-ignore
+
+		if (session?.profile && liked !== undefined) {
+			// @ts-ignore
+			if (nft.likedBy?.includes(session.profile._id)) {
 				setLikedNFT(true);
 			} else {
 				setLikedNFT(false);
 			}
 		}
-	}, [nft.likedBy, user]);
+	}, [nft.likedBy, session]);
 
 	const likeNFT = (e) => {
 		e.preventDefault();
@@ -261,6 +264,31 @@ export const useBuyFromResale = () => {
 	};
 };
 
+export const useGetIsNFTOwned = (nft) => {
+	const [isOwned, setIsOwned] = useState(false);
+	const [balance, setBalance] = useState(0);
+	const {data: signer} = useSigner();
+	const {address} = useAccount();
+	const {treatMinterContract} = useContracts();
+
+	useEffect(() => {
+		if (signer) {
+			treatMinterContract.balanceOf(address, nft.id).then((bal) => {
+				const balance = bal.toString();
+				setBalance(parseInt(balance));
+				if (parseInt(balance) > 0) {
+					setIsOwned(true);
+				}
+			});
+		}
+	}, [treatMinterContract, signer]);
+
+	return {
+		isOwned,
+		balance,
+	};
+};
+
 export const useContracts = () => {
 	const {data: signer} = useSigner();
 
@@ -288,10 +316,17 @@ export const useContracts = () => {
 		signerOrProvider: signer,
 	});
 
+	const subscriptionsMart = useContract({
+		addressOrName: contractAddresses.subscriberMart[56],
+		contractInterface: ABI.subscriberNFTMart,
+		signerOrProvider: signer,
+	});
+
 	return {
 		treatMarketplaceContract,
 		treatSubscriptionsContract,
 		treatMinterContract,
 		creatorMartContract,
+		subscriptionsMart,
 	};
 };

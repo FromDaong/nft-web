@@ -2,8 +2,12 @@ import {useBuyFromResale} from "@packages/post/hooks";
 import {TritPostProps} from "@packages/post/types";
 import {Container} from "@packages/shared/components/Container";
 import {Text} from "@packages/shared/components/Typography/Headings";
+import {ImportantText} from "@packages/shared/components/Typography/Text";
 import {BigNumber, ethers} from "ethers";
-import {useState} from "react";
+import {useSession} from "next-auth/react";
+import {useRouter} from "next/router";
+import {useEffect, useState} from "react";
+import {useWaitForTransaction} from "wagmi";
 import GenericChainModal from "./GenericChainModal";
 
 export default function PurchaseResaleNFTModal(props: {
@@ -12,44 +16,78 @@ export default function PurchaseResaleNFTModal(props: {
 	nft: TritPostProps;
 }) {
 	const [loading, setLoading] = useState(false);
+	const [err, setError] = useState("");
+	const [tx, setTx] = useState("");
+	const router = useRouter();
+	const session = useSession();
+
 	const {buyFromResale} = useBuyFromResale();
 
-	const cost = ethers.utils.formatEther(BigNumber.from(props.nft.price.value));
+	const cost = props.nft.price.value;
+
+	const {data, isLoading} = useWaitForTransaction({
+		hash: tx,
+	});
+
+	useEffect(() => {
+		setLoading(false);
+		setError("");
+	}, []);
 
 	const purchaseNFT = async () => {
 		setLoading(true);
+		setError("");
 		buyFromResale(
 			props.nft.id,
 			1,
-			props.nft.seller,
-			Number(props.nft.price.value)
+			props.nft.author.address,
+			props.nft.price.bigNumber
 		)
-			.then(() => {
-				setLoading(false);
-				props.onClose();
+			.then((t) => {
+				setTx(t.hash);
 			})
-			.catch((err) => console.error(err));
-
-		setLoading(false);
-		props.onClose();
+			.catch((err) => {
+				console.error(err);
+				setLoading(false);
+				setError(err.data.message);
+			});
 	};
+
+	useEffect(() => {
+		if (data && isLoading) {
+			setLoading(false);
+		}
+	}, [data]);
 
 	return (
 		<>
 			<GenericChainModal
-				title={"Purchase NFT 🛒"}
+				title={
+					!isLoading && !loading ? "Purchase NFT 🛒" : "Transaction pending"
+				}
 				onClose={props.onClose}
 				isOpen={props.isOpen}
-				subtitle={`You are buying the NFT ${props.nft.name} for ${cost}BNB from the Resale Market`}
-				buttonLabel={"Purchase NFT"}
-				action={purchaseNFT}
+				buttonLabel={!data ? "Purchase NFT" : "Go to portfolio"}
+				action={
+					!data ? purchaseNFT : () => router.push(`/${session}/collected`)
+				}
 				loading={loading}
 			>
 				<Container className="flex flex-col gap-4">
-					<Text>
-						Your <b>"{props.nft.name}"</b> NFT will no longer be available on
-						the resale marketplace.
-					</Text>
+					{!data && !loading && (
+						<Text>
+							You are buying the NFT{" "}
+							<ImportantText>{props.nft.name}</ImportantText> for{" "}
+							<ImportantText>{cost} BNB</ImportantText> from the Resale Market
+						</Text>
+					)}
+					{!data && (loading || isLoading) && (
+						<Text>
+							You will be taken to the next step automagically when your
+							purchase has been confirmed on the blockchain.
+						</Text>
+					)}
+					{err && !data && <Text appearance="danger">{err}</Text>}
 				</Container>
 			</GenericChainModal>
 		</>

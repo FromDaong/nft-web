@@ -23,7 +23,7 @@ export const Container = styled("div", {
 });
 
 export const ContextualContainer = styled("div", {
-	marginTop: "32px",
+	marginTop: "16px",
 });
 
 const ThemedContainer = styled(Container, {

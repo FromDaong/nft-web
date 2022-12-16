@@ -159,7 +159,8 @@ export default function Index() {
 												<Container
 													key={item}
 													className={
-														"flex " + (i > 3 ? "lg:hidden xl:flex" : "")
+														"flex col-span-1 " +
+														(i > 3 ? "lg:hidden xl:flex" : "")
 													}
 												>
 													<TritPost

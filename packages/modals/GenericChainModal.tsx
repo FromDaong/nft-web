@@ -23,24 +23,24 @@ export default function GenericChainModal(props: {
 			onClose={props.onClose}
 		>
 			<Container className="flex flex-col gap-8">
-				<Container>
-					<Heading size="sm">{props.title || "Action Complete ✅ 💝"}</Heading>
-					<Text>{props.subtitle}</Text>
+				<Container className="flex flex-col gap-1">
+					<Heading size="xs">{props.title || "Action Complete ✅ 💝"}</Heading>
+					<Text className="w-2/3">{props.subtitle}</Text>
 				</Container>
 				<Container>{props.children}</Container>
 				{!props.noButton && (
 					<Container className="flex justify-end gap-8">
 						{!props.hideClose && (
 							<Button
-								appearance={"surface"}
+								appearance={"subtle"}
 								onClick={props.onClose}
 							>
-								Close
+								Cancel
 							</Button>
 						)}
 
 						{props.buttonLabel &&
-							(props.loading ? (
+							(!props.loading ? (
 								<Button onClick={props.action}>{props.buttonLabel}</Button>
 							) : (
 								<Button

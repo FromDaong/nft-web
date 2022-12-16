@@ -26,6 +26,9 @@ import {
 import {useTheme} from "@packages/theme";
 import authenticationAdapter from "./connectAdapter";
 import {SiweMessage} from "siwe";
+import {SessionProvider, useSession} from "next-auth/react";
+import {useDisclosure} from "@packages/hooks";
+import CreateProfileModal from "@packages/onboarding/CreateProfileModal";
 
 const binance: Chain = {
 	id: 56,
@@ -37,7 +40,7 @@ const binance: Chain = {
 		symbol: "BNB",
 	},
 	rpcUrls: {
-		default: "https://bsc-dataseed1.binance.org",
+		default: "https://bsc-dataseed.binance.org",
 	},
 	blockExplorers: {
 		default: {name: "Bscscan", url: "https://bscscan.com"},
@@ -45,9 +48,9 @@ const binance: Chain = {
 	testnet: false,
 };
 
-const {provider} = configureChains(
+export const {chains, provider} = configureChains(
 	[binance],
-	[alchemyProvider({apiKey: "yourAlchemyApiKey"}), publicProvider()]
+	[publicProvider()]
 );
 
 const connectors = connectorsForWallets([
@@ -89,94 +92,14 @@ const Disclaimer: DisclaimerComponent = ({Text, Link}) => (
 	</Text>
 );
 
-const WagmiWrapper = ({children}: {children: ReactNode}) => {
+const WagmiWrapper = ({
+	children,
+	pageProps,
+}: {
+	children: ReactNode;
+	pageProps: any;
+}) => {
 	const {theme} = useTheme();
-
-	const fetchingStatusRef = useRef(false);
-	const verifyingRef = useRef(false);
-	const [authStatus, setAuthStatus] = useState<AuthenticationStatus>("loading");
-
-	// Fetch user when:
-	useEffect(() => {
-		const fetchStatus = async () => {
-			if (fetchingStatusRef.current || verifyingRef.current) {
-				return;
-			}
-
-			fetchingStatusRef.current = true;
-
-			try {
-				const response = await fetch("/api/me");
-				const json = await response.json();
-				setAuthStatus(json.address ? "authenticated" : "unauthenticated");
-			} catch (_error) {
-				setAuthStatus("unauthenticated");
-			} finally {
-				fetchingStatusRef.current = false;
-			}
-		};
-
-		// 1. page loads
-		fetchStatus();
-
-		// 2. window is focused (in case user logs out of another window)
-		window.addEventListener("focus", fetchStatus);
-		return () => window.removeEventListener("focus", fetchStatus);
-	}, []);
-
-	const authAdapter = useMemo(() => {
-		return createAuthenticationAdapter({
-			getNonce: async () => {
-				const response = await fetch("/api/nonce");
-				return await response.text();
-			},
-
-			createMessage: ({nonce, address, chainId}) => {
-				return new SiweMessage({
-					domain: window.location.host,
-					address,
-					statement: "Sign in with Ethereum to the app.",
-					uri: window.location.origin,
-					version: "1",
-					chainId,
-					nonce,
-				});
-			},
-
-			getMessageBody: ({message}) => {
-				return message.prepareMessage();
-			},
-
-			verify: async ({message, signature}) => {
-				verifyingRef.current = true;
-
-				try {
-					const response = await fetch("/api/verify", {
-						method: "POST",
-						headers: {"Content-Type": "application/json"},
-						body: JSON.stringify({message, signature}),
-					});
-
-					const authenticated = Boolean(response.ok);
-
-					if (authenticated) {
-						setAuthStatus(authenticated ? "authenticated" : "unauthenticated");
-					}
-
-					return authenticated;
-				} catch (error) {
-					return false;
-				} finally {
-					verifyingRef.current = false;
-				}
-			},
-
-			signOut: async () => {
-				setAuthStatus("unauthenticated");
-				await fetch("/api/logout");
-			},
-		});
-	}, []);
 
 	const themes = {
 		light: lightTheme({
@@ -192,24 +115,50 @@ const WagmiWrapper = ({children}: {children: ReactNode}) => {
 
 	return (
 		<WagmiConfig client={wagmiClient}>
-			<RainbowKitAuthenticationProvider
-				adapter={authAdapter}
-				status={authStatus}
+			<SessionProvider
+				refetchInterval={0}
+				session={pageProps.session}
 			>
-				<RainbowKitProvider
-					modalSize="compact"
-					appInfo={{
-						appName: "Trit",
-						disclaimer: Disclaimer,
-					}}
-					showRecentTransactions={true}
-					chains={[binance]}
-					theme={themes[theme]}
-				>
-					{children}
-				</RainbowKitProvider>
-			</RainbowKitAuthenticationProvider>
+				<RainbowKitSiweNextAuthProvider>
+					<RainbowKitProvider
+						modalSize="compact"
+						appInfo={{
+							appName: "Trit",
+							disclaimer: Disclaimer,
+						}}
+						showRecentTransactions={true}
+						chains={[binance]}
+						theme={themes[theme]}
+					>
+						<SessionRequires />
+						{children}
+					</RainbowKitProvider>
+				</RainbowKitSiweNextAuthProvider>
+			</SessionProvider>
 		</WagmiConfig>
+	);
+};
+
+const SessionRequires = () => {
+	const {data} = useSession();
+	const {isOpen, onOpen, onClose} = useDisclosure();
+
+	useEffect(() => {
+		// @ts-ignore
+		if (data && !data.profile) {
+			onOpen();
+		} else {
+			onClose();
+		}
+	}, [data]);
+
+	return (
+		<>
+			<CreateProfileModal
+				isOpen={isOpen}
+				onClose={onClose}
+			/>
+		</>
 	);
 };
 

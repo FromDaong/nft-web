@@ -1,6 +1,4 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import {ArrowRightIcon} from "@heroicons/react/outline";
-import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Heading} from "@packages/shared/components/Typography/Headings";
 import {apiEndpoint} from "@utils/index";
@@ -8,7 +6,7 @@ import axios from "axios";
 import UserAvatar from "core/auth/components/Avatar";
 import TreatCore from "core/TreatCore";
 import Link from "next/link";
-import {TPost} from "./types";
+import {TritPostProps} from "./types";
 
 const getTrendingCreators = async () => {
 	const res = await axios.get(`${apiEndpoint}/profile/featured`);
@@ -16,7 +14,7 @@ const getTrendingCreators = async () => {
 };
 
 export default function TreatOfTheMonthCollectionSection(props: {
-	collectionItems: Array<TPost>;
+	collectionItems: Array<TritPostProps>;
 	title: string;
 	author: Array<{
 		username: string;

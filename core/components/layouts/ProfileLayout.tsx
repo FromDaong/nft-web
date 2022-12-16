@@ -1,3 +1,4 @@
+import {ShareIcon} from "@heroicons/react/outline";
 import {ChevronDownIcon} from "@heroicons/react/solid";
 import {ProfileDropdown} from "@packages/Dropdowns";
 import {SEOHead} from "@packages/seo/page";
@@ -21,6 +22,7 @@ import {
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
 import VerifiedBadge from "@packages/shared/components/VerifiedBadge";
+import {SVG} from "@packages/shared/icons/Spinner";
 import {styled} from "@styles/theme";
 import TreatCore, {ComponentBasicProps} from "core/TreatCore";
 import ApplicationFrame from "./ApplicationFrame";
@@ -45,18 +47,41 @@ const tabs = [
   },*/
 ];
 
-const followers = [
-	{
-		name: "kamfeskaya",
-		imageSrc:
-			"https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?&w=128&h=128&dpr=2&q=80",
-	},
-	{
-		name: "kamfeskaya",
-		imageSrc:
-			"https://images.unsplash.com/photo-1511485977113-f34c92461ad9?ixlib=rb-1.2.1&w=128&h=128&dpr=2&q=80",
-	},
-];
+const ArrowUp = () => (
+	<SVG
+		xmlns="http://www.w3.org/2000/svg"
+		fill="none"
+		viewBox="0 0 24 24"
+		strokeWidth={1.5}
+		stroke="currentColor"
+		width={20}
+		height={20}
+	>
+		<path
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3V15"
+		/>
+	</SVG>
+);
+
+const FollowUser = () => (
+	<SVG
+		xmlns="http://www.w3.org/2000/svg"
+		fill="none"
+		viewBox="0 0 24 24"
+		strokeWidth={1.5}
+		width={18}
+		height={18}
+		css={{stroke: "$surface"}}
+	>
+		<path
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"
+		/>
+	</SVG>
+);
 
 const AvatarContainer = styled("div", {
 	borderRadius: "16px",
@@ -214,8 +239,14 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 						</Container>
 						<Container variant={"unstyled"}>
 							<Container className="flex gap-x-4">
-								<Button className="drop-shadow-xl">Follow</Button>
-								<Button appearance={"surface"}>Share profile</Button>
+								<Button className="drop-shadow-xl">
+									<span>Follow</span>
+									<FollowUser />
+								</Button>
+								<Button appearance={"surface"}>
+									<span>Share profile</span>
+									<ArrowUp />
+								</Button>
 							</Container>
 						</Container>
 					</ContextualContainer>

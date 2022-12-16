@@ -232,7 +232,7 @@ export const lightTheme = createTheme("light", {
 		errorText: "$red11",
 		errorTextContrast: "$red12",
 
-		surface: "$gray2",
+		surface: "$gray1",
 		elementSurface: "#ffffff",
 		surfaceOnSurface: "$gray3",
 		elementOnSurface: "$gray4",
@@ -258,7 +258,7 @@ export const lightTheme = createTheme("light", {
 		sm: "13px",
 		base: "17px",
 		lg: "21px",
-		xl: "32px",
+		xl: "16px",
 		"2xl": "48px",
 		"3xl": "96px",
 	},

@@ -13,8 +13,8 @@ export const DialogOverlay = styled("div", {
 });
 
 export const DialogContent = styled(Dialog.Panel, {
-	backgroundColor: "white",
-	borderRadius: "6px",
+	backgroundColor: "$surface",
+	borderRadius: "32px",
 	boxShadow:
 		"hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px",
 	position: "fixed",
@@ -22,9 +22,9 @@ export const DialogContent = styled(Dialog.Panel, {
 	left: "50%",
 	transform: "translate(-50%, -50%)",
 	width: "90vw",
-	maxWidth: "640px",
+	maxWidth: "520px",
 	height: "fit-content",
-	padding: "25px",
+	padding: "32px",
 	animation: "contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1)",
 	zIndex: 1200,
 });
@@ -46,10 +46,12 @@ export const Modal = ({
 	isOpen,
 	onClose,
 	children,
+	compact,
 }: {
 	isOpen: boolean;
 	onClose: (props?: any) => any;
 	children: ReactNode;
+	compact?: boolean;
 }) => {
 	return (
 		<Transition
@@ -80,7 +82,9 @@ export const Modal = ({
 					leaveFrom="opacity-100"
 					leaveTo="opacity-0"
 				>
-					<DialogContent>{children}</DialogContent>
+					<DialogContent css={{width: compact ? "fit-content" : "auto"}}>
+						{children}
+					</DialogContent>
 				</Transition.Child>
 			</Dialog>
 		</Transition>

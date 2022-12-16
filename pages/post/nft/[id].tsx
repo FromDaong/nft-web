@@ -16,14 +16,18 @@ import {
 	useWagmiMintTOTMNFT,
 	useWagmiMintCreatorNFT,
 	useWagmiMintSubscriberNFT,
-} from "@packages/chain/hooks/alpha";
+} from "@packages/chain/hooks";
 import useGetIsSubscribed from "@packages/chain/hooks/useGetIsSubscribed";
 import Error404 from "@packages/error/404";
 import {useDisclosure} from "@packages/hooks";
 import {Modal} from "@packages/modals";
 import FullScreenImagePreview from "@packages/modals/FullScreenImagePreview";
 import BuyNFTButton from "@packages/post/BuyNFTButton";
-import {useTritNFTUtils} from "@packages/post/hooks";
+import {
+	useContracts,
+	useGetIsNFTOwned,
+	useTritNFTUtils,
+} from "@packages/post/hooks";
 import {
 	DislikeIcon,
 	LikeIcon,
@@ -48,7 +52,6 @@ import {
 import {apiEndpoint, legacy_nft_to_new, timeFromNow} from "@utils/index";
 import axios from "axios";
 import UserAvatar from "core/auth/components/Avatar";
-import useUser from "core/auth/useUser";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import TreatCore from "core/TreatCore";
@@ -56,7 +59,12 @@ import {BigNumber, ethers} from "ethers";
 import Link from "next/link";
 import {useEffect, useMemo, useState} from "react";
 import {MongoModelNFT, MongoModelTransaction} from "server/helpers/models";
-import {useAccount, useContractRead, useWaitForTransaction} from "wagmi";
+import {
+	useAccount,
+	useContractRead,
+	useSigner,
+	useWaitForTransaction,
+} from "wagmi";
 
 const exitFullScreen = () => {
 	if (document.exitFullscreen) {
@@ -155,6 +163,8 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 		queryFn: getYouMightAlsoLike,
 	});
 
+	const {isOwned, balance} = useGetIsNFTOwned(nft);
+
 	if (props.notFound) {
 		return <Error404 />;
 	}
@@ -177,7 +187,9 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 						id={"nft_image"}
 					>
 						<OptimizedImage
-							src={`${nft.image.cdn}&blur=${nft.protected ? 30 : 0}&`}
+							src={`${nft.image.cdn}&blur=${
+								nft.protected && !isOwned ? 30 : 0
+							}&`}
 							className="cursor-zoom-in"
 							sizes="100vw"
 							fill
@@ -187,6 +199,7 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 						<Container className="flex gap-4 absolute bottom-4 right-4">
 							<Button onClick={() => setShowFullScreen(!showFullScreen)}>
 								<EnterFullScreenIcon
+									style={{strokeWidth: "2px"}}
 									height={16}
 									width={16}
 								/>
@@ -218,6 +231,8 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 							nft={nft}
 							mints={mints}
 							account={address}
+							isOwned={isOwned}
+							balance={balance}
 						/>
 						<Divider dir={"horizontal"} />
 						<Container className="flex flex-col gap-12">
@@ -303,7 +318,15 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 	);
 }
 
-const ViewNFT = ({nft}: {nft: any; account: string; mints: Array<any>}) => {
+const ViewNFT = ({
+	nft,
+	isOwned,
+	balance,
+}: {
+	nft: any;
+	isOwned: string;
+	balance: number;
+}) => {
 	const {creatorCost} = useWagmiGetCreatorNftCost(nft.id);
 	const {treatCost} = useWagmiGetTreatOfTheMonthNftCost(nft.id);
 	const {subscriptionCost} = useWagmiGetSubscriberNftCost(nft.id);
@@ -361,6 +384,8 @@ const ViewNFT = ({nft}: {nft: any; account: string; mints: Array<any>}) => {
 			return await onMintFreeCreatorTreat();
 		}
 	};
+
+	console.log({openOrders});
 
 	return (
 		<>
@@ -426,15 +451,16 @@ const ViewNFT = ({nft}: {nft: any; account: string; mints: Array<any>}) => {
 						</Container>
 					</Container>
 				</Container>
-				<Container className="flex flex-col gap-8 px-4 py-8">
+				<Container className="flex flex-col gap-4 px-4 py-8">
 					<Container
-						className="flex flex-col w-full border drop-shadow-lg rounded-xl"
+						className="flex flex-col w-full border drop-shadow-lg rounded-xl py-4"
 						css={{
 							backgroundColor: "$elementSurface",
 							borderColor: "$subtleBorder",
+							borderRadius: "32px",
 						}}
 					>
-						<Container className="grid grid-cols-2 gap-4 p-8">
+						<Container className="grid grid-cols-2 gap-4 px-8 py-4">
 							<Container>
 								<MutedText>
 									<ImportantText>Reserve price</ImportantText>
@@ -455,7 +481,7 @@ const ViewNFT = ({nft}: {nft: any; account: string; mints: Array<any>}) => {
 						{remainingNfts !== 0 && (
 							<>
 								<Divider dir={"horizontal"} />
-								<Container className="p-8">
+								<Container className="px-8 py-4">
 									<BuyNFTButton
 										mintNFT={nft.price === 0 ? mintFreeNFT : mintNFT}
 										remainingNfts={remainingNfts}
@@ -467,7 +493,7 @@ const ViewNFT = ({nft}: {nft: any; account: string; mints: Array<any>}) => {
 						{openOrders?.length > 0 && (
 							<>
 								<Divider dir={"horizontal"} />
-								<Container className="grid grid-cols-1 gap-1 p-8">
+								<Container className="grid grid-cols-1 gap-1 px-8 py-4">
 									<Heading size="xs">
 										Available on the Resale Marketplace
 									</Heading>
@@ -499,6 +525,7 @@ const ViewNFT = ({nft}: {nft: any; account: string; mints: Array<any>}) => {
 											price={{
 												value: ethers.utils.formatEther(order.price),
 												currency: "BNB",
+												bigNumber: order.price,
 											}}
 											collection={{
 												minted: 0,

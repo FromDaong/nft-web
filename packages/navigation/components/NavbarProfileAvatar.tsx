@@ -1,3 +1,4 @@
+import {GlobeAltIcon, LogoutIcon} from "@heroicons/react/outline";
 import {
 	ArrowRightIcon,
 	CurrencyDollarIcon,
@@ -8,9 +9,11 @@ import {
 } from "@heroicons/react/solid";
 import {useDisclosure} from "@packages/hooks";
 import BecomeCreatorModal from "@packages/onboarding/BecomeCreatorModal";
+import {Divider} from "@packages/shared/components/Divider";
 import {BoldLink, Text} from "@packages/shared/components/Typography/Text";
 import ThemeSwitcherModal from "@packages/theme/ThemeSwitcherModal";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import {ConnectButton, useAccountModal} from "@rainbow-me/rainbowkit";
 import UserAvatar from "core/auth/components/Avatar";
 import Link from "next/link";
 import {useAccount} from "wagmi";
@@ -19,10 +22,10 @@ import {
 	DropdownContent,
 	NavDropdownItem,
 } from "./DropdownContainer";
-import WalletConnectButton from "./WalletConnectButton";
 
 const NavbarProfileAvatar = () => {
 	const {address, isConnected} = useAccount();
+	const {openAccountModal} = useAccountModal();
 
 	const {isOpen, onClose, onOpen} = useDisclosure();
 	const {
@@ -47,20 +50,23 @@ const NavbarProfileAvatar = () => {
 			/>
 			<DropdownMenu.Root>
 				<DropdownMenu.Trigger>
-					<UserAvatar
-						size={32}
-						value={address}
-					/>
+					<ConnectButton />
 				</DropdownMenu.Trigger>
 				<DropdownMenu.Portal>
 					<DropdownContent>
 						<DropdownContainer className="drop-shadow-2xl">
-							<DropdownMenu.DropdownMenuGroup>
-								<DropdownMenu.DropdownMenuItem>
-									<WalletConnectButton />
-								</DropdownMenu.DropdownMenuItem>
-							</DropdownMenu.DropdownMenuGroup>
 							<DropdownMenu.DropdownMenuGroup className="py-2 mt-2">
+								<NavDropdownItem
+									onClick={openAccountModal}
+									className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
+								>
+									<div className="flex items-center gap-4">
+										<Text className="p-2 rounded-full">
+											<GlobeAltIcon className="w-5 h-5 " />
+										</Text>
+										<BoldLink>Wallet connection</BoldLink>
+									</div>
+								</NavDropdownItem>
 								<NavDropdownItem
 									onClick={onOpenUpgradeToCreator}
 									className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
@@ -114,6 +120,17 @@ const NavbarProfileAvatar = () => {
 									<Text>
 										<ArrowRightIcon className="w-5 h-5 " />
 									</Text>
+								</NavDropdownItem>
+								<NavDropdownItem
+									onClick={onOpen}
+									className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
+								>
+									<div className="flex items-center gap-4">
+										<Text className="p-2 rounded-full">
+											<LogoutIcon className="w-5 h-5 " />
+										</Text>
+										<BoldLink>Sign out</BoldLink>
+									</div>
 								</NavDropdownItem>
 							</DropdownMenu.DropdownMenuGroup>
 						</DropdownContainer>

@@ -23,7 +23,7 @@ export default function Messages() {
 					css={{
 						height: "calc(100vh - 120px)",
 						width: "100%",
-						marginTop: "32px",
+						marginTop: "16px",
 					}}
 				>
 					<Container
@@ -125,8 +125,8 @@ export default function Messages() {
 									/>
 									<Container
 										css={{
-											width: "32px",
-											height: "32px",
+											width: "16px",
+											height: "16px",
 											backgroundColor: "$surface",
 											borderColor: "$subtleBorder",
 										}}

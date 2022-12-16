@@ -77,7 +77,7 @@ export const Heading = styled("h1", {
 });
 
 export const ContextualHeading = styled("h3", {
-	fontSize: "32px",
+	fontSize: "16px",
 	marginTop: "4px",
 	color: "$textContrast",
 	fontWeight: "600",

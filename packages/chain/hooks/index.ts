@@ -81,18 +81,20 @@ export const useWagmiGetNFTMaxSupply = (id: number) => {
 		args: [id],
 	});
 
-	return Number(isLoading ? 0 : data.toString());
+	return Number(isLoading ? 0 : data?.toString());
 };
 
 export const useWagmiGetNFTTotalSupply = (id: number) => {
-	const {data, isLoading} = useContractRead({
+	const {data, isLoading, error} = useContractRead({
 		addressOrName: contractAddresses.treatNFTMinter[56],
 		contractInterface: ABI.treatMinter,
 		functionName: "tokenSupply",
 		args: [id],
 	});
 
-	return Number(isLoading ? 0 : data.toString());
+	console.log({data, error, id});
+
+	return Number(isLoading ? 0 : data?.toString());
 };
 
 export const useWagmiGetResaleNFTsForNFT = (id: number) => {
@@ -135,16 +137,17 @@ export const useWagmiMintFreeNFT = (id: number) => {
 	const {address} = useAccount();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplace[56],
-		contractInterface: ABI.treatMarketplace,
+		addressOrName: contractAddresses.creatorMart[56],
+		contractInterface: ABI.creatorMart,
 		signerOrProvider: signer,
 	});
 
 	const mintFreeNFT = useCallback(async () => {
 		if (signer && treatMarketplaceContract) {
-			const tx = await treatMarketplaceContract
-				?.redeemFreeTreat(id)
-				.send({from: address, value: 0});
+			const tx = await treatMarketplaceContract?.redeemFreeTreat(id, {
+				from: address,
+				value: 0,
+			});
 			return tx;
 		}
 
@@ -222,9 +225,10 @@ export const useWagmiMintFreeSubscriberNFT = (id: number) => {
 
 	const mintFreeNFT = useCallback(async () => {
 		if (signer && subscriptionMartContract) {
-			const tx = await subscriptionMartContract
-				?.redeemFreeTreat(id)
-				.send({from: address, value: 0});
+			const tx = await subscriptionMartContract?.redeemFreeTreat(id, {
+				from: address,
+				value: 0,
+			});
 			return tx;
 		}
 

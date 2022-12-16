@@ -13,6 +13,7 @@ export type TritPostProps = {
 		avatar: string;
 		bio?: string;
 		live?: boolean;
+		address?: string;
 	};
 	subscription?: {
 		id: string;
@@ -42,6 +43,7 @@ export type TritPostProps = {
 	price?: {
 		value: number;
 		currency: string;
+		bigNumber?: any;
 	};
 	collection?: {
 		name: string;

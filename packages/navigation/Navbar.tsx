@@ -73,8 +73,8 @@ export default function Navbar() {
 										<Container>
 											<Container
 												css={{
-													width: "32px",
-													height: "32px",
+													width: "16px",
+													height: "16px",
 													backgroundColor: "$surface",
 													borderColor: "$subtleBorder",
 												}}
