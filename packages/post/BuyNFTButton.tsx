@@ -9,14 +9,18 @@ import {ImportantText, Text} from "@packages/shared/components/Typography/Text";
 import Spinner from "@packages/shared/icons/Spinner";
 import {apiEndpoint} from "@utils/index";
 import axios from "axios";
+import {ethers} from "ethers";
 import {useSession} from "next-auth/react";
 import Link from "next/link";
 import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
-import {useAccount, useWaitForTransaction} from "wagmi";
+import {useAccount, useBalance, useWaitForTransaction} from "wagmi";
 
 const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 	const {address} = useAccount();
+	const {data: accountBalance, isLoading: balanceIsLoading} = useBalance({
+		addressOrName: "0x0000000000000000000000000000000000001000",
+	});
 	const session = useSession();
 	// @ts-ignore
 	const {profile} = session.data ?? {};
@@ -97,23 +101,44 @@ const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 
 	if (nftData.melon_nft) return null;
 
-	console.log({isSubscriptionNFT, subscription});
+	const bnbBalance = Number(ethers.utils.formatEther(accountBalance.value));
 
 	return (
 		<>
 			{isSubscriptionNFT && !subscription.isSubscribed ? (
 				<Container className="flex flex-col gap-4">
-					<Container className="flex flex-col gap-1">
-						<Heading size="xs">Subscription Content</Heading>
-						<Text>
-							You need to be subscribed to this creator to redeem this NFT
-						</Text>
-					</Container>
+					{!balanceIsLoading && (
+						<>
+							<Container className="flex flex-col gap-1">
+								<Heading size="xs">Subscription Content</Heading>
+								<Text>
+									You need to be subscribed to this creator to redeem this NFT
+								</Text>
+							</Container>
 
-					<SubscribeToCreatorButton
-						subscription={subscription}
-						creator_address={nftData.creator.address}
-					/>
+							<SubscribeToCreatorButton
+								balance={bnbBalance}
+								subscription={subscription}
+								creator_address={nftData.creator.address}
+							/>
+						</>
+					)}
+					{balanceIsLoading && (
+						<>
+							<Container
+								className="w-1/2 py-3 animate-pulse rounded"
+								css={{backgroundColor: "$elementOnSurface"}}
+							/>
+							<Container
+								className="w-full py-3 animate-pulse rounded"
+								css={{backgroundColor: "$elementOnSurface"}}
+							/>
+							<Container
+								className="w-full py-6 animate-pulse rounded"
+								css={{backgroundColor: "$elementOnSurface"}}
+							/>
+						</>
+					)}
 				</Container>
 			) : (
 				<>
@@ -229,6 +254,7 @@ const BuyNFTButton = ({mintNFT, remainingNfts, nftData}) => {
 export const SubscribeToCreatorButton = (props: {
 	creator_address: string;
 	subscription: any;
+	balance: number;
 }) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const router = useRouter();
@@ -238,20 +264,36 @@ export const SubscribeToCreatorButton = (props: {
 		props.subscription.subscribe().then(() => router.reload());
 	};
 
+	const insufficientBalance =
+		props.balance < parseInt(props.subscription.subscriptionPrice);
+
 	return (
 		<Button
 			fullWidth
 			onClick={subscribeToCreator}
 			appearance={
-				props.subscription.isLoading || isLoading ? "disabled" : "primary"
+				props.subscription.isLoading || isLoading || insufficientBalance
+					? "disabled"
+					: "primary"
 			}
-			disabled={props.subscription.isLoading || isLoading}
+			disabled={
+				props.subscription.isLoading || isLoading || insufficientBalance
+			}
 			css={{padding: "16px"}}
 		>
-			{(props.subscription.isLoading || isLoading) && <Spinner />}
-			{props.subscription.isLoading || isLoading
-				? "Please wait..."
-				: `Subscribe to creator for ${props.subscription.subscriptionPrice} BNB`}
+			{insufficientBalance ? (
+				<>
+					{(props.subscription.isLoading || isLoading) && <Spinner />}
+					{props.subscription.isLoading || isLoading
+						? "Please wait..."
+						: `Subscribe to creator for ${props.subscription.subscriptionPrice} BNB`}
+				</>
+			) : (
+				<>
+					Insufficient balance, cost is {props.subscription.subscriptionPrice}{" "}
+					BNB
+				</>
+			)}
 		</Button>
 	);
 };

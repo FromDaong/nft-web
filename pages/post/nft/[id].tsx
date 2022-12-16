@@ -250,35 +250,37 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 			<ApplicationLayout>
 				<ApplicationFrame>
 					<Container className="flex flex-col gap-12">
-						<Container className="flex mt-8">
-							<Container
-								className="py-4 px-8 flex gap-4 items-center"
-								css={{
-									backgroundColor: "$accentBg",
-									borderRadius: "16px",
-								}}
-							>
-								<Container>
-									<Text css={{color: "$accentText"}}>
-										<RectangleStack
-											width={32}
-											height={32}
-										/>
-									</Text>
-								</Container>
-								<Container>
-									<Heading
-										css={{color: "$accentText"}}
-										size="xs"
-									>
-										You own this NFT
-									</Heading>
-									<Text css={{color: "$accentText"}}>
-										You already own {balance} units of this NFT
-									</Text>
+						{isOwned && balance > 0 && (
+							<Container className="flex mt-8">
+								<Container
+									className="py-4 px-8 flex gap-4 items-center"
+									css={{
+										backgroundColor: "$accentBg",
+										borderRadius: "16px",
+									}}
+								>
+									<Container>
+										<Text css={{color: "$accentText"}}>
+											<RectangleStack
+												width={32}
+												height={32}
+											/>
+										</Text>
+									</Container>
+									<Container>
+										<Heading
+											css={{color: "$accentText"}}
+											size="xs"
+										>
+											You own this NFT
+										</Heading>
+										<Text css={{color: "$accentText"}}>
+											You already own {balance} units of this NFT
+										</Text>
+									</Container>
 								</Container>
 							</Container>
-						</Container>
+						)}
 						<ViewNFT
 							nft={nft}
 							isOwned={isOwned}
