@@ -253,7 +253,7 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 						{isOwned && balance > 0 && (
 							<Container className="flex mt-8">
 								<Container
-									className="py-4 px-8 flex gap-4 items-center"
+									className="flex items-center gap-4 px-8 py-4"
 									css={{
 										backgroundColor: "$accentBg",
 										borderRadius: "16px",
@@ -630,3 +630,44 @@ export const getServerSideProps = async (context) => {
 		},
 	};
 };
+
+function ResaleMarketplaceListings({order, i, nft}) {
+	return (
+		<>
+			<Container className="col-span-2">
+				<Divider dir={"horizontal"} />
+			</Container>
+			<Container className="flex flex-col col-span-2 gap-8">
+				<Heading size="sm">Available on resale market</Heading>
+				<Container className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+					{openOrders.map((order, i) => {
+						return (
+							<TritPost
+								key={i}
+								inGrid
+								isResale
+								{...nft}
+								likedBy={nft.likedBy}
+								price={{
+									value: ethers.utils.formatEther(order.price),
+									currency: "BNB",
+									bigNumber: order.price,
+								}}
+								collection={{
+									minted: 0,
+									totalSupply: 1,
+								}}
+								protected={nft.protected}
+								author={{
+									address: order.seller,
+									username:
+										order.seller.slice(0, 3) + "..." + order.seller.slice(-3),
+								}}
+							/>
+						);
+					})}
+				</Container>
+			</Container>
+		</>
+	);
+}

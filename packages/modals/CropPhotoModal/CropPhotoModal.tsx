@@ -1,5 +1,4 @@
 import {XIcon} from "@heroicons/react/outline";
-import {FullscreenOverlay} from "@packages/commandbar/components/Frame";
 import {Container} from "@packages/shared/components/Container";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {
@@ -68,7 +67,6 @@ export default function CropPhotoModal({isOpen, onClose, image}) {
 			css={{zIndex: 9999}}
 			className="fixed top-0 left-0 w-screen h-screen"
 		>
-			<FullscreenOverlay onClick={onClose} />
 			<Container
 				className="fixed w-1/2 p-8 divide-y shadow-xl h-1/2 rounded-xl"
 				css={{
