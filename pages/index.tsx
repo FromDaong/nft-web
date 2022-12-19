@@ -74,120 +74,115 @@ export default function Index() {
 	console.log({trendingCreators});
 
 	return (
-		<ApplicationLayout>
-			{
-				<ApplicationFrame>
-					<Container className="flex flex-col gap-12 px-2 md:gap-16 lg:gap-24">
-						<Container className="pt-12">
-							<Container className="flex flex-col gap-8 px-4 xl:px-0">
-								{
-									<TreatOfTheMonthCollectionSection
-										title={"Treat of the Month"}
-										author={[
-											{
-												username: "treatdaoofficial",
-												display_name: "TreatDAO",
-											},
-											{
-												username: "elizarosewatson",
-												display_name: "Eliza Rose Watson",
-											},
-										]}
-										collectionItems={totmCurated}
-									/>
-								}
-							</Container>
+		<ApplicationFrame>
+			<Container className="flex flex-col gap-12 px-2 md:gap-16 lg:gap-24">
+				<Container className="pt-12">
+					<Container className="flex flex-col gap-8 px-4 xl:px-0">
+						{
+							<TreatOfTheMonthCollectionSection
+								title={"Treat of the Month"}
+								author={[
+									{
+										username: "treatdaoofficial",
+										display_name: "TreatDAO",
+									},
+									{
+										username: "elizarosewatson",
+										display_name: "Eliza Rose Watson",
+									},
+								]}
+								collectionItems={totmCurated}
+							/>
+						}
+					</Container>
+				</Container>
+				<Divider dir={"horizontal"} />
+				<Container>
+					<Container className="flex flex-col w-full gap-8 px-4 xl:px-0">
+						<Container className="flex justify-between">
+							<Heading size="sm">Discover Treat creators</Heading>
 						</Container>
-						<Divider dir={"horizontal"} />
-						<Container>
-							<Container className="flex flex-col w-full gap-8 px-4 xl:px-0">
-								<Container className="flex justify-between">
-									<Heading size="sm">Discover Treat creators</Heading>
-								</Container>
-								<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-									{!trendingCreatorError && !trendingCreatorsLoading
-										? trendingCreators?.slice(0, 4).map((creator) => (
-												<SuggestedCreatorCard
-													key={creator._id}
-													username={creator.username}
-													display_name={creator.profile[0].display_name}
-													avatar={creator.profile[0].profile_picture}
-													bio={creator.profile[0].bio}
-													isExpanded
-													border
-													live={creator.livestream_active}
-													followers={creator.profile[0].followers}
-													subscribers={creator.profile[0].following}
-												/>
-										  ))
-										: [0, 1, 2, 4].map((i) => (
-												<Container
-													key={i}
-													className="col-span-1 border"
-													css={{
-														borderColor: "$subtleBorder",
-														padding: "16px",
-														borderRadius: "16px",
-													}}
-												>
-													<SkeletonExpandedSuggestedCreatorCard />
-												</Container>
-										  ))}
-								</Container>
-							</Container>
-						</Container>
-						<Divider dir={"horizontal"} />
-						<Container>
-							<Container className="flex flex-col w-full gap-8 px-8 xl:px-0">
-								<Container className="flex flex-col items-baseline justify-between gap-4 md:flex-row">
-									<Heading size="sm">Discover sweetshop NFTs</Heading>
-									<Link href={"/sweetshop"}>
-										<a>
-											<Text className="flex items-center gap-2">
-												<ImportantText>View all on sweetshop</ImportantText>
-												<ArrowRightIcon
-													width={16}
-													height={16}
-												/>
-											</Text>
-										</a>
-									</Link>
-								</Container>
-								<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:gap-4">
-									{!trendingNFTError && !trendingNFTsLoading
-										? trendingNFTs.map((item, i) => (
-												<Container
-													key={item}
-													className={
-														"flex col-span-1 " +
-														(i > 3 ? "lg:hidden xl:flex" : "")
-													}
-												>
-													<TritPost
-														inGrid
-														{...item}
-													/>
-												</Container>
-										  ))
-										: [0, 1, 2].map((i) => (
-												<Container
-													key={i}
-													className="col-span-1 border"
-													css={{
-														borderColor: "$subtleBorder",
-														padding: "8px",
-														borderRadius: "16px",
-													}}
-												>
-													<SkeletonTritCollectiblePost />
-												</Container>
-										  ))}
-								</Container>
-							</Container>
+						<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+							{!trendingCreatorError && !trendingCreatorsLoading
+								? trendingCreators?.slice(0, 4).map((creator) => (
+										<SuggestedCreatorCard
+											key={creator._id}
+											username={creator.username}
+											display_name={creator.profile[0].display_name}
+											avatar={creator.profile[0].profile_picture}
+											bio={creator.profile[0].bio}
+											isExpanded
+											border
+											live={creator.livestream_active}
+											followers={creator.profile[0].followers}
+											subscribers={creator.profile[0].following}
+										/>
+								  ))
+								: [0, 1, 2, 4].map((i) => (
+										<Container
+											key={i}
+											className="col-span-1 border"
+											css={{
+												borderColor: "$subtleBorder",
+												padding: "16px",
+												borderRadius: "16px",
+											}}
+										>
+											<SkeletonExpandedSuggestedCreatorCard />
+										</Container>
+								  ))}
 						</Container>
 					</Container>
-				</ApplicationFrame>
-			}
-		</ApplicationLayout>
+				</Container>
+				<Divider dir={"horizontal"} />
+				<Container>
+					<Container className="flex flex-col w-full gap-8 px-8 xl:px-0">
+						<Container className="flex flex-col items-baseline justify-between gap-4 md:flex-row">
+							<Heading size="sm">Discover sweetshop NFTs</Heading>
+							<Link href={"/sweetshop"}>
+								<a>
+									<Text className="flex items-center gap-2">
+										<ImportantText>View all on sweetshop</ImportantText>
+										<ArrowRightIcon
+											width={16}
+											height={16}
+										/>
+									</Text>
+								</a>
+							</Link>
+						</Container>
+						<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:gap-4">
+							{!trendingNFTError && !trendingNFTsLoading
+								? trendingNFTs.map((item, i) => (
+										<Container
+											key={item}
+											className={
+												"flex col-span-1 " + (i > 3 ? "lg:hidden xl:flex" : "")
+											}
+										>
+											<TritPost
+												inGrid
+												{...item}
+											/>
+										</Container>
+								  ))
+								: [0, 1, 2].map((i) => (
+										<Container
+											key={i}
+											className="col-span-1 border"
+											css={{
+												borderColor: "$subtleBorder",
+												padding: "8px",
+												borderRadius: "16px",
+											}}
+										>
+											<SkeletonTritCollectiblePost />
+										</Container>
+								  ))}
+						</Container>
+					</Container>
+				</Container>
+			</Container>
+		</ApplicationFrame>
 	);
 }

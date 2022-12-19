@@ -18,6 +18,8 @@ import MobileNavbarDropdown from "./components/MobileNavbarDropdown";
 import ThemedConnectButton from "core/chain/ConnectButton";
 import {Button} from "@packages/shared/components/Button";
 import {useSession} from "next-auth/react";
+import Spinner from "@packages/shared/icons/Spinner";
+import {ConnectButton} from "@rainbow-me/rainbowkit";
 
 const NavbarProfileAvatar = dynamic(
 	() => import("./components/NavbarProfileAvatar")
@@ -51,10 +53,11 @@ const NotificationsIcon = (props) => {
 };
 
 export default function Navbar() {
-	const {isConnected: connected} = useAccount();
 	const {status} = useSession();
 
-	const isConnected = status === "authenticated" && connected;
+	const isConnected = status === "authenticated";
+	const loading = status === "loading";
+	console.log({isConnected, status});
 
 	return (
 		<Container>
@@ -131,9 +134,9 @@ export default function Navbar() {
 
 						<div className="flex gap-4">
 							<div className="flex md:hidden"></div>
-							{
+							{!loading &&
 								// eslint-disable-next-line no-constant-condition
-								isConnected ? (
+								(isConnected ? (
 									<Container className="flex items-center gap-4">
 										<Link href={"/notifications"}>
 											<a>
@@ -169,9 +172,9 @@ export default function Navbar() {
 										<NavbarProfileAvatar />
 									</Container>
 								) : (
-									<ThemedConnectButton />
-								)
-							}
+									<ConnectButton />
+								))}
+							{loading && <Spinner />}
 						</div>
 					</div>
 				</Container>

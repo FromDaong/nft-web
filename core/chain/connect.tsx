@@ -7,6 +7,7 @@ import {
 	RainbowKitAuthenticationProvider,
 	createAuthenticationAdapter,
 	AuthenticationStatus,
+	useConnectModal,
 } from "@rainbow-me/rainbowkit";
 import {
 	injectedWallet,
@@ -29,6 +30,8 @@ import {SiweMessage} from "siwe";
 import {SessionProvider, useSession} from "next-auth/react";
 import {useDisclosure} from "@packages/hooks";
 import CreateProfileModal from "@packages/onboarding/CreateProfileModal";
+import {useRouter} from "next/router";
+import {publicRoutes} from "@utils/routes";
 
 const binance: Chain = {
 	id: 56,
@@ -78,10 +81,6 @@ const wagmiClient = createClient({
 	autoConnect: true,
 	connectors,
 	provider,
-});
-
-const getSiweMessageOptions: GetSiweMessageOptions = () => ({
-	statement: "Sign in to Trit",
 });
 
 const Disclaimer: DisclaimerComponent = ({Text, Link}) => (
@@ -142,6 +141,20 @@ const WagmiWrapper = ({
 const SessionRequires = () => {
 	const {data} = useSession();
 	const {isOpen, onOpen, onClose} = useDisclosure();
+	const router = useRouter();
+	const {openConnectModal} = useConnectModal();
+	const {status} = useSession();
+
+	useEffect(() => {
+		if (
+			!publicRoutes.includes(router.pathname) &&
+			status !== "unauthenticated"
+		) {
+			if (openConnectModal) {
+				openConnectModal();
+			}
+		}
+	}, [openConnectModal, router]);
 
 	useEffect(() => {
 		// @ts-ignore
@@ -159,7 +172,6 @@ const SessionRequires = () => {
 				isOpen={isOpen}
 				onClose={onClose}
 			/>
-			Discover Creators, Discover Content
 		</>
 	);
 };

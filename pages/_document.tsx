@@ -109,7 +109,7 @@ class MyDocument extends Document {
 						}}
 					/>
 				</Head>
-				<Body className="antialised">
+				<Body className="antialiased">
 					<Main />
 					<NextScript />
 					{false && (

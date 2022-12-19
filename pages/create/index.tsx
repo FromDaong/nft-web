@@ -15,21 +15,23 @@ import {Field, Form, Formik} from "formik";
 import {useRouter} from "next/router";
 import {useState} from "react";
 import * as Yup from "yup";
+import * as Switch from "@radix-ui/react-switch";
 
 export default function Create() {
 	const router = useRouter();
 	const [error, setError] = useState("");
 	const initialValues = {
 		name: "",
+		subscription: false,
 	};
 
 	return (
 		<ApplicationLayout>
 			<SEOHead title="Create a new post" />
 			<ApplicationFrame>
-				<Container className="flex flex-col gap-8 py-12">
+				<Container className="flex flex-col items-center gap-8 py-12">
 					<Container
-						className="p-4 lg:p-8 rounded border shadow flex flex-col gap-8 max-w-xl"
+						className="flex flex-col max-w-xl gap-8 p-4 border rounded shadow lg:p-8"
 						css={{background: "$elementSurface", borderRadius: "16px"}}
 					>
 						<Container className="flex flex-col gap-2">
@@ -64,7 +66,7 @@ export default function Create() {
 							})}
 						>
 							{(props) => (
-								<Form className="flex flex-col gap-4">
+								<Form className="flex flex-col gap-8">
 									<Container className="flex flex-col gap-2">
 										<Text>
 											<ImportantText>Collection name</ImportantText>
@@ -82,6 +84,25 @@ export default function Create() {
 														</Text>
 													)}
 												</Container>
+											)}
+										</Field>
+									</Container>
+									<Container className="flex justify-between gap-2">
+										<Text>
+											<ImportantText>Only for my subscribers</ImportantText>
+										</Text>
+										<Field name="subscription">
+											{({field}) => (
+												<Switch.Root
+													className="SwitchRoot"
+													id="airplane-mode"
+													{...field}
+													onCheckedChange={(e) => {
+														props.setFieldValue("subscription", e);
+													}}
+												>
+													<Switch.Thumb className="SwitchThumb" />
+												</Switch.Root>
 											)}
 										</Field>
 									</Container>

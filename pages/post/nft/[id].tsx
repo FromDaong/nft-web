@@ -49,7 +49,7 @@ import {
 	HeartFilledIcon,
 	HeartIcon,
 } from "@radix-ui/react-icons";
-import {apiEndpoint, legacy_nft_to_new, timeFromNow} from "@utils/index";
+import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import UserAvatar from "core/auth/components/Avatar";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
@@ -57,14 +57,9 @@ import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import TreatCore from "core/TreatCore";
 import {BigNumber, ethers} from "ethers";
 import Link from "next/link";
-import {useEffect, useMemo, useState} from "react";
+import {useEffect, useState} from "react";
 import {MongoModelNFT, MongoModelTransaction} from "server/helpers/models";
-import {
-	useAccount,
-	useContractRead,
-	useSigner,
-	useWaitForTransaction,
-} from "wagmi";
+import {useAccount} from "wagmi";
 
 const RectangleStack = (props) => (
 	<svg
@@ -142,10 +137,9 @@ const getYouMightAlsoLike = async () => {
 
 export default function NFT(props: {notFound?: boolean; data: any}) {
 	const data = JSON.parse(props.data);
-	const {nft, mints} = data;
+	const {nft} = data;
 	const postUtils = useTritNFTUtils(nft);
 
-	const {address} = useAccount();
 	const [showFullScreen, setShowFullScreen] = useState(false);
 	useFullScreen("nft_image", showFullScreen);
 
@@ -447,7 +441,7 @@ const ViewNFT = ({
 							<a>
 								<Container className="flex">
 									<Container
-										className="flex items-center gap-2 px-4 py-2 border rounded-full shadow"
+										className="flex items-center gap-2 px-4 py-2 border rounded-full shadow-sm"
 										css={{
 											borderColor: "$subtleBorder",
 											backgroundColor: "$elementSurface",
@@ -476,7 +470,7 @@ const ViewNFT = ({
 							{nft.tags?.map((tag) => (
 								<Container
 									key={tag}
-									className="px-3 py-1 border rounded-full shadow-xl"
+									className="px-3 py-1 border rounded-full shadow-sm"
 									css={{
 										backgroundColor: "$elementSurface",
 										borderColor: "$subtleBorder",
@@ -488,7 +482,7 @@ const ViewNFT = ({
 								</Container>
 							))}
 							<Container
-								className="px-3 py-1 border rounded-full shadow-xl"
+								className="px-3 py-1 border rounded-full shadow-sm"
 								css={{
 									backgroundColor: "$elementSurface",
 									borderColor: "$subtleBorder",
@@ -503,7 +497,7 @@ const ViewNFT = ({
 				</Container>
 				<Container className="flex flex-col gap-4 px-4 py-8">
 					<Container
-						className="flex flex-col w-full py-4 border drop-shadow-lg rounded-xl"
+						className="flex flex-col w-full py-4 border drop-shadow-sm rounded-xl"
 						css={{
 							backgroundColor: "$elementSurface",
 							borderColor: "$subtleBorder",

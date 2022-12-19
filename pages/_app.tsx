@@ -5,7 +5,7 @@ import "pintura/pintura.css";
 
 import "../styles/index.css";
 
-import {Router} from "next/router";
+import {Router, useRouter} from "next/router";
 import Head from "next/head";
 import ProgressBar from "@badrap/bar-of-progress";
 import Navbar from "packages/navigation/Navbar";
@@ -15,11 +15,12 @@ import {AppProps} from "next/app";
 import type {Session} from "next-auth";
 import {ApplicationProvider} from "core/provider";
 import AcceptAgeModal from "@packages/modals/AcceptAgeModal";
-import CreateProfileModal from "@packages/onboarding/CreateProfileModal";
-import {useDisclosure} from "@packages/hooks";
 import {useEffect} from "react";
 import {Container} from "@packages/shared/components/Container";
 import Footer from "@packages/shared/components/Footer";
+import {useConnectModal} from "@rainbow-me/rainbowkit";
+import {publicRoutes} from "@utils/routes";
+import {useSession} from "next-auth/react";
 
 const progress = new ProgressBar({
 	size: 3,

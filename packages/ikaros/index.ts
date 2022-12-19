@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import {ClientRequest, ClientResponse} from "./type";
 import {Session, RequestBody} from "./type";
 /*
@@ -31,6 +32,21 @@ export class IkarosInterface {
 
 	onReceivePayload = (payload: object) => {};
 	onIntersectionTriggered = (payload: object) => {};
+}
+
+export class IkarosClient {
+	static instance: IkarosClient;
+	public readonly mode = "dark";
+
+	private constructor() {}
+
+	static getInstance(): IkarosClient {
+		if (!IkarosClient.instance) {
+			IkarosClient.instance = new IkarosClient();
+		}
+
+		return IkarosClient.instance;
+	}
 }
 
 // TODO: Check if we are at 5 items from last and fetch new ones

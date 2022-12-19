@@ -11,7 +11,7 @@ import {
 import {protectedAPIRoute} from "server/utils";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-	const {name} = req.body;
+	const {name, subscription} = req.body;
 
 	if (!name) {
 		return returnWithError({name: "Name is required"}, 500, res);
@@ -38,6 +38,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const collection = new MongoModelCollection({
 		name,
 		creator: creator._id,
+		isSubscription: subscription ? true : false
 	});
 
 	await collection.save();

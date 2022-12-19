@@ -1,5 +1,5 @@
 // Import the editor default configuration
-import {getEditorDefaults} from "pintura/pintura";
+import {createDefaultImageWriter, getEditorDefaults} from "pintura/pintura";
 import {useEffect, useRef} from "react";
 
 // Import the editor component from `react-pintura`
@@ -15,13 +15,6 @@ function PicEdtor(props: {
 	const editorConfig = getEditorDefaults();
 	const componentRef = useRef(null);
 
-	const handleUndo = () => {
-		const {editor} = componentRef.current;
-
-		// run history.undo()
-		editor.history.undo();
-	};
-
 	useEffect(() => {
 		if (props.spyEditor && componentRef.current) {
 			props.spyEditor(componentRef.current.editor);
@@ -34,6 +27,7 @@ function PicEdtor(props: {
 			src={props.src}
 			ref={componentRef}
 			onProcess={props.handleProcess}
+			imageWriter={createDefaultImageWriter({quality: 1})}
 		></PinturaEditor>
 	);
 }

@@ -232,6 +232,10 @@ export const Collection = createMongoDBModel(
 					ref: "MarketplaceNFT",
 				},
 			],
+			isSubscription: {
+				type: Boolean,
+				default: false,
+			},
 		},
 		{
 			timestamps: {
