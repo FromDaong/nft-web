@@ -3,27 +3,25 @@
     Description: Ikaros is a portable recommendation algorithm for TreatDAO Platform
 */
 
-type SectionsTypes =
-	| "recommended"
-	| "popular"
-	| "based on your history"
-	| "you might love"
-	| "latest"
-	| "curated";
-
-type ContentTypes =
-	| "creator"
-	| "post"
-	| "subscription"
-	| "marketplace"
-	| "collection"
-	| "banner"
-	| "toast";
-
 export class IkarosHelpers {
 	static getComponentType() {}
 	static getDeviceType() {}
 	static getNavigatorConnection() {}
+}
+
+export class IkarosRequest implements ClientRequest {
+	fingerprint: string;
+	timestamp: string;
+	metadata: {ip_address: string; resolved_location: string};
+	session: Session;
+	requestBody: RequestBody;
+
+	getSession = (): Session => {};
+	getRequestBody = (): RequestBody => {};
+}
+
+export class IkarosResponse implements Response {
+	timestamp: string;
 }
 
 export class IkarosInterface {
