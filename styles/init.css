@@ -15,12 +15,12 @@ h4,
 h5,
 h6 {
 	margin: 0;
-	font-family: "Helvetica", -apple-system, system-ui, sans-serif !important;
+	font-family: "Inter", -apple-system, system-ui, sans-serif !important;
 	font-family: 700 !important;
 }
 
 * {
 	outline: none !important;
 	box-sizing: border-box !important;
-	font-family: "Helvetica", -apple-system, system-ui, sans-serif !important;
+	font-family: "Inter", -apple-system, system-ui, sans-serif !important;
 }

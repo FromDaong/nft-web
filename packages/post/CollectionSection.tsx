@@ -38,10 +38,9 @@ export default function TreatOfTheMonthCollectionSection(props: {
 	return (
 		<Container className="grid grid-cols-1 gap-8 lg:grid-cols-2">
 			<Container
-				className="flex flex-col h-auto gap-4 p-4 border-4 rounded-xl"
+				className="flex flex-col h-auto gap-4 p-4 rounded-xl drop-shadow-sm border"
 				css={{
 					backgroundColor: "$elementSurface",
-					borderColor: "$totmPurple",
 					borderRadius: "32px",
 				}}
 			>
@@ -86,10 +85,9 @@ export default function TreatOfTheMonthCollectionSection(props: {
 				</Container>
 			</Container>
 			<Container
-				className="flex flex-col h-auto gap-4 p-4 rounded-xl border"
+				className="flex flex-col h-auto gap-4 p-4 rounded-xl drop-shadow-sm border"
 				css={{
 					backgroundColor: "$elementSurface",
-					borderColor: "$accentBorder",
 					borderRadius: "32px",
 				}}
 			>

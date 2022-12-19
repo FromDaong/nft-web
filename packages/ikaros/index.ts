@@ -1,3 +1,5 @@
+import {ClientRequest, ClientResponse} from "./type";
+import {Session, RequestBody} from "./type";
 /*
     Author: Kamfeskaya
     Description: Ikaros is a portable recommendation algorithm for TreatDAO Platform
@@ -20,7 +22,7 @@ export class IkarosRequest implements ClientRequest {
 	getRequestBody = (): RequestBody => {};
 }
 
-export class IkarosResponse implements Response {
+export class IkarosResponse implements ClientResponse {
 	timestamp: string;
 }
 

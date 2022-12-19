@@ -24,11 +24,11 @@ export type RequestBody = {
 	};
 };
 
-export type Response = {
+export type ClientResponse = {
 	timestamp: string;
 };
 
-interface ClientRequest {
+export interface ClientRequest {
 	fingerprint: string;
 	timestamp: string;
 	metadata: {
