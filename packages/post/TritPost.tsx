@@ -69,6 +69,8 @@ export const LikeIcon = styled(HeartIcon, {
 });
 
 export const TritPost = (props: TritPostProps) => {
+	console.log({props});
+
 	const {
 		liked,
 		likeNFT,
@@ -81,7 +83,7 @@ export const TritPost = (props: TritPostProps) => {
 	} = useTritNFTUtils(props);
 
 	const imageUrl = props.image?.ipfs;
-	const soldOut = props.collection?.minted === props.collection?.totalSupply;
+	const soldOut = props.collection?.minted === props.max_supply;
 
 	return (
 		<Container
@@ -222,8 +224,7 @@ export const TritPost = (props: TritPostProps) => {
 											<Container className="flex justify-between">
 												<Text css={{color: "#ffffff"}}>Supply</Text>
 												<Text css={{color: "#ffffff"}}>
-													{props.collection?.minted}/
-													{props.collection?.totalSupply}
+													{props.collection?.minted ?? 0}/{props.max_supply}
 												</Text>
 											</Container>
 											<FrostyBackgroundContainer
@@ -235,8 +236,8 @@ export const TritPost = (props: TritPostProps) => {
 													css={{
 														backgroundColor: "$surfaceOnSurface",
 														width: `${
-															(props.collection?.minted /
-																props.collection?.totalSupply) *
+															((props.collection?.minted ?? 0) /
+																props.max_supply) *
 															100
 														}%`,
 														height: "100%",
