@@ -15,111 +15,25 @@ import ImagePreviewWitEditor from "./ImagePreview";
 import * as Switch from "@radix-ui/react-switch";
 import {Button} from "@packages/shared/components/Button";
 import {useContracts} from "../hooks";
-import {useUploadcare} from "@packages/shared/hooks";
+import {useStorageService} from "@packages/shared/hooks";
 import {File} from "filepond";
 import VideoPreview from "./VideoPreview";
 
 const AddNFTDetails = ({
 	prev,
 	nft_data,
+	onSubmit,
 }: {
 	prev: any;
 	nft_data: Array<{
 		file: File;
 		type: "image" | "video";
 	}>;
+	onSubmit: (values: any, actions: any) => Promise<void>;
 }) => {
 	const {data: bnbPrice, error: bnbError} = useSWR(
 		`https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT`
 	);
-	const {creatorMartContract, subscriptionsMart} = useContracts();
-	const {address} = useAccount();
-	const [basicTxHash, setBasicTxHash] = useState("");
-	const [subscriptionTxHash, setSubscriptionTxHash] = useState("");
-
-	const [tx, setTx] = useState({
-		basic: {},
-		sub: {},
-	});
-
-	const {uploadFile} = useUploadcare();
-
-	const {isSuccess: isBasicTxConfirmed, data: basicTxData} =
-		useWaitForTransaction({
-			hash: basicTxHash,
-		});
-
-	const {isSuccess: isSubscriptionTxSuccess, data: subscriptionData} =
-		useWaitForTransaction({
-			hash: basicTxHash,
-		});
-
-	const createNFTs = async (values) => {
-		try {
-			const nfts = values.nfts;
-
-			const basic_nfts = nfts.filter((n) => !n.subscription_nft);
-			const subscription_nfts = nfts.filter((n) => !n.subscription_nft);
-
-			const basic_tx = createBasicNFTs(basic_nfts);
-			const sub_tx = createSubscriberNFTs(subscription_nfts);
-			const fn_arr = [basic_tx, sub_tx];
-
-			const results_arr = await Promise.all(fn_arr);
-			console.log({results_arr});
-
-			// TODO: Create NFTs on Server
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
-	const updateCDNAndUploadToIPFS = async (nfts) => {
-		const nfts_with_cdn = await Promise.all(
-			nfts.map(async (n) => {
-				//const cdn = await uploadToCDN(n.file);
-				//const ipfs = await uploadToIPFS(n.file);
-				//return {...n, cdn, ipfs};
-			})
-		);
-
-		return nfts_with_cdn;
-	};
-
-	const createBasicNFTs = async (nfts) => {
-		const amounts_and_supply = {
-			amounts: nfts.map((n) => n.maxSupply),
-			maxSupplys: nfts.map((n) => n.price),
-		};
-
-		const tx = await creatorMartContract.createAndAddNFTs(
-			amounts_and_supply.maxSupplys,
-			amounts_and_supply.amounts,
-			amounts_and_supply.amounts.map(() => false),
-			"0x"
-		);
-
-		setBasicTxHash(tx.hash);
-		setTx({...tx, basic: tx});
-	};
-
-	const createSubscriberNFTs = async (nfts) => {
-		const amounts_and_supply = {
-			amounts: nfts.map((n) => n.maxSupply),
-			maxSupplys: nfts.map((n) => n.price),
-		};
-
-		const tx = await subscriptionsMart.createAndAddNFTs(
-			amounts_and_supply.maxSupplys,
-			amounts_and_supply.amounts,
-			amounts_and_supply.amounts.map(() => false),
-			"0x",
-			{from: address, value: 0}
-		);
-
-		setSubscriptionTxHash(tx.hash);
-		setTx({...tx, sub: tx});
-	};
 
 	return (
 		<Formik
@@ -151,7 +65,7 @@ const AddNFTDetails = ({
 			}}
 			validateOnBlur={true}
 			validateOnChange={false}
-			onSubmit={(values) => console.log(values)}
+			onSubmit={onSubmit}
 		>
 			{(props) => (
 				<Form>
@@ -315,7 +229,19 @@ const AddNFTDetails = ({
 								</Button>
 							</Container>
 							<Container className="flex justify-end">
-								<Button type="submit">Publish</Button>
+								<Button
+									disabled={
+										(props.dirty && !props.isValid) || props.isSubmitting
+									}
+									appearance={
+										(props.dirty && !props.isValid) || props.isSubmitting
+											? "disabled"
+											: "primary"
+									}
+									type="submit"
+								>
+									{props.isSubmitting ? "Creating your NFT..." : "Publish"}
+								</Button>
 							</Container>
 						</Container>
 					</Container>

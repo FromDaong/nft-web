@@ -27,7 +27,6 @@ function PicEdtor(props: {
 			src={props.src}
 			ref={componentRef}
 			onProcess={props.handleProcess}
-			imageWriter={createDefaultImageWriter({quality: 1})}
 		></PinturaEditor>
 	);
 }

@@ -4,25 +4,196 @@ import {Container} from "@packages/shared/components/Container";
 import {Heading} from "@packages/shared/components/Typography/Headings";
 import {ImportantText, Text} from "@packages/shared/components/Typography/Text";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import {pagePropsConnectMongoDB} from "@db/engine/pagePropsDB";
 import {MongoModelCollection} from "server/helpers/models";
 import AddNFTDetails from "@packages/post/CreatePost/NFTDetails";
 import UploadMedia from "@packages/form/actions/UploadFiles";
 import {File} from "filepond";
+import {useAccount, useWaitForTransaction} from "wagmi";
+import {useContracts} from "@packages/post/hooks";
+import {useStorageService} from "@packages/shared/hooks";
+import {BigNumber} from "ethers";
+import Web3 from "web3";
+import {useDisclosure} from "@packages/hooks";
+import GenericChainModal from "@packages/modals/GenericChainModal";
+import {useRouter} from "next/router";
+import axios from "axios";
+import {apiEndpoint} from "@utils/index";
+import {useAccountModal, useAddRecentTransaction} from "@rainbow-me/rainbowkit";
 
 export default function PostType(props: {collection: string}) {
 	const data = JSON.parse(props.collection);
+	const isSubscription = data.isSubscription;
 	const [files, setFiles] = useState([]);
 	const {step, next, prev} = useStep(["upload", "detail"]);
 	const [title, setTitle] = useState("");
+	const [mintTxHash, setMintTxHash] = useState("");
+	const [nftValues, setNftValues] = useState([]);
+	const {isOpen, onOpen, onClose} = useDisclosure();
+	const {creatorMartContract, subscriptionsMart} = useContracts();
+	const {address} = useAccount();
+	const {uploadFile, uploadToIPFS} = useStorageService();
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [error, setError] = useState<any>("");
+	const [submittedFormState, setSubmittedFormState] = useState({
+		values: null,
+		actions: null,
+	});
+	const router = useRouter();
+	const transactionManager = useAddRecentTransaction();
+	const {openAccountModal} = useAccountModal();
+	const {
+		isSuccess: isMintTxConfirmed,
+		data: mintTxData,
+		isError: isMintTxError,
+	} = useWaitForTransaction({
+		hash: mintTxHash,
+	});
 
-	useEffect(() => {
-		if (data) {
-			setTitle(data.name);
+	const [modalStep, setModalStep] = useState<{
+		status: string;
+		title: string;
+		subtitle: string;
+		actionLabel?: string;
+		action?: () => void;
+	}>({
+		status: "loading",
+		title: "🖼️ Uploading your media",
+		subtitle:
+			"Please wait while we upload your media and start the minting process",
+		actionLabel: "",
+	});
+
+	const navigateToCollection = () => {
+		router.push(`/collection/${data._id}`);
+	};
+
+	const addNFTsToCollection = useCallback(() => {
+		setIsSubmitting(true);
+		setError("");
+		setModalStep(processStages.sendingToServer);
+		if (mintTxData && !isMintTxError && nftValues.length > 0) {
+			axios
+				.post(`${apiEndpoint}/marketplace/create`, {
+					collection: data,
+					nfts: nftValues,
+					hash: mintTxHash,
+				})
+				.then(() => {
+					setIsSubmitting(false);
+					setModalStep(processStages.txConfirmed);
+				})
+				.catch((err) => {
+					console.error(err);
+					setError(err);
+					setIsSubmitting(false);
+					setModalStep(processStages.serverError);
+				});
 		}
-	}, [data]);
+	}, [mintTxData, nftValues]);
+
+	const createNFTs = async (values, actions) => {
+		setError("");
+		setSubmittedFormState({values, actions});
+		actions.setSubmitting(true);
+		onOpen();
+		setIsSubmitting(true);
+		setModalStep(processStages.uploading);
+
+		try {
+			const with_uploaded_images = await Promise.all(
+				values.nfts.map(async (n) => {
+					const cdn = await uploadFile(n.file);
+					const ipfs = await uploadToIPFS(n.file);
+
+					return {...n, cdn, ipfs, subscription_nft: isSubscription};
+				})
+			);
+
+			// Now create the NFT depending on collection configuration
+
+			let mintTx;
+			setModalStep(processStages.requestingConfirmation);
+
+			if (isSubscription) {
+				mintTx = await createSubscriberNFTs(with_uploaded_images);
+			} else {
+				mintTx = await createBasicNFTs(with_uploaded_images);
+			}
+
+			// Now we wait for the transaction to be confirmed
+			setMintTxHash(mintTx.hash);
+			setModalStep(processStages.waitingForTx);
+			transactionManager({
+				hash: mintTx.hash,
+				description: `Minting collection ${data.name} with ${values.nfts.length} NFTs`,
+			});
+
+			mintTx.wait().then((res) => {
+				const event = res.events.find((e) => e.event === "NFTCreatedAndAdded");
+				const args = {...event.args};
+				const {nftIds, isGiveAways} = args;
+
+				const collection_data = with_uploaded_images.map((nft, index) => {
+					return {
+						...nft,
+						id: (nftIds[index] as BigNumber).toNumber(),
+						isGiveAway: isGiveAways[index],
+					};
+				});
+
+				setNftValues(collection_data);
+			});
+		} catch (error) {
+			// We have two errors that might occur.
+			// 1. Chain Related - Not perfomer, gas, denied Tx
+			// 2. Upload related, network or some issues with IPFS & Uploadcare
+			console.error({error});
+			setError(error);
+			setModalStep(processStages.confirmationDenied);
+			// setModalStep(processStages.uploadFailed)
+			actions.setSubmitting(false);
+		}
+	};
+
+	const createBasicNFTs = async (nfts) => {
+		const amounts_and_supply = {
+			amounts: nfts.map((n) => Web3.utils.toWei(n.price.toString())),
+			maxSupplys: nfts.map((n) => Web3.utils.toWei(n.maxSupply.toString())),
+		};
+
+		const tx = await creatorMartContract.createAndAddNFTs(
+			amounts_and_supply.maxSupplys,
+			amounts_and_supply.amounts,
+			amounts_and_supply.amounts.map(() => false),
+			"0x",
+			{
+				from: address,
+				value: 0,
+			}
+		);
+
+		return tx;
+	};
+
+	const createSubscriberNFTs = async (nfts) => {
+		const amounts_and_supply = {
+			amounts: nfts.map((n) => Web3.utils.toWei(n.price.toString())),
+			maxSupplys: nfts.map((n) => Web3.utils.toWei(n.maxSupply.toString())),
+		};
+
+		const tx = await subscriptionsMart.createAndAddNFTs(
+			amounts_and_supply.maxSupplys,
+			amounts_and_supply.amounts,
+			amounts_and_supply.amounts.map(() => false),
+			"0x",
+			{from: address, value: 0}
+		);
+
+		return tx;
+	};
 
 	const proceedWithFiles = (
 		files: Array<{
@@ -34,14 +205,112 @@ export default function PostType(props: {collection: string}) {
 		next();
 	};
 
+	const processStages = {
+		uploading: {
+			status: "loading",
+			title: "🖼️ Uploading your media",
+			subtitle:
+				"Please wait while we upload your media and start the minting process",
+		},
+		requestingConfirmation: {
+			status: "loading",
+			title: "🔒 Requesting permission",
+			subtitle:
+				"We are requesting permission to proceed with the transaction. Please confirm in your wallet to continue.",
+		},
+		confirmationDenied: {
+			status: "error",
+			title: "⚠️ Transaction denied",
+			subtitle:
+				"We were denied permission to proceed with the transaction by your wallet.",
+			actionLabel: "Try again",
+			action: () =>
+				createNFTs(submittedFormState.values, submittedFormState.actions),
+		},
+		uploadFailed: {
+			status: "error",
+			title: "⚠️ Media upload failed",
+			subtitle:
+				"An error happened while we were uploading your media. Please check your network connection and try again.",
+			actionLabel: "Try again",
+			action: () =>
+				createNFTs(submittedFormState.values, submittedFormState.actions),
+		},
+		waitingForTx: {
+			status: "loading",
+			title: "💸 Transaction is being confirmed",
+			subtitle:
+				"Please wait while we confirm your transaction. Please do not close or reload this page before the transaction has been confirmed on the blockchain.",
+		},
+		sendingToServer: {
+			status: "loading",
+			title: "💸 Listing on marketplace",
+			subtitle:
+				"Please wait while we list your collection on the marketplace. Please do not close or reload this page.",
+		},
+		txConfirmed: {
+			status: "success",
+			title: "💸 Your NFT Collection has been listed!",
+			subtitle:
+				"Your transaction has been confirmed on the blockchain. You can now visit the collection and other people can buy your NFTs.",
+			actionLabel: "Take me to the collection",
+			action: () => navigateToCollection(),
+		},
+		serverError: {
+			status: "error",
+			title: "⚠️ A server error occurred",
+			subtitle:
+				"We encountered an error while trying to list your collection on the marketplace. Please try again.",
+			actionLabel: "Try again",
+			action: () => addNFTsToCollection(),
+		},
+		chainError: {
+			status: "error",
+			title: "⚠️ An error occurred on the blockchain",
+			subtitle:
+				"An error occured while confirming your transaction on the blockchain. Please check your recent transactions for more.",
+			actionLabel: "Try again",
+			action: () => openAccountModal(),
+		},
+	};
+
+	// Set a title for the page
+	useEffect(() => {
+		if (data) {
+			setTitle(data.name);
+		}
+	}, [data]);
+
+	// Go back to file selector if no media has been selected
 	useEffect(() => {
 		if (files.length === 0 && step === "detail") {
 			prev();
 		}
 	}, [files]);
 
+	useEffect(() => {
+		if (nftValues.length > 0 && isMintTxConfirmed && !isMintTxError) {
+			addNFTsToCollection();
+		} else if (isMintTxError) {
+			setModalStep(processStages.chainError);
+		}
+	}, [nftValues, isMintTxConfirmed, isMintTxError]);
+
 	return (
 		<ApplicationLayout>
+			<GenericChainModal
+				isOpen={isOpen}
+				onClose={onClose}
+				hideClose={true}
+				title={modalStep.title}
+				subtitle={modalStep.subtitle}
+				loading={isSubmitting || modalStep.status === "loading"}
+				buttonLabel={modalStep.actionLabel}
+				noButton={!modalStep.actionLabel}
+				action={modalStep.action}
+			>
+				{error && <Text appearance={"danger"}>{String(error)}</Text>}
+			</GenericChainModal>
 			<SEOHead title={`Create ${title} Collection - Trit`} />
 			<ApplicationFrame>
 				<Container className="flex flex-col gap-12 px-4 py-12">
@@ -68,6 +337,7 @@ export default function PostType(props: {collection: string}) {
 							<AddNFTDetails
 								prev={prev}
 								nft_data={files}
+								onSubmit={createNFTs}
 							/>
 						)}
 					</Container>

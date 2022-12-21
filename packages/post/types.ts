@@ -1,4 +1,5 @@
 export type TritPostProps = {
+	_id: string;
 	id: string;
 	name?: string;
 	text?: string;

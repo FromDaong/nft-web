@@ -235,6 +235,7 @@ export const Collection = createMongoDBModel(
 			isSubscription: {
 				type: Boolean,
 				default: false,
+				required: true,
 			},
 		},
 		{

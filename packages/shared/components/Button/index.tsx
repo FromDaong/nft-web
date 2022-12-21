@@ -30,6 +30,10 @@ export const Button = styled("button", {
 				backgroundColor: "$btnCallToAction",
 				color: "$surface",
 			},
+			action: {
+				backgroundColor: "$textContrast",
+				color: "$surface",
+			},
 			surface: {
 				backgroundColor: "$elementOnSurface",
 				color: "$textContrast",
@@ -79,7 +83,7 @@ export const Button = styled("button", {
 		},
 	},
 	defaultVariants: {
-		appearance: "primary",
+		appearance: "action",
 	},
 });
 

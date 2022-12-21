@@ -1,6 +1,8 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import {Container} from "@packages/shared/components/Container";
 import {Heading} from "@packages/shared/components/Typography/Headings";
+import DynamicSkeleton from "@packages/skeleton";
+import {CollectionSectionHeading} from "@packages/skeleton/config";
 import {apiEndpoint} from "@utils/index";
 import axios from "axios";
 import UserAvatar from "core/auth/components/Avatar";
@@ -33,12 +35,10 @@ export default function TreatOfTheMonthCollectionSection(props: {
 		refetchOnMount: false,
 	});
 
-	console.log({featuredCreator});
-
 	return (
-		<Container className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+		<Container className="grid grid-cols-1 gap-8 xl:grid-cols-2">
 			<Container
-				className="flex flex-col h-auto gap-4 p-4 rounded-xl drop-shadow-sm border"
+				className="flex flex-col h-auto gap-4 p-4 border rounded-xl drop-shadow-sm"
 				css={{
 					backgroundColor: "$elementSurface",
 					borderRadius: "32px",
@@ -71,21 +71,27 @@ export default function TreatOfTheMonthCollectionSection(props: {
 						))}
 				</Container>
 				<Container className="flex items-center gap-2">
-					<Container className="flex">
-						<Link href={`/${props.author[0]?.username}`}>
-							<a>
-								<UserAvatar
-									value={props.author[0]?.username}
-									size={32}
-								/>
-							</a>
-						</Link>
-					</Container>
-					<Heading size="xs">{props.title}</Heading>
+					{props.collectionItems.length > 0 ? (
+						<>
+							<Container className="flex">
+								<Link href={`/${props.author[0]?.username}`}>
+									<a>
+										<UserAvatar
+											value={props.author[0]?.username}
+											size={32}
+										/>
+									</a>
+								</Link>
+							</Container>
+							<Heading size="xs">{props.title}</Heading>
+						</>
+					) : (
+						<DynamicSkeleton config={CollectionSectionHeading} />
+					)}
 				</Container>
 			</Container>
 			<Container
-				className="flex flex-col h-auto gap-4 p-4 rounded-xl drop-shadow-sm border"
+				className="flex flex-col h-auto gap-4 p-4 border rounded-xl drop-shadow-sm"
 				css={{
 					backgroundColor: "$elementSurface",
 					borderRadius: "32px",
@@ -116,31 +122,26 @@ export default function TreatOfTheMonthCollectionSection(props: {
 					))}
 				</Container>
 				<Container className="flex items-center gap-2">
-					<Container className="flex">
-						<Link href={`/devan`}>
-							<a>
-								<UserAvatar
-									value={"devan"}
-									size={32}
-								/>
-							</a>
-						</Link>
-					</Container>
-					{featuredCreatorLoading ? (
-						<Container
-							css={{
-								width: "50%",
-								borderRadius: "8px",
-								backgroundColor: "$surfaceOnSurface",
-								height: "24px",
-							}}
-						></Container>
+					{!featuredCreatorLoading && !featuredCreatorError ? (
+						<>
+							<Container className="flex">
+								<Link href={`/${featuredCreator?.profile[0].username}`}>
+									<a>
+										<UserAvatar
+											value={featuredCreator?.profile[0].username}
+											size={32}
+										/>
+									</a>
+								</Link>
+							</Container>
+							<Heading size="xs">
+								{featuredCreator?.profile[0].display_name === ""
+									? featuredCreator?.profile[0].username
+									: featuredCreator?.profile[0].display_name}
+							</Heading>
+						</>
 					) : (
-						<Heading size="xs">
-							{featuredCreator?.profile[0].display_name === ""
-								? featuredCreator?.profile[0].username
-								: featuredCreator?.profile[0].display_name}
-						</Heading>
+						<DynamicSkeleton config={CollectionSectionHeading} />
 					)}
 				</Container>
 			</Container>

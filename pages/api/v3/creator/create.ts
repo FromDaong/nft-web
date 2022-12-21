@@ -4,15 +4,15 @@ import {returnWithError, returnWithSuccess} from "server/database/engine/utils";
 import {NextApiRequest, NextApiResponse} from "next";
 import {MongoModelCreator, MongoModelProfile} from "server/helpers/models";
 import {ironOptions} from "@utils/index";
-import {requireApiAuth} from "server/utils";
+import {protectedAPIRoute} from "server/utils";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
 	await connectMongoDB();
-	requireApiAuth(req, res);
+	const {session} = req;
 
 	try {
 		const profile = await MongoModelProfile.findOne({
-			address: req.session.siwe?.address.toLowerCase(),
+			address: session.address.toLowerCase(),
 		});
 
 		const creatorProfile = new MongoModelCreator({
@@ -39,4 +39,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 	}
 }
 
-export default withIronSessionApiRoute(handler, ironOptions);
+export default protectedAPIRoute(handler);

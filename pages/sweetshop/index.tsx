@@ -1,4 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import {FilterIcon} from "@heroicons/react/outline";
+import {useDisclosure} from "@packages/hooks";
+import {Modal} from "@packages/modals";
 import SweetshopSortBy from "@packages/post/SweetshopSortBy";
 import {SkeletonTritCollectiblePost, TritPost} from "@packages/post/TritPost";
 import {SEOHead} from "@packages/seo/page";
@@ -46,6 +49,8 @@ const filtersList = [
 ];
 
 export default function NFTS(props) {
+	const {onOpen, isOpen, onClose} = useDisclosure();
+
 	const {ref, inView} = useInView();
 	const [market_filter, setFilters] = useState(props.query.market);
 	const router = useRouter();
@@ -105,6 +110,14 @@ export default function NFTS(props) {
 
 	return (
 		<ApplicationLayout>
+			<Modal
+				isOpen={isOpen}
+				onClose={onClose}
+			>
+				<Container className="w-full min-w-2xl">
+					<Heading size="xs">Filters</Heading>
+				</Container>
+			</Modal>
 			<ApplicationFrame>
 				<SEOHead title="Explore NFTs" />
 				<Container className="flex flex-col gap-12 py-12">
@@ -130,7 +143,13 @@ export default function NFTS(props) {
 									))}
 								</Container>
 								<Container className="flex gap-4">
-									<SweetshopSortBy />
+									<Button onClick={onOpen}>
+										<span>Filter</span>
+										<FilterIcon
+											width={16}
+											height={16}
+										/>
+									</Button>
 								</Container>
 							</Container>
 							<Divider dir="horizontal" />

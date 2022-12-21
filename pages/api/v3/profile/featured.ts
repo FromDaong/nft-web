@@ -2,8 +2,6 @@ import {
 	populateNFTsWithProfileAndTx,
 	returnWithSuccess,
 } from "@db/engine/utils";
-import {ironOptions} from "@utils/index";
-import {withIronSessionApiRoute} from "iron-session/next";
 import {NextApiResponse} from "next";
 import {NextApiRequest} from "next";
 import {connectMongoDB} from "server/helpers/core";
@@ -63,4 +61,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	return returnWithSuccess(featuredCreator[0], res);
 };
 
-export default withIronSessionApiRoute(handler, ironOptions);
+export default handler;

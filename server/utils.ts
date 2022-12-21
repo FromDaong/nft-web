@@ -47,14 +47,3 @@ export const protectedAPIRoute = (handler) => async (req, res) => {
 
 	return handler(req, res);
 };
-
-export const protectRoute = (handler) => {
-	console.log(handler);
-	return withIronSessionApiRoute(protectedAPIRoute(handler), ironOptions);
-};
-
-export const requireApiAuth = (req, res) => {
-	if (!req.session.siwe) {
-		returnWithError("Not logged in", 401, res);
-	}
-};

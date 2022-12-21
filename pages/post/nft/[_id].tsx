@@ -43,7 +43,10 @@ import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {
 	ImportantText,
 	MutedText,
+	SmallText,
 } from "@packages/shared/components/Typography/Text";
+import {useFullScreen} from "@packages/shared/hooks";
+import RectangleStack from "@packages/shared/icons/RectangleStack";
 import {
 	EnterFullScreenIcon,
 	HeartFilledIcon,
@@ -60,75 +63,6 @@ import Link from "next/link";
 import {useEffect, useState} from "react";
 import {MongoModelNFT, MongoModelTransaction} from "server/helpers/models";
 import {useAccount} from "wagmi";
-
-const RectangleStack = (props) => (
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		fill="none"
-		viewBox="0 0 24 24"
-		strokeWidth={1.5}
-		stroke="currentColor"
-		{...props}
-	>
-		<path
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			d="M6 6.878V6a2.25 2.25 0 012.25-2.25h7.5A2.25 2.25 0 0118 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 004.5 9v.878m13.5-3A2.25 2.25 0 0119.5 9v.878m0 0a2.246 2.246 0 00-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0121 12v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6c0-.98.626-1.813 1.5-2.122"
-		/>
-	</svg>
-);
-
-const exitFullScreen = () => {
-	if (document.exitFullscreen) {
-		document.exitFullscreen();
-	} else if (document["mozCancelFullScreen"]) {
-		document["mozCancelFullScreen"]();
-	} else if (document["webkitExitFullscreen"]) {
-		document["webkitExitFullscreen"]();
-	} else if (document["msExitFullscreen"]) {
-		document["msExitFullscreen"]();
-	}
-};
-
-export const useFullScreen = (
-	elementOrElementId: HTMLElement | string,
-	showFullScreen: boolean
-) =>
-	useEffect(() => {
-		const fullScreenElement =
-			document["fullscreenElement"] ||
-			document["webkitFullscreenElement"] ||
-			document["mozFullScreenElement"] ||
-			document["msFullscreenElement"];
-
-		// exit full screen
-		if (!showFullScreen) {
-			if (fullScreenElement) {
-				exitFullScreen();
-			}
-			return;
-		}
-
-		// get the element to make full screen
-		const element =
-			typeof elementOrElementId === "string"
-				? document.getElementById(elementOrElementId)
-				: elementOrElementId;
-
-		// if the current element is not already full screen, make it full screen
-		if (!fullScreenElement) {
-			if (element.requestFullscreen) {
-				element.requestFullscreen();
-			} else if (element["mozRequestFullScreen"]) {
-				element["mozRequestFullScreen"]();
-			} else if (element["webkitRequestFullscreen"]) {
-				// @ts-ignore
-				element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-			} else if (element["msRequestFullscreen"]) {
-				element["msRequestFullscreen"]();
-			}
-		}
-	}, [showFullScreen, elementOrElementId]);
 
 const getYouMightAlsoLike = async () => {
 	const res = await axios.get(`${apiEndpoint}/marketplace/trending`);
@@ -158,12 +92,6 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 		queryKey: [`moreNFTS:${nft.creator._id}`],
 		queryFn: getMoreNFTsFromCreator,
 	});
-
-	const {
-		isOpen: isFullscreenPreviewOpen,
-		onOpen: onOpenFullscreenPreview,
-		onClose: onCloseFullscreenPreview,
-	} = useDisclosure();
 
 	const {
 		isLoading: youMightAlsoLikeLoading,
@@ -275,13 +203,13 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 								</Container>
 							</Container>
 						)}
-						<ViewNFT
+						<NFTPresentationComponent
 							nft={nft}
 							isOwned={isOwned}
 							balance={balance}
 						/>
 						<Divider dir={"horizontal"} />
-						<Container className="flex flex-col gap-12">
+						<Container className="flex flex-col gap-12 px-8 lg:p-0">
 							<Container className="flex flex-col gap-4">
 								<Heading size="sm">People also bought</Heading>
 							</Container>
@@ -311,7 +239,7 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 						</Container>
 						<Divider dir={"horizontal"} />
 
-						<Container className="flex flex-col gap-12">
+						<Container className="flex flex-col gap-12 px-8 lg:0">
 							<Container className="flex flex-col gap-4">
 								<Heading size="sm">More from this creator</Heading>
 							</Container>
@@ -364,10 +292,8 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 	);
 }
 
-const ViewNFT = ({
+const NFTPresentationComponent = ({
 	nft,
-	isOwned,
-	balance,
 }: {
 	nft: any;
 	isOwned: boolean;
@@ -434,8 +360,8 @@ const ViewNFT = ({
 	return (
 		<>
 			<Container className="grid grid-cols-1 gap-12 px-4 lg:grid-cols-2">
-				<Container className="flex flex-col gap-12 py-8">
-					<Container className="flex flex-col gap-4">
+				<Container className="grid flex-col grid-cols-2 gap-12 py-8 lg:flex">
+					<Container className="flex flex-col col-span-2 gap-4">
 						<Heading size="sm">{nft.name}</Heading>
 						<Link href={`/${nft.creator.username}`}>
 							<a>
@@ -460,11 +386,11 @@ const ViewNFT = ({
 							</a>
 						</Link>
 					</Container>
-					<Container className="flex flex-col gap-4">
+					<Container className="flex flex-col col-span-1 gap-4">
 						<Heading size="xs">Description</Heading>
 						<Text>{nft.description}</Text>
 					</Container>
-					<Container className="flex flex-col gap-4">
+					<Container className="flex flex-col col-span-1 gap-4">
 						<Heading size="xs">Tags</Heading>
 						<Container className="flex flex-wrap gap-4 py-2">
 							{nft.tags?.map((tag) => (
@@ -504,14 +430,26 @@ const ViewNFT = ({
 							borderRadius: "32px",
 						}}
 					>
-						<Container className="grid grid-cols-2 gap-4 px-8 py-4">
-							<Container>
+						<Container className="grid grid-cols-3 gap-4 px-8 py-4">
+							<Container className="flex flex-col gap-2">
 								<MutedText>
 									<ImportantText>Reserve price</ImportantText>
 								</MutedText>
 								<Heading size="sm">{nftCost} BNB</Heading>
+								<MutedText>
+									<SmallText>Listing buying price</SmallText>
+								</MutedText>
 							</Container>
-							<Container>
+							<Container className="flex flex-col gap-2">
+								<MutedText>
+									<ImportantText>Floor price</ImportantText>
+								</MutedText>
+								<Heading size="sm">{floorResalePrice} BNB</Heading>
+								<MutedText>
+									<SmallText>From other listings</SmallText>
+								</MutedText>
+							</Container>
+							<Container className="flex flex-col gap-2">
 								<MutedText>
 									<ImportantText>Remaining</ImportantText>
 								</MutedText>
@@ -534,73 +472,19 @@ const ViewNFT = ({
 								</Container>
 							</>
 						)}
-						{openOrders?.length > 0 && (
-							<>
-								<Divider dir={"horizontal"} />
-								<Container className="grid grid-cols-1 gap-1 px-8 py-4">
-									<Heading size="xs">
-										Available on the Resale Marketplace
-									</Heading>
-									<Text>
-										Please scroll down to purchase this NFT from resale
-										marketplace listings
-									</Text>
-								</Container>
-							</>
-						)}
 					</Container>
 				</Container>
-				{openOrders?.length > 0 && (
-					<>
-						<Container className="col-span-2">
-							<Divider dir={"horizontal"} />
-						</Container>
-						<Container className="flex flex-col col-span-2 gap-8">
-							<Heading size="sm">Available on resale market</Heading>
-							<Container className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-								{openOrders.map((order, i) => {
-									return (
-										<TritPost
-											key={i}
-											inGrid
-											isResale
-											{...nft}
-											likedBy={nft.likedBy}
-											price={{
-												value: ethers.utils.formatEther(order.price),
-												currency: "BNB",
-												bigNumber: order.price,
-											}}
-											collection={{
-												minted: 0,
-												totalSupply: 1,
-											}}
-											protected={nft.protected}
-											author={{
-												address: order.seller,
-												username:
-													order.seller.slice(0, 3) +
-													"..." +
-													order.seller.slice(-3),
-											}}
-										/>
-									);
-								})}
-							</Container>
-						</Container>
-					</>
-				)}
 			</Container>
 		</>
 	);
 };
 
 export const getServerSideProps = async (context) => {
-	const {id} = context.params;
+	const {_id} = context.params;
 
 	await pagePropsConnectMongoDB();
 
-	const nft = await MongoModelNFT.findOne({id}).populate("creator").exec();
+	const nft = await MongoModelNFT.findById(_id).populate("creator").exec();
 
 	if (!nft) {
 		return {
@@ -609,11 +493,11 @@ export const getServerSideProps = async (context) => {
 	}
 
 	const transactions = await MongoModelTransaction.find({
-		"metadata.nftId": id,
+		"metadata.nftId": nft.id,
 	});
 
 	const returnObj = {
-		id,
+		id: nft.id,
 		mints: transactions,
 		nft: nft,
 	};
@@ -624,44 +508,3 @@ export const getServerSideProps = async (context) => {
 		},
 	};
 };
-
-function ResaleMarketplaceListings({order, i, nft}) {
-	return (
-		<>
-			<Container className="col-span-2">
-				<Divider dir={"horizontal"} />
-			</Container>
-			<Container className="flex flex-col col-span-2 gap-8">
-				<Heading size="sm">Available on resale market</Heading>
-				<Container className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-					{openOrders.map((order, i) => {
-						return (
-							<TritPost
-								key={i}
-								inGrid
-								isResale
-								{...nft}
-								likedBy={nft.likedBy}
-								price={{
-									value: ethers.utils.formatEther(order.price),
-									currency: "BNB",
-									bigNumber: order.price,
-								}}
-								collection={{
-									minted: 0,
-									totalSupply: 1,
-								}}
-								protected={nft.protected}
-								author={{
-									address: order.seller,
-									username:
-										order.seller.slice(0, 3) + "..." + order.seller.slice(-3),
-								}}
-							/>
-						);
-					})}
-				</Container>
-			</Container>
-		</>
-	);
-}

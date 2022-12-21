@@ -126,7 +126,7 @@ export const TritPost = (props: TritPostProps) => {
 					nft={props}
 				/>
 			)}
-			<Link href={!props.isResale ? `/post/nft/${props.id}` : "#"}>
+			<Link href={!props.isResale ? `/post/nft/${props._id}` : "#"}>
 				<a className="w-full p-1">
 					<Container
 						className="relative flex overflow-hidden border shadow-lg"
@@ -281,7 +281,7 @@ export const TritPost = (props: TritPostProps) => {
 				</Container>
 			)}
 			{isMine && props.isMine && (
-				<Container className="grid grid-cols-2 w-full gap-4">
+				<Container className="grid w-full grid-cols-2 gap-4">
 					{!props.isResale && !isListedOnResale && (
 						<>
 							<Container className="py-2">

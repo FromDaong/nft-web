@@ -332,5 +332,6 @@ export const useContracts = () => {
 		treatMinterContract,
 		creatorMartContract,
 		subscriptionsMart,
+		signer
 	};
 };

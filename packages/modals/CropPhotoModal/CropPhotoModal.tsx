@@ -17,6 +17,8 @@ import Cropper from "react-easy-crop";
 import {useCallback} from "react";
 import {SliderIcon} from "@radix-ui/react-icons";
 import * as Slider from "@radix-ui/react-slider";
+import {Modal} from "..";
+import {Button} from "@packages/shared/components/Button";
 
 const SliderRoot = styled(Slider.Root, {
 	position: "relative",
@@ -25,29 +27,32 @@ const SliderRoot = styled(Slider.Root, {
 	userSelect: "none",
 	touchAction: "none",
 	width: "100%",
-	height: "200px",
+	height: "20px",
 });
 
 const SliderTrack = styled(Slider.Track, {
-	backgroundColor: "var(--blackA10)",
 	position: "relative",
+	backgroundColor: "$surfaceOnSurface",
 	flexGrow: "1",
 	borderRadius: "9999px",
+	height: "50%",
+	marinY: "auto",
 });
 
 const SliderRange = styled(Slider.Range, {
 	position: "absolute",
-	backgroundColor: "white",
+	backgroundColor: "$textContrast",
 	borderRadius: "9999px",
 	height: "100%",
+	marinY: "auto",
 });
 
 const SliderThumb = styled(Slider.Thumb, {
 	display: "block",
 	width: "20px",
 	height: "20px",
-	backgroundColor: "white",
-	boxShadow: "0 2px 10px var(--blackA7)",
+	backgroundColor: "$textContrast",
+	boxShadow: "0 2px 10px var(--blackA)",
 	borderRadius: "10px",
 });
 
@@ -62,42 +67,30 @@ export default function CropPhotoModal({isOpen, onClose, image}) {
 	if (!isOpen) {
 		return null;
 	}
+
+	const save = () => {
+		onClose();
+	};
+
 	return (
-		<Container
-			css={{zIndex: 9999}}
-			className="fixed top-0 left-0 w-screen h-screen"
+		<Modal
+			isOpen={isOpen}
+			onClose={onClose}
 		>
-			<Container
-				className="fixed w-1/2 p-8 divide-y shadow-xl h-1/2 rounded-xl"
-				css={{
-					top: "50%",
-					left: "50%",
-					transform: "translate(-50%, -50%)",
-					zIndex: 1500,
-					backgroundColor: "$surface",
-					borderRadius: "16px",
-				}}
-			>
-				<Container className="flex justify-center">
-					<Container className="flex flex-col gap-1"></Container>
+			<Container className="flex flex-col gap-4">
+				<Container>
+					<Heading size="xs">Crop image</Heading>
 				</Container>
-				<Container
-					className="flex flex-col w-full h-full gap-8"
-					style={{
-						position: "relative",
-					}}
-				>
-					<Container className="flex">
-						<Cropper
-							image={image}
-							crop={crop}
-							zoom={zoom}
-							aspect={1 / 1}
-							onCropChange={setCrop}
-							onCropComplete={onCropComplete}
-							onZoomChange={setZoom}
-						/>
-					</Container>
+				<Container className="relative flex flex-col w-full h-full gap-8 min-h-[300px]">
+					<Cropper
+						image={image}
+						crop={crop}
+						zoom={zoom}
+						aspect={1 / 1}
+						onCropChange={setCrop}
+						onCropComplete={onCropComplete}
+						onZoomChange={setZoom}
+					/>
 				</Container>
 				<Container>
 					<SliderRoot
@@ -105,6 +98,7 @@ export default function CropPhotoModal({isOpen, onClose, image}) {
 						max={100}
 						step={1}
 						aria-label="Zoom"
+						onValueChange={(e) => setZoom(1 + e[0] / 10)}
 					>
 						<SliderTrack>
 							<SliderRange />
@@ -112,7 +106,16 @@ export default function CropPhotoModal({isOpen, onClose, image}) {
 						<SliderThumb />
 					</SliderRoot>
 				</Container>
+				<Container className="flex justify-end gap-8">
+					<Button
+						appearance={"surface"}
+						onClick={onClose}
+					>
+						Cancel
+					</Button>
+					<Button onClick={save}>Save</Button>
+				</Container>
 			</Container>
-		</Container>
+		</Modal>
 	);
 }

@@ -146,7 +146,7 @@ export default function Navbar() {
 														padding: "8px !important",
 													}}
 													className="flex items-center justify-center rounded-full"
-													appearance={"danger"}
+													appearance={"surface"}
 												>
 													<NotificationsIcon
 														width={20}
@@ -158,8 +158,8 @@ export default function Navbar() {
 										<Link href={"/create"}>
 											<a>
 												<Button
+													appearance={"surface"}
 													css={{borderRadius: "9999px"}}
-													className="p-1 rounded-full"
 												>
 													<PhotographIcon
 														width={18}

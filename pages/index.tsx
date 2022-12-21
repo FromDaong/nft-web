@@ -18,6 +18,12 @@ import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import TreatCore from "core/TreatCore";
 import axios from "axios";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
+import {useDisclosure} from "@packages/hooks";
+import DynamicSkeleton from "@packages/skeleton";
+import {
+	FeaturedCreatorSkeleton,
+	HeadingSkeleton,
+} from "@packages/skeleton/config";
 
 // TODO: Use intersection observer to change navbar color.
 
@@ -71,8 +77,6 @@ export default function Index() {
 			? []
 			: trendingNFTsData?.map((post) => legacy_nft_to_new(post));
 
-	console.log({trendingCreators});
-
 	return (
 		<ApplicationFrame>
 			<Container className="flex flex-col gap-12 px-2 md:gap-16 lg:gap-24">
@@ -100,7 +104,10 @@ export default function Index() {
 				<Container>
 					<Container className="flex flex-col w-full gap-8 px-4 xl:px-0">
 						<Container className="flex justify-between">
-							<Heading size="sm">Discover Treat creators</Heading>
+							<DynamicSkeleton config={HeadingSkeleton} />
+							{
+								// <Heading size="sm">Discover Treat creators</Heading>
+							}
 						</Container>
 						<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
 							{!trendingCreatorError && !trendingCreatorsLoading
@@ -128,7 +135,7 @@ export default function Index() {
 												borderRadius: "16px",
 											}}
 										>
-											<SkeletonExpandedSuggestedCreatorCard />
+											<DynamicSkeleton config={FeaturedCreatorSkeleton} />
 										</Container>
 								  ))}
 						</Container>

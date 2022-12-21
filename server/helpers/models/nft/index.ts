@@ -8,7 +8,6 @@ const NFTSchema = new mongoose.Schema(
 		id: {
 			type: Number,
 			required: [true, "Please add an NFT ID"],
-			unique: "ID is already taken",
 		},
 		tx_hash: {
 			type: String,
@@ -38,6 +37,11 @@ const NFTSchema = new mongoose.Schema(
 				type: String,
 				required: [true, "Please add an IPFS url"],
 			},
+		},
+		type: {
+			type: String,
+			default: "image",
+			required: true,
 		},
 		blurhash: {
 			type: String,
@@ -81,6 +85,10 @@ const NFTSchema = new mongoose.Schema(
 		nftCollection: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "NFTCollection",
+		},
+		listedBy: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Profile",
 		},
 	},
 	{
