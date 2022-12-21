@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /* eslint-disable @typescript-eslint/no-empty-function */
 import {ClientRequest, ClientResponse} from "./type";
 import {Session, RequestBody} from "./type";
