@@ -50,6 +50,7 @@ export const legacy_nft_to_new = (post: any): TritPostProps => ({
 	protected: post.protected,
 	totm: post.totm_nft,
 	subscription_nft: post.subscription_nft,
+	max_supply: Number(post.max_supply),
 });
 
 export const apiEndpoint = "/api/v3";

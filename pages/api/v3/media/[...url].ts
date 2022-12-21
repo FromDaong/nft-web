@@ -25,7 +25,8 @@ export default async function fetchWithFallback(req, res) {
 		return;
 	}
 
-	const defaultUrl = url[0];
+	const defaultUrl = "https://" + (url as Array<string>).slice(1).join("/");
+
 	if (defaultUrl.includes("mypinata")) {
 		try {
 			const response = await axios.get(defaultUrl, {

@@ -18,30 +18,39 @@ export default async function handler(
 	await connectMongoDB();
 
 	const {collection_id} = req.query;
+	const {page} = req.query;
+	const get_page = Number(page ?? 1) || 1;
+	const options = {
+		page: get_page,
+		limit: 24,
+	};
 
 	const collection = await MongoModelCollection.findOne({
 		_id: collection_id,
-	}).populate("creator");
+	})
+		.populate("creator")
+		.exec();
 
 	if (!collection) {
 		return returnWithError("Collection not found", 404, res);
 	}
 
-	const collectionNfts = collection.toObject().nfts;
+	// @ts-ignore
+	const nfts = await MongoModelNFT.paginate(
+		{
+			_id: {
+				$in: collection.nfts,
+			},
+		},
+		options
+	);
 
-	const nfts = await MongoModelNFT.find({
-		_id: {$in: collectionNfts},
-	}).populate({
+	console.log({nfts, collection});
+
+	nfts.docs = await MongoModelNFT.populate(nfts.docs, {
 		path: "creator",
-		select: "username address bio profile",
 		model: MongoModelCreator,
 	});
 
-	return returnWithSuccess(
-		{
-			collection: collection,
-			nfts: await populateNFTsWithProfileAndTx(nfts),
-		},
-		res
-	);
+	return returnWithSuccess(nfts, res);
 }
