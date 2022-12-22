@@ -68,6 +68,18 @@ const ModelSchema = new mongoose.Schema(
 			required: true,
 			ref: "User",
 		},
+		followers: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Profile",
+			},
+		],
+		following: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Profile",
+			},
+		],
 	},
 	{
 		timestamps: {createdAt: true, updatedAt: true},

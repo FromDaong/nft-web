@@ -120,7 +120,6 @@ const WagmiWrapper = ({
 			>
 				<RainbowKitSiweNextAuthProvider>
 					<RainbowKitProvider
-						modalSize="compact"
 						appInfo={{
 							appName: "Trit",
 							disclaimer: Disclaimer,

@@ -1,4 +1,9 @@
-import {LinkIcon, ShareIcon} from "@heroicons/react/outline";
+import {
+	ClipboardCheckIcon,
+	ClipboardCopyIcon,
+	LinkIcon,
+	ShareIcon,
+} from "@heroicons/react/outline";
 import {ChevronDownIcon} from "@heroicons/react/solid";
 import {ProfileDropdown} from "@packages/Dropdowns";
 import {SEOHead} from "@packages/seo/page";
@@ -31,6 +36,9 @@ import {ComponentBasicProps} from "core/TreatCore";
 import ApplicationFrame from "./ApplicationFrame";
 import useSound from "use-sound";
 import Link from "next/link";
+import {useEffect, useState} from "react";
+import axios from "axios";
+import {apiEndpoint} from "@utils/index";
 
 const creator_tabs = [
 	{
@@ -74,7 +82,6 @@ const AvatarContainer = styled("div", {
 	alignItems: "center",
 	justifyContent: "center",
 	overflow: "hidden",
-	border: "4px solid $surface",
 	backgroundColor: "$surface",
 	padding: "2px",
 });
@@ -110,6 +117,7 @@ type ProfileLayoutProps = ComponentBasicProps & {
 
 export default function ProfileLayout(props: ProfileLayoutProps) {
 	const {isLoading, isConnected, profile: loggedInUser} = useUser();
+	const [following, setFollowing] = useState([]);
 	const [value, copy] = useCopyToClipboard();
 	const [copyFx] = useSound("/sound/toggle_on.wav");
 
@@ -139,6 +147,14 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 		copy(`${baseDomain}/${ownerOfUserProfile.username}`);
 		copyFx();
 	};
+	useEffect(() => {
+		axios
+			.get(`${apiEndpoint}/profile/${profile.username}/following`)
+			.then((res) => {
+				setFollowing(res.data.data);
+			})
+			.catch((err) => console.log({err}));
+	}, []);
 
 	return (
 		<>
@@ -150,10 +166,13 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 
 			<Container className="container mx-auto py-8 px-4 xl:px-0">
 				<FluidContainer className="flex justify-between px-4">
-					<ContextualContainer className="flex justify-between w-full gap-y-4">
-						<Container>
+					<ContextualContainer className="grid col-span-1 xl:grid-cols-3 justify-between w-full gap-y-4">
+						<Container className="col-span-1 xl:col-span-2">
 							<Container className="flex gap-8">
-								<AvatarContainer className="drop-shadow">
+								<AvatarContainer
+									className="drop-shadow-sm border"
+									css={{borderColor: "$subtleBorder", padding: "4px"}}
+								>
 									<Avatar
 										name="Tatenda Chris"
 										imageSrc={ownerOfUserProfile.profile_pic}
@@ -179,7 +198,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 										{ownerOfUserProfile.badges?.map((badge) => (
 											<Container
 												key={badge.name}
-												css={{backgroundColor: `$${badge.color}3`}}
+												css={{backgroundColor: `$${badge.color}2`}}
 												className="px-3 py-1 rounded-xl"
 											>
 												<Text css={{color: `$${badge.color}10`}}>
@@ -190,7 +209,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 											</Container>
 										))}
 									</Container>
-									<Text className="mt-2">
+									<Text className="mt-2 max-w-2xl">
 										{ownerOfUserProfile.bio ?? "Loading profile details"}
 									</Text>
 									<Container className="flex w-full mb-4 mt-2">
@@ -199,7 +218,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 												appearance={"hiContrast"}
 												weight={"bold"}
 											>
-												{ownerOfUserProfile.following}
+												{following.length}
 											</Text>
 											{""}
 											<JustifiedSpan>Following</JustifiedSpan>
@@ -230,9 +249,9 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 							</Container>
 						</Container>
 
-						<Container>
-							<Container variant={"unstyled"}>
-								<Container className="flex gap-x-4">
+						<Container className="h-fit xl:justify-end flex">
+							<Container className="flex h-auto relative">
+								<Container className="flex gap-x-4 h-fit">
 									{!isLoading &&
 										loggedInUser.address !== ownerOfUserProfile.address && (
 											<Button className="focus:scale-110">
@@ -265,7 +284,18 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 										className="hover:scale-105 transition-transform duration-100"
 									>
 										<span>Copy profile link</span>
-										<ArrowUp />
+										{!value && (
+											<ClipboardCopyIcon
+												width={16}
+												height={16}
+											/>
+										)}
+										{value && (
+											<ClipboardCheckIcon
+												width={16}
+												height={16}
+											/>
+										)}
 									</Button>
 								</Container>
 							</Container>
