@@ -2,6 +2,7 @@
 import {FilterIcon} from "@heroicons/react/outline";
 import {useDisclosure} from "@packages/hooks";
 import {Modal} from "@packages/modals";
+import FilterNFTResultsModal from "@packages/modals/FilterNFTResultsModal";
 import SweetshopSortBy from "@packages/post/SweetshopSortBy";
 import {SkeletonTritCollectiblePost, TritPost} from "@packages/post/TritPost";
 import {SEOHead} from "@packages/seo/page";
@@ -9,7 +10,11 @@ import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
 import SelectableTag from "@packages/shared/components/Selectabletag";
-import {Heading} from "@packages/shared/components/Typography/Headings";
+import {Heading, Text} from "@packages/shared/components/Typography/Headings";
+import {
+	ImportantText,
+	MutedText,
+} from "@packages/shared/components/Typography/Text";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
@@ -29,30 +34,17 @@ const getSweetshopNFTs = async (page: number, filterString: string) => {
 	return res.data.data;
 };
 
-const filtersList = [
-	{
-		label: "Free",
-		value: "free",
-	},
-	{
-		label: "TOTM NFT",
-		value: "totm_nft",
-	},
-	{
-		label: "Subscription NFT",
-		value: "subscription_nft",
-	},
-	{
-		label: "Resale Market",
-		value: "resale_market",
-	},
-];
-
 export default function NFTS(props) {
 	const {onOpen, isOpen, onClose} = useDisclosure();
 
 	const {ref, inView} = useInView();
 	const [market_filter, setFilters] = useState(props.query.market);
+	const [filterList, setFilterlist] = useState<
+		Array<{
+			label: string;
+			value: string;
+		}>
+	>([]);
 	const router = useRouter();
 
 	const {
@@ -110,14 +102,10 @@ export default function NFTS(props) {
 
 	return (
 		<ApplicationLayout>
-			<Modal
+			<FilterNFTResultsModal
 				isOpen={isOpen}
 				onClose={onClose}
-			>
-				<Container className="w-full min-w-2xl">
-					<Heading size="xs">Filters</Heading>
-				</Container>
-			</Modal>
+			/>
 			<ApplicationFrame>
 				<SEOHead title="Explore NFTs" />
 				<Container className="flex flex-col gap-12 py-12">
@@ -127,7 +115,7 @@ export default function NFTS(props) {
 						<Container>
 							<Container className="flex flex-col gap-4 md:flex-row md:justify-between">
 								<Container className="flex gap-2 overflow-x-auto flex-nowrap">
-									{filtersList.map((f) => (
+									{filterList.map((f) => (
 										<Container
 											key={f.value}
 											className="flex-shrink-0"

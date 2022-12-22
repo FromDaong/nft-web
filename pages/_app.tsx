@@ -38,6 +38,10 @@ function MyApp({
 }: AppProps<{
 	session: Session;
 }>) {
+	// T-24 implement captcha
+
+	// T-27 Implement error and success toasts
+
 	return (
 		<ThemeProvider>
 			<ApplicationProvider>

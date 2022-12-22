@@ -28,8 +28,8 @@ export default class TreatCore {
 	 * @param metadata
 	 */
 	async triggerEvent(event_type: string, metadata: object) {
-		// TODO: Implement logger
-		// TODO: Sync to server
+		// T-19 Implement logger
+		// T-23 Sync to server
 
 		const meta = JSON.stringify(metadata);
 		const event = {

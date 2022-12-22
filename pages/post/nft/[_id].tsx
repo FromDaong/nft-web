@@ -70,6 +70,8 @@ const getYouMightAlsoLike = async () => {
 };
 
 export default function NFT(props: {notFound?: boolean; data: any}) {
+	// T-26 implement view counter + analytics
+
 	const data = JSON.parse(props.data);
 	const {nft} = data;
 	const postUtils = useTritNFTUtils(nft);
@@ -126,7 +128,7 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 						id={"nft_image"}
 					>
 						<OptimizedImage
-							src={`${nft.image.cdn}?blur=${
+							src={`${nft.image.ipfs}?blur=${
 								nft.protected && !isOwned ? 30 : 0
 							}&`}
 							className="cursor-zoom-in"

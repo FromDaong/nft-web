@@ -53,6 +53,11 @@ export default async function handler(
 
 	let NFTs;
 
+	// todo: get all sold out nfts array and keep ids
+	// todo: get all resale nfts
+
+	let resale_nfts;
+
 	if (market) {
 		query = {
 			[(market as string) === "free" ? "price" : (market as string)]:

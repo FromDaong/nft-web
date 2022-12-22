@@ -11,12 +11,10 @@ const CollectionSchema = new Schema(
 		},
 		creator: {
 			type: Schema.Types.ObjectId,
-			required: true,
 			ref: "Creator",
 		},
 		profile: {
 			type: Schema.Types.ObjectId,
-			required: true,
 			ref: "Profile",
 		},
 		cover_image: {

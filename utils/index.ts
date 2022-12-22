@@ -22,7 +22,7 @@ export const legacy_nft_to_new = (post: any): TritPostProps => ({
 	_id: post._id,
 	name: post.name,
 	image: {
-		cdn: post.image.cdn,
+		cdn: post.image.ipfs,
 		ipfs: post.image.ipfs,
 	},
 	price: {

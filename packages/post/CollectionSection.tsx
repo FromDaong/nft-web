@@ -59,7 +59,7 @@ export default function TreatOfTheMonthCollectionSection(props: {
 								css={{
 									background: item.image
 										? `url('https://treatnfts.gumlet.io/api/v3/image?default=${
-												item.image.cdn ?? item.image.ipfs
+												item.image.ipfs ?? item.image.ipfs
 										  }${item.protected ? "&blur=30" : ""}')`
 										: "$surfaceOnSurface",
 									backgroundColor: "$surfaceOnSurface",
@@ -110,7 +110,7 @@ export default function TreatOfTheMonthCollectionSection(props: {
 							css={{
 								background: item.image
 									? `url('https://treatnfts.gumlet.io/api/v3/image?default=${
-											item.image.cdn ?? item.image.ipfs
+											item.image.ipfs ?? item.image.ipfs
 									  }${item.protected ? "&blur=30" : ""}')`
 									: "$surfaceOnSurface",
 								backgroundColor: "$surfaceOnSurface",

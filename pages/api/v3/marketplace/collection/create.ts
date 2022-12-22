@@ -20,7 +20,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 	await connectMongoDB();
 
 	const profile = await MongoModelProfile.findOne({
-		address: req.session.address,
+		address: req.session.address.toLowerCase(),
 	});
 
 	if (!profile) {
@@ -38,7 +38,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const collection = new MongoModelCollection({
 		name,
 		creator: creator._id,
-		isSubscription: subscription ? true : false
+		isSubscription: subscription ? true : false,
+		profile: profile._id,
 	});
 
 	await collection.save();

@@ -19,6 +19,8 @@ const RenderProfileNFTs = ({
 	isFetchingNextPage,
 	hasNextPage,
 }) => {
+	// T-25 implement a reasonable empty state design
+
 	return (
 		<ProfileLayout userProfile={data}>
 			<div className="grid grid-cols-1 gap-12">

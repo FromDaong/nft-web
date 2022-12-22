@@ -94,12 +94,14 @@ export default function Collection(props) {
 									</Link>
 								</Container>
 							</Container>
-							<Container>
-								<Container className="flex gap-4">
-									<Button appearance={"surface"}>Bookmark</Button>
-									<Button appearance={"surface"}>Share</Button>
+							{false && (
+								<Container>
+									<Container className="flex gap-4">
+										<Button appearance={"surface"}>Bookmark</Button>
+										<Button appearance={"surface"}>Share</Button>
+									</Container>
 								</Container>
-							</Container>
+							)}
 						</Container>
 						<Divider dir={"horizontal"} />
 					</Container>

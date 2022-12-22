@@ -35,6 +35,8 @@ export default async function handler(
 		return returnWithError("Collection not found", 404, res);
 	}
 
+	console.log(collection.nfts);
+
 	// @ts-ignore
 	const nfts = await MongoModelNFT.paginate(
 		{
@@ -44,8 +46,6 @@ export default async function handler(
 		},
 		options
 	);
-
-	console.log({nfts, collection});
 
 	nfts.docs = await MongoModelNFT.populate(nfts.docs, {
 		path: "creator",

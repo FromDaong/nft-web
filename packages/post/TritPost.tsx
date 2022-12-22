@@ -2,8 +2,15 @@ import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import Link from "next/link";
 import {Container} from "@packages/shared/components/Container";
 import {TritPostProps} from "./types";
-import {ImportantText} from "@packages/shared/components/Typography/Text";
-import {EyeOffIcon, HeartIcon} from "@heroicons/react/outline";
+import {
+	ImportantText,
+	SmallText,
+} from "@packages/shared/components/Typography/Text";
+import {
+	DotsHorizontalIcon,
+	EyeOffIcon,
+	HeartIcon,
+} from "@heroicons/react/outline";
 import {PostMediaContent} from "./PostMediaContent";
 import UserAvatar from "core/auth/components/Avatar";
 import {styled} from "@styles/theme";
@@ -15,6 +22,7 @@ import TransferNFTModal from "@packages/modals/TransferNFTModal";
 import CancelOrderModal from "@packages/modals/CancelOrderModal";
 import ListOrderModal from "@packages/modals/ListOrderModal";
 import PurchaseResaleNFTModal from "@packages/modals/PurchaseResaleNFTModal";
+import RectangleStack from "@packages/shared/icons/RectangleStack";
 
 export const StyledLoader = styled(ContentLoader, {
 	backgroundColor: "$surface",
@@ -41,31 +49,28 @@ export const UserBadge = (props: {username: string; avatar: string}) => {
 	return (
 		<Link href={`/${props.username}`}>
 			<a>
-				<FrostyBackgroundContainer className="flex gap-2 py-2 pl-2 pr-4 rounded-full ">
+				<Container className="flex gap-2 pr-4 rounded-full ">
 					<UserAvatar
 						size={24}
 						value={props.username}
 					/>
-					<Text css={{color: "#ffffff"}}>
+					<Text>
 						<ImportantText>@{props.username}</ImportantText>
 					</Text>
-				</FrostyBackgroundContainer>
+				</Container>
 			</a>
 		</Link>
 	);
 };
 
 export const DislikeIcon = styled(HeartFilledIcon, {
-	color: "$surface",
-	height: "24px",
-	width: "24px",
+	height: "20px",
+	width: "20px",
 });
 
 export const LikeIcon = styled(HeartIcon, {
-	color: "$surface",
-	fill: "$overlay",
-	height: "24px",
-	width: "24px",
+	height: "20px",
+	width: "20px",
 });
 
 export const TritPost = (props: TritPostProps) => {
@@ -83,15 +88,16 @@ export const TritPost = (props: TritPostProps) => {
 	const imageUrl = props.image?.ipfs;
 	const soldOut = props.collection?.minted === props.max_supply;
 
+	// T-28 check if user owns this nft and get the units owned
+
 	return (
 		<Container
-			className={`grid grid-cols-1 gap-4 w-full ${
+			className={`grid grid-cols-1 gap-4 py-4 border w-full ${
 				props.totm ? "border-2" : ""
 			}`}
 			css={{
-				borderColor: "$accentText",
-				borderRadius: "20px",
-				backgroundColor: props.totm ? "$accentText" : "inherit",
+				borderColor: "$subtleBorder",
+				borderRadius: "12px",
 			}}
 		>
 			{isMine && (
@@ -126,13 +132,20 @@ export const TritPost = (props: TritPostProps) => {
 					nft={props}
 				/>
 			)}
+			<Container className="flex justify-between px-4">
+				<UserBadge
+					username={props.author.username}
+					avatar={props.author.avatar}
+				/>
+			</Container>
 			<Link href={!props.isResale ? `/post/nft/${props._id}` : "#"}>
-				<a className="w-full p-1">
+				<a className="w-full flex flex-col">
+					{
+						// T-29 implement a hover options button if user owns this NFT
+					}
 					<Container
-						className="relative flex overflow-hidden border shadow-lg"
+						className="relative flex overflow-hidden"
 						css={{
-							borderColor: "$subtleBorder",
-							borderRadius: "16px",
 							backgroundColor: "$textContrast",
 							height: "440px",
 						}}
@@ -200,71 +213,18 @@ export const TritPost = (props: TritPostProps) => {
 										</Container>
 									)}
 								</Container>
-								<Container>
-									{liked ? (
-										<DislikeIcon onClick={likeNFT} />
-									) : (
-										<LikeIcon onClick={likeNFT} />
-									)}
-								</Container>
-							</Container>
-							<Container className="flex flex-col gap-2">
-								{!props.isResale && !isMine && (
-									<>
-										<Heading
-											css={{color: "#ffffff"}}
-											size="xss"
-											className="line-clamp-1"
-										>
-											{props.name}
-										</Heading>
-										<Container className="flex flex-col gap-2">
-											<Container className="flex justify-between">
-												<Text css={{color: "#ffffff"}}>Supply</Text>
-												<Text css={{color: "#ffffff"}}>
-													{props.collection?.minted ?? 0}/{props.max_supply}
-												</Text>
-											</Container>
-											<FrostyBackgroundContainer
-												className="rounded-full"
-												css={{height: "10px"}}
-											>
-												<Container
-													className="rounded-full"
-													css={{
-														backgroundColor: "$surfaceOnSurface",
-														width: `${
-															((props.collection?.minted ?? 0) /
-																props.max_supply) *
-															100
-														}%`,
-														height: "100%",
-													}}
-												/>
-											</FrostyBackgroundContainer>
-										</Container>
-									</>
-								)}
-								<Container className="flex justify-between">
-									<UserBadge
-										username={props.author.username}
-										avatar={props.author.avatar}
-									/>
-									{!props.noPrice && (
-										<FrostyBackgroundContainer className="px-4 py-2 rounded-full">
-											<Text css={{color: "#ffffff"}}>
-												<ImportantText>
-													{props.price.value} {props.price.currency}
-												</ImportantText>
-											</Text>
-										</FrostyBackgroundContainer>
-									)}
-								</Container>
 							</Container>
 						</Container>
 					</Container>
 				</a>
 			</Link>
+			<ActionSection
+				{...props}
+				isMine={isMine}
+				liked={liked}
+				likeNFT={likeNFT}
+				unlikeNFT={likeNFT}
+			/>
 			{props.isResale && !props.isMine && (
 				<Container className="py-2">
 					<Button
@@ -280,6 +240,7 @@ export const TritPost = (props: TritPostProps) => {
 				</Container>
 			)}
 			{isMine && props.isMine && (
+				// T-30 show the number of NFTs owned by the user
 				<Container className="grid w-full grid-cols-2 gap-4">
 					{!props.isResale && !isListedOnResale && (
 						<>
@@ -317,6 +278,79 @@ export const TritPost = (props: TritPostProps) => {
 					)}
 				</Container>
 			)}
+		</Container>
+	);
+};
+
+const ActionSection = (props) => {
+	return (
+		<Container className="flex flex-col gap-2 px-2">
+			<SmallText className="px-2">
+				Liked by {props.likedBy.length} people
+			</SmallText>
+			<Container className="px-2">
+				<Text className="line-clamp-1 text-xl">{props.name}</Text>
+				{!props.noPrice && (
+					<Container className="rounded-full pb-2">
+						<Heading size={"xss"}>
+							Selling for {props.price.value} {props.price.currency}
+						</Heading>
+					</Container>
+				)}
+			</Container>
+			<Container className="flex gap-2 px-2">
+				<ActionBar
+					liked={props.liked}
+					likeNFT={props.likeNFT}
+				/>
+			</Container>
+		</Container>
+	);
+};
+
+const ActionBar = (props) => {
+	return (
+		<Container
+			className="w-full grid grid-cols-3 divide-x rounded-lg"
+			css={{backgroundColor: "$surfaceOnSurface"}}
+		>
+			<Button
+				className="col-span-1 p-3"
+				appearance={"unstyled"}
+				css={{borderRadius: 0, padding: "8px", borderColor: "$subtleBorder"}}
+			>
+				{props.liked ? (
+					<HeartFilledIcon
+						width={20}
+						height={20}
+					/>
+				) : (
+					<HeartIcon
+						width={20}
+						height={20}
+					/>
+				)}
+			</Button>
+			<Button
+				className="col-span-1 p-3"
+				appearance={"unstyled"}
+				css={{borderRadius: 0, padding: "8px", borderColor: "$subtleBorder"}}
+			>
+				<RectangleStack
+					height={20}
+					width={20}
+				/>
+			</Button>
+			<Button
+				className="col-span-1 p-3"
+				appearance={"unstyled"}
+				css={{borderRadius: 0, padding: "8px", borderColor: "$subtleBorder"}}
+			>
+				<DotsHorizontalIcon
+					width={20}
+					height={20}
+				/>
+			</Button>
 		</Container>
 	);
 };

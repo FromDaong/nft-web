@@ -39,7 +39,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 					price: nft.price,
 					external_url: process.env.NFT_EXTERNAL_URL,
 					image: {
-						cdn: nft.cdn,
+						cdn: typeof nft.cdn === "string" ? nft.cdn : nft.ipfs,
 						ipfs: nft.ipfs,
 					},
 					max_supply: parseInt(nft.maxSupply),
@@ -52,12 +52,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
 				await mongoNFT.save();
 
-				return mongoNFT._id;
+				return mongoNFT;
 			})
 		);
 
 		await MongoModelCollection.findByIdAndUpdate(collection_id, {
-			nfts: created_nfts,
+			nfts: created_nfts.map((nft) => nft._id),
 		});
 
 		return returnWithSuccess(
