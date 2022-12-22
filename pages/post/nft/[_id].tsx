@@ -126,7 +126,7 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 						id={"nft_image"}
 					>
 						<OptimizedImage
-							src={`${nft.image.cdn}&blur=${
+							src={`${nft.image.cdn}?blur=${
 								nft.protected && !isOwned ? 30 : 0
 							}&`}
 							className="cursor-zoom-in"
@@ -213,7 +213,7 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 							<Container className="flex flex-col gap-4">
 								<Heading size="sm">People also bought</Heading>
 							</Container>
-							<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+							<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 								{!youMightAlsoLikeError && !youMightAlsoLikeLoading
 									? trendingNFTs.slice(0, 4).map((item) => (
 											<TritPost
@@ -243,7 +243,7 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 							<Container className="flex flex-col gap-4">
 								<Heading size="sm">More from this creator</Heading>
 							</Container>
-							<Container className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+							<Container className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 								<Link href={`/${nft.creator.username}`}>
 									<a>
 										<Container className="flex flex-col gap-8">
@@ -359,7 +359,7 @@ const NFTPresentationComponent = ({
 
 	return (
 		<>
-			<Container className="grid grid-cols-1 gap-12 px-4 lg:grid-cols-2">
+			<Container className="grid grid-cols-1 gap-12 px-4 xl:grid-cols-2">
 				<Container className="grid flex-col grid-cols-2 gap-12 py-8 lg:flex">
 					<Container className="flex flex-col col-span-2 gap-4">
 						<Heading size="sm">{nft.name}</Heading>

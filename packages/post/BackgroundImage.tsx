@@ -6,7 +6,7 @@ const BackgroundImage = ({url, caption, isProtected = false}) => {
 			<OptimizedImage
 				objectFit={"cover"}
 				alt={caption}
-				src={`${url}${isProtected ? "&blur=30&" : "?"}`}
+				src={`${url}${isProtected ? "?blur=15&" : "?"}`}
 				sizes="100vw"
 				fill
 			/>

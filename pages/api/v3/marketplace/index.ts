@@ -67,7 +67,14 @@ export default async function handler(
 
 	// @ts-ignore
 
-	NFTs.docs = await populateNFTsWithProfileAndTx(NFTs.docs);
+	NFTs.docs = await MongoModelNFT.populate(NFTs.docs, {
+		path: "creator",
+		select: "username address",
+		populate: {
+			path: "profile",
+			select: "username profile_pic",
+		},
+	});
 
 	return returnWithSuccess(NFTs, res);
 }
