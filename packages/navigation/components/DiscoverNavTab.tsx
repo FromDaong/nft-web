@@ -67,7 +67,7 @@ const NavTab = () => {
 		>
 			<Tab
 				label="Discover"
-				route="/discover"
+				route="/"
 				icon={
 					<GlobeAltIcon
 						width={14}
@@ -77,7 +77,7 @@ const NavTab = () => {
 			/>
 			<Tab
 				label="Subscribed"
-				route="/discover/subscribed"
+				route="//subscribed"
 				icon={
 					<BankNotesIcon
 						width={14}

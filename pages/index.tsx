@@ -33,7 +33,7 @@ const getTrendingNFTs = async () => {
 };
 
 const getTrendingCreators = async () => {
-	const res = await axios.get(`${apiEndpoint}/profile/discover`);
+	const res = await axios.get(`${apiEndpoint}/profile/`);
 	return res.data.data;
 };
 

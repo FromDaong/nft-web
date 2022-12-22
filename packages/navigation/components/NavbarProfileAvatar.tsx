@@ -16,6 +16,7 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import {ConnectButton, useAccountModal} from "@rainbow-me/rainbowkit";
 import Avvvatars from "avvvatars-react";
 import UserAvatar from "core/auth/components/Avatar";
+import {useUser} from "core/auth/useUser";
 import {useSession} from "next-auth/react";
 import Link from "next/link";
 import {useAccount} from "wagmi";
@@ -126,10 +127,10 @@ const WalletConnectionIcon = (props) => {
 };
 
 const NavbarProfileAvatar = () => {
-	const {address, isConnected} = useAccount();
+	const {isConnected} = useAccount();
 	const {openAccountModal} = useAccountModal();
 	const {data: session} = useSession();
-	const {profile} = (session as any) ?? {profile: {}};
+	const {profile, isLoading} = useUser();
 	console.log({session});
 
 	const {isOpen, onClose, onOpen} = useDisclosure();
@@ -185,20 +186,22 @@ const NavbarProfileAvatar = () => {
 										</NavDropdownItem>
 									</a>
 								</Link>
-								<NavDropdownItem
-									onClick={onOpenUpgradeToCreator}
-									className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
-								>
-									<div className="flex items-center gap-4">
-										<Text className="p-2 rounded-full">
-											<BankNotes
-												width={20}
-												height={20}
-											/>
-										</Text>
-										<BoldLink>Become a Creator</BoldLink>
-									</div>
-								</NavDropdownItem>
+								{!isLoading && !profile.creator && (
+									<NavDropdownItem
+										onClick={onOpenUpgradeToCreator}
+										className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
+									>
+										<div className="flex items-center gap-4">
+											<Text className="p-2 rounded-full">
+												<BankNotes
+													width={20}
+													height={20}
+												/>
+											</Text>
+											<BoldLink>Become a Creator</BoldLink>
+										</div>
+									</NavDropdownItem>
+								)}
 								<Link href={"/account"}>
 									<a>
 										<NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">

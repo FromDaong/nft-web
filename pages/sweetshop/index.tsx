@@ -196,7 +196,7 @@ export default function NFTS(props) {
 								{isFetchingNextPage
 									? "Loading more..."
 									: hasNextPage
-									? "Load Newer"
+									? "Load more"
 									: "Nothing more to load"}
 							</Button>
 						</Container>

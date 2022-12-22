@@ -12,12 +12,15 @@ import DynamicSkeleton from "@packages/skeleton";
 import {CollectionSkeleton, TritPostSkeleton} from "@packages/skeleton/config";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
+import {useUser} from "core/auth/useUser";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import ProfileLayout from "core/components/layouts/ProfileLayout";
 import TreatCore from "core/TreatCore";
 import Link from "next/link";
 import {useRouter} from "next/router";
+import {useEffect, useMemo} from "react";
+import {useInView} from "react-intersection-observer";
 import {beforePageLoadGetUserProfile} from "server/page/userProfile";
 
 export default function UserProfile(props: {
@@ -35,52 +38,98 @@ export default function UserProfile(props: {
 
 	const data = JSON.parse(props.data);
 	const {username} = data;
+	const {profile} = useUser();
+	const {ref, inView} = useInView();
 
-	const getCollections = async () => {
+	const getCollections = async (page) => {
 		const res = await axios.get(
-			`${apiEndpoint}/profile/${username}/collections`
+			`${apiEndpoint}/profile/${username}/collections?page=${page}`
 		);
 		return res.data.data;
 	};
 
 	const {
-		isLoading: collectionsLoading,
-		error: collectionsError,
 		data: collectionsData,
-	} = TreatCore.useQuery({
+		isFetchingNextPage,
+		fetchNextPage,
+		hasNextPage,
+		refetch,
+		isFetching,
+		error,
+	} = TreatCore.useInfiniteQuery({
 		queryKey: [`collections:${username}`],
-		queryFn: getCollections,
+		queryFn: ({pageParam = 1}) => getCollections(pageParam),
+		getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
+		getPreviousPageParam: (firstPage) => firstPage.prevPage ?? undefined,
 	});
 
-	console.log({data});
+	const pages = collectionsData ? collectionsData.pages : [];
+
+	const collections = useMemo(() => {
+		if (pages.length > 0) {
+			return pages.map((page) => page.docs).flat();
+		} else {
+			return [];
+		}
+	}, [pages]);
+
+	useEffect(() => {
+		if (inView) {
+			fetchNextPage();
+		}
+	}, [inView]);
 
 	return (
 		<ProfileLayout userProfile={data}>
-			<Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
-				{collectionsLoading &&
-					[0, 1, 2, 3].map((i) => (
-						<DynamicSkeleton
-							key={`skeleton:${i}`}
-							config={CollectionSkeleton}
-						/>
-					))}
-				{collectionsError && <Error500 />}
-				{collectionsData &&
-					collectionsData.docs.map((collection) => (
-						<Link
-							key={collection._id}
-							href={`/collection/${collection._id}`}
-						>
-							<a>
-								<CollectionsPreview
-									key={`collection:${collection._id}}`}
-									nfts={collection.nfts}
-									creator={data}
-									collection={collection}
-								/>
-							</a>
-						</Link>
-					))}
+			<Container className="grid grid-cols-1 gap-12">
+				{isFetching && collections.length === 0 && (
+					<Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
+						{[0, 1, 2, 3].map((i) => (
+							<DynamicSkeleton
+								key={`skeleton:${i}`}
+								config={CollectionSkeleton}
+							/>
+						))}
+					</Container>
+				)}
+				{error && <Error500 />}
+				{collections && (
+					<>
+						<Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
+							{collections.map((collection) => (
+								<Link
+									key={collection._id}
+									href={`/collection/${collection._id}`}
+								>
+									<a>
+										<CollectionsPreview
+											key={`collection:${collection._id}}`}
+											nfts={collection.nfts}
+											creator={data}
+											collection={collection}
+										/>
+									</a>
+								</Link>
+							))}
+						</Container>
+						{collections.length > 0 && (
+							<Container className="flex justify-center w-full">
+								<Button
+									appearance={"surface"}
+									ref={ref}
+									onClick={() => fetchNextPage()}
+									disabled={!hasNextPage || isFetchingNextPage}
+								>
+									{isFetchingNextPage
+										? "Loading more..."
+										: hasNextPage
+										? "Load more"
+										: "Nothing more to load"}
+								</Button>
+							</Container>
+						)}
+					</>
+				)}
 			</Container>
 		</ProfileLayout>
 	);

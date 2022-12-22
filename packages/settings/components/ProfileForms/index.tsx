@@ -18,7 +18,7 @@ import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginImageCrop from "filepond-plugin-image-crop";
 import FilePondPluginImageResize from "filepond-plugin-image-resize";
 import FilePondPluginImageTransform from "filepond-plugin-image-transform";
-import {useFormik} from "formik";
+import {Field, useFormik} from "formik";
 import {useSession} from "next-auth/react";
 import DynamicSkeleton from "@packages/skeleton";
 import {
@@ -171,22 +171,41 @@ const PersonalPresentationInformationForm = (props: {
 					<ImportantText>
 						<Text>Display name</Text>
 					</ImportantText>
-					<Input />
+					<Input
+						value={personalInformationForm.values.displayName}
+						onChange={personalInformationForm.handleChange}
+						onBlur={personalInformationForm.handleBlur}
+					/>
 				</Container>
 				<Container className="flex flex-col gap-1">
 					<ImportantText>
-						<Text>Username</Text>
+						<Text>Bio</Text>
 					</ImportantText>
-					<Input />
+					<Input
+						value={personalInformationForm.values.bio}
+						onChange={personalInformationForm.handleChange}
+						onBlur={personalInformationForm.handleBlur}
+					/>
 				</Container>
 				<Container className="flex flex-col gap-1">
 					<ImportantText>
 						<Text>Email Address</Text>
 					</ImportantText>
-					<Input />
+					<Input
+						value={personalInformationForm.values.email}
+						onChange={personalInformationForm.handleChange}
+						onBlur={personalInformationForm.handleBlur}
+					/>
 				</Container>
 				<Container className="flex justify-end gap-2">
-					<Button appearance={"surface"}>Save Changes</Button>
+					<Button
+						onClick={personalInformationForm.submitForm}
+						appearance={"surface"}
+					>
+						{personalInformationForm.isSubmitting
+							? "Loading..."
+							: "Save Changes"}
+					</Button>
 				</Container>
 			</form>
 		</>

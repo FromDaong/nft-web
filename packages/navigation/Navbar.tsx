@@ -66,7 +66,7 @@ export default function Navbar() {
 					<div className="absolute top-0 left-0 z-20 w-full h-full" />
 					<div className="container relative z-30 flex items-center justify-between py-3 mx-auto">
 						<div className="flex items-center gap-8">
-							<Link href={isConnected ? "/discover" : "/"}>
+							<Link href={isConnected ? "/" : "/"}>
 								<a className="relative w-8 h-8 text-3xl font-medium">
 									<Image
 										src={Logo}
@@ -138,7 +138,7 @@ export default function Navbar() {
 								// eslint-disable-next-line no-constant-condition
 								(isConnected ? (
 									<Container className="flex items-center gap-4">
-										<Link href={"/notifications"}>
+										{/*<Link href={"/notifications"}>
 											<a>
 												<Button
 													css={{
@@ -154,7 +154,7 @@ export default function Navbar() {
 													/>
 												</Button>
 											</a>
-										</Link>
+												</Link>*/}
 										<Link href={"/create"}>
 											<a>
 												<Button
@@ -182,7 +182,7 @@ export default function Navbar() {
 			<Nav className="fixed top-0 left-0 w-full py-4 shadow md:hidden">
 				<Container className="flex flex-col h-full gap-2 px-8">
 					<Container className="flex items-center justify-between">
-						<Link href={isConnected ? "/discover" : "/"}>
+						<Link href={isConnected ? "/" : "/"}>
 							<a className="relative w-8 h-8 text-3xl font-medium">
 								<Image
 									src={Logo}

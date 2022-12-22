@@ -1,7 +1,11 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import {getCsrfToken} from "next-auth/react";
-import {MongoModelProfile, MongoModelUser} from "server/helpers/models";
+import {
+	MongoModelCreator,
+	MongoModelProfile,
+	MongoModelUser,
+} from "server/helpers/models";
 import {SiweMessage} from "siwe";
 
 // For more information on each option (and a full list of options) go to
@@ -75,7 +79,12 @@ export default async function auth(req: any, res: any) {
 		secret: process.env.NEXTAUTH_SECRET,
 		callbacks: {
 			async session({session, token}: {session: any; token: any}) {
-				const profile = await MongoModelProfile.findOne({address: token.sub});
+				const profile =
+					(await MongoModelProfile.findOne({address: token.sub})) ?? {};
+				const creator = await MongoModelCreator.findOne({
+					profile: profile._id,
+				});
+				profile.creator = creator;
 				session.address = token.sub;
 				session.profile = profile;
 				session.user.name = token.sub;

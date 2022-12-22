@@ -1,13 +1,13 @@
+// Get nfts listed for resale from blockchain for the given address
+
 import {connectMongoDB} from "server/database/engine";
 import {NextApiResponse} from "next";
 import {NextApiRequest} from "next";
-import LegacyNFTModel from "server/database/legacy/nft/NFT";
 import {
 	enforcePrivacyForNFTs,
 	returnWithSuccess,
 } from "server/database/engine/utils";
 import {MongoModelCreator} from "server/database/models/creator";
-import LegacyCreatorModel from "@db/legacy/profile/Creator";
 import {MongoModelNFT} from "server/helpers/models";
 
 export default async function handler(

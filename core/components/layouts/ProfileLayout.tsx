@@ -36,25 +36,30 @@ import {ComponentBasicProps} from "core/TreatCore";
 import ApplicationFrame from "./ApplicationFrame";
 import useSound from "use-sound";
 import Link from "next/link";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import axios from "axios";
 import {apiEndpoint} from "@utils/index";
 
 const creator_tabs = [
 	{
-		label: "Timeline",
+		label: "Subscription",
 		href: "",
-	},
-	{
-		label: "Sweetshop",
-		href: "/nfts",
 	},
 	{
 		label: "Collections",
 		href: "/collections",
 	},
 	{
-		label: "Portfolio",
+		label: "Created",
+		href: "/sweetshop",
+	},
+	{
+		label: "Listed",
+		href: "/listed",
+	},
+
+	{
+		label: "Owned",
 		href: "/portfolio",
 	},
 	/*{
@@ -65,12 +70,16 @@ const creator_tabs = [
 
 const profile_tabs = [
 	{
-		label: "Portfolio",
-		href: "/collected",
+		label: "Collections",
+		href: "/collections",
 	},
 	{
-		label: "Resale Marketplace",
-		href: "/nfts",
+		label: "Listed",
+		href: "/listed",
+	},
+	{
+		label: "Owned",
+		href: "/portfolio",
 	},
 ];
 
@@ -174,13 +183,6 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 
 	const isFollowing = followers.includes(loggedInUser?._id);
 
-	console.log({
-		profile,
-		index: followers.indexOf(loggedInUser?._id),
-		user: loggedInUser,
-		followers,
-	});
-
 	return (
 		<>
 			<SEOHead title={profile.username + " - Trit"} />
@@ -267,6 +269,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 							<Container className="flex h-auto relative">
 								<Container className="flex gap-x-4 h-fit">
 									{!isLoading &&
+										loggedInUser &&
 										loggedInUser.address !== ownerOfUserProfile.address && (
 											<Button
 												onClick={followOrUnfollow}

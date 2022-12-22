@@ -3,17 +3,20 @@ import Error404 from "@packages/error/404";
 import Error500 from "@packages/error/500";
 import RenderProfileNFTs from "@packages/post/profile/RenderProfileNFTs";
 import {SkeletonTritCollectiblePost, TritPost} from "@packages/post/TritPost";
+import {TritPostProps} from "@packages/post/types";
 import {SEOHead} from "@packages/seo/page";
 import {Container} from "@packages/shared/components/Container";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
+import Spinner from "@packages/shared/icons/Spinner";
+import DynamicSkeleton from "@packages/skeleton";
+import {TritPostSkeleton} from "@packages/skeleton/config";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
-import {useUser} from "core/auth/useUser";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import ProfileLayout from "core/components/layouts/ProfileLayout";
 import TreatCore from "core/TreatCore";
-import {useRouter} from "next/router";
+import {useSession} from "next-auth/react";
 import {useEffect, useMemo} from "react";
 import {useInView} from "react-intersection-observer";
 import {beforePageLoadGetUserProfile} from "server/page/userProfile";
@@ -23,22 +26,15 @@ export default function UserProfile(props: {
 	notFound: boolean;
 	data: any;
 }) {
-	if (props.notFound) {
-		return <Error404 />;
-	}
-
-	if (props.error) {
-		return <Error500 />;
-	}
-
+	const {data: session} = useSession();
 	const data = JSON.parse(props.data);
 	const {username} = data;
+	const {profile} = (session as any) ?? {profile: {}};
 	const {ref, inView} = useInView();
-	const {profile} = useUser();
 
-	const getcreatorNFTs = async (page) => {
+	const getListedNFTs = async (page) => {
 		const res = await axios.get(
-			`${apiEndpoint}/creator/${username}/subscription/nfts?page=${page}`
+			`${apiEndpoint}/profile/${username}/listed?page=${page}`
 		);
 		return res.data.data;
 	};
@@ -52,11 +48,19 @@ export default function UserProfile(props: {
 		isFetching,
 		error,
 	} = TreatCore.useInfiniteQuery({
-		queryKey: [`subscriptionNFTs:${username}`],
-		queryFn: ({pageParam = 1}) => getcreatorNFTs(pageParam),
+		queryKey: [`profileListedNFTs:${username}`],
+		queryFn: ({pageParam = 1}) => getListedNFTs(pageParam),
 		getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
 		getPreviousPageParam: (firstPage) => firstPage.prevPage ?? undefined,
 	});
+
+	if (props.notFound) {
+		return <Error404 />;
+	}
+
+	if (props.error) {
+		return <Error500 />;
+	}
 
 	const pages = creatorNFTsData ? creatorNFTsData.pages : [];
 
@@ -83,7 +87,7 @@ export default function UserProfile(props: {
 			isFetching={isFetching}
 			error={error}
 			posts={posts}
-			profile={profile ?? {}}
+			profile={profile}
 			username={username}
 			ref={ref}
 			fetchNextPage={fetchNextPage}
@@ -92,7 +96,5 @@ export default function UserProfile(props: {
 		/>
 	);
 }
-
-// TODO: If username is not creator, redirect to collected immediately
 
 export const getServerSideProps = beforePageLoadGetUserProfile;
