@@ -104,8 +104,8 @@ type ProfileLayoutProps = ComponentBasicProps & {
 		username: string;
 		display_name: string;
 		bio: string;
-		following: number;
-		followers: number;
+		following: Array<string>;
+		followers: Array<string>;
 		earnings: number;
 		address: string;
 		profile_pic?: string;
@@ -117,18 +117,17 @@ type ProfileLayoutProps = ComponentBasicProps & {
 
 export default function ProfileLayout(props: ProfileLayoutProps) {
 	const {isLoading, isConnected, profile: loggedInUser} = useUser();
-	const [following, setFollowing] = useState([]);
 	const [value, copy] = useCopyToClipboard();
 	const [copyFx] = useSound("/sound/toggle_on.wav");
 
 	const profile = props.userProfile;
 
-	const ownerOfUserProfile = {
+	const [ownerOfUserProfile, setOwnerOfUserProfile] = useState({
 		username: profile.username,
 		displayName: profile ? profile.display_name : "",
 		bio: profile ? profile.bio : "",
-		followers: profile.followers ?? 0,
-		following: profile.following ?? 0,
+		followers: profile.followers,
+		following: profile.following,
 		earnings: profile.earnings ?? 0,
 		address: profile ? profile.address : "",
 		profile_pic: profile.profile_pic,
@@ -139,7 +138,9 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 				? {color: "pink", name: "Verified Creator"}
 				: {color: "purple", name: "Collector"},
 		],
-	};
+	});
+
+	const [followers, setFollowers] = useState(profile.followers);
 
 	const copyProfileUrlToClipboard = () => {
 		// Get base domain
@@ -147,14 +148,38 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 		copy(`${baseDomain}/${ownerOfUserProfile.username}`);
 		copyFx();
 	};
-	useEffect(() => {
-		axios
-			.get(`${apiEndpoint}/profile/${profile.username}/following`)
-			.then((res) => {
-				setFollowing(res.data.data);
-			})
-			.catch((err) => console.log({err}));
-	}, []);
+
+	const followOrUnfollow = () => {
+		if (followers.includes(loggedInUser._id)) {
+			setFollowers(followers.filter((id) => id !== loggedInUser._id));
+
+			axios
+				.post(`${apiEndpoint}/profile/${profile.username}/unfollow`)
+				.catch((err) => {
+					console.log({err});
+					setFollowers(followers.concat(loggedInUser._id));
+				});
+		}
+
+		if (!followers.includes(loggedInUser._id)) {
+			setFollowers(followers.concat(loggedInUser._id));
+			axios
+				.post(`${apiEndpoint}/profile/${profile.username}/follow`)
+				.catch((err) => {
+					console.log({err});
+					setFollowers(followers.filter((id) => id !== loggedInUser._id));
+				});
+		}
+	};
+
+	const isFollowing = followers.includes(loggedInUser?._id);
+
+	console.log({
+		profile,
+		index: followers.indexOf(loggedInUser?._id),
+		user: loggedInUser,
+		followers,
+	});
 
 	return (
 		<>
@@ -218,7 +243,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 												appearance={"hiContrast"}
 												weight={"bold"}
 											>
-												{following.length}
+												{ownerOfUserProfile.following.length}
 											</Text>
 											{""}
 											<JustifiedSpan>Following</JustifiedSpan>
@@ -229,20 +254,9 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 												appearance={"hiContrast"}
 												weight={"bold"}
 											>
-												{ownerOfUserProfile.followers}
+												{followers.length}
 											</Text>
 											<JustifiedSpan>Followers</JustifiedSpan>
-										</>
-										<Bull />
-
-										<>
-											<Text
-												appearance={"hiContrast"}
-												weight={"bold"}
-											>
-												{ownerOfUserProfile.earnings}
-											</Text>
-											<JustifiedSpan>Collectors</JustifiedSpan>
 										</>
 									</Container>
 								</Container>
@@ -254,9 +268,19 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 								<Container className="flex gap-x-4 h-fit">
 									{!isLoading &&
 										loggedInUser.address !== ownerOfUserProfile.address && (
-											<Button className="focus:scale-110">
-												<span>Follow</span>
-												<FollowUser />
+											<Button
+												onClick={followOrUnfollow}
+												className="focus:scale-110"
+												appearance={isFollowing ? "surface" : "action"}
+											>
+												{isFollowing ? (
+													"Unfollow"
+												) : (
+													<>
+														<span>Follow</span>
+														<FollowUser />
+													</>
+												)}
 											</Button>
 										)}
 									<Link

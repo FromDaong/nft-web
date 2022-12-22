@@ -69,8 +69,6 @@ export const LikeIcon = styled(HeartIcon, {
 });
 
 export const TritPost = (props: TritPostProps) => {
-	console.log({props});
-
 	const {
 		liked,
 		likeNFT,

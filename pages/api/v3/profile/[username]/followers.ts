@@ -18,41 +18,8 @@ export default async function handler(
 
 	const profile = await MongoModelProfile.findOne({username});
 
-	if (profile.followers?.length > 0) {
-		return returnWithSuccess(profile.followers, res);
-	}
-
-	const tx = await MongoModelTransaction.aggregate([
-		{
-			$match: {
-				"metadata.balanceSender": profile.address,
-			},
-		},
-		{
-			$graphLookup: {
-				from: "profiles",
-				startWith: "$metadata.balanceReceiver",
-				connectFromField: "metadata.balanceSender",
-				connectToField: "address",
-				as: "followers",
-			},
-		},
-	]);
-
-	const followers = tx.map((tx) => tx.followers[0]);
-	const trimmedFollowers = Array.from(new Set(followers));
-
-	await MongoModelProfile.findOneAndUpdate(
-		{username},
-		{
-			$push: {
-				followers: trimmedFollowers,
-			},
-		}
-	);
-
 	return returnWithSuccess(
-		trimmedFollowers.map((follower) => follower._id),
+		profile.followers.map((follower) => follower._id),
 		res
 	);
 }
