@@ -1,30 +1,25 @@
-import {useEffect} from "react";
-import Router from "next/router";
-import useSWR from "swr";
+import {useSession} from "next-auth/react";
+import {useEffect, useState} from "react";
 
-export default function useUser({
-	redirectTo = "",
-	redirectIfFound = false,
-} = {}) {
-	const {data: user, mutate: mutateUser} = useSWR("/api/me");
+export const useUser = () => {
+	const {data, status} = useSession();
+	const [isConnected, setConnected] = useState(false);
+
+	const profile = (data as any)?.profile;
+
+	const isLoading = status === "loading";
 
 	useEffect(() => {
-		// if no redirect needed, just return (example: already on /dashboard)
-		// if user data not yet there (fetch in progress, logged in or not) then don't do anything yet
-		if (!redirectTo || !user) return;
-
-		if (
-			// If redirectTo is set, redirect if the user was not found.
-			(redirectTo && !redirectIfFound && !user?.isLoggedIn) ||
-			// If redirectIfFound is also set, redirect if the user was found
-			(redirectIfFound && user?.isLoggedIn)
-		) {
-			Router.push(redirectTo);
+		if (status === "authenticated") {
+			setConnected(true);
+		} else {
+			setConnected(false);
 		}
-	}, [user, redirectIfFound, redirectTo]);
+	}, [status]);
 
 	return {
-		user: user?.data as {user: any; profile: any} | undefined,
-		mutateUser,
+		isConnected,
+		isLoading,
+		profile,
 	};
-}
+};

@@ -27303,6 +27303,13 @@ snapdragon@^0.8.1:
     source-map-resolve "^0.5.0"
     use "^3.1.0"
 
+snd-lib@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/snd-lib/-/snd-lib-1.1.2.tgz#fc88c7ef8a913033a0ed3a29df7f0830b482acb9"
+  integrity sha512-Td/HsnJNwwbLAU3VkaaAMVXJs4bg3qeAFGRwcoNz9gPdFq6XCod6u51D0oHq690NB98vTOgwfKojLDZOFrdaHw==
+  dependencies:
+    events "^3.3.0"
+
 socket.io-adapter@~2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/socket.io-adapter/-/socket.io-adapter-2.4.0.tgz#b50a4a9ecdd00c34d4c8c808224daa1a786152a6"

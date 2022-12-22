@@ -3,7 +3,6 @@ import {
 	LikeNFT,
 	BlockProfile,
 	FollowTag as Interests,
-	Collection,
 } from "./graph/index";
 import {Followers, Following, SubscribedBy, SubscribedTo} from "./graph";
 import ModelCreator from "./users/creator";
@@ -13,6 +12,7 @@ import ModelUser from "./users/user";
 import NFTModel from "./nft";
 import Post from "./posts";
 import ModelTransaction from "./transaction";
+import CollectionModel from "./graph/collections";
 
 export const MongoModelCreator = ModelCreator;
 export const MongoModelProfile = ModelProfile;
@@ -29,4 +29,4 @@ export const MongoModelFollowingTag = Interests;
 export const MongoModelNFT = NFTModel;
 export const MongModelPost = Post;
 export const MongoModelTransaction = ModelTransaction;
-export const MongoModelCollection = Collection;
+export const MongoModelCollection = CollectionModel;

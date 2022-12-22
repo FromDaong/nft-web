@@ -368,3 +368,18 @@ export const TritPostSkeleton: Array<SkeletonRow> = [
 		],
 	},
 ];
+
+export const CollectionSkeleton: Array<SkeletonRow> = [
+	{
+		type: "row",
+		height: 30,
+		repeat: 4,
+		columns: [
+			{
+				start: 1,
+				length: 4,
+				radius: 8,
+			},
+		],
+	},
+];

@@ -40,7 +40,7 @@ export default function Collection(props) {
 		refetch,
 		isFetching,
 	} = TreatCore.useInfiniteQuery({
-		queryKey: ["sweetshopNFTsInfinite"],
+		queryKey: [`collectionNFTs:${collectionData.collection._id}`],
 		queryFn: ({pageParam = 1}) => getNFTs(pageParam, collection._id),
 		getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
 		getPreviousPageParam: (firstPage) => firstPage.prevPage ?? undefined,

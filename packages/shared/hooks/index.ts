@@ -2,7 +2,8 @@
 import uploadcareClient from "@utils/uploadcare";
 import axios from "axios";
 import {File} from "filepond";
-import {useEffect} from "react";
+import {useSession} from "next-auth/react";
+import {useEffect, useState} from "react";
 
 export const useStorageService = () => {
 	const uploadFile = async (file: File): Promise<any> => {

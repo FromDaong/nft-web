@@ -22,8 +22,11 @@ import {
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
 import VerifiedBadge from "@packages/shared/components/VerifiedBadge";
+import ArrowUp from "@packages/shared/icons/ArrowUp";
+import FollowUser from "@packages/shared/icons/FollowUser";
 import {SVG} from "@packages/shared/icons/Spinner";
 import {styled} from "@styles/theme";
+import {useUser} from "core/auth/useUser";
 import TreatCore, {ComponentBasicProps} from "core/TreatCore";
 import {useSession} from "next-auth/react";
 import ApplicationFrame from "./ApplicationFrame";
@@ -33,10 +36,13 @@ const creator_tabs = [
 		label: "Subscription Content",
 		href: "",
 	},
-
 	{
-		label: "Marketplace",
+		label: "Sweetshop",
 		href: "/nfts",
+	},
+	{
+		label: "Collections",
+		href: "/collections",
 	},
 	{
 		label: "Portfolio",
@@ -58,42 +64,6 @@ const profile_tabs = [
 		href: "/nfts",
 	},
 ];
-
-const ArrowUp = () => (
-	<SVG
-		xmlns="http://www.w3.org/2000/svg"
-		fill="none"
-		viewBox="0 0 24 24"
-		strokeWidth={1.5}
-		stroke="currentColor"
-		width={20}
-		height={20}
-	>
-		<path
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3V15"
-		/>
-	</SVG>
-);
-
-const FollowUser = () => (
-	<SVG
-		xmlns="http://www.w3.org/2000/svg"
-		fill="none"
-		viewBox="0 0 24 24"
-		strokeWidth={1.5}
-		width={18}
-		height={18}
-		css={{stroke: "$surface"}}
-	>
-		<path
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"
-		/>
-	</SVG>
-);
 
 const AvatarContainer = styled("div", {
 	borderRadius: "16px",
@@ -151,6 +121,9 @@ type ProfileLayoutProps = ComponentBasicProps & {
 };
 
 export default function ProfileLayout(props: ProfileLayoutProps) {
+	const {data: session} = useSession();
+	const {isLoading, isConnected, profile: userProfile} = useUser();
+
 	const profile = props.userProfile;
 	const user = {
 		username: profile.username,
@@ -252,12 +225,14 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 						</Container>
 						<Container variant={"unstyled"}>
 							<Container className="flex gap-x-4">
-								<Button>
-									<span>Follow</span>
-									<FollowUser />
-								</Button>
+								{!isLoading && userProfile.address !== user.address && (
+									<Button>
+										<span>Follow</span>
+										<FollowUser />
+									</Button>
+								)}
 								<Button appearance={"surface"}>
-									<span>Share profile</span>
+									<span>Copy profile link</span>
 									<ArrowUp />
 								</Button>
 							</Container>
