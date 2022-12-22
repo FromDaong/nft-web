@@ -7,6 +7,8 @@ import {SEOHead} from "@packages/seo/page";
 import {Container} from "@packages/shared/components/Container";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import Spinner from "@packages/shared/icons/Spinner";
+import DynamicSkeleton from "@packages/skeleton";
+import {TritPostSkeleton} from "@packages/skeleton/config";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
@@ -88,36 +90,14 @@ export default function UserProfile(props: {
 
 	return (
 		<ProfileLayout userProfile={data}>
-			<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+			<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 				{creatorNFTsLoading &&
 					[0, 1, 2, 3].map((i) => (
-						<Container
-							key={i}
-							className="col-span-1 border"
-							css={{
-								borderColor: "$subtleBorder",
-								padding: "16px",
-								borderRadius: "16px",
-							}}
-						>
-							<SkeletonTritCollectiblePost />
+						<Container key={i}>
+							<DynamicSkeleton config={TritPostSkeleton} />
 						</Container>
 					))}
-				{collectedNFTs?.length > 0 && !creatorNFTsLoading ? (
-					collectedNFTs?.map((post: TritPostProps) => (
-						<TritPost
-							key={post.id}
-							{...post}
-							noPrice
-							isMine={username === profile.username}
-						/>
-					))
-				) : (
-					<Container className="col-span-4 py-12 flex flex-col gap-2 items-center">
-						<Heading size={"sm"}>Eish, not a collector.</Heading>
-						<Text>This profile has not collected any Treat NFT's yet.</Text>
-					</Container>
-				)}
+
 				{creatorNFTError && (
 					<Container className="col-span-4 py-12 flex flex-col gap-2 items-center">
 						<Heading size={"sm"}>Eish, an error!</Heading>
@@ -126,6 +106,23 @@ export default function UserProfile(props: {
 						</Text>
 					</Container>
 				)}
+
+				{collectedNFTs?.length === 0 && !creatorNFTsLoading && (
+					<Container className="col-span-4 py-12 flex flex-col gap-2 items-center">
+						<Heading size={"sm"}>Eish, not a collector.</Heading>
+						<Text>This profile has not collected any Treat NFT's yet.</Text>
+					</Container>
+				)}
+
+				{collectedNFTs &&
+					collectedNFTs.map((post: TritPostProps) => (
+						<TritPost
+							key={post.id}
+							{...post}
+							noPrice
+							isMine={username === profile.username}
+						/>
+					))}
 			</div>
 		</ProfileLayout>
 	);
