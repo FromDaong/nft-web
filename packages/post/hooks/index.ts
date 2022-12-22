@@ -11,6 +11,7 @@ import {useAccount, useContract, useSigner} from "wagmi";
 export const useTritNFTUtils = (nft: any) => {
 	const {data: session} = useSession();
 	const [liked, setLikedNFT] = useState<undefined | boolean>(false);
+	const [isProtected, setIsProtected] = useState(nft.protected);
 	const listNFTModalProps = useDisclosure();
 	const cancelOrderModalProps = useDisclosure();
 	const transferNFTModalProps = useDisclosure();
@@ -40,6 +41,10 @@ export const useTritNFTUtils = (nft: any) => {
 			.catch(() => setLikedNFT(!liked));
 	};
 
+	const toggleImageProtection = () => {
+		setIsProtected(!isProtected);
+	};
+
 	const {isOwned, balance} = useGetIsNFTOwned(nft);
 
 	return {
@@ -52,6 +57,8 @@ export const useTritNFTUtils = (nft: any) => {
 		buyResaleNFTModalProps,
 		isMine: isOwned,
 		balance,
+		toggleImageProtection,
+		isProtected,
 	};
 };
 
@@ -332,6 +339,6 @@ export const useContracts = () => {
 		treatMinterContract,
 		creatorMartContract,
 		subscriptionsMart,
-		signer
+		signer,
 	};
 };

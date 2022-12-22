@@ -110,10 +110,9 @@ export default function NFTS(props) {
 				<SEOHead title="Explore NFTs" />
 				<Container className="flex flex-col gap-12 py-12">
 					<Container className="flex flex-col px-4 xl:px-0">
-						<Heading size="md">Browse sweetshop trits</Heading>
-						<Divider dir="horizontal" />
 						<Container>
 							<Container className="flex flex-col gap-4 md:flex-row md:justify-between">
+								<Heading size="sm">Discover content from our creators</Heading>
 								<Container className="flex gap-2 overflow-x-auto flex-nowrap">
 									{filterList.map((f) => (
 										<Container

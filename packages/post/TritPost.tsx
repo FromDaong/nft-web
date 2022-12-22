@@ -23,6 +23,14 @@ import CancelOrderModal from "@packages/modals/CancelOrderModal";
 import ListOrderModal from "@packages/modals/ListOrderModal";
 import PurchaseResaleNFTModal from "@packages/modals/PurchaseResaleNFTModal";
 import RectangleStack from "@packages/shared/icons/RectangleStack";
+import {
+	DropdownContainer,
+	DropdownContent,
+} from "@packages/navigation/components/DropdownContainer";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import {DropdownMenuItem} from "@packages/Dropdowns";
+import {useCopyToClipboard} from "@packages/shared/hooks";
+import {useRouter} from "next/router";
 
 export const StyledLoader = styled(ContentLoader, {
 	backgroundColor: "$surface",
@@ -83,6 +91,8 @@ export const TritPost = (props: TritPostProps) => {
 		cancelOrderModalProps,
 		buyResaleNFTModalProps,
 		isMine,
+		isProtected,
+		toggleImageProtection,
 	} = useTritNFTUtils(props);
 
 	const imageUrl = props.image?.ipfs;
@@ -153,7 +163,7 @@ export const TritPost = (props: TritPostProps) => {
 						<PostMediaContent
 							imageUrl={imageUrl}
 							blurhash={props.blurhash}
-							isProtected={!isMine && props.protected}
+							isProtected={isProtected}
 							caption={props.text}
 							overrideText={
 								"The creator wants you to collect this trit before you can preview the content"
@@ -179,14 +189,14 @@ export const TritPost = (props: TritPostProps) => {
 											/>
 										</FrostyBackgroundContainer>
 									)}
-									{(props.protected || soldOut || props.totm) && (
+									{(isProtected || soldOut || props.totm) && (
 										<Container className="flex justify-between w-full">
-											{props.protected && (
+											{isProtected && (
 												<FrostyBackgroundContainer
 													className="px-3 py-1 rounded-full"
 													css={{}}
 												>
-													{props.protected && (
+													{isProtected && (
 														<Container className="flex items-center justify-center gap-2">
 															<Text css={{color: "#ffffff"}}>
 																<EyeOffIcon
@@ -224,6 +234,9 @@ export const TritPost = (props: TritPostProps) => {
 				liked={liked}
 				likeNFT={likeNFT}
 				unlikeNFT={likeNFT}
+				creator={props.author.username}
+				toggleImageProtection={toggleImageProtection}
+				isProtected={isProtected}
 			/>
 			{props.isResale && !props.isMine && (
 				<Container className="py-2">
@@ -285,9 +298,9 @@ export const TritPost = (props: TritPostProps) => {
 const ActionSection = (props) => {
 	return (
 		<Container className="flex flex-col gap-2 px-2">
-			<SmallText className="px-2">
-				Liked by {props.likedBy.length} people
-			</SmallText>
+			<ImportantText className="px-2">
+				<SmallText>Liked by {props.likedBy.length} people</SmallText>
+			</ImportantText>
 			<Container className="px-2">
 				<Text className="line-clamp-1 text-xl">{props.name}</Text>
 				{!props.noPrice && (
@@ -302,6 +315,11 @@ const ActionSection = (props) => {
 				<ActionBar
 					liked={props.liked}
 					likeNFT={props.likeNFT}
+					_id={props._id}
+					creator={props.creator}
+					toggleImageProtection={props.toggleImageProtection}
+					isMine={props.isMine}
+					isProtected={props.isProtected}
 				/>
 			</Container>
 		</Container>
@@ -311,47 +329,131 @@ const ActionSection = (props) => {
 const ActionBar = (props) => {
 	return (
 		<Container
-			className="w-full grid grid-cols-3 divide-x rounded-lg"
-			css={{backgroundColor: "$surfaceOnSurface"}}
+			className="w-full grid grid-cols-3 "
+			css={{backgroundColor: "$surfaceOnSurface", borderRadius: "8px"}}
 		>
 			<Button
-				className="col-span-1 p-3"
+				className="col-span-1 p-3 "
 				appearance={"unstyled"}
-				css={{borderRadius: 0, padding: "8px", borderColor: "$subtleBorder"}}
+				onClick={props.likeNFT}
+				css={{
+					borderRadius: "8px",
+					padding: "8px",
+					borderColor: "$subtleBorder",
+					"&:hover": {backgroundColor: "$elementOnSurface"},
+				}}
 			>
 				{props.liked ? (
-					<HeartFilledIcon
-						width={20}
-						height={20}
-					/>
+					<Text css={{color: "$accentText"}}>
+						<HeartFilledIcon
+							width={20}
+							height={20}
+						/>
+					</Text>
 				) : (
 					<HeartIcon
 						width={20}
 						height={20}
 					/>
 				)}
+				<span>Like</span>
 			</Button>
 			<Button
-				className="col-span-1 p-3"
+				className="col-span-1 p-3 "
 				appearance={"unstyled"}
-				css={{borderRadius: 0, padding: "8px", borderColor: "$subtleBorder"}}
+				css={{
+					borderRadius: "8px",
+					padding: "8px",
+					borderColor: "$subtleBorder",
+					"&:hover": {backgroundColor: "$elementOnSurface"},
+					color: props.isMine ? "$accentText" : "inherit",
+				}}
 			>
 				<RectangleStack
 					height={20}
 					width={20}
 				/>
+				<span>{props.isMine ? "Owned" : "Buy"}</span>
 			</Button>
-			<Button
-				className="col-span-1 p-3"
-				appearance={"unstyled"}
-				css={{borderRadius: 0, padding: "8px", borderColor: "$subtleBorder"}}
-			>
-				<DotsHorizontalIcon
-					width={20}
-					height={20}
-				/>
-			</Button>
+			<MoreActionsDropdown
+				creator={props.creator}
+				id={props._id}
+				toggleImageProtection={props.toggleImageProtection}
+				isMine={props.isMine}
+				isProtected={props.isProtected}
+			/>
 		</Container>
+	);
+};
+
+const MoreActionsDropdown = (props) => {
+	const [, copy] = useCopyToClipboard();
+	const router = useRouter();
+
+	const copyToClipboard = () => {
+		copy(window.origin + "/post/nft/" + props.id);
+	};
+
+	const gotoCreator = () => {
+		router.push(`/${props.creator}`);
+	};
+
+	return (
+		<DropdownMenu.Root>
+			<DropdownMenu.Trigger className="col-span-1 w-full grid">
+				<Button
+					className="col-span-1 p-3 "
+					appearance={"unstyled"}
+					css={{
+						borderRadius: "8px",
+						padding: "8px",
+						borderColor: "$subtleBorder",
+						"&:hover": {backgroundColor: "$elementOnSurface"},
+					}}
+				>
+					<DotsHorizontalIcon
+						width={20}
+						height={20}
+					/>
+					<span>More</span>
+				</Button>
+			</DropdownMenu.Trigger>
+			<DropdownMenu.Portal>
+				<DropdownMenu.Content className="z-30 p-3 shadow-xl gap-y-3 rounded-xl bg-white">
+					<DropdownMenuItem
+						onClick={copyToClipboard}
+						className="px-4 py-2 flex gap-2"
+					>
+						<Text>🌍</Text>
+						<Text>
+							<ImportantText>Get NFT link</ImportantText>
+						</Text>
+					</DropdownMenuItem>
+					<DropdownMenuItem
+						onClick={gotoCreator}
+						className="px-4 py-2 flex gap-2"
+					>
+						<Text>🎨</Text>
+						<Text>
+							<ImportantText>Go to creator</ImportantText>
+						</Text>
+					</DropdownMenuItem>
+					{props.isMine && (
+						<DropdownMenuItem
+							onClick={props.toggleImageProtection}
+							className="px-4 py-2 flex gap-2"
+						>
+							<Text>👀</Text>
+							<Text>
+								<ImportantText>
+									{props.isProtected ? "Show HD version" : "Hide HD media"}
+								</ImportantText>
+							</Text>
+						</DropdownMenuItem>
+					)}
+				</DropdownMenu.Content>
+			</DropdownMenu.Portal>
+		</DropdownMenu.Root>
 	);
 };
 
