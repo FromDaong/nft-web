@@ -38,6 +38,11 @@ export const Button = styled("button", {
 				backgroundColor: "$elementOnSurface",
 				color: "$textContrast",
 			},
+			outline: {
+				backgroundColor: "$surface",
+				color: "$textContrast",
+				border: "1.5px solid $textContrast",
+			},
 			subtle: {
 				backgroundColor: "$surfaceOnSurface",
 			},

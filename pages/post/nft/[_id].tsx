@@ -113,6 +113,8 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 			? []
 			: youMightAlsoLikeData?.map((post) => legacy_nft_to_new(post));
 
+	// T-39 Get cross-selling nft data from obviously API and show them under you might like.
+
 	return (
 		<>
 			<Container
@@ -479,8 +481,8 @@ export const getServerSideProps = async (context) => {
 	}
 
 	await MongoModelNFT.findByIdAndUpdate(_id, {
-		views: {
-			$push: "temporary",
+		$push: {
+			views: "temporary",
 		},
 	});
 

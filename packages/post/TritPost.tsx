@@ -16,6 +16,8 @@ import CancelOrderModal from "@packages/modals/CancelOrderModal";
 import ListOrderModal from "@packages/modals/ListOrderModal";
 import PurchaseResaleNFTModal from "@packages/modals/PurchaseResaleNFTModal";
 import {ActionSection, UserBadge} from "./UtilityComponents";
+import {useEffect} from "react";
+import TreatCore from "core/TreatCore";
 
 export const FrostyBackgroundContainer = styled(Container, {
 	backgroundColor: "#ffffff33",
@@ -51,6 +53,13 @@ export const TritPost = (props: TritPostProps) => {
 	const soldOut = props.collection?.minted === props.max_supply;
 
 	// T-28 check if user owns this nft and get the units owned
+
+	useEffect(() => {
+		TreatCore.triggerEvent("post_impression", {
+			_id: props._id,
+			nftId: props.id,
+		});
+	}, []);
 
 	return (
 		<Container

@@ -1,4 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import {ArrowLeftIcon, ArrowRightIcon} from "@heroicons/react/outline";
+import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Heading} from "@packages/shared/components/Typography/Headings";
 import DynamicSkeleton from "@packages/skeleton";
@@ -23,11 +25,7 @@ export default function TreatOfTheMonthCollectionSection(props: {
 		display_name: string;
 	}>;
 }) {
-	const {
-		isLoading: featuredCreatorLoading,
-		error: featuredCreatorError,
-		data: featuredCreator,
-	} = TreatCore.useQuery({
+	const {data: featuredCreator} = TreatCore.useQuery({
 		queryKey: ["featuredCreator"],
 		queryFn: getTrendingCreators,
 		refetchOnWindowFocus: false,
@@ -37,74 +35,50 @@ export default function TreatOfTheMonthCollectionSection(props: {
 
 	return (
 		<Container className="grid grid-cols-1 gap-8 xl:grid-cols-2">
-			<Container
-				className="flex flex-col h-auto gap-4 p-4 border rounded-xl drop-shadow-sm"
-				css={{
-					backgroundColor: "$elementSurface",
-					borderRadius: "32px",
-				}}
-			>
-				<Container className="grid grid-cols-2 gap-4 lg:grid-cols-3 ">
-					{(props.collectionItems && props.collectionItems.length > 0
-						? props.collectionItems
-						: new Array(6).fill(0)
-					)
-						.slice(0, 6)
-						.map((item, i) => (
-							<Container
-								key={item.id}
-								className={`overflow-hidden h-[140px] md:h-[240px] lg:h-[320px] ${
-									i > 3 ? "hidden lg:flex" : "inherit"
-								}`}
-								css={{
-									background: item.image
-										? `url('https://treatnfts.gumlet.io/api/v3/image?default=${
-												item.image.ipfs ?? item.image.ipfs
-										  }${item.protected ? "&blur=30" : ""}')`
-										: "$surfaceOnSurface",
-									backgroundColor: "$surfaceOnSurface",
-									backgroundSize: "cover",
-									backgroundPosition: "center",
-									borderRadius: "16px",
-								}}
-							/>
-						))}
-				</Container>
-				<Container className="flex items-center gap-2">
-					{props.collectionItems.length > 0 ? (
-						<>
-							<Container className="flex">
-								<Link href={`/${props.author[0]?.username}`}>
-									<a>
-										<UserAvatar
-											value={props.author[0]?.username}
-											size={32}
-										/>
-									</a>
-								</Link>
-							</Container>
-							<Heading size="xs">{props.title}</Heading>
-						</>
-					) : (
-						<DynamicSkeleton config={CollectionSectionHeading} />
-					)}
-				</Container>
-			</Container>
-			<Container
-				className="flex flex-col h-auto gap-4 p-4 border rounded-xl drop-shadow-sm"
-				css={{
-					backgroundColor: "$elementSurface",
-					borderRadius: "32px",
-				}}
-			>
-				<Container className="grid grid-cols-2 gap-4 lg:grid-cols-3">
-					{(!featuredCreatorLoading && !featuredCreatorError
-						? featuredCreator?.nfts
-						: new Array(6).fill(0)
-					).map((item, i) => (
+			{
+				<PreviewCollection
+					collectionItems={props.collectionItems}
+					title={props.title}
+					author={props.author[0]}
+				/>
+			}
+			{
+				<PreviewCollection
+					collectionItems={featuredCreator?.nfts ?? []}
+					title="Featured Creator"
+					author={featuredCreator?.profile[0] ?? {}}
+				/>
+			}
+		</Container>
+	);
+}
+
+function PreviewCollection(props: {
+	collectionItems: Array<TritPostProps>;
+	title: string;
+	author: {
+		username: string;
+		display_name: string;
+	};
+}) {
+	return (
+		<Container
+			className="flex flex-col h-auto gap-4 p-4 border rounded-xl drop-shadow-sm"
+			css={{
+				backgroundColor: "$elementSurface",
+				borderRadius: "32px",
+			}}
+		>
+			<Container className="flex flex-nowrap overflow-x-auto md:grid md:grid-cols-2 gap-4 lg:grid-cols-3 scrollbar-hide overscroll-contain snap-x snap-mandatory">
+				{(props.collectionItems && props.collectionItems.length > 0
+					? props.collectionItems
+					: new Array(6).fill(0)
+				)
+					.slice(0, 6)
+					.map((item, i) => (
 						<Container
 							key={item.id}
-							className={`overflow-hidden h-[140px] md:h-[240px] lg:h-[320px] ${
+							className={`w-[80%] md:w-auto flex-shrink-0 overflow-hidden h-[280px] lg:h-[320px] snap-center ${
 								i > 3 ? "hidden lg:flex" : "inherit"
 							}`}
 							css={{
@@ -120,30 +94,25 @@ export default function TreatOfTheMonthCollectionSection(props: {
 							}}
 						/>
 					))}
-				</Container>
-				<Container className="flex items-center gap-2">
-					{!featuredCreatorLoading && !featuredCreatorError ? (
-						<>
-							<Container className="flex">
-								<Link href={`/${featuredCreator?.profile[0].username}`}>
-									<a>
-										<UserAvatar
-											value={featuredCreator?.profile[0].username}
-											size={32}
-										/>
-									</a>
-								</Link>
-							</Container>
-							<Heading size="xs">
-								{featuredCreator?.profile[0].display_name === ""
-									? featuredCreator?.profile[0].username
-									: featuredCreator?.profile[0].display_name}
-							</Heading>
-						</>
-					) : (
-						<DynamicSkeleton config={CollectionSectionHeading} />
-					)}
-				</Container>
+			</Container>
+			<Container className="flex items-center gap-2">
+				{props.collectionItems.length > 0 ? (
+					<>
+						<Container className="flex">
+							<Link href={`/${props.author.username}`}>
+								<a>
+									<UserAvatar
+										value={props.author.username}
+										size={32}
+									/>
+								</a>
+							</Link>
+						</Container>
+						<Heading size="xs">{props.title}</Heading>
+					</>
+				) : (
+					<DynamicSkeleton config={CollectionSectionHeading} />
+				)}
 			</Container>
 		</Container>
 	);

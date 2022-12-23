@@ -113,3 +113,14 @@ html {
 	box-shadow: drop-shadow(0 20px 13px rgb(110 43 215 / 6%))
 		drop-shadow(0 8px 5px rgb(147 65 201 / 14%));
 }
+
+/* For Webkit-based browsers (Chrome, Safari and Opera) */
+.scrollbar-hide::-webkit-scrollbar {
+	display: none;
+}
+
+/* For IE, Edge and Firefox */
+.scrollbar-hide {
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+}

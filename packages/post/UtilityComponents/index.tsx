@@ -14,13 +14,11 @@ import {useCopyToClipboard} from "@packages/shared/hooks";
 import {useRouter} from "next/router";
 import Link from "next/link";
 import UserAvatar from "core/auth/components/Avatar";
+import {styled} from "@stitches/react";
 
 export const ActionSection = (props) => {
 	return (
 		<Container className="flex flex-col gap-2 px-2">
-			<ImportantText className="px-2">
-				<SmallText>Liked by {props.likedBy?.length} people</SmallText>
-			</ImportantText>
 			<Container className="px-2">
 				<Text className="line-clamp-1 text-xl">{props.name}</Text>
 				{!props.noPrice && (
@@ -31,6 +29,9 @@ export const ActionSection = (props) => {
 					</Container>
 				)}
 			</Container>
+			<ImportantText className="px-2">
+				<SmallText>Liked by {props.likedBy?.length ?? 0} people</SmallText>
+			</ImportantText>
 			<Container className="flex gap-2 px-2">
 				<ActionBar
 					liked={props.liked}
@@ -46,6 +47,10 @@ export const ActionSection = (props) => {
 	);
 };
 
+const UnlikeIcon = styled(HeartFilledIcon, {
+	color: "inherit",
+});
+
 export const ActionBar = (props) => {
 	const router = useRouter();
 	const gotoNFT = () => {
@@ -53,24 +58,26 @@ export const ActionBar = (props) => {
 	};
 
 	return (
-		<Container
-			className="w-full grid grid-cols-3 "
-			css={{backgroundColor: "$surfaceOnSurface", borderRadius: "8px"}}
-		>
+		<Container className="w-full flex gap-4">
+			<MoreActionsDropdown
+				creator={props.creator}
+				id={props._id}
+				toggleImageProtection={props.toggleImageProtection}
+				isMine={props.isMine}
+				isProtected={props.isProtected}
+			/>
 			<Button
-				className="col-span-1 p-3 "
-				appearance={"unstyled"}
+				className="p-3 "
 				onClick={props.likeNFT}
+				appearance={"unstyled"}
 				css={{
 					borderRadius: "8px",
-					padding: "8px",
-					borderColor: "$subtleBorder",
-					"&:hover": {backgroundColor: "$elementOnSurface"},
+					padding: "8px 2px",
 				}}
 			>
 				{props.liked ? (
-					<Text css={{color: "$accentText"}}>
-						<HeartFilledIcon
+					<Text>
+						<UnlikeIcon
 							width={20}
 							height={20}
 						/>
@@ -81,33 +88,7 @@ export const ActionBar = (props) => {
 						height={20}
 					/>
 				)}
-				<span>Like</span>
 			</Button>
-			<Button
-				className="col-span-1 p-3 "
-				appearance={"unstyled"}
-				css={{
-					borderRadius: "8px",
-					padding: "8px",
-					borderColor: "$subtleBorder",
-					"&:hover": {backgroundColor: "$elementOnSurface"},
-					color: props.isMine ? "$accentText" : "inherit",
-				}}
-				onClick={gotoNFT}
-			>
-				<RectangleStack
-					height={20}
-					width={20}
-				/>
-				<span>{props.isMine ? "Owned" : "View"}</span>
-			</Button>
-			<MoreActionsDropdown
-				creator={props.creator}
-				id={props._id}
-				toggleImageProtection={props.toggleImageProtection}
-				isMine={props.isMine}
-				isProtected={props.isProtected}
-			/>
 		</Container>
 	);
 };
@@ -126,15 +107,13 @@ export const MoreActionsDropdown = (props) => {
 
 	return (
 		<DropdownMenu.Root>
-			<DropdownMenu.Trigger className="col-span-1 w-full grid">
+			<DropdownMenu.Trigger className="col-span-3 w-full grid">
 				<Button
-					className="col-span-1 p-3 "
-					appearance={"unstyled"}
+					className="col-span-1 p-3"
+					appearance={"surface"}
 					css={{
 						borderRadius: "8px",
 						padding: "8px",
-						borderColor: "$subtleBorder",
-						"&:hover": {backgroundColor: "$elementOnSurface"},
 					}}
 				>
 					<DotsHorizontalIcon

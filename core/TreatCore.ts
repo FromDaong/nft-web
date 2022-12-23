@@ -1,4 +1,6 @@
 import {QueryClient, useInfiniteQuery, useQuery} from "@tanstack/react-query";
+import {apiEndpoint} from "@utils/index";
+import axios from "axios";
 import {ReactNode, useEffect, useRef} from "react";
 
 export type Context = {currentUserEmail: string};
@@ -27,19 +29,28 @@ export default class TreatCore {
 	 * @param event_type
 	 * @param metadata
 	 */
-	async triggerEvent(event_type: string, metadata: object) {
+	static async triggerEvent(event_type: string, metadata: object) {
 		// T-19 Implement logger
 		// T-23 Sync to server
-
-		const meta = JSON.stringify(metadata);
-		const event = {
-			id: "",
+		await axios.post(`${apiEndpoint}/analytics/push`, {
 			event_type,
-			metadata: meta,
-		};
+			metadata: JSON.stringify(metadata),
+			timestamp: new Date(),
+		});
+	}
 
-		const log_event = {id: "", created_at: Date.now(), metadata: meta};
-		console.log({event_type, metadata: JSON.stringify(metadata)});
+	static async logThis(
+		status: "critical" | "error" | "warning" | "info",
+		message: string,
+		metadata: object
+	) {
+		// T-20 Implement logger
+		await axios.post(`${apiEndpoint}/analytics/log/push`, {
+			status,
+			message,
+			metadata: JSON.stringify(metadata),
+			timestamp: new Date(),
+		});
 	}
 
 	static getFormattedNumber = (value: number): string => {

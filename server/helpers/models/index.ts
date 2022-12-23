@@ -13,6 +13,8 @@ import NFTModel from "./nft";
 import Post from "./posts";
 import ModelTransaction from "./transaction";
 import CollectionModel from "./graph/collections";
+import ModelLog from "./events/Log";
+import ModelAnalytics from "./events/Analytics";
 
 export const MongoModelCreator = ModelCreator;
 export const MongoModelProfile = ModelProfile;
@@ -30,3 +32,5 @@ export const MongoModelNFT = NFTModel;
 export const MongModelPost = Post;
 export const MongoModelTransaction = ModelTransaction;
 export const MongoModelCollection = CollectionModel;
+export const MongoModelLog = ModelLog;
+export const MongoModelAnalytics = ModelAnalytics;
