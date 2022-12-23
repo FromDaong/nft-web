@@ -2,7 +2,7 @@
 import {ArrowRightIcon} from "@heroicons/react/outline";
 import Error404 from "@packages/error/404";
 import Error500 from "@packages/error/500";
-import {SkeletonTritCollectiblePost, TritPost} from "@packages/post/TritPost";
+import {TritPost} from "@packages/post/TritPost";
 import {TritPostProps} from "@packages/post/types";
 import {SEOHead} from "@packages/seo/page";
 import {Button} from "@packages/shared/components/Button";

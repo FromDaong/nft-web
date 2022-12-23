@@ -2,7 +2,7 @@
 import Error404 from "@packages/error/404";
 import Error500 from "@packages/error/500";
 import RenderProfileNFTs from "@packages/post/profile/RenderProfileNFTs";
-import {SkeletonTritCollectiblePost, TritPost} from "@packages/post/TritPost";
+import {TritPost} from "@packages/post/TritPost";
 import {SEOHead} from "@packages/seo/page";
 import {Container} from "@packages/shared/components/Container";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
@@ -93,6 +93,6 @@ export default function UserProfile(props: {
 	);
 }
 
-// TODO: If username is not creator, redirect to collected immediately
+// T-32 If username is not creator, redirect to collected immediately
 
 export const getServerSideProps = beforePageLoadGetUserProfile;

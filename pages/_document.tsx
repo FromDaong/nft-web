@@ -71,19 +71,6 @@ class MyDocument extends Document {
 						href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
 						rel="stylesheet"
 					/>
-					<link
-						rel="preconnect"
-						href="https://fonts.cdnfonts.com"
-					/>
-					<link
-						rel="preconnect"
-						href="https://fonts.cdnfonts.com"
-						crossOrigin="true"
-					/>
-					<link
-						href="https://fonts.cdnfonts.com/css/helvetica-2"
-						rel="stylesheet"
-					/>
 
 					<meta
 						name="theme-color"
@@ -100,6 +87,8 @@ class MyDocument extends Document {
 
 					<Script
 						strategy="lazyOnload"
+						async
+						defer
 						dangerouslySetInnerHTML={{
 							__html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
               new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

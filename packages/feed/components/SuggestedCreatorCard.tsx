@@ -6,6 +6,8 @@ import {
 	SmallText,
 	Text,
 } from "@packages/shared/components/Typography/Text";
+import DynamicSkeleton from "@packages/skeleton";
+import {FeaturedCreatorSkeleton} from "@packages/skeleton/config";
 import UserAvatar from "core/auth/components/Avatar";
 import Link from "next/link";
 import LiveTag from "./LiveTag";
@@ -25,54 +27,8 @@ type SuggestedCreatorData = {
 	subscribers?: number;
 };
 
-import {StyledLoader} from "@packages/post/TritPost";
-
 export const SkeletonExpandedSuggestedCreatorCard = (props) => (
-	<StyledLoader
-		speed={1}
-		width={320}
-		height={180}
-		viewBox="0 0 320 180"
-		{...props}
-	>
-		<circle
-			cx="29"
-			cy="37"
-			r="22"
-		/>
-		<rect
-			x="66"
-			y="18"
-			rx="2"
-			ry="2"
-			width="133"
-			height="14"
-		/>
-		<rect
-			x="66"
-			y="37"
-			rx="2"
-			ry="2"
-			width="135"
-			height="15"
-		/>
-		<rect
-			x="67"
-			y="72"
-			rx="2"
-			ry="2"
-			width="317"
-			height="51"
-		/>
-		<rect
-			x="66"
-			y="139"
-			rx="2"
-			ry="2"
-			width="317"
-			height="21"
-		/>
-	</StyledLoader>
+	<DynamicSkeleton config={FeaturedCreatorSkeleton} />
 );
 
 export default function SuggestedCreatorCard(props: SuggestedCreatorData) {
