@@ -4,7 +4,7 @@ import {useDisclosure} from "@packages/hooks";
 import {Modal} from "@packages/modals";
 import FilterNFTResultsModal from "@packages/modals/FilterNFTResultsModal";
 import SweetshopSortBy from "@packages/post/SweetshopSortBy";
-import {SkeletonTritCollectiblePost, TritPost} from "@packages/post/TritPost";
+import {TritPost} from "@packages/post/TritPost";
 import {SEOHead} from "@packages/seo/page";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
@@ -15,6 +15,8 @@ import {
 	ImportantText,
 	MutedText,
 } from "@packages/shared/components/Typography/Text";
+import DynamicSkeleton from "@packages/skeleton";
+import {TritPostSkeleton} from "@packages/skeleton/config";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
@@ -27,7 +29,7 @@ import {useInView} from "react-intersection-observer";
 
 const getSweetshopNFTs = async (page: number, filterString: string) => {
 	const res = await axios.get(
-		`${apiEndpoint}/marketplace?page=${page ?? 1}${
+		`${apiEndpoint}/marketplace/activity?page=${page ?? 1}${
 			filterString ? "&market=" + filterString : ""
 		}`
 	);
@@ -68,7 +70,17 @@ export default function NFTS(props) {
 			return pages
 				.map((page) => page.docs)
 				.flat()
-				.map((post) => legacy_nft_to_new(post));
+				.map((post) =>
+					legacy_nft_to_new({
+						...post.nft,
+						price: post.price,
+						_id: post._id,
+						creator: {
+							...post.creator,
+							profile: post.creator_profile,
+						},
+					})
+				);
 		} else {
 			return [];
 		}
@@ -168,7 +180,7 @@ export default function NFTS(props) {
 													borderRadius: "16px",
 												}}
 											>
-												<SkeletonTritCollectiblePost />
+												<DynamicSkeleton config={TritPostSkeleton} />
 											</Container>
 									  ))}
 							</InfinityScrollListing>
