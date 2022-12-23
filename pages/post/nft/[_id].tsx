@@ -28,12 +28,7 @@ import {
 	useGetIsNFTOwned,
 	useTritNFTUtils,
 } from "@packages/post/hooks";
-import {
-	DislikeIcon,
-	LikeIcon,
-	SkeletonTritCollectiblePost,
-	TritPost,
-} from "@packages/post/TritPost";
+import {TritPost} from "@packages/post/TritPost";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import CreatorBadge from "@packages/shared/components/CreatorBadget";
@@ -47,6 +42,8 @@ import {
 } from "@packages/shared/components/Typography/Text";
 import {useFullScreen} from "@packages/shared/hooks";
 import RectangleStack from "@packages/shared/icons/RectangleStack";
+import DynamicSkeleton from "@packages/skeleton";
+import {TritPostSkeleton} from "@packages/skeleton/config";
 import {
 	EnterFullScreenIcon,
 	HeartFilledIcon,
@@ -59,6 +56,7 @@ import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import TreatCore from "core/TreatCore";
 import {BigNumber, ethers} from "ethers";
+import {unstable_getServerSession} from "next-auth";
 import Link from "next/link";
 import {useEffect, useState} from "react";
 import {MongoModelNFT, MongoModelTransaction} from "server/helpers/models";
@@ -225,17 +223,10 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 											/>
 									  ))
 									: [0, 1, 2, 3].map((i) => (
-											<Container
-												key={i}
-												className="col-span-1 border"
-												css={{
-													borderColor: "$subtleBorder",
-													padding: "8px",
-													borderRadius: "16px",
-												}}
-											>
-												<SkeletonTritCollectiblePost />
-											</Container>
+											<DynamicSkeleton
+												key={"skeleton" + i}
+												config={TritPostSkeleton}
+											/>
 									  ))}
 							</Container>
 						</Container>
@@ -273,17 +264,10 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 												/>
 											))
 									: [0, 1, 2].map((i) => (
-											<Container
-												key={i}
-												className="col-span-1 border"
-												css={{
-													borderColor: "$subtleBorder",
-													padding: "8px",
-													borderRadius: "16px",
-												}}
-											>
-												<SkeletonTritCollectiblePost />
-											</Container>
+											<DynamicSkeleton
+												key={"skeleton2:" + i}
+												config={TritPostSkeleton}
+											/>
 									  ))}
 							</Container>
 						</Container>
@@ -493,6 +477,12 @@ export const getServerSideProps = async (context) => {
 			notFound: true,
 		};
 	}
+
+	await MongoModelNFT.findByIdAndUpdate(_id, {
+		views: {
+			$push: "temporary",
+		},
+	});
 
 	const transactions = await MongoModelTransaction.find({
 		"metadata.nftId": nft.id,

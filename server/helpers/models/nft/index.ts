@@ -87,8 +87,15 @@ const NFTSchema = new mongoose.Schema(
 			ref: "NFTCollection",
 		},
 		listedBy: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "Profile",
+			type: String,
+		},
+		views: [
+			{
+				type: String,
+			},
+		],
+		listedDate: {
+			type: Number,
 		},
 	},
 	{

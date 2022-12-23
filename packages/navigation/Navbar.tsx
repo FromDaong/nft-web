@@ -54,8 +54,8 @@ const NotificationsIcon = (props) => {
 
 export default function Navbar() {
 	const {status} = useSession();
-
-	const isConnected = status === "authenticated";
+	const {isConnected: connected} = useAccount();
+	const isConnected = status === "authenticated" && connected;
 	const loading = status === "loading";
 	console.log({isConnected, status});
 

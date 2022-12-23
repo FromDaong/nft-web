@@ -311,7 +311,7 @@ export const useContracts = () => {
 
 	const treatSubscriptionsContract = useContract({
 		addressOrName: contractAddresses.treatSubscriptions[56],
-		contractInterface: ABI.treatSubscribtions,
+		contractInterface: ABI.treatSubscriptions,
 		signerOrProvider: signer,
 	});
 

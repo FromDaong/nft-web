@@ -333,14 +333,14 @@ export const useSubscriptionData = (creator_address: string) => {
 
 	const {data, isError, isLoading} = useContractRead({
 		addressOrName: contractAddresses.treatSubscriptions[56],
-		contractInterface: ABI.treatSubscribtions,
+		contractInterface: ABI.treatSubscriptions,
 		functionName: "creatorSubscriptionCost",
 		args: [creator_address],
 	});
 
 	const subscriptionContract = useContract({
 		addressOrName: contractAddresses.treatSubscriptions[56],
-		contractInterface: ABI.treatSubscribtions,
+		contractInterface: ABI.treatSubscriptions,
 		signerOrProvider: signer,
 	});
 

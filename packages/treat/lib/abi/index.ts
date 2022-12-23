@@ -36,7 +36,7 @@ export const ABI = {
 	treatMarketReader: TreatMarketReaderAbi,
 	treatMarketplace: TreatMarketplaceAbi,
 	totmMart: TreatMartAbi,
-	treatSubscribtions: TreatSubscriptionsAbi,
+	treatSubscriptions: TreatSubscriptionsAbi,
 	treatTradeIn: TreatTradeInAbi,
 	treatV1ForV2: TreatV1ForV2Abi,
 	weth: WETHAbi,

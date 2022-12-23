@@ -5,7 +5,7 @@ import {BenefitsCard} from "@packages/shared/components/Card/MarketingPages/Bene
 import Footer from "@packages/shared/components/Footer";
 import {Divider, ShortDivider} from "@packages/shared/components/Divider";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
-import {SkeletonTritCollectiblePost, TritPost} from "@packages/post/TritPost";
+import {TritPost} from "@packages/post/TritPost";
 import SuggestedCreatorCard, {
 	SkeletonExpandedSuggestedCreatorCard,
 } from "@packages/feed/components/SuggestedCreatorCard";
@@ -23,6 +23,7 @@ import DynamicSkeleton from "@packages/skeleton";
 import {
 	FeaturedCreatorSkeleton,
 	HeadingSkeleton,
+	TritPostSkeleton,
 } from "@packages/skeleton/config";
 
 // TODO: Use intersection observer to change navbar color.
@@ -33,7 +34,7 @@ const getTrendingNFTs = async () => {
 };
 
 const getTrendingCreators = async () => {
-	const res = await axios.get(`${apiEndpoint}/profile/`);
+	const res = await axios.get(`${apiEndpoint}/profile`);
 	return res.data.data;
 };
 
@@ -109,20 +110,20 @@ export default function Index() {
 								// <Heading size="sm">Discover Treat creators</Heading>
 							}
 						</Container>
-						<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+						<Container className="grid grid-cols-1 gap-8 md:grid-cols-2  xl:grid-cols-4">
 							{!trendingCreatorError && !trendingCreatorsLoading
 								? trendingCreators?.slice(0, 4).map((creator) => (
 										<SuggestedCreatorCard
 											key={creator._id}
 											username={creator.username}
-											display_name={creator.profile[0].display_name}
-											avatar={creator.profile[0].profile_picture}
-											bio={creator.profile[0].bio}
+											display_name={creator.profile?.display_name}
+											avatar={creator.profile?.profile_picture}
+											bio={creator.profile?.bio}
 											isExpanded
 											border
 											live={creator.livestream_active}
-											followers={creator.profile[0].followers}
-											subscribers={creator.profile[0].following}
+											followers={creator.profile?.followers}
+											subscribers={creator.profile?.following}
 										/>
 								  ))
 								: [0, 1, 2, 4].map((i) => (
@@ -158,7 +159,7 @@ export default function Index() {
 								</a>
 							</Link>
 						</Container>
-						<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:gap-4">
+						<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4 lg:gap-4">
 							{!trendingNFTError && !trendingNFTsLoading
 								? trendingNFTs.map((item, i) => (
 										<Container
@@ -183,7 +184,7 @@ export default function Index() {
 												borderRadius: "16px",
 											}}
 										>
-											<SkeletonTritCollectiblePost />
+											<DynamicSkeleton config={TritPostSkeleton} />
 										</Container>
 								  ))}
 						</Container>
