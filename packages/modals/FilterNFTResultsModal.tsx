@@ -15,7 +15,7 @@ export default function FilterNFTResultsModal({isOpen, onClose}) {
 			onClose={onClose}
 		>
 			<Container className="flex flex-col gap-4">
-				<Container className="flex flex-col gap-4 min-w-[400px]">
+				<Container className="flex flex-col gap-4 lg:min-w-[400px]">
 					<Heading size="xs">Sort by</Heading>
 					<Container className="grid grid-cols-1 gap-2">
 						<Container className="flex justify-between items-center gap-2 py-3 rounded-[8px] px-4 bg-gray-100 hover:scale-105 transition-all duration-200 cursor-pointer">

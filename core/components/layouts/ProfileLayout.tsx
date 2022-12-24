@@ -32,56 +32,13 @@ import ArrowUp from "@packages/shared/icons/ArrowUp";
 import FollowUser from "@packages/shared/icons/FollowUser";
 import {styled} from "@styles/theme";
 import {useUser} from "core/auth/useUser";
-import {ComponentBasicProps} from "core/TreatCore";
+import TreatCore, {ComponentBasicProps} from "core/TreatCore";
 import ApplicationFrame from "./ApplicationFrame";
 import useSound from "use-sound";
 import Link from "next/link";
 import {useState} from "react";
 import axios from "axios";
 import {apiEndpoint} from "@utils/index";
-
-const creator_tabs = [
-	{
-		label: "Subscription",
-		href: "",
-	},
-	{
-		label: "Collections",
-		href: "/collections",
-	},
-	{
-		label: "Created",
-		href: "/sweetshop",
-	},
-	{
-		label: "Listed",
-		href: "/listed",
-	},
-
-	{
-		label: "Owned",
-		href: "/portfolio",
-	},
-	/*{
-    label: "Curated",
-    href: "/curated",
-  },*/
-];
-
-const profile_tabs = [
-	{
-		label: "Collections",
-		href: "/collections",
-	},
-	{
-		label: "Listed",
-		href: "/listed",
-	},
-	{
-		label: "Owned",
-		href: "/portfolio",
-	},
-];
 
 const AvatarContainer = styled("div", {
 	borderRadius: "9999px",
@@ -147,6 +104,144 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 				? {color: "pink", name: "Verified Creator"}
 				: {color: "purple", name: "Collector"},
 		],
+	});
+
+	const getSubscriptionNFTsCount = async () => {
+		const res = await axios.get(
+			`${apiEndpoint}/marketplace/methods/count/subscription?address=${ownerOfUserProfile.address}`
+		);
+		return res.data.data;
+	};
+
+	const getResaleNFTsCount = async () => {
+		const res = await axios.get(
+			`${apiEndpoint}/marketplace/methods/count/resale?address=${ownerOfUserProfile.address}`
+		);
+		return res.data.data;
+	};
+
+	const getCollectionsCount = async () => {
+		const res = await axios.get(
+			`${apiEndpoint}/marketplace/methods/count/collection?address=${ownerOfUserProfile.address}`
+		);
+		return res.data.data;
+	};
+
+	const getOwnedNFTsCount = async () => {
+		const res = await axios.get(
+			`${apiEndpoint}/marketplace/methods/count/owned?address=${ownerOfUserProfile.address}`
+		);
+		return res.data.data;
+	};
+
+	const getCreateNFTsCount = async () => {
+		const res = await axios.get(
+			`${apiEndpoint}/marketplace/methods/count/created?address=${ownerOfUserProfile.address}`
+		);
+		return res.data.data;
+	};
+
+	const getBadges = async () => {
+		const res = await axios.get(
+			`${apiEndpoint}/marketplace/methods/get-badges-for-address?address=${ownerOfUserProfile.address}`
+		);
+		return res.data.data;
+	};
+
+	// Fetch all in one batch using react query useQueries
+	const [
+		subscriptionNFTsCount,
+		resaleNFTsCount,
+		collectionsCount,
+		ownedNFTsCount,
+		badges,
+		createdNFTsCount,
+	] = TreatCore.useQueries({
+		queries: [
+			{
+				queryKey: ["subscriptionNFTsCount", ownerOfUserProfile.address],
+				queryFn: getSubscriptionNFTsCount,
+			},
+			{
+				queryKey: ["resaleNFTsCount", ownerOfUserProfile.address],
+				queryFn: getResaleNFTsCount,
+			},
+			{
+				queryKey: ["collectionsCount", ownerOfUserProfile.address],
+				queryFn: getCollectionsCount,
+			},
+			{
+				queryKey: ["ownedNFTsCount", ownerOfUserProfile.address],
+				queryFn: getOwnedNFTsCount,
+			},
+			{
+				queryKey: ["badges", ownerOfUserProfile.address],
+				queryFn: getBadges,
+			},
+			{
+				queryKey: ["createNFTsCount", ownerOfUserProfile.address],
+				queryFn: getCreateNFTsCount,
+			},
+		],
+	});
+
+	const creator_tabs = [
+		{
+			label: "Subscription",
+			href: "",
+			count: subscriptionNFTsCount.data,
+		},
+		{
+			label: "Collections",
+			href: "/collections",
+			count: collectionsCount.data,
+		},
+		{
+			label: "Created",
+			href: "/sweetshop",
+			count: createdNFTsCount.data,
+		},
+		{
+			label: "Listed",
+			href: "/listed",
+			count: resaleNFTsCount.data,
+		},
+
+		{
+			label: "Owned",
+			href: "/portfolio",
+			count: ownedNFTsCount.data,
+		},
+		/*{
+    label: "Curated",
+    href: "/curated",
+  },*/
+	];
+
+	const profile_tabs = [
+		{
+			label: "Collections",
+			href: "/collections",
+			count: collectionsCount.data,
+		},
+		{
+			label: "Listed",
+			href: "/listed",
+			count: resaleNFTsCount.data,
+		},
+		{
+			label: "Owned",
+			href: "/portfolio",
+			count: ownedNFTsCount.data,
+		},
+	];
+
+	console.log({
+		subscriptionNFTsCount,
+		resaleNFTsCount,
+		collectionsCount,
+		ownedNFTsCount,
+		badges,
 	});
 
 	const [followers, setFollowers] = useState(profile.followers);
@@ -341,6 +436,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 									key={tab.href}
 									href={`/${ownerOfUserProfile.username}${tab.href}`}
 									label={tab.label}
+									count={tab.count}
 								/>
 							)
 						)}

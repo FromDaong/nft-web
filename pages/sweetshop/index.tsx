@@ -1,14 +1,16 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import {FilterIcon} from "@heroicons/react/outline";
+import {FilterIcon, SearchIcon} from "@heroicons/react/outline";
 import {useDisclosure} from "@packages/hooks";
 import {Modal} from "@packages/modals";
 import FilterNFTResultsModal from "@packages/modals/FilterNFTResultsModal";
 import SweetshopSortBy from "@packages/post/SweetshopSortBy";
 import {TritPost} from "@packages/post/TritPost";
+import {ExpandableSearch} from "@packages/search/ExpandableSearch";
 import {SEOHead} from "@packages/seo/page";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
+import {Input} from "@packages/shared/components/Input";
 import SelectableTag from "@packages/shared/components/Selectabletag";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {
@@ -23,7 +25,7 @@ import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import TreatCore from "core/TreatCore";
 import {useRouter} from "next/router";
-import {InfinityScrollListing} from "packages/shared/components/ListingSection";
+import {TreatNFTsInfinityScrollingContainer} from "packages/shared/components/ListingSection";
 import {useEffect, useMemo, useState} from "react";
 import {useInView} from "react-intersection-observer";
 
@@ -37,8 +39,6 @@ const getSweetshopNFTs = async (page: number, filterString: string) => {
 };
 
 export default function NFTS(props) {
-	const {onOpen, isOpen, onClose} = useDisclosure();
-
 	const {ref, inView} = useInView();
 	const [market_filter, setFilters] = useState(props.query.market);
 	const [filterList, setFilterlist] = useState<
@@ -112,52 +112,44 @@ export default function NFTS(props) {
 		}
 	}, [inView]);
 
+	// T-44 Implement search bar for sweetshop NFTs + filters with inspiration form Airbnb
+
 	return (
 		<ApplicationLayout>
-			<FilterNFTResultsModal
-				isOpen={isOpen}
-				onClose={onClose}
-			/>
 			<ApplicationFrame>
 				<SEOHead title="Explore NFTs" />
 				<Container className="flex flex-col gap-12 py-12">
-					<Container className="flex flex-col px-4 xl:px-0">
-						<Container>
-							<Container className="flex flex-col gap-4 md:flex-row md:justify-between">
-								<Heading size="sm">Discover content from our creators</Heading>
-								<Container className="flex gap-2 overflow-x-auto flex-nowrap">
-									{filterList.map((f) => (
-										<Container
-											key={f.value}
-											className="flex-shrink-0"
-										>
-											<SelectableTag
-												toggle={toggleFilter}
-												key={f.value}
-												selected={market_filter}
-												label={f.label}
-												value={f.value}
-											/>
-										</Container>
-									))}
-								</Container>
-								<Container className="flex gap-4">
-									<Button onClick={onOpen}>
-										<span>Filter</span>
-										<FilterIcon
-											width={16}
-											height={16}
-										/>
-									</Button>
-								</Container>
+					<Container className="flex flex-col">
+						<Container className="px-2 flex flex-col gap-8">
+							<Container className="flex gap-4 justify-center px-2">
+								<ExpandableSearch />
 							</Container>
-							<Divider dir="horizontal" />
+							{false && (
+								<Container className="flex justify-between px-2">
+									<Container className="flex gap-2 overflow-x-auto flex-nowrap">
+										{filterList.map((f) => (
+											<Container
+												key={f.value}
+												className="flex-shrink-0"
+											>
+												<SelectableTag
+													toggle={toggleFilter}
+													key={f.value}
+													selected={market_filter}
+													label={f.label}
+													value={f.value}
+												/>
+											</Container>
+										))}
+									</Container>
+								</Container>
+							)}
 						</Container>
 					</Container>
 
 					<Container className="flex flex-col gap-8 px-4 xl:px-0">
 						<Container className={isFetching ? "opacity-80" : ""}>
-							<InfinityScrollListing>
+							<TreatNFTsInfinityScrollingContainer>
 								{posts.length > 0
 									? posts.map((nft) => (
 											<div
@@ -183,7 +175,7 @@ export default function NFTS(props) {
 												<DynamicSkeleton config={TritPostSkeleton} />
 											</Container>
 									  ))}
-							</InfinityScrollListing>
+							</TreatNFTsInfinityScrollingContainer>
 						</Container>
 						<Container className="flex justify-center w-full">
 							<Button

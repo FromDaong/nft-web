@@ -50,3 +50,8 @@ name: "Diamond Treator",
 color: "gray",
 name: "Silver Treator",
 },
+
+# TODO List
+
+- [ ] Add the creator collaboration landing page
+- [ ] Add the developers page

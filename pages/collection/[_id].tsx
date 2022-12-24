@@ -6,7 +6,7 @@ import {SEOHead} from "@packages/seo/page";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
-import {InfinityScrollListing} from "@packages/shared/components/ListingSection";
+import {TreatNFTsInfinityScrollingContainer} from "@packages/shared/components/ListingSection";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
 import DynamicSkeleton from "@packages/skeleton";
@@ -106,7 +106,7 @@ export default function Collection(props) {
 						<Divider dir={"horizontal"} />
 					</Container>
 
-					<InfinityScrollListing>
+					<TreatNFTsInfinityScrollingContainer>
 						{posts.length > 0
 							? posts.map((nft) => (
 									<div
@@ -132,7 +132,7 @@ export default function Collection(props) {
 										<DynamicSkeleton config={TritPostSkeleton} />
 									</Container>
 							  ))}
-					</InfinityScrollListing>
+					</TreatNFTsInfinityScrollingContainer>
 				</Container>
 			</ApplicationFrame>
 		</ApplicationLayout>

@@ -1,4 +1,9 @@
-import {QueryClient, useInfiniteQuery, useQuery} from "@tanstack/react-query";
+import {
+	QueryClient,
+	useInfiniteQuery,
+	useQueries,
+	useQuery,
+} from "@tanstack/react-query";
 import {apiEndpoint} from "@utils/index";
 import axios from "axios";
 import {ReactNode, useEffect, useRef} from "react";
@@ -23,6 +28,7 @@ export default class TreatCore {
 	});
 	static useQuery = useQuery;
 	static useInfiniteQuery = useInfiniteQuery;
+	static useQueries = useQueries;
 
 	/**
 	 * @description Trigger analytics event & logger then sync.

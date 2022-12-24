@@ -2,6 +2,7 @@ import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {Container} from "@packages/shared/components/Container";
 import {
 	ImportantText,
+	MutedText,
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
 import {DotsHorizontalIcon, HeartIcon} from "@heroicons/react/outline";
@@ -18,77 +19,36 @@ import {styled} from "@stitches/react";
 
 export const ActionSection = (props) => {
 	return (
-		<Container className="flex flex-col gap-2 px-2">
-			<Container className="px-2">
-				<Text className="line-clamp-1 text-xl">{props.name}</Text>
+		<Container className="grid grid-cols-5 gap-2">
+			<Container className="col-span-4 flex flex-col gap-4">
+				<Container className="flex flex-col w-full">
+					<Text
+						className="line-clamp-1"
+						css={{padding: 0}}
+					>
+						<ImportantText>{props.name}</ImportantText>
+					</Text>
+					<MutedText css={{lineHeight: "12px"}}>Listed by creator</MutedText>
+				</Container>
+
 				{!props.noPrice && (
-					<Container className="rounded-full pb-2">
+					<Container className="flex items-baseline gap-1">
 						<Heading size={"xss"}>
-							Selling for {props.price.value} {props.price.currency}
+							{props.price.value} {props.price.currency}
 						</Heading>
+						<MutedText>asking price</MutedText>
 					</Container>
 				)}
 			</Container>
-			<ImportantText className="px-2">
-				<SmallText>Liked by {props.likedBy?.length ?? 0} people</SmallText>
-			</ImportantText>
-			<Container className="flex gap-2 px-2">
-				<ActionBar
-					liked={props.liked}
-					likeNFT={props.likeNFT}
-					_id={props._id}
+			<Container className="flex justify-end">
+				<MoreActionsDropdown
 					creator={props.creator}
+					id={props._id}
 					toggleImageProtection={props.toggleImageProtection}
 					isMine={props.isMine}
 					isProtected={props.isProtected}
 				/>
 			</Container>
-		</Container>
-	);
-};
-
-const UnlikeIcon = styled(HeartFilledIcon, {
-	color: "inherit",
-});
-
-export const ActionBar = (props) => {
-	const router = useRouter();
-	const gotoNFT = () => {
-		router.push(`/post/nft/${props._id}`);
-	};
-
-	return (
-		<Container className="w-full flex gap-4">
-			<MoreActionsDropdown
-				creator={props.creator}
-				id={props._id}
-				toggleImageProtection={props.toggleImageProtection}
-				isMine={props.isMine}
-				isProtected={props.isProtected}
-			/>
-			<Button
-				className="p-3 "
-				onClick={props.likeNFT}
-				appearance={"unstyled"}
-				css={{
-					borderRadius: "8px",
-					padding: "8px 2px",
-				}}
-			>
-				{props.liked ? (
-					<Text>
-						<UnlikeIcon
-							width={20}
-							height={20}
-						/>
-					</Text>
-				) : (
-					<HeartIcon
-						width={20}
-						height={20}
-					/>
-				)}
-			</Button>
 		</Container>
 	);
 };
@@ -107,24 +67,22 @@ export const MoreActionsDropdown = (props) => {
 
 	return (
 		<DropdownMenu.Root>
-			<DropdownMenu.Trigger className="col-span-3 w-full grid">
-				<Button
-					className="col-span-1 p-3"
-					appearance={"surface"}
+			<DropdownMenu.Trigger className="w-full flex justify-end">
+				<Container
+					className="col-span-1 p-3 rounded-full hover:bg-gray-100"
 					css={{
-						borderRadius: "8px",
-						padding: "8px",
+						borderRadius: "9999px",
+						padding: "4px",
 					}}
 				>
 					<DotsHorizontalIcon
-						width={20}
-						height={20}
+						width={24}
+						height={24}
 					/>
-					<span>More</span>
-				</Button>
+				</Container>
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Portal>
-				<DropdownMenu.Content className="z-30 p-3 shadow-xl gap-y-3 rounded-xl bg-white">
+				<DropdownMenu.Content className="z-30 p-3 shadow-xl gap-y-3 rounded-xl bg-white transition-all duration-150">
 					<DropdownMenuItem
 						onClick={copyToClipboard}
 						className="px-4 py-2 flex gap-2"

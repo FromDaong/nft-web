@@ -124,3 +124,11 @@ html {
 	-ms-overflow-style: none; /* IE and Edge */
 	scrollbar-width: none; /* Firefox */
 }
+
+.dropdown-content[data-side="top"] {
+	animation-name: slideUp;
+}
+
+.dropdown-content[data-side="bottom"] {
+	animation-name: slideDown;
+}

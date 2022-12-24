@@ -106,7 +106,7 @@ const baseColorsDark = {
 	...grayDark,
 };
 
-//TODO: Theme colors OG pink = https://www.happyhues.co/palettes/7
+//T-40 Theme colors OG pink = https://www.happyhues.co/palettes/7
 
 export const darkTheme = createTheme("dark", {
 	colors: {
@@ -237,7 +237,7 @@ export const lightTheme = createTheme("light", {
 		errorText: "$red11",
 		errorTextContrast: "$red12",
 
-		surface: "$gray1",
+		surface: "#ffffff",
 		elementSurface: "#ffffff",
 		surfaceOnSurface: "$gray3",
 		elementOnSurface: "$gray4",
@@ -424,4 +424,4 @@ export const ogPinkTheme = createTheme("pink", {
 	zIndices: {},
 	transitions: {},
 });
-// TODO: Favicon size must drop
+// T-41 Favicon size must drop

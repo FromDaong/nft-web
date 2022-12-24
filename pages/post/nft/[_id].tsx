@@ -108,6 +108,13 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 		return <Error404 />;
 	}
 
+	useEffect(() => {
+		TreatCore.triggerEvent("post_impression", {
+			_id: nft._id,
+			nftId: nft.id,
+		});
+	}, []);
+
 	const trendingNFTs =
 		youMightAlsoLikeError || youMightAlsoLikeLoading
 			? []

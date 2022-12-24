@@ -3,21 +3,15 @@ import Link from "next/link";
 import {Container} from "@packages/shared/components/Container";
 import {TritPostProps} from "./types";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
-import {EyeOffIcon, HeartIcon} from "@heroicons/react/outline";
+import {EyeOffIcon} from "@heroicons/react/outline";
 import {PostMediaContent} from "./PostMediaContent";
-import UserAvatar from "core/auth/components/Avatar";
 import {styled} from "@styles/theme";
-import ContentLoader from "react-content-loader";
-import {Button} from "@packages/shared/components/Button";
-import {HeartFilledIcon} from "@radix-ui/react-icons";
 import {useTritNFTUtils} from "./hooks";
 import TransferNFTModal from "@packages/modals/TransferNFTModal";
 import CancelOrderModal from "@packages/modals/CancelOrderModal";
 import ListOrderModal from "@packages/modals/ListOrderModal";
 import PurchaseResaleNFTModal from "@packages/modals/PurchaseResaleNFTModal";
-import {ActionSection, UserBadge} from "./UtilityComponents";
-import {useEffect} from "react";
-import TreatCore from "core/TreatCore";
+import {ActionSection} from "./UtilityComponents";
 
 export const FrostyBackgroundContainer = styled(Container, {
 	backgroundColor: "#ffffff33",
@@ -54,16 +48,13 @@ export const TritPost = (props: TritPostProps) => {
 
 	// T-28 check if user owns this nft and get the units owned
 
-	useEffect(() => {
-		TreatCore.triggerEvent("post_impression", {
-			_id: props._id,
-			nftId: props.id,
-		});
-	}, []);
+	// T-42 Add hover card with nft details including, original cretor listing tag, current owner, price, units owned, etc
+
+	// T-43 Check if seller === creator , determine if resale or original listing
 
 	return (
 		<Container
-			className={`grid grid-cols-1 gap-4 py-4 border w-full ${
+			className={`grid grid-cols-1 gap-4 py-4 place-items-center w-full ${
 				props.totm ? "border-2" : ""
 			}`}
 			css={{
@@ -103,12 +94,6 @@ export const TritPost = (props: TritPostProps) => {
 					nft={props}
 				/>
 			)}
-			<Container className="flex justify-between px-4">
-				<UserBadge
-					username={props.author.username}
-					avatar={props.author.avatar}
-				/>
-			</Container>
 			<Link href={!props.isResale ? `/post/nft/${props._id}` : "#"}>
 				<a className="w-full flex flex-col">
 					{
@@ -118,7 +103,8 @@ export const TritPost = (props: TritPostProps) => {
 						className="relative flex overflow-hidden"
 						css={{
 							backgroundColor: "$textContrast",
-							height: "440px",
+							height: "256px",
+							borderRadius: "12px",
 						}}
 					>
 						<PostMediaContent
@@ -189,69 +175,18 @@ export const TritPost = (props: TritPostProps) => {
 					</Container>
 				</a>
 			</Link>
-			<ActionSection
-				{...props}
-				isMine={isMine}
-				liked={liked}
-				likeNFT={likeNFT}
-				unlikeNFT={likeNFT}
-				creator={props.author.username}
-				toggleImageProtection={toggleImageProtection}
-				isProtected={isProtected}
-			/>
-			{props.isResale && !props.isMine && (
-				<Container className="py-2">
-					<Button
-						fullWidth
-						appearance={"accent"}
-						onClick={() => {
-							console.log("buying from resale");
-							buyResaleNFTModalProps.onOpen();
-						}}
-					>
-						Purchase from {props.author.username || props.author.display_name}
-					</Button>
-				</Container>
-			)}
-			{isMine && props.isMine && (
-				// T-30 show the number of NFTs owned by the user
-				<Container className="grid w-full grid-cols-2 gap-4">
-					{!props.isResale && !isListedOnResale && (
-						<>
-							<Container className="py-2">
-								<Button
-									fullWidth
-									appearance={"surface"}
-									onClick={listNFTModalProps.onOpen}
-								>
-									Resell
-								</Button>
-							</Container>
-							<Container className="py-2">
-								<Button
-									fullWidth
-									appearance={"surface"}
-									onClick={transferNFTModalProps.onOpen}
-								>
-									Transfer
-								</Button>
-							</Container>
-						</>
-					)}
-
-					{props.isResale && isListedOnResale && (
-						<Container className="py-2">
-							<Button
-								fullWidth
-								appearance={"surface"}
-								onClick={cancelOrderModalProps.onOpen}
-							>
-								Remove your listing
-							</Button>
-						</Container>
-					)}
-				</Container>
-			)}
+			<Container className="flex flex-col w-full hover:scale-95 transition-transform duration-150">
+				<ActionSection
+					{...props}
+					isMine={isMine}
+					liked={liked}
+					likeNFT={likeNFT}
+					unlikeNFT={likeNFT}
+					creator={props.author.username}
+					toggleImageProtection={toggleImageProtection}
+					isProtected={isProtected}
+				/>
+			</Container>
 		</Container>
 	);
 };
