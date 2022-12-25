@@ -5,42 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="13ddaae3-483e-427b-8a07-e5e133fac976" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/chat/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/commandbar/components/Footer.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/commandbar/components/Frame.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/commandbar/components/Results.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/commandbar/components/Search.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/commandbar/components/SearchTrigger.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/commandbar/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/commandbar/key_listener.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/commandbar/search.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/flow/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/flow/machines/default.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/flow/machines/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/flow/types.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/form/FileUpload.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/heartbeat/ServiceHealth.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/heartbeat/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/ikaros/onboarding/Step.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/ikaros/onboarding/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/ikaros/onboarding/types.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/modals/CropPhotoModal/CropPhotoModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/modals/CropPhotoModal/CropPhotoModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/photo-editor/components/Doka.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/photo-editor/components/DokaModal.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/photo-editor/components/DokaOverlay.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/photo-editor/components/createDoka.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/photo-editor/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/photo-editor/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/photo-editor/lib/doka.esm.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/photo-editor/utils/createDoka.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/photo-editor/utils/toURL.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/profile/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/stagedla/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/store/index.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/theme/ThemeSwitcherModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/theme/ThemeSwitcherModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/post/[postId].tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/post/nft/[id].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/post/nft/[id].tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/components/layouts/ProfileLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/core/components/layouts/ProfileLayout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/chain/hooks/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/chain/hooks/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/modals/CancelOrderModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/modals/CancelOrderModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/modals/ListOrderModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/modals/ListOrderModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/post/BuyNFTButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/post/BuyNFTButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/post/hooks/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/post/hooks/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/shared/components/Button/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/shared/components/Button/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/shared/hooks/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/shared/hooks/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/post/nft/[_id].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/post/nft/[_id].tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/privacy.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/privacy.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/helpers/models/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/helpers/models/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,27 +56,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/pagak/treat/frontend",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "yarn",
-    "prettierjs.PrettierConfiguration.Package": "/Users/lucamarchal/code/treat-next/node_modules/prettier",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "ts.external.directory.path": "D:\\work\\codeslayer\\freelance\\treatdao\\web\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/pagak/treat/frontend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/lucamarchal/code/treat-next/node_modules/prettier&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\work\\codeslayer\\freelance\\treatdao\\web\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\work\codeslayer\freelance\nft-web\data" />
@@ -127,6 +104,7 @@
       <workItem from="1670810616528" duration="835000" />
       <workItem from="1671145482857" duration="1222000" />
       <workItem from="1671387442123" duration="423000" />
+      <workItem from="1671834274293" duration="595000" />
     </task>
     <servers />
   </component>

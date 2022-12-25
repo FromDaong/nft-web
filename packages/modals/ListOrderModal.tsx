@@ -3,7 +3,7 @@ import {
 	useApproveMarketplace,
 	useGetMinterIsApprovedForAll,
 	useGetRemainingOrderBalance,
-	useGetResaleOrder,
+	useGetResaleOrders,
 	useListOrder,
 } from "@packages/post/hooks";
 import {TritPostProps} from "@packages/post/types";
@@ -32,7 +32,7 @@ export default function ListOrderModal(props: {
 
 	const isApprovedForAll = useGetMinterIsApprovedForAll();
 	const {listOrder} = useListOrder();
-	const openOrders = useGetResaleOrder(props.nft.id) ?? [];
+	const openOrders = useGetResaleOrders(props.nft.id) ?? [];
 	const balance = useGetRemainingOrderBalance(props.nft.id);
 
 	const {approveMarketplace} = useApproveMarketplace();

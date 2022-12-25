@@ -37,7 +37,7 @@ export const useWagmiGetTreatOfTheMonthNftCost = (id: number) => {
 	});
 
 	return {
-		treatCost: data ? ethers.utils.formatEther(BigNumber.from(data)) : 0,
+		cost: data ? ethers.utils.formatEther(BigNumber.from(data)) : 0,
 		isError,
 		isLoading,
 	};
@@ -52,7 +52,7 @@ export const useWagmiGetCreatorNftCost = (id: number) => {
 	});
 
 	return {
-		creatorCost: data ? ethers.utils.formatEther(BigNumber.from(data)) : 0,
+		cost: data ? ethers.utils.formatEther(BigNumber.from(data)) : 0,
 		isError,
 		isLoading,
 	};
@@ -67,7 +67,7 @@ export const useWagmiGetSubscriberNftCost = (id: number) => {
 	});
 
 	return {
-		subscriptionCost: data ? ethers.utils.formatEther(BigNumber.from(data)) : 0,
+		cost: data ? ethers.utils.formatEther(BigNumber.from(data)) : 0,
 		isError,
 		isLoading,
 	};
@@ -127,7 +127,7 @@ export const useWagmiGetResaleNFTsForNFT = (id: number) => {
 	}, [sellers, treatMarketplaceContract, signer]);
 
 	return {
-		openOrders: openOrders.map((order) => ({...order})),
+		resaleListings: openOrders.map((order) => ({...order})),
 		isLoading,
 	};
 };
@@ -142,7 +142,7 @@ export const useWagmiMintFreeNFT = (id: number) => {
 		signerOrProvider: signer,
 	});
 
-	const mintFreeNFT = useCallback(async () => {
+	const mintNFT = useCallback(async () => {
 		if (signer && treatMarketplaceContract) {
 			const tx = await treatMarketplaceContract?.redeemFreeTreat(id, {
 				from: address,
@@ -155,7 +155,7 @@ export const useWagmiMintFreeNFT = (id: number) => {
 	}, [treatMarketplaceContract, id, signer]);
 
 	return {
-		mintFreeNFT,
+		mintNFT,
 	};
 };
 
@@ -169,7 +169,7 @@ export const useWagmiMintFreeTOTMNFT = (id: number) => {
 		signerOrProvider: signer,
 	});
 
-	const mintFreeNFT = useCallback(async () => {
+	const mintNFT = useCallback(async () => {
 		if (signer && totmMartContract) {
 			const tx = await totmMartContract?.redeemFreeTreat(id, {
 				from: address,
@@ -182,7 +182,7 @@ export const useWagmiMintFreeTOTMNFT = (id: number) => {
 	}, [totmMartContract, id, signer]);
 
 	return {
-		mintFreeNFT,
+		mintNFT,
 	};
 };
 
@@ -206,7 +206,7 @@ export const useHKWagmiMintFreeTOTMNFT = (id: number) => {
 	});
 
 	return {
-		mintFreeNFT: mint,
+		mintNFT: mint,
 		isTxConfirmed,
 		isMintStarted,
 		isMintLoading,
@@ -223,7 +223,7 @@ export const useWagmiMintFreeSubscriberNFT = (id: number) => {
 		signerOrProvider: signer,
 	});
 
-	const mintFreeNFT = useCallback(async () => {
+	const mintNFT = useCallback(async () => {
 		if (signer && subscriptionMartContract) {
 			const tx = await subscriptionMartContract?.redeemFreeTreat(id, {
 				from: address,
@@ -236,7 +236,7 @@ export const useWagmiMintFreeSubscriberNFT = (id: number) => {
 	}, [subscriptionMartContract, id, signer]);
 
 	return {
-		mintFreeNFT,
+		mintNFT,
 	};
 };
 
@@ -364,8 +364,6 @@ export const useSubscriptionData = (creator_address: string) => {
 			value: data,
 		});
 	}, [address, subscriptionContract, data]);
-
-	console.log({creator_address, data});
 
 	return {
 		subscriptionPrice: data

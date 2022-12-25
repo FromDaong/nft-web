@@ -1,7 +1,7 @@
 import {
 	useCancelOrder,
 	useGetRemainingOrderBalance,
-	useGetResaleOrder,
+	useGetResaleOrders,
 	useTritNFTUtils,
 } from "@packages/post/hooks";
 import {TritPostProps} from "@packages/post/types";

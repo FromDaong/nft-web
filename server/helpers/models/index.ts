@@ -15,6 +15,8 @@ import ModelTransaction from "./transaction";
 import CollectionModel from "./graph/collections";
 import ModelLog from "./events/Log";
 import ModelAnalytics from "./events/Analytics";
+import NFTEvent from "./posts/activity";
+import TimelineEvent from "./posts/TimelineEvent";
 
 export const MongoModelCreator = ModelCreator;
 export const MongoModelProfile = ModelProfile;
@@ -34,3 +36,5 @@ export const MongoModelTransaction = ModelTransaction;
 export const MongoModelCollection = CollectionModel;
 export const MongoModelLog = ModelLog;
 export const MongoModelAnalytics = ModelAnalytics;
+export const MongoModelEvent = NFTEvent;
+export const MongoModelTimelineEvent = TimelineEvent;

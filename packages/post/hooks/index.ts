@@ -17,7 +17,7 @@ export const useTritNFTUtils = (nft: any) => {
 	const transferNFTModalProps = useDisclosure();
 	const buyResaleNFTModalProps = useDisclosure();
 
-	const isListedOnResale = useGetResaleOrder(nft.id);
+	const isListedOnResale = useGetResaleOrders(nft.id);
 
 	useEffect(() => {
 		// @ts-ignore
@@ -177,7 +177,7 @@ export const useGetMinterIsApprovedForAll = () => {
 	return allowance;
 };
 
-export const useGetResaleOrder = (id) => {
+export const useGetResaleOrders = (id) => {
 	const {data: signer} = useSigner();
 	const [orders, setOrders] = useState([]);
 
@@ -221,6 +221,33 @@ export const useGetRemainingOrderBalance = (id) => {
 		const bal = await treatMarketplaceContract.orderBalances(address, id);
 		setBalance(bal);
 	}, [address, treatMarketplaceContract]);
+
+	useEffect(() => {
+		if (signer) {
+			getRemainingBalanceForOrder();
+		}
+	}, [signer, getRemainingBalanceForOrder]);
+
+	return ethers.utils.formatEther(BigNumber.from(balance));
+};
+
+export const useGetRemainingOrderBalanceForSeller = (id, seller_address) => {
+	const [balance, setBalance] = useState(0);
+	const {data: signer} = useSigner();
+
+	const treatMarketplaceContract = useContract({
+		addressOrName: contractAddresses.treatMarketplace[56],
+		contractInterface: ABI.treatMarketplace,
+		signerOrProvider: signer,
+	});
+
+	const getRemainingBalanceForOrder = useCallback(async () => {
+		const bal = await treatMarketplaceContract.orderBalances(
+			seller_address,
+			id
+		);
+		setBalance(bal);
+	}, [seller_address, treatMarketplaceContract]);
 
 	useEffect(() => {
 		if (signer) {

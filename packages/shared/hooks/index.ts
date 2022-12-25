@@ -4,6 +4,17 @@ import axios from "axios";
 import {File} from "filepond";
 import {useSession} from "next-auth/react";
 import {useEffect, useState} from "react";
+import {Dispatch, SetStateAction, useCallback} from "react";
+
+export function useToggle(
+	defaultValue?: boolean
+): [boolean, () => void, Dispatch<SetStateAction<boolean>>] {
+	const [value, setValue] = useState(!!defaultValue);
+
+	const toggle = useCallback(() => setValue((x) => !x), []);
+
+	return [value, toggle, setValue];
+}
 
 export const useStorageService = () => {
 	const uploadFile = async (file: File): Promise<any> => {

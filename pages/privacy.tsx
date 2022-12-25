@@ -1,7 +1,13 @@
+import {useNFTCostFunctionFactory} from "@packages/post/hooks/helpers";
 import {SEOHead} from "@packages/seo/page";
 import {Container} from "@packages/shared/components/Container";
 
 export default function Privacy() {
+	const {useNFTCost} = useNFTCostFunctionFactory("creatorMart");
+	const {cost, isLoading: costLoading, isError} = useNFTCost(2654);
+
+	console.log({cost, costLoading, isError});
+
 	return (
 		<Container className="container mx-auto">
 			<SEOHead title={"Treat Privacy Policy"} />

@@ -1,7 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import {pagePropsConnectMongoDB} from "@db/engine/pagePropsDB";
 import LegacyNFTModel from "@db/legacy/nft/NFT";
-import {BadgeCheckIcon} from "@heroicons/react/outline";
+import {BadgeCheckIcon, DotsHorizontalIcon} from "@heroicons/react/outline";
 import {EvmNftMetadata} from "@moralisweb3/common-evm-utils";
 import {
 	useWagmiGetCreatorNftCost,
@@ -48,6 +48,9 @@ import {
 	EnterFullScreenIcon,
 	HeartFilledIcon,
 	HeartIcon,
+	ImageIcon,
+	Share1Icon,
+	Share2Icon,
 } from "@radix-ui/react-icons";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
@@ -56,11 +59,9 @@ import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import TreatCore from "core/TreatCore";
 import {BigNumber, ethers} from "ethers";
-import {unstable_getServerSession} from "next-auth";
 import Link from "next/link";
 import {useEffect, useState} from "react";
 import {MongoModelNFT, MongoModelTransaction} from "server/helpers/models";
-import {useAccount} from "wagmi";
 
 const getYouMightAlsoLike = async () => {
 	const res = await axios.get(`${apiEndpoint}/marketplace/trending`);
@@ -69,10 +70,22 @@ const getYouMightAlsoLike = async () => {
 
 export default function NFT(props: {notFound?: boolean; data: any}) {
 	// T-26 implement view counter + analytics
+	// T-45 user wants to purchase creator NFT
+	// T-46 user wants to purchase subscription NFT
+	// T-47 user wants to purchase TOTM NFT
+	// T-48 user wants to purchase resale NFT
+	// T-49 user wants to like NFT
+	// T-50 user wants to see a list of users who liked this NFT
+	// T-51 user wants to see a list of users who purchased this NFT
+	// T-52 user wants to easily navigate to the search page with other listings of the NFT
+	// T-53 user wants to navigate to search page by clicking on a tag
+	// T-54 user wants to see a modal that shows if they own the NFT and the details of their ownership
+	// T-55 admin wants to restrict user from opening fullscreen if they don't own the NFT
+	// T-56 admin wants to disable certain functionality if user is not logged in
+	// T-57 admin wants to change layout if user is not logged in
 
 	const data = JSON.parse(props.data);
 	const {nft} = data;
-	const postUtils = useTritNFTUtils(nft);
 
 	const [showFullScreen, setShowFullScreen] = useState(false);
 	useFullScreen("nft_image", showFullScreen);
@@ -144,43 +157,12 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 							objectFit="contain"
 							alt={nft.name}
 						/>
-						<Container className="absolute flex gap-4 bottom-4 right-4">
-							<Button
-								appearance={"surface"}
-								onClick={() => setShowFullScreen(!showFullScreen)}
-							>
-								<EnterFullScreenIcon
-									style={{strokeWidth: "2px"}}
-									height={16}
-									width={16}
-								/>
-							</Button>
-							<Button
-								appearance={"surface"}
-								onClick={postUtils.likeNFT}
-							>
-								{postUtils.liked ? (
-									<>
-										<HeartFilledIcon
-											width={20}
-											height={20}
-										/>
-									</>
-								) : (
-									<HeartIcon
-										width={20}
-										height={20}
-									/>
-								)}
-								<span>Like</span>
-							</Button>
-						</Container>
 					</Container>
 				</Container>
 			</Container>
 			<ApplicationLayout>
 				<ApplicationFrame>
-					<Container className="flex flex-col gap-12">
+					<Container className="flex flex-col gap-12 max-w-7xl mx-auto">
 						{isOwned && balance > 0 && (
 							<Container className="flex mt-8">
 								<Container
@@ -287,16 +269,17 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 	);
 }
 
-const NFTPresentationComponent = ({
-	nft,
-}: {
+const NFTPresentationComponent = (props: {
 	nft: any;
 	isOwned: boolean;
 	balance: number;
 }) => {
-	const {creatorCost} = useWagmiGetCreatorNftCost(nft.id);
-	const {treatCost} = useWagmiGetTreatOfTheMonthNftCost(nft.id);
-	const {subscriptionCost} = useWagmiGetSubscriberNftCost(nft.id);
+	const {nft} = props;
+	const postUtils = useTritNFTUtils(nft);
+
+	const {cost: creatorCost} = useWagmiGetCreatorNftCost(nft.id);
+	const {cost: treatCost} = useWagmiGetTreatOfTheMonthNftCost(nft.id);
+	const {cost: subscriptionCost} = useWagmiGetSubscriberNftCost(nft.id);
 
 	let nftCost: any = nft.subscription_nft ? subscriptionCost : creatorCost;
 	nftCost = nft.totm_nft ? treatCost : nftCost;
@@ -308,31 +291,18 @@ const NFTPresentationComponent = ({
 		nftCost
 	);
 
-	const {mintFreeNFT: onMintFreeTOTM} = useWagmiMintFreeTOTMNFT(nft.id);
-	const {mintFreeNFT: onMintFreeCreatorTreat} = useWagmiMintFreeNFT(nft.id);
-	const {mintFreeNFT: onMintFreeSubscriberTreat} =
-		useWagmiMintFreeSubscriberNFT(nft.id);
+	const {mintNFT: onMintFreeTOTM} = useWagmiMintFreeTOTMNFT(nft.id);
+	const {mintNFT: onMintFreeCreatorTreat} = useWagmiMintFreeNFT(nft.id);
+	const {mintNFT: onMintFreeSubscriberTreat} = useWagmiMintFreeSubscriberNFT(
+		nft.id
+	);
 
 	const maxNftSupply = useWagmiGetNFTMaxSupply(nft.id);
 	const mintedNfts = useWagmiGetNFTTotalSupply(nft.id);
 
 	const remainingNfts = maxNftSupply - mintedNfts;
 
-	const {openOrders} = useWagmiGetResaleNFTsForNFT(nft.id);
-
-	const floorOrder = openOrders.reduce(
-		(lowest, order, index) => {
-			const price = BigNumber.from(order.price);
-			const lowestPrice = BigNumber.from(lowest.price);
-			if (index === 0) return order;
-			return price.lt(lowestPrice) ? order : lowest;
-		},
-		{price: 0}
-	);
-
-	const floorResalePrice = ethers.utils.formatEther(
-		BigNumber.from(floorOrder.price)
-	);
+	const {resaleListings: openOrders} = useWagmiGetResaleNFTsForNFT(nft.id);
 
 	const mintNFT = async () => {
 		if (nft.subscription_nft) return onMintSubscriberNft();
@@ -354,32 +324,89 @@ const NFTPresentationComponent = ({
 
 	return (
 		<>
-			<Container className="grid grid-cols-1 gap-12 px-4 xl:grid-cols-2">
-				<Container className="grid flex-col grid-cols-2 gap-12 py-8 lg:flex">
-					<Container className="flex flex-col col-span-2 gap-4">
-						<Heading size="sm">{nft.name}</Heading>
-						<Link href={`/${nft.creator.username}`}>
-							<a>
-								<Container className="flex">
-									<Container
-										className="flex items-center gap-2 px-4 py-2 border rounded-full shadow-sm"
-										css={{
-											borderColor: "$subtleBorder",
-											backgroundColor: "$elementSurface",
-										}}
-									>
-										<UserAvatar
-											value={nft.creator.username}
-											size={24}
-										/>
-										<Text className="flex items-center gap-2">
+			<Container className="grid grid-cols-1 gap-12 lg:grid-cols-3">
+				<Container className="grid flex-col grid-cols-2 lg:col-span-2 gap-12 py-8 lg:flex">
+					<Container className=" flex gap-4 bottom-4 right-4">
+						<Button
+							appearance={"surface"}
+							onClick={
+								() => {}
+								//postUtils.setShowFullScreen(true)
+							}
+						>
+							<EnterFullScreenIcon
+								style={{strokeWidth: "2px"}}
+								height={16}
+								width={16}
+							/>
+						</Button>
+						<Button appearance={"surface"}>
+							<ImageIcon
+								width={16}
+								height={16}
+							/>
+							Load HD
+						</Button>
+						<Button
+							appearance={"surface"}
+							onClick={
+								() => {}
+								//postUtils.setShowFullScreen(true)
+							}
+						>
+							<Share2Icon
+								width={16}
+								height={16}
+							/>
+							Share
+						</Button>
+						<Button
+							appearance={"surface"}
+							onClick={postUtils.likeNFT}
+						>
+							{postUtils.liked ? (
+								<>
+									<HeartFilledIcon
+										width={16}
+										height={16}
+									/>
+								</>
+							) : (
+								<HeartIcon
+									width={16}
+									height={16}
+								/>
+							)}
+							<span>10k</span>
+						</Button>
+						<Button>
+							<DotsHorizontalIcon
+								width={16}
+								height={16}
+							/>
+							More
+						</Button>
+					</Container>
+					<Container className="flex justify-between col-span-2 gap-4">
+						<Container className="flex flex-col gap-2">
+							<Heading size="sm">{nft.name}</Heading>
+							<Container className="flex">
+								<Text>
+									Listed by{" "}
+									<Link href={`/${nft.creator.username}`}>
+										<a>
 											<ImportantText>@{nft.creator.username}</ImportantText>
-											<CreatorBadge />
-										</Text>
-									</Container>
-								</Container>
-							</a>
-						</Link>
+										</a>
+									</Link>
+								</Text>
+							</Container>
+						</Container>
+						<Container>
+							<UserAvatar
+								value={nft.creator.username}
+								size={48}
+							/>
+						</Container>
 					</Container>
 					<Container className="flex flex-col col-span-1 gap-4">
 						<Heading size="xs">Description</Heading>
@@ -416,57 +443,49 @@ const NFTPresentationComponent = ({
 						</Container>
 					</Container>
 				</Container>
-				<Container className="flex flex-col gap-4 px-4 py-8">
+				<Container className="flex flex-col gap-4 py-8">
 					<Container
-						className="flex flex-col w-full py-4 border drop-shadow-sm rounded-xl"
+						className="flex flex-col w-full border shadow rounded-xl divide-y overflow-hidden"
 						css={{
 							backgroundColor: "$elementSurface",
 							borderColor: "$subtleBorder",
-							borderRadius: "32px",
+							borderRadius: "16px",
 						}}
 					>
-						<Container className="grid grid-cols-3 gap-4 px-8 py-4">
-							<Container className="flex flex-col gap-2">
-								<MutedText>
+						<Container className="flex flex-col gap-12 p-4">
+							<Container className="flex flex-col gap-1">
+								<Text>
 									<ImportantText>Reserve price</ImportantText>
-								</MutedText>
-								<Heading size="sm">{nftCost} BNB</Heading>
-								<MutedText>
-									<SmallText>Listing buying price</SmallText>
-								</MutedText>
+								</Text>
+								<SmallText>This is the buying price</SmallText>
 							</Container>
-							<Container className="flex flex-col gap-2">
-								<MutedText>
-									<ImportantText>Floor price</ImportantText>
-								</MutedText>
-								<Heading size="sm">{floorResalePrice} BNB</Heading>
-								<MutedText>
-									<SmallText>From other listings</SmallText>
-								</MutedText>
-							</Container>
-							<Container className="flex flex-col gap-2">
-								<MutedText>
-									<ImportantText>Remaining</ImportantText>
-								</MutedText>
-								<Heading size="sm">
-									{remainingNfts === 0
-										? "Sold out"
-										: `${remainingNfts}/${maxNftSupply}`}
-								</Heading>
+							<Container className="flex flex-col gap-2 items-center">
+								<Container className="flex justify-between w-full items-baseline">
+									<Heading size="sm">{nftCost} BNB</Heading>
+
+									<MutedText className="flex-shrink-0">
+										{remainingNfts === 0 ? "Sold out" : `${remainingNfts} left`}
+									</MutedText>
+								</Container>
+								<BuyNFTButton
+									mintNFT={nft.price === 0 ? mintFreeNFT : mintNFT}
+									remainingNfts={remainingNfts}
+									nftData={nft}
+								/>
 							</Container>
 						</Container>
-						{remainingNfts !== 0 && (
-							<>
-								<Divider dir={"horizontal"} />
-								<Container className="px-8 py-4">
-									<BuyNFTButton
-										mintNFT={nft.price === 0 ? mintFreeNFT : mintNFT}
-										remainingNfts={remainingNfts}
-										nftData={nft}
-									/>
-								</Container>
-							</>
-						)}
+
+						<Container
+							className="p-4"
+							css={{backgroundColor: "$surfaceOnSurface"}}
+						>
+							<Button
+								fullWidth
+								appearance={"surface"}
+							>
+								View other options
+							</Button>
+						</Container>
 					</Container>
 				</Container>
 			</Container>

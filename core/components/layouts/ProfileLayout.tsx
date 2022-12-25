@@ -197,7 +197,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 			count: collectionsCount.data,
 		},
 		{
-			label: "Created",
+			label: "Sweetshop",
 			href: "/sweetshop",
 			count: createdNFTsCount.data,
 		},
@@ -225,7 +225,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 			count: collectionsCount.data,
 		},
 		{
-			label: "Listed",
+			label: "Sweetshop",
 			href: "/listed",
 			count: resaleNFTsCount.data,
 		},
