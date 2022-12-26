@@ -90,7 +90,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 
 	const [ownerOfUserProfile, setOwnerOfUserProfile] = useState({
 		username: profile.username,
-		displayName: profile ? profile.display_name : "",
+		display_name: profile ? profile.display_name : "",
 		bio: profile ? profile.bio : "",
 		followers: profile.followers,
 		following: profile.following,
@@ -309,7 +309,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 											className="flex items-center gap-1"
 										>
 											<span>
-												{ownerOfUserProfile.displayName ??
+												{ownerOfUserProfile.display_name ??
 													"Loading profile details"}
 											</span>
 											<VerifiedBadge size={16} />

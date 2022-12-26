@@ -3,7 +3,7 @@ import {connectMongoDB} from "server/database/engine";
 import Web3 from "web3";
 
 import LegacyNFTModel from "server/database/legacy/nft/NFT";
-import {MongoModelCreator} from "server/database/models/creator";
+import {MongoModelCreator} from "server/helpers/models";
 import {contractAddresses} from "@packages/treat/lib/constants";
 
 import TreatNFTMinterABI from "packages/treat/lib/abi/treatnftminter.json";
@@ -62,7 +62,7 @@ export default async function handler(req, res) {
 				};
 
 				try {
-					// TODO: Update from Legacy NFT
+					// T-63 Update from Legacy NFT
 					const newNFT = await LegacyNFTModel.create(nftBody);
 					await MongoModelCreator.updateOne(
 						{address: nft.model_bnb_address},

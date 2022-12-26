@@ -4,12 +4,8 @@ import PersonalInformationForm, {
 import {Container} from "@packages/shared/components/Container";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
-import {useRouter} from "next/router";
 
 export default function Settings() {
-	const router = useRouter();
-	const query = router.query;
-
 	return (
 		<ApplicationLayout>
 			<ApplicationFrame>
@@ -21,7 +17,7 @@ export default function Settings() {
 					}}
 				>
 					<PersonalInformationForm />
-					<LinksForm />
+					{false && <LinksForm />}
 				</Container>
 			</ApplicationFrame>
 		</ApplicationLayout>

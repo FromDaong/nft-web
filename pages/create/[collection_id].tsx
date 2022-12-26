@@ -22,6 +22,7 @@ import {useRouter} from "next/router";
 import axios from "axios";
 import {apiEndpoint} from "@utils/index";
 import {useAccountModal, useAddRecentTransaction} from "@rainbow-me/rainbowkit";
+import logsnag from "@utils/logsnag";
 
 export default function PostType(props: {collection: string}) {
 	const data = JSON.parse(props.collection);
@@ -81,7 +82,18 @@ export default function PostType(props: {collection: string}) {
 					nfts: nftValues,
 					hash: mintTxHash,
 				})
-				.then(() => {
+				.then(async () => {
+					await logsnag.publish({
+						channel: "nft",
+						event: "NFT Collection Created",
+						description: `NFT Created by ${address} in collection ${title}`,
+						icon: "🎉",
+						tags: {
+							address,
+							collection: data._id,
+						},
+						notify: true,
+					});
 					setIsSubmitting(false);
 					setModalStep(processStages.txConfirmed);
 				})

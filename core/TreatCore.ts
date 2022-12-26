@@ -101,7 +101,7 @@ export type TreatUser = {
 	address: string;
 	connected_addresses: () => Promise<Array<string>>;
 	username: string;
-	email_address: string;
+	email: string;
 	fingerprint: string;
 	connected_chains: string;
 	display_name: string;

@@ -1,6 +1,6 @@
 import {connectMongoDB} from "server/database/engine";
 import {returnWithError, returnWithSuccess} from "server/database/engine/utils";
-import {MongoModelCreator} from "server/database/models/creator";
+import {MongoModelCreator} from "server/helpers/models";
 import {NextApiRequest, NextApiResponse} from "next";
 
 export default async function handler(

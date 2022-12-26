@@ -10,9 +10,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 	await connectMongoDB();
 	const {session} = req;
 
-	const {username, displayName, bio} = req.body;
+	const {username, display_name, bio} = req.body;
 
-	if (!username || !displayName || !bio)
+	if (!username || !display_name || !bio)
 		return returnWithError(
 			{
 				username: "Please fill out all fields",
@@ -40,7 +40,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
 		const profile = new MongoModelProfile({
 			username,
-			display_name: displayName,
+			display_name: display_name,
 			bio,
 			address: user.address,
 			user: user._id,

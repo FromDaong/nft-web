@@ -7,7 +7,7 @@ import {
 	enforcePrivacyForNFTs,
 	returnWithSuccess,
 } from "server/database/engine/utils";
-import {MongoModelCreator} from "server/database/models/creator";
+import {MongoModelCreator} from "server/helpers/models";
 import {MongoModelNFT} from "server/helpers/models";
 
 export default async function handler(

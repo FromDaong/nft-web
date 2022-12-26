@@ -24,7 +24,7 @@ export default function CreateProfileModal({
 	const router = useRouter();
 	const initialValues = {
 		username: "",
-		displayName: "",
+		display_name: "",
 		bio: "",
 	};
 	return (
@@ -81,7 +81,7 @@ export default function CreateProfileModal({
 									});
 								}
 							),
-						displayName: Yup.string()
+						display_name: Yup.string()
 							.min(3, "Display name must be at least 3 characters")
 							.max(20, "Display name must be at most 20 characters")
 							.required("Display name is required"),
@@ -118,7 +118,7 @@ export default function CreateProfileModal({
 									<Text>
 										<ImportantText>Display name</ImportantText>
 									</Text>
-									<Field name="displayName">
+									<Field name="display_name">
 										{({field, meta}) => (
 											<Container className="flex flex-col gap-2">
 												<Input

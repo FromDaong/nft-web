@@ -6,7 +6,7 @@ import {
 	enforcePrivacyForNFTs,
 	returnWithSuccess,
 } from "server/database/engine/utils";
-import {MongoModelCreator} from "server/database/models/creator";
+import {MongoModelCreator} from "server/helpers/models";
 import LegacyCreatorModel from "@db/legacy/profile/Creator";
 import {MongoModelNFT} from "server/helpers/models";
 

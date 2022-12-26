@@ -467,11 +467,7 @@ const NFTPresentationComponent = (props: {
 										{remainingNfts === 0 ? "Sold out" : `${remainingNfts} left`}
 									</MutedText>
 								</Container>
-								<BuyNFTButton
-									mintNFT={nft.price === 0 ? mintFreeNFT : mintNFT}
-									remainingNfts={remainingNfts}
-									nftData={nft}
-								/>
+								<BuyNFTButton nftData={nft} />
 							</Container>
 						</Container>
 

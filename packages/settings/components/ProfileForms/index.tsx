@@ -2,62 +2,42 @@ import {Heading} from "@packages/shared/components/Typography/Headings";
 import {
 	ImportantText,
 	MutedText,
+	SmallText,
 	Text,
 } from "@packages/shared/components/Typography/Text";
-import {Button, WhiteButton} from "@packages/shared/components/Button";
-import {Container, FluidContainer} from "@packages/shared/components/Container";
+import {Button} from "@packages/shared/components/Button";
+import {Container} from "@packages/shared/components/Container";
 import {Input} from "@packages/shared/components/Input";
-import {styled} from "@styles/theme";
-import Avatar from "@packages/shared/components/AvatarNew";
 import {useDisclosure} from "@packages/hooks";
 import CropPhotoModal from "../../../modals/CropPhotoModal/CropPhotoModal";
-import {useState, useEffect} from "react";
-import {FilePond, registerPlugin} from "react-filepond";
-import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
-import FilePondPluginImagePreview from "filepond-plugin-image-preview";
-import FilePondPluginImageCrop from "filepond-plugin-image-crop";
-import FilePondPluginImageResize from "filepond-plugin-image-resize";
-import FilePondPluginImageTransform from "filepond-plugin-image-transform";
-import {Field, useFormik} from "formik";
+import {useState, useEffect, useLayoutEffect} from "react";
+import {useFormik} from "formik";
 import {useSession} from "next-auth/react";
 import DynamicSkeleton from "@packages/skeleton";
 import {
 	LinksFormSkeleton,
 	ProfileFormSkeleton,
 } from "@packages/skeleton/config";
+import {PencilAltIcon} from "@heroicons/react/outline";
+import {cdnUploadFileAndReturnURL} from "@utils/uploadcare";
+import axios from "axios";
+import {apiEndpoint} from "@utils/index";
+import Spinner from "@packages/shared/icons/Spinner";
 
-registerPlugin(
-	FilePondPluginFileValidateType,
-	FilePondPluginImagePreview,
-	FilePondPluginImageCrop,
-	FilePondPluginImageResize,
-	FilePondPluginImageTransform
-);
+import * as Yup from "yup";
+import Toast from "@packages/shared/components/Toast";
 
 export default function PersonalInformationForm() {
 	const {isOpen, onClose, onOpen} = useDisclosure();
 	const [newImage, setNewImage] = useState(null);
 	const {data: session} = useSession();
-
-	const [profile, setProfile] = useState({
-		username: "",
-		displayName: "",
-		email: "",
-		profile_pic: "",
-		bio: "",
-	});
+	const profile = (session as unknown as any)?.profile;
 
 	useEffect(() => {
 		if (newImage) {
 			onOpen();
 		}
 	}, [newImage]);
-
-	useEffect(() => {
-		if (session) {
-			setProfile((session as any).profile);
-		}
-	}, [session]);
 
 	const closeCropModal = () => {
 		setNewImage(null);
@@ -83,7 +63,7 @@ export default function PersonalInformationForm() {
 				</Container>
 				<Container className="flex flex-col col-span-1 gap-10">
 					<Container className="flex flex-col gap-6 border-gray-100 rounded-2xl">
-						{session ? (
+						{profile ? (
 							<PersonalPresentationInformationForm profile={profile} />
 						) : (
 							<DynamicSkeleton config={ProfileFormSkeleton} />
@@ -97,10 +77,10 @@ export default function PersonalInformationForm() {
 
 export const LinksForm = () => {
 	const {data: session} = useSession();
-	const profile = (session as unknown as {profile: any})?.profile;
+	const profile = (session as unknown as any)?.profile;
 
 	return (
-		<Container className="grid w-full max-w-3xl grid-cols-1 gap-8 mx-auto">
+		<Container className="grid w-full max-w-3xl grid-cols-1 gap-12 mx-auto">
 			<Container className="col-span-1 px-1 py-1 mt-4">
 				<p>
 					<Heading size="sm">Social media links</Heading>
@@ -110,7 +90,7 @@ export const LinksForm = () => {
 					<MutedText>Add links to your social media profiles</MutedText>
 				</Text>
 			</Container>
-			{session ? (
+			{profile ? (
 				<LinksFormPresentation links={profile.links ?? []} />
 			) : (
 				<DynamicSkeleton config={LinksFormSkeleton} />
@@ -122,59 +102,234 @@ export const LinksForm = () => {
 const PersonalPresentationInformationForm = (props: {
 	profile: {
 		username: string;
-		displayName: string;
+		display_name: string;
 		email: string;
 		profile_pic: string;
+		banner_pic: string;
 		bio: string;
 	};
 }) => {
+	const {profile} = props;
+	const [bannerUrl, setBannerURL] = useState("");
+	const [profilePicUrl, setProfilePicURL] = useState("");
+	const [updatingBanner, setUpdatingBanner] = useState(false);
+	const [updatingProfilePic, setUpdatingProfilePic] = useState(false);
+	const [updateBannerError, setUpdateBannerError] = useState("");
+	const [updateProfilePicError, setUpdateProfilePicError] = useState("");
+	const [updateProfileError, setUpdateProfileError] = useState("");
+	const [toastMessage, setToastMessage] = useState({title: "", content: ""});
+
+	const {isOpen, onOpen, onClose} = useDisclosure();
+
+	const [profileData, setUpdateProfile] = useState({
+		email: "",
+		display_name: "",
+		bio: "",
+	});
+
 	const personalInformationForm = useFormik({
 		initialValues: {
-			displayName: props.profile.displayName,
-			bio: props.profile.bio,
-			email: props.profile.email,
+			...profileData,
 		},
+		validationSchema: Yup.object({
+			display_name: Yup.string()
+				.min(3, "Must be at least 3 characters")
+				.max(20, "Must be 20 characters or less")
+				.required("Required"),
+
+			bio: Yup.string()
+				.min(3, "Must be at least 3 characters")
+				.max(100, "Must be 100 characters or less"),
+		}),
+
 		onSubmit(values, formikHelpers) {
-			console.log(values);
+			setUpdateProfileError("");
+			axios
+				.post(`${apiEndpoint}/profile/methods/patch`, values)
+				.then(() => setUpdateProfile(values))
+				.then(() => formikHelpers.setSubmitting(false))
+				.then(() =>
+					setToastMessage({title: "Success", content: "Profile updated"})
+				)
+				.catch((err) => {
+					setUpdateProfileError(err.message);
+					formikHelpers.setSubmitting(false);
+					setToastMessage({title: "Error", content: err.message});
+				});
 		},
 	});
 
+	const onSelectBannerPic = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files[0];
+		setUpdatingBanner(true);
+		setUpdateBannerError("");
+		cdnUploadFileAndReturnURL(file)
+			.then((url) => {
+				axios
+					.post(`${apiEndpoint}/profile/methods/patch`, {banner_pic: url})
+					.then(() => setBannerURL(url));
+			})
+			.then(() => setUpdatingBanner(false))
+			.then(() =>
+				setToastMessage({title: "Success", content: "Banner updated"})
+			)
+			.catch((err) => {
+				setUpdateBannerError(err.message);
+				setUpdatingBanner(false);
+				setToastMessage({title: "Error", content: err.message});
+			});
+	};
+
+	const onSelectProfilePic = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files[0];
+		setUpdatingProfilePic(true);
+		setUpdateProfilePicError("");
+		cdnUploadFileAndReturnURL(file)
+			.then((url) => {
+				axios
+					.post(`${apiEndpoint}/profile/methods/patch`, {profile_pic: url})
+					.then(() => setProfilePicURL(url));
+			})
+			.then(() => setUpdatingProfilePic(false))
+			.then(() =>
+				setToastMessage({title: "Success", content: "Profile picture updated"})
+			)
+			.catch((err) => {
+				setUpdateProfilePicError(err.message);
+				setUpdatingProfilePic(false);
+				setToastMessage({title: "Error", content: err.message});
+			});
+	};
+
+	useEffect(() => {
+		if (toastMessage.title) {
+			onOpen();
+		}
+	}, [toastMessage]);
+
+	useLayoutEffect(() => {
+		setProfilePicURL(profile.profile_pic);
+		setBannerURL(profile.banner_pic);
+
+		personalInformationForm.setValues({
+			email: profile.email,
+			display_name: profile.display_name,
+			bio: profile.bio,
+		});
+	}, [profile]);
+
 	return (
 		<>
-			<Container className="flex flex-col gap-1">
+			<Toast
+				isOpen={isOpen}
+				onClose={onClose}
+				title={toastMessage.title}
+				content={toastMessage.content}
+			/>
+			<Container className="flex flex-col gap-2">
+				<ImportantText>
+					<Text>Banner Photo</Text>
+				</ImportantText>
+				<Container className="flex items-center gap-12">
+					<Container
+						css={{
+							backgroundColor: "$surfaceOnSurface",
+							backgroundImage: `url(${
+								bannerUrl ||
+								"https://treatdao.mypinata.cloud/ipfs/QmdRewQfGbQP95hcyabRwRnXKWFH8Lyrr8ak6xc2y4uWTP"
+							})`,
+							backgroundSize: "cover",
+							backgroundPosition: "center",
+						}}
+						className="relative overflow-hidden w-full h-[200px] rounded-xl group flex items-center justify-center"
+					>
+						{!updatingBanner && (
+							<Container className="hidden group-hover:flex hover:transition-opacity duration-200 items-center justify-center  rounded-full w-full h-full">
+								<label
+									htmlFor="banner_pic"
+									className="h-full w-full flex items-center justify-center"
+								>
+									<Text
+										css={{backgroundColor: "$elementSurface"}}
+										className="p-2 relative rounded-full"
+									>
+										<PencilAltIcon
+											height={20}
+											width={20}
+										/>
+									</Text>
+									<input
+										id="banner_pic"
+										name="banner_pic"
+										className="hidden"
+										type="file"
+										onChange={onSelectBannerPic}
+									/>
+								</label>
+							</Container>
+						)}
+						{updatingBanner && <Spinner />}
+					</Container>
+				</Container>
+				<SmallText>Click in the box to update your banner picture.</SmallText>
+			</Container>
+			<Container className="flex flex-col gap-2">
 				<ImportantText>
 					<Text>Profile Photo</Text>
 				</ImportantText>
 				<Container className="flex items-center gap-12">
-					<Container className="flex flex-col gap-1">
-						<FluidContainer className="relative flex h-full">
-							<FilePond
-								allowMultiple={false}
-								allowImageCrop={true}
-								imagePreviewHeight={170}
-								imageCropAspectRatio={"1:1"}
-								imageResizeTargetWidth={200}
-								imageResizeTargetHeight={200}
-								stylePanelLayout={"compact circle"}
-								styleLoadIndicatorPosition={"center bottom"}
-								styleProgressIndicatorPosition={"right bottom"}
-								styleButtonRemoveItemPosition={"left bottom"}
-								styleButtonProcessItemPosition={"right bottom"}
-								acceptedFileTypes={["image/png", "image/jpg", "image/jpeg"]}
-							/>
-						</FluidContainer>
+					<Container
+						css={{
+							backgroundColor: "$surfaceOnSurface",
+							backgroundImage: `url(${
+								profilePicUrl ||
+								"https://treatdao.mypinata.cloud/ipfs/QmdRewQfGbQP95hcyabRwRnXKWFH8Lyrr8ak6xc2y4uWTP"
+							})`,
+							backgroundSize: "cover",
+							backgroundPosition: "center",
+						}}
+						className="relative overflow-hidden w-[120px] h-[120px] rounded-full group flex items-center justify-center"
+					>
+						{!updatingProfilePic && (
+							<Container className="hidden group-hover:flex hover:transition-opacity duration-200 items-center justify-center  rounded-full w-full h-full">
+								<label
+									htmlFor="profile_pic"
+									className="h-full w-full flex items-center justify-center"
+								>
+									<Text
+										css={{backgroundColor: "$elementSurface"}}
+										className="p-2 relative rounded-full"
+									>
+										<PencilAltIcon
+											height={20}
+											width={20}
+										/>
+									</Text>
+									<input
+										id="profile_pic"
+										name="profile_pic"
+										className="hidden"
+										type="file"
+										onChange={onSelectProfilePic}
+									/>
+								</label>
+							</Container>
+						)}
+						{updatingProfilePic && <Spinner />}
 					</Container>
 				</Container>
 			</Container>
-			<form className="flex flex-col gap-4">
+			<form className="flex flex-col gap-8">
 				<Container className="flex flex-col gap-1">
 					<ImportantText>
 						<Text>Display name</Text>
 					</ImportantText>
 					<Input
-						value={personalInformationForm.values.displayName}
+						value={personalInformationForm.values.display_name}
 						onChange={personalInformationForm.handleChange}
 						onBlur={personalInformationForm.handleBlur}
+						name="display_name"
+						required
 					/>
 				</Container>
 				<Container className="flex flex-col gap-1">
@@ -185,23 +340,36 @@ const PersonalPresentationInformationForm = (props: {
 						value={personalInformationForm.values.bio}
 						onChange={personalInformationForm.handleChange}
 						onBlur={personalInformationForm.handleBlur}
+						name="bio"
+						required
 					/>
 				</Container>
-				<Container className="flex flex-col gap-1">
-					<ImportantText>
-						<Text>Email Address</Text>
-					</ImportantText>
-					<Input
-						value={personalInformationForm.values.email}
-						onChange={personalInformationForm.handleChange}
-						onBlur={personalInformationForm.handleBlur}
-					/>
-				</Container>
+				{false && (
+					<Container className="flex flex-col gap-1">
+						<ImportantText>
+							<Text>Email Address</Text>
+						</ImportantText>
+						<Input
+							value={personalInformationForm.values.email}
+							onChange={personalInformationForm.handleChange}
+							onBlur={personalInformationForm.handleBlur}
+							name="email"
+						/>
+					</Container>
+				)}
 				<Container className="flex justify-end gap-2">
 					<Button
 						onClick={personalInformationForm.submitForm}
-						appearance={"surface"}
+						appearance={
+							personalInformationForm.isSubmitting ? "loading" : "action"
+						}
+						disabled={
+							personalInformationForm.isSubmitting ||
+							!personalInformationForm.isValid ||
+							!personalInformationForm.dirty
+						}
 					>
+						{personalInformationForm.isSubmitting && <Spinner />}
 						{personalInformationForm.isSubmitting
 							? "Loading..."
 							: "Save Changes"}

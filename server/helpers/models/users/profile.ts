@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import createMongoDBModel from "../../utils";
 import paginate from "mongoose-paginate-v2";
 
-const ModelSchema = new mongoose.Schema(
+const ProfileSchema = new mongoose.Schema(
 	{
 		display_name: {
 			type: String,
@@ -14,6 +14,9 @@ const ModelSchema = new mongoose.Schema(
 			required: [true, "Please add a Model username"],
 		},
 		identity_access_key: {
+			type: String,
+		},
+		email: {
 			type: String,
 		},
 		bio: {
@@ -86,12 +89,12 @@ const ModelSchema = new mongoose.Schema(
 	}
 );
 
-ModelSchema.plugin(paginate);
+ProfileSchema.plugin(paginate);
 
-ModelSchema.pre("findOne", function (next) {
+ProfileSchema.pre("findOne", function (next) {
 	// Find badges and add them to the model
 	next();
 });
 
-const ModelProfile = createMongoDBModel("Profile", ModelSchema);
+const ModelProfile = createMongoDBModel("Profile", ProfileSchema);
 export default ModelProfile;

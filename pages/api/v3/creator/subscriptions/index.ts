@@ -1,7 +1,4 @@
-import {
-	MongoModelCreator,
-	MongoSubscriptionModel,
-} from "server/database/models/creator";
+import {MongoModelCreator, MongoSubscriptionModel} from "server/helpers/models";
 import {connectMongoDB} from "server/database/engine";
 import {NextApiResponse} from "next";
 import {NextApiRequest} from "next";
@@ -13,7 +10,7 @@ export default async function handler(
 ) {
 	await connectMongoDB();
 
-	// TODO: Add pagination to prevent perfomance hit on $in query to creators
+	// T-62 Add pagination to prevent perfomance hit on $in query to creators
 	const subscriptions = await MongoSubscriptionModel.find();
 	const creatorIds = subscriptions.map(
 		(subscription) => subscription.creatorId

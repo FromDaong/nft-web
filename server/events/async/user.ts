@@ -3,7 +3,7 @@ import {createStepFunction} from "inngest";
 type Added = {
 	name: "user/profile.email_added";
 	data: {
-		email_address: string;
+		email: string;
 		referral_code: string;
 	};
 	user: {

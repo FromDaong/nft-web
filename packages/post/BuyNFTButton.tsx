@@ -1,22 +1,13 @@
-import {CheckCircleIcon} from "@heroicons/react/outline";
-import {useSubscriptionData} from "@packages/chain/hooks";
-import {useDisclosure} from "@packages/hooks";
-import {Modal} from "@packages/modals";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
-import {Heading} from "@packages/shared/components/Typography/Headings";
-import {ImportantText, Text} from "@packages/shared/components/Typography/Text";
 import {useToggle} from "@packages/shared/hooks";
 import Spinner from "@packages/shared/icons/Spinner";
 import {useConnectModal} from "@rainbow-me/rainbowkit";
 import {apiEndpoint} from "@utils/index";
+import logsnag from "@utils/logsnag";
 import axios from "axios";
-import {useUser} from "core/auth/useUser";
 import TreatCore from "core/TreatCore";
-import {useSession} from "next-auth/react";
-import Link from "next/link";
-import {useRouter} from "next/router";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {useAccount, useBalance, useWaitForTransaction} from "wagmi";
 import {BuyButtonProps, get_nft_type, useNFTFactory} from "./hooks/helpers";
 
@@ -44,17 +35,30 @@ const purchaseNFTTransporter = async (data: {
 	timestamp: number;
 	nft_type: string;
 	remaining: number;
-	metadata?: {
+	metadata: {
 		did_subscribe_in_session?: boolean;
 		subscription_price?: number;
 		browser: string;
 		os: string;
-		wallet?: {
+		wallet: {
 			address: string;
 			name: string;
 		};
 	};
 }) => {
+	await logsnag.publish({
+		channel: "nft",
+		event: "NFT Purchase",
+		description: `Purchase of NFT by ${data.metadata.wallet.address}}`,
+		icon: "🎉",
+		tags: {
+			address: data.metadata.wallet.address,
+			seller: data.seller,
+			nftId: data.nftId,
+		},
+		notify: true,
+	});
+
 	return axios.post(`${apiEndpoint}/marketplace/methods/purchase-nft`, data);
 };
 
@@ -135,7 +139,6 @@ const BuySubscriptionNFTButton = ({
 
 	const buyNFT = () => {
 		toggleLoading();
-		// T-59 Emit event of buying subscription NFT to generate timeline and log in analytics
 		mint()
 			.then((res) => {
 				return purchaseNFTTransporter({
@@ -163,10 +166,6 @@ const BuySubscriptionNFTButton = ({
 				// 3. Send to server
 				// 4. Send transaction to server
 				// 5. Show success modal
-			})
-			.then((res) => {
-				const tx = res.data;
-				console.log("Now emit events");
 			})
 			.catch(async (err) => {
 				const event = {
@@ -224,10 +223,6 @@ const BuyCreatorMartNFTButton = ({
 				// 4. Send transaction to server
 				// 5. Show success modal
 			})
-			.then((res) => {
-				const tx = res.data;
-				console.log("Now emit events");
-			})
 			.catch(async (err) => {
 				const event = {
 					message: "Error occurred in buying Subscription NFT",
@@ -276,10 +271,6 @@ const BuyTOTMNFTButton = ({nft, mint, address, toggleLoading, remaining}) => {
 				// 3. Send to server
 				// 4. Send transaction to server
 				// 5. Show success modal
-			})
-			.then((res) => {
-				const tx = res.data;
-				console.log("Now emit events");
 			})
 			.catch(async (err) => {
 				const event = {
@@ -410,75 +401,7 @@ const PurchaseButtonWrapper = (nft: BuyButtonProps) => {
 	);
 };
 
-const BuyNFTButton = ({mintNFT, nftData}) => {
-	const {address} = useAccount();
-	const session = useSession();
-	// @ts-ignore
-	const {profile} = session.data ?? {};
-	const {isOpen, onOpen, onClose} = useDisclosure();
-	const [loading, setLoading] = useState(false);
-	const [mintTx, setMintTx] = useState(null);
-	const [showConfirmWallet, setShowConfirmWallet] = useState(false);
-	const [savedTx, setSavedTx] = useState(false);
-
-	const {isSuccess: isTxConfirmed, data} = useWaitForTransaction({
-		hash: mintTx?.txHash,
-	});
-
-	useEffect(() => {
-		if (isTxConfirmed && data) {
-			submitTransaction().then(() => {
-				setShowConfirmWallet(false);
-				setLoading(false);
-				setSavedTx(true);
-			});
-		}
-	}, [isTxConfirmed, data]);
-
-	const redeemNFT = async () => {
-		try {
-			setLoading(true);
-			setShowConfirmWallet(true);
-			setSavedTx(false);
-			onOpen();
-
-			const tx = await mintNFT();
-
-			if (!tx) {
-				setLoading(false);
-				setShowConfirmWallet(false);
-				onClose();
-				return;
-			}
-
-			const transactionData = {
-				txHash: tx.hash,
-			};
-
-			setMintTx(transactionData);
-			setShowConfirmWallet(false);
-		} catch (err) {
-			console.log(err);
-			setLoading(false);
-			setShowConfirmWallet(false);
-			onClose();
-		}
-	};
-
-	const submitTransaction = async () => {
-		return axios.post(`${apiEndpoint}/tx/create`, {
-			txHash: data.transactionHash,
-			metadata: {
-				nftId: nftData.id,
-				balanceSender: address,
-				balanceReceiver: nftData.creator?.address,
-			},
-			type: "mint",
-			amount: nftData.price,
-			timestamp: new Date(),
-		});
-	};
-
+const BuyNFTButton = ({nftData}) => {
 	if (nftData.melon_nft) return null;
 
 	return (

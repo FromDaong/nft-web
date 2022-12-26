@@ -87,7 +87,7 @@ export interface I_Post_TimelineEvent {
 	timestamp: string;
 	actor: {
 		username: string;
-		displayName: string;
+		display_name: string;
 		profilePicture: string;
 		isLive: string;
 	};
@@ -111,7 +111,7 @@ export interface I_Post_Collector {
 	text: string;
 	actor: {
 		username: string;
-		displayName: string;
+		display_name: string;
 		profilePicture: string;
 		address: string;
 	};
