@@ -1,22 +1,10 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import {FilterIcon, SearchIcon} from "@heroicons/react/outline";
-import {useDisclosure} from "@packages/hooks";
-import {Modal} from "@packages/modals";
-import FilterNFTResultsModal from "@packages/modals/FilterNFTResultsModal";
-import SweetshopSortBy from "@packages/post/SweetshopSortBy";
 import {TritPost} from "@packages/post/TritPost";
 import {ExpandableSearch} from "@packages/search/ExpandableSearch";
 import {SEOHead} from "@packages/seo/page";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
-import {Divider} from "@packages/shared/components/Divider";
-import {Input} from "@packages/shared/components/Input";
 import SelectableTag from "@packages/shared/components/Selectabletag";
-import {Heading, Text} from "@packages/shared/components/Typography/Headings";
-import {
-	ImportantText,
-	MutedText,
-} from "@packages/shared/components/Typography/Text";
 import DynamicSkeleton from "@packages/skeleton";
 import {TritPostSkeleton} from "@packages/skeleton/config";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";

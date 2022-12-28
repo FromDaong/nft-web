@@ -1,21 +1,10 @@
-import {GlobeAltIcon, LogoutIcon} from "@heroicons/react/outline";
-import {
-	ArrowRightIcon,
-	CurrencyDollarIcon,
-	DesktopComputerIcon,
-	ShoppingBagIcon,
-	UserCircleIcon,
-} from "@heroicons/react/solid";
 import {useDisclosure} from "@packages/hooks";
-import BecomeCreatorModal from "@packages/onboarding/BecomeCreatorModal";
 import {Container} from "@packages/shared/components/Container";
-import {Divider} from "@packages/shared/components/Divider";
 import {BoldLink, Text} from "@packages/shared/components/Typography/Text";
 import ThemeSwitcherModal from "@packages/theme/ThemeSwitcherModal";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import {ConnectButton, useAccountModal} from "@rainbow-me/rainbowkit";
+import { useAccountModal} from "@rainbow-me/rainbowkit";
 import Avvvatars from "avvvatars-react";
-import UserAvatar from "core/auth/components/Avatar";
 import {useUser} from "core/auth/useUser";
 import {useSession} from "next-auth/react";
 import Link from "next/link";
@@ -134,11 +123,6 @@ const NavbarProfileAvatar = () => {
 	console.log({session});
 
 	const {isOpen, onClose, onOpen} = useDisclosure();
-	const {
-		isOpen: upgradeToCreatorIsOpen,
-		onOpen: onOpenUpgradeToCreator,
-		onClose: onCloseUpgradeToCreator,
-	} = useDisclosure();
 
 	if (!isConnected) {
 		return null;
@@ -149,10 +133,6 @@ const NavbarProfileAvatar = () => {
 			<ThemeSwitcherModal
 				isOpen={isOpen}
 				onClose={onClose}
-			/>
-			<BecomeCreatorModal
-				isOpen={upgradeToCreatorIsOpen}
-				onClose={onCloseUpgradeToCreator}
 			/>
 			<DropdownMenu.Root>
 				<DropdownMenu.Trigger>
@@ -171,7 +151,7 @@ const NavbarProfileAvatar = () => {
 					<DropdownContent>
 						<DropdownContainer className="drop-shadow-2xl">
 							<DropdownMenu.DropdownMenuGroup className="py-1">
-								<Link href={`/${profile.username}`}>
+								<Link href={`/${profile?.username}`}>
 									<a>
 										<NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
 											<div className="flex items-center gap-4">

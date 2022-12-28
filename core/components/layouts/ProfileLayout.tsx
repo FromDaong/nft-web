@@ -258,7 +258,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 			setFollowers(followers.filter((id) => id !== loggedInUser._id));
 
 			axios
-				.post(`${apiEndpoint}/profile/${profile.username}/unfollow`)
+				.post(`${apiEndpoint}/profile/${profile?.username}/unfollow`)
 				.catch((err) => {
 					console.log({err});
 					setFollowers(followers.concat(loggedInUser._id));
@@ -268,7 +268,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 		if (!followers.includes(loggedInUser._id)) {
 			setFollowers(followers.concat(loggedInUser._id));
 			axios
-				.post(`${apiEndpoint}/profile/${profile.username}/follow`)
+				.post(`${apiEndpoint}/profile/${profile?.username}/follow`)
 				.catch((err) => {
 					console.log({err});
 					setFollowers(followers.filter((id) => id !== loggedInUser._id));
@@ -280,7 +280,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 
 	return (
 		<>
-			<SEOHead title={profile.username + " - Trit"} />
+			<SEOHead title={profile?.username + " - Trit"} />
 
 			{
 				// <UserHeader profile_pic={user.profile_pic} />

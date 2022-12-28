@@ -2,18 +2,10 @@
 import Error404 from "@packages/error/404";
 import Error500 from "@packages/error/500";
 import RenderProfileNFTs from "@packages/post/profile/RenderProfileNFTs";
-import {TritPost} from "@packages/post/TritPost";
-import {SEOHead} from "@packages/seo/page";
-import {Container} from "@packages/shared/components/Container";
-import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import {useUser} from "core/auth/useUser";
-import ApplicationFrame from "core/components/layouts/ApplicationFrame";
-import ApplicationLayout from "core/components/layouts/ApplicationLayout";
-import ProfileLayout from "core/components/layouts/ProfileLayout";
 import TreatCore from "core/TreatCore";
-import {useRouter} from "next/router";
 import {useEffect, useMemo} from "react";
 import {useInView} from "react-intersection-observer";
 import {beforePageLoadGetUserProfile} from "server/page/userProfile";

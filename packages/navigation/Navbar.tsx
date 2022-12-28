@@ -53,11 +53,12 @@ const NotificationsIcon = (props) => {
 };
 
 export default function Navbar() {
-	const {status} = useSession();
+	const {status, data} = useSession();
 	const {isConnected: connected} = useAccount();
 	const isConnected = status === "authenticated" && connected;
 	const loading = status === "loading";
-	console.log({isConnected, status});
+
+	const {profile, creator} = (data as any) || {};
 
 	return (
 		<Container>
@@ -155,20 +156,22 @@ export default function Navbar() {
 												</Button>
 											</a>
 												</Link>*/}
-										<Link href={"/create"}>
-											<a>
-												<Button
-													appearance={"surface"}
-													css={{borderRadius: "9999px"}}
-												>
-													<PhotographIcon
-														width={18}
-														height={18}
-													/>
-													<span>Create post</span>
-												</Button>
-											</a>
-										</Link>
+										{creator && (
+											<Link href={"/create"}>
+												<a>
+													<Button
+														appearance={"surface"}
+														css={{borderRadius: "9999px"}}
+													>
+														<PhotographIcon
+															width={18}
+															height={18}
+														/>
+														<span>Create post</span>
+													</Button>
+												</a>
+											</Link>
+										)}
 										<NavbarProfileAvatar />
 									</Container>
 								) : (

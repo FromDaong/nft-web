@@ -1,24 +1,17 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import {Container} from "packages/shared/components/Container";
-import FeaturesCard from "@packages/shared/components/Card/MarketingPages/FeaturesCard";
-import {BenefitsCard} from "@packages/shared/components/Card/MarketingPages/BenefitsCard";
-import Footer from "@packages/shared/components/Footer";
-import {Divider, ShortDivider} from "@packages/shared/components/Divider";
+import {Divider} from "@packages/shared/components/Divider";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {TritPost} from "@packages/post/TritPost";
-import SuggestedCreatorCard, {
-	SkeletonExpandedSuggestedCreatorCard,
-} from "@packages/feed/components/SuggestedCreatorCard";
+import SuggestedCreatorCard from "@packages/feed/components/SuggestedCreatorCard";
 import Link from "next/link";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
 import {ArrowRightIcon} from "@heroicons/react/outline";
 import TreatOfTheMonthCollectionSection from "@packages/post/CollectionSection";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
-import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import TreatCore from "core/TreatCore";
 import axios from "axios";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
-import {useDisclosure} from "@packages/hooks";
 import DynamicSkeleton from "@packages/skeleton";
 import {
 	FeaturedCreatorSkeleton,

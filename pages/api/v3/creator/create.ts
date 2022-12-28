@@ -8,7 +8,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 	await connectMongoDB();
 	const {session} = req;
 	const {
-		subscription_cost,
+		subscription_price,
 		subscription_description,
 		email,
 		identity_access_key,
@@ -23,7 +23,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 			res
 		);
 	}
-	if (!subscription_cost) {
+	if (!subscription_price) {
 		return returnWithError(
 			{
 				subscription_cost: "Please enter a valid subscription cost.",
@@ -66,7 +66,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 			address: session.address.toLowerCase(),
 		});
 
-		await MongoModelCreator.findOneAndUpdate(
+		await MongoModelProfile.findOneAndUpdate(
 			{
 				profile: profile._id,
 			},
@@ -89,7 +89,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 			pending: true,
 			approved: false,
 			subscription: {
-				cost: subscription_cost,
+				cost: subscription_price,
 				description: subscription_description,
 			},
 			subscriptions_enabled: false,
@@ -101,9 +101,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 	} catch (err) {
 		console.log({err});
 		return returnWithError(
-			{
-				bio: "An error occurred while creating your profile. Please try again.",
-			},
+			"An error occurred while creating your profile. Please try again.",
 			400,
 			res
 		);

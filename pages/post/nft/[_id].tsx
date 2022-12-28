@@ -1,8 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import {pagePropsConnectMongoDB} from "@db/engine/pagePropsDB";
-import LegacyNFTModel from "@db/legacy/nft/NFT";
-import {BadgeCheckIcon, DotsHorizontalIcon} from "@heroicons/react/outline";
-import {EvmNftMetadata} from "@moralisweb3/common-evm-utils";
+import {DotsHorizontalIcon} from "@heroicons/react/outline";
 import {
 	useWagmiGetCreatorNftCost,
 	useWagmiGetNFTMaxSupply,
@@ -17,21 +15,12 @@ import {
 	useWagmiMintCreatorNFT,
 	useWagmiMintSubscriberNFT,
 } from "@packages/chain/hooks";
-import useGetIsSubscribed from "@packages/chain/hooks/useGetIsSubscribed";
 import Error404 from "@packages/error/404";
-import {useDisclosure} from "@packages/hooks";
-import {Modal} from "@packages/modals";
-import FullScreenImagePreview from "@packages/modals/FullScreenImagePreview";
 import BuyNFTButton from "@packages/post/BuyNFTButton";
-import {
-	useContracts,
-	useGetIsNFTOwned,
-	useTritNFTUtils,
-} from "@packages/post/hooks";
+import {useGetIsNFTOwned, useTritNFTUtils} from "@packages/post/hooks";
 import {TritPost} from "@packages/post/TritPost";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
-import CreatorBadge from "@packages/shared/components/CreatorBadget";
 import {Divider} from "@packages/shared/components/Divider";
 import OptimizedImage from "@packages/shared/components/OptimizedImage";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
@@ -49,7 +38,6 @@ import {
 	HeartFilledIcon,
 	HeartIcon,
 	ImageIcon,
-	Share1Icon,
 	Share2Icon,
 } from "@radix-ui/react-icons";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
@@ -58,7 +46,6 @@ import UserAvatar from "core/auth/components/Avatar";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import TreatCore from "core/TreatCore";
-import {BigNumber, ethers} from "ethers";
 import Link from "next/link";
 import {useEffect, useState} from "react";
 import {MongoModelNFT, MongoModelTransaction} from "server/helpers/models";

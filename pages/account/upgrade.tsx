@@ -15,11 +15,10 @@ import {apiEndpoint} from "@utils/index";
 import axios from "axios";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
-import {BigNumber} from "ethers";
 import {useFormik} from "formik";
 import dynamic from "next/dynamic";
 import {Suspense, useCallback, useEffect, useState} from "react";
-import {useAccount, useWaitForTransaction} from "wagmi";
+import {useAccount, useBalance, useWaitForTransaction} from "wagmi";
 import Web3 from "web3";
 import * as Yup from "yup";
 
@@ -249,30 +248,51 @@ const VerifyIdentity = (props: {
 	callback: (returned) => void;
 }) => {
 	const [stage, setStage] = useState<
-		"creating_subscription" | "verify_identity"
-	>("creating_subscription");
+		| "creating_subscription"
+		| "verify_identity"
+		| "initializing"
+		| "insufficient_balance"
+		| "error"
+	>("initializing");
 	const {treatSubscriptionsContract, signer} = useContracts();
 	// wait for transaction by hash
 	const [txHash, setTxHash] = useState<string>("");
-	const {isSuccess, isLoading, isError} = useWaitForTransaction({
+	const {isSuccess, isError} = useWaitForTransaction({
 		hash: txHash,
+	});
+	const {data} = useBalance({
+		addressOrName: props.address,
 	});
 
 	const setSubscriptionCost = useCallback(
 		async (subscription_price: number) => {
 			if (signer) {
-				const tx = await treatSubscriptionsContract.setSubscriptionCost(
-					Web3.utils.toWei(subscription_price.toString()),
-					{
-						from: props.address,
-						value: 0,
-					}
-				);
-				setTxHash(tx.hash);
+				try {
+					const tx = await treatSubscriptionsContract.setSubscriptionCost(
+						Web3.utils.toWei(subscription_price.toString()),
+						{
+							from: props.address,
+							value: 0,
+						}
+					);
+					setTxHash(tx.hash);
+				} catch (err) {
+					setStage("error");
+				}
 			}
 		},
 		[signer, treatSubscriptionsContract, props.address]
 	);
+
+	useEffect(() => {
+		if (signer && data) {
+			if (Number(data.formatted.toString()) < 0.0005) {
+				setStage("insufficient_balance");
+			} else {
+				setStage("creating_subscription");
+			}
+		}
+	}, [signer, data]);
 
 	useEffect(() => {
 		// Create subscription on chain and toggle to verify_identity
@@ -289,9 +309,48 @@ const VerifyIdentity = (props: {
 
 	return (
 		<Container>
+			{stage === "initializing" && (
+				<Container className="flex flex-col gap-2 items-center w-full">
+					<Spinner />
+					<Text>
+						<ImportantText>Please wait, initializing...</ImportantText>
+					</Text>
+				</Container>
+			)}
+			{stage === "insufficient_balance" && (
+				<Container className="flex flex-col gap-2 items-center w-full">
+					<Text appearance={"danger"}>
+						<XCircleIcon
+							width={40}
+							height={40}
+						/>
+					</Text>
+					<Text>
+						<ImportantText>
+							Insufficient balance to create subscription.
+						</ImportantText>
+					</Text>
+				</Container>
+			)}
+
+			{stage === "error" && (
+				<Container className="flex flex-col gap-2 items-center w-full">
+					<Text appearance={"danger"}>
+						<XCircleIcon
+							width={40}
+							height={40}
+						/>
+					</Text>
+					<Text>
+						<ImportantText>
+							An error occurred while creating subscription.
+						</ImportantText>
+					</Text>
+				</Container>
+			)}
 			{stage === "creating_subscription" && (
 				<Container className="flex w-full">
-					{isLoading && (
+					{!isError && !isSuccess && (
 						<Container className="flex flex-col gap-2 items-center w-full">
 							<Spinner />
 							<Text>

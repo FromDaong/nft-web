@@ -91,7 +91,7 @@ export const LinksForm = () => {
 				</Text>
 			</Container>
 			{profile ? (
-				<LinksFormPresentation links={profile.links ?? []} />
+				<LinksFormPresentation links={profile?.links ?? []} />
 			) : (
 				<DynamicSkeleton config={LinksFormSkeleton} />
 			)}

@@ -3,15 +3,9 @@ import {
 	Container,
 	ContextualContainer,
 } from "@packages/shared/components/Container";
-import {
-	ContextualHeading,
-	Heading,
-	Text,
-} from "@packages/shared/components/Typography/Headings";
+import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
-
-import React from "react";
 
 function Icon() {
 	return (

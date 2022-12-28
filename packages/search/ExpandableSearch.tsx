@@ -7,14 +7,11 @@ import {
 	Text,
 } from "@packages/shared/components/Typography/Text";
 import {useState} from "react";
-import {styled} from "@styles/theme";
 import {Button} from "@packages/shared/components/Button";
 import {ImageIcon} from "@radix-ui/react-icons";
 import UserAvatar from "core/auth/components/Avatar";
 import FilterNFTResultsModal from "@packages/modals/FilterNFTResultsModal";
 import {useDisclosure} from "@packages/hooks";
-
-const MotionContainer = styled(Container, {});
 
 export function ExpandableSearch() {
 	const [focused, setFocused] = useState(false);
@@ -38,20 +35,6 @@ export function ExpandableSearch() {
 				onClose={onClose}
 			/>
 			<Container
-				initial={{
-					opacity: 0,
-					borderRadius: "9999px",
-					transitionDuration: "150",
-				}}
-				animate={{
-					opacity: 1,
-					borderRadius: "12px",
-				}}
-				exit={{
-					opacity: 0,
-					borderRadius: "9999px",
-					transitionDuration: "150",
-				}}
 				className={`
                         w-full border max-w-md transition-all duration-150
                         focus-within:border-gray-200/50 shadow-sm

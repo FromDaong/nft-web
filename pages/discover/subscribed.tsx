@@ -1,25 +1,14 @@
-import {GlobeAltIcon} from "@heroicons/react/outline";
 import SuggestedCreatorsSection from "@packages/feed/components/SuggestedCreatorsSection";
 import TrendsSection from "@packages/feed/components/TrendsSection";
 import NavTab from "@packages/navigation/components/DiscoverNavTab";
-import {TimelineActivity} from "@packages/post/TimelineActivity";
-import {TritPostProps} from "@packages/post/types";
 import {SEOHead} from "@packages/seo/page";
 import {Container} from "@packages/shared/components/Container";
-import {Divider} from "@packages/shared/components/Divider";
-import {
-	BoldLink,
-	ImportantText,
-} from "@packages/shared/components/Typography/Text";
 import {apiEndpoint} from "@utils/index";
 import axios from "axios";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import ContentSidebar from "core/components/layouts/ContentSidebar";
 import TreatCore from "core/TreatCore";
-import Link from "next/link";
-import {useRouter} from "next/router";
-import {ReactElement, ReactNode} from "react";
 
 const getTrendingCreators = async () => {
 	const res = await axios.get(`${apiEndpoint}/profile`);

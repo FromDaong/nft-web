@@ -4,9 +4,6 @@ import {
 	connectorsForWallets,
 	DisclaimerComponent,
 	darkTheme,
-	RainbowKitAuthenticationProvider,
-	createAuthenticationAdapter,
-	AuthenticationStatus,
 	useConnectModal,
 } from "@rainbow-me/rainbowkit";
 import {
@@ -17,16 +14,10 @@ import {
 } from "@rainbow-me/rainbowkit/wallets";
 
 import {Chain, configureChains, createClient, WagmiConfig} from "wagmi";
-import {alchemyProvider} from "wagmi/providers/alchemy";
 import {publicProvider} from "wagmi/providers/public";
-import {ReactNode, useEffect, useMemo, useRef, useState} from "react";
-import {
-	RainbowKitSiweNextAuthProvider,
-	GetSiweMessageOptions,
-} from "core/auth/components/AuthenticationProvider";
+import {ReactNode, useEffect} from "react";
+import {RainbowKitSiweNextAuthProvider} from "core/auth/components/AuthenticationProvider";
 import {useTheme} from "@packages/theme";
-import authenticationAdapter from "./connectAdapter";
-import {SiweMessage} from "siwe";
 import {SessionProvider, useSession} from "next-auth/react";
 import {useDisclosure} from "@packages/hooks";
 import CreateProfileModal from "@packages/onboarding/CreateProfileModal";
@@ -157,14 +148,14 @@ const SessionRequires = () => {
 
 	useEffect(() => {
 		// @ts-ignore
-		if (data && !data.profile) {
+		if (data && (!data.profile || data.profile === {})) {
 			onOpen();
 		} else {
 			onClose();
 		}
-	}, [data]);
+	}, [data, status]);
 
-	// TODO: Discover creators modal
+	// T-65 Discover creators modal
 	return (
 		<>
 			<CreateProfileModal
