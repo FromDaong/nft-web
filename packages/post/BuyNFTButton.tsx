@@ -382,6 +382,8 @@ const PurchaseButtonWrapper = (nft: BuyButtonProps) => {
 		return <ConnectWalletButton />;
 	}
 
+	if (!address) return null;
+
 	if (didBalanceFetchError) {
 		return <ErrorButton error={balanceFetchError} />;
 	}

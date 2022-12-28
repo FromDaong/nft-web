@@ -98,10 +98,7 @@ export default function Index() {
 				<Container>
 					<Container className="flex flex-col w-full gap-8 px-4 xl:px-0">
 						<Container className="flex justify-between">
-							<DynamicSkeleton config={HeadingSkeleton} />
-							{
-								// <Heading size="sm">Discover Treat creators</Heading>
-							}
+							<Heading size="sm">Discover Treat creators</Heading>
 						</Container>
 						<Container className="grid grid-cols-1 gap-8 md:grid-cols-2  xl:grid-cols-4">
 							{!trendingCreatorError && !trendingCreatorsLoading

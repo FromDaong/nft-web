@@ -61,6 +61,10 @@ function PreviewCollection(props: {
 		display_name: string;
 	};
 }) {
+	const collection =
+		props.collectionItems.length > 0
+			? props.collectionItems.slice(0, 6)
+			: new Array(6).fill(0);
 	return (
 		<Container
 			className="flex flex-col h-auto gap-4 p-4 border rounded-xl drop-shadow-sm"
@@ -70,30 +74,25 @@ function PreviewCollection(props: {
 			}}
 		>
 			<Container className="flex flex-nowrap overflow-x-auto md:grid md:grid-cols-2 gap-4 lg:grid-cols-3 scrollbar-hide overscroll-contain snap-x snap-mandatory">
-				{(props.collectionItems && props.collectionItems.length > 0
-					? props.collectionItems
-					: new Array(6).fill(0)
-				)
-					.slice(0, 6)
-					.map((item, i) => (
-						<Container
-							key={item.id + i}
-							className={`w-[80%] md:w-auto flex-shrink-0 overflow-hidden h-[280px] lg:h-[320px] snap-center ${
-								i > 3 ? "hidden lg:flex" : "inherit"
-							}`}
-							css={{
-								background: item.image
-									? `url('https://treatnfts.gumlet.io/api/v3/image?default=${
-											item.image.ipfs ?? item.image.ipfs
-									  }${item.protected ? "&blur=30" : ""}')`
-									: "$surfaceOnSurface",
-								backgroundColor: "$surfaceOnSurface",
-								backgroundSize: "cover",
-								backgroundPosition: "center",
-								borderRadius: "16px",
-							}}
-						/>
-					))}
+				{collection.map((item, i) => (
+					<Container
+						key={item?.image?.ipfs ?? "skeleton" + i}
+						className={`w-[80%] md:w-auto flex-shrink-0 overflow-hidden h-[280px] lg:h-[320px] snap-center ${
+							i > 3 ? "hidden lg:flex" : "inherit"
+						}`}
+						css={{
+							background: item.image
+								? `url('https://treatnfts.gumlet.io/api/v3/image?default=${
+										item.image.ipfs ?? item.image.ipfs
+								  }${item.protected ? "&blur=30" : ""}')`
+								: "$surfaceOnSurface",
+							backgroundColor: "$surfaceOnSurface",
+							backgroundSize: "cover",
+							backgroundPosition: "center",
+							borderRadius: "16px",
+						}}
+					/>
+				))}
 			</Container>
 			<Container className="flex items-center gap-2">
 				{props.collectionItems.length > 0 ? (

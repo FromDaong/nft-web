@@ -7,13 +7,6 @@ import {
 	useWagmiGetSubscriberNftCost,
 	useWagmiGetTreatOfTheMonthNftCost,
 	useWagmiGetNFTTotalSupply,
-	useWagmiGetResaleNFTsForNFT,
-	useWagmiMintFreeNFT,
-	useWagmiMintFreeTOTMNFT,
-	useWagmiMintFreeSubscriberNFT,
-	useWagmiMintTOTMNFT,
-	useWagmiMintCreatorNFT,
-	useWagmiMintSubscriberNFT,
 } from "@packages/chain/hooks";
 import Error404 from "@packages/error/404";
 import BuyNFTButton from "@packages/post/BuyNFTButton";
@@ -263,7 +256,6 @@ const NFTPresentationComponent = (props: {
 }) => {
 	const {nft} = props;
 	const postUtils = useTritNFTUtils(nft);
-
 	const {cost: creatorCost} = useWagmiGetCreatorNftCost(nft.id);
 	const {cost: treatCost} = useWagmiGetTreatOfTheMonthNftCost(nft.id);
 	const {cost: subscriptionCost} = useWagmiGetSubscriberNftCost(nft.id);
@@ -271,43 +263,10 @@ const NFTPresentationComponent = (props: {
 	let nftCost: any = nft.subscription_nft ? subscriptionCost : creatorCost;
 	nftCost = nft.totm_nft ? treatCost : nftCost;
 
-	const {mintNFT: onMintTOTMNft} = useWagmiMintTOTMNFT(nft.id, nftCost);
-	const {mintNFT: onMintCreatorNft} = useWagmiMintCreatorNFT(nft.id, nftCost);
-	const {mintNFT: onMintSubscriberNft} = useWagmiMintSubscriberNFT(
-		nft.id,
-		nftCost
-	);
-
-	const {mintNFT: onMintFreeTOTM} = useWagmiMintFreeTOTMNFT(nft.id);
-	const {mintNFT: onMintFreeCreatorTreat} = useWagmiMintFreeNFT(nft.id);
-	const {mintNFT: onMintFreeSubscriberTreat} = useWagmiMintFreeSubscriberNFT(
-		nft.id
-	);
-
 	const maxNftSupply = useWagmiGetNFTMaxSupply(nft.id);
 	const mintedNfts = useWagmiGetNFTTotalSupply(nft.id);
 
 	const remainingNfts = maxNftSupply - mintedNfts;
-
-	const {resaleListings: openOrders} = useWagmiGetResaleNFTsForNFT(nft.id);
-
-	const mintNFT = async () => {
-		if (nft.subscription_nft) return onMintSubscriberNft();
-		if (nft.totm_nft) {
-			return await onMintTOTMNft();
-		} else {
-			return await onMintCreatorNft();
-		}
-	};
-
-	const mintFreeNFT = async () => {
-		if (nft.subscription_nft) return onMintFreeSubscriberTreat();
-		if (nft.totm_nft) {
-			return await onMintFreeTOTM();
-		} else {
-			return await onMintFreeCreatorTreat();
-		}
-	};
 
 	return (
 		<>
