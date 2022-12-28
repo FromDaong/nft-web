@@ -84,7 +84,8 @@ export default async function auth(req: any, res: any) {
 				const creator = await MongoModelCreator.findOne({
 					profile: profile._id,
 				});
-				profile.creator = creator;
+
+				session.creator = creator;
 				session.address = token.sub;
 				session.profile = profile;
 				session.user.name = token.sub;

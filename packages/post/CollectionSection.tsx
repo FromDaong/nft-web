@@ -77,7 +77,7 @@ function PreviewCollection(props: {
 					.slice(0, 6)
 					.map((item, i) => (
 						<Container
-							key={item.id}
+							key={item.id + i}
 							className={`w-[80%] md:w-auto flex-shrink-0 overflow-hidden h-[280px] lg:h-[320px] snap-center ${
 								i > 3 ? "hidden lg:flex" : "inherit"
 							}`}

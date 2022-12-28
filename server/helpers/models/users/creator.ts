@@ -39,8 +39,16 @@ const ModelSchema = new mongoose.Schema(
 			],
 		},
 		subscription: {
-			type: mongoose.Schema.Types.ObjectId,
-			required: false,
+			cost: {
+				type: Number,
+				required: true,
+				default: 0,
+			},
+			description: {
+				type: String,
+				required: true,
+				default: "",
+			},
 		},
 		livestream_active: {
 			type: Boolean,
@@ -60,6 +68,18 @@ const ModelSchema = new mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			required: true,
 			ref: "User",
+		},
+		identity_access_key: {
+			type: String,
+		},
+		approved: {
+			type: Boolean,
+			default: false,
+		},
+		pending: {
+			type: Boolean,
+			default: false,
+			required: true,
 		},
 	},
 	{

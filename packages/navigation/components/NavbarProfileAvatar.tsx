@@ -130,7 +130,7 @@ const NavbarProfileAvatar = () => {
 	const {isConnected} = useAccount();
 	const {openAccountModal} = useAccountModal();
 	const {data: session} = useSession();
-	const {profile, isLoading} = useUser();
+	const {profile, creator, isLoading} = useUser();
 	console.log({session});
 
 	const {isOpen, onClose, onOpen} = useDisclosure();
@@ -186,21 +186,22 @@ const NavbarProfileAvatar = () => {
 										</NavDropdownItem>
 									</a>
 								</Link>
-								{!isLoading && !profile.creator && (
-									<NavDropdownItem
-										onClick={onOpenUpgradeToCreator}
-										className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
-									>
-										<div className="flex items-center gap-4">
-											<Text className="p-2 rounded-full">
-												<BankNotes
-													width={20}
-													height={20}
-												/>
-											</Text>
-											<BoldLink>Become a Creator</BoldLink>
-										</div>
-									</NavDropdownItem>
+								{!isLoading && !creator && (
+									<Link href={"/account/upgrade"}>
+										<a>
+											<NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
+												<div className="flex items-center gap-4">
+													<Text className="p-2 rounded-full">
+														<BankNotes
+															width={20}
+															height={20}
+														/>
+													</Text>
+													<BoldLink>Become a Creator</BoldLink>
+												</div>
+											</NavDropdownItem>
+										</a>
+									</Link>
 								)}
 								<Link href={"/account"}>
 									<a>

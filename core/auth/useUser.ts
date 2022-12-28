@@ -6,7 +6,7 @@ export const useUser = () => {
 	const [isConnected, setConnected] = useState(false);
 
 	const profile = (data as any)?.profile;
-
+	const creator = (data as any)?.creator;
 	const isLoading = status === "loading";
 
 	useEffect(() => {
@@ -21,5 +21,6 @@ export const useUser = () => {
 		isConnected,
 		isLoading,
 		profile,
+		creator,
 	};
 };
