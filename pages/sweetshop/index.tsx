@@ -17,10 +17,10 @@ import {TreatNFTsInfinityScrollingContainer} from "packages/shared/components/Li
 import {useEffect, useMemo, useState} from "react";
 import {useInView} from "react-intersection-observer";
 
-const getSweetshopNFTs = async (page: number, filterString: string) => {
+const getSweetshopNFTs = async (page: number, sort: string) => {
 	const res = await axios.get(
 		`${apiEndpoint}/marketplace/activity?page=${page ?? 1}${
-			filterString ? "&market=" + filterString : ""
+			sort ? "&sort=" + sort : ""
 		}`
 	);
 	return res.data.data;
@@ -28,13 +28,7 @@ const getSweetshopNFTs = async (page: number, filterString: string) => {
 
 export default function NFTS(props) {
 	const {ref, inView} = useInView();
-	const [market_filter, setFilters] = useState(props.query.market);
-	const [filterList, setFilterlist] = useState<
-		Array<{
-			label: string;
-			value: string;
-		}>
-	>([]);
+	const [sort, setSortBy] = useState<string>("");
 	const router = useRouter();
 
 	const {
@@ -42,11 +36,10 @@ export default function NFTS(props) {
 		isFetchingNextPage,
 		fetchNextPage,
 		hasNextPage,
-		refetch,
 		isFetching,
 	} = TreatCore.useInfiniteQuery({
 		queryKey: ["sweetshopNFTsInfinite"],
-		queryFn: ({pageParam = 1}) => getSweetshopNFTs(pageParam, market_filter),
+		queryFn: ({pageParam = 1}) => getSweetshopNFTs(pageParam, sort),
 		getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
 		getPreviousPageParam: (firstPage) => firstPage.prevPage ?? undefined,
 	});
@@ -72,6 +65,7 @@ export default function NFTS(props) {
 							profile_pic: post.seller.profile_pic,
 							username: post.seller.username,
 							display_name: post.seller.display_name,
+							event_id: post._id,
 						},
 					})
 				);
@@ -79,26 +73,6 @@ export default function NFTS(props) {
 			return [];
 		}
 	}, [pages]);
-
-	const toggleFilter = (filter: string) => {
-		// add filter if it doesnt exist, remove if it does
-		if (filter === market_filter) {
-			setFilters("");
-		} else {
-			setFilters(filter);
-		}
-	};
-
-	useEffect(() => {
-		if (market_filter) {
-			router.push(`/sweetshop?market=${market_filter}`, undefined, {
-				shallow: true,
-			});
-		} else {
-			router.push(`/sweetshop`, undefined, {shallow: true});
-		}
-		refetch({refetchPage: (page, index) => index === 0});
-	}, [market_filter]);
 
 	useEffect(() => {
 		if (inView) {
@@ -118,26 +92,6 @@ export default function NFTS(props) {
 							<Container className="flex gap-4 justify-center px-2">
 								<ExpandableSearch />
 							</Container>
-							{false && (
-								<Container className="flex justify-between px-2">
-									<Container className="flex gap-2 overflow-x-auto flex-nowrap">
-										{filterList.map((f) => (
-											<Container
-												key={f.value}
-												className="flex-shrink-0"
-											>
-												<SelectableTag
-													toggle={toggleFilter}
-													key={f.value}
-													selected={market_filter}
-													label={f.label}
-													value={f.value}
-												/>
-											</Container>
-										))}
-									</Container>
-								</Container>
-							)}
 						</Container>
 					</Container>
 

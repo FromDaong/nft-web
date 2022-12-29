@@ -1,38 +1,18 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import {pagePropsConnectMongoDB} from "@db/engine/pagePropsDB";
-import {DotsHorizontalIcon} from "@heroicons/react/outline";
-import {
-	useWagmiGetCreatorNftCost,
-	useWagmiGetNFTMaxSupply,
-	useWagmiGetSubscriberNftCost,
-	useWagmiGetTreatOfTheMonthNftCost,
-	useWagmiGetNFTTotalSupply,
-} from "@packages/chain/hooks";
 import Error404 from "@packages/error/404";
-import BuyNFTButton from "@packages/post/BuyNFTButton";
-import {useGetIsNFTOwned, useTritNFTUtils} from "@packages/post/hooks";
+import NFTPresentationComponent from "@packages/post/BuyNFTPageViewNFT";
+import {useGetIsNFTOwned} from "@packages/post/hooks";
 import {TritPost} from "@packages/post/TritPost";
-import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
 import OptimizedImage from "@packages/shared/components/OptimizedImage";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
-import {
-	ImportantText,
-	MutedText,
-	SmallText,
-} from "@packages/shared/components/Typography/Text";
-import {useCopyToClipboard, useFullScreen} from "@packages/shared/hooks";
+import {SmallText} from "@packages/shared/components/Typography/Text";
+import {useFullScreen} from "@packages/shared/hooks";
 import RectangleStack from "@packages/shared/icons/RectangleStack";
 import DynamicSkeleton from "@packages/skeleton";
 import {TritPostSkeleton} from "@packages/skeleton/config";
-import {
-	EnterFullScreenIcon,
-	HeartFilledIcon,
-	HeartIcon,
-	ImageIcon,
-	Share2Icon,
-} from "@radix-ui/react-icons";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import UserAvatar from "core/auth/components/Avatar";
@@ -42,6 +22,7 @@ import TreatCore from "core/TreatCore";
 import Link from "next/link";
 import {useEffect, useState} from "react";
 import {
+	MongoModelEvent,
 	MongoModelNFT,
 	MongoModelProfile,
 	MongoModelTransaction,
@@ -65,26 +46,16 @@ export default function NFT(props: {
 	};
 	isResale: boolean;
 }) {
-	// T-26 implement view counter + analytics
-	// T-45 user wants to purchase creator NFT
-	// T-46 user wants to purchase subscription NFT
-	// T-47 user wants to purchase TOTM NFT
 	// T-48 user wants to purchase resale NFT
-	// T-49 user wants to like NFT
-	// T-50 user wants to see a list of users who liked this NFT
-	// T-51 user wants to see a list of users who purchased this NFT
 	// T-52 user wants to easily navigate to the search page with other listings of the NFT
 	// T-53 user wants to navigate to search page by clicking on a tag
-	// T-54 user wants to see a modal that shows if they own the NFT and the details of their ownership
-	// T-55 admin wants to restrict user from opening fullscreen if they don't own the NFT
-	// T-56 admin wants to disable certain functionality if user is not logged in
-	// T-57 admin wants to change layout if user is not logged in
 
 	const data = JSON.parse(props.data);
 	const {nft} = data;
 	const {seller} = data;
 	const {isResale} = data;
-	console.log({seller, isResale, nft});
+	const {event} = data;
+	console.log({seller, isResale, nft, event});
 
 	const {address} = useAccount();
 
@@ -135,8 +106,6 @@ export default function NFT(props: {
 		youMightAlsoLikeError || youMightAlsoLikeLoading
 			? []
 			: youMightAlsoLikeData?.map((post) => legacy_nft_to_new(post));
-
-	// T-39 Get cross-selling nft data from obviously API and show them under you might like.
 
 	const blurred_image = `${nft.image.ipfs}?blur=30`;
 	const hd_image = `${nft.image.ipfs}?q=100`;
@@ -260,6 +229,7 @@ export default function NFT(props: {
 							address={address}
 							seller={seller}
 							isResale={isResale}
+							event={event}
 						/>
 						<Divider dir={"horizontal"} />
 						<Container className="flex flex-col gap-12 px-8 lg:p-0">
@@ -335,236 +305,9 @@ export default function NFT(props: {
 	);
 }
 
-const NFTPresentationComponent = (props: {
-	nft: any;
-	isOwned: boolean;
-	balance: number;
-	loadHD: () => void;
-	openFullScreen: () => void;
-	address: string;
-	seller: any;
-	isResale: boolean;
-}) => {
-	const {nft} = props;
-	const postUtils = useTritNFTUtils(nft);
-	const {cost: creatorCost} = useWagmiGetCreatorNftCost(nft.id);
-	const {cost: treatCost} = useWagmiGetTreatOfTheMonthNftCost(nft.id);
-	const {cost: subscriptionCost} = useWagmiGetSubscriberNftCost(nft.id);
-	const [, copy] = useCopyToClipboard();
-
-	let nftCost: any = nft.subscription_nft ? subscriptionCost : creatorCost;
-	nftCost = nft.totm_nft ? treatCost : nftCost;
-
-	const maxNftSupply = useWagmiGetNFTMaxSupply(nft.id);
-	const mintedNfts = useWagmiGetNFTTotalSupply(nft.id);
-
-	const copyUrlToClipboard = () => {
-		// Get base domain
-		const baseDomain = window.location.origin;
-		copy(`${baseDomain}/post/nft/${nft._id}`);
-	};
-
-	const remainingNfts = maxNftSupply - mintedNfts;
-
-	const isOwned = props.isOwned;
-	const numberOfNFTsOwned = props.balance;
-
-	return (
-		<>
-			<Container className="grid grid-cols-1 gap-12 lg:grid-cols-3">
-				<Container className="grid flex-col grid-cols-2 lg:col-span-2 gap-12 py-8 lg:flex">
-					<Container className=" flex gap-4 bottom-4 right-4 col-span-2">
-						{props.address && (
-							<Button
-								appearance={"surface"}
-								onClick={postUtils.likeNFT}
-							>
-								{postUtils.liked ? (
-									<>
-										<HeartFilledIcon
-											width={16}
-											height={16}
-										/>
-									</>
-								) : (
-									<HeartIcon
-										width={16}
-										height={16}
-									/>
-								)}
-								<span>{postUtils.likedBy.length}</span>
-							</Button>
-						)}
-						<Button
-							onClick={copyUrlToClipboard}
-							appearance={"surface"}
-						>
-							<Share2Icon
-								width={16}
-								height={16}
-							/>
-							Copy link
-						</Button>
-						{false && (
-							<Button
-								appearance={"surface"}
-								onClick={props.openFullScreen}
-							>
-								<EnterFullScreenIcon
-									style={{strokeWidth: "2px"}}
-									height={16}
-									width={16}
-								/>
-							</Button>
-						)}
-						{isOwned && (
-							<Button
-								onClick={props.loadHD}
-								appearance={"surface"}
-							>
-								<ImageIcon
-									width={16}
-									height={16}
-								/>
-								Load HD
-							</Button>
-						)}
-						{isOwned && (
-							<Button>
-								<DotsHorizontalIcon
-									width={16}
-									height={16}
-								/>
-								More
-							</Button>
-						)}
-					</Container>
-					<Container className="flex justify-between col-span-2 gap-4">
-						<Container className="flex flex-col gap-2">
-							<Heading size="sm">{nft.name}</Heading>
-							<Container className="flex">
-								<Text>
-									Listed by{" "}
-									<Link
-										href={`/${
-											props.seller
-												? props.seller.username
-												: nft.creator.username
-										}`}
-									>
-										<a>
-											<ImportantText>
-												@
-												{props.seller
-													? props.seller.username
-													: nft.creator.username}
-											</ImportantText>
-										</a>
-									</Link>
-								</Text>
-							</Container>
-						</Container>
-						<Container>
-							<UserAvatar
-								username={
-									props.seller ? props.seller.username : nft.creator.username
-								}
-								profile_pic={
-									props.seller
-										? props.seller.profile_pic
-										: nft.creator.profile.profile_pic
-								}
-								size={48}
-							/>
-						</Container>
-					</Container>
-					<Container className="flex flex-col col-span-1 gap-4">
-						<Heading size="xs">Description</Heading>
-						<Text>{nft.description}</Text>
-					</Container>
-					<Container className="flex flex-col col-span-1 gap-4">
-						<Heading size="xs">Tags</Heading>
-						<Container className="flex flex-wrap gap-4 py-2">
-							{nft.tags?.map((tag) => (
-								<Container
-									key={tag}
-									className="px-3 py-1 border rounded-full shadow-sm"
-									css={{
-										backgroundColor: "$elementSurface",
-										borderColor: "$subtleBorder",
-									}}
-								>
-									<Text>
-										<ImportantText>{tag}</ImportantText>
-									</Text>
-								</Container>
-							))}
-							<Container
-								className="px-3 py-1 border rounded-full shadow-sm"
-								css={{
-									backgroundColor: "$elementSurface",
-									borderColor: "$subtleBorder",
-								}}
-							>
-								<Text>
-									<ImportantText>NFT</ImportantText>
-								</Text>
-							</Container>
-						</Container>
-					</Container>
-				</Container>
-				<Container className="flex flex-col gap-4 py-8">
-					<Container
-						className="flex flex-col w-full border shadow rounded-xl divide-y overflow-hidden"
-						css={{
-							backgroundColor: "$elementSurface",
-							borderColor: "$subtleBorder",
-							borderRadius: "16px",
-						}}
-					>
-						<Container className="flex flex-col gap-8 p-4">
-							<Container className="flex flex-col">
-								<Text>
-									<ImportantText>Reserve price</ImportantText>
-								</Text>
-								<SmallText>This is the buying price</SmallText>
-							</Container>
-							<Container className="flex flex-col gap-2 items-center">
-								<Container className="flex justify-between w-full items-baseline">
-									<Heading size="sm">{nftCost} BNB</Heading>
-
-									<MutedText className="flex-shrink-0">
-										{remainingNfts === 0 ? "Sold out" : `${remainingNfts} left`}
-									</MutedText>
-								</Container>
-								<BuyNFTButton
-									seller={props.seller.address}
-									nftData={nft}
-								/>
-							</Container>
-						</Container>
-
-						<Container
-							className="p-4"
-							css={{backgroundColor: "$surfaceOnSurface"}}
-						>
-							<Button
-								fullWidth
-								appearance={"surface"}
-							>
-								View other options
-							</Button>
-						</Container>
-					</Container>
-				</Container>
-			</Container>
-		</>
-	);
-};
-
 export const getServerSideProps = async (context) => {
 	const {_id} = context.params;
-	const {seller} = context.query;
+	const {seller, eid} = context.query;
 
 	await pagePropsConnectMongoDB();
 
@@ -583,6 +326,8 @@ export const getServerSideProps = async (context) => {
 	const seller_profile = await MongoModelProfile.findOne({
 		address: seller?.toLowerCase(),
 	});
+
+	const event = await MongoModelEvent.findById(eid);
 
 	if (!nft) {
 		return {
@@ -608,6 +353,7 @@ export const getServerSideProps = async (context) => {
 		nft: nft,
 		seller: seller_profile,
 		isResale: !!seller,
+		event: event,
 	};
 
 	return {

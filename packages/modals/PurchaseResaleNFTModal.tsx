@@ -23,7 +23,7 @@ export default function PurchaseResaleNFTModal(props: {
 
 	const {buyFromResale} = useBuyFromResale();
 
-	const cost = props.nft.price.value;
+	const cost = props.nft.price;
 
 	const {data, isLoading} = useWaitForTransaction({
 		hash: tx,
@@ -41,7 +41,7 @@ export default function PurchaseResaleNFTModal(props: {
 			props.nft.id,
 			1,
 			props.nft.author.address,
-			props.nft.price.bigNumber
+			props.nft.price
 		)
 			.then((t) => {
 				setTx(t.hash);
@@ -78,7 +78,7 @@ export default function PurchaseResaleNFTModal(props: {
 						<Text>
 							You are buying the NFT{" "}
 							<ImportantText>{props.nft.name}</ImportantText> for{" "}
-							<ImportantText>{cost} BNB</ImportantText> from the Resale Market
+							<ImportantText>{props.nft.price.value}</ImportantText>  BNB from the Resale Market
 						</Text>
 					)}
 					{!data && (loading || isLoading) && (

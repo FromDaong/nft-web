@@ -7,9 +7,11 @@ import {apiEndpoint} from "@utils/index";
 import logsnag from "@utils/logsnag";
 import axios from "axios";
 import TreatCore from "core/TreatCore";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useAccount, useBalance, useWaitForTransaction} from "wagmi";
 import {BuyButtonProps, get_nft_type, useNFTFactory} from "./hooks/helpers";
+import {useBuyFromResale} from "@packages/post/hooks";
+import {BigNumber} from "ethers";
 
 /**
  *
@@ -28,415 +30,517 @@ import {BuyButtonProps, get_nft_type, useNFTFactory} from "./hooks/helpers";
  */
 
 const purchaseNFTTransporter = async (data: {
-	tx_hash: string;
-	seller: string;
-	nftId: number;
-	price: number;
-	timestamp: number;
-	nft_type: string;
-	remaining: number;
-	metadata: {
-		did_subscribe_in_session?: boolean;
-		subscription_price?: number;
-		browser: string;
-		os: string;
-		wallet: {
-			address: string;
-			name: string;
-		};
-	};
+    tx_hash: string;
+    seller: string;
+    nftId: number;
+    price: number;
+    eid?: string;
+    timestamp: number;
+    nft_type: string;
+    remaining: number;
+    metadata: {
+        did_subscribe_in_session?: boolean;
+        subscription_price?: number;
+        browser: string;
+        os: string;
+        wallet: {
+            address: string;
+            name: string;
+        };
+    };
 }) => {
-	await logsnag.publish({
-		channel: "nft",
-		event: "NFT Purchase",
-		description: `Purchase of NFT by ${data.metadata.wallet.address}}`,
-		icon: "🎉",
-		tags: {
-			address: data.metadata.wallet.address,
-			seller: data.seller,
-			nftId: data.nftId,
-		},
-		notify: true,
-	});
+    await logsnag.publish({
+        channel: "nft",
+        event: "NFT Purchase",
+        description: `Purchase of NFT by ${data.metadata.wallet.address}}`,
+        icon: "🎉",
+        tags: {
+            address: data.metadata.wallet.address,
+            seller: data.seller,
+            nftId: data.nftId,
+        },
+        notify: true,
+    });
 
-	return axios.post(`${apiEndpoint}/marketplace/methods/purchase-nft`, data);
+    return axios.post(`${apiEndpoint}/marketplace/methods/purchase-nft`, data);
 };
 
 const InsufficientBalanceButton = () => {
-	return (
-		<Button
-			appearance={"disabled"}
-			disabled
-		>
-			Insufficient balance
-		</Button>
-	);
+    return (
+        <Button
+            appearance={"disabled"}
+            disabled
+        >
+            Insufficient balance
+        </Button>
+    );
 };
 
 const SoldOutButton = () => {
-	return (
-		<Button
-			appearance={"disabled"}
-			disabled
-		>
-			Sold out
-		</Button>
-	);
+    return (
+        <Button
+            appearance={"disabled"}
+            disabled
+        >
+            Sold out
+        </Button>
+    );
 };
 
 const ErrorButton = ({error}) => {
-	return (
-		<Button
-			appearance={"danger"}
-			disabled
-		>
-			{error ?? <>An error occurred</>}
-		</Button>
-	);
+    return (
+        <Button
+            appearance={"danger"}
+            disabled
+        >
+            {error ?? <>An error occurred</>}
+        </Button>
+    );
 };
 
 const LoadingButton = () => {
-	return (
-		<Button
-			appearance={"disabled"}
-			disabled
-		>
-			<Spinner />
-		</Button>
-	);
+    return (
+        <Button
+            appearance={"disabled"}
+            disabled
+        >
+            <Spinner />
+        </Button>
+    );
 };
 
 const RedeemFreeNFT = ({mint}) => {
-	return <Button onClick={mint}>Redeem free NFT</Button>;
+    return <Button onClick={mint}>Redeem free NFT</Button>;
 };
 
 const SubscribeButton = ({subscribe, price, cb, toggleLoading}) => {
-	const doSubscription = () => {
-		toggleLoading();
+    const doSubscription = () => {
+        toggleLoading();
 
-		subscribe()
-			.then(() => {
-				toggleLoading();
+        subscribe()
+            .then(() => {
+                toggleLoading();
 
-				cb();
-			})
-			.catch((err) => {
-				console.log({err});
-				toggleLoading();
-			});
-	};
-	return (
-		<Button
-			onClick={doSubscription}
-			appearance={"surface"}
-		>
-			Subscribe for {price} BNB
-		</Button>
-	);
+                cb();
+            })
+            .catch((err) => {
+                console.log({err});
+                toggleLoading();
+            });
+    };
+    return (
+        <Button
+            onClick={doSubscription}
+            appearance={"surface"}
+        >
+            Subscribe for {price} BNB
+        </Button>
+    );
 };
 
 const BuySubscriptionNFTButton = ({
-	subscription,
-	address,
-	mint,
-	toggleLoading,
-	nft,
-	remaining,
-}: {
-	nft: BuyButtonProps;
-	address: string;
-	mint: () => Promise<any>;
-	toggleLoading: () => void;
-	remaining: number;
-	subscription: {
-		subscriptionPrice: string | number;
-		isError: boolean;
-		isLoading: boolean;
-		isSubscribed: boolean;
-		subscribe: () => Promise<any>;
-		loadingIsSubscribed: boolean;
-	};
+                                      subscription,
+                                      address,
+                                      mint,
+                                      toggleLoading,
+                                      nft,
+                                      remaining,
+                                  }: {
+    nft: BuyButtonProps;
+    address: string;
+    mint: () => Promise<any>;
+    toggleLoading: () => void;
+    remaining: number;
+    subscription: {
+        subscriptionPrice: string | number;
+        isError: boolean;
+        isLoading: boolean;
+        isSubscribed: boolean;
+        subscribe: () => Promise<any>;
+        loadingIsSubscribed: boolean;
+    };
 }) => {
-	const [subscribedInSession, setSubscribedInSession] = useState(false);
-	if (!subscription.isSubscribed) {
-		return (
-			<SubscribeButton
-				subscribe={subscription.subscribe}
-				price={subscription.subscriptionPrice}
-				cb={() => setSubscribedInSession(true)}
-				toggleLoading={toggleLoading()}
-			/>
-		);
-	}
+    const [subscribedInSession, setSubscribedInSession] = useState(false);
+    if (!subscription.isSubscribed) {
+        return (
+            <SubscribeButton
+                subscribe={subscription.subscribe}
+                price={subscription.subscriptionPrice}
+                cb={() => setSubscribedInSession(true)}
+                toggleLoading={toggleLoading()}
+            />
+        );
+    }
 
-	const buyNFT = () => {
-		toggleLoading();
-		mint()
-			.then((res) => {
-				return purchaseNFTTransporter({
-					tx_hash: res.txHash,
-					seller: nft.seller.address,
-					nftId: nft.id,
-					price: nft.price,
-					timestamp: Date.now(),
-					nft_type: "subscription",
-					remaining,
-					metadata: {
-						did_subscribe_in_session: subscribedInSession,
-						subscription_price: Number(subscription.subscriptionPrice),
-						browser: navigator.userAgent,
-						os: navigator.platform,
-						wallet: {
-							address,
-							name: "metamask",
-						},
-					},
-				});
-				// Check res object, should contain txHash
-				// 1. Emit event
-				// 2. Log in analytics
-				// 3. Send to server
-				// 4. Send transaction to server
-				// 5. Show success modal
-			})
-			.catch(async (err) => {
-				const event = {
-					message: "Error occurred in buying Subscription NFT",
-					metadata: err,
-				};
+    const buyNFT = () => {
+        toggleLoading();
+        mint()
+            .then((res) => {
+                return purchaseNFTTransporter({
+                    tx_hash: res.txHash,
+                    seller: nft.seller.address,
+                    nftId: nft.id,
+                    price: nft.price,
+                    timestamp: Date.now(),
+                    nft_type: "subscription",
+                    remaining,
+                    metadata: {
+                        did_subscribe_in_session: subscribedInSession,
+                        subscription_price: Number(subscription.subscriptionPrice),
+                        browser: navigator.userAgent,
+                        os: navigator.platform,
+                        wallet: {
+                            address,
+                            name: "metamask",
+                        },
+                    },
+                });
+                // Check res object, should contain txHash
+                // 1. Emit event
+                // 2. Log in analytics
+                // 3. Send to server
+                // 4. Send transaction to server
+                // 5. Show success modal
+            })
+            .catch(async (err) => {
+                const event = {
+                    message: "Error occurred in buying Subscription NFT",
+                    metadata: err,
+                };
 
-				await TreatCore.logThis("error", event.message, event.metadata);
-				toggleLoading();
-			});
-	};
+                await TreatCore.logThis("error", event.message, event.metadata);
+                toggleLoading();
+            });
+    };
 
-	if (nft.price === 0) {
-		return <RedeemFreeNFT mint={buyNFT} />;
-	}
+    if (nft.price === 0) {
+        return <RedeemFreeNFT mint={buyNFT} />;
+    }
 
-	return <Button onClick={buyNFT}>Buy</Button>;
+    return <Button onClick={buyNFT}>Buy</Button>;
 };
 
 const BuyCreatorMartNFTButton = ({
-	nft,
-	mint,
-	seller,
-	price,
-	address,
-	toggleLoading,
-	remaining,
-}) => {
-	const buyNFT = () => {
-		// if seller address exists, we will use resale open orders automatically
-		toggleLoading();
-		mint(price, seller?.address)
-			.then((res) => {
-				return purchaseNFTTransporter({
-					tx_hash: res.txHash,
-					seller: nft.seller.address,
-					nftId: nft.id,
-					price: nft.price,
-					timestamp: Date.now(),
-					nft_type: "creatorMart",
-					remaining,
-					metadata: {
-						browser: navigator.userAgent,
-						os: navigator.platform,
-						wallet: {
-							address,
-							name: "metamask",
-						},
-					},
-				});
-				// Check res object, should contain txHash
-				// 1. Emit event
-				// 2. Log in analytics
-				// 3. Send to server
-				// 4. Send transaction to server
-				// 5. Show success modal
-			})
-			.catch(async (err) => {
-				const event = {
-					message: "Error occurred in buying Subscription NFT",
-					metadata: err,
-				};
+                                     nft,
+                                     mint,
+                                     seller,
+                                     price,
+                                     address,
+                                     toggleLoading,
+                                     remaining,
+                                 }) => {
+    const buyNFT = () => {
+        // if seller address exists, we will use resale open orders automatically
+        toggleLoading();
+        mint(price, seller?.address)
+            .then((res) => {
+                return purchaseNFTTransporter({
+                    tx_hash: res.txHash,
+                    seller: nft.seller.address,
+                    nftId: nft.id,
+                    price: nft.price,
+                    timestamp: Date.now(),
+                    nft_type: "creatorMart",
+                    remaining,
+                    metadata: {
+                        browser: navigator.userAgent,
+                        os: navigator.platform,
+                        wallet: {
+                            address,
+                            name: "metamask",
+                        },
+                    },
+                });
+                // Check res object, should contain txHash
+                // 1. Emit event
+                // 2. Log in analytics
+                // 3. Send to server
+                // 4. Send transaction to server
+                // 5. Show success modal
+            })
+            .catch(async (err) => {
+                const event = {
+                    message: "Error occurred in buying Subscription NFT",
+                    metadata: err,
+                };
 
-				await TreatCore.logThis("error", event.message, event.metadata);
-				toggleLoading();
-			});
-	};
+                await TreatCore.logThis("error", event.message, event.metadata);
+                toggleLoading();
+            });
+    };
 
-	if (nft.price === 0) {
-		return <RedeemFreeNFT mint={buyNFT} />;
-	}
+    if (nft.price === 0) {
+        return <RedeemFreeNFT mint={buyNFT} />;
+    }
 
-	return <Button onClick={buyNFT}>Buy</Button>;
+    return <Button onClick={buyNFT}>Buy</Button>;
 };
 
 const BuyTOTMNFTButton = ({nft, mint, address, toggleLoading, remaining}) => {
-	const buyNFT = () => {
-		toggleLoading();
+    const buyNFT = () => {
+        toggleLoading();
 
-		// if seller address exists, we will use resale open orders automatically
-		mint()
-			.then((res) => {
-				return purchaseNFTTransporter({
-					tx_hash: res.txHash,
-					seller: nft.seller.address,
-					nftId: nft.id,
-					price: nft.price,
-					timestamp: Date.now(),
-					nft_type: "creatorMart",
-					remaining,
-					metadata: {
-						browser: navigator.userAgent,
-						os: navigator.platform,
-						wallet: {
-							address,
-							name: "metamask",
-						},
-					},
-				});
-				// Check res object, should contain txHash
-				// 1. Emit event
-				// 2. Log in analytics
-				// 3. Send to server
-				// 4. Send transaction to server
-				// 5. Show success modal
-			})
-			.catch(async (err) => {
-				const event = {
-					message: "Error occurred in buying Subscription NFT",
-					metadata: err,
-				};
+        // if seller address exists, we will use resale open orders automatically
+        mint()
+            .then((res) => {
+                return purchaseNFTTransporter({
+                    tx_hash: res.txHash,
+                    seller: nft.seller.address,
+                    nftId: nft.id,
+                    price: nft.price,
+                    timestamp: Date.now(),
+                    nft_type: "creatorMart",
+                    remaining,
+                    metadata: {
+                        browser: navigator.userAgent,
+                        os: navigator.platform,
+                        wallet: {
+                            address,
+                            name: "metamask",
+                        },
+                    },
+                });
+                // Check res object, should contain txHash
+                // 1. Emit event
+                // 2. Log in analytics
+                // 3. Send to server
+                // 4. Send transaction to server
+                // 5. Show success modal
+            })
+            .catch(async (err) => {
+                const event = {
+                    message: "Error occurred in buying Subscription NFT",
+                    metadata: err,
+                };
 
-				await TreatCore.logThis("error", event.message, event.metadata);
-				toggleLoading();
-			});
-	};
+                await TreatCore.logThis("error", event.message, event.metadata);
+                toggleLoading();
+            });
+    };
 
-	if (nft.price === 0) {
-		return <RedeemFreeNFT mint={buyNFT} />;
-	}
+    if (nft.price === 0) {
+        return <RedeemFreeNFT mint={buyNFT} />;
+    }
 
-	return <Button onClick={buyNFT}>Buy</Button>;
+    return <Button onClick={buyNFT}>Buy</Button>;
 };
 
 const ConnectWalletButton = () => {
-	const {openConnectModal} = useConnectModal();
-	return <Button onClick={openConnectModal}>Connect wallet</Button>;
+    const {openConnectModal} = useConnectModal();
+    return <Button onClick={openConnectModal}>Connect wallet</Button>;
 };
 
 const ContextAwarePurchaseButton = ({nft, address, toggleLoading}) => {
-	const nft_type = get_nft_type(nft);
-	const {useNFT} = useNFTFactory(nft_type, nft.seller?.address);
-	const nftUtils = useNFT(nft, nft.seller?.address);
+    const nft_type = get_nft_type(nft);
+    const {useNFT} = useNFTFactory(nft_type, nft.seller?.address);
+    const nftUtils = useNFT(nft, nft.seller?.address);
 
-	console.log({nftUtils});
+    if (nftUtils.remainingNfts === 0) {
+        return <SoldOutButton />;
+    }
 
-	if (nftUtils.remainingNfts === 0) {
-		return <SoldOutButton />;
-	}
+    if (nft_type === "subscription") {
+        if (nftUtils.subscription.isError) {
+            return <ErrorButton error={"Error fetching subscription"} />;
+        }
 
-	if (nft_type === "subscription") {
-		if (nftUtils.subscription.isError) {
-			return <ErrorButton error={"Error fetching subscription"} />;
-		}
+        if (nftUtils.subscription.isLoading) {
+            return <LoadingButton />;
+        }
 
-		if (nftUtils.subscription.isLoading) {
-			return <LoadingButton />;
-		}
+        return (
+            <BuySubscriptionNFTButton
+                nft={nft}
+                address={address}
+                subscription={nftUtils.subscription}
+                mint={nftUtils.mint as () => Promise<any>}
+                toggleLoading={toggleLoading}
+                remaining={Number(nftUtils.remainingNfts) - 1}
+            />
+        );
+    }
 
-		return (
-			<BuySubscriptionNFTButton
-				nft={nft}
-				address={address}
-				subscription={nftUtils.subscription}
-				mint={nftUtils.mint as () => Promise<any>}
-				toggleLoading={toggleLoading}
-				remaining={Number(nftUtils.remainingNfts) - 1}
-			/>
-		);
-	}
+    if (nft_type === "totm") {
+        return (
+            <BuyTOTMNFTButton
+                nft={nft}
+                address={address}
+                mint={nftUtils.mint as () => Promise<any>}
+                toggleLoading={toggleLoading}
+                remaining={Number(nftUtils.remainingNfts) - 1}
+            />
+        );
+    }
 
-	if (nft_type === "totm") {
-		return (
-			<BuyTOTMNFTButton
-				nft={nft}
-				address={address}
-				mint={nftUtils.mint as () => Promise<any>}
-				toggleLoading={toggleLoading}
-				remaining={Number(nftUtils.remainingNfts) - 1}
-			/>
-		);
-	}
-
-	return (
-		<BuyCreatorMartNFTButton
-			nft={nft}
-			address={address}
-			mint={nftUtils.mint as any}
-			toggleLoading={toggleLoading}
-			seller={nft.seller}
-			price={nftUtils.cost}
-			remaining={Number(nftUtils.remainingNfts) - 1}
-		/>
-	);
+    return (
+        <BuyCreatorMartNFTButton
+            nft={nft}
+            address={address}
+            mint={nftUtils.mint as any}
+            toggleLoading={toggleLoading}
+            seller={nft.seller}
+            price={nftUtils.cost}
+            remaining={Number(nftUtils.remainingNfts) - 1}
+        />
+    );
 };
 
 const PurchaseButtonWrapper = (nft: BuyButtonProps) => {
-	const {status, address} = useAccount();
-	const [isLoading, toggleLoading] = useToggle(false);
-	const {
-		data,
-		isLoading: isBalanceFetching,
-		error: balanceFetchError,
-		isError: didBalanceFetchError,
-	} = useBalance({
-		addressOrName: address,
-	});
+    const {status, address} = useAccount();
+    const [isLoading, toggleLoading] = useToggle(false);
+    const {
+        data,
+        isLoading: isBalanceFetching,
+        error: balanceFetchError,
+        isError: didBalanceFetchError,
+    } = useBalance({
+        addressOrName: address,
+    });
 
-	if (status === "connecting" || isBalanceFetching || isLoading) {
-		return <LoadingButton />;
-	}
+    if (status === "connecting" || isBalanceFetching || isLoading) {
+        return <LoadingButton />;
+    }
 
-	if (status === "disconnected") {
-		return <ConnectWalletButton />;
-	}
+    if (status === "disconnected") {
+        return <ConnectWalletButton />;
+    }
 
-	if (!address) return null;
+    if (!address) return null;
 
-	if (didBalanceFetchError) {
-		return <ErrorButton error={balanceFetchError} />;
-	}
+    if (didBalanceFetchError) {
+        return <ErrorButton error={balanceFetchError} />;
+    }
 
-	const balance = Number(data.formatted);
+    const balance = Number(data.formatted);
 
-	if (balance < Number(nft.price)) {
-		return <InsufficientBalanceButton />;
-	}
+    if (balance < Number(nft.price)) {
+        return <InsufficientBalanceButton />;
+    }
 
-	return (
-		<ContextAwarePurchaseButton
-			address={address}
-			nft={nft}
-			toggleLoading={toggleLoading}
-		/>
-	);
+    return (
+        <ContextAwarePurchaseButton
+            address={address}
+            nft={nft}
+            toggleLoading={toggleLoading}
+        />
+    );
 };
 
-const BuyNFTButton = ({nftData, seller}) => {
-	if (nftData.melon_nft) return null;
+const BuyFromResaleButtonWrapper = ({price, event, id}) => {
+    const {status, address} = useAccount();
+    const [tx, setTx] = useState("");
 
-	return (
-		<Container className="flex flex-col w-full">
-			<PurchaseButtonWrapper
-				{...nftData}
-				seller={seller}
-				creator={nftData.creator}
-			/>
-		</Container>
-	);
+
+    const [isLoading, toggleLoading] = useToggle(false);
+    const {
+        data,
+        isLoading: isBalanceFetching,
+        error: balanceFetchError,
+        isError: didBalanceFetchError,
+    } = useBalance({
+        addressOrName: address,
+    });
+
+    const {buyFromResale} = useBuyFromResale();
+    const {isLoading: isTxLoading, isSuccess, isError} = useWaitForTransaction({
+        hash: tx,
+    });
+
+    const balance = Number(data.formatted);
+    const cost = BigNumber.from(price.toString());
+    const purchaseNFT = async () => {
+        toggleLoading()
+        buyFromResale(
+            id,
+            1,
+            event.seller,
+            cost
+        )
+            .then((t) => {
+                setTx(t.hash);
+            })
+            .catch((err) => {
+                console.error(err);
+                toggleLoading()
+            });
+    };
+
+    useEffect(() => {
+        if(isSuccess) {
+            purchaseNFTTransporter({
+                tx_hash: tx,
+                seller: event.seller,
+                eid: event._id,
+                nftId: id,
+                price: price,
+                timestamp: Date.now(),
+                nft_type: "resaleMart",
+                remaining: 0,
+                metadata: {
+                    browser: navigator.userAgent,
+                    os: navigator.platform,
+                    wallet: {
+                        address,
+                        name: "metamask",
+                    },
+                },
+            });
+        }
+
+        if(isError) {
+            toggleLoading()
+            return
+        }
+    }, [isSuccess, isError])
+
+    if (status === "connecting" || isBalanceFetching || isLoading || isTxLoading) {
+        return <LoadingButton />;
+    }
+
+    if (status === "disconnected") {
+        return <ConnectWalletButton />;
+    }
+
+    if (!address) return null;
+
+    if (didBalanceFetchError) {
+        return <ErrorButton error={balanceFetchError} />;
+    }
+
+    if (balance < Number(price)) {
+        return <InsufficientBalanceButton />;
+    }
+
+    return (
+        <BuyFromResaleButton purchaseNFT={purchaseNFT} />
+    )
+}
+
+const BuyFromResaleButton = ({purchaseNFT}) => {
+
+    return (
+        <Button onClick={purchaseNFT} fullWidth>
+            Buy NFT
+        </Button>
+    )
+}
+
+const BuyNFTButton = ({nftData, seller, event}) => {
+    if (nftData.melon_nft) return null;
+
+    if (seller) {
+        return <BuyFromResaleButtonWrapper event={event} id={nftData.id} price={event.price} />;
+    }
+
+    return (
+        <Container className="flex flex-col w-full">
+            <PurchaseButtonWrapper
+                {...nftData}
+                seller={seller}
+                creator={nftData.creator}
+            />
+        </Container>
+    );
 };
 
 export default BuyNFTButton;

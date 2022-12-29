@@ -58,6 +58,7 @@ export type TritPostProps = {
 		display_name: string;
 		address: string;
 		profile_pic: string;
+		event_id: string;
 	};
 	likedBy?: Array<string>;
 	protected?: boolean;

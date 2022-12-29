@@ -110,7 +110,9 @@ export const TritPost = (props: TritPostProps) => {
 			)}
 			<Link
 				href={`/post/nft/${props._id}${
-					props.seller ? `?seller=${props.seller.address}` : ""
+					props.seller
+						? `?seller=${props.seller.address}&eid=${props.seller.event_id}`
+						: ""
 				}`}
 			>
 				<a className="w-full flex flex-col">
