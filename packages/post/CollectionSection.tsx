@@ -101,7 +101,7 @@ function PreviewCollection(props: {
 							<Link href={`/${props.author.username}`}>
 								<a>
 									<UserAvatar
-										value={props.author.username}
+										username={props.author.username}
 										size={32}
 									/>
 								</a>

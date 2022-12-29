@@ -32,6 +32,7 @@ export const SkeletonExpandedSuggestedCreatorCard = (props) => (
 );
 
 export default function SuggestedCreatorCard(props: SuggestedCreatorData) {
+	console.log(props);
 	return props.isExpanded ? (
 		<ExpandSuggestedCreatorCard {...props} />
 	) : (
@@ -56,7 +57,7 @@ const CollapseSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 					<Container className="flex gap-2">
 						<UserAvatar
 							size={40}
-							value={props.username}
+							profile_pic={props.avatar}
 						/>
 						<Container className="gap-2">
 							<Container>
@@ -101,7 +102,8 @@ const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 						<Container css={{width: "40px", height: "40px"}}>
 							<UserAvatar
 								size={40}
-								value={props.username}
+								username={props.username}
+								profile_pic={props.avatar}
 							/>
 						</Container>
 						<Container className="flex flex-col gap-4">

@@ -63,19 +63,51 @@ const purchaseNFTTransporter = async (data: {
 };
 
 const InsufficientBalanceButton = () => {
-	return <Button appearance={"subtle"}>Insufficient balance</Button>;
+	return (
+		<Button
+			appearance={"disabled"}
+			disabled
+		>
+			Insufficient balance
+		</Button>
+	);
 };
 
-const RedeemFreeNFT = ({mint}) => {
-	return <Button onClick={mint}>Redeem free NFT</Button>;
+const SoldOutButton = () => {
+	return (
+		<Button
+			appearance={"disabled"}
+			disabled
+		>
+			Sold out
+		</Button>
+	);
+};
+
+const ErrorButton = ({error}) => {
+	return (
+		<Button
+			appearance={"danger"}
+			disabled
+		>
+			{error ?? <>An error occurred</>}
+		</Button>
+	);
 };
 
 const LoadingButton = () => {
 	return (
-		<Button appearance={"surface"}>
+		<Button
+			appearance={"disabled"}
+			disabled
+		>
 			<Spinner />
 		</Button>
 	);
+};
+
+const RedeemFreeNFT = ({mint}) => {
+	return <Button onClick={mint}>Redeem free NFT</Button>;
 };
 
 const SubscribeButton = ({subscribe, price, cb, toggleLoading}) => {
@@ -288,16 +320,6 @@ const BuyTOTMNFTButton = ({nft, mint, address, toggleLoading, remaining}) => {
 	}
 
 	return <Button onClick={buyNFT}>Buy</Button>;
-};
-
-const SoldOutButton = () => {
-	return <Button appearance={"subtle"}>Sold out</Button>;
-};
-
-const ErrorButton = ({error}) => {
-	return (
-		<Button appearance={"subtle"}>{error ?? <>An error occurred</>}</Button>
-	);
 };
 
 const ConnectWalletButton = () => {

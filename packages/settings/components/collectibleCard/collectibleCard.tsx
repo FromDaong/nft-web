@@ -21,7 +21,7 @@ export default function CollectibleCard() {
 				<div className="flex items-center gap-2">
 					<UserAvatar
 						size={40}
-						value="Elvin"
+						username="Elvin"
 					/>
 					<a>
 						<p>

@@ -207,7 +207,7 @@ const SearchHit = ({text, type}) => {
 			{type === "profile" && (
 				<UserAvatar
 					size={20}
-					value={text}
+					username={text}
 				/>
 			)}
 

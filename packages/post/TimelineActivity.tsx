@@ -205,19 +205,19 @@ export const TimelineActivity = (
 					<Container className="flex gap-2">
 						<Container className="flex items-center">
 							<UserAvatar
-								value={"chris"}
+								username={"chris"}
 								size={20}
 							/>
 							<UserAvatar
-								value={"tatenda"}
+								username={"tatenda"}
 								size={20}
 							/>
 							<UserAvatar
-								value={"putin"}
+								username={"putin"}
 								size={20}
 							/>
 							<UserAvatar
-								value={"kamfes"}
+								username={"kamfes"}
 								size={20}
 							/>
 						</Container>

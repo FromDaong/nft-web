@@ -22,7 +22,7 @@ import {
 	MutedText,
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
-import {useFullScreen} from "@packages/shared/hooks";
+import {useCopyToClipboard, useFullScreen} from "@packages/shared/hooks";
 import RectangleStack from "@packages/shared/icons/RectangleStack";
 import DynamicSkeleton from "@packages/skeleton";
 import {TritPostSkeleton} from "@packages/skeleton/config";
@@ -41,7 +41,12 @@ import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import TreatCore from "core/TreatCore";
 import Link from "next/link";
 import {useEffect, useState} from "react";
-import {MongoModelNFT, MongoModelTransaction} from "server/helpers/models";
+import {
+	MongoModelNFT,
+	MongoModelProfile,
+	MongoModelTransaction,
+} from "server/helpers/models";
+import {useAccount} from "wagmi";
 
 const getYouMightAlsoLike = async () => {
 	const res = await axios.get(`${apiEndpoint}/marketplace/trending`);
@@ -67,7 +72,11 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 	const data = JSON.parse(props.data);
 	const {nft} = data;
 
+	const {address} = useAccount();
+
 	const [showFullScreen, setShowFullScreen] = useState(false);
+	const [loadHD, setLoadHD] = useState(false);
+	const [imageURL, setImageURL] = useState("");
 	useFullScreen("nft_image", showFullScreen);
 
 	const getMoreNFTsFromCreator = async () => {
@@ -115,6 +124,27 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 
 	// T-39 Get cross-selling nft data from obviously API and show them under you might like.
 
+	const blurred_image = `${nft.image.ipfs}?blur=30`;
+	const hd_image = `${nft.image.ipfs}?q=100`;
+	const sd_image = `${nft.image.ipfs}?q=75`;
+
+	useEffect(() => {
+		if (nft.protected && !isOwned) {
+			setImageURL(blurred_image);
+			return;
+		}
+
+		if (!loadHD) {
+			setImageURL(sd_image);
+			return;
+		}
+
+		if (loadHD) {
+			setImageURL(hd_image);
+			return;
+		}
+	}, [nft.protected, isOwned, loadHD]);
+
 	return (
 		<>
 			<Container
@@ -128,9 +158,7 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 						id={"nft_image"}
 					>
 						<OptimizedImage
-							src={`${nft.image.ipfs}?blur=${
-								nft.protected && !isOwned ? 30 : 0
-							}&`}
+							src={imageURL}
 							className="cursor-zoom-in"
 							sizes="100vw"
 							fill
@@ -142,7 +170,7 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 			</Container>
 			<ApplicationLayout>
 				<ApplicationFrame>
-					<Container className="flex flex-col gap-12 max-w-7xl mx-auto">
+					<Container className="flex flex-col gap-12 ">
 						{isOwned && balance > 0 && (
 							<Container className="flex mt-8">
 								<Container
@@ -178,6 +206,9 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 							nft={nft}
 							isOwned={isOwned}
 							balance={balance}
+							openFullScreen={() => setShowFullScreen(true)}
+							loadHD={() => setLoadHD(true)}
+							address={address}
 						/>
 						<Divider dir={"horizontal"} />
 						<Container className="flex flex-col gap-12 px-8 lg:p-0">
@@ -212,7 +243,11 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 									<a>
 										<Container className="flex flex-col gap-8">
 											<UserAvatar
-												value={nft.creator.username}
+												username={nft.creator.username}
+												profile_pic={
+													nft.creator.profile_pic ??
+													nft.creator.profile?.profile_pic
+												}
 												size={80}
 											/>
 
@@ -253,12 +288,16 @@ const NFTPresentationComponent = (props: {
 	nft: any;
 	isOwned: boolean;
 	balance: number;
+	loadHD: () => void;
+	openFullScreen: () => void;
+	address: string;
 }) => {
 	const {nft} = props;
 	const postUtils = useTritNFTUtils(nft);
 	const {cost: creatorCost} = useWagmiGetCreatorNftCost(nft.id);
 	const {cost: treatCost} = useWagmiGetTreatOfTheMonthNftCost(nft.id);
 	const {cost: subscriptionCost} = useWagmiGetSubscriberNftCost(nft.id);
+	const [, copy] = useCopyToClipboard();
 
 	let nftCost: any = nft.subscription_nft ? subscriptionCost : creatorCost;
 	nftCost = nft.totm_nft ? treatCost : nftCost;
@@ -266,72 +305,88 @@ const NFTPresentationComponent = (props: {
 	const maxNftSupply = useWagmiGetNFTMaxSupply(nft.id);
 	const mintedNfts = useWagmiGetNFTTotalSupply(nft.id);
 
+	const copyUrlToClipboard = () => {
+		// Get base domain
+		const baseDomain = window.location.origin;
+		copy(`${baseDomain}/post/nft/${nft._id}`);
+	};
+
 	const remainingNfts = maxNftSupply - mintedNfts;
+
+	const isOwned = props.isOwned;
+	const numberOfNFTsOwned = props.balance;
+
+	console.log({nft});
 
 	return (
 		<>
 			<Container className="grid grid-cols-1 gap-12 lg:grid-cols-3">
 				<Container className="grid flex-col grid-cols-2 lg:col-span-2 gap-12 py-8 lg:flex">
 					<Container className=" flex gap-4 bottom-4 right-4">
+						{props.address && (
+							<Button
+								appearance={"surface"}
+								onClick={postUtils.likeNFT}
+							>
+								{postUtils.liked ? (
+									<>
+										<HeartFilledIcon
+											width={16}
+											height={16}
+										/>
+									</>
+								) : (
+									<HeartIcon
+										width={16}
+										height={16}
+									/>
+								)}
+								<span>{postUtils.likedBy.length}</span>
+							</Button>
+						)}
 						<Button
+							onClick={copyUrlToClipboard}
 							appearance={"surface"}
-							onClick={
-								() => {}
-								//postUtils.setShowFullScreen(true)
-							}
-						>
-							<EnterFullScreenIcon
-								style={{strokeWidth: "2px"}}
-								height={16}
-								width={16}
-							/>
-						</Button>
-						<Button appearance={"surface"}>
-							<ImageIcon
-								width={16}
-								height={16}
-							/>
-							Load HD
-						</Button>
-						<Button
-							appearance={"surface"}
-							onClick={
-								() => {}
-								//postUtils.setShowFullScreen(true)
-							}
 						>
 							<Share2Icon
 								width={16}
 								height={16}
 							/>
-							Share
+							Copy link
 						</Button>
-						<Button
-							appearance={"surface"}
-							onClick={postUtils.likeNFT}
-						>
-							{postUtils.liked ? (
-								<>
-									<HeartFilledIcon
-										width={16}
-										height={16}
-									/>
-								</>
-							) : (
-								<HeartIcon
+						{false && (
+							<Button
+								appearance={"surface"}
+								onClick={props.openFullScreen}
+							>
+								<EnterFullScreenIcon
+									style={{strokeWidth: "2px"}}
+									height={16}
+									width={16}
+								/>
+							</Button>
+						)}
+						{isOwned && (
+							<Button
+								onClick={props.loadHD}
+								appearance={"surface"}
+							>
+								<ImageIcon
 									width={16}
 									height={16}
 								/>
-							)}
-							<span>10k</span>
-						</Button>
-						<Button>
-							<DotsHorizontalIcon
-								width={16}
-								height={16}
-							/>
-							More
-						</Button>
+								Load HD
+							</Button>
+						)}
+						{isOwned && (
+							<Button>
+								<DotsHorizontalIcon
+									width={16}
+									height={16}
+								/>
+								More
+							</Button>
+						)}
 					</Container>
 					<Container className="flex justify-between col-span-2 gap-4">
 						<Container className="flex flex-col gap-2">
@@ -349,7 +404,8 @@ const NFTPresentationComponent = (props: {
 						</Container>
 						<Container>
 							<UserAvatar
-								value={nft.creator.username}
+								username={nft.creator.username}
+								profile_pic={nft.creator.profile.profile_pic}
 								size={48}
 							/>
 						</Container>
@@ -398,8 +454,8 @@ const NFTPresentationComponent = (props: {
 							borderRadius: "16px",
 						}}
 					>
-						<Container className="flex flex-col gap-12 p-4">
-							<Container className="flex flex-col gap-1">
+						<Container className="flex flex-col gap-8 p-4">
+							<Container className="flex flex-col">
 								<Text>
 									<ImportantText>Reserve price</ImportantText>
 								</Text>
@@ -441,6 +497,10 @@ export const getServerSideProps = async (context) => {
 	await pagePropsConnectMongoDB();
 
 	const nft = await MongoModelNFT.findById(_id).populate("creator").exec();
+	const creator = await MongoModelNFT.populate(nft.creator, {
+		path: "profile",
+		model: MongoModelProfile,
+	});
 
 	if (!nft) {
 		return {
@@ -457,6 +517,8 @@ export const getServerSideProps = async (context) => {
 	const transactions = await MongoModelTransaction.find({
 		"metadata.nftId": nft.id,
 	});
+
+	nft.creator = creator;
 
 	const returnObj = {
 		id: nft.id,

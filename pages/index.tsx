@@ -71,6 +71,8 @@ export default function Index() {
 			? []
 			: trendingNFTsData?.map((post) => legacy_nft_to_new(post));
 
+	console.log({trendingCreators});
+
 	return (
 		<ApplicationFrame>
 			<Container className="flex flex-col gap-12 px-2 md:gap-16 lg:gap-24">
@@ -107,7 +109,7 @@ export default function Index() {
 											key={creator._id}
 											username={creator.username}
 											display_name={creator.profile?.display_name}
-											avatar={creator.profile?.profile_picture}
+											avatar={creator.profile?.profile_pic}
 											bio={creator.profile?.bio}
 											isExpanded
 											border

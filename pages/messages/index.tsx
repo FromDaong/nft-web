@@ -62,7 +62,7 @@ export default function Messages() {
 								<Container className="flex items-center gap-2 p-4">
 									<UserAvatar
 										size={64}
-										value={"Andi Lane"}
+										username={"Andi Lane"}
 									/>
 									<Container className="flex flex-col">
 										<Text className="flex gap-2">
@@ -193,7 +193,7 @@ const ChatListItem = () => {
 							<Container className="flex gap-2">
 								<UserAvatar
 									size={40}
-									value="Phoenix"
+									username="Phoenix"
 								/>
 								<Container className="flex flex-col">
 									<p>

@@ -40,7 +40,7 @@ export default function CreateNftModal({
 					<Container className="flex flex-col gap-2">
 						<UserAvatar
 							size={40}
-							value={""}
+							username={""}
 						/>
 						<Container className="flex gap-2">
 							<Text>My timeline</Text>

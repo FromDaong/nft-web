@@ -9,7 +9,6 @@ export const PostMediaContent = (props: {
 }) => {
 	return (
 		<BackgroundImage
-			isProtected={props.isProtected}
 			url={props.imageUrl}
 			caption={props.caption}
 		/>

@@ -127,7 +127,7 @@ export const UserBadge = (props: {username: string; avatar: string}) => {
 				<Container className="flex gap-2 pr-4 rounded-full ">
 					<UserAvatar
 						size={24}
-						value={props.username}
+						username={props.username}
 					/>
 					<Text>
 						<ImportantText>@{props.username}</ImportantText>

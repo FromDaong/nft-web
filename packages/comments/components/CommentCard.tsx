@@ -23,7 +23,7 @@ export default function CommentCard(props: CommentCardData) {
 			<Container className="flex gap-4">
 				<UserAvatar
 					size={24}
-					value={props.username}
+					username={props.username}
 				/>
 				<a>
 					<p>

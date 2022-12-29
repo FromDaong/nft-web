@@ -16,6 +16,7 @@ export const useTritNFTUtils = (nft: any) => {
 	const cancelOrderModalProps = useDisclosure();
 	const transferNFTModalProps = useDisclosure();
 	const buyResaleNFTModalProps = useDisclosure();
+	const [likedBy, setLikedBy] = useState(nft.likedBy ?? []);
 
 	const isListedOnResale = useGetResaleOrders(nft.id);
 
@@ -35,7 +36,14 @@ export const useTritNFTUtils = (nft: any) => {
 	const likeNFT = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
+		if (!liked) {
+			setLikedBy([...likedBy, (session as any).profile._id]);
+		} else {
+			setLikedBy(likedBy.filter((id) => id !== (session as any).profile._id));
+		}
+
 		setLikedNFT(!liked);
+
 		return axios
 			.post(`${apiEndpoint}/marketplace/nft/${nft.id}/like`)
 			.catch(() => setLikedNFT(!liked));
@@ -59,6 +67,7 @@ export const useTritNFTUtils = (nft: any) => {
 		balance,
 		toggleImageProtection,
 		isProtected,
+		likedBy,
 	};
 };
 

@@ -7,7 +7,7 @@ import {
 import {ChevronDownIcon} from "@heroicons/react/solid";
 import {ProfileDropdown} from "@packages/Dropdowns";
 import {SEOHead} from "@packages/seo/page";
-import Avatar, {AvatarGroup} from "@packages/shared/components/AvatarNew";
+import NewAvatar, {AvatarGroup} from "@packages/shared/components/AvatarNew";
 import {Button} from "@packages/shared/components/Button";
 import {
 	Container,
@@ -295,10 +295,10 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 									className="drop-shadow-sm border"
 									css={{borderColor: "$subtleBorder", padding: "4px"}}
 								>
-									<Avatar
-										name="Tatenda Chris"
+									<NewAvatar
+										username="Tatenda Chris"
 										imageSrc={ownerOfUserProfile.profile_pic}
-										size={{width: "100%", height: "100%"}}
+										size_def={{width: "100%", height: "100%"}}
 									/>
 								</AvatarContainer>
 

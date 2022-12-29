@@ -34,7 +34,7 @@ const SubscriptionListItem = () => {
 		>
 			<Container className="flex gap-4">
 				<UserAvatar
-					value={"c"}
+					username={"c"}
 					size={40}
 				/>
 				<Container>

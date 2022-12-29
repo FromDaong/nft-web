@@ -12,6 +12,7 @@ import CancelOrderModal from "@packages/modals/CancelOrderModal";
 import ListOrderModal from "@packages/modals/ListOrderModal";
 import PurchaseResaleNFTModal from "@packages/modals/PurchaseResaleNFTModal";
 import {ActionSection} from "./UtilityComponents";
+import {useEffect, useState} from "react";
 
 export const FrostyBackgroundContainer = styled(Container, {
 	backgroundColor: "#ffffff33",
@@ -43,7 +44,8 @@ export const TritPost = (props: TritPostProps) => {
 		toggleImageProtection,
 	} = useTritNFTUtils(props);
 
-	const imageUrl = props.image?.ipfs;
+	const [imageURL, setImageURL] = useState("");
+
 	const soldOut = props.collection?.minted === props.max_supply;
 
 	// T-28 check if user owns this nft and get the units owned
@@ -51,6 +53,18 @@ export const TritPost = (props: TritPostProps) => {
 	// T-42 Add hover card with nft details including, original cretor listing tag, current owner, price, units owned, etc
 
 	// T-43 Check if seller === creator , determine if resale or original listing
+
+	const blurred_image = `${props.image.ipfs}?blur=30`;
+	const sd_image = `${props.image.ipfs}?q=75`;
+
+	useEffect(() => {
+		if (props.protected && !isMine) {
+			setImageURL(blurred_image);
+			return;
+		}
+
+		setImageURL(sd_image);
+	}, [props.protected, isMine]);
 
 	return (
 		<Container
@@ -105,10 +119,11 @@ export const TritPost = (props: TritPostProps) => {
 							backgroundColor: "$textContrast",
 							height: "256px",
 							borderRadius: "12px",
+							backdropFilter: isProtected ? "blur(10px)" : "none",
 						}}
 					>
 						<PostMediaContent
-							imageUrl={imageUrl}
+							imageUrl={imageURL}
 							blurhash={props.blurhash}
 							isProtected={isProtected}
 							caption={props.text}

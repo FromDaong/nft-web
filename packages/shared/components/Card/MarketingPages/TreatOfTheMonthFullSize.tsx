@@ -1,5 +1,5 @@
 import {Container} from "../../Container";
-import Avatar from "../../AvatarNew";
+import NewAvatar from "../../AvatarNew";
 import {ImportantSmallText} from "../../Typography/Headings";
 import {MutedText} from "../../Typography/Text";
 import {Heading} from "../../Typography/Headings";

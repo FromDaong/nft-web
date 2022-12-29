@@ -1,6 +1,6 @@
 import {Container} from "../../Container";
 import {Text} from "../../Typography/Text";
-import Avatar from "../../AvatarNew";
+import NewAvatar from "../../AvatarNew";
 import {ImportantSmallText} from "../../Typography/Headings";
 import {MutedText} from "../../Typography/Text";
 import {Heading} from "../../Typography/Headings";
@@ -32,10 +32,10 @@ export default function TreatOfTheMonthThumbnail({images}) {
 			<Container className="col-span-3">
 				<Container className="grid grid-cols-2 gap-4 ">
 					<Container className="flex items-center gap-2 p-2">
-						<Avatar
-							size={{width: "40px", height: "40px"}}
+						<NewAvatar
+							size_def={{width: "40px", height: "40px"}}
 							imageSrc="elvin"
-							name="ane"
+							username="ane"
 						/>
 						<Container className="grid grid-cols-1">
 							<p>

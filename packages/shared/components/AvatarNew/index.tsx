@@ -37,20 +37,25 @@ const AvatarFallback = styled(Fallback, {
 
 type AvatarProps = {
 	imageSrc: string;
-	name: string;
-	size?: {
+	username: string;
+	size_def?: {
 		height: string;
 		width: string;
 	};
+	size?: number;
 	position?: "normal" | "transform";
 };
 
-export default function Avatar(props: AvatarProps) {
+export default function NewAvatar(props: AvatarProps) {
+	const size = {
+		height: props.size ? `${props.size}px` : "45px",
+		width: props.size ? `${props.size}px` : "45px",
+	};
 	return (
-		<AvatarRoot css={{...props.size}}>
+		<AvatarRoot css={props.size_def ? {...props.size_def} : {...size}}>
 			<AvatarImage
 				src={props.imageSrc}
-				alt={props.name}
+				alt={props.username}
 			/>
 			<AvatarFallback
 				className="AvatarFallback"
@@ -74,7 +79,7 @@ export const AvatarGroup = ({
 			{people.map((person, i) => (
 				<div
 					id="avatar-wrapper"
-					key={person.name}
+					key={person.username}
 					className="relative flex"
 					style={{
 						height: "45px",
@@ -84,7 +89,7 @@ export const AvatarGroup = ({
 						borderRadius: "50%",
 					}}
 				>
-					<Avatar {...person} />
+					<NewAvatar {...person} />
 				</div>
 			))}
 			<div

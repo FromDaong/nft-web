@@ -1,12 +1,12 @@
 import OptimizedImage from "@packages/shared/components/OptimizedImage";
 
-const BackgroundImage = ({url, caption, isProtected = false}) => {
+const BackgroundImage = ({url, caption}) => {
 	return (
 		<>
 			<OptimizedImage
 				objectFit={"cover"}
 				alt={caption}
-				src={`${url}${isProtected ? "?blur=15&" : "?"}`}
+				src={`${url}`}
 				sizes="100vw"
 				fill
 			/>

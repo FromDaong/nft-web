@@ -7,7 +7,7 @@ import {HeartIcon} from "@radix-ui/react-icons";
 import {DotsHorizontalIcon, GiftIcon} from "@heroicons/react/solid";
 import {BoldLink} from "@packages/shared/components/Typography/Text";
 import Link from "next/link";
-import Avatar from "@packages/shared/components/AvatarNew";
+import NewAvatar from "@packages/shared/components/AvatarNew";
 import {PostMediaContent} from "./PostMediaContent";
 import {TritPostProps} from "./types";
 import {Container} from "@packages/shared/components/Container";
@@ -40,10 +40,10 @@ export const SubscriptionContentPost = (props: TritPostProps) => {
 				>
 					<Link href={props.author.username}>
 						<a>
-							<Avatar
+							<NewAvatar
 								imageSrc={props.author.avatar}
-								size={{height: "48px", width: "48px"}}
-								name={props.author.display_name}
+								size_def={{height: "48px", width: "48px"}}
+								username={props.author.display_name}
 							/>
 						</a>
 					</Link>

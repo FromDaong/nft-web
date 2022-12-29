@@ -1,7 +1,7 @@
 import Image from "next/future/image";
 
-const gumletLoader = ({src, width, quality}) => {
-	return `https://treatnfts.gumlet.io${src}q=${quality || 90}`;
+const gumletLoader = ({src}) => {
+	return `https://treatnfts.gumlet.io${src}`;
 };
 
 type OptimizedImageProps = {
