@@ -62,10 +62,16 @@ export default function NFTS(props) {
 					legacy_nft_to_new({
 						...post.nft,
 						price: post.price,
-						_id: post._id,
+						_id: post.nft._id,
 						creator: {
 							...post.creator,
 							profile: post.creator_profile,
+						},
+						seller: {
+							address: post.seller.address,
+							profile_pic: post.seller.profile_pic,
+							username: post.seller.username,
+							display_name: post.seller.display_name,
 						},
 					})
 				);

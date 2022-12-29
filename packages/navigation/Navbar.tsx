@@ -86,43 +86,9 @@ export default function Navbar() {
 								</Link>
 							</div>
 							<div className="items-center hidden gap-8 md:flex">
-								<Link href="/explore">
-									<a>
-										<BoldLink className="font-medium">Explore</BoldLink>
-									</a>
-								</Link>
-							</div>
-							<div className="items-center hidden gap-8 md:flex">
-								<Link href="/dex/farm">
-									<a>
-										<BoldLink className="font-medium">Farming</BoldLink>
-									</a>
-								</Link>
-							</div>
-							<div className="items-center hidden gap-8 md:flex">
 								<Link href="/dex/bridge">
 									<a>
 										<BoldLink className="font-medium">Bridge</BoldLink>
-									</a>
-								</Link>
-							</div>
-							<div className="items-center hidden gap-8 md:flex">
-								<Link href="/beta">
-									<a className="flex items-center gap-1">
-										<BoldLink className="font-medium">Beta</BoldLink>
-										<p>
-											<Text
-												css={{
-													backgroundColor: "$totmPurple",
-													color: "#fff",
-													padding: "4px 4px",
-													borderRadius: "4px",
-													fontSize: "10px",
-												}}
-											>
-												<ImportantText>NEW</ImportantText>
-											</Text>
-										</p>
 									</a>
 								</Link>
 							</div>

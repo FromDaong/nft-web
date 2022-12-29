@@ -497,10 +497,20 @@ export const getServerSideProps = async (context) => {
 	await pagePropsConnectMongoDB();
 
 	const nft = await MongoModelNFT.findById(_id).populate("creator").exec();
-	const creator = await MongoModelNFT.populate(nft.creator, {
-		path: "profile",
-		model: MongoModelProfile,
-	});
+	if (!nft) {
+		return {
+			notFound: true,
+		};
+	}
+
+	const creator = nft.creator
+		? await MongoModelNFT.populate(nft.creator, {
+				path: "profile",
+				model: MongoModelProfile,
+		  })
+		: {
+				profile: {},
+		  };
 
 	if (!nft) {
 		return {

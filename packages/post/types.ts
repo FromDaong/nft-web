@@ -53,7 +53,12 @@ export type TritPostProps = {
 		avatar: string;
 	};
 	max_supply: number;
-	seller?: string;
+	seller?: {
+		username: string;
+		display_name: string;
+		address: string;
+		profile_pic: string;
+	};
 	likedBy?: Array<string>;
 	protected?: boolean;
 	totm?: boolean;

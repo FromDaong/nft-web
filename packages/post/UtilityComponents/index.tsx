@@ -28,7 +28,11 @@ export const ActionSection = (props) => {
 					>
 						<ImportantText>{props.name}</ImportantText>
 					</Text>
-					<MutedText css={{lineHeight: "12px"}}>Listed by creator</MutedText>
+					<MutedText css={{lineHeight: "12px"}}>
+						{props.seller
+							? `Listed by ${props.seller.username}`
+							: "Listed by creator"}
+					</MutedText>
 				</Container>
 
 				{!props.noPrice && (

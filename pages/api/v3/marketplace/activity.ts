@@ -23,6 +23,11 @@ export default async function handler(req, res) {
 			},
 		},
 		{
+			$sort: {
+				createdAt: -1,
+			},
+		},
+		{
 			$lookup: {
 				from: "profiles",
 				localField: "seller",

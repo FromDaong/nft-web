@@ -108,7 +108,11 @@ export const TritPost = (props: TritPostProps) => {
 					nft={props}
 				/>
 			)}
-			<Link href={!props.isResale ? `/post/nft/${props._id}` : "#"}>
+			<Link
+				href={`/post/nft/${props._id}${
+					props.seller ? `?seller=${props.seller.address}` : ""
+				}`}
+			>
 				<a className="w-full flex flex-col">
 					{
 						// T-29 implement a hover options button if user owns this NFT
