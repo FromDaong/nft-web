@@ -425,14 +425,14 @@ const PurchaseButtonWrapper = (nft: BuyButtonProps) => {
 	);
 };
 
-const BuyNFTButton = ({nftData}) => {
+const BuyNFTButton = ({nftData, seller}) => {
 	if (nftData.melon_nft) return null;
 
 	return (
 		<Container className="flex flex-col w-full">
 			<PurchaseButtonWrapper
 				{...nftData}
-				seller={nftData.seller}
+				seller={seller}
 				creator={nftData.creator}
 			/>
 		</Container>

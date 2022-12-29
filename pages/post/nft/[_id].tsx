@@ -53,7 +53,18 @@ const getYouMightAlsoLike = async () => {
 	return res.data.data;
 };
 
-export default function NFT(props: {notFound?: boolean; data: any}) {
+export default function NFT(props: {
+	notFound?: boolean;
+	data: any;
+	seller: {
+		username: string;
+		profile_pic: string;
+		address: string;
+		_id: string;
+		display_name: string;
+	};
+	isResale: boolean;
+}) {
 	// T-26 implement view counter + analytics
 	// T-45 user wants to purchase creator NFT
 	// T-46 user wants to purchase subscription NFT
@@ -71,6 +82,9 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 
 	const data = JSON.parse(props.data);
 	const {nft} = data;
+	const {seller} = data;
+	const {isResale} = data;
+	console.log({seller, isResale, nft});
 
 	const {address} = useAccount();
 
@@ -171,37 +185,72 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 			<ApplicationLayout>
 				<ApplicationFrame>
 					<Container className="flex flex-col gap-12 ">
-						{isOwned && balance > 0 && (
-							<Container className="flex mt-8">
-								<Container
-									className="flex items-center gap-4 px-8 py-4"
-									css={{
-										backgroundColor: "$accentBg",
-										borderRadius: "16px",
-									}}
-								>
-									<Container>
-										<Text css={{color: "$accentText"}}>
-											<RectangleStack
-												width={32}
-												height={32}
-											/>
-										</Text>
-									</Container>
-									<Container>
-										<Heading
-											css={{color: "$accentText"}}
-											size="xs"
-										>
-											You own this NFT
-										</Heading>
-										<Text css={{color: "$accentText"}}>
-											You already own {balance} units of this NFT
-										</Text>
+						<Container className="flex gap-4 flex-wrap">
+							{isOwned && balance > 0 && (
+								<Container className="flex mt-8">
+									<Container
+										className="flex items-center gap-4 px-8 py-4"
+										css={{
+											backgroundColor: "$accentBg",
+											borderRadius: "16px",
+										}}
+									>
+										<Container>
+											<Text css={{color: "$accentText"}}>
+												<RectangleStack
+													width={32}
+													height={32}
+												/>
+											</Text>
+										</Container>
+										<Container>
+											<Heading
+												css={{color: "$accentText"}}
+												size="xss"
+											>
+												You own this NFT
+											</Heading>
+											<Text css={{color: "$accentText"}}>
+												<SmallText>
+													You already own {balance} units of this NFT
+												</SmallText>
+											</Text>
+										</Container>
 									</Container>
 								</Container>
-							</Container>
-						)}
+							)}
+							{seller && (
+								<Container className="flex mt-8">
+									<Container
+										className="flex items-center gap-4 px-8 py-4"
+										css={{
+											backgroundColor: "$amber3",
+											borderRadius: "16px",
+										}}
+									>
+										<Container>
+											<Text css={{color: "$amber7"}}>
+												<RectangleStack
+													width={32}
+													height={32}
+												/>
+											</Text>
+										</Container>
+										<Container>
+											<Heading
+												css={{color: "$amber12"}}
+												size="xss"
+											>
+												Resale Market
+											</Heading>
+											<Text css={{color: "$amber11"}}>
+												<SmallText>NFT listed on Resale Market</SmallText>
+											</Text>
+										</Container>
+									</Container>
+								</Container>
+							)}
+						</Container>
 						<NFTPresentationComponent
 							nft={nft}
 							isOwned={isOwned}
@@ -209,6 +258,8 @@ export default function NFT(props: {notFound?: boolean; data: any}) {
 							openFullScreen={() => setShowFullScreen(true)}
 							loadHD={() => setLoadHD(true)}
 							address={address}
+							seller={seller}
+							isResale={isResale}
 						/>
 						<Divider dir={"horizontal"} />
 						<Container className="flex flex-col gap-12 px-8 lg:p-0">
@@ -291,6 +342,8 @@ const NFTPresentationComponent = (props: {
 	loadHD: () => void;
 	openFullScreen: () => void;
 	address: string;
+	seller: any;
+	isResale: boolean;
 }) => {
 	const {nft} = props;
 	const postUtils = useTritNFTUtils(nft);
@@ -316,13 +369,11 @@ const NFTPresentationComponent = (props: {
 	const isOwned = props.isOwned;
 	const numberOfNFTsOwned = props.balance;
 
-	console.log({nft});
-
 	return (
 		<>
 			<Container className="grid grid-cols-1 gap-12 lg:grid-cols-3">
 				<Container className="grid flex-col grid-cols-2 lg:col-span-2 gap-12 py-8 lg:flex">
-					<Container className=" flex gap-4 bottom-4 right-4">
+					<Container className=" flex gap-4 bottom-4 right-4 col-span-2">
 						{props.address && (
 							<Button
 								appearance={"surface"}
@@ -394,9 +445,20 @@ const NFTPresentationComponent = (props: {
 							<Container className="flex">
 								<Text>
 									Listed by{" "}
-									<Link href={`/${nft.creator.username}`}>
+									<Link
+										href={`/${
+											props.seller
+												? props.seller.username
+												: nft.creator.username
+										}`}
+									>
 										<a>
-											<ImportantText>@{nft.creator.username}</ImportantText>
+											<ImportantText>
+												@
+												{props.seller
+													? props.seller.username
+													: nft.creator.username}
+											</ImportantText>
 										</a>
 									</Link>
 								</Text>
@@ -404,8 +466,14 @@ const NFTPresentationComponent = (props: {
 						</Container>
 						<Container>
 							<UserAvatar
-								username={nft.creator.username}
-								profile_pic={nft.creator.profile.profile_pic}
+								username={
+									props.seller ? props.seller.username : nft.creator.username
+								}
+								profile_pic={
+									props.seller
+										? props.seller.profile_pic
+										: nft.creator.profile.profile_pic
+								}
 								size={48}
 							/>
 						</Container>
@@ -469,7 +537,10 @@ const NFTPresentationComponent = (props: {
 										{remainingNfts === 0 ? "Sold out" : `${remainingNfts} left`}
 									</MutedText>
 								</Container>
-								<BuyNFTButton nftData={nft} />
+								<BuyNFTButton
+									seller={props.seller.address}
+									nftData={nft}
+								/>
 							</Container>
 						</Container>
 
@@ -493,6 +564,7 @@ const NFTPresentationComponent = (props: {
 
 export const getServerSideProps = async (context) => {
 	const {_id} = context.params;
+	const {seller} = context.query;
 
 	await pagePropsConnectMongoDB();
 
@@ -503,14 +575,14 @@ export const getServerSideProps = async (context) => {
 		};
 	}
 
-	const creator = nft.creator
-		? await MongoModelNFT.populate(nft.creator, {
-				path: "profile",
-				model: MongoModelProfile,
-		  })
-		: {
-				profile: {},
-		  };
+	const creator = await MongoModelNFT.populate(nft.creator, {
+		path: "profile",
+		model: MongoModelProfile,
+	});
+
+	const seller_profile = await MongoModelProfile.findOne({
+		address: seller?.toLowerCase(),
+	});
 
 	if (!nft) {
 		return {
@@ -534,6 +606,8 @@ export const getServerSideProps = async (context) => {
 		id: nft.id,
 		mints: transactions,
 		nft: nft,
+		seller: seller_profile,
+		isResale: !!seller,
 	};
 
 	return {

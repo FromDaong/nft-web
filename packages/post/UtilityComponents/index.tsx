@@ -3,19 +3,14 @@ import {Container} from "@packages/shared/components/Container";
 import {
 	ImportantText,
 	MutedText,
-	SmallText,
 } from "@packages/shared/components/Typography/Text";
-import {DotsHorizontalIcon, HeartIcon} from "@heroicons/react/outline";
-import {Button} from "@packages/shared/components/Button";
-import {HeartFilledIcon} from "@radix-ui/react-icons";
-import RectangleStack from "@packages/shared/icons/RectangleStack";
+import {DotsHorizontalIcon} from "@heroicons/react/outline";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import {DropdownMenuItem} from "@packages/Dropdowns";
 import {useCopyToClipboard} from "@packages/shared/hooks";
 import {useRouter} from "next/router";
 import Link from "next/link";
 import UserAvatar from "core/auth/components/Avatar";
-import {styled} from "@stitches/react";
 
 export const ActionSection = (props) => {
 	return (

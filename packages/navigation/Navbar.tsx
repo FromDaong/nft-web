@@ -3,19 +3,13 @@ import * as Logo from "../../public/brand/logo_mono.svg";
 import Image from "next/image";
 import {useAccount} from "wagmi";
 import dynamic from "next/dynamic";
-import NavbarExploreDropdown from "./components/NavbarExploreDropdown";
 import NavbarSearchDropdown from "../search/NavbarSearchDropdown";
 
 import {styled} from "@styles/theme";
-import {
-	BoldLink,
-	ImportantText,
-	Text,
-} from "@packages/shared/components/Typography/Text";
-import {ChatIcon, PhotographIcon} from "@heroicons/react/outline";
+import {BoldLink} from "@packages/shared/components/Typography/Text";
+import {PhotographIcon} from "@heroicons/react/outline";
 import {Container} from "@packages/shared/components/Container";
 import MobileNavbarDropdown from "./components/MobileNavbarDropdown";
-import ThemedConnectButton from "core/chain/ConnectButton";
 import {Button} from "@packages/shared/components/Button";
 import {useSession} from "next-auth/react";
 import Spinner from "@packages/shared/icons/Spinner";
