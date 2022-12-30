@@ -30,15 +30,11 @@ export function ExpandableSearch() {
 					onClick={toggleFocus}
 				/>
 			)}
-			<FilterNFTResultsModal
-				isOpen={isOpen}
-				onClose={onClose}
-			/>
 			<Container
 				className={`
-                        w-full border max-w-md transition-all duration-150
+                        w-full border max-w-md transition-all group duration-150
                         focus-within:border-gray-200/50 shadow-sm
-                        focus-within:max-w-xl absolute overflow-x-hidden divide-y
+                        focus-within:max-w-xl group-focus-within:max-w-xl absolute overflow-x-hidden divide-y
                     `}
 				css={{
 					zIndex: focused ? 5500 : 0,
@@ -46,8 +42,8 @@ export function ExpandableSearch() {
 					borderRadius: focused ? "12px" : "28px",
 				}}
 			>
-				<Container className="w-full flex items-center justify-between px-4 gap-4 divide-x">
-					<Container className="flex justify-between items-center flex-1">
+				<Container className="flex items-center justify-between w-full gap-4 px-4 divide-x">
+					<Container className="flex items-center justify-between flex-1">
 						<input
 							className={`flex-1 ${focused ? "px-4 py-2" : "px-0 py-2"}`}
 							placeholder="Search"
@@ -63,11 +59,16 @@ export function ExpandableSearch() {
 					</Container>
 				</Container>
 				{focused && (
-					<Container className="py-2 flex flex-col gap-1 divide-y">
+					<Container className="flex flex-col gap-1 py-2 divide-y">
 						<Container className="flex flex-col gap-2 py-2">
-							<MutedText className="px-8">
-								<SmallText>Suggestions</SmallText>
-							</MutedText>
+							<Container className="flex justify-between px-8">
+								<MutedText>
+									<SmallText>Content</SmallText>
+								</MutedText>
+								<Text>
+									<ImportantText>View all</ImportantText>
+								</Text>
+							</Container>
 							<Container className="flex flex-col px-4">
 								{[
 									"Christmas speci",
@@ -85,7 +86,7 @@ export function ExpandableSearch() {
 							<MutedText className="px-8 pt-2">
 								<SmallText>I am searching for</SmallText>
 							</MutedText>
-							<Container className="flex flex-wrap px-8 gap-4">
+							<Container className="flex flex-wrap gap-4 px-8">
 								<Button
 									appearance={"outline"}
 									css={{
@@ -162,22 +163,6 @@ export function ExpandableSearch() {
 								)}
 							</Container>
 						</Container>
-						<Container className="flex justify-between px-8 py-4">
-							<Button
-								appearance={"surface"}
-								onClick={() => {
-									toggleFocus();
-									onOpen();
-								}}
-							>
-								<span>Filter</span>
-								<FilterIcon
-									width={16}
-									height={16}
-								/>
-							</Button>
-							<Button>Show all 206 results</Button>
-						</Container>
 					</Container>
 				)}
 			</Container>
@@ -187,7 +172,7 @@ export function ExpandableSearch() {
 
 const AutocompleteSearchHit = ({text}) => {
 	return (
-		<Container className="flex rounded-xl hover:bg-gray-100 py-2 px-4 justify-between">
+		<Container className="flex justify-between px-4 py-2 rounded-xl hover:bg-gray-100">
 			<Text className="line-clamp-1">
 				<ImportantText>{text}</ImportantText>
 			</Text>
@@ -203,7 +188,7 @@ const AutocompleteSearchHit = ({text}) => {
 
 const SearchHit = ({text, type}) => {
 	return (
-		<Container className="flex rounded-xl hover:bg-gray-100 py-2 px-4 gap-4">
+		<Container className="flex gap-4 px-4 py-2 rounded-xl hover:bg-gray-100">
 			{type === "profile" && (
 				<UserAvatar
 					size={20}

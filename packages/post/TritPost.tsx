@@ -68,9 +68,7 @@ export const TritPost = (props: TritPostProps) => {
 
 	return (
 		<Container
-			className={`grid grid-cols-1 gap-4 py-4 place-items-center w-full ${
-				props.totm ? "border-2" : ""
-			}`}
+			className={`grid grid-cols-1 gap-4 py-4 place-items-center w-full`}
 			css={{
 				borderColor: "$subtleBorder",
 				borderRadius: "12px",
@@ -115,7 +113,7 @@ export const TritPost = (props: TritPostProps) => {
 						: ""
 				}`}
 			>
-				<a className="w-full flex flex-col">
+				<a className="flex flex-col w-full">
 					{
 						// T-29 implement a hover options button if user owns this NFT
 					}
@@ -196,7 +194,7 @@ export const TritPost = (props: TritPostProps) => {
 					</Container>
 				</a>
 			</Link>
-			<Container className="flex flex-col w-full hover:scale-95 transition-transform duration-150">
+			<Container className="flex flex-col w-full transition-transform duration-150 hover:scale-95">
 				<ActionSection
 					{...props}
 					isMine={isMine}

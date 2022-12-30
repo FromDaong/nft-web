@@ -42,7 +42,6 @@ const NFTPresentationComponent = (props: {
 		seller: string;
 	};
 }) => {
-
 	const {nft} = props;
 	const postUtils = useTritNFTUtils(nft);
 	const {cost: creatorCost} = useWagmiGetCreatorNftCost(nft.id);
@@ -59,7 +58,7 @@ const NFTPresentationComponent = (props: {
 	const copyUrlToClipboard = () => {
 		// Get base domain
 		const baseDomain = window.location.origin;
-		 copy(`${baseDomain}/post/nft/${nft._id}`);
+		copy(`${baseDomain}/post/nft/${nft._id}`);
 	};
 
 	const remainingNfts = maxNftSupply - mintedNfts;
@@ -72,8 +71,8 @@ const NFTPresentationComponent = (props: {
 	return (
 		<>
 			<Container className="grid grid-cols-1 gap-12 lg:grid-cols-3">
-				<Container className="grid flex-col grid-cols-2 lg:col-span-2 gap-12 py-8 lg:flex">
-					<Container className=" flex gap-4 bottom-4 right-4 col-span-2">
+				<Container className="grid flex-col grid-cols-2 gap-12 py-8 lg:col-span-2 lg:flex">
+					<Container className="flex col-span-2 gap-4 bottom-4 right-4">
 						{props.address && (
 							<Button
 								appearance={"surface"}
@@ -186,7 +185,10 @@ const NFTPresentationComponent = (props: {
 						<Heading size="xs">Tags</Heading>
 						<Container className="flex flex-wrap gap-4 py-2">
 							{nft.tags?.map((tag) => (
-								<Link href={`/sweetshop?tag=${tag}`} key={tag}>
+								<Link
+									href={`/sweetshop/tag/${tag}`}
+									key={tag}
+								>
 									<a>
 										<Container
 											className="px-3 py-1 border rounded-full shadow-sm"
@@ -218,7 +220,7 @@ const NFTPresentationComponent = (props: {
 				</Container>
 				<Container className="flex flex-col gap-4 py-8">
 					<Container
-						className="flex flex-col w-full border shadow rounded-xl divide-y overflow-hidden"
+						className="flex flex-col w-full overflow-hidden border divide-y shadow rounded-xl"
 						css={{
 							backgroundColor: "$elementSurface",
 							borderColor: "$subtleBorder",
@@ -232,8 +234,8 @@ const NFTPresentationComponent = (props: {
 								</Text>
 								<SmallText>This is the buying price</SmallText>
 							</Container>
-							<Container className="flex flex-col gap-2 items-center">
-								<Container className="flex justify-between w-full items-baseline">
+							<Container className="flex flex-col items-center gap-2">
+								<Container className="flex items-baseline justify-between w-full">
 									<Heading size="sm">{displayedCost} BNB</Heading>
 
 									{!props.seller && (
@@ -247,6 +249,7 @@ const NFTPresentationComponent = (props: {
 								<BuyNFTButton
 									seller={props.seller.address}
 									nftData={nft}
+									event={props.event}
 								/>
 							</Container>
 						</Container>
@@ -255,7 +258,7 @@ const NFTPresentationComponent = (props: {
 							className="p-4"
 							css={{backgroundColor: "$surfaceOnSurface"}}
 						>
-							<Link href={`/nft_id=${props.nft.id}`}>
+							<Link href={`/sweetshop/nft/${props.nft.id}`}>
 								<a>
 									<Button
 										fullWidth
