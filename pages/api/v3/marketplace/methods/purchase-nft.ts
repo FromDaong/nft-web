@@ -18,7 +18,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const {session} = req;
 
 	const profile = await MongoModelProfile.findOne({
-		address: session.user.address.toLowerCase(),
+		address: session.address.toLowerCase(),
 	});
 
 	if (!profile) return returnWithError("Not authorized", 403, res);

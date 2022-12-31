@@ -68,6 +68,15 @@ export default async function auth(req: any, res: any) {
 		secret: process.env.NEXTAUTH_SECRET,
 		callbacks: {
 			async session({session, token}: {session: any; token: any}) {
+				let user = await MongoModelUser.findOne({
+					address: token.sub.toLowerCase(),
+				});
+
+				if (!user) {
+					user = await MongoModelUser.create({
+						address: token.sub.toLowerCase(),
+					});
+				}
 				const profile =
 					(await MongoModelProfile.findOne({address: token.sub})) ?? {};
 				const creator = await MongoModelCreator.findOne({
