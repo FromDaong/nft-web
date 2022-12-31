@@ -76,7 +76,7 @@ export default function Address(props) {
 		<ApplicationLayout>
 			<ApplicationFrame>
 				<SEOHead title={`Seller`} />
-				<Container className={"flex py-12"}>
+				<Container className={"flex py-12 px-4"}>
 					<Heading size={"xs"}>Showing NFT's for seller {address}</Heading>
 				</Container>
 				<Container className="flex flex-col gap-8 px-4 xl:px-0">
