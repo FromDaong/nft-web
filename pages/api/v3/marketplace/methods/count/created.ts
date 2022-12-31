@@ -10,6 +10,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		address: address.toString().toLowerCase(),
 	});
 
+	if (!creator) {
+		return returnWithSuccess(0, res);
+	}
+
 	const collections = await MongoModelNFT.find({
 		creator: creator._id,
 		$or: [

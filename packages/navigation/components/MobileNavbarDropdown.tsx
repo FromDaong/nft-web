@@ -31,6 +31,8 @@ import {Heading} from "@packages/shared/components/Typography/Headings";
 import {Divider} from "@packages/shared/components/Divider";
 import {useUser} from "core/auth/useUser";
 import NewAvatar from "@packages/shared/components/AvatarNew";
+import {useRouter} from "next/router";
+import {useEffect} from "react";
 
 const BankNotes = (props) => {
 	return (
@@ -236,7 +238,8 @@ const ExploreDropdownLinks = [
 const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 	const {openAccountModal} = useAccountModal();
 	const {openConnectModal} = useConnectModal();
-	const {profile, isLoading} = useUser();
+	const {profile, creator, isLoading} = useUser();
+	const router = useRouter();
 
 	const {isOpen, onClose, onOpen} = useDisclosure();
 	const {
@@ -250,6 +253,10 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 		onOpen: onOpenUpgradeToCreator,
 		onClose: onCloseUpgradeToCreator,
 	} = useDisclosure();
+
+	useEffect(() => {
+		onMenuClose();
+	}, [router.pathname]);
 
 	return (
 		<Container>
@@ -303,7 +310,10 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 												href={link.link}
 											>
 												<a className="flex items-center justify-between">
-													<Container className="flex items-center gap-8 py-4">
+													<Container
+														onClick={onClose}
+														className="flex items-center gap-8 py-4"
+													>
 														<Text>
 															<ImportantText>{link.icon}</ImportantText>
 														</Text>
@@ -374,7 +384,10 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 								<Container className="py-1">
 									<Link href={`/${profile?.username}`}>
 										<a>
-											<Container className="flex items-center justify-between p-4 rounded-xl hover:cursor-pointer">
+											<Container
+												onClick={onClose}
+												className="flex items-center justify-between p-4 rounded-xl hover:cursor-pointer"
+											>
 												<div className="flex items-center gap-4">
 													<Text className="p-2 rounded-full">
 														<UserCircle
@@ -387,27 +400,32 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 											</Container>
 										</a>
 									</Link>
-									<Link href={"/account/upgrade"}>
-										<a>
-											<Container
-												onClick={onOpenUpgradeToCreator}
-												className="flex items-center justify-between p-4 rounded-xl hover:cursor-pointer"
-											>
-												<div className="flex items-center gap-4">
-													<Text className="p-2 rounded-full">
-														<BankNotes
-															width={20}
-															height={20}
-														/>
-													</Text>
-													<BoldLink>Become a Creator</BoldLink>
-												</div>
-											</Container>
-										</a>
-									</Link>
+									{!isLoading && !creator && (
+										<Link href={"/account/upgrade"}>
+											<a>
+												<Container
+													onClick={onClose}
+													className="flex items-center justify-between p-4 rounded-xl hover:cursor-pointer"
+												>
+													<div className="flex items-center gap-4">
+														<Text className="p-2 rounded-full">
+															<BankNotes
+																width={20}
+																height={20}
+															/>
+														</Text>
+														<BoldLink>Become a Creator</BoldLink>
+													</div>
+												</Container>
+											</a>
+										</Link>
+									)}
 									<Link href={"/account"}>
 										<a>
-											<Container className="flex items-center justify-between p-4 rounded-xl hover:cursor-pointer">
+											<Container
+												onClick={onClose}
+												className="flex items-center justify-between p-4 rounded-xl hover:cursor-pointer"
+											>
 												<div className="flex items-center gap-4">
 													<Text className="p-2 rounded-full">
 														<CogIcon
@@ -447,7 +465,10 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 											href={link.link}
 										>
 											<a>
-												<Container className="flex items-center justify-between py-3 rounded-xl hover:cursor-pointer">
+												<Container
+													onClick={onClose}
+													className="flex items-center justify-between py-3 rounded-xl hover:cursor-pointer"
+												>
 													<div className="flex items-center justify-between w-full gap-4">
 														<BoldLink>{link.label}</BoldLink>
 														<ArrowRightIcon className="w-5 h-5" />

@@ -22,9 +22,8 @@ export default async function handler(
 	});
 
 	if (!creator) {
-		return res.status(404).json({error: "Creator not found"});
+		return returnWithSuccess(0, res);
 	}
-
 	// @ts-ignore
 	const creatorNFTs = await MongoModelNFT.find({
 		creator: creator._id,

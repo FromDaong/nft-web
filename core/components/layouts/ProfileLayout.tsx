@@ -199,11 +199,11 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 			href: "/sweetshop",
 			count: createdNFTsCount.data,
 		},
-		{
+		/*{
 			label: "Listed",
 			href: "/listed",
 			count: resaleNFTsCount.data,
-		},
+		},*/
 
 		{
 			label: "Owned",
@@ -222,11 +222,11 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 			href: "/collections",
 			count: collectionsCount.data,
 		},*/
-		{
-			label: "Sweetshop",
+		/*{
+			label: "Listed",
 			href: "/listed",
 			count: resaleNFTsCount.data,
-		},
+		},*/
 		{
 			label: "Owned",
 			href: "/portfolio",
@@ -299,7 +299,6 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 												{ownerOfUserProfile.display_name ??
 													"Loading profile details"}
 											</span>
-											<VerifiedBadge size={16} />
 										</Heading>
 										<MutedText>@{ownerOfUserProfile.username}</MutedText>
 									</Container>

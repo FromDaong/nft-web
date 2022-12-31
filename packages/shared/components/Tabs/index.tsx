@@ -3,7 +3,7 @@ import Link from "next/link";
 import {useRouter} from "next/router";
 import {Button} from "../Button";
 import {Container} from "../Container";
-import {BoldLink, ImportantText} from "../Typography/Text";
+import {ImportantText} from "../Typography/Text";
 
 export const TabsContainer = ({children}: ComponentBasicProps) => {
 	return (

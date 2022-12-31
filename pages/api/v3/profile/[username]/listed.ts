@@ -30,8 +30,6 @@ export default async function handler(
 
 	const creator = await MongoModelCreator.findOne({username});
 
-	console.log({username, creator});
-
 	if (!creator) {
 		return res.status(404).json({error: "Creator not found"});
 	}
