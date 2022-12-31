@@ -85,57 +85,48 @@ export default async function fetchWithFallback(req, res) {
 			}
 
 			res.setHeader("Content-Type", "image/webp");
-			return res.send(Buffer.from(image));
+			return res.send(await image.toBuffer());
 		} catch (err) {
 			console.log({err});
 			const response = await axios.get(defaultUrl);
 
 			const blob = dataURLtoFile(response.data); //response.data.replace(`"`, "").replace(/["']/g, "");
-			const image = await sharp(blob).toFormat("webp", {
-				nearLossless: true,
-				quality: 100,
-			});
+			const image = await sharp(blob);
 
 			if (blurhash) {
 				return encodeImage(image, res);
 			}
 
 			res.setHeader("Content-Type", "image/webp");
-			return res.send(Buffer.from(image));
+			return res.send(await image.toBuffer());
 		}
 	} else {
 		try {
 			const cdnurl = `${defaultUrl}-/quality/lighter/-/format/webp/`;
 			const image_data = await fetch(cdnurl);
 			const img = await image_data.arrayBuffer();
-			const finalImage = await sharp(Buffer.from(img)).toFormat("webp", {
-				nearLossless: true,
-				alphaQuality: 100,
-			});
-
-			if (blurhash) {
-				return encodeImage(finalImage, res);
-			}
-
-			res.setHeader("Content-Type", "image/webp");
-			return res.send(Buffer.from(finalImage));
-		} catch (err) {
-			const response = await axios.get(defaultUrl, {
-				responseType: "arraybuffer",
-			});
-
-			const blob = response.data;
-			const image = await sharp(Buffer.from(blob)).toFormat("webp", {
-				nearLossless: true,
-				alphaQuality: 100,
-			});
+			const image = await sharp(Buffer.from(img));
 
 			if (blurhash) {
 				return encodeImage(image, res);
 			}
 
 			res.setHeader("Content-Type", "image/webp");
-			return res.send(Buffer.from(image));
+			return res.send(await image.toBuffer());
+		} catch (err) {
+			const response = await axios.get(defaultUrl, {
+				responseType: "arraybuffer",
+			});
+
+			const blob = response.data;
+			const image = await sharp(Buffer.from(blob));
+
+			if (blurhash) {
+				return encodeImage(image, res);
+			}
+
+			res.setHeader("Content-Type", "image/webp");
+			return res.send(await image.toBuffer());
 		}
 	}
 }
