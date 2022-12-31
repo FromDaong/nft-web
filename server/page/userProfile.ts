@@ -20,7 +20,7 @@ export const beforePageLoadGetUserProfile = async (ctx) => {
 		if (ctx.resolvedUrl === `/${username}`) {
 			return {
 				redirect: {
-					destination: `/${username}/collected`,
+					destination: `/${username}/portfolio`,
 					permanent: false,
 				},
 			};

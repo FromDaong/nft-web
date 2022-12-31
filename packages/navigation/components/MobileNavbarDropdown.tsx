@@ -29,6 +29,7 @@ import BecomeCreatorModal from "@packages/onboarding/BecomeCreatorModal";
 import ThemeSwitcherModal from "@packages/theme/ThemeSwitcherModal";
 import {Heading} from "@packages/shared/components/Typography/Headings";
 import {Divider} from "@packages/shared/components/Divider";
+import {useUser} from "core/auth/useUser";
 
 const BankNotes = (props) => {
 	return (
@@ -242,9 +243,9 @@ const ExploreDropdownLinks = [
 ];
 
 const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
-	const {address, isConnected} = useAccount();
 	const {openAccountModal} = useAccountModal();
 	const {openConnectModal} = useConnectModal();
+	const {profile, isLoading} = useUser();
 
 	const {isOpen, onClose, onOpen} = useDisclosure();
 	const {
@@ -334,7 +335,7 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 								</Container>
 							</Container>
 						)}
-						{props.isConnected && (
+						{props.isConnected && !isLoading && (
 							<Container className="relative flex flex-col gap-4 p-4 py-12">
 								<Container className="absolute flex justify-end right-4 top-4">
 									<Button
@@ -364,8 +365,8 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 										style="shape"
 									/>
 									<Container>
-										<Heading size="xs">Kamfeskaya</Heading>
-										<Text>@Kamfeskaya</Text>
+										<Heading size="xs">{profile?.displayName}</Heading>
+										<Text>@{profile?.username}</Text>
 									</Container>
 									<Button
 										className="w-full"
@@ -380,34 +381,39 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 									</Button>
 								</Container>
 								<Container className="py-1">
-									<Container
-										onClick={openAccountModal}
-										className="flex items-center justify-between p-4 rounded-xl hover:cursor-pointer"
-									>
-										<div className="flex items-center gap-4">
-											<Text className="p-2 rounded-full">
-												<UserCircle
-													width={20}
-													height={20}
-												/>
-											</Text>
-											<BoldLink>Profile</BoldLink>
-										</div>
-									</Container>
-									<Container
-										onClick={onOpenUpgradeToCreator}
-										className="flex items-center justify-between p-4 rounded-xl hover:cursor-pointer"
-									>
-										<div className="flex items-center gap-4">
-											<Text className="p-2 rounded-full">
-												<BankNotes
-													width={20}
-													height={20}
-												/>
-											</Text>
-											<BoldLink>Become a Creator</BoldLink>
-										</div>
-									</Container>
+									<Link href={`/${profile?.username}`}>
+										<a>
+											<Container className="flex items-center justify-between p-4 rounded-xl hover:cursor-pointer">
+												<div className="flex items-center gap-4">
+													<Text className="p-2 rounded-full">
+														<UserCircle
+															width={20}
+															height={20}
+														/>
+													</Text>
+													<BoldLink>Profile</BoldLink>
+												</div>
+											</Container>
+										</a>
+									</Link>
+									<Link href={"/account/upgrade"}>
+										<a>
+											<Container
+												onClick={onOpenUpgradeToCreator}
+												className="flex items-center justify-between p-4 rounded-xl hover:cursor-pointer"
+											>
+												<div className="flex items-center gap-4">
+													<Text className="p-2 rounded-full">
+														<BankNotes
+															width={20}
+															height={20}
+														/>
+													</Text>
+													<BoldLink>Become a Creator</BoldLink>
+												</div>
+											</Container>
+										</a>
+									</Link>
 									<Link href={"/account"}>
 										<a>
 											<Container className="flex items-center justify-between p-4 rounded-xl hover:cursor-pointer">

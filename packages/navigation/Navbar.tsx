@@ -157,7 +157,6 @@ export default function Navbar() {
 						</Link>
 						<Container className="flex gap-4">
 							<MobileNavbarDropdown isConnected={isConnected} />
-							{isConnected && <NavbarProfileAvatar />}
 						</Container>
 					</Container>
 				</Container>

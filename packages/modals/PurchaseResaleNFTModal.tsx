@@ -37,12 +37,7 @@ export default function PurchaseResaleNFTModal(props: {
 	const purchaseNFT = async () => {
 		setLoading(true);
 		setError("");
-		buyFromResale(
-			props.nft.id,
-			1,
-			props.nft.author.address,
-			props.nft.price
-		)
+		buyFromResale(props.nft.id, 1, props.nft.author.address, props.nft.price)
 			.then((t) => {
 				setTx(t.hash);
 			})
@@ -69,7 +64,7 @@ export default function PurchaseResaleNFTModal(props: {
 				isOpen={props.isOpen}
 				buttonLabel={!data ? "Purchase NFT" : "Go to portfolio"}
 				action={
-					!data ? purchaseNFT : () => router.push(`/${session}/collected`)
+					!data ? purchaseNFT : () => router.push(`/${session}/portfolio`)
 				}
 				loading={loading}
 			>
@@ -78,7 +73,8 @@ export default function PurchaseResaleNFTModal(props: {
 						<Text>
 							You are buying the NFT{" "}
 							<ImportantText>{props.nft.name}</ImportantText> for{" "}
-							<ImportantText>{props.nft.price.value}</ImportantText>  BNB from the Resale Market
+							<ImportantText>{props.nft.price.value}</ImportantText> BNB from
+							the Resale Market
 						</Text>
 					)}
 					{!data && (loading || isLoading) && (
