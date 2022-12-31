@@ -457,7 +457,9 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 					</TabsContainer>
 				</FluidContainer>
 			</Container>
-			<ApplicationFrame>{props.children}</ApplicationFrame>
+			<ApplicationFrame>
+				<Container className="px-4">{props.children}</Container>
+			</ApplicationFrame>
 		</>
 	);
 }
