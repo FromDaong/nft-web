@@ -5,7 +5,7 @@ import NFTEvent from "server/helpers/models/posts/activity";
 export default async function handler(req, res) {
 	await connectMongoDB();
 
-	const {page, seller, sort} = req.query;
+	const {page, seller} = req.query;
 
 	const get_page = Number(page ?? 1) || 1;
 	const options = {
