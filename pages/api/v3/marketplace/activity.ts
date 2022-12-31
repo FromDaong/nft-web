@@ -60,6 +60,28 @@ export default async function handler(req, res) {
 			},
 		},
 		{
+			$match: {
+				$or: [
+					{
+						"nft.subscription_nft": false,
+					},
+					{
+						"nft.subscription_nft": {
+							$exists: false,
+						},
+					},
+					{
+						"nft.totm_nft": false,
+					},
+					{
+						"nft.totm_nft": {
+							$exists: false,
+						},
+					},
+				],
+			},
+		},
+		{
 			$unwind: {
 				path: "$creator",
 			},

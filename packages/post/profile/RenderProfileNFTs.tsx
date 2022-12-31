@@ -41,7 +41,7 @@ const RenderProfileNFTs = ({
 					))}
 
 				{error && (
-					<Container className="flex flex-col items-center col-span-4 gap-2 py-12">
+					<Container className="flex flex-col text-center items-center col-span-4 gap-2 py-12">
 						<Heading size={"sm"}>Eish, an error!</Heading>
 						<Text>
 							That was an error. Please reload the page and try again.
@@ -50,9 +50,9 @@ const RenderProfileNFTs = ({
 				)}
 
 				{posts.length === 0 && !isFetching && !error && (
-					<Container className="flex flex-col items-center col-span-4 gap-2 py-12">
-						<Heading size={"sm"}>Eish, not a collector.</Heading>
-						<Text>This profile has not collected any Treat NFT's yet.</Text>
+					<Container className="flex flex-col items-center text-center col-span-4 gap-2 py-12">
+						<Heading size={"sm"}>Eish, we found nothing.</Heading>
+						<Text>The query returned no results from the server.</Text>
 					</Container>
 				)}
 
@@ -69,20 +69,22 @@ const RenderProfileNFTs = ({
 								/>
 							))}
 						</Container>
-						<Container className="flex justify-center w-full">
-							<Button
-								appearance={"surface"}
-								ref={ref}
-								onClick={() => fetchNextPage()}
-								disabled={!hasNextPage || isFetchingNextPage}
-							>
-								{isFetchingNextPage
-									? "Loading more..."
-									: hasNextPage
-									? "Load more"
-									: "Nothing more to load"}
-							</Button>
-						</Container>
+						{posts.length > 0 && (
+							<Container className="flex justify-center w-full">
+								<Button
+									appearance={"surface"}
+									ref={ref}
+									onClick={() => fetchNextPage()}
+									disabled={!hasNextPage || isFetchingNextPage}
+								>
+									{isFetchingNextPage
+										? "Loading more..."
+										: hasNextPage
+										? "Load more"
+										: "Nothing more to load"}
+								</Button>
+							</Container>
+						)}
 					</>
 				)}
 			</div>

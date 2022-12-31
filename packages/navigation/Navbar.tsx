@@ -82,7 +82,14 @@ export default function Navbar() {
 							<div className="items-center hidden gap-8 md:flex">
 								<Link href="/dex/bridge">
 									<a>
-										<BoldLink className="font-medium">Bridge</BoldLink>
+										<BoldLink className="font-medium">Buy Crypto</BoldLink>
+									</a>
+								</Link>
+							</div>
+							<div className="items-center hidden gap-8 md:flex">
+								<Link href="/dex/bridge">
+									<a>
+										<BoldLink className="font-medium">NFT Bridge</BoldLink>
 									</a>
 								</Link>
 							</div>
