@@ -110,8 +110,8 @@ export default function Index() {
 	return (
 		<ApplicationFrame>
 			<Container className="flex flex-col gap-12 px-2 md:gap-16 lg:gap-24">
-				<Container className="pt-12">
-					<Container className="flex flex-col gap-8 px-4 xl:px-0 h-[80vh] w-full">
+				<Container className="pt-4">
+					<Container className="flex flex-col gap-8 px-4 xl:px-0 h-[70vh] w-full">
 						{theme === "light" && <LightWidget />}
 						{theme === "dark" && <DarkWidget />}
 						{theme === "pink" && <PinkWidget />}
