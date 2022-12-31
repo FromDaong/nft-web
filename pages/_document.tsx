@@ -111,6 +111,11 @@ class MyDocument extends Document {
 					`,
 						}}
 					/>
+					<Script
+						strategy="lazyOnload"
+						async
+						src="https://widget.xp.network/wscript.js"
+					/>
 					{false && (
 						<noscript>
 							<iframe

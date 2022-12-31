@@ -184,11 +184,11 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 	});
 
 	const creator_tabs = [
-		{
+		/*{
 			label: "Subscription",
 			href: "",
 			count: subscriptionNFTsCount.data,
-		},
+		},*/
 		/*{
 			label: "Collections",
 			href: "/collections",

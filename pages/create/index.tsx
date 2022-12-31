@@ -15,14 +15,12 @@ import {Field, Form, Formik} from "formik";
 import {useRouter} from "next/router";
 import {useState} from "react";
 import * as Yup from "yup";
-import * as Switch from "@radix-ui/react-switch";
 
 export default function Create() {
 	const router = useRouter();
 	const [error, setError] = useState("");
 	const initialValues = {
 		name: "",
-		subscription: false,
 	};
 
 	return (
@@ -84,25 +82,6 @@ export default function Create() {
 														</Text>
 													)}
 												</Container>
-											)}
-										</Field>
-									</Container>
-									<Container className="flex justify-between gap-2">
-										<Text>
-											<ImportantText>Only for my subscribers</ImportantText>
-										</Text>
-										<Field name="subscription">
-											{({field}) => (
-												<Switch.Root
-													className="SwitchRoot"
-													id="airplane-mode"
-													{...field}
-													onCheckedChange={(e) => {
-														props.setFieldValue("subscription", e);
-													}}
-												>
-													<Switch.Thumb className="SwitchThumb" />
-												</Switch.Root>
 											)}
 										</Field>
 									</Container>

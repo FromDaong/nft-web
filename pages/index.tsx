@@ -18,6 +18,8 @@ import {
 	HeadingSkeleton,
 	TritPostSkeleton,
 } from "@packages/skeleton/config";
+import {useContext} from "react";
+import {useApplicationTheme} from "@packages/theme/provider";
 
 // TODO: Use intersection observer to change navbar color.
 
@@ -37,6 +39,7 @@ const getTOTM = async () => {
 };
 
 export default function Index() {
+	const {theme} = useApplicationTheme();
 	const {
 		isLoading: totmIsLoading,
 		error: totmError,
@@ -71,17 +74,47 @@ export default function Index() {
 			? []
 			: trendingNFTsData?.map((post) => legacy_nft_to_new(post));
 
+	const LightWidget = () => (
+		<div style={{height: "100%", width: "100%"}}>
+			<iframe
+				src="https://widget.xp.network/connect?widget=true&background=fff&panelBackground=fff&modalBackground=fff&color=14161a&fontSize=16&btnColor=ffffff&btnBackground=395FEB&btnRadius=9&fontFamily=Roboto&chains=Moonbeam-Ethereum-Godwoken-Polygon-VeChain-BSC-Avalanche-Harmony-Aurora-Tron-Algorand-Tezos-Elrond-Fantom-Gnosis-GateChain-Iotex-Velas-Fuse-Abeychain-Internet Computer-Hedera-Secret-Cardano&from=&to=&cardBackground=1e222d&cardBackgroundBot=1e222d&cardColor=ffffff&cardRadius=25&secondaryColor=0c0d0d&accentColor=3e64ed&borderColor=988b8b&iconColor=3e64ed&tooltipBg=1D212A&tooltipColor=ffffff&wallets=MetaMask-BitKeep-WalletConnect-TrustWallet-MyAlgo-AlgoSigner-TronLink-Maiar-Beacon-TempleWallet-MaiarExtension-Sync2-VeChainThor-Sync2-VeChainThor-TronLink-MyAlgo-AlgoSigner-Beacon-TempleWallet-Maiar-MaiarExtension-Keplr&bridgeState=undefined&showLink=false&affiliationFees=1"
+				width="100%"
+				height="100%"
+				id="xpnetWidget"
+			/>
+		</div>
+	);
+
+	const DarkWidget = () => (
+		<div style={{height: "100%", width: "100%"}}>
+			<iframe
+				src="https://widget.xp.network/connect?widget=true&background=1c1c1f&panelBackground=1c1c1f&modalBackground=1c1c1f&color=fff&fontSize=16&btnColor=ffffff&btnBackground=395FEB&btnRadius=9&fontFamily=Roboto&chains=Moonbeam-Ethereum-Godwoken-Polygon-VeChain-BSC-Avalanche-Harmony-Aurora-Tron-Algorand-Tezos-Elrond-Fantom-Gnosis-GateChain-Iotex-Velas-Fuse-Abeychain-Internet Computer-Hedera-Secret-Cardano&from=&to=&cardBackground=1e222d&cardBackgroundBot=1e222d&cardColor=ffffff&cardRadius=25&secondaryColor=f9f9f9&accentColor=395FEB&borderColor=988b8b&iconColor=3e64ed&tooltipBg=1D212A&tooltipColor=ffffff&wallets=MetaMask-BitKeep-WalletConnect-TrustWallet-MyAlgo-AlgoSigner-TronLink-Maiar-Beacon-TempleWallet-MaiarExtension-Sync2-VeChainThor-Sync2-VeChainThor-TronLink-MyAlgo-AlgoSigner-Beacon-TempleWallet-Maiar-MaiarExtension-Keplr&bridgeState=undefined&showLink=false&affiliationFees=1"
+				width="100%"
+				height="100%"
+				id="xpnetWidget"
+			/>
+		</div>
+	);
+
+	const PinkWidget = () => (
+		<div style={{height: "100%", width: "100%"}}>
+			<iframe
+				src="https://widget.xp.network/connect?widget=true&background=ffeef0&panelBackground=ffeef0&modalBackground=fff&color=14161a&fontSize=16&btnColor=ffffff&btnBackground=395FEB&btnRadius=9&fontFamily=Roboto&chains=Moonbeam-Ethereum-Godwoken-Polygon-VeChain-BSC-Avalanche-Harmony-Aurora-Tron-Algorand-Tezos-Elrond-Fantom-Gnosis-GateChain-Iotex-Velas-Fuse-Abeychain-Internet Computer-Hedera-Secret-Cardano&from=&to=&cardBackground=1e222d&cardBackgroundBot=1e222d&cardColor=ffffff&cardRadius=25&secondaryColor=0c0d0d&accentColor=3e64ed&borderColor=988b8b&iconColor=3e64ed&tooltipBg=1D212A&tooltipColor=ffffff&wallets=MetaMask-BitKeep-WalletConnect-TrustWallet-MyAlgo-AlgoSigner-TronLink-Maiar-Beacon-TempleWallet-MaiarExtension-Sync2-VeChainThor-Sync2-VeChainThor-TronLink-MyAlgo-AlgoSigner-Beacon-TempleWallet-Maiar-MaiarExtension-Keplr&bridgeState=undefined&showLink=false&affiliationFees=1"
+				width="100%"
+				height="100%"
+				id="xpnetWidget"
+			/>
+		</div>
+	);
+
 	return (
 		<ApplicationFrame>
 			<Container className="flex flex-col gap-12 px-2 md:gap-16 lg:gap-24">
 				<Container className="pt-12">
-					<Container className="flex flex-col gap-8 px-4 xl:px-0 h-[70vh] lg:h-[700px] w-full">
-						<iframe
-							src={
-								"https://widget.xp.network?wid=63154d32cb2821f53306aeb9&wmode=opaque&background=ffffff&panelBackground=ffffff&modalBackground=ffffff&color=14161"
-							}
-							className="h-full w-full"
-						/>
+					<Container className="flex flex-col gap-8 px-4 xl:px-0 h-[80vh] w-full">
+						{theme === "light" && <LightWidget />}
+						{theme === "dark" && <DarkWidget />}
+						{theme === "pink" && <PinkWidget />}
 					</Container>
 				</Container>
 				<Container>
