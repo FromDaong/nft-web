@@ -8,6 +8,7 @@ import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {
 	ImportantText,
 	MutedText,
+	SmallText,
 } from "@packages/shared/components/Typography/Text";
 import Spinner from "@packages/shared/icons/Spinner";
 import DynamicSkeleton from "@packages/skeleton";
@@ -55,7 +56,9 @@ export default function Upgrade() {
 		},
 		validationSchema: Yup.object({
 			email: Yup.string().email("Invalid email address").required("Required"),
-			subscription_price: Yup.number().required("Required"),
+			subscription_price: Yup.number()
+				.min(0.001, "Price should not be less than 0.001 BNB")
+				.required("Required"),
 			subscription_description: Yup.string().required("Required"),
 		}),
 	});
@@ -135,9 +138,17 @@ export default function Upgrade() {
 											value={upgradeForm.values.subscription_price}
 											onChange={upgradeForm.handleChange}
 											onBlur={upgradeForm.handleBlur}
-											step="0.001"
-											min="0.0001"
 										/>
+										{upgradeForm.errors.subscription_price && (
+											<Text appearance={"danger"}>
+												<SmallText>
+													{upgradeForm.errors.subscription_price}
+												</SmallText>
+											</Text>
+										)}
+										<Text>
+											<MutedText>Price is in BNB and charged monthly</MutedText>
+										</Text>
 									</Container>
 									<Container className="flex flex-col gap-1">
 										<label htmlFor="subscription_description">
@@ -247,135 +258,16 @@ const VerifyIdentity = (props: {
 	address: string;
 	callback: (returned) => void;
 }) => {
-	const [stage, setStage] = useState<
+	const [stage] = useState<
 		| "creating_subscription"
 		| "verify_identity"
 		| "initializing"
 		| "insufficient_balance"
 		| "error"
-	>("initializing");
-	const {treatSubscriptionsContract, signer} = useContracts();
-	// wait for transaction by hash
-	const [txHash, setTxHash] = useState<string>("");
-	const {isSuccess, isError} = useWaitForTransaction({
-		hash: txHash,
-	});
-	const {data} = useBalance({
-		addressOrName: props.address,
-	});
-
-	const setSubscriptionCost = useCallback(
-		async (subscription_price: number) => {
-			if (signer) {
-				try {
-					const tx = await treatSubscriptionsContract.setSubscriptionCost(
-						Web3.utils.toWei(subscription_price.toString()),
-						{
-							from: props.address,
-							value: 0,
-						}
-					);
-					setTxHash(tx.hash);
-				} catch (err) {
-					setStage("error");
-				}
-			}
-		},
-		[signer, treatSubscriptionsContract, props.address]
-	);
-
-	useEffect(() => {
-		if (signer && data) {
-			if (Number(data.formatted.toString()) < 0.0005) {
-				setStage("insufficient_balance");
-			} else {
-				setStage("creating_subscription");
-			}
-		}
-	}, [signer, data]);
-
-	useEffect(() => {
-		// Create subscription on chain and toggle to verify_identity
-		if (stage === "creating_subscription" && signer) {
-			setSubscriptionCost(props.subscription_price);
-		}
-	}, [signer, stage]);
-
-	useEffect(() => {
-		if (isSuccess) {
-			setStage("verify_identity");
-		}
-	}, [isSuccess, isError]);
+	>("verify_identity");
 
 	return (
 		<Container>
-			{stage === "initializing" && (
-				<Container className="flex flex-col gap-2 items-center w-full">
-					<Spinner />
-					<Text>
-						<ImportantText>Please wait, initializing...</ImportantText>
-					</Text>
-				</Container>
-			)}
-			{stage === "insufficient_balance" && (
-				<Container className="flex flex-col gap-2 items-center w-full">
-					<Text appearance={"danger"}>
-						<XCircleIcon
-							width={40}
-							height={40}
-						/>
-					</Text>
-					<Text>
-						<ImportantText>
-							Insufficient balance to create subscription.
-						</ImportantText>
-					</Text>
-				</Container>
-			)}
-
-			{stage === "error" && (
-				<Container className="flex flex-col gap-2 items-center w-full">
-					<Text appearance={"danger"}>
-						<XCircleIcon
-							width={40}
-							height={40}
-						/>
-					</Text>
-					<Text>
-						<ImportantText>
-							An error occurred while creating subscription.
-						</ImportantText>
-					</Text>
-				</Container>
-			)}
-			{stage === "creating_subscription" && (
-				<Container className="flex w-full">
-					{!isError && !isSuccess && (
-						<Container className="flex flex-col gap-2 items-center w-full">
-							<Spinner />
-							<Text>
-								<ImportantText>
-									Please wait, creating subscription...
-								</ImportantText>
-							</Text>
-						</Container>
-					)}
-					{isError && (
-						<Container className="flex flex-col gap-2 items-center w-full">
-							<Text appearance={"danger"}>
-								<ImportantText>
-									Something went wrong creating subscription
-								</ImportantText>
-							</Text>
-							<Button
-								onClick={() => setSubscriptionCost(props.subscription_price)}
-							>
-								Try again
-							</Button>
-						</Container>
-					)}
-				</Container>
-			)}
 			{stage === "verify_identity" && (
 				<Container className="w-full flex flex-col gap-2">
 					<Text>

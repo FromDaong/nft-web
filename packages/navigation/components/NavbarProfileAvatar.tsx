@@ -1,9 +1,10 @@
 import {useDisclosure} from "@packages/hooks";
+import NewAvatar from "@packages/shared/components/AvatarNew";
 import {Container} from "@packages/shared/components/Container";
 import {BoldLink, Text} from "@packages/shared/components/Typography/Text";
 import ThemeSwitcherModal from "@packages/theme/ThemeSwitcherModal";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { useAccountModal} from "@rainbow-me/rainbowkit";
+import {useAccountModal} from "@rainbow-me/rainbowkit";
 import Avvvatars from "avvvatars-react";
 import {useUser} from "core/auth/useUser";
 import {useSession} from "next-auth/react";
@@ -138,13 +139,23 @@ const NavbarProfileAvatar = () => {
 				<DropdownMenu.Trigger>
 					<Container
 						css={{borderColor: "$totmPurple"}}
-						className="p-1 bg-white border-2 rounded-full"
+						className="border-2 rounded-full"
 					>
-						<Avvvatars
-							value={"something"}
-							size={24}
-							style="shape"
-						/>
+						{profile && profile.profile_pic && (
+							<NewAvatar
+								username={profile?.username}
+								imageSrc={profile?.profile_pic}
+								size={32}
+							/>
+						)}
+
+						{!profile?.profile_pic && (
+							<Avvvatars
+								value={"something"}
+								size={32}
+								style="shape"
+							/>
+						)}
 					</Container>
 				</DropdownMenu.Trigger>
 				<DropdownMenu.Portal>
