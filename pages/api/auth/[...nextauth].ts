@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import {getCsrfToken} from "next-auth/react";
+import {connectMongoDB} from "server/helpers/core";
 import {
 	MongoModelCreator,
 	MongoModelProfile,
@@ -40,9 +41,25 @@ export default async function auth(req: any, res: any) {
 					});
 
 					if (result.success) {
-						return {
-							id: siwe.address.toLowerCase(),
-						};
+						try {
+							await connectMongoDB();
+
+							let user = await MongoModelUser.findOne({
+								address: siwe.address.toLowerCase(),
+							});
+
+							if (!user) {
+								user = await MongoModelUser.create({
+									address: siwe.address.toLowerCase(),
+								});
+							}
+							return {
+								id: siwe.address.toLowerCase(),
+							};
+						} catch (err) {
+							console.log({err});
+							return null;
+						}
 					}
 					return null;
 				} catch (e) {
@@ -68,15 +85,8 @@ export default async function auth(req: any, res: any) {
 		secret: process.env.NEXTAUTH_SECRET,
 		callbacks: {
 			async session({session, token}: {session: any; token: any}) {
-				let user = await MongoModelUser.findOne({
-					address: token.sub.toLowerCase(),
-				});
+				await connectMongoDB();
 
-				if (!user) {
-					user = await MongoModelUser.create({
-						address: token.sub.toLowerCase(),
-					});
-				}
 				const profile =
 					(await MongoModelProfile.findOne({address: token.sub})) ?? {};
 				const creator = await MongoModelCreator.findOne({
