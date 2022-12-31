@@ -177,11 +177,11 @@ const NFTPresentationComponent = (props: {
 							/>
 						</Container>
 					</Container>
-					<Container className="flex flex-col col-span-1 gap-4">
+					<Container className="flex flex-col col-span-2 md:col-span-1 gap-4">
 						<Heading size="xs">Description</Heading>
 						<Text>{nft.description}</Text>
 					</Container>
-					<Container className="flex flex-col col-span-1 gap-4">
+					<Container className="flex flex-col col-span-2 md:col-span-1 gap-4">
 						<Heading size="xs">Tags</Heading>
 						<Container className="flex flex-wrap gap-4 py-2">
 							{nft.tags?.map((tag) => (

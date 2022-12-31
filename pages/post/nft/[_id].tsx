@@ -154,8 +154,8 @@ export default function NFT(props: {
 			</Container>
 			<ApplicationLayout>
 				<ApplicationFrame>
-					<Container className="flex flex-col gap-12 ">
-						<Container className="flex flex-wrap gap-4">
+					<Container className="flex flex-col gap-12">
+						<Container className="flex flex-wrap gap-4 px-8">
 							{isOwned && balance > 0 && (
 								<Container className="flex mt-8">
 									<Container
@@ -254,19 +254,21 @@ export default function NFT(props: {
 									</Container>
 								)}
 						</Container>
-						<NFTPresentationComponent
-							nft={nft}
-							isOwned={isOwned}
-							balance={balance}
-							openFullScreen={() => setShowFullScreen(true)}
-							loadHD={() => setLoadHD(true)}
-							address={address}
-							seller={seller}
-							isResale={isResale}
-							event={event}
-						/>
+						<Container className="px-8">
+							<NFTPresentationComponent
+								nft={nft}
+								isOwned={isOwned}
+								balance={balance}
+								openFullScreen={() => setShowFullScreen(true)}
+								loadHD={() => setLoadHD(true)}
+								address={address}
+								seller={seller}
+								isResale={isResale}
+								event={event}
+							/>
+						</Container>
 						<Divider dir={"horizontal"} />
-						<Container className="flex flex-col gap-12 px-8 lg:p-0">
+						<Container className="flex flex-col gap-12 px-8">
 							<Container className="flex flex-col gap-4">
 								<Heading size="sm">People also bought</Heading>
 							</Container>
@@ -289,7 +291,7 @@ export default function NFT(props: {
 						</Container>
 						<Divider dir={"horizontal"} />
 
-						<Container className="flex flex-col gap-12 px-8 lg:0">
+						<Container className="flex flex-col gap-12 px-8">
 							<Container className="flex flex-col gap-4">
 								<Heading size="sm">More from this creator</Heading>
 							</Container>
