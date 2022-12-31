@@ -108,7 +108,7 @@ export default function NFT(props: {
 			? []
 			: youMightAlsoLikeData?.map((post) => legacy_nft_to_new(post));
 
-	const blurred_image = `${nft.image.ipfs}?blur=30`;
+	const blurred_image = `${nft.image.ipfs}?blurhash=true`;
 	const hd_image = `${nft.image.ipfs}?q=100`;
 	const sd_image = `${nft.image.ipfs}?q=75`;
 

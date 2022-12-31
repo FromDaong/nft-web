@@ -70,7 +70,7 @@ export default function ListOrderModal(props: {
 		listOrder(
 			props.nft.id,
 			listQuantity,
-			Web3.utils.toWei(listPrice),
+			Web3.utils.toWei(listPrice.toString()),
 			listExpires ?? maxUnixTimestamp
 		)
 			.then(() => {

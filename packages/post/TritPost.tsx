@@ -54,7 +54,7 @@ export const TritPost = (props: TritPostProps) => {
 
 	// T-43 Check if seller === creator , determine if resale or original listing
 
-	const blurred_image = `${props.image.ipfs}?blur=30`;
+	const blurred_image = `${props.image.ipfs}?blurhash=true`;
 	const sd_image = `${props.image.ipfs}?q=75`;
 
 	useEffect(() => {

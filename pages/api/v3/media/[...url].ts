@@ -6,7 +6,7 @@ const {encode} = require("blurhash");
 
 const encodeImage = async (sharpObj, res) => {
 	try {
-		await sharpObj
+		const obj = await sharpObj
 			.raw()
 			.ensureAlpha()
 			.resize(32, 32, {fit: "inside"})
@@ -41,6 +41,8 @@ const encodeImage = async (sharpObj, res) => {
 				res.setHeader("Content-Type", "image/webp");
 				return res.send(resizedImageBuf);
 			});
+
+		return obj;
 	} catch (err) {
 		console.log(err);
 		return res.send(null);

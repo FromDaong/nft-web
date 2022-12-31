@@ -84,7 +84,7 @@ function PreviewCollection(props: {
 							background: item.image
 								? `url('https://treatnfts.gumlet.io/api/v3/image?default=${
 										item.image.ipfs ?? item.image.ipfs
-								  }${item.protected ? "&blur=30" : ""}')`
+								  }${item.protected ? "&blurhash=true" : ""}')`
 								: "$surfaceOnSurface",
 							backgroundColor: "$surfaceOnSurface",
 							backgroundSize: "cover",
