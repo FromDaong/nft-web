@@ -40,17 +40,6 @@ export default async function auth(req: any, res: any) {
 					});
 
 					if (result.success) {
-						let user = await MongoModelUser.findOne({
-							address: siwe.address.toLowerCase(),
-						});
-
-						console.log({user});
-
-						if (!user) {
-							user = await MongoModelUser.create({
-								address: siwe.address.toLowerCase(),
-							});
-						}
 						return {
 							id: siwe.address.toLowerCase(),
 						};
