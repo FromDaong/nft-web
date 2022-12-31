@@ -1,7 +1,6 @@
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import Link from "next/link";
 
-import {DropdownContent, NavDropdownContainer} from "./DropdownContainer";
+import {NavDropdownContainer} from "./DropdownContainer";
 import {
 	BoldLink,
 	ImportantText,
@@ -9,21 +8,13 @@ import {
 	Text,
 } from "@packages/shared/components/Typography/Text";
 import {Container} from "@packages/shared/components/Container";
-import {HamburgerMenuIcon} from "@radix-ui/react-icons";
-import NavbarProfileAvatar from "./NavbarProfileAvatar";
-import {
-	ConnectButton,
-	useAccountModal,
-	useConnectModal,
-} from "@rainbow-me/rainbowkit";
+import {useAccountModal, useConnectModal} from "@rainbow-me/rainbowkit";
 import {
 	ArrowRightIcon,
 	DotsVerticalIcon,
 	XIcon,
 } from "@heroicons/react/outline";
 import {Button} from "@packages/shared/components/Button";
-import Avvvatars from "avvvatars-react";
-import {useAccount} from "wagmi";
 import {useDisclosure} from "@packages/hooks";
 import BecomeCreatorModal from "@packages/onboarding/BecomeCreatorModal";
 import ThemeSwitcherModal from "@packages/theme/ThemeSwitcherModal";
