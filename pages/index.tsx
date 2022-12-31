@@ -71,32 +71,19 @@ export default function Index() {
 			? []
 			: trendingNFTsData?.map((post) => legacy_nft_to_new(post));
 
-	console.log({trendingCreators});
-
 	return (
 		<ApplicationFrame>
 			<Container className="flex flex-col gap-12 px-2 md:gap-16 lg:gap-24">
 				<Container className="pt-12">
-					<Container className="flex flex-col gap-8 px-4 xl:px-0">
-						{
-							<TreatOfTheMonthCollectionSection
-								title={"Treat of the Month"}
-								author={[
-									{
-										username: "treatdaoofficial",
-										display_name: "TreatDAO",
-									},
-									{
-										username: "elizarosewatson",
-										display_name: "Eliza Rose Watson",
-									},
-								]}
-								collectionItems={totmCurated}
-							/>
-						}
+					<Container className="flex flex-col gap-8 px-4 xl:px-0 h-[70vh] lg:h-[700px] w-full">
+						<iframe
+							src={
+								"https://widget.xp.network?wid=63154d32cb2821f53306aeb9&wmode=opaque&background=ffffff&panelBackground=ffffff&modalBackground=ffffff&color=14161"
+							}
+							className="h-full w-full"
+						/>
 					</Container>
 				</Container>
-				<Divider dir={"horizontal"} />
 				<Container>
 					<Container className="flex flex-col w-full gap-8 px-4 xl:px-0">
 						<Container className="flex justify-between">

@@ -132,3 +132,7 @@ html {
 .dropdown-content[data-side="bottom"] {
 	animation-name: slideDown;
 }
+
+iframe .bridgeBody {
+	background-color: #00000000 !important;
+}

@@ -1,5 +1,4 @@
 import {CheckCircleIcon, XCircleIcon} from "@heroicons/react/outline";
-import {useContracts} from "@packages/post/hooks";
 import {SEOHead} from "@packages/seo/page";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
@@ -14,13 +13,14 @@ import Spinner from "@packages/shared/icons/Spinner";
 import DynamicSkeleton from "@packages/skeleton";
 import {apiEndpoint} from "@utils/index";
 import axios from "axios";
+import {useUser} from "core/auth/useUser";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import {useFormik} from "formik";
 import dynamic from "next/dynamic";
-import {Suspense, useCallback, useEffect, useState} from "react";
-import {useAccount, useBalance, useWaitForTransaction} from "wagmi";
-import Web3 from "web3";
+import Link from "next/link";
+import {Suspense, useEffect, useState} from "react";
+import {useAccount} from "wagmi";
 import * as Yup from "yup";
 
 const VerifyButton = dynamic(() => import("@passbase/button/react"), {
@@ -29,6 +29,7 @@ const VerifyButton = dynamic(() => import("@passbase/button/react"), {
 
 export default function Upgrade() {
 	const {address} = useAccount();
+	const {profile} = useUser();
 	const [identity_acess_key, setIdentityAccessKey] = useState("");
 	const [formData, setFormData] = useState({
 		email: "",
@@ -59,7 +60,7 @@ export default function Upgrade() {
 			subscription_price: Yup.number()
 				.min(0.001, "Price should not be less than 0.001 BNB")
 				.required("Required"),
-			subscription_description: Yup.string().required("Required"),
+			subscription_description: Yup.string(),
 		}),
 	});
 
@@ -224,7 +225,11 @@ export default function Upgrade() {
 											been approved
 										</Text>
 									</Container>
-									<Button appearance={"surface"}>Go to your profile</Button>
+									<Link href={`/${profile.username}`}>
+										<a>
+											<Button appearance={"surface"}>Go to your profile</Button>
+										</a>
+									</Link>
 								</Container>
 							)}
 

@@ -80,7 +80,7 @@ export default function Navbar() {
 								</Link>
 							</div>
 							<div className="items-center hidden gap-8 md:flex">
-								<Link href="/dex/bridge">
+								<Link href="/dex/ramp">
 									<a>
 										<BoldLink className="font-medium">Buy Crypto</BoldLink>
 									</a>
@@ -90,6 +90,13 @@ export default function Navbar() {
 								<Link href="/dex/bridge">
 									<a>
 										<BoldLink className="font-medium">NFT Bridge</BoldLink>
+									</a>
+								</Link>
+							</div>
+							<div className="items-center hidden gap-8 md:flex">
+								<Link href="https://treatdao.org/magazine">
+									<a>
+										<BoldLink className="font-medium">Magazine</BoldLink>
 									</a>
 								</Link>
 							</div>

@@ -70,14 +70,6 @@ export default async function handler(req, res) {
 							$exists: false,
 						},
 					},
-					{
-						"nft.totm_nft": false,
-					},
-					{
-						"nft.totm_nft": {
-							$exists: false,
-						},
-					},
 				],
 			},
 		},
