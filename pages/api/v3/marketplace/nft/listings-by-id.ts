@@ -5,7 +5,7 @@ import NFTEvent from "server/helpers/models/posts/activity";
 export default async function handler(req, res) {
 	await connectMongoDB();
 
-	const {page, market, sort} = req.query;
+	const {page, id, sort} = req.query;
 
 	const get_page = Number(page ?? 1) || 1;
 	const options = {
@@ -14,6 +14,11 @@ export default async function handler(req, res) {
 	};
 
 	const nftsAggregate = NFTEvent.aggregate([
+		{
+			$match: {
+				id: Number(id),
+			},
+		},
 		{
 			$lookup: {
 				from: "marketplacenfts",

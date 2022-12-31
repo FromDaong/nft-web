@@ -13,6 +13,7 @@ import {useFullScreen} from "@packages/shared/hooks";
 import RectangleStack from "@packages/shared/icons/RectangleStack";
 import DynamicSkeleton from "@packages/skeleton";
 import {TritPostSkeleton} from "@packages/skeleton/config";
+import {ImageIcon} from "@radix-ui/react-icons";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import UserAvatar from "core/auth/components/Avatar";
@@ -154,7 +155,7 @@ export default function NFT(props: {
 			<ApplicationLayout>
 				<ApplicationFrame>
 					<Container className="flex flex-col gap-12 ">
-						<Container className="flex gap-4 flex-wrap">
+						<Container className="flex flex-wrap gap-4">
 							{isOwned && balance > 0 && (
 								<Container className="flex mt-8">
 									<Container
@@ -219,6 +220,39 @@ export default function NFT(props: {
 									</Container>
 								</Container>
 							)}
+							{address &&
+								nft.creator.profile.address.toLowerCase() ===
+									address?.toLowerCase() && (
+									<Container className="flex mt-8">
+										<Container
+											className="flex items-center gap-4 px-8 py-4"
+											css={{
+												backgroundColor: "$pink3",
+												borderRadius: "16px",
+											}}
+										>
+											<Container>
+												<Text css={{color: "$pink7"}}>
+													<ImageIcon
+														width={32}
+														height={32}
+													/>
+												</Text>
+											</Container>
+											<Container>
+												<Heading
+													css={{color: "$pink12"}}
+													size="xss"
+												>
+													Your masterpiece
+												</Heading>
+												<Text css={{color: "$pink12"}}>
+													<SmallText>You are the creator of this NFT</SmallText>
+												</Text>
+											</Container>
+										</Container>
+									</Container>
+								)}
 						</Container>
 						<NFTPresentationComponent
 							nft={nft}
@@ -240,7 +274,7 @@ export default function NFT(props: {
 								{!youMightAlsoLikeError && !youMightAlsoLikeLoading
 									? trendingNFTs.slice(0, 4).map((item) => (
 											<TritPost
-												key={item}
+												key={item.id}
 												inGrid
 												{...item}
 											/>
@@ -283,9 +317,10 @@ export default function NFT(props: {
 								{!moreNFTSError && !moreNFTSLoading
 									? moreNFTs
 											.map((post) => legacy_nft_to_new(post))
+											.slice(0, 3)
 											.map((item) => (
 												<TritPost
-													key={item}
+													key={item._id}
 													inGrid
 													{...item}
 												/>
@@ -323,11 +358,13 @@ export const getServerSideProps = async (context) => {
 		model: MongoModelProfile,
 	});
 
-	const seller_profile = await MongoModelProfile.findOne({
-		address: seller?.toLowerCase(),
-	});
+	const seller_profile = seller
+		? await MongoModelProfile.findOne({
+				address: seller?.toLowerCase(),
+		  })
+		: null;
 
-	const event = await MongoModelEvent.findById(eid);
+	const event = eid ? await MongoModelEvent.findById(eid) : null;
 
 	if (!nft) {
 		return {

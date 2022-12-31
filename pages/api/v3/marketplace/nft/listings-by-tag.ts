@@ -5,13 +5,15 @@ import NFTEvent from "server/helpers/models/posts/activity";
 export default async function handler(req, res) {
 	await connectMongoDB();
 
-	const {page, market, sort} = req.query;
+	const {page, tag, sort} = req.query;
 
 	const get_page = Number(page ?? 1) || 1;
 	const options = {
 		page: get_page,
 		limit: 24,
 	};
+
+	console.log({tag});
 
 	const nftsAggregate = NFTEvent.aggregate([
 		{
@@ -22,6 +24,7 @@ export default async function handler(req, res) {
 				as: "nft",
 			},
 		},
+
 		{
 			$sort: {
 				createdAt: -1,
@@ -54,6 +57,11 @@ export default async function handler(req, res) {
 		{
 			$unwind: {
 				path: "$nft",
+			},
+		},
+		{
+			$match: {
+				"nft.tags": tag,
 			},
 		},
 		{

@@ -26,6 +26,7 @@ import {
 } from "@radix-ui/react-icons";
 import UserAvatar from "core/auth/components/Avatar";
 import Link from "next/link";
+import MoreActionsButton from "./MoreActionsButton";
 
 const NFTPresentationComponent = (props: {
 	nft: any;
@@ -129,13 +130,12 @@ const NFTPresentationComponent = (props: {
 							</Button>
 						)}
 						{isOwned && (
-							<Button>
-								<DotsHorizontalIcon
-									width={16}
-									height={16}
-								/>
-								More
-							</Button>
+							<MoreActionsButton
+								nft={props.nft}
+								seller={props.seller}
+								event={props.event}
+								address={props.address}
+							/>
 						)}
 					</Container>
 					<Container className="flex justify-between col-span-2 gap-4">
@@ -246,11 +246,17 @@ const NFTPresentationComponent = (props: {
 										</MutedText>
 									)}
 								</Container>
-								<BuyNFTButton
-									seller={props.seller.address}
-									nftData={nft}
-									event={props.event}
-								/>
+								{!(props.address === props.seller) &&
+									!(
+										props.nft.creator.profile.address.toLowerCase() ===
+										props.address?.toLowerCase()
+									) && (
+										<BuyNFTButton
+											seller={props.seller?.address ?? null}
+											nftData={nft}
+											event={props.event}
+										/>
+									)}
 							</Container>
 						</Container>
 

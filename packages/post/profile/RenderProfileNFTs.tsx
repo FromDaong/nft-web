@@ -18,6 +18,10 @@ const RenderProfileNFTs = ({
 	fetchNextPage,
 	isFetchingNextPage,
 	hasNextPage,
+	hideSeller,
+}: {
+	[key: string]: any;
+	hideSeller?: boolean;
 }) => {
 	// T-25 implement a reasonable empty state design
 
@@ -37,7 +41,7 @@ const RenderProfileNFTs = ({
 					))}
 
 				{error && (
-					<Container className="col-span-4 py-12 flex flex-col gap-2 items-center">
+					<Container className="flex flex-col items-center col-span-4 gap-2 py-12">
 						<Heading size={"sm"}>Eish, an error!</Heading>
 						<Text>
 							That was an error. Please reload the page and try again.
@@ -46,7 +50,7 @@ const RenderProfileNFTs = ({
 				)}
 
 				{posts.length === 0 && !isFetching && !error && (
-					<Container className="col-span-4 py-12 flex flex-col gap-2 items-center">
+					<Container className="flex flex-col items-center col-span-4 gap-2 py-12">
 						<Heading size={"sm"}>Eish, not a collector.</Heading>
 						<Text>This profile has not collected any Treat NFT's yet.</Text>
 					</Container>
@@ -61,6 +65,7 @@ const RenderProfileNFTs = ({
 									{...post}
 									noPrice
 									isMine={username === profile.username}
+									hideSeller={hideSeller}
 								/>
 							))}
 						</Container>

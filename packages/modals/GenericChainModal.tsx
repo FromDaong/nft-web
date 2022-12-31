@@ -14,8 +14,9 @@ export default function GenericChainModal(props: {
 	hideClose?: boolean;
 	buttonLabel?: string;
 	action?: any;
-	subtitle?: string;
+	subtitle?: string | ReactNode;
 	loading?: boolean;
+	noTitle?: boolean;
 }) {
 	return (
 		<Modal
@@ -23,8 +24,10 @@ export default function GenericChainModal(props: {
 			onClose={props.onClose}
 		>
 			<Container className="flex flex-col gap-8">
-				<Container className="flex flex-col gap-2 w-full">
-					<Heading size="xs">{props.title || "Action Complete ✅ 💝"}</Heading>
+				<Container className="flex flex-col w-full gap-2">
+					<Heading size="xs">
+						{!props.noTitle && (props.title || "Action Complete ✅ 💝")}
+					</Heading>
 					<Text>{props.subtitle}</Text>
 				</Container>
 				{props.children && <Container>{props.children}</Container>}

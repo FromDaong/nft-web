@@ -2,9 +2,15 @@ import {useTransferNFTs} from "@packages/post/hooks";
 import {TritPostProps} from "@packages/post/types";
 import {Container} from "@packages/shared/components/Container";
 import {Input} from "@packages/shared/components/Input";
-import {Text} from "@packages/shared/components/Typography/Text";
+import {
+	ImportantText,
+	MutedText,
+	SmallText,
+	Text,
+} from "@packages/shared/components/Typography/Text";
 import Link from "next/link";
 import {useState} from "react";
+import {useSigner} from "wagmi";
 import GenericChainModal from "./GenericChainModal";
 
 export default function TransferNFTModal(props: {
@@ -12,7 +18,8 @@ export default function TransferNFTModal(props: {
 	isOpen: any;
 	nft: TritPostProps;
 }) {
-	const {transferNFT} = useTransferNFTs();
+	const {data: signer} = useSigner();
+	const {transferNFT} = useTransferNFTs(signer);
 	const [transferLoading, setTransferLoading] = useState(false);
 	const [transferSuccess, setTransferSuccess] = useState(false);
 	const [transferError, setTransferError] = useState("");
@@ -80,42 +87,38 @@ export default function TransferNFTModal(props: {
 				}
 				buttonLabel={"Transfer NFT"}
 				action={() => {
-					transferNFTAction;
+					transferNFTAction();
 				}}
-			/>
-			<GenericChainModal
-				title={"Transfer NFT"}
-				onClose={props.onClose}
-				isOpen={props.isOpen}
-				subtitle={
-					"Transfer your NFT to another wallet. Please make sure both walletsare on the Binance Smart Chain."
-				}
-				buttonLabel={"Transfer NFT"}
-				action={() => {
-					transferNFTAction;
-				}}
-				loading={transferLoading}
+				loading={transferLoading || !signer}
 			>
 				<Container className="flex flex-col gap-4">
 					<Container>
-						<Text>Recipient Address</Text>
+						<Text>
+							<ImportantText>Recipient Address</ImportantText>
+						</Text>
 						<Input
 							type="email"
 							onChange={(e) => setToAddress(e.currentTarget.value)}
 							placeholder="0x123"
 						/>
-						<Text className="text-muted">Ensure this is a BEP-20 Address.</Text>
+						<Text>
+							<SmallText>Ensure this is a BEP-20 Address.</SmallText>
+						</Text>
 					</Container>
 
 					<Container>
-						<Text>Amount</Text>
+						<Text>
+							<ImportantText>Amount</ImportantText>
+						</Text>
 						<Input
 							type="number"
 							defaultValue={0}
 							onChange={(e) => setTransferAmount(Number(e.currentTarget.value))}
 						/>
-						<Text className="text-muted">
-							How many of these NFTs do you want to transfer?
+						<Text>
+							<SmallText>
+								How many of these NFTs do you want to transfer?
+							</SmallText>
 						</Text>
 					</Container>
 				</Container>

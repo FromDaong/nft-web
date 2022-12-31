@@ -1,7 +1,7 @@
 import {styled} from "@styles/theme";
-import {Dialog, Transition} from "@headlessui/react";
+import {Dialog} from "@headlessui/react";
 import {Text} from "@packages/shared/components/Typography/Text";
-import {Fragment, ReactNode} from "react";
+import {ReactNode} from "react";
 
 export const DialogOverlay = styled("div", {
 	backgroundColor: "var(--blackA9)",
@@ -55,42 +55,18 @@ export const Modal = ({
 	compact?: boolean;
 }) => {
 	return (
-		<Transition
-			as={Fragment}
-			show={isOpen}
+		<Dialog
+			open={isOpen}
+			onClose={onClose}
 		>
-			<Dialog
-				open={isOpen}
-				onClose={onClose}
-			>
-				<Transition.Child
-					as={Fragment}
-					enter="ease-out duration-300"
-					enterFrom="opacity-0"
-					enterTo="opacity-100"
-					leave="ease-in duration-200"
-					leaveFrom="opacity-100"
-					leaveTo="opacity-0"
-				>
-					<DialogOverlay />
-				</Transition.Child>
-				<Transition.Child
-					as={Fragment}
-					enter="ease-out duration-300"
-					enterFrom="opacity-0"
-					enterTo="opacity-100"
-					leave="ease-in duration-200"
-					leaveFrom="opacity-100"
-					leaveTo="opacity-0"
-				>
-					{
-						//@ts-ignore
-						<DialogContent css={{width: compact ? "fit-content" : "auto"}}>
-							{children}
-						</DialogContent>
-					}
-				</Transition.Child>
-			</Dialog>
-		</Transition>
+			<DialogOverlay />
+
+			{
+				//@ts-ignore
+				<DialogContent css={{width: compact ? "fit-content" : "auto"}}>
+					{children}
+				</DialogContent>
+			}
+		</Dialog>
 	);
 };

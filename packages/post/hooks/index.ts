@@ -71,29 +71,29 @@ export const useTritNFTUtils = (nft: any) => {
 	};
 };
 
-export const useTransferNFTs = () => {
-	const {data: signer} = useSigner();
+export const useTransferNFTs = (signer) => {
 	const {address} = useAccount();
 
-	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplace[56],
-		contractInterface: ABI.treatMarketplace,
+	const treatMinterContract = useContract({
+		addressOrName: contractAddresses.treatNFTMinter[56],
+		contractInterface: ABI.treatMinter,
 		signerOrProvider: signer,
 	});
 
 	const transferNFT = useCallback(
 		async (to, id, amount) => {
-			return treatMarketplaceContract.safeTransferFrom(
+			return treatMinterContract.safeTransferFrom(
 				address,
 				to,
 				id,
 				amount,
+				"0x0",
 				{
 					from: address,
 				}
 			);
 		},
-		[address, treatMarketplaceContract]
+		[address, treatMinterContract]
 	);
 
 	return {transferNFT};
@@ -158,6 +158,7 @@ export const useApproveMarketplace = () => {
 
 export const useGetMinterIsApprovedForAll = () => {
 	const [allowance, setAllowance] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const {address} = useAccount();
 	const {data: signer} = useSigner();
 
@@ -175,6 +176,7 @@ export const useGetMinterIsApprovedForAll = () => {
 			treatMarketplaceAddress
 		);
 		setAllowance(_allowance);
+		setLoading(false);
 	}, [address, signer]);
 
 	useEffect(() => {
@@ -183,7 +185,7 @@ export const useGetMinterIsApprovedForAll = () => {
 		}
 	}, [address, signer, treatMarketplaceAddress]);
 
-	return allowance;
+	return [allowance, loading];
 };
 
 export const useGetResaleOrders = (id) => {

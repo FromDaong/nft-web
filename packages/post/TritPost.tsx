@@ -204,6 +204,7 @@ export const TritPost = (props: TritPostProps) => {
 					creator={props.author.username}
 					toggleImageProtection={toggleImageProtection}
 					isProtected={isProtected}
+					hideSeller={props.hideSeller}
 				/>
 			</Container>
 		</Container>

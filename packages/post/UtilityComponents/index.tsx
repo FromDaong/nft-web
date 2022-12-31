@@ -15,7 +15,7 @@ import UserAvatar from "core/auth/components/Avatar";
 export const ActionSection = (props) => {
 	return (
 		<Container className="grid grid-cols-5 gap-2">
-			<Container className="col-span-4 flex flex-col gap-4">
+			<Container className="flex flex-col col-span-4 gap-4">
 				<Container className="flex flex-col w-full">
 					<Text
 						className="line-clamp-1"
@@ -23,11 +23,13 @@ export const ActionSection = (props) => {
 					>
 						<ImportantText>{props.name}</ImportantText>
 					</Text>
-					<MutedText css={{lineHeight: "12px"}}>
-						{props.seller
-							? `Listed by ${props.seller.username}`
-							: "Listed by creator"}
-					</MutedText>
+					{!props.hideSeller && (
+						<MutedText css={{lineHeight: "12px"}}>
+							{props.seller
+								? `Listed by ${props.seller.username}`
+								: "Listed by creator"}
+						</MutedText>
+					)}
 				</Container>
 
 				{!props.noPrice && (
@@ -66,7 +68,7 @@ export const MoreActionsDropdown = (props) => {
 
 	return (
 		<DropdownMenu.Root>
-			<DropdownMenu.Trigger className="w-full flex justify-end">
+			<DropdownMenu.Trigger className="flex justify-end w-full">
 				<Container
 					className="col-span-1 p-3 rounded-full hover:bg-gray-100"
 					css={{
@@ -81,10 +83,10 @@ export const MoreActionsDropdown = (props) => {
 				</Container>
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Portal>
-				<DropdownMenu.Content className="z-30 p-3 shadow-xl gap-y-3 rounded-xl bg-white transition-all duration-150">
+				<DropdownMenu.Content className="z-30 p-3 transition-all duration-150 bg-white shadow-xl gap-y-3 rounded-xl">
 					<DropdownMenuItem
 						onClick={copyToClipboard}
-						className="px-4 py-2 flex gap-2"
+						className="flex gap-2 px-4 py-2"
 					>
 						<Text>🌍</Text>
 						<Text>
@@ -93,7 +95,7 @@ export const MoreActionsDropdown = (props) => {
 					</DropdownMenuItem>
 					<DropdownMenuItem
 						onClick={gotoCreator}
-						className="px-4 py-2 flex gap-2"
+						className="flex gap-2 px-4 py-2"
 					>
 						<Text>🎨</Text>
 						<Text>
@@ -103,7 +105,7 @@ export const MoreActionsDropdown = (props) => {
 					{props.isMine && (
 						<DropdownMenuItem
 							onClick={props.toggleImageProtection}
-							className="px-4 py-2 flex gap-2"
+							className="flex gap-2 px-4 py-2"
 						>
 							<Text>👀</Text>
 							<Text>
