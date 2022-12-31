@@ -234,7 +234,7 @@ const NFTPresentationComponent = (props: {
 								</Text>
 								<SmallText>This is the buying price</SmallText>
 							</Container>
-							<Container className="flex flex-col items-center gap-2">
+							<Container className="flex flex-col items-center gap-4">
 								<Container className="flex items-baseline justify-between w-full">
 									<Heading size="sm">{displayedCost} BNB</Heading>
 
@@ -255,6 +255,7 @@ const NFTPresentationComponent = (props: {
 											seller={props.seller?.address ?? null}
 											nftData={nft}
 											event={props.event}
+											isResale={props.isResale}
 										/>
 									)}
 							</Container>

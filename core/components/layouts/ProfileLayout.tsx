@@ -139,27 +139,8 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 	};
 
 	// Fetch all in one batch using react query useQueries
-	const [
-		subscriptionNFTsCount,
-		resaleNFTsCount,
-		collectionsCount,
-		ownedNFTsCount,
-		badges,
-		createNFTsCount,
-	] = TreatCore.useQueries({
+	const [ownedNFTsCount, badges, createNFTsCount] = TreatCore.useQueries({
 		queries: [
-			{
-				queryKey: ["subscriptionNFTsCount", ownerOfUserProfile.address],
-				queryFn: getSubscriptionNFTsCount,
-			},
-			{
-				queryKey: ["resaleNFTsCount", ownerOfUserProfile.address],
-				queryFn: getResaleNFTsCount,
-			},
-			{
-				queryKey: ["collectionsCount", ownerOfUserProfile.address],
-				queryFn: getCollectionsCount,
-			},
 			{
 				queryKey: ["ownedNFTsCount", ownerOfUserProfile.address],
 				queryFn: getOwnedNFTsCount,
@@ -176,49 +157,19 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 	});
 
 	const creator_tabs = [
-		/*{
-			label: "Subscription",
-			href: "",
-			count: subscriptionNFTsCount.data,
-		},*/
-		/*{
-			label: "Collections",
-			href: "/collections",
-			count: collectionsCount.data,
-		},*/
 		{
 			label: "Sweetshop",
 			href: "/",
 			count: createNFTsCount.data,
 		},
-		/*{
-			label: "Listed",
-			href: "/listed",
-			count: resaleNFTsCount.data,
-		},*/
-
 		{
 			label: "Owned",
 			href: "/portfolio",
 			count: ownedNFTsCount.data,
 		},
-		/*{
-    label: "Curated",
-    href: "/curated",
-  },*/
 	];
 
 	const profile_tabs = [
-		/*{
-			label: "Collections",
-			href: "/collections",
-			count: collectionsCount.data,
-		},*/
-		/*{
-			label: "Listed",
-			href: "/listed",
-			count: resaleNFTsCount.data,
-		},*/
 		{
 			label: "Owned",
 			href: "/portfolio",

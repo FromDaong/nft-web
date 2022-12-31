@@ -54,9 +54,7 @@ export default function NFT(props: {
 	const data = JSON.parse(props.data);
 	const {nft} = data;
 	const {seller} = data;
-	const {isResale} = data;
 	const {event} = data;
-	console.log({seller, isResale, nft, event});
 
 	const {address} = useAccount();
 
@@ -129,6 +127,11 @@ export default function NFT(props: {
 		}
 	}, [nft.protected, isOwned, loadHD]);
 
+	const isResale =
+		event && event.seller.toLowerCase() !== nft.creator.address.toLowerCase();
+
+	console.log({isResale, event, nft});
+
 	return (
 		<>
 			<Container
@@ -189,7 +192,7 @@ export default function NFT(props: {
 									</Container>
 								</Container>
 							)}
-							{seller && (
+							{isResale && (
 								<Container className="flex mt-8">
 									<Container
 										className="flex items-center gap-4 px-8 py-4"
