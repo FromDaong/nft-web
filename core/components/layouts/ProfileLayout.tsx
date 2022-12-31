@@ -42,8 +42,6 @@ import {apiEndpoint} from "@utils/index";
 
 const AvatarContainer = styled("div", {
 	borderRadius: "9999px",
-	height: "96px",
-	width: "96px",
 	display: "flex",
 	alignItems: "center",
 	justifyContent: "center",
@@ -191,11 +189,11 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 			href: "",
 			count: subscriptionNFTsCount.data,
 		},
-		{
+		/*{
 			label: "Collections",
 			href: "/collections",
 			count: collectionsCount.data,
-		},
+		},*/
 		{
 			label: "Sweetshop",
 			href: "/sweetshop",
@@ -219,11 +217,11 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 	];
 
 	const profile_tabs = [
-		{
+		/*{
 			label: "Collections",
 			href: "/collections",
 			count: collectionsCount.data,
-		},
+		},*/
 		{
 			label: "Sweetshop",
 			href: "/listed",
@@ -235,14 +233,6 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 			count: ownedNFTsCount.data,
 		},
 	];
-
-	console.log({
-		subscriptionNFTsCount,
-		resaleNFTsCount,
-		collectionsCount,
-		ownedNFTsCount,
-		badges,
-	});
 
 	const [followers, setFollowers] = useState(profile.followers);
 
@@ -291,16 +281,13 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 					<ContextualContainer className="grid col-span-1 xl:grid-cols-3 justify-between w-full gap-y-4">
 						<Container className="col-span-1 xl:col-span-2">
 							<Container className="flex gap-8">
-								<AvatarContainer
-									className="drop-shadow-sm border"
-									css={{borderColor: "$subtleBorder", padding: "4px"}}
-								>
+								<Container>
 									<NewAvatar
 										username="Tatenda Chris"
 										imageSrc={ownerOfUserProfile.profile_pic}
-										size_def={{width: "100%", height: "100%"}}
+										size={64}
 									/>
-								</AvatarContainer>
+								</Container>
 
 								<Container className="flex flex-col gap-1">
 									<Container>
@@ -331,10 +318,10 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 											</Container>
 										))}
 									</Container>
-									<Text className="mt-2 max-w-2xl">
+									<Text className="mt-2 max-w-2xl hidden md:flex">
 										{ownerOfUserProfile.bio ?? "Loading profile details"}
 									</Text>
-									<Container className="flex w-full mb-4 mt-2">
+									<Container className="w-full mb-4 mt-2 hidden md:flex">
 										<>
 											<Text
 												appearance={"hiContrast"}
@@ -358,11 +345,38 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 									</Container>
 								</Container>
 							</Container>
+							<Container className="flex flex-col gap-4 md:hidden">
+								<Text className="mt-2 max-w-2xl flex">
+									{ownerOfUserProfile.bio ?? "Loading profile details"}
+								</Text>
+								<Container className="w-full mb-4 mt-2 flex">
+									<>
+										<Text
+											appearance={"hiContrast"}
+											weight={"bold"}
+										>
+											{ownerOfUserProfile.following.length}
+										</Text>
+										{""}
+										<JustifiedSpan>Following</JustifiedSpan>
+									</>
+									<Bull />
+									<>
+										<Text
+											appearance={"hiContrast"}
+											weight={"bold"}
+										>
+											{followers.length}
+										</Text>
+										<JustifiedSpan>Followers</JustifiedSpan>
+									</>
+								</Container>
+							</Container>
 						</Container>
 
 						<Container className="h-fit xl:justify-end flex">
 							<Container className="flex h-auto relative">
-								<Container className="flex gap-x-4 h-fit">
+								<Container className="flex flex-wrap gap-4 h-fit">
 									{!isLoading &&
 										loggedInUser &&
 										loggedInUser.address !== ownerOfUserProfile.address && (
