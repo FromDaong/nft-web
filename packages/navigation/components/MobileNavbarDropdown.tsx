@@ -30,6 +30,7 @@ import ThemeSwitcherModal from "@packages/theme/ThemeSwitcherModal";
 import {Heading} from "@packages/shared/components/Typography/Headings";
 import {Divider} from "@packages/shared/components/Divider";
 import {useUser} from "core/auth/useUser";
+import NewAvatar from "@packages/shared/components/AvatarNew";
 
 const BankNotes = (props) => {
 	return (
@@ -211,16 +212,6 @@ const ExploreDropdownLinks = [
 		),
 	},
 	{
-		label: "Farms",
-		link: "/farm",
-		icon: (
-			<FarmIcon
-				width={20}
-				height={20}
-			/>
-		),
-	},
-	{
 		label: "Buy Crypto",
 		link: "/dex/ramp",
 		icon: (
@@ -231,8 +222,8 @@ const ExploreDropdownLinks = [
 		),
 	},
 	{
-		label: "Beta Features",
-		link: "/dex/ramp",
+		label: "NFT Bridge",
+		link: "/dex/bridge",
 		icon: (
 			<BeakerIcon
 				width={20}
@@ -359,13 +350,13 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 									onClose={onCloseUpgradeToCreator}
 								/>
 								<Container className="flex flex-col items-center w-full gap-4 text-center">
-									<Avvvatars
-										value={"something"}
+									<NewAvatar
+										username={profile?.username}
+										imageSrc={profile.profile_pic}
 										size={80}
-										style="shape"
 									/>
 									<Container>
-										<Heading size="xs">{profile?.displayName}</Heading>
+										<Heading size="xs">{profile?.display_name}</Heading>
 										<Text>@{profile?.username}</Text>
 									</Container>
 									<Button

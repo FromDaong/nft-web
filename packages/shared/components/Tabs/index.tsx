@@ -10,7 +10,7 @@ export const TabsContainer = ({children}: ComponentBasicProps) => {
 		<Container
 			css={{borderBottom: "1px solid $subtleBorder"}}
 			variant={"unstyled"}
-			className="flex w-full gap-x-4 flex-start oveflow-x-auto"
+			className="flex w-full gap-x-4 flex-start"
 		>
 			{children}
 		</Container>

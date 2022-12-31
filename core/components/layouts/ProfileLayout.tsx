@@ -441,7 +441,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 
 				<FluidContainer
 					justified
-					className="flex py-8"
+					className="flex py-8 overflow-x-auto"
 				>
 					<TabsContainer>
 						{(ownerOfUserProfile?.creator ? creator_tabs : profile_tabs).map(
