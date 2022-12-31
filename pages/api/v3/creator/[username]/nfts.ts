@@ -40,7 +40,7 @@ export default async function handler(
 	const creatorNFTs = await MongoModelNFT.paginate(
 		{
 			creator: creator._id,
-			subscription_nft: false,
+			$or: [{subscription_nft: false}, {subscription_nft: {$exists: false}}],
 		},
 		options
 	);

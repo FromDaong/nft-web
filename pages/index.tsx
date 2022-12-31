@@ -7,7 +7,6 @@ import SuggestedCreatorCard from "@packages/feed/components/SuggestedCreatorCard
 import Link from "next/link";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
 import {ArrowRightIcon} from "@heroicons/react/outline";
-import TreatOfTheMonthCollectionSection from "@packages/post/CollectionSection";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import TreatCore from "core/TreatCore";
 import axios from "axios";
@@ -15,10 +14,8 @@ import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import DynamicSkeleton from "@packages/skeleton";
 import {
 	FeaturedCreatorSkeleton,
-	HeadingSkeleton,
 	TritPostSkeleton,
 } from "@packages/skeleton/config";
-import {useContext} from "react";
 import {useApplicationTheme} from "@packages/theme/provider";
 
 // TODO: Use intersection observer to change navbar color.

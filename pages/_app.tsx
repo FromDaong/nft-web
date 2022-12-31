@@ -17,7 +17,6 @@ import {ApplicationProvider} from "core/provider";
 import AcceptAgeModal from "@packages/modals/AcceptAgeModal";
 import {Container} from "@packages/shared/components/Container";
 import Footer from "@packages/shared/components/Footer";
-import {useEffect} from "react";
 
 const progress = new ProgressBar({
 	size: 3,

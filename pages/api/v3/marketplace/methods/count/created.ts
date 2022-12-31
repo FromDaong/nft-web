@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 	const collections = await MongoModelNFT.find({
 		creator: creator._id,
-		subscription_nft: false,
+		$or: [{subscription_nft: false}, {subscription_nft: {$exists: false}}],
 	});
 
 	return returnWithSuccess(collections.length, res);

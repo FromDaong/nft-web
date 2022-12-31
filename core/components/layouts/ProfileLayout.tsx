@@ -2,21 +2,15 @@ import {
 	ClipboardCheckIcon,
 	ClipboardCopyIcon,
 	LinkIcon,
-	ShareIcon,
 } from "@heroicons/react/outline";
-import {ChevronDownIcon} from "@heroicons/react/solid";
-import {ProfileDropdown} from "@packages/Dropdowns";
 import {SEOHead} from "@packages/seo/page";
-import NewAvatar, {AvatarGroup} from "@packages/shared/components/AvatarNew";
+import NewAvatar from "@packages/shared/components/AvatarNew";
 import {Button} from "@packages/shared/components/Button";
 import {
 	Container,
 	ContextualContainer,
 	FluidContainer,
 } from "@packages/shared/components/Container";
-import CreatorBadge, {
-	BriefcaseBadge,
-} from "@packages/shared/components/CreatorBadget";
 import {Tab, TabsContainer} from "@packages/shared/components/Tabs";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {
@@ -26,9 +20,7 @@ import {
 	MutedText,
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
-import VerifiedBadge from "@packages/shared/components/VerifiedBadge";
 import {useCopyToClipboard} from "@packages/shared/hooks";
-import ArrowUp from "@packages/shared/icons/ArrowUp";
 import FollowUser from "@packages/shared/icons/FollowUser";
 import {styled} from "@styles/theme";
 import {useUser} from "core/auth/useUser";
@@ -153,7 +145,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 		collectionsCount,
 		ownedNFTsCount,
 		badges,
-		createdNFTsCount,
+		createNFTsCount,
 	] = TreatCore.useQueries({
 		queries: [
 			{
@@ -196,8 +188,8 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 		},*/
 		{
 			label: "Sweetshop",
-			href: "/sweetshop",
-			count: createdNFTsCount.data,
+			href: "/",
+			count: createNFTsCount.data,
 		},
 		/*{
 			label: "Listed",
