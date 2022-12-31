@@ -205,6 +205,16 @@ const ExploreDropdownLinks = [
 		),
 	},
 	{
+		label: "Farm",
+		link: "https://treatdao.com/farms",
+		icon: (
+			<CreditCardIcon
+				width={20}
+				height={20}
+			/>
+		),
+	},
+	{
 		label: "Buy Crypto",
 		link: "/dex/ramp",
 		icon: (
@@ -216,7 +226,27 @@ const ExploreDropdownLinks = [
 	},
 	{
 		label: "NFT Bridge",
-		link: "/dex/bridge",
+		link: "https://treatdao.org/nftbridge",
+		icon: (
+			<BeakerIcon
+				width={20}
+				height={20}
+			/>
+		),
+	},
+	{
+		label: "Exchanges",
+		link: "https://treatdao.org/exchanges",
+		icon: (
+			<BeakerIcon
+				width={20}
+				height={20}
+			/>
+		),
+	},
+	{
+		label: "Magazine",
+		link: "https://treatdao.org/magazine",
 		icon: (
 			<BeakerIcon
 				width={20}
@@ -239,11 +269,8 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 		onOpen: onMenuOpen,
 	} = useDisclosure();
 
-	const {
-		isOpen: upgradeToCreatorIsOpen,
-		onOpen: onOpenUpgradeToCreator,
-		onClose: onCloseUpgradeToCreator,
-	} = useDisclosure();
+	const {isOpen: upgradeToCreatorIsOpen, onClose: onCloseUpgradeToCreator} =
+		useDisclosure();
 
 	useEffect(() => {
 		onMenuClose();
