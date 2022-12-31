@@ -80,6 +80,13 @@ export default function Navbar() {
 								</Link>
 							</div>
 							<div className="items-center hidden gap-8 md:flex">
+								<Link href="https://treatdao.com/farms">
+									<a>
+										<BoldLink className="font-medium">Farm</BoldLink>
+									</a>
+								</Link>
+							</div>
+							<div className="items-center hidden gap-8 md:flex">
 								<Link href="/dex/ramp">
 									<a>
 										<BoldLink className="font-medium">Buy Crypto</BoldLink>
@@ -87,9 +94,16 @@ export default function Navbar() {
 								</Link>
 							</div>
 							<div className="items-center hidden gap-8 md:flex">
-								<Link href="/dex/bridge">
+								<Link href="https://treatdao.org/nftbridge">
 									<a>
 										<BoldLink className="font-medium">NFT Bridge</BoldLink>
+									</a>
+								</Link>
+							</div>
+							<div className="items-center hidden gap-8 md:flex">
+								<Link href="https://treatdao.org/exchanges">
+									<a>
+										<BoldLink className="font-medium">Exchanges</BoldLink>
 									</a>
 								</Link>
 							</div>
