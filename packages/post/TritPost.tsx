@@ -55,7 +55,7 @@ export const TritPost = (props: TritPostProps) => {
 	// T-43 Check if seller === creator , determine if resale or original listing
 
 	const blurred_image = `${props.image.ipfs}?blurhash=true`;
-	const sd_image = `${props.image.ipfs}?q=75`;
+	const sd_image = `${props.image.ipfs}`;
 
 	useEffect(() => {
 		if (props.protected && !isMine) {
@@ -74,38 +74,6 @@ export const TritPost = (props: TritPostProps) => {
 				borderRadius: "12px",
 			}}
 		>
-			{isMine && (
-				<>
-					{!props.isResale && (
-						<>
-							<TransferNFTModal
-								isOpen={transferNFTModalProps.isOpen}
-								onClose={transferNFTModalProps.onClose}
-								nft={props}
-							/>
-							<ListOrderModal
-								isOpen={listNFTModalProps.isOpen}
-								onClose={listNFTModalProps.onClose}
-								nft={props}
-							/>
-						</>
-					)}
-					{(props.isResale || isListedOnResale) && (
-						<CancelOrderModal
-							isOpen={cancelOrderModalProps.isOpen}
-							onClose={cancelOrderModalProps.onClose}
-							nft={props}
-						/>
-					)}
-				</>
-			)}
-			{props.isResale && (
-				<PurchaseResaleNFTModal
-					isOpen={buyResaleNFTModalProps.isOpen}
-					onClose={buyResaleNFTModalProps.onClose}
-					nft={props}
-				/>
-			)}
 			<Link
 				href={`/post/nft/${props._id}${
 					props.seller

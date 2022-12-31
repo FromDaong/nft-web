@@ -11,6 +11,9 @@ export default async function handler(req, res) {
 	const options = {
 		page: get_page,
 		limit: 24,
+		sort: {
+			id: -1,
+		},
 	};
 
 	const nftsAggregate = NFTEvent.aggregate([
