@@ -4,7 +4,9 @@ import {ExpandableSearch} from "@packages/search/ExpandableSearch";
 import {SEOHead} from "@packages/seo/page";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
+import {Input} from "@packages/shared/components/Input";
 import SelectableTag from "@packages/shared/components/Selectabletag";
+import {useDebounce} from "@packages/shared/hooks";
 import DynamicSkeleton from "@packages/skeleton";
 import {TritPostSkeleton} from "@packages/skeleton/config";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
@@ -17,19 +19,23 @@ import {TreatNFTsInfinityScrollingContainer} from "packages/shared/components/Li
 import {useEffect, useMemo, useState} from "react";
 import {useInView} from "react-intersection-observer";
 
-const getSweetshopNFTs = async (page: number, sort: string) => {
+const getSweetshopNFTs = async (page: number, sort: string, search: string) => {
 	const res = await axios.get(
 		`${apiEndpoint}/marketplace/activity?page=${page ?? 1}${
 			sort ? "&sort=" + sort : ""
-		}`
+		}${search ? "&q=" + search : ""}`
 	);
 	return res.data.data;
 };
 
-export default function NFTS(props) {
+export default function NFTS() {
 	const {ref, inView} = useInView();
 	const [sort, setSortBy] = useState<string>("");
 	const router = useRouter();
+	const [searchText, setSearchText] = useState(
+		(router.query.search ?? "") as string
+	);
+	const search = useDebounce(searchText, 400);
 
 	const {
 		data,
@@ -37,9 +43,10 @@ export default function NFTS(props) {
 		fetchNextPage,
 		hasNextPage,
 		isFetching,
+		refetch,
 	} = TreatCore.useInfiniteQuery({
 		queryKey: ["sweetshopNFTsInfinite"],
-		queryFn: ({pageParam = 1}) => getSweetshopNFTs(pageParam, sort),
+		queryFn: ({pageParam = 1}) => getSweetshopNFTs(pageParam, sort, search),
 		getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
 		getPreviousPageParam: (firstPage) => firstPage.prevPage ?? undefined,
 	});
@@ -81,20 +88,25 @@ export default function NFTS(props) {
 	}, [inView]);
 
 	// T-44 Implement search bar for sweetshop NFTs + filters with inspiration form Airbnb
+	useEffect(() => {
+		refetch();
+	}, [search]);
 
 	return (
 		<ApplicationLayout>
 			<ApplicationFrame>
 				<SEOHead title="Explore NFTs" />
 				<Container className="flex flex-col gap-12 py-12">
-					<Container className="flex flex-col">
-						<Container className="px-2 flex flex-col gap-8">
-							<Container className="flex gap-4 justify-center px-2">
-								<ExpandableSearch />
-							</Container>
+					<Container className="w-full px-4 flex">
+						<Container className="max-w-xl w-full">
+							<Input
+								css={{borderRadius: "9999px", width: "100%"}}
+								placeholder={"Search"}
+								onChange={(e) => setSearchText(e.target.value)}
+								value={searchText}
+							/>
 						</Container>
 					</Container>
-
 					<Container className="flex flex-col gap-8 px-4 xl:px-0">
 						<Container className={isFetching ? "opacity-80" : ""}>
 							<TreatNFTsInfinityScrollingContainer>

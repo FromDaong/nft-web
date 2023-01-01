@@ -5,7 +5,9 @@ import NFTEvent from "server/helpers/models/posts/activity";
 export default async function handler(req, res) {
 	await connectMongoDB();
 
-	const {page, market, sort} = req.query;
+	const {page, q, sort} = req.query;
+
+	console.log({q});
 
 	const get_page = Number(page ?? 1) || 1;
 	const options = {
@@ -16,6 +18,18 @@ export default async function handler(req, res) {
 		},
 	};
 
+	const pipeline = [
+		{
+			$search: {
+				index: "nfts",
+				text: {
+					query: "booty",
+					path: ["name", "description"],
+				},
+			},
+		},
+	];
+
 	const nftsAggregate = NFTEvent.aggregate([
 		{
 			$lookup: {
@@ -23,6 +37,7 @@ export default async function handler(req, res) {
 				localField: "id",
 				foreignField: "id",
 				as: "nft",
+				pipeline: q ? pipeline : [],
 			},
 		},
 		{

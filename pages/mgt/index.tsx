@@ -50,7 +50,7 @@ export default function Address(props: {pending_creators: string}) {
 					<Text>
 						Please use this interface only for the purposes of approving a
 						creator. To delete and manage creator applications please use the
-						Dashboard for that.
+						respective dashboard.
 					</Text>
 				</Container>
 				<Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
