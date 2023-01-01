@@ -11,6 +11,7 @@ import {Container} from "@packages/shared/components/Container";
 import {useAccountModal, useConnectModal} from "@rainbow-me/rainbowkit";
 import {
 	ArrowRightIcon,
+	CubeIcon,
 	DotsVerticalIcon,
 	XIcon,
 } from "@heroicons/react/outline";
@@ -24,6 +25,7 @@ import {useUser} from "core/auth/useUser";
 import NewAvatar from "@packages/shared/components/AvatarNew";
 import {useRouter} from "next/router";
 import {useEffect} from "react";
+import {GridIcon, ImageIcon} from "@radix-ui/react-icons";
 
 const BankNotes = (props) => {
 	return (
@@ -208,7 +210,7 @@ const ExploreDropdownLinks = [
 		label: "Farm",
 		link: "https://treatdao.com/farms",
 		icon: (
-			<CreditCardIcon
+			<FarmIcon
 				width={20}
 				height={20}
 			/>
@@ -228,7 +230,7 @@ const ExploreDropdownLinks = [
 		label: "NFT Bridge",
 		link: "https://treatdao.org/nftbridge",
 		icon: (
-			<BeakerIcon
+			<CubeIcon
 				width={20}
 				height={20}
 			/>
@@ -238,7 +240,7 @@ const ExploreDropdownLinks = [
 		label: "Exchanges",
 		link: "https://treatdao.org/exchanges",
 		icon: (
-			<BeakerIcon
+			<GridIcon
 				width={20}
 				height={20}
 			/>
@@ -248,7 +250,7 @@ const ExploreDropdownLinks = [
 		label: "Magazine",
 		link: "https://treatdao.org/magazine",
 		icon: (
-			<BeakerIcon
+			<ImageIcon
 				width={20}
 				height={20}
 			/>
