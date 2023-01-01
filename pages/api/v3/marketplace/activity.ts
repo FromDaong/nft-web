@@ -24,12 +24,6 @@ export default async function handler(req, res) {
 	const options = {
 		page: get_page,
 		limit: 24,
-		sort:
-			sort && sortMap[sort]
-				? sortMap[sort]
-				: {
-						id: -1,
-				  },
 	};
 
 	const pipeline = [
@@ -56,7 +50,11 @@ export default async function handler(req, res) {
 		},
 		{
 			$sort: {
-				createdAt: -1,
+				...(sort && sortMap[sort]
+					? sortMap[sort]
+					: {
+							id: -1,
+					  }),
 			},
 		},
 		{
