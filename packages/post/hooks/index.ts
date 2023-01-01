@@ -353,6 +353,12 @@ export const useContracts = () => {
 		signerOrProvider: signer,
 	});
 
+	const permissionsHelperContract = useContract({
+		addressOrName: contractAddresses.minterPermissionHelper[56],
+		contractInterface: ABI.minterPermissionHelper,
+		signerOrProvider: signer,
+	});
+
 	const treatMinterContract = useContract({
 		addressOrName: contractAddresses.treatNFTMinter[56],
 		contractInterface: ABI.treatMinter,
@@ -377,6 +383,7 @@ export const useContracts = () => {
 		treatMinterContract,
 		creatorMartContract,
 		subscriptionsMart,
+		permissionsHelperContract,
 		signer,
 	};
 };
