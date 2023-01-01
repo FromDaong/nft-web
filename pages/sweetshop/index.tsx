@@ -95,7 +95,7 @@ export default function NFTS() {
 		router.push(
 			{
 				query: {
-					...(sort ? {sort} : {sort: 3}),
+					...(sort ? {sort} : {sort: "3"}),
 					...(search ? {q: search} : {}),
 				},
 			},
@@ -106,7 +106,7 @@ export default function NFTS() {
 		);
 
 		if (!sort) {
-			setSortBy(3);
+			setSortBy("3");
 		}
 	}, [search, sort]);
 
