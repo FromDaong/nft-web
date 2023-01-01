@@ -31,10 +31,10 @@ const getSweetshopNFTs = async (page: number, sort: string, search: string) => {
 
 export default function NFTS() {
 	const {ref, inView} = useInView();
-	const [sort, setSortBy] = useState<string>("");
 	const router = useRouter();
+	const [sort, setSortBy] = useState<string>(router.query.sort as string);
 	const [searchText, setSearchText] = useState(
-		(router.query.search ?? "") as string
+		(router.query.q ?? "") as string
 	);
 	const search = useDebounce(searchText, 400);
 
@@ -91,6 +91,19 @@ export default function NFTS() {
 	// T-44 Implement search bar for sweetshop NFTs + filters with inspiration form Airbnb
 	useEffect(() => {
 		refetch();
+
+		router.push(
+			{
+				query: {
+					...(sort ? {sort} : {sort: 1}),
+					...(search ? {q: search} : {}),
+				},
+			},
+			undefined,
+			{
+				shallow: true,
+			}
+		);
 	}, [search, sort]);
 
 	return (
