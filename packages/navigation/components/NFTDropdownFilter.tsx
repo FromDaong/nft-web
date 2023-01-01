@@ -3,7 +3,7 @@ import {Button} from "@packages/shared/components/Button";
 import {ImportantText, Text} from "@packages/shared/components/Typography/Text";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
-const NFTDropdownSort = ({setSort}) => (
+const NFTDropdownSort = ({setSort, sort}) => (
 	<DropdownMenu.Root>
 		<DropdownMenu.Trigger className="flex">
 			<Button>Sort</Button>
@@ -13,25 +13,37 @@ const NFTDropdownSort = ({setSort}) => (
 				<DropdownMenuItem
 					onClick={() => setSort(1)}
 					className="flex gap-2 px-4 py-2"
+					css={{
+						backgroundColor: Number(sort) === 1 && "$accentText",
+						borderRadius: "16px",
+					}}
 				>
-					<Text>
+					<Text css={{color: Number(sort) === 1 && "$surface !important"}}>
 						<ImportantText>Lowest price first</ImportantText>
 					</Text>
 				</DropdownMenuItem>
 				<DropdownMenuItem
 					onClick={() => setSort(2)}
 					className="flex gap-2 px-4 py-2"
+					css={{
+						backgroundColor: Number(sort) === 2 && "$accentText",
+						borderRadius: "16px",
+					}}
 				>
-					<Text>
+					<Text css={{color: Number(sort) === 2 && "$surface !important"}}>
 						<ImportantText>Highest price first</ImportantText>
 					</Text>
 				</DropdownMenuItem>
 				<DropdownMenuItem
 					onClick={() => setSort(3)}
 					className="flex gap-2 px-4 py-2"
+					css={{
+						backgroundColor: Number(sort) === 3 && "$accentText",
+						borderRadius: "16px",
+					}}
 				>
-					<Text>
-						<ImportantText>Date created</ImportantText>
+					<Text css={{color: Number(sort) === 3 && "$surface !important"}}>
+						<ImportantText>Newest first</ImportantText>
 					</Text>
 				</DropdownMenuItem>
 			</DropdownMenu.Content>

@@ -95,7 +95,7 @@ export default function NFTS() {
 		router.push(
 			{
 				query: {
-					...(sort ? {sort} : {sort: 1}),
+					...(sort ? {sort} : {sort: 3}),
 					...(search ? {q: search} : {}),
 				},
 			},
@@ -104,14 +104,20 @@ export default function NFTS() {
 				shallow: true,
 			}
 		);
+
+		if (!sort) {
+			setSortBy(3);
+		}
 	}, [search, sort]);
+
+	const sortMap = ["Lowest price first", "Highest price first", "Newest first"];
 
 	return (
 		<ApplicationLayout>
 			<ApplicationFrame>
 				<SEOHead title="Explore NFTs" />
 				<Container className="flex flex-col gap-12 py-12">
-					<Container className="w-full px-4 flex items-center gap-4">
+					<Container className="w-full flex-wrap px-4 flex items-center gap-4">
 						<Container className="max-w-xl w-full ">
 							<Input
 								css={{borderRadius: "9999px", width: "100%"}}
@@ -120,7 +126,20 @@ export default function NFTS() {
 								value={searchText}
 							/>
 						</Container>
-						<NFTDropdownSort setSort={setSortBy} />
+						<Container className="flex gap-4 flex-1">
+							<NFTDropdownSort
+								sort={sort}
+								setSort={setSortBy}
+							/>
+							<Container className="h-full flex items-center flex-1 w-full">
+								<Button
+									appearance={"surface"}
+									fullWidth
+								>
+									Showing: {sortMap[Number(sort ?? 3) - 1]}
+								</Button>
+							</Container>
+						</Container>
 					</Container>
 					<Container className="flex flex-col gap-8 px-4 xl:px-0">
 						<Container className={isFetching ? "opacity-80" : ""}>
@@ -128,7 +147,7 @@ export default function NFTS() {
 								{posts.length > 0
 									? posts.map((nft) => (
 											<div
-												key={nft.id}
+												key={nft._id}
 												className="col-span-1"
 											>
 												<TritPost
