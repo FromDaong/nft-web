@@ -1,25 +1,42 @@
-import { BoldLink } from "@packages/shared/components/Typography/Text";
+import {DropdownMenuItem} from "@packages/Dropdowns";
+import {Button} from "@packages/shared/components/Button";
+import {ImportantText, Text} from "@packages/shared/components/Typography/Text";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
-const NFTDropdownSort = () => (
-  <DropdownMenu.Root>
-    <DropdownMenu.Trigger className="w-24 px-4 py-1 text-sm font-medium">
-      <BoldLink>Sort by</BoldLink>
-    </DropdownMenu.Trigger>
-    <DropdownMenu.Portal>
-      <DropdownMenu.Content className="z-30 p-3 shadow-xl gap-y-3 rounded-xl">
-        <DropdownMenu.Item className="px-4 py-2">Newest</DropdownMenu.Item>
-        <DropdownMenu.Item className="px-4 py-2">Oldest</DropdownMenu.Item>
-
-        <DropdownMenu.Item className="px-4 py-2">
-          Price: Lowest first
-        </DropdownMenu.Item>
-        <DropdownMenu.Item className="px-4 py-2">
-          Price: Highest first
-        </DropdownMenu.Item>
-      </DropdownMenu.Content>
-    </DropdownMenu.Portal>
-  </DropdownMenu.Root>
+const NFTDropdownSort = ({setSort}) => (
+	<DropdownMenu.Root>
+		<DropdownMenu.Trigger className="flex">
+			<Button>Sort</Button>
+		</DropdownMenu.Trigger>
+		<DropdownMenu.Portal>
+			<DropdownMenu.Content className="z-30 p-3 transition-all duration-150 bg-white shadow-xl gap-y-3 rounded-xl">
+				<DropdownMenuItem
+					onClick={() => setSort(1)}
+					className="flex gap-2 px-4 py-2"
+				>
+					<Text>
+						<ImportantText>Lowest price first</ImportantText>
+					</Text>
+				</DropdownMenuItem>
+				<DropdownMenuItem
+					onClick={() => setSort(2)}
+					className="flex gap-2 px-4 py-2"
+				>
+					<Text>
+						<ImportantText>Highest price first</ImportantText>
+					</Text>
+				</DropdownMenuItem>
+				<DropdownMenuItem
+					onClick={() => setSort(3)}
+					className="flex gap-2 px-4 py-2"
+				>
+					<Text>
+						<ImportantText>Date created</ImportantText>
+					</Text>
+				</DropdownMenuItem>
+			</DropdownMenu.Content>
+		</DropdownMenu.Portal>
+	</DropdownMenu.Root>
 );
 
 export default NFTDropdownSort;

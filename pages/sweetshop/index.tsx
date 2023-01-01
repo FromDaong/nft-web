@@ -1,4 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import NFTDropdownSort from "@packages/navigation/components/NFTDropdownFilter";
 import {TritPost} from "@packages/post/TritPost";
 import {ExpandableSearch} from "@packages/search/ExpandableSearch";
 import {SEOHead} from "@packages/seo/page";
@@ -90,15 +91,15 @@ export default function NFTS() {
 	// T-44 Implement search bar for sweetshop NFTs + filters with inspiration form Airbnb
 	useEffect(() => {
 		refetch();
-	}, [search]);
+	}, [search, sort]);
 
 	return (
 		<ApplicationLayout>
 			<ApplicationFrame>
 				<SEOHead title="Explore NFTs" />
 				<Container className="flex flex-col gap-12 py-12">
-					<Container className="w-full px-4 flex">
-						<Container className="max-w-xl w-full">
+					<Container className="w-full px-4 flex items-center gap-4">
+						<Container className="max-w-xl w-full ">
 							<Input
 								css={{borderRadius: "9999px", width: "100%"}}
 								placeholder={"Search"}
@@ -106,6 +107,7 @@ export default function NFTS() {
 								value={searchText}
 							/>
 						</Container>
+						<NFTDropdownSort setSort={setSortBy} />
 					</Container>
 					<Container className="flex flex-col gap-8 px-4 xl:px-0">
 						<Container className={isFetching ? "opacity-80" : ""}>

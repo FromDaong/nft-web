@@ -7,10 +7,6 @@ import {EyeOffIcon} from "@heroicons/react/outline";
 import {PostMediaContent} from "./PostMediaContent";
 import {styled} from "@styles/theme";
 import {useTritNFTUtils} from "./hooks";
-import TransferNFTModal from "@packages/modals/TransferNFTModal";
-import CancelOrderModal from "@packages/modals/CancelOrderModal";
-import ListOrderModal from "@packages/modals/ListOrderModal";
-import PurchaseResaleNFTModal from "@packages/modals/PurchaseResaleNFTModal";
 import {ActionSection} from "./UtilityComponents";
 import {useEffect, useState} from "react";
 
