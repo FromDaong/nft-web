@@ -16,7 +16,7 @@ export default async function handler(req, res) {
 			price: -1,
 		},
 		"3": {
-			id: -1,
+			createdAt: -1,
 		},
 	};
 

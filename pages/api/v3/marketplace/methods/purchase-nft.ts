@@ -35,38 +35,31 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
 	const nft = await MongoModelNFT.findOne({
 		id: payload.nftId,
-	});
-
-	const tx = new MongoModelTransaction({
-		txHash: payload.txHash,
-		metadata: {
-			nftId: payload.nftId,
-			balanceSender: profile.address.toLowerCase(),
-			balanceReceiver: payload.seller.toLowerCase(),
-		},
-		type: "nft_purchase",
-		amount: payload.price,
-		timestamp: payload.timestamp,
-	});
+	}).populate("creator");
 
 	const event = new MongoModelTimelineEvent({
 		profile: profile._id,
 		action: {
 			verb: ["purchased NFT ", `$1`, `for ${payload.price} from`, `$2`],
-			subjects: [nft.name, payload.seller.toLowerCase()],
+			subjects: [
+				nft.name,
+				payload.seller ? payload.seller.toLowerCase() : nft.creator.address,
+			],
 		},
 	});
 
 	if (payload.remaining === 0) {
 		await MongoModelEvent.findOneAndDelete({
 			id: payload.nftId,
-			seller: payload.seller.toLowerCase(),
+			seller: payload.seller
+				? payload.seller.toLowerCase()
+				: nft.creator.address,
 		});
 	}
 
-	await Promise.all([tx.save(), event.save()]);
+	await Promise.all([event.save()]);
 
-	return returnWithSuccess(tx, res);
+	return returnWithSuccess(event, res);
 }
 
 export default protectedAPIRoute(handler);

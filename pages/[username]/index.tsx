@@ -15,8 +15,8 @@ export default function UserProfile(props: {
 	notFound: boolean;
 	data: any;
 }) {
-	const {data: session, status} = useSession();
-	const data = JSON.parse(props.data);
+	const {data: session} = useSession();
+	const data = props.data ? JSON.parse(props.data) : {};
 	const {username} = data;
 	const {profile} = (session as any) ?? {profile: {}};
 	const {ref, inView} = useInView();

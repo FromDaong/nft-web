@@ -53,6 +53,15 @@ export const useTritNFTUtils = (nft: any) => {
 		setIsProtected(!isProtected);
 	};
 
+	const getOpenOrdersForSeller = async (address) => {
+		const data = await axios.get(
+			`${apiEndpoint}/marketplace/methods/open-orders-for-seller?address=${address}`
+		);
+		const orders = data.data.data;
+
+		return !!orders.find((order) => order.nftId === nft.id);
+	};
+
 	const {isOwned, balance} = useGetIsNFTOwned(nft);
 
 	return {
@@ -66,6 +75,7 @@ export const useTritNFTUtils = (nft: any) => {
 		isMine: isOwned,
 		balance,
 		toggleImageProtection,
+		getOpenOrdersForSeller,
 		isProtected,
 		likedBy,
 	};
@@ -110,7 +120,7 @@ export const useListOrder = () => {
 	});
 
 	const listOrder = useCallback(
-		async (to, id, price, quantity) => {
+		async (id, price, quantity) => {
 			const priceBn = BigNumber.isBigNumber(price)
 				? price
 				: BigNumber.from(price);
@@ -118,7 +128,7 @@ export const useListOrder = () => {
 			return treatMarketplaceContract.listOrder(
 				id,
 				quantity,
-				`0x${priceBn.toString()}`,
+				`${priceBn.toHexString()}`,
 				2147483647,
 				{
 					from: address,
@@ -129,6 +139,28 @@ export const useListOrder = () => {
 	);
 
 	return {listOrder};
+};
+
+export const useRemoveOrder = () => {
+	const {data: signer} = useSigner();
+	const {address} = useAccount();
+
+	const treatMarketplaceContract = useContract({
+		addressOrName: contractAddresses.treatMarketplace[56],
+		contractInterface: ABI.treatMarketplace,
+		signerOrProvider: signer,
+	});
+
+	const removeOrder = useCallback(
+		async (id) => {
+			return treatMarketplaceContract.cancelOrder(id, address, {
+				from: address,
+			});
+		},
+		[address, treatMarketplaceContract]
+	);
+
+	return {removeOrder};
 };
 
 export const useApproveMarketplace = () => {

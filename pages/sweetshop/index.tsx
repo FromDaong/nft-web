@@ -131,7 +131,7 @@ export default function NFTS() {
 								sort={sort}
 								setSort={setSortBy}
 							/>
-							<Container className="h-full flex items-center flex-1 w-full">
+							<Container className="h-full flex items-center">
 								<Button
 									appearance={"surface"}
 									fullWidth

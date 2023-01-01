@@ -16,7 +16,7 @@ export default async function handler(req, res) {
 	const nftsAggregate = NFTEvent.aggregate([
 		{
 			$match: {
-				seller,
+				seller: seller.toLowerCase(),
 			},
 		},
 		{

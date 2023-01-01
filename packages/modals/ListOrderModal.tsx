@@ -17,8 +17,12 @@ import {
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
 import Spinner from "@packages/shared/icons/Spinner";
+import {apiEndpoint} from "@utils/index";
+import axios from "axios";
 import {BigNumber, ethers} from "ethers";
+import {useRouter} from "next/router";
 import {useState} from "react";
+import {useAccount, useWaitForTransaction} from "wagmi";
 import Web3 from "web3";
 import GenericChainModal from "./GenericChainModal";
 
@@ -27,15 +31,14 @@ export default function ListOrderModal(props: {
 	isOpen: any;
 	nft: TritPostProps;
 }) {
+	const router = useRouter();
+	const {address} = useAccount();
 	const {isOpen, onOpen, onClose} = useDisclosure();
-	const [approveLoading, setApproveLoading] = useState(false);
 	const [listOrderPending, setListOrderPending] = useState(false);
 	const [listOrderSuccess, setListOrderSuccess] = useState(false);
 	const [listOrderError, setListOrderError] = useState(false);
 	const [listPrice, setListPrice] = useState(0);
 	const [listQuantity, setListQuantity] = useState(1);
-	const maxUnixTimestamp = 2147483647;
-	const [listExpires] = useState(maxUnixTimestamp);
 
 	const [isApproved, isApprovedLoading] = useGetMinterIsApprovedForAll();
 
@@ -43,6 +46,10 @@ export default function ListOrderModal(props: {
 	const openOrders = useGetResaleOrders(props.nft.id) ?? [];
 	const balance = useGetRemainingOrderBalance(props.nft.id);
 
+	const [approveTx, setApproveTx] = useState<any>(null);
+	const {isLoading: isApprovalLoading} = useWaitForTransaction({
+		hash: approveTx,
+	});
 	const {approveMarketplace} = useApproveMarketplace();
 
 	const lowestOpenOrder = BigNumber.from(
@@ -57,9 +64,10 @@ export default function ListOrderModal(props: {
 	}
 
 	const approveAction = () => {
-		setApproveLoading(true);
 		approveMarketplace()
-			.then(() => setApproveLoading(false))
+			.then((res) => {
+				setApproveTx(res.hash);
+			})
 			.then(() => onClose())
 			.catch((err) => {
 				console.log({err});
@@ -67,12 +75,20 @@ export default function ListOrderModal(props: {
 	};
 
 	const listOrderAction = async () => {
+		setListOrderPending(true);
+
 		listOrder(
 			props.nft.id,
-			listQuantity,
 			Web3.utils.toWei(listPrice.toString()),
-			listExpires ?? maxUnixTimestamp
+			listQuantity
 		)
+			.then(() => {
+				return axios.post(`${apiEndpoint}/marketplace/methods/add-new-event`, {
+					id: props.nft.id,
+					price: listPrice.toString(),
+					seller: address,
+				});
+			})
 			.then(() => {
 				setListOrderPending(false);
 				setListOrderSuccess(true);
@@ -86,23 +102,26 @@ export default function ListOrderModal(props: {
 
 	return (
 		<>
-			<GenericChainModal
-				isOpen={!isApproved}
-				title={"Approve the Treat Marketplace"}
-				subtitle={
-					"In order to use the Treat resale marketplace, you must approve our smart contract on your wallet. The smart contract code is publicly available to view. Once complete, wait a few minutes for the transaction to confirm."
-				}
-				buttonLabel={"Approve in Wallet"}
-				action={approveAction}
-				onClose={() => {
-					onClose();
-					props.onClose();
-				}}
-				loading={approveLoading}
-			/>
+			{!isApprovalLoading ||
+				(isApprovedLoading && (
+					<GenericChainModal
+						isOpen={!isApproved}
+						title={"Approve the Treat Marketplace"}
+						subtitle={
+							"In order to use the Treat resale marketplace, you must approve our smart contract on your wallet. The smart contract code is publicly available to view. Once complete, wait a few minutes for the transaction to confirm."
+						}
+						buttonLabel={"Approve in Wallet"}
+						action={approveAction}
+						onClose={() => {
+							onClose();
+							props.onClose();
+						}}
+						loading={isApprovalLoading}
+					/>
+				))}
 
 			<GenericChainModal
-				isOpen={isApprovedLoading}
+				isOpen={isApprovalLoading || isApprovedLoading}
 				noTitle
 				subtitle={
 					<Container className="flex flex-col items-center gap-4">
@@ -150,11 +169,11 @@ export default function ListOrderModal(props: {
 				buttonLabel="Close"
 				action={() => {
 					onClose();
-					props.onClose();
+					router.reload();
 				}}
 				onClose={() => {
 					onClose();
-					props.onClose();
+					router.reload();
 				}}
 			/>
 
@@ -253,7 +272,6 @@ export default function ListOrderModal(props: {
 											{listOrderPending ? (
 												<>
 													<Spinner />
-													<span>Submit</span>
 												</>
 											) : (
 												"List order"

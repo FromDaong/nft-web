@@ -1,9 +1,8 @@
 import {DropdownMenuItem} from "@packages/Dropdowns";
 import {useDisclosure} from "@packages/hooks";
 import ListOrderModal from "@packages/modals/ListOrderModal";
-import TransferNFTModal from "@packages/modals/TransferNFTModal";
+import RemoveListingModal from "@packages/modals/RemoveListingModal";
 import {Button} from "@packages/shared/components/Button";
-import {Container} from "@packages/shared/components/Container";
 import {ImportantText, Text} from "@packages/shared/components/Typography/Text";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import {DotsHorizontalIcon} from "@radix-ui/react-icons";
@@ -11,18 +10,18 @@ import {DotsHorizontalIcon} from "@radix-ui/react-icons";
 export default function MoreActionsButton({
 	nft,
 	seller,
-	event,
+	hasOpenOrders,
 	address,
 }: {
 	nft: any;
 	seller?: any;
-	event?: any;
+	hasOpenOrders?: boolean;
 	address?: any;
 }) {
 	const {
-		onOpen: onOpenTransferModal,
-		onClose: onCloseTransferModal,
-		isOpen: isTransferModalOpen,
+		onOpen: onOpenRemoveModal,
+		onClose: onCloseRemoveModal,
+		isOpen: isRemoveModalOpen,
 	} = useDisclosure();
 
 	const {
@@ -33,15 +32,18 @@ export default function MoreActionsButton({
 
 	return (
 		<>
-			<TransferNFTModal
-				isOpen={isTransferModalOpen}
-				onClose={onCloseTransferModal}
-				nft={nft}
-			/>
 			{isListOrderModalOpen && (
 				<ListOrderModal
 					isOpen={isListOrderModalOpen}
 					onClose={onCloseListOrderModal}
+					nft={nft}
+				/>
+			)}
+
+			{isRemoveModalOpen && (
+				<RemoveListingModal
+					isOpen={isRemoveModalOpen}
+					onClose={onCloseRemoveModal}
 					nft={nft}
 				/>
 			)}
@@ -57,17 +59,7 @@ export default function MoreActionsButton({
 				</DropdownMenu.Trigger>
 				<DropdownMenu.Portal>
 					<DropdownMenu.Content className="z-30 p-3 transition-all duration-150 bg-white shadow-xl gap-y-3 rounded-xl">
-						{seller?.address !== address && (
-							<DropdownMenuItem
-								onClick={onOpenTransferModal}
-								className="flex gap-2 px-4 py-2"
-							>
-								<Text>
-									<ImportantText>Transfer to address</ImportantText>
-								</Text>
-							</DropdownMenuItem>
-						)}
-						{seller?.address !== address && (
+						{!hasOpenOrders && seller?.address !== address && (
 							<DropdownMenuItem
 								onClick={onOpenListOrderModal}
 								className="flex gap-2 px-4 py-2"
@@ -77,8 +69,11 @@ export default function MoreActionsButton({
 								</Text>
 							</DropdownMenuItem>
 						)}
-						{seller?.address === address && (
-							<DropdownMenuItem className="flex gap-2 px-4 py-2">
+						{hasOpenOrders && (
+							<DropdownMenuItem
+								onClick={onOpenRemoveModal}
+								className="flex gap-2 px-4 py-2"
+							>
 								<Text>
 									<ImportantText>Remove my listing</ImportantText>
 								</Text>

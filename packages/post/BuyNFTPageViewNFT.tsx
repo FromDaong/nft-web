@@ -26,6 +26,7 @@ import {
 } from "@radix-ui/react-icons";
 import UserAvatar from "core/auth/components/Avatar";
 import Link from "next/link";
+import {useEffect, useState} from "react";
 import MoreActionsButton from "./MoreActionsButton";
 
 const NFTPresentationComponent = (props: {
@@ -49,6 +50,7 @@ const NFTPresentationComponent = (props: {
 	const {cost: treatCost} = useWagmiGetTreatOfTheMonthNftCost(nft.id);
 	const {cost: subscriptionCost} = useWagmiGetSubscriberNftCost(nft.id);
 	const [, copy] = useCopyToClipboard();
+	const [hasOpenOrders, setHasOpenOrders] = useState(false);
 
 	let nftCost: any = nft.subscription_nft ? subscriptionCost : creatorCost;
 	nftCost = nft.totm_nft ? treatCost : nftCost;
@@ -62,8 +64,15 @@ const NFTPresentationComponent = (props: {
 		copy(`${baseDomain}/post/nft/${nft._id}`);
 	};
 
-	const remainingNfts = maxNftSupply - mintedNfts;
+	useEffect(() => {
+		if (props.address) {
+			postUtils
+				.getOpenOrdersForSeller(props.address)
+				.then((hasOpenOrders) => setHasOpenOrders(hasOpenOrders));
+		}
+	}, [props.address]);
 
+	const remainingNfts = maxNftSupply - mintedNfts;
 	const isOwned = props.isOwned;
 	const numberOfNFTsOwned = props.balance;
 
@@ -73,7 +82,7 @@ const NFTPresentationComponent = (props: {
 		<>
 			<Container className="grid grid-cols-1 gap-12 lg:grid-cols-3">
 				<Container className="grid flex-col grid-cols-2 gap-12 py-8 lg:col-span-2 lg:flex">
-					<Container className="flex col-span-2 gap-4 bottom-4 right-4">
+					<Container className="flex flex-wrap col-span-2 gap-4 bottom-4 right-4">
 						{props.address && (
 							<Button
 								appearance={"surface"}
@@ -133,8 +142,8 @@ const NFTPresentationComponent = (props: {
 							<MoreActionsButton
 								nft={props.nft}
 								seller={props.seller}
-								event={props.event}
 								address={props.address}
+								hasOpenOrders={hasOpenOrders}
 							/>
 						)}
 					</Container>
@@ -246,7 +255,16 @@ const NFTPresentationComponent = (props: {
 										</MutedText>
 									)}
 								</Container>
-								{!(props.address === props.seller) &&
+								{hasOpenOrders && (
+									<Text
+										className="w-full"
+										css={{color: "$accentText"}}
+									>
+										You have listed your NFT for resale
+									</Text>
+								)}
+								{!hasOpenOrders &&
+									!(props.address === props.seller) &&
 									!(
 										props.nft.creator.profile.address.toLowerCase() ===
 										props.address?.toLowerCase()
