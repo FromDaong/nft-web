@@ -31,7 +31,7 @@ export default async function handler(req, res) {
 			$search: {
 				index: "nfts",
 				text: {
-					query: "booty",
+					query: `${q}`,
 					path: ["name", "description"],
 				},
 			},

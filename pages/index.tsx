@@ -116,7 +116,9 @@ export default function Index() {
 			<Container className="flex flex-col gap-12 px-2 md:gap-16 lg:gap-24">
 				<Container className="py-12 min-h-[50vh] items-center justify-center flex">
 					<Container className="flex flex-col gap-8 items-center max-w-xl text-center">
-						<Heading>Spicy content. Directly from the Creators</Heading>
+						<Heading size="md">
+							Spicy content. Directly from the Creators
+						</Heading>
 						<Text>
 							Treat is an open platform for creators to curate their adult
 							content as NFTs. Hold the $TREAT token to have a say in the future
@@ -317,12 +319,26 @@ export default function Index() {
 				<Divider dir={"horizontal"} />
 				<Container>
 					<Container className="flex flex-col w-full gap-8 px-4 xl:px-0">
-						<Container className="flex flex-col gap-2">
-							<Heading size="sm">Discover Treat creators</Heading>
-							<Text>
-								Meet our content creators, giving you your daily dose of spicy
-								content.
-							</Text>
+						<Container className="flex flex-col gap-4">
+							<Container className="flex flex-col gap-2">
+								<Heading size="sm">Discover Treat creators</Heading>
+								<Text>
+									Meet our content creators, giving you your daily dose of spicy
+									content.
+								</Text>
+							</Container>
+
+							<Link href={"/creators"}>
+								<a>
+									<Button appearance={"surface"}>
+										<ImportantText>View more creators</ImportantText>
+										<ArrowRightIcon
+											width={16}
+											height={16}
+										/>
+									</Button>
+								</a>
+							</Link>
 						</Container>
 						<Container className="grid grid-cols-1 gap-8 md:grid-cols-2  xl:grid-cols-4">
 							{!trendingCreatorError && !trendingCreatorsLoading
