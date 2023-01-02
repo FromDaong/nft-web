@@ -1,5 +1,7 @@
 import Link from "next/link";
-import * as Logo from "../../public/brand/logo_mono.svg";
+import * as LightLogo from "../../public/brand/logo_mono.svg";
+import * as DarkLogo from "../../public/brand/logo_white.svg";
+
 import Image from "next/image";
 import {useAccount} from "wagmi";
 import dynamic from "next/dynamic";
@@ -14,12 +16,10 @@ import {Button} from "@packages/shared/components/Button";
 import {useSession} from "next-auth/react";
 import Spinner from "@packages/shared/icons/Spinner";
 import {ConnectButton} from "@rainbow-me/rainbowkit";
+import {useApplicationTheme} from "@packages/theme/provider";
 
 const NavbarProfileAvatar = dynamic(
 	() => import("./components/NavbarProfileAvatar")
-);
-const NavbarActionDropdown = dynamic(
-	() => import("./components/NavbarActionDropdown")
 );
 
 const Nav = styled("nav", {
@@ -27,26 +27,8 @@ const Nav = styled("nav", {
 	zIndex: 30,
 });
 
-const NotificationsIcon = (props) => {
-	return (
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			fill="none"
-			viewBox="0 0 24 24"
-			strokeWidth={1.5}
-			stroke="currentColor"
-			{...props}
-		>
-			<path
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0M3.124 7.5A8.969 8.969 0 015.292 3m13.416 0a8.969 8.969 0 012.168 4.5"
-			/>
-		</svg>
-	);
-};
-
 export default function Navbar() {
+	const {theme} = useApplicationTheme();
 	const {status, data} = useSession();
 	const {isConnected: connected} = useAccount();
 	const isConnected = status === "authenticated" && connected;
@@ -64,7 +46,7 @@ export default function Navbar() {
 							<Link href={isConnected ? "/" : "/"}>
 								<a className="relative w-8 h-8 text-3xl font-medium">
 									<Image
-										src={Logo}
+										src={theme === "dark" ? DarkLogo : LightLogo}
 										alt="Logo"
 										layout="fill"
 										className="w-12 h-12"
@@ -80,19 +62,20 @@ export default function Navbar() {
 								</Link>
 							</div>
 							<div className="items-center hidden gap-8 md:flex">
+								<Link href="https://treatdao.org/magazine">
+									<a>
+										<BoldLink className="font-medium">Magazine</BoldLink>
+									</a>
+								</Link>
+							</div>
+							<div className="items-center hidden gap-8 md:flex">
 								<Link href="https://treatdao.com/farms">
 									<a>
 										<BoldLink className="font-medium">Farm</BoldLink>
 									</a>
 								</Link>
 							</div>
-							<div className="items-center hidden gap-8 md:flex">
-								<Link href="/dex/ramp">
-									<a>
-										<BoldLink className="font-medium">Buy Crypto</BoldLink>
-									</a>
-								</Link>
-							</div>
+
 							<div className="items-center hidden gap-8 md:flex">
 								<Link href="https://treatdao.org/nftbridge">
 									<a>
@@ -101,16 +84,9 @@ export default function Navbar() {
 								</Link>
 							</div>
 							<div className="items-center hidden gap-8 md:flex">
-								<Link href="https://treatdao.org/exchanges">
+								<Link href="/dex/ramp">
 									<a>
-										<BoldLink className="font-medium">Exchanges</BoldLink>
-									</a>
-								</Link>
-							</div>
-							<div className="items-center hidden gap-8 md:flex">
-								<Link href="https://treatdao.org/magazine">
-									<a>
-										<BoldLink className="font-medium">Magazine</BoldLink>
+										<BoldLink className="font-medium">Buy Crypto</BoldLink>
 									</a>
 								</Link>
 							</div>
@@ -155,7 +131,7 @@ export default function Navbar() {
 															width={18}
 															height={18}
 														/>
-														<span>Create post</span>
+														<span>Create NFT</span>
 													</Button>
 												</a>
 											</Link>
@@ -176,7 +152,7 @@ export default function Navbar() {
 						<Link href={isConnected ? "/" : "/"}>
 							<a className="relative w-8 h-8 text-3xl font-medium">
 								<Image
-									src={Logo}
+									src={LightLogo}
 									alt="Logo"
 									layout="fill"
 									className="w-16 h-16"

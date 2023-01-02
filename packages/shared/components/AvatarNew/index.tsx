@@ -1,6 +1,7 @@
 import React from "react";
 import {Image, Fallback, Root} from "@radix-ui/react-avatar";
 import {styled} from "@styles/theme";
+import Avvvatars from "avvvatars-react";
 
 const AvatarRoot = styled(Root, {
 	display: "inline-flex",
@@ -61,7 +62,10 @@ export default function NewAvatar(props: AvatarProps) {
 				className="AvatarFallback"
 				delayMs={600}
 			>
-				CT
+				<Avvvatars
+					size={props.size}
+					value={props.username}
+				/>
 			</AvatarFallback>
 		</AvatarRoot>
 	);

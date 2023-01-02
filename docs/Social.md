@@ -83,7 +83,7 @@ When user requests home or user timeline, the timeline services queries Redis an
 
 ## Write Journey
 
-- Create post with Trit Service
+- Create NFT with Trit Service
 - Store media in Object Storage
 - Write to chain with Chain Service and store in Redis CacheUser Timeline
 - Trit Service sends post to Fanout Service

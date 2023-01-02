@@ -1,7 +1,7 @@
 import Image from "next/future/image";
 
 const gumletLoader = ({src}) => {
-	return `https://treatnfts.gumlet.io${src}`;
+	return `${src}`;
 };
 
 type OptimizedImageProps = {

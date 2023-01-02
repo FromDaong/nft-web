@@ -27,18 +27,8 @@ export const FrostyBackgroundContainer = styled(Container, {
 });
 
 export const TritPost = (props: TritPostProps) => {
-	const {
-		liked,
-		likeNFT,
-		isListedOnResale,
-		listNFTModalProps,
-		transferNFTModalProps,
-		cancelOrderModalProps,
-		buyResaleNFTModalProps,
-		isMine,
-		isProtected,
-		toggleImageProtection,
-	} = useTritNFTUtils(props);
+	const {liked, likeNFT, isMine, isProtected, toggleImageProtection} =
+		useTritNFTUtils(props);
 
 	const [imageURL, setImageURL] = useState("");
 

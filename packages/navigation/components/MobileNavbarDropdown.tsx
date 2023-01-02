@@ -207,6 +207,16 @@ const ExploreDropdownLinks = [
 		),
 	},
 	{
+		label: "Magazine",
+		link: "https://treatdao.org/magazine",
+		icon: (
+			<ImageIcon
+				width={20}
+				height={20}
+			/>
+		),
+	},
+	{
 		label: "Farm",
 		link: "https://treatdao.com/farms",
 		icon: (
@@ -216,16 +226,7 @@ const ExploreDropdownLinks = [
 			/>
 		),
 	},
-	{
-		label: "Buy Crypto",
-		link: "/dex/ramp",
-		icon: (
-			<CreditCardIcon
-				width={20}
-				height={20}
-			/>
-		),
-	},
+
 	{
 		label: "NFT Bridge",
 		link: "https://treatdao.org/nftbridge",
@@ -237,20 +238,10 @@ const ExploreDropdownLinks = [
 		),
 	},
 	{
-		label: "Exchanges",
-		link: "https://treatdao.org/exchanges",
+		label: "Buy Crypto",
+		link: "/dex/ramp",
 		icon: (
-			<GridIcon
-				width={20}
-				height={20}
-			/>
-		),
-	},
-	{
-		label: "Magazine",
-		link: "https://treatdao.org/magazine",
-		icon: (
-			<ImageIcon
+			<CreditCardIcon
 				width={20}
 				height={20}
 			/>

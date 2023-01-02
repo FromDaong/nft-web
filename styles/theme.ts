@@ -115,7 +115,7 @@ export const darkTheme = createTheme("dark", {
 		overlayContrast: "#606060eb",
 		accentBase: "$purple1",
 		accentBgSubtle: "$purple2",
-		accentBg: "$purple3",
+		accentBg: "$purple1",
 		accentBgHover: "$purple4",
 		accentBgActive: "$purple5",
 		accentLine: "$purple6",
@@ -318,7 +318,7 @@ export const ogPinkTheme = createTheme("pink", {
 
 		accentBase: "$purple1",
 		accentBgSubtle: "$purple2",
-		accentBg: "$purple3",
+		accentBg: "$purple1",
 		accentBgHover: "$purple4",
 		accentBgActive: "$purple5",
 		accentLine: "$purple6",

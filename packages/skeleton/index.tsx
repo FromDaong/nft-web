@@ -1,10 +1,11 @@
+import {Container} from "@packages/shared/components/Container";
 import {SkeletonRow} from "./types";
 
 const recursiveRender = (row) => {
 	return (
-		<div
+		<Container
 			key={row}
-			style={{
+			css={{
 				height: `${row.height ? `${row.height * 21}px` : "auto"}`,
 				display: "grid",
 				gridTemplateColumns: `repeat(${row.repeat ?? 4}, minmax(0, 1fr))`,
@@ -12,9 +13,9 @@ const recursiveRender = (row) => {
 			}}
 		>
 			{row.columns.map((col, i) => (
-				<div
+				<Container
 					key={i}
-					style={{
+					css={{
 						height: "calc(100% -8px)px",
 						gridColumn: `${col.start} / span ${col.length}`,
 						backgroundColor:
@@ -23,35 +24,35 @@ const recursiveRender = (row) => {
 							col.type === "gutter" ||
 							col.rows
 								? "transparent"
-								: "#f1f1f1",
+								: "$elementOnSurface",
 						borderRadius: `${col.radius}px`,
 						gap: "6px",
 					}}
 				>
 					{col.rows && col.rows.map(recursiveRender)}
 					{(col.type === "circle" || col.type === "square") && (
-						<div
-							style={{
+						<Container
+							css={{
 								height: `${
 									row.height ? `${row.height * 21}px` : `${col.size}px`
 								}`,
 								width: `${
 									row.height ? `${row.height * 21}px` : `${col.size}px`
 								}`,
-								backgroundColor: "#f1f1f1",
+								backgroundColor: "$elementOnSurface",
 								borderRadius: `${col.radius}px`,
 							}}
 						/>
 					)}
-				</div>
+				</Container>
 			))}
-		</div>
+		</Container>
 	);
 };
 
 export default function DynamicSkeleton(props: {config: Array<SkeletonRow>}) {
 	return (
-		<div
+		<Container
 			style={{
 				display: "flex",
 				gap: "8px",
@@ -60,6 +61,6 @@ export default function DynamicSkeleton(props: {config: Array<SkeletonRow>}) {
 			}}
 		>
 			{props.config.map((row) => recursiveRender(row))}
-		</div>
+		</Container>
 	);
 }

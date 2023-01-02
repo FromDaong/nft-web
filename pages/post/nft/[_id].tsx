@@ -130,8 +130,6 @@ export default function NFT(props: {
 	const isResale =
 		event && event.seller.toLowerCase() !== nft.creator.address.toLowerCase();
 
-	console.log({isResale, event, nft});
-
 	return (
 		<>
 			<Container

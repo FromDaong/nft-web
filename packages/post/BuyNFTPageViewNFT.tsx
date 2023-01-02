@@ -127,18 +127,6 @@ const NFTPresentationComponent = (props: {
 							</Button>
 						)}
 						{isOwned && (
-							<Button
-								onClick={props.loadHD}
-								appearance={"surface"}
-							>
-								<ImageIcon
-									width={16}
-									height={16}
-								/>
-								Load HD
-							</Button>
-						)}
-						{isOwned && (
 							<MoreActionsButton
 								nft={props.nft}
 								seller={props.seller}
