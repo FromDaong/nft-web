@@ -120,7 +120,7 @@ export default function NFTS() {
 					<Container className="w-full flex-wrap px-4 flex items-center gap-4">
 						<Container className="max-w-xl w-full ">
 							<Input
-								css={{borderRadius: "9999px", width: "100%"}}
+								css={{width: "100%", padding: "8px 12px", borderRadius: "8px"}}
 								placeholder={"Search"}
 								onChange={(e) => setSearchText(e.target.value)}
 								value={searchText}

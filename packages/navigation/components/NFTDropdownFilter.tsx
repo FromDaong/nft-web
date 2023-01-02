@@ -18,7 +18,14 @@ const NFTDropdownSort = ({setSort, sort}) => (
 						borderRadius: "16px",
 					}}
 				>
-					<Text css={{color: Number(sort) === 1 && "$surface !important"}}>
+					<Text
+						css={{
+							color: Number(sort) === 1 && "$surface",
+							"&hover": {
+								color: "$textContrast",
+							},
+						}}
+					>
 						<ImportantText>Lowest price first</ImportantText>
 					</Text>
 				</DropdownMenuItem>
@@ -30,7 +37,14 @@ const NFTDropdownSort = ({setSort, sort}) => (
 						borderRadius: "16px",
 					}}
 				>
-					<Text css={{color: Number(sort) === 2 && "$surface !important"}}>
+					<Text
+						css={{
+							color: Number(sort) === 2 && "$surface ",
+							"&hover": {
+								color: "$textContrast",
+							},
+						}}
+					>
 						<ImportantText>Highest price first</ImportantText>
 					</Text>
 				</DropdownMenuItem>
@@ -42,7 +56,14 @@ const NFTDropdownSort = ({setSort, sort}) => (
 						borderRadius: "16px",
 					}}
 				>
-					<Text css={{color: Number(sort) === 3 && "$surface !important"}}>
+					<Text
+						css={{
+							color: Number(sort) === 3 && "$surface ",
+							"&hover": {
+								color: "$textContrast",
+							},
+						}}
+					>
 						<ImportantText>Newest first</ImportantText>
 					</Text>
 				</DropdownMenuItem>

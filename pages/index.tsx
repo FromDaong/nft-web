@@ -208,7 +208,6 @@ export default function Index() {
 											padding: "12px",
 											borderRadius: "8px",
 										}}
-										className="shadow"
 									>
 										<Text css={{color: "$surface !important"}}>
 											<MoonIcon
@@ -238,7 +237,6 @@ export default function Index() {
 											padding: "12px",
 											borderRadius: "8px",
 										}}
-										className="shadow"
 									>
 										<Text css={{color: "$surface !important"}}>
 											<FilmIcon
@@ -268,7 +266,6 @@ export default function Index() {
 											padding: "12px",
 											borderRadius: "8px",
 										}}
-										className="shadow"
 									>
 										<Text css={{color: "$surface !important"}}>
 											<PresentationChartLineIcon
@@ -298,7 +295,6 @@ export default function Index() {
 											padding: "12px",
 											borderRadius: "8px",
 										}}
-										className="shadow"
 									>
 										<Text css={{color: "$surface !important"}}>
 											<MixerVerticalIcon

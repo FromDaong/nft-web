@@ -11,6 +11,7 @@ export const DropdownMenuItem = styled(DropdownMenu.Item, {
 		backgroundColor: "$elementOnSurface",
 		cursor: "pointer",
 		borderRadius: "15px",
+		color: "$textContrast !important",
 	},
 });
 
