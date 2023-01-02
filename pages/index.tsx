@@ -246,10 +246,11 @@ export default function Index() {
 										</Text>
 									</Container>
 								</Container>
-								<Heading size="xss">Become a creator</Heading>
+								<Heading size="xss">Image Editor</Heading>
 								<Text>
-									Anyone can now apply to become a creator provided they are
-									above the legal age and have verified their identity.
+									Now you can edit your NFT images on the platform, with
+									features such as filters, color correction and cropping with
+									multiple templates preconfigured.
 								</Text>
 							</Container>
 							<Container
