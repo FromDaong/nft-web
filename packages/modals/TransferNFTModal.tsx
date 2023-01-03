@@ -1,4 +1,4 @@
-import {useRemoveOrder, useTransferNFTs} from "@packages/post/hooks";
+import {useTransferNFTs} from "@packages/post/hooks";
 import {TritPostProps} from "@packages/post/types";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
@@ -12,7 +12,7 @@ import Spinner from "@packages/shared/icons/Spinner";
 import {useUser} from "core/auth/useUser";
 import {useRouter} from "next/router";
 import {useState} from "react";
-import {useAccount, useSigner} from "wagmi";
+import {useSigner} from "wagmi";
 import GenericChainModal from "./GenericChainModal";
 
 export default function TransferNFTModal(props: {
@@ -155,7 +155,13 @@ export default function TransferNFTModal(props: {
 						>
 							Cancel
 						</Button>
-						<Button onClick={transferNFTAction}>Transfer</Button>
+						<Button
+							disabled={!sendTo && !amount}
+							appearance={!sendTo && !amount ? "disabled" : "action"}
+							onClick={transferNFTAction}
+						>
+							Transfer
+						</Button>
 					</Container>
 				</Container>
 			</GenericChainModal>
