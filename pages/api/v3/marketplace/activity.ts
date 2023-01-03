@@ -49,15 +49,6 @@ export default async function handler(req, res) {
 			},
 		},
 		{
-			$sort: {
-				...(sort && sortMap[sort]
-					? sortMap[sort]
-					: {
-							id: -1,
-					  }),
-			},
-		},
-		{
 			$lookup: {
 				from: "profiles",
 				localField: "seller",
@@ -79,11 +70,6 @@ export default async function handler(req, res) {
 				localField: "creator.profile",
 				foreignField: "_id",
 				as: "creator_profile",
-			},
-		},
-		{
-			$unwind: {
-				path: "$nft",
 			},
 		},
 		{
@@ -136,10 +122,35 @@ export default async function handler(req, res) {
 				path: "$seller",
 			},
 		},
+		{
+			$unwind: {
+				path: "$nft",
+			},
+		},
+
+		{
+			$group: {
+				_id: "$id",
+				count: {$sum: 1},
+				first: {$first: "$$ROOT"},
+			},
+		},
+		{
+			$sort: {
+				...(sort && sortMap[sort]
+					? sortMap[sort]
+					: {
+							id: -1,
+					  }),
+			},
+		},
 	]);
 
 	// @ts-ignore
 	const nfts = await NFTEvent.aggregatePaginate(nftsAggregate, options);
-
+	nfts.docs = nfts.docs.map((nft) => ({
+		...nft.first,
+		count: nft.count,
+	}));
 	return returnWithSuccess(nfts, res);
 }

@@ -43,8 +43,6 @@ const encodeImage = async (sharpObj, res) => {
 			res.setHeader("Content-Type", "image/webp");
 			return res.send(resizedImageBuf);
 		});
-
-		return;
 	} catch (err) {
 		console.log(err);
 		return res.send(null);
@@ -73,7 +71,8 @@ export default async function fetchWithFallback(req, res) {
 		return;
 	}
 
-	const defaultUrl = "https://" + (url as Array<string>).slice(1).join("/");
+	const defaultUrl =
+		"https://" + (url as Array<string>).slice(1).join("/") + "?q=20";
 	console.log({defaultUrl});
 
 	if (defaultUrl.includes("treatdaoipfs")) {
