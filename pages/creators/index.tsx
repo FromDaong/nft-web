@@ -102,7 +102,7 @@ export default function NFTS() {
 									borderRadius: "8px",
 									backgroundColor: "$elementOnSurface",
 								}}
-								placeholder={"Start typign to search for creators"}
+								placeholder={"Start typing to search for creators"}
 								onChange={(e) => setSearchText(e.target.value)}
 								value={searchText}
 							/>
