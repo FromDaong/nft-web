@@ -33,11 +33,11 @@ const NFTDropdownSort = ({setSort, sort}) => (
 					onClick={() => setSort(2)}
 					className="flex gap-2 px-4 py-2"
 					css={{
-						backgroundColor: Number(sort) === 1 && "$accentText",
+						backgroundColor: Number(sort) === 2 && "$accentText",
 						borderRadius: "16px",
-						color: Number(sort) === 1 && "$surface",
+						color: Number(sort) === 2 && "$surface",
 						"&hover": {
-							color: Number(sort) === 1 && "$textContrast !important",
+							color: Number(sort) === 2 && "$textContrast !important",
 						},
 					}}
 				>
@@ -47,11 +47,11 @@ const NFTDropdownSort = ({setSort, sort}) => (
 					onClick={() => setSort(3)}
 					className="flex gap-2 px-4 py-2"
 					css={{
-						backgroundColor: Number(sort) === 1 && "$accentText",
+						backgroundColor: Number(sort) === 3 && "$accentText",
 						borderRadius: "16px",
-						color: Number(sort) === 1 && "$surface",
+						color: Number(sort) === 3 && "$surface",
 						"&hover": {
-							color: Number(sort) === 1 && "$textContrast !important",
+							color: Number(sort) === 3 && "$textContrast !important",
 						},
 					}}
 				>
