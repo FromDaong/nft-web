@@ -28,7 +28,6 @@ const getSweetshopNFTs = async (page: number, search: string) => {
 export default function NFTS() {
 	const {ref, inView} = useInView();
 	const router = useRouter();
-	const [sort, setSortBy] = useState<string>(router.query.sort as string);
 	const [searchText, setSearchText] = useState(
 		(router.query.q ?? "") as string
 	);
@@ -42,7 +41,7 @@ export default function NFTS() {
 		isFetching,
 		refetch,
 	} = TreatCore.useInfiniteQuery({
-		queryKey: ["creatorsInfinite"],
+		queryKey: [`creatorsInfinite:${search}`],
 		queryFn: ({pageParam = 1}) => getSweetshopNFTs(pageParam, search),
 		getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
 		getPreviousPageParam: (firstPage) => firstPage.prevPage ?? undefined,
@@ -64,14 +63,12 @@ export default function NFTS() {
 		}
 	}, [inView]);
 
-	// T-44 Implement search bar for sweetshop NFTs + filters with inspiration form Airbnb
 	useEffect(() => {
 		refetch();
 
 		router.push(
 			{
 				query: {
-					...(sort ? {sort} : {sort: "3"}),
 					...(search ? {q: search} : {}),
 				},
 			},
@@ -80,13 +77,7 @@ export default function NFTS() {
 				shallow: true,
 			}
 		);
-
-		if (!sort) {
-			setSortBy("3");
-		}
-	}, [search, sort]);
-
-	const sortMap = ["Lowest price first", "Highest price first", "Newest first"];
+	}, [search]);
 
 	return (
 		<ApplicationLayout>

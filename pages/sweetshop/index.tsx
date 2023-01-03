@@ -46,7 +46,7 @@ export default function NFTS() {
 		isFetching,
 		refetch,
 	} = TreatCore.useInfiniteQuery({
-		queryKey: ["sweetshopNFTsInfinite"],
+		queryKey: [`sweetshopNFTsInfinite:${search}`],
 		queryFn: ({pageParam = 1}) => getSweetshopNFTs(pageParam, sort, search),
 		getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
 		getPreviousPageParam: (firstPage) => firstPage.prevPage ?? undefined,
@@ -121,7 +121,7 @@ export default function NFTS() {
 						<Container className="max-w-xl w-full ">
 							<Input
 								css={{width: "100%", padding: "8px 12px", borderRadius: "8px"}}
-								placeholder={"Search"}
+								placeholder={"Start typing to search for NFTs"}
 								onChange={(e) => setSearchText(e.target.value)}
 								value={searchText}
 							/>
