@@ -4,11 +4,6 @@ import {
 	ImportantText,
 	MutedText,
 } from "@packages/shared/components/Typography/Text";
-import {DotsHorizontalIcon} from "@heroicons/react/outline";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import {DropdownMenuItem} from "@packages/Dropdowns";
-import {useCopyToClipboard} from "@packages/shared/hooks";
-import {useRouter} from "next/router";
 import Link from "next/link";
 import UserAvatar from "core/auth/components/Avatar";
 
@@ -27,7 +22,7 @@ export const ActionSection = (props) => {
 						<MutedText css={{lineHeight: "12px"}}>
 							{props.seller
 								? `Listed by ${props.seller.username}`
-								: "Listed by creator"}
+								: `Listed by ${props.username}`}
 						</MutedText>
 					)}
 				</Container>

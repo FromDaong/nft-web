@@ -25,7 +25,7 @@ import {useApplicationTheme} from "@packages/theme/provider";
 import {Button} from "@packages/shared/components/Button";
 import {MixerVerticalIcon} from "@radix-ui/react-icons";
 
-// TODO: Use intersection observer to change navbar color.
+// T-69 Use intersection observer to change navbar color.
 
 const getTrendingNFTs = async () => {
 	const res = await axios.get(`${apiEndpoint}/marketplace/trending`);
@@ -112,21 +112,7 @@ export default function Index() {
 	);
 
 	return (
-		<Container className="flex flex-col gap-12 md:gap-16 lg:gap-24">
-			<Container className="py-12 min-h-[50vh] items-center justify-center flex">
-				<Container className="flex flex-col gap-8 items-center max-w-xl text-center">
-					<Heading size="xl">Spicy content. Directly from the Creators</Heading>
-					<Text>
-						Treat is an open platform for creators to curate their adult content
-						as NFTs. Hold the $TREAT token to have a say in the future platform.
-					</Text>
-					<Link href={"/sweetshop"}>
-						<a>
-							<Button>Visit the sweetshop</Button>
-						</a>
-					</Link>
-				</Container>
-			</Container>
+		<Container className="flex flex-col gap-12 md:gap-16 lg:gap-24 py-12">
 			<Container>
 				<Container className="flex flex-col w-full gap-8 px-8 xl:px-0 container mx-auto">
 					<Container className="flex flex-col items-baseline gap-4">

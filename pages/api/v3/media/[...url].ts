@@ -9,40 +9,42 @@ const encodeImage = async (sharpObj, res) => {
 		const obj = await sharpObj
 			.raw()
 			.ensureAlpha()
-			.resize(32, 32, {fit: "inside"})
-			.toBuffer(async (err, buffer, {width, height}) => {
-				if (err) return res.send("null");
-				const encoded = await encode(
-					new Uint8ClampedArray(buffer),
-					width,
-					height,
-					4,
-					4
-				);
+			.resize(32, 32, {fit: "inside"});
 
-				const hashWidth = 400;
-				const hashHeight = Math.round(hashWidth * (400 / 400));
+		await obj.toBuffer(async (err, buffer, info) => {
+			if (err) return res.send("null");
 
-				const pixels = decode(encoded, hashWidth, hashHeight);
+			const encoded = await encode(
+				new Uint8ClampedArray(buffer),
+				info.width,
+				info.height,
+				4,
+				4
+			);
 
-				const resizedImageBuf = await sharp(Buffer.from(pixels), {
-					raw: {
-						channels: 4,
-						width: hashWidth,
-						height: hashHeight,
-					},
+			const hashWidth = 400;
+			const hashHeight = Math.round(hashWidth * (400 / 400));
+
+			const pixels = decode(encoded, hashWidth, hashHeight);
+
+			const resizedImageBuf = await sharp(Buffer.from(pixels), {
+				raw: {
+					channels: 4,
+					width: hashWidth,
+					height: hashHeight,
+				},
+			})
+				.toFormat("webp", {
+					nearLossless: true,
+					alphaQuality: 100,
 				})
-					.toFormat("webp", {
-						nearLossless: true,
-						alphaQuality: 100,
-					})
-					.toBuffer();
+				.toBuffer();
 
-				res.setHeader("Content-Type", "image/webp");
-				return res.send(resizedImageBuf);
-			});
+			res.setHeader("Content-Type", "image/webp");
+			return res.send(resizedImageBuf);
+		});
 
-		return obj;
+		return;
 	} catch (err) {
 		console.log(err);
 		return res.send(null);
@@ -72,8 +74,9 @@ export default async function fetchWithFallback(req, res) {
 	}
 
 	const defaultUrl = "https://" + (url as Array<string>).slice(1).join("/");
+	console.log({defaultUrl});
 
-	if (defaultUrl.includes("mypinata")) {
+	if (defaultUrl.includes("treatdaoipfs")) {
 		try {
 			const response = await axios.get(defaultUrl, {
 				responseType: "arraybuffer",

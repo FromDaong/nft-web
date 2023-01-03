@@ -42,7 +42,7 @@ export const TritPost = (props: TritPostProps) => {
 	const ipfs_parts = props.image?.ipfs.split("/");
 	const ipfs_id = ipfs_parts[ipfs_parts.length - 1];
 
-	const blurred_image = `${props.image?.ipfs}?blurhash=true`;
+	const blurred_image = `${ipfs_id}?blurhash=true`;
 	const sd_image = `${ipfs_id}?`;
 
 	useEffect(() => {
