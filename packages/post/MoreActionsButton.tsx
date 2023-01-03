@@ -2,6 +2,7 @@ import {DropdownMenuItem} from "@packages/Dropdowns";
 import {useDisclosure} from "@packages/hooks";
 import ListOrderModal from "@packages/modals/ListOrderModal";
 import RemoveListingModal from "@packages/modals/RemoveListingModal";
+import TransferNFTModal from "@packages/modals/TransferNFTModal";
 import {Button} from "@packages/shared/components/Button";
 import {ImportantText, Text} from "@packages/shared/components/Typography/Text";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
@@ -12,11 +13,13 @@ export default function MoreActionsButton({
 	seller,
 	hasOpenOrders,
 	address,
+	numberOfNFTsOwned,
 }: {
 	nft: any;
 	seller?: any;
 	hasOpenOrders?: boolean;
 	address?: any;
+	numberOfNFTsOwned: number;
 }) {
 	const {
 		onOpen: onOpenRemoveModal,
@@ -28,6 +31,12 @@ export default function MoreActionsButton({
 		onOpen: onOpenListOrderModal,
 		onClose: onCloseListOrderModal,
 		isOpen: isListOrderModalOpen,
+	} = useDisclosure();
+
+	const {
+		onOpen: onOpenTransferModal,
+		onClose: onCloseTransferModal,
+		isOpen: isTransferModalOpen,
 	} = useDisclosure();
 
 	return (
@@ -45,6 +54,15 @@ export default function MoreActionsButton({
 					isOpen={isRemoveModalOpen}
 					onClose={onCloseRemoveModal}
 					nft={nft}
+				/>
+			)}
+
+			{numberOfNFTsOwned > 0 && isTransferModalOpen && (
+				<TransferNFTModal
+					isOpen={isRemoveModalOpen}
+					onClose={onCloseRemoveModal}
+					nft={nft}
+					balance={numberOfNFTsOwned}
 				/>
 			)}
 			<DropdownMenu.Root>
@@ -66,6 +84,16 @@ export default function MoreActionsButton({
 							>
 								<Text>
 									<ImportantText>List for resale</ImportantText>
+								</Text>
+							</DropdownMenuItem>
+						)}
+						{numberOfNFTsOwned > 0 && (
+							<DropdownMenuItem
+								onClick={onOpenTransferModal}
+								className="flex gap-2 px-4 py-2"
+							>
+								<Text>
+									<ImportantText>Transfer to address</ImportantText>
 								</Text>
 							</DropdownMenuItem>
 						)}

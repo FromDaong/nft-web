@@ -132,6 +132,7 @@ const NFTPresentationComponent = (props: {
 								seller={props.seller}
 								address={props.address}
 								hasOpenOrders={hasOpenOrders}
+								numberOfNFTsOwned={numberOfNFTsOwned}
 							/>
 						)}
 					</Container>

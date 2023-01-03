@@ -1,26 +1,18 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import SuggestedCreatorCard from "@packages/feed/components/SuggestedCreatorCard";
-import NFTDropdownSort from "@packages/navigation/components/NFTDropdownFilter";
-import {TritPost} from "@packages/post/TritPost";
-import {ExpandableSearch} from "@packages/search/ExpandableSearch";
 import {SEOHead} from "@packages/seo/page";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Input} from "@packages/shared/components/Input";
-import SelectableTag from "@packages/shared/components/Selectabletag";
 import {useDebounce} from "@packages/shared/hooks";
 import DynamicSkeleton from "@packages/skeleton";
-import {
-	FeaturedCreatorSkeleton,
-	TritPostSkeleton,
-} from "@packages/skeleton/config";
-import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
+import {FeaturedCreatorSkeleton} from "@packages/skeleton/config";
+import {apiEndpoint} from "@utils/index";
 import axios from "axios";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import TreatCore from "core/TreatCore";
 import {useRouter} from "next/router";
-import {TreatNFTsInfinityScrollingContainer} from "packages/shared/components/ListingSection";
 import {useEffect, useMemo, useState} from "react";
 import {useInView} from "react-intersection-observer";
 

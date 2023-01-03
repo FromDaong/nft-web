@@ -91,7 +91,7 @@ export const useTransferNFTs = (signer) => {
 	});
 
 	const transferNFT = useCallback(
-		async (to, id, amount) => {
+		async (to: string, id: number, amount: number) => {
 			return treatMinterContract.safeTransferFrom(
 				address,
 				to,
