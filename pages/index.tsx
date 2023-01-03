@@ -116,7 +116,7 @@ export default function Index() {
 			<Container className="flex flex-col gap-12 px-2 md:gap-16 lg:gap-24">
 				<Container className="py-12 min-h-[50vh] items-center justify-center flex">
 					<Container className="flex flex-col gap-8 items-center max-w-xl text-center">
-						<Heading size="md">
+						<Heading size="xl">
 							Spicy content. Directly from the Creators
 						</Heading>
 						<Text>
