@@ -417,7 +417,7 @@ export default function Index() {
 							<Container className="flex flex-col gap-2">
 								<Heading size="xss">How do I buy BNB or $TREAT?</Heading>
 								<Text>
-									You canbuy BNB or $TREAT directly from this website. Visit
+									You can buy BNB or $TREAT directly from this website. Visit
 									this{" "}
 									<Link href={"/dex/ramp"}>
 										<a>
