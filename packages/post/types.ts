@@ -64,6 +64,7 @@ export type TritPostProps = {
 	protected?: boolean;
 	totm?: boolean;
 	subscription_nft?: boolean;
+	count?: number;
 	noPrice?: boolean;
 	inGrid?: boolean;
 	isResale?: boolean;

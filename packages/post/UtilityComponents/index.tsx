@@ -25,6 +25,7 @@ export const ActionSection = (props) => {
 								: `Listed by ${props.username}`}
 						</MutedText>
 					)}
+					{props.count && <Text>{props.count} editions available</Text>}
 				</Container>
 
 				{!props.noPrice && (

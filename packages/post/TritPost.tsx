@@ -161,6 +161,7 @@ export const TritPost = (props: TritPostProps) => {
 					toggleImageProtection={toggleImageProtection}
 					isProtected={isProtected}
 					hideSeller={props.hideSeller}
+					count={props.count}
 				/>
 			</Container>
 		</Container>
