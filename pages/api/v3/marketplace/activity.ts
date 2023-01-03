@@ -20,6 +20,18 @@ export default async function handler(req, res) {
 		},
 	};
 
+	const groupSortMap = {
+		"1": {
+			"first.price": 1,
+		},
+		"2": {
+			"first.price": -1,
+		},
+		"3": {
+			"first.createdAt": -1,
+		},
+	};
+
 	const get_page = Number(page ?? 1) || 1;
 	const options = {
 		page: get_page,
@@ -127,7 +139,15 @@ export default async function handler(req, res) {
 				path: "$nft",
 			},
 		},
-
+		{
+			$sort: {
+				...(sort && sortMap[sort]
+					? sortMap[sort]
+					: {
+							price: -1,
+					  }),
+			},
+		},
 		{
 			$group: {
 				_id: "$id",
@@ -137,10 +157,10 @@ export default async function handler(req, res) {
 		},
 		{
 			$sort: {
-				...(sort && sortMap[sort]
-					? sortMap[sort]
+				...(sort && groupSortMap[sort]
+					? groupSortMap[sort]
 					: {
-							id: -1,
+							price: 1,
 					  }),
 			},
 		},

@@ -7,6 +7,7 @@ import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Input} from "@packages/shared/components/Input";
 import SelectableTag from "@packages/shared/components/Selectabletag";
+import {Heading} from "@packages/shared/components/Typography/Headings";
 import {useDebounce} from "@packages/shared/hooks";
 import DynamicSkeleton from "@packages/skeleton";
 import {TritPostSkeleton} from "@packages/skeleton/config";
@@ -45,6 +46,7 @@ export default function NFTS() {
 		hasNextPage,
 		isFetching,
 		refetch,
+		isLoading,
 	} = TreatCore.useInfiniteQuery({
 		queryKey: [`sweetshopNFTsInfinite:${search}`],
 		queryFn: ({pageParam = 1}) => getSweetshopNFTs(pageParam, sort, search),
@@ -144,47 +146,55 @@ export default function NFTS() {
 					<Container className="flex flex-col gap-8 px-4 xl:px-0">
 						<Container className={isFetching ? "opacity-80" : ""}>
 							<TreatNFTsInfinityScrollingContainer>
-								{posts.length > 0
-									? posts.map((nft) => (
-											<div
-												key={nft._id}
-												className="col-span-1"
-											>
-												<TritPost
-													inGrid
-													{...nft}
-												/>
-											</div>
-									  ))
-									: new Array(20).fill(20).map((_, i) => (
-											<Container
-												key={i}
-												className="col-span-1 border"
-												css={{
-													borderColor: "$subtleBorder",
-													padding: "16px",
-													borderRadius: "16px",
-												}}
-											>
-												<DynamicSkeleton config={TritPostSkeleton} />
-											</Container>
-									  ))}
+								{posts.length > 0 ? (
+									posts.map((nft) => (
+										<div
+											key={nft._id}
+											className="col-span-1"
+										>
+											<TritPost
+												inGrid
+												{...nft}
+											/>
+										</div>
+									))
+								) : isLoading ? (
+									new Array(20).fill(20).map((_, i) => (
+										<Container
+											key={i}
+											className="col-span-1 border"
+											css={{
+												borderColor: "$subtleBorder",
+												padding: "16px",
+												borderRadius: "16px",
+											}}
+										>
+											<DynamicSkeleton config={TritPostSkeleton} />
+										</Container>
+									))
+								) : (
+									<Container className="col-span-1 md:col-span-2 flex flex-col items-center py-24 xl:col-span-5">
+										<Heading size="sm">No results found</Heading>
+									</Container>
+								)}
 							</TreatNFTsInfinityScrollingContainer>
 						</Container>
-						<Container className="flex justify-center w-full">
-							<Button
-								appearance={"surface"}
-								ref={ref}
-								onClick={() => fetchNextPage()}
-								disabled={!hasNextPage || isFetchingNextPage}
-							>
-								{isFetchingNextPage
-									? "Loading more..."
-									: hasNextPage
-									? "Load more"
-									: "Nothing more to load"}
-							</Button>
-						</Container>
+						{!isLoading && (
+							<Container className="flex justify-center w-full">
+								<Button
+									appearance={"surface"}
+									ref={ref}
+									onClick={() => fetchNextPage()}
+									disabled={!hasNextPage || isFetchingNextPage}
+								>
+									{isFetchingNextPage
+										? "Loading more..."
+										: hasNextPage
+										? "Load more"
+										: "Nothing more to load"}
+								</Button>
+							</Container>
+						)}
 					</Container>
 				</Container>
 			</ApplicationFrame>

@@ -4,6 +4,7 @@ import {SEOHead} from "@packages/seo/page";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Input} from "@packages/shared/components/Input";
+import {Heading} from "@packages/shared/components/Typography/Headings";
 import {useDebounce} from "@packages/shared/hooks";
 import DynamicSkeleton from "@packages/skeleton";
 import {FeaturedCreatorSkeleton} from "@packages/skeleton/config";
@@ -40,6 +41,7 @@ export default function NFTS() {
 		hasNextPage,
 		isFetching,
 		refetch,
+		isLoading,
 	} = TreatCore.useInfiniteQuery({
 		queryKey: [`creatorsInfinite:${search}`],
 		queryFn: ({pageParam = 1}) => getSweetshopNFTs(pageParam, search),
@@ -105,34 +107,40 @@ export default function NFTS() {
 								isFetching ? "opacity-80" : ""
 							} grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8`}
 						>
-							{creators.length > 0
-								? creators.map((creator) => (
-										<SuggestedCreatorCard
-											key={creator._id}
-											username={creator.username}
-											display_name={creator.profile?.display_name}
-											avatar={creator.profile?.profile_pic}
-											bio={creator.profile?.bio}
-											isExpanded
-											border
-											live={creator.livestream_active}
-											followers={creator.profile?.followers?.length}
-											subscribers={creator.profile?.following?.length}
-										/>
-								  ))
-								: new Array(20).fill(0).map((_, i) => (
-										<Container
-											key={i}
-											className="col-span-1 border"
-											css={{
-												borderColor: "$subtleBorder",
-												padding: "16px",
-												borderRadius: "16px",
-											}}
-										>
-											<DynamicSkeleton config={FeaturedCreatorSkeleton} />
-										</Container>
-								  ))}
+							{creators.length > 0 ? (
+								creators.map((creator) => (
+									<SuggestedCreatorCard
+										key={creator._id}
+										username={creator.username}
+										display_name={creator.profile?.display_name}
+										avatar={creator.profile?.profile_pic}
+										bio={creator.profile?.bio}
+										isExpanded
+										border
+										live={creator.livestream_active}
+										followers={creator.profile?.followers?.length}
+										subscribers={creator.profile?.following?.length}
+									/>
+								))
+							) : isLoading ? (
+								new Array(20).fill(0).map((_, i) => (
+									<Container
+										key={i}
+										className="col-span-1 border"
+										css={{
+											borderColor: "$subtleBorder",
+											padding: "16px",
+											borderRadius: "16px",
+										}}
+									>
+										<DynamicSkeleton config={FeaturedCreatorSkeleton} />
+									</Container>
+								))
+							) : (
+								<Container className="col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-4 flex flex-col items-center py-24">
+									<Heading size="sm">No results found</Heading>
+								</Container>
+							)}
 						</Container>
 						<Container className="flex justify-center w-full">
 							<Button
