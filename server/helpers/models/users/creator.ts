@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 import createMongoDBModel from "../../utils";
+import paginate from "mongoose-paginate-v2";
+import aggregatePaginate from "mongoose-aggregate-paginate-v2";
 
-const ModelSchema = new mongoose.Schema(
+const CreatorSchema = new mongoose.Schema(
 	{
 		username: {
 			type: String,
@@ -87,5 +89,8 @@ const ModelSchema = new mongoose.Schema(
 	}
 );
 
-const ModelCreator = createMongoDBModel("Creator", ModelSchema);
+CreatorSchema.plugin(paginate);
+CreatorSchema.plugin(aggregatePaginate);
+
+const ModelCreator = createMongoDBModel("Creator", CreatorSchema);
 export default ModelCreator;

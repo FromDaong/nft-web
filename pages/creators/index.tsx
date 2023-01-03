@@ -96,8 +96,13 @@ export default function NFTS() {
 					<Container className="w-full flex-wrap px-4 flex items-center gap-4">
 						<Container className="max-w-xl w-full ">
 							<Input
-								css={{width: "100%", padding: "8px 12px", borderRadius: "8px"}}
-								placeholder={"Search"}
+								css={{
+									width: "100%",
+									padding: "8px 12px",
+									borderRadius: "8px",
+									backgroundColor: "$elementOnSurface",
+								}}
+								placeholder={"Start typign to search for creators"}
 								onChange={(e) => setSearchText(e.target.value)}
 								value={searchText}
 							/>
