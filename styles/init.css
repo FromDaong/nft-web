@@ -1,6 +1,7 @@
 * {
 	font-size: 14px;
 	overscroll-behavior: none;
+	hyphens: auto;
 }
 
 p,

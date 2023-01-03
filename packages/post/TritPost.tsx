@@ -39,9 +39,11 @@ export const TritPost = (props: TritPostProps) => {
 	// T-42 Add hover card with nft details including, original cretor listing tag, current owner, price, units owned, etc
 
 	// T-43 Check if seller === creator , determine if resale or original listing
+	const ipfs_parts = props.image?.ipfs.split("/");
+	const ipfs_id = ipfs_parts[ipfs_parts.length - 1];
 
-	const blurred_image = `${props.image.ipfs}?blurhash=true`;
-	const sd_image = `${props.image.ipfs}`;
+	const blurred_image = `${props.image?.ipfs}?blurhash=true`;
+	const sd_image = `${ipfs_id}?`;
 
 	useEffect(() => {
 		if (props.protected && !isMine) {

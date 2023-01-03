@@ -255,6 +255,8 @@ export const lightTheme = createTheme("light", {
 		btnCallToActionDisabled: "#ffc1d7",
 		accentCallToAction: "#9b22d3",
 		totmPurple: "#9c24ff",
+
+		featuresection_iconPinkBg: "hsl(339deg 70% 60%)",
 	},
 	space: {
 		xs: "5px",
