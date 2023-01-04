@@ -89,7 +89,7 @@ export const TritPost = (props: TritPostProps) => {
 								top: "16px",
 								left: "-24px",
 							}}
-							className="absolute z-30 h-fit w-fit px-8"
+							className="absolute z-10 h-fit w-fit px-8"
 						>
 							<SmallText>
 								<ImportantText>Sold Out</ImportantText>
