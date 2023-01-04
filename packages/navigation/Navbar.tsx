@@ -75,14 +75,6 @@ export default function Navbar() {
 									</a>
 								</Link>
 							</div>
-
-							<div className="items-center hidden gap-8 md:flex">
-								<Link href="https://treatdao.org/nftbridge">
-									<a>
-										<BoldLink className="font-medium">NFT Bridge</BoldLink>
-									</a>
-								</Link>
-							</div>
 							<div className="items-center hidden gap-8 md:flex">
 								<Link href="/dex/ramp">
 									<a>

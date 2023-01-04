@@ -226,17 +226,6 @@ const ExploreDropdownLinks = [
 			/>
 		),
 	},
-
-	{
-		label: "NFT Bridge",
-		link: "https://treatdao.org/nftbridge",
-		icon: (
-			<CubeIcon
-				width={20}
-				height={20}
-			/>
-		),
-	},
 	{
 		label: "Buy Crypto",
 		link: "/dex/ramp",
