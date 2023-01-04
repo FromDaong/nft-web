@@ -1,3 +1,7 @@
+import {
+	useWagmiGetNFTMaxSupply,
+	useWagmiGetNFTTotalSupply,
+} from "@packages/chain/hooks";
 import {useDisclosure} from "@packages/hooks";
 import {ABI} from "@packages/treat/lib/abi";
 import {contractAddresses} from "@packages/treat/lib/constants";
@@ -10,6 +14,8 @@ import {useAccount, useContract, useSigner} from "wagmi";
 
 export const useTritNFTUtils = (nft: any) => {
 	const {data: session} = useSession();
+	const {data: signer} = useSigner();
+	const [loadingSigner, setLoadingSigner] = useState(false);
 	const [liked, setLikedNFT] = useState<undefined | boolean>(false);
 	const [isProtected, setIsProtected] = useState(nft.protected);
 	const listNFTModalProps = useDisclosure();
@@ -17,8 +23,15 @@ export const useTritNFTUtils = (nft: any) => {
 	const transferNFTModalProps = useDisclosure();
 	const buyResaleNFTModalProps = useDisclosure();
 	const [likedBy, setLikedBy] = useState(nft.likedBy ?? []);
+	const maxNftSupply = useWagmiGetNFTMaxSupply(nft.id);
+	const mintedNfts = useWagmiGetNFTTotalSupply(nft.id);
+	const remainingNfts = maxNftSupply - mintedNfts;
 
-	const isListedOnResale = useGetResaleOrders(nft.id);
+	useEffect(() => {
+		if (signer) {
+			setLoadingSigner(false);
+		}
+	}, [signer]);
 
 	useEffect(() => {
 		// @ts-ignore
@@ -67,7 +80,6 @@ export const useTritNFTUtils = (nft: any) => {
 	return {
 		liked,
 		likeNFT,
-		isListedOnResale,
 		listNFTModalProps,
 		cancelOrderModalProps,
 		transferNFTModalProps,
@@ -78,6 +90,8 @@ export const useTritNFTUtils = (nft: any) => {
 		getOpenOrdersForSeller,
 		isProtected,
 		likedBy,
+		remainingNfts,
+		loadingSigner,
 	};
 };
 

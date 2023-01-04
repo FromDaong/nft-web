@@ -2,7 +2,10 @@ import {Text} from "@packages/shared/components/Typography/Headings";
 import Link from "next/link";
 import {Container} from "@packages/shared/components/Container";
 import {TritPostProps} from "./types";
-import {ImportantText} from "@packages/shared/components/Typography/Text";
+import {
+	ImportantText,
+	SmallText,
+} from "@packages/shared/components/Typography/Text";
 import {EyeOffIcon} from "@heroicons/react/outline";
 import {PostMediaContent} from "./PostMediaContent";
 import {styled} from "@styles/theme";
@@ -27,8 +30,15 @@ export const FrostyBackgroundContainer = styled(Container, {
 });
 
 export const TritPost = (props: TritPostProps) => {
-	const {liked, likeNFT, isMine, isProtected, toggleImageProtection} =
-		useTritNFTUtils(props);
+	const {
+		liked,
+		likeNFT,
+		isMine,
+		isProtected,
+		toggleImageProtection,
+		loadingSigner,
+		remainingNfts,
+	} = useTritNFTUtils(props);
 
 	const [imageURL, setImageURL] = useState("");
 
@@ -69,10 +79,23 @@ export const TritPost = (props: TritPostProps) => {
 						: ""
 				}`}
 			>
-				<a className="flex flex-col w-full">
-					{
-						// T-29 implement a hover options button if user owns this NFT
-					}
+				<a className="flex flex-col w-full relative overflow-hidden">
+					{!loadingSigner && remainingNfts === 0 && (
+						<Text
+							css={{
+								color: "$surface",
+								backgroundColor: "$red9",
+								transform: "rotate(-45deg)",
+								top: "16px",
+								left: "-24px",
+							}}
+							className="absolute z-30 h-fit w-fit px-8"
+						>
+							<SmallText>
+								<ImportantText>Sold Out</ImportantText>
+							</SmallText>
+						</Text>
+					)}
 					<Container
 						className="relative flex overflow-hidden"
 						css={{
