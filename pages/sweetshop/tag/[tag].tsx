@@ -79,7 +79,7 @@ export default function Address(props) {
 					<Heading size={"xs"}>Showing NFT's with the tag {tag}</Heading>
 				</Container>
 				<Container className="flex flex-col gap-8 px-4 xl:px-0">
-					<Container className={isFetching ? "opacity-80" : ""}>
+					<Container className={isFetching ? "opacity-40" : ""}>
 						<TreatNFTsInfinityScrollingContainer>
 							{posts.length > 0
 								? posts.map((nft) => (

@@ -22,7 +22,7 @@ export const ActionSection = (props) => {
 						<MutedText css={{lineHeight: "12px"}}>
 							{props.seller
 								? `Listed by ${props.seller.username}`
-								: props.username && `Listed by ${props.username}`}
+								: props.creator && `Listed by ${props.creator}`}
 						</MutedText>
 					)}
 					{props.count && <Text>{props.count} editions available</Text>}

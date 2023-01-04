@@ -104,7 +104,7 @@ export default function NFTS() {
 					<Container className="flex flex-col gap-8 px-4 xl:px-0">
 						<Container
 							className={`${
-								isFetching ? "opacity-80" : ""
+								isFetching ? "opacity-40" : ""
 							} grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8`}
 						>
 							{creators.length > 0 ? (

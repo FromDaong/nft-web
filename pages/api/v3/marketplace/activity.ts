@@ -16,7 +16,7 @@ export default async function handler(req, res) {
 			price: -1,
 		},
 		"3": {
-			createdAt: -1,
+			"nft.listedDate": -1,
 		},
 	};
 
@@ -28,7 +28,7 @@ export default async function handler(req, res) {
 			"first.price": -1,
 		},
 		"3": {
-			"first.createdAt": -1,
+			"first.nft.listedDate": -1,
 		},
 	};
 
