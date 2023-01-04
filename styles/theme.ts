@@ -358,7 +358,7 @@ export const ogPinkTheme = createTheme("pink", {
 		errorTextContrast: "$red12",
 
 		surface: "#ffeef0",
-		surfaceOnSurface: "#fff1f3",
+		surfaceOnSurface: "$primary1",
 		elementSurface: "#ffdde4",
 		elementOnSurface: "#ffffffa6",
 		hoveredElementSurface: "$primary3",
