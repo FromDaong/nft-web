@@ -1,9 +1,5 @@
 import {connectMongoDB} from "@db/engine";
-import {
-	populateNFTsWithProfileAndTx,
-	returnWithError,
-	returnWithSuccess,
-} from "@db/engine/utils";
+import {returnWithError, returnWithSuccess} from "@db/engine/utils";
 import Moralis from "moralis";
 import {EvmChain} from "@moralisweb3/common-evm-utils";
 import {contractAddresses} from "@packages/treat/lib/constants";
@@ -16,8 +12,7 @@ import {
 
 export default async function handler(req, res) {
 	const {username} = req.query;
-	const {page, cursor} = req.query;
-	const get_page = Number(page ?? 1) || 1;
+	const {cursor} = req.query;
 
 	if (!username) {
 		return returnWithError("No username provided", 400, res);
@@ -54,8 +49,6 @@ export default async function handler(req, res) {
 		},
 		options
 	);
-
-	console.log({ownedNftsIds, cursor, page: response.pagination.page});
 
 	nfts.docs = await MongoModelCreator.populate(nfts.docs, {
 		path: "creator",
