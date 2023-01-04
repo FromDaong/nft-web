@@ -21,7 +21,7 @@ export const ApplicationTheme = createContext<{
 	themes?: Array<string>;
 	updateTheme: (theme: string) => void;
 }>({
-	theme: "light",
+	theme: "pink",
 	themes: ["dark", "light"],
 	updateTheme: (_theme) => ({_theme}),
 });
@@ -37,7 +37,7 @@ export const useApplicationTheme = () => {
 };
 
 export default function ThemeProvider({children}: {children: ReactNode}) {
-	const {theme, updateTheme} = useTheme("light");
+	const {theme, updateTheme} = useTheme("pink");
 
 	const themes = {
 		light: lightTheme,
@@ -51,7 +51,7 @@ export default function ThemeProvider({children}: {children: ReactNode}) {
 		if (typeof window !== "undefined") {
 			try {
 				const theme = localStorage.getItem("theme");
-				updateTheme((theme as "dark" | "pink" | "light") ?? "light");
+				updateTheme((theme as "dark" | "pink" | "light") ?? "pink");
 			} catch (err) {
 				console.error("[x] Error reading theme from local");
 			}
