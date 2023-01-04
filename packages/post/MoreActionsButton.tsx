@@ -59,8 +59,8 @@ export default function MoreActionsButton({
 
 			{numberOfNFTsOwned > 0 && isTransferModalOpen && (
 				<TransferNFTModal
-					isOpen={isRemoveModalOpen}
-					onClose={onCloseRemoveModal}
+					isOpen={isTransferModalOpen}
+					onClose={onCloseTransferModal}
 					nft={nft}
 					balance={numberOfNFTsOwned}
 				/>

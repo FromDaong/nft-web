@@ -7,6 +7,7 @@ import {TritPost} from "@packages/post/TritPost";
 import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
 import OptimizedImage from "@packages/shared/components/OptimizedImage";
+import OptimizedNFTImage from "@packages/shared/components/OptimizedImage/OptimizedNFTImage";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {SmallText} from "@packages/shared/components/Typography/Text";
 import {useFullScreen} from "@packages/shared/hooks";
@@ -106,9 +107,12 @@ export default function NFT(props: {
 			? []
 			: youMightAlsoLikeData?.map((post) => legacy_nft_to_new(post));
 
-	const blurred_image = `${nft.image.ipfs}?blurhash=true`;
-	const hd_image = `${nft.image.ipfs}`;
-	const sd_image = `${nft.image.ipfs}`;
+	const ipfs_parts = nft.image?.ipfs.split("/");
+	const ipfs_id = ipfs_parts[ipfs_parts.length - 1];
+
+	const blurred_image = `${ipfs_id}?blurhash=true`;
+	const sd_image = `${ipfs_id}?`;
+	const hd_image = `${ipfs_id}?`;
 
 	useEffect(() => {
 		if (nft.protected && !isOwned) {
@@ -142,14 +146,37 @@ export default function NFT(props: {
 						onClick={() => setShowFullScreen(!showFullScreen)}
 						id={"nft_image"}
 					>
-						<OptimizedImage
-							src={imageURL}
-							className="cursor-zoom-in"
-							sizes="100vw"
-							fill
-							objectFit="contain"
-							alt={nft.name}
-						/>
+						{nft.protected && !isOwned && (
+							<OptimizedImage
+								src={imageURL}
+								className="cursor-zoom-in"
+								sizes="100vw"
+								fill
+								objectFit="contain"
+								alt={nft.name}
+							/>
+						)}
+						{nft.protected && isOwned && (
+							<OptimizedNFTImage
+								src={sd_image}
+								className="cursor-zoom-in"
+								sizes="100vw"
+								fill
+								objectFit="contain"
+								alt={nft.name}
+							/>
+						)}
+						{!nft.protected && (
+							<OptimizedNFTImage
+								src={hd_image}
+								className="cursor-zoom-in"
+								sizes="100vw"
+								fill
+								objectFit="contain"
+								alt={nft.name}
+								quality={100}
+							/>
+						)}
 					</Container>
 				</Container>
 			</Container>
