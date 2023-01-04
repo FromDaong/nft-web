@@ -21,9 +21,11 @@ export default function UserProfile(props: {
 	const {profile} = (session as any) ?? {profile: {}};
 	const {ref, inView} = useInView();
 
-	const getCollectedNFTs = async (page) => {
+	const getCollectedNFTs = async (page, cursor) => {
 		const res = await axios.get(
-			`${apiEndpoint}/profile/${username}/collected?page=${page}`
+			`${apiEndpoint}/profile/${username}/collected?page=${page}${
+				cursor ? `&cursor=${cursor}` : ""
+			}`
 		);
 		return res.data.data;
 	};
@@ -38,7 +40,7 @@ export default function UserProfile(props: {
 		error,
 	} = TreatCore.useInfiniteQuery({
 		queryKey: [`collectedNFTs:${username}`],
-		queryFn: ({pageParam = 1}) => getCollectedNFTs(pageParam),
+		queryFn: ({pageParam = 1}) => getCollectedNFTs(pageParam, cursor),
 		getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
 		getPreviousPageParam: (firstPage) => firstPage.prevPage ?? undefined,
 	});
@@ -52,6 +54,11 @@ export default function UserProfile(props: {
 	}
 
 	const pages = creatorNFTsData ? creatorNFTsData.pages : [];
+	const cursor = creatorNFTsData
+		? creatorNFTsData.pages[creatorNFTsData.pages.length - 1].cursor
+		: null;
+
+	console.log({cursor});
 
 	const posts = useMemo(() => {
 		if (pages.length > 0) {

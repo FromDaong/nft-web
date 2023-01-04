@@ -73,7 +73,6 @@ export default async function fetchWithFallback(req, res) {
 
 	const defaultUrl =
 		"https://" + (url as Array<string>).slice(1).join("/") + "?q=20";
-	console.log({defaultUrl});
 
 	if (defaultUrl.includes("treatdaoipfs")) {
 		try {

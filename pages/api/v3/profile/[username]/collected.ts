@@ -16,12 +16,8 @@ import {
 
 export default async function handler(req, res) {
 	const {username} = req.query;
-	const {page} = req.query;
+	const {page, cursor} = req.query;
 	const get_page = Number(page ?? 1) || 1;
-	const options = {
-		page: get_page,
-		limit: 8,
-	};
 
 	if (!username) {
 		return returnWithError("No username provided", 400, res);
@@ -39,14 +35,17 @@ export default async function handler(req, res) {
 	const response = await Moralis.EvmApi.nft.getWalletNFTs({
 		address: profile.address,
 		chain: EvmChain.BSC,
-		tokenAddresses: [
-			contractAddresses.treatNFTMinter[56],
-			contractAddresses.treatNFTMinterV1[56],
-		],
+		tokenAddresses: [contractAddresses.treatNFTMinter[56]],
+		cursor,
 	});
 
 	const ownedNfts = response.toJSON();
 	const ownedNftsIds = ownedNfts.result.map((nft) => Number(nft.token_id));
+
+	const options = {
+		page: 1,
+		limit: response.pagination.pageSize,
+	};
 
 	// @ts-ignore
 	const nfts = await MongoModelNFT.paginate(
@@ -55,6 +54,8 @@ export default async function handler(req, res) {
 		},
 		options
 	);
+
+	console.log({ownedNftsIds, cursor, page: response.pagination.page});
 
 	nfts.docs = await MongoModelCreator.populate(nfts.docs, {
 		path: "creator",
@@ -65,5 +66,13 @@ export default async function handler(req, res) {
 		},
 	});
 
-	return returnWithSuccess(nfts, res);
+	return returnWithSuccess(
+		{
+			...nfts,
+			cursor: ownedNfts.cursor,
+			hasNextPage: response.hasNext(),
+			nextPage: response.hasNext() ? response.pagination.page + 1 : null,
+		},
+		res
+	);
 }

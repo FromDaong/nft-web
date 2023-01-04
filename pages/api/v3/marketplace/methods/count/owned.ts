@@ -31,11 +31,11 @@ export default async function handler(req, res) {
 	const response = await Moralis.EvmApi.nft.getWalletNFTs({
 		address: profile.address,
 		chain: EvmChain.BSC,
-		tokenAddresses: [
-			contractAddresses.treatNFTMinter[56],
-			contractAddresses.treatNFTMinterV1[56],
-		],
+		tokenAddresses: [contractAddresses.treatNFTMinter[56]],
+		normalizeMetadata: true,
 	});
+
+	console.log(response.toJSON().result.map((nft) => Number(nft.token_id)));
 
 	return returnWithSuccess(response.pagination.total, res);
 }
