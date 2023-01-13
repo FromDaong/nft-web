@@ -65,6 +65,7 @@ type ProfileLayoutProps = ComponentBasicProps & {
 		earnings: number;
 		address: string;
 		profile_pic?: string;
+		banner_pic: string;
 		profilePicCdnUrl?: string;
 		badges: Array<{color: string; name: string}>;
 		creator?: any;
@@ -87,6 +88,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 		earnings: profile.earnings ?? 0,
 		address: profile ? profile.address : "",
 		profile_pic: profile.profile_pic,
+		banner_pic: profile.banner_pic,
 		creator: profile.creator,
 		badges: [
 			...profile.badges,
@@ -217,9 +219,16 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 		<>
 			<SEOHead title={profile?.username + " - Trit"} />
 
-			{
-				// <UserHeader profile_pic={user.profile_pic} />
-			}
+			<Container
+				className="w-full h-[256px]"
+				css={{
+					backgroundImage: `url("${ownerOfUserProfile.banner_pic}")`,
+					backgroundPosition: "center",
+					backgroundRepeat: "no-repeat",
+					backgroundSize: "cover",
+					backgroundColor: "$surfaceOnSurface",
+				}}
+			/>
 
 			<Container className="container mx-auto py-8 px-4 xl:px-0">
 				<FluidContainer className="flex justify-between px-4">

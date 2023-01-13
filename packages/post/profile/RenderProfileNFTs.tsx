@@ -19,9 +19,11 @@ const RenderProfileNFTs = ({
 	isFetchingNextPage,
 	hasNextPage,
 	hideSeller,
+	hidePrice,
 }: {
 	[key: string]: any;
 	hideSeller?: boolean;
+	hidePrice?: boolean;
 }) => {
 	// T-25 implement a reasonable empty state design
 
@@ -63,7 +65,7 @@ const RenderProfileNFTs = ({
 								<TritPost
 									key={post.id}
 									{...post}
-									noPrice
+									noPrice={hidePrice}
 									isMine={username === profile.username}
 									hideSeller={hideSeller}
 								/>

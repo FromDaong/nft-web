@@ -4,6 +4,7 @@ import ListOrderModal from "@packages/modals/ListOrderModal";
 import RemoveListingModal from "@packages/modals/RemoveListingModal";
 import TransferNFTModal from "@packages/modals/TransferNFTModal";
 import {Button} from "@packages/shared/components/Button";
+import {Container} from "@packages/shared/components/Container";
 import {ImportantText, Text} from "@packages/shared/components/Typography/Text";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import {DotsHorizontalIcon} from "@radix-ui/react-icons";
@@ -40,7 +41,7 @@ export default function MoreActionsButton({
 	} = useDisclosure();
 
 	return (
-		<>
+		<Container className="flex gap-4">
 			{isListOrderModalOpen && (
 				<ListOrderModal
 					isOpen={isListOrderModalOpen}
@@ -65,51 +66,36 @@ export default function MoreActionsButton({
 					balance={numberOfNFTsOwned}
 				/>
 			)}
-			<DropdownMenu.Root>
-				<DropdownMenu.Trigger className="flex">
-					<Button appearance={"surface"}>
-						<DotsHorizontalIcon
-							width={24}
-							height={24}
-						/>
-						More
-					</Button>
-				</DropdownMenu.Trigger>
-				<DropdownMenu.Portal>
-					<DropdownMenu.Content className="z-30 p-3 transition-all duration-150 bg-white shadow-xl gap-y-3 rounded-xl">
-						{!hasOpenOrders && seller?.address !== address && (
-							<DropdownMenuItem
-								onClick={onOpenListOrderModal}
-								className="flex gap-2 px-4 py-2"
-							>
-								<Text>
-									<ImportantText>List for resale</ImportantText>
-								</Text>
-							</DropdownMenuItem>
-						)}
-						{numberOfNFTsOwned > 0 && (
-							<DropdownMenuItem
-								onClick={onOpenTransferModal}
-								className="flex gap-2 px-4 py-2"
-							>
-								<Text>
-									<ImportantText>Transfer to address</ImportantText>
-								</Text>
-							</DropdownMenuItem>
-						)}
-						{hasOpenOrders && (
-							<DropdownMenuItem
-								onClick={onOpenRemoveModal}
-								className="flex gap-2 px-4 py-2"
-							>
-								<Text>
-									<ImportantText>Remove my listing</ImportantText>
-								</Text>
-							</DropdownMenuItem>
-						)}
-					</DropdownMenu.Content>
-				</DropdownMenu.Portal>
-			</DropdownMenu.Root>
-		</>
+			{!hasOpenOrders && seller?.address !== address && (
+				<Button
+					onClick={onOpenListOrderModal}
+					className="flex gap-2 px-4 py-2"
+				>
+					<Text>
+						<ImportantText>List for resale</ImportantText>
+					</Text>
+				</Button>
+			)}
+			{numberOfNFTsOwned > 0 && (
+				<Button
+					onClick={onOpenTransferModal}
+					className="flex gap-2 px-4 py-2"
+				>
+					<Text>
+						<ImportantText>Transfer to address</ImportantText>
+					</Text>
+				</Button>
+			)}
+			{hasOpenOrders && (
+				<Button
+					onClick={onOpenRemoveModal}
+					className="flex gap-2 px-4 py-2"
+				>
+					<Text>
+						<ImportantText>Remove my listing</ImportantText>
+					</Text>
+				</Button>
+			)}
+		</Container>
 	);
 }

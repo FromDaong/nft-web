@@ -238,6 +238,8 @@ const ExploreDropdownLinks = [
 	},
 ];
 
+// dec to binary
+
 const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 	const {openAccountModal} = useAccountModal();
 	const {openConnectModal} = useConnectModal();

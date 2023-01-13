@@ -82,7 +82,6 @@ export default function UserProfile(props: {
 			fetchNextPage={fetchNextPage}
 			isFetchingNextPage={isFetchingNextPage}
 			hasNextPage={hasNextPage}
-			hideSeller={true}
 		/>
 	);
 }
