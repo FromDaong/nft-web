@@ -11,7 +11,7 @@ const DropDownContent = styled(DropdownMenu.Content, {
 const NFTDropdownSort = ({setSort, sort}) => (
 	<DropdownMenu.Root>
 		<DropdownMenu.Trigger className="flex">
-			<Button>Sort</Button>
+			<Button appearance={"default"}>Sort</Button>
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Portal>
 			<DropDownContent className="z-30 p-3 transition-all duration-150 shadow-xl gap-y-3 rounded-xl">

@@ -23,7 +23,7 @@ export default function NotificationPreferences() {
 				<Container className="flex items-center justify-between gap-8">
 					<Container>
 						<Heading size="sm">Offers</Heading>
-						<Text>Notify me when someone offers to buy my trit.</Text>
+						<Text>Notify me when someone offers to buy my NFT.</Text>
 					</Container>
 					<Container>
 						<Switch.Root

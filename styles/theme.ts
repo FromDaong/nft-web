@@ -159,6 +159,7 @@ export const darkTheme = createTheme("dark", {
 		totmPurple: "#9c24ff",
 		buttonSurface: "$surface",
 		textOnSurface: "$text",
+		inputSurface: "$surfaceOnSurface",
 	},
 	space: {
 		1: "5px",
@@ -259,6 +260,7 @@ export const lightTheme = createTheme("light", {
 		totmPurple: "#9c24ff",
 		buttonSurface: "$surface",
 		textOnSurface: "$text",
+		inputSurface: "$surfaceOnSurface",
 
 		featuresection_iconPinkBg: "hsl(339deg 70% 60%)",
 	},
@@ -386,6 +388,7 @@ export const ogPinkTheme = createTheme("pink", {
 		totmPurple: "#9c24ff",
 		buttonSurface: "$primary4",
 		textOnSurface: "#ffffff",
+		inputSurface: "$primary2",
 	},
 	space: {
 		1: "5px",

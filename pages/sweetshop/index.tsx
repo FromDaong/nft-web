@@ -6,6 +6,7 @@ import {SEOHead} from "@packages/seo/page";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Input} from "@packages/shared/components/Input";
+import Pagination from "@packages/shared/components/Pagination";
 import SelectableTag from "@packages/shared/components/Selectabletag";
 import {Heading} from "@packages/shared/components/Typography/Headings";
 import {useDebounce} from "@packages/shared/hooks";
@@ -83,6 +84,10 @@ export default function NFTS() {
 			return [];
 		}
 	}, [pages]);
+
+	const changePage = () => {
+		// reset scroll position
+	};
 
 	useEffect(() => {
 		if (inView) {
@@ -179,6 +184,13 @@ export default function NFTS() {
 								)}
 							</TreatNFTsInfinityScrollingContainer>
 						</Container>
+						<Pagination
+							hasNextPage={true}
+							hasPrevPage={true}
+							gotoPage={(page) => page}
+							page={4}
+							totalPages={4}
+						/>
 						{!isLoading && (
 							<Container className="flex justify-center w-full">
 								<Button

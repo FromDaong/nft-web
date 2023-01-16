@@ -217,7 +217,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 
 	return (
 		<>
-			<SEOHead title={profile?.username + " - Trit"} />
+			<SEOHead title={profile?.username + " - Treat"} />
 
 			<Container
 				className="w-full h-[256px]"

@@ -112,7 +112,7 @@ const WagmiWrapper = ({
 				<RainbowKitSiweNextAuthProvider>
 					<RainbowKitProvider
 						appInfo={{
-							appName: "Trit",
+							appName: "Treat",
 							disclaimer: Disclaimer,
 						}}
 						showRecentTransactions={true}

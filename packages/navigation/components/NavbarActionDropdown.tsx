@@ -47,7 +47,7 @@ const NavbarActionDropdown = () => {
 										<LegibleText className="p-2 rounded-full">
 											<UploadIcon className="w-4 h-4" />
 										</LegibleText>
-										<ImportantText>Create new trit</ImportantText>
+										<ImportantText>Create new NFT</ImportantText>
 									</Text>
 									<span className="flex gap-2 text-sm">
 										<LegibleText>

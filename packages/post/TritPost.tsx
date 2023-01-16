@@ -111,7 +111,7 @@ export const TritPost = (props: TritPostProps) => {
 							isProtected={isProtected}
 							caption={props.text}
 							overrideText={
-								"The creator wants you to collect this trit before you can preview the content"
+								"The creator wants you to collect this NFT before you can preview the content"
 							}
 						/>
 						<Container

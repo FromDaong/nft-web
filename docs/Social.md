@@ -43,7 +43,7 @@
 ## Components
 
 - User Service: user interaction, blocking, notifications, etc
-- Trit Service: creates posts and writes activity to the blockchain and listens for blockchain events
+- Treat Service: creates posts and writes activity to the blockchain and listens for blockchain events
 - Feed Service: Retrieves the posts to show the user on their feed, enforces privacy options, strip reply to, remove image_url for sub content etc.
 - Timeline Service: should show all the follower's most recent posts.
   - To render them in realtime is bad slow, instead, constantly generate the timeline and store it in memory. When user navigates to page they will be served from cache.
@@ -83,10 +83,10 @@ When user requests home or user timeline, the timeline services queries Redis an
 
 ## Write Journey
 
-- Create NFT with Trit Service
+- Create NFT with Treat Service
 - Store media in Object Storage
 - Write to chain with Chain Service and store in Redis CacheUser Timeline
-- Trit Service sends post to Fanout Service
+- Treat Service sends post to Fanout Service
 - Fanout Service queries User Service to get list of followers stored in Cache
 - Fanout Service sends post to Redis Cache of each follower(Home Timeline) _[condition: followers < 1000]_
 - Fanout Service sends post to Apache Storm to generate trending topics

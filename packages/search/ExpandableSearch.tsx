@@ -73,7 +73,7 @@ export function ExpandableSearch() {
 								{[
 									"Christmas speci",
 									"Christmas specials from TreatDAO",
-									"Christmas specials Trit TOTM",
+									"Christmas specials Treat TOTM",
 								].map((text, i) => (
 									<AutocompleteSearchHit
 										text={text}

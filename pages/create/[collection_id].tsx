@@ -323,7 +323,7 @@ export default function PostType(props: {collection: string}) {
 			>
 				{error && <Text appearance={"danger"}>{String(error)}</Text>}
 			</GenericChainModal>
-			<SEOHead title={`Create ${title} Collection - Trit`} />
+			<SEOHead title={`Create ${title} Collection - Treat`} />
 			<ApplicationFrame>
 				<Container className="flex flex-col gap-12 px-4 py-12">
 					<Container className="flex flex-col w-full max-w-2xl gap-2">

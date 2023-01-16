@@ -10,9 +10,9 @@ export const types_of_posts = [
     icon: <LockClosedIcon className="w-12 h-12" />,
   },*/
 	{
-		title: "Trit collectible",
+		title: "Treat collectible",
 		description:
-			"Create video, music and picture collectibles and list them on the Trit Marketplace. ",
+			"Create video, music and picture collectibles and list them on the Treat Marketplace. ",
 		url: "/create/collectible",
 		icon: <CurrencyDollarIcon className="w-12 h-12" />,
 	},

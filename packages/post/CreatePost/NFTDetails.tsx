@@ -191,7 +191,7 @@ const AddNFTDetails = ({
 																</Text>
 																<Text>
 																	<MutedText>
-																		Only owners of this trit can view its
+																		Only owners of this NFT can view its
 																		content.
 																	</MutedText>
 																</Text>
