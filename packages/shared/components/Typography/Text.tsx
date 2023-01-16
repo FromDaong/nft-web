@@ -2,7 +2,7 @@ import {styled} from "@styles/theme";
 
 export const BoldLink = styled("a", {
 	fontWeight: "700 !important",
-	color: "$textContrast",
+	color: "$textOnSurface",
 	cursor: "pointer",
 	variants: {
 		hover: {

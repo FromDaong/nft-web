@@ -1,3 +1,39 @@
+@font-face {
+	font-family: "Circular Pro";
+	src: url("../public/fonts/CircularPro-Book.eot");
+	src: url("../public/fonts/CircularPro-Book.eot?#iefix")
+			format("embedded-opentype"),
+		url("../public/fonts/CircularPro-Book.woff2") format("woff2"),
+		url("../public/fonts/CircularPro-Book.woff") format("woff"),
+		url("../public/fonts/CircularPro-Book.ttf") format("truetype");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Circular Pro";
+	src: url("../public/fonts/CircularPro-Medium.eot");
+	src: url("../public/fonts/CircularPro-Medium.eot?#iefix")
+			format("embedded-opentype"),
+		url("../public/fonts/CircularPro-Medium.woff2") format("woff2"),
+		url("../public/fonts/CircularPro-Medium.woff") format("woff"),
+		url("../public/fonts/CircularPro-Medium.ttf") format("truetype");
+	font-weight: 500;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Circular Pro";
+	src: url("../public/fonts/CircularPro-Bold.eot");
+	src: url("../public/fonts/CircularPro-Bold.eot?#iefix")
+			format("embedded-opentype"),
+		url("../public/fonts/CircularPro-Bold.woff2") format("woff2"),
+		url("../public/fonts/CircularPro-Bold.woff") format("woff"),
+		url("../public/fonts/CircularPro-Bold.ttf") format("truetype");
+	font-weight: bold;
+	font-style: normal;
+}
+
 * {
 	font-size: 14px;
 	overscroll-behavior: none;
@@ -5,7 +41,7 @@
 
 p,
 span {
-	font-family: "Inter", -apple-system, system-ui, sans-serif !important;
+	font-family: "Circular Pro", -apple-system, system-ui, sans-serif !important;
 }
 
 h1,
@@ -15,12 +51,12 @@ h4,
 h5,
 h6 {
 	margin: 0;
-	font-family: "Inter", -apple-system, system-ui, sans-serif !important;
+	font-family: "Circular Pro", -apple-system, system-ui, sans-serif !important;
 	font-family: 700 !important;
 }
 
 * {
 	outline: none !important;
 	box-sizing: border-box !important;
-	font-family: "Inter", -apple-system, system-ui, sans-serif !important;
+	font-family: "Circular Pro", -apple-system, system-ui, sans-serif !important;
 }

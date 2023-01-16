@@ -23,8 +23,8 @@ export const Button = styled("button", {
 	variants: {
 		appearance: {
 			default: {
-				backgroundColor: "$surface",
-				color: "$textContrast",
+				backgroundColor: "$buttonSurface",
+				color: "$textOnSurface",
 			},
 			primary: {
 				backgroundColor: "$btnCallToAction",

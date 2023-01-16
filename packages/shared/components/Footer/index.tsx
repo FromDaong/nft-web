@@ -45,7 +45,7 @@ export default function Footer() {
 						style={{maxWidth: 150}}
 					/>
 				</div>
-				<div className="col-span-1 flex flex-col gap-2">
+				<div className="col-span-1 flex flex-col gap-4">
 					<Heading
 						size="xs"
 						className="mb-2 md:mb-4"
@@ -58,35 +58,35 @@ export default function Footer() {
 							rel="noreferrer"
 							href="https://docs.google.com/gview?url=https://github.com/TreatDAO/litepaper/raw/main/TreatPaperFinal.pdf&embedded=true"
 						>
-							<BoldLink className="">Litepaper</BoldLink>
+							<BoldLink css={{color: "$text"}}>Litepaper</BoldLink>
 						</ListLinkItem>
 						<ListLinkItem
 							target="_blank"
 							rel="noreferrer"
 							href="https://pancakeswap.finance/swap?inputCurrency=0x01bd7acb6ff3b6dd5aefa05cf085f2104f3fc53f"
 						>
-							<BoldLink>Swap Tokens</BoldLink>
+							<BoldLink css={{color: "$text"}}>Swap Tokens</BoldLink>
 						</ListLinkItem>
 						<ListLinkItem href={"/sweetshop"}>
-							<BoldLink>Purchase NFTs</BoldLink>
+							<BoldLink css={{color: "$text"}}>Purchase NFTs</BoldLink>
 						</ListLinkItem>
 						<ListLinkItem
 							href="https://www.coingecko.com/en/coins/treatdao-v2"
 							target="_blank"
 							rel="noreferrer"
 						>
-							<BoldLink>CoinGecko</BoldLink>
+							<BoldLink css={{color: "$text"}}>CoinGecko</BoldLink>
 						</ListLinkItem>
 						<ListLinkItem
 							target="_blank"
 							rel="noreferrer"
 							href="https://coinmarketcap.com/en/currencies/treat-dao-new/"
 						>
-							<BoldLink>CoinMarketCap</BoldLink>
+							<BoldLink css={{color: "$text"}}>CoinMarketCap</BoldLink>
 						</ListLinkItem>
 					</Ul>
 				</div>
-				<div className="col-span-1 flex flex-col gap-2">
+				<div className="col-span-1 flex flex-col gap-4">
 					<Heading
 						size="xs"
 						className="mb-2 md:mb-4"
@@ -99,39 +99,39 @@ export default function Footer() {
 							target="_blank"
 							rel="noreferrer"
 						>
-							<BoldLink>Telegram</BoldLink>
+							<BoldLink css={{color: "$text"}}>Telegram</BoldLink>
 						</ListLinkItem>
 						<ListLinkItem
 							href="https://twitter.com/treatdao"
 							target="_blank"
 							rel="noreferrer"
 						>
-							<BoldLink>Twitter</BoldLink>
+							<BoldLink css={{color: "$text"}}>Twitter</BoldLink>
 						</ListLinkItem>
 						<ListLinkItem
 							href="https://www.instagram.com/treat_dao/"
 							target="_blank"
 							rel="noreferrer"
 						>
-							<BoldLink>Instagram</BoldLink>
+							<BoldLink css={{color: "$text"}}>Instagram</BoldLink>
 						</ListLinkItem>
 						<ListLinkItem
 							href="https://www.tiktok.com/@treatdao"
 							target="_blank"
 							rel="noreferrer"
 						>
-							<BoldLink>TikTok</BoldLink>
+							<BoldLink css={{color: "$text"}}>TikTok</BoldLink>
 						</ListLinkItem>
 						<ListLinkItem
 							href="https://treatdao.medium.com/"
 							target="_blank"
 							rel="noreferrer"
 						>
-							<BoldLink>Medium</BoldLink>
+							<BoldLink css={{color: "$text"}}>Medium</BoldLink>
 						</ListLinkItem>
 					</Ul>
 				</div>
-				<div className="col-span-1 flex flex-col gap-2">
+				<div className="col-span-1 flex flex-col gap-4">
 					<Heading
 						size="xs"
 						className="mb-2 md:mb-4"
@@ -144,23 +144,23 @@ export default function Footer() {
 							target="_blank"
 							rel="noreferrer"
 						>
-							<BoldLink>Help Center</BoldLink>
+							<BoldLink css={{color: "$text"}}>Help Center</BoldLink>
 						</ListLinkItem>
 						<ListLinkItem
 							href="https://www.bonfire.com/store/treatdao-merch/"
 							target="_blank"
 							rel="noreferrer"
 						>
-							<BoldLink>Merch Store</BoldLink>
+							<BoldLink css={{color: "$text"}}>Merch Store</BoldLink>
 						</ListLinkItem>
 						<ListLinkItem href="/about">
-							<BoldLink>About</BoldLink>
+							<BoldLink css={{color: "$text"}}>About</BoldLink>
 						</ListLinkItem>
 						<ListLinkItem href="/privacy">
-							<BoldLink>Privacy Policy</BoldLink>
+							<BoldLink css={{color: "$text"}}>Privacy Policy</BoldLink>
 						</ListLinkItem>
 						<ListLinkItem href="/tos">
-							<BoldLink>Terms of Service</BoldLink>
+							<BoldLink css={{color: "$text"}}>Terms of Service</BoldLink>
 						</ListLinkItem>
 					</Ul>
 				</div>

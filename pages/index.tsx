@@ -124,7 +124,7 @@ export default function Index() {
 						</Container>
 						<Link href={"/sweetshop"}>
 							<a>
-								<Button appearance={"surface"}>
+								<Button appearance={"default"}>
 									<ImportantText>View all on sweetshop</ImportantText>
 									<ArrowRightIcon
 										width={16}
@@ -312,7 +312,7 @@ export default function Index() {
 
 						<Link href={"/creators"}>
 							<a>
-								<Button appearance={"surface"}>
+								<Button appearance={"default"}>
 									<ImportantText>View more creators</ImportantText>
 									<ArrowRightIcon
 										width={16}
