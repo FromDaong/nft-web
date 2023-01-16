@@ -1,6 +1,13 @@
 import Image from "next/future/image";
 
+let dev = false;
+if (typeof window !== "undefined") {
+	dev = window.origin === "http://localhost:3000";
+}
+
 const gumletLoader = ({src}) => {
+	if (dev) return;
+
 	return `${src}`;
 };
 

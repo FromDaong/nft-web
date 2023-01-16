@@ -1,8 +1,15 @@
 import Image from "next/future/image";
 
+let dev = false;
+if (typeof window !== "undefined") {
+	dev = window.origin === "http://localhost:3000";
+}
+
 const gumletLoader = ({src, width, quality}) => {
+	if (dev) return;
 	return `https://treatdaoipfs.gumlet.io/${src}w=${width}&q=${quality || 75}`;
 };
+
 type OptimizedImageProps = {
 	src?: string;
 	alt: string;

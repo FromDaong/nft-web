@@ -93,10 +93,10 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 		badges: [
 			...profile.badges,
 			props.userProfile.creator &&
-			props.userProfile.creator?.approved !== false &&
-			props.userProfile.creator?.pending !== true
-				? {color: "pink", name: "Verified Creator"}
-				: {color: "purple", name: "Collector"},
+			props.userProfile.creator?.approved === false &&
+			props.userProfile.creator?.pending === true
+				? {color: "purple", name: "Collector"}
+				: {color: "pink", name: "Verified Creator"},
 		],
 	});
 
