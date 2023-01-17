@@ -31,6 +31,7 @@ import Link from "next/link";
 import {useState} from "react";
 import axios from "axios";
 import {apiEndpoint} from "@utils/index";
+import {SocialProfileJsonLd} from "next-seo";
 
 const AvatarContainer = styled("div", {
 	borderRadius: "9999px",
@@ -218,6 +219,12 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 	return (
 		<>
 			<SEOHead title={profile?.username + " - Treat"} />
+			<SocialProfileJsonLd
+				type="Person"
+				name={ownerOfUserProfile?.username}
+				url={`https://treatnfts.com/${ownerOfUserProfile?.username}`}
+				sameAs={[]}
+			/>
 
 			<Container
 				className="w-full h-[256px]"

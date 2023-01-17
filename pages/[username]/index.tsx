@@ -6,6 +6,7 @@ import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import TreatCore from "core/TreatCore";
 import {useSession} from "next-auth/react";
+import {SocialProfileJsonLd} from "next-seo";
 import {useEffect, useMemo} from "react";
 import {useInView} from "react-intersection-observer";
 import {beforePageLoadGetUserProfile} from "server/page/userProfile";
@@ -33,7 +34,6 @@ export default function UserProfile(props: {
 		isFetchingNextPage,
 		fetchNextPage,
 		hasNextPage,
-		refetch,
 		isFetching,
 		error,
 	} = TreatCore.useInfiniteQuery({
@@ -71,18 +71,20 @@ export default function UserProfile(props: {
 	}, [inView]);
 
 	return (
-		<RenderProfileNFTs
-			data={data}
-			isFetching={isFetching}
-			error={error}
-			posts={posts}
-			profile={profile}
-			username={username}
-			ref={ref}
-			fetchNextPage={fetchNextPage}
-			isFetchingNextPage={isFetchingNextPage}
-			hasNextPage={hasNextPage}
-		/>
+		<>
+			<RenderProfileNFTs
+				data={data}
+				isFetching={isFetching}
+				error={error}
+				posts={posts}
+				profile={profile}
+				username={username}
+				ref={ref}
+				fetchNextPage={fetchNextPage}
+				isFetchingNextPage={isFetchingNextPage}
+				hasNextPage={hasNextPage}
+			/>
+		</>
 	);
 }
 

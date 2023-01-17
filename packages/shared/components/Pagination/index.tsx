@@ -47,7 +47,9 @@ const generatePreviewPages = (page, totalPages) => {
 };
 
 export default function Pagination(props: PaginationProps) {
-	const pagesPreview = generatePreviewPages(props.page, props.totalPages);
+	const pagesPreview = generatePreviewPages(props.page, props.totalPages) ?? [];
+
+	if (pagesPreview.length === 0) return null;
 
 	return (
 		<Container className="flex w-full justify-center gap-2">

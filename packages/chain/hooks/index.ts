@@ -92,8 +92,6 @@ export const useWagmiGetNFTTotalSupply = (id: number) => {
 		args: [id],
 	});
 
-	console.log({data, error, id});
-
 	return Number(isLoading ? 0 : data?.toNumber());
 };
 

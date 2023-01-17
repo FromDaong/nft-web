@@ -30,6 +30,7 @@ import {
 	MongoModelTransaction,
 } from "server/helpers/models";
 import {useAccount} from "wagmi";
+import {ArticleJsonLd} from "next-seo";
 
 const getYouMightAlsoLike = async () => {
 	const res = await axios.get(`${apiEndpoint}/marketplace/trending`);
@@ -136,6 +137,16 @@ export default function NFT(props: {
 
 	return (
 		<>
+			<ArticleJsonLd
+				url={`https://treatnfts.com/post/nft/${nft._id}`}
+				title={nft.name}
+				images={[nft.image?.ipfs]}
+				datePublished="2021-01-01"
+				authorName={nft.creator.username}
+				publisherName={"TreatDAO"}
+				publisherLogo="https://www.treatnfts.com/logo.png"
+				description={nft.description}
+			/>
 			<Container
 				className="w-full 2xl:h-[80vh] lg:h-[90vh] h-[calc(100vh-64px)] flex items-center justify-center"
 				css={{backgroundColor: "$surfaceOnSurface"}}

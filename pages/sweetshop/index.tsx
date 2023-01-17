@@ -34,6 +34,8 @@ const getSweetshopNFTs = async (page: number, sort: string, search: string) => {
 export default function NFTS() {
 	const {ref, inView} = useInView();
 	const router = useRouter();
+	const [page, setPage] = useState(1);
+	const [totalPages, setTotalPages] = useState(1);
 	const [sort, setSortBy] = useState<string>(router.query.sort as string);
 	const [searchText, setSearchText] = useState(
 		(router.query.q ?? "") as string
@@ -48,9 +50,14 @@ export default function NFTS() {
 		isFetching,
 		refetch,
 		isLoading,
+		fetchPreviousPage,
+		hasPreviousPage,
 	} = TreatCore.useInfiniteQuery({
 		queryKey: [`sweetshopNFTsInfinite:${search}`],
-		queryFn: ({pageParam = 1}) => getSweetshopNFTs(pageParam, sort, search),
+		queryFn: ({pageParam = 1}) => {
+			setPage(pageParam);
+			return getSweetshopNFTs(pageParam, sort, search);
+		},
 		getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
 		getPreviousPageParam: (firstPage) => firstPage.prevPage ?? undefined,
 	});
@@ -59,6 +66,7 @@ export default function NFTS() {
 
 	const posts = useMemo(() => {
 		if (pages.length > 0) {
+			setTotalPages(pages[0].totalPages);
 			return pages
 				.map((page) => page.docs)
 				.flat()
@@ -185,11 +193,15 @@ export default function NFTS() {
 							</TreatNFTsInfinityScrollingContainer>
 						</Container>
 						<Pagination
-							hasNextPage={true}
-							hasPrevPage={true}
+							hasNextPage={hasNextPage}
+							hasPrevPage={hasPreviousPage}
 							gotoPage={(page) => page}
-							page={4}
-							totalPages={4}
+							page={page}
+							totalPages={+totalPages}
+							next={fetchNextPage}
+							prev={fetchPreviousPage}
+							nextPage={page + +1}
+							prevPage={page - +1}
 						/>
 						{!isLoading && (
 							<Container className="flex justify-center w-full">
