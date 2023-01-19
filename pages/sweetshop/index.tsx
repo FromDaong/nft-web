@@ -93,8 +93,20 @@ export default function NFTS() {
 		}
 	}, [pages]);
 
+	const nextPage = () => {
+		setPage(page + +1);
+		changePage();
+		fetchNextPage();
+	};
+
+	const prevPage = () => {
+		setPage(page + -1);
+		changePage();
+		fetchPreviousPage();
+	};
+
 	const changePage = () => {
-		// reset scroll position
+		window.scrollTo(0, 0);
 	};
 
 	useEffect(() => {
@@ -112,6 +124,7 @@ export default function NFTS() {
 				query: {
 					...(sort ? {sort} : {sort: "3"}),
 					...(search ? {q: search} : {}),
+					...(page ? {p: page} : {p: 1}),
 				},
 			},
 			undefined,
@@ -123,7 +136,7 @@ export default function NFTS() {
 		if (!sort) {
 			setSortBy("3");
 		}
-	}, [search, sort]);
+	}, [search, sort, page]);
 
 	const sortMap = ["Lowest price first", "Highest price first", "Newest first"];
 
@@ -198,27 +211,11 @@ export default function NFTS() {
 							gotoPage={(page) => page}
 							page={page}
 							totalPages={+totalPages}
-							next={fetchNextPage}
-							prev={fetchPreviousPage}
+							next={nextPage}
+							prev={prevPage}
 							nextPage={page + +1}
 							prevPage={page - +1}
 						/>
-						{!isLoading && (
-							<Container className="flex justify-center w-full">
-								<Button
-									appearance={"surface"}
-									ref={ref}
-									onClick={() => fetchNextPage()}
-									disabled={!hasNextPage || isFetchingNextPage}
-								>
-									{isFetchingNextPage
-										? "Loading more..."
-										: hasNextPage
-										? "Load more"
-										: "Nothing more to load"}
-								</Button>
-							</Container>
-						)}
 					</Container>
 				</Container>
 			</ApplicationFrame>

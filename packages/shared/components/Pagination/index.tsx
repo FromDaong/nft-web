@@ -30,6 +30,7 @@ const generatePreviewPages = (page, totalPages) => {
 
 	if (page === 1) {
 		new Array(5).fill(page).map((p, i) => pages.push(i));
+		pages = pages.slice(1, 5);
 		return pages;
 	}
 

@@ -137,14 +137,6 @@ const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 										</ImportantText>
 										<>Followers</>
 									</Text>
-									<Text className="flex items-baseline gap-1">
-										<ImportantText>
-											{Intl.NumberFormat("en-US").format(
-												props.subscribers ?? 0
-											)}
-										</ImportantText>
-										<>Subscribers</>
-									</Text>
 								</Container>
 								{props.isPromoted && (
 									<p>

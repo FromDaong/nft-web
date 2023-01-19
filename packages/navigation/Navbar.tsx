@@ -62,6 +62,13 @@ export default function Navbar() {
 								</Link>
 							</div>
 							<div className="items-center hidden gap-8 md:flex">
+								<Link href="/creators">
+									<a>
+										<BoldLink className="font-medium">Creators</BoldLink>
+									</a>
+								</Link>
+							</div>
+							<div className="items-center hidden gap-8 md:flex">
 								<Link href="https://treatdao.org/magazine">
 									<a>
 										<BoldLink className="font-medium">Magazine</BoldLink>
