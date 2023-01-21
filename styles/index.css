@@ -136,3 +136,8 @@ html {
 iframe .bridgeBody {
 	background-color: #00000000 !important;
 }
+
+.scrollbar::-webkit-scrollbar {
+	width: 12px;
+	height: 12px;
+}

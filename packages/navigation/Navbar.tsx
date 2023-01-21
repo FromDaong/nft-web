@@ -8,8 +8,8 @@ import dynamic from "next/dynamic";
 import NavbarSearchDropdown from "../search/NavbarSearchDropdown";
 
 import {styled} from "@styles/theme";
-import {BoldLink} from "@packages/shared/components/Typography/Text";
-import {PhotographIcon} from "@heroicons/react/outline";
+import {BoldLink, Text} from "@packages/shared/components/Typography/Text";
+import {ChatIcon, PhotographIcon} from "@heroicons/react/outline";
 import {Container} from "@packages/shared/components/Container";
 import MobileNavbarDropdown from "./components/MobileNavbarDropdown";
 import {Button} from "@packages/shared/components/Button";
@@ -102,23 +102,16 @@ export default function Navbar() {
 								// eslint-disable-next-line no-constant-condition
 								(isConnected ? (
 									<Container className="flex items-center gap-4">
-										{/*<Link href={"/notifications"}>
+										<Link href={"/messages"}>
 											<a>
-												<Button
-													css={{
-														borderRadius: "9999px",
-														padding: "8px !important",
-													}}
-													className="flex items-center justify-center rounded-full"
-													appearance={"surface"}
-												>
-													<NotificationsIcon
-														width={20}
-														height={20}
+												<Text css={{color: "$textOnSurface"}}>
+													<ChatIcon
+														width={24}
+														height={24}
 													/>
-												</Button>
+												</Text>
 											</a>
-												</Link>*/}
+										</Link>
 										{creator && (
 											<Link href={"/create"}>
 												<a>

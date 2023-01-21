@@ -13,7 +13,10 @@ export type TMessage = {
 
 export type TChatBucket = {
 	date: number;
-	messages: Array<TMessage>;
+	messageBuckets: Array<{
+		sender: TChatParticipant;
+		messages: Array<TMessage>;
+	}>;
 };
 
 export type TChat = {

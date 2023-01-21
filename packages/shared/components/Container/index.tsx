@@ -2,6 +2,20 @@ import {styled} from "@styles/theme";
 import {ReactNode} from "react";
 
 export const Container = styled("div", {
+	"&.scrollbar::-webkit-scrollbar-track": {
+		borderRadius: "100vh",
+		background: "$surface",
+	},
+
+	".scrollbar::-webkit-scrollbar-thumb": {
+		background: "$elementOnSurface",
+		borderRadius: "100vh",
+		border: "3px solid $surface",
+	},
+
+	"&.scrollbar::-webkit-scrollbar-thumb:hover": {
+		background: "$elementOnSurface",
+	},
 	variants: {
 		variant: {
 			unstyled: {

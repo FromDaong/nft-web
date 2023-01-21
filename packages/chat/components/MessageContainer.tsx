@@ -12,17 +12,17 @@ export default function MessageContainer({
 	messages: Array<TMessage>;
 }) {
 	return (
-		<Container className="flex gap-8">
+		<Container className="flex gap-4">
 			<Link href={`/${user.username}`}>
-				<a>
+				<a className="flex-noshrink">
 					<UserAvatar
 						username={user.username}
 						profile_pic={user.profile_pic}
-						size={20}
+						size={24}
 					/>
 				</a>
 			</Link>
-			<Container className="flex flex-row gap-4">
+			<Container className="w-full">
 				{messages.map((message) => (
 					<Message
 						text={message.text}
