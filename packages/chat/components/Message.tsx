@@ -18,7 +18,8 @@ export default function Message({
 				}}
 				className="flex-noshrink opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-200"
 			>
-				{new Date(timestamp).getHours()}:{new Date(timestamp).getUTCMinutes()}
+				{new Date(timestamp).getHours()}:{new Date(timestamp).getUTCMinutes()}{" "}
+				{"\n"}
 			</MutedText>
 		</Container>
 	);

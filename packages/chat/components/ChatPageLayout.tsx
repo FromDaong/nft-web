@@ -1,7 +1,8 @@
+import {PencilAltIcon} from "@heroicons/react/outline";
+import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Heading} from "@packages/shared/components/Typography/Headings";
-import Spinner from "@packages/shared/icons/Spinner";
-import {ReactNode, useEffect, useState} from "react";
+import {ReactNode} from "react";
 import ChatListItem from "./ChatListItem";
 
 export default function ChatPageLayout({
@@ -13,7 +14,7 @@ export default function ChatPageLayout({
 }) {
 	return (
 		<Container
-			className="grid max-w-5xl grid-cols-1 gap-16 mx-auto overflow-hidden "
+			className="grid max-w-5xl grid-cols-1 gap-16 mx-auto overflow-hidden border"
 			css={{
 				height: "calc(100vh - 120px)",
 				width: "100%",
@@ -23,14 +24,26 @@ export default function ChatPageLayout({
 				backgroundColor: "$surface",
 			}}
 		>
-			<Container className="flex overflow-hidden">
+			<Container className="flex overflow-hidden divide-x">
 				<Container
 					className={` flex-col min-w-[360px] flex-1 ${
 						hideListInMobile ? "hidden lg:flex" : "flex"
 					}`}
 				>
-					<Container className="px-8 py-4">
-						<Heading size="sm">Messages</Heading>
+					<Container
+						className="px-8 flex justify-between items-center h-[64px] border-b"
+						css={{borderColor: "$border"}}
+					>
+						<Heading size="xss">@kamfeskaya</Heading>
+						<Button
+							css={{borderRadius: "9999px", padding: "8px"}}
+							appearance={"surface"}
+						>
+							<PencilAltIcon
+								height={20}
+								width={20}
+							/>
+						</Button>
 					</Container>
 					<Container className="flex-col gap-2 p-2 ">
 						<ChatListItem
@@ -105,7 +118,7 @@ export default function ChatPageLayout({
 					</Container>
 				</Container>
 				<Container
-					className="flex flex-col px-4 py-2 md:py-0 md:px-8 fixed h-[90vh]
+					className="flex flex-col fixed h-[90vh]
                     ] w-screen top-0 left-0 z-50 lg:z-0 md:w-full md:h-full md:relative"
 					css={{
 						borderColor: "$border",

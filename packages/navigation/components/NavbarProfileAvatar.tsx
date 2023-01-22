@@ -138,8 +138,8 @@ const NavbarProfileAvatar = () => {
 			<DropdownMenu.Root>
 				<DropdownMenu.Trigger>
 					<Container
-						css={{borderColor: "$totmPurple"}}
-						className="border-2 rounded-full"
+						css={{backgroundColor: "$surfaceOnSurface"}}
+						className="rounded-full"
 					>
 						{profile && profile.profile_pic && (
 							<NewAvatar

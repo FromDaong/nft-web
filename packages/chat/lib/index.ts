@@ -67,7 +67,6 @@ export class ChatEngine {
 	};
 
 	private onReceiveMessage = (data: TMessage) => {
-		console.log("Received " + data.text + " from " + data.sender.username);
 		if (data.sender.username === this.owner.username) return;
 		this.addMessage(data.text, data.sender.username, data.timestamp);
 		this.setState(Array.from(this.chatBuckets));

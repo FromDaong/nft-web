@@ -8,8 +8,8 @@ import dynamic from "next/dynamic";
 import NavbarSearchDropdown from "../search/NavbarSearchDropdown";
 
 import {styled} from "@styles/theme";
-import {BoldLink, Text} from "@packages/shared/components/Typography/Text";
-import {ChatIcon, PhotographIcon} from "@heroicons/react/outline";
+import {BoldLink} from "@packages/shared/components/Typography/Text";
+import {BellIcon, ChatIcon, PhotographIcon} from "@heroicons/react/outline";
 import {Container} from "@packages/shared/components/Container";
 import MobileNavbarDropdown from "./components/MobileNavbarDropdown";
 import {Button} from "@packages/shared/components/Button";
@@ -34,7 +34,7 @@ export default function Navbar() {
 	const isConnected = status === "authenticated" && connected;
 	const loading = status === "loading";
 
-	const {profile, creator} = (data as any) || {};
+	const {creator} = (data as any) || {};
 
 	return (
 		<Container>
@@ -104,12 +104,46 @@ export default function Navbar() {
 									<Container className="flex items-center gap-4">
 										<Link href={"/messages"}>
 											<a>
-												<Text css={{color: "$textOnSurface"}}>
-													<ChatIcon
-														width={24}
-														height={24}
-													/>
-												</Text>
+												<Button
+													css={{
+														borderRadius: "9999px",
+														height: "40px",
+														width: "40px",
+														padding: 0,
+														alignItems: "center",
+														justifyContent: "center",
+													}}
+													appearance={"surface"}
+												>
+													<Container className="w-full h-full flex items-center justify-center">
+														<ChatIcon
+															height={20}
+															width={20}
+														/>
+													</Container>
+												</Button>
+											</a>
+										</Link>
+										<Link href={"/notifications"}>
+											<a>
+												<Button
+													css={{
+														borderRadius: "9999px",
+														height: "40px",
+														width: "40px",
+														padding: 0,
+														alignItems: "center",
+														justifyContent: "center",
+													}}
+													appearance={"surface"}
+												>
+													<Container className="w-full h-full flex items-center justify-center">
+														<BellIcon
+															height={20}
+															width={20}
+														/>
+													</Container>
+												</Button>
 											</a>
 										</Link>
 										{creator && (

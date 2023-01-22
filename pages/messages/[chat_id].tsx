@@ -25,8 +25,8 @@ export const getServerSideProps = async (ctx: NextPageContext) => {
 	console.log(ctx.query);
 	return {
 		props: {
-			username: ctx.query.chat_id.split("-")[0],
-			contact: ctx.query.chat_id.split("-")[1],
+			username: (ctx.query.chat_id as string).split("-")[0],
+			contact: (ctx.query.chat_id as string).split("-")[1],
 		},
 	};
 };

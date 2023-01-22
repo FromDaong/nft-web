@@ -24,6 +24,10 @@ export default function ChatContainer({username, contact}) {
 		},
 	]);
 
+	// T-74 Fetch messages from DB
+	// T-75 Clear messages on DB
+	// T-76 Block user
+
 	const clearAllMessages = () => {
 		setChatBucket([]);
 	};
@@ -84,12 +88,12 @@ export default function ChatContainer({username, contact}) {
 		<Container className="flex flex-col justify-between h-full">
 			<Container className="flex-noshrink">
 				<Container
-					className="flex justify-between"
-					css={{borderColor: "$subtleBorder"}}
+					className="flex justify-between items-center border-b px-4 md:px-8 h-[64px]"
+					css={{borderColor: "$border"}}
 				>
 					<Container>
 						<Link href={`/username`}>
-							<a className="flex items-center gap-2 md:p-4 py-2">
+							<a className="flex items-center gap-2 py-2">
 								<UserAvatar
 									size={32}
 									username={"Andi Lane"}
@@ -130,7 +134,7 @@ export default function ChatContainer({username, contact}) {
 			</Container>
 			<Container
 				ref={chatContainerRef}
-				className="flex-1 h-full w-full py-4 flex flex-col gap-12 overflow-y-auto scrollbar"
+				className="flex-1 h-full w-full py-4 flex flex-col gap-12 overflow-y-auto scrollbar px-4 md:px-8"
 			>
 				{chatBucket[0].messageBuckets.length > 0 &&
 					chatBucket.map((bucket) => (
@@ -141,7 +145,7 @@ export default function ChatContainer({username, contact}) {
 						/>
 					))}
 			</Container>
-			<Container className="flex-noshrink">
+			<Container className="flex-noshrink p-4 md:px-8 ">
 				<Container
 					css={{backgroundColor: "$surface"}}
 					className="flex items-center w-full py-2"
