@@ -12,133 +12,73 @@ import {
 	NavDropdownContainer,
 	NavDropdownItem,
 } from "@packages/navigation/components/DropdownContainer";
-import {useCallback, useState} from "react";
-import {TMessage} from "../lib/types";
+import {useEffect, useMemo, useRef, useState} from "react";
+import {ChatEngine} from "../lib";
 
-export default function ChatContainer() {
-	const [messages, setMessages] = useState([
+export default function ChatContainer({username, contact}) {
+	const chatContainerRef = useRef(null);
+	const [chatBucket, setChatBucket] = useState([
 		{
 			date: new Date().getTime(),
-			messageBuckets: [
-				{
-					sender: {
-						_id: "hdhdshjd",
-						display_name: "tatenda bako",
-						username: "tatenda",
-					},
-					messages: [
-						{
-							timestamp: new Date().getTime(),
-							text: "Hey there mate",
-							sender: {
-								_id: "hdhdshjd",
-								display_name: "tatenda bako",
-								username: "tatenda",
-							},
-						},
-					],
-				},
-			],
-		},
-		{
-			date: new Date().getTime(),
-			messageBuckets: [
-				{
-					sender: {
-						_id: "hdhdshjd",
-						display_name: "tatenda bako",
-						username: "chris",
-					},
-					messages: [
-						{
-							timestamp: new Date().getTime(),
-							text: "Cool. Lets do it then",
-							sender: {
-								_id: "hdhdshjd",
-								display_name: "tatenda bako",
-								username: "tatenda",
-							},
-						},
-					],
-				},
-			],
+			messageBuckets: [],
 		},
 	]);
 
-	const getComposedSingletonBucket = (text, sender) => {
-		return {
-			date: new Date().getTime(),
-			messageBuckets: [
-				{
-					sender,
-					messages: [
-						{
-							timestamp: new Date().getTime(),
-							text,
-							sender,
-						},
-					],
-				},
-			],
-		};
+	const clearAllMessages = () => {
+		setChatBucket([]);
 	};
 
-	const getSender = () => ({
-		_id: "hdhdshjd",
-		display_name: "tatenda bako",
-		username: "tatenda",
-	});
+	const chatEngine = useMemo(
+		() =>
+			new ChatEngine(
+				{
+					_id: "testerid",
+					display_name: "tatenda",
+					username: username,
+				},
+				{
+					_id: "someotherid",
+					display_name: "pacbar",
+					username: contact,
+				},
+				{
+					docs: [],
+					page: 1,
+					totalDocs: 120,
+					totalPages: 6,
+					hasNextPage: true,
+					hasPreviousPage: false,
+				},
+				async () => ({
+					docs: chatBucket
+						.map((b) => b.messageBuckets)
+						.flat()
+						.map((mb) => mb.messages)
+						.flat(),
+					page: 1,
+					totalDocs: 120,
+					totalPages: 6,
+					hasNextPage: true,
+					hasPreviousPage: false,
+				}),
+				clearAllMessages,
+				setChatBucket
+			),
+
+		[]
+	);
 
 	const sendMessage = (text: string) => {
-		setMessages((messages) => {
-			const lastBucket =
-				messages.length > 0 ? messages[messages.length - 1] : null;
-			if (!lastBucket) {
-				return [getComposedSingletonBucket(text, getSender())];
-			}
-
-			const lastMessageBucket =
-				lastBucket.messageBuckets[lastBucket.messageBuckets.length - 1];
-			const lastReceivedMessage =
-				lastMessageBucket.messages[lastMessageBucket.messages.length - 1];
-
-			console.log(
-				new Date().getTime() - 5 * 1000,
-				lastReceivedMessage.timestamp
-			);
-
-			if (new Date().getTime() - 5 * 1000 < lastReceivedMessage.timestamp) {
-				console.log("is under mintue");
-				if (getSender().username === lastMessageBucket.sender.username) {
-					lastMessageBucket.messages.push({
-						timestamp: new Date().getTime(),
-						text,
-						sender: getSender(),
-					});
-					return Array.from(messages);
-				}
-			}
-
-			if (new Date().getTime() - 1000 * 60 * 60 * 24 < lastBucket.date) {
-				lastBucket.messageBuckets.push({
-					sender: getSender(),
-					messages: [
-						{
-							timestamp: new Date().getTime(),
-							text,
-							sender: getSender(),
-						},
-					],
-				});
-
-				messages[0] = lastBucket;
-				return Array.from(messages);
-			}
-
-			messages[0] = getComposedSingletonBucket(text, getSender());
-			return Array.from(messages);
-		});
+		chatEngine.sendMessage(text, username);
+		setChatBucket(Array.from(chatEngine.chatBuckets));
 	};
+
+	useEffect(() => {
+		if (chatContainerRef.current) {
+			const container = chatContainerRef.current;
+			container.scrollTo(0, container.clientHeight);
+		}
+	}, [chatBucket]);
 
 	return (
 		<Container className="flex flex-col justify-between h-full">
@@ -188,14 +128,18 @@ export default function ChatContainer() {
 					</Container>
 				</Container>
 			</Container>
-			<Container className="flex-1 h-full w-full py-4 flex flex-col gap-12 overflow-y-auto scrollbar">
-				{messages.map((bucket) => (
-					<MessagesBucket
-						date={bucket.date}
-						messageBuckets={bucket.messageBuckets}
-						key={`${bucket.date}-${bucket.messageBuckets[0].messages[0].timestamp}-${bucket.messageBuckets[0].sender.username}`}
-					/>
-				))}
+			<Container
+				ref={chatContainerRef}
+				className="flex-1 h-full w-full py-4 flex flex-col gap-12 overflow-y-auto scrollbar"
+			>
+				{chatBucket[0].messageBuckets.length > 0 &&
+					chatBucket.map((bucket) => (
+						<MessagesBucket
+							date={bucket.date}
+							messageBuckets={bucket.messageBuckets}
+							key={`${bucket.date}-${bucket.messageBuckets[0].messages[0].timestamp}-${bucket.messageBuckets[0].sender.username}`}
+						/>
+					))}
 			</Container>
 			<Container className="flex-noshrink">
 				<Container

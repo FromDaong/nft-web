@@ -1,4 +1,4 @@
-import Pusher from "pusher-js/with-encryption";
+import Pusher from "pusher-js";
 
 const pusherClient = new Pusher("app-key", {
 	wsHost: "127.0.0.1",

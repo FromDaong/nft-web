@@ -23,3 +23,12 @@ export type TChat = {
 	participants: [TChatParticipant];
 	buckets: Array<TChatBucket>;
 };
+
+export type ChatApiResponse = {
+	docs: Array<TMessage>;
+	page: number;
+	hasNextPage?: boolean;
+	hasPreviousPage?: boolean;
+	totalPages: number;
+	totalDocs: number;
+};

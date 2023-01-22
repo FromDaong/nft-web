@@ -1,6 +1,7 @@
 import {Container} from "@packages/shared/components/Container";
 import {Heading} from "@packages/shared/components/Typography/Headings";
-import {ReactNode} from "react";
+import Spinner from "@packages/shared/icons/Spinner";
+import {ReactNode, useEffect, useState} from "react";
 import ChatListItem from "./ChatListItem";
 
 export default function ChatPageLayout({
@@ -105,7 +106,7 @@ export default function ChatPageLayout({
 				</Container>
 				<Container
 					className="flex flex-col px-4 py-2 md:py-0 md:px-8 fixed h-[90vh]
-                    ] w-screen top-0 left-0 z-50 md:w-full md:h-full md:relative"
+                    ] w-screen top-0 left-0 z-50 lg:z-0 md:w-full md:h-full md:relative"
 					css={{
 						borderColor: "$border",
 						backgroundColor: "$surface",
