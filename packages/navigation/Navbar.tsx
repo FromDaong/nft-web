@@ -48,7 +48,7 @@ export default function Navbar() {
 				<Container className="relative w-full h-full px-8 xl:px-0">
 					<div className="absolute top-0 left-0 z-20 w-full h-full" />
 					<div className="container relative z-30 flex items-center justify-between py-3 mx-auto">
-						<div className="flex items-center gap-8">
+						<div className="flex items-center gap-4">
 							<Link href={isConnected ? "/" : "/"}>
 								<a className="relative w-8 h-8 text-3xl font-medium">
 									<Image
@@ -60,35 +60,35 @@ export default function Navbar() {
 								</a>
 							</Link>
 
-							<div className="items-center hidden gap-8 md:flex">
+							<div className="items-center hidden gap-4 md:flex">
 								<Link href="/sweetshop">
 									<a>
 										<BoldLink>Sweetshop</BoldLink>
 									</a>
 								</Link>
 							</div>
-							<div className="items-center hidden gap-8 md:flex">
+							<div className="items-center hidden gap-4 md:flex">
 								<Link href="/creators">
 									<a>
 										<BoldLink>Creators</BoldLink>
 									</a>
 								</Link>
 							</div>
-							<div className="items-center hidden gap-8 md:flex">
+							<div className="items-center hidden gap-4 md:flex">
 								<Link href="https://treatdao.org/magazine">
 									<a>
 										<BoldLink>Magazine</BoldLink>
 									</a>
 								</Link>
 							</div>
-							<div className="items-center hidden gap-8 md:flex">
+							<div className="items-center hidden gap-4 md:flex">
 								<Link href="https://treatdao.com/farms">
 									<a>
 										<BoldLink>Farm</BoldLink>
 									</a>
 								</Link>
 							</div>
-							<div className="items-center hidden gap-8 md:flex">
+							<div className="items-center hidden gap-4 md:flex">
 								<Link href="/dex/ramp">
 									<a>
 										<BoldLink>Buy Crypto</BoldLink>
@@ -97,7 +97,7 @@ export default function Navbar() {
 							</div>
 						</div>
 						{false && (
-							<div className="items-center hidden w-full max-w-md gap-8 md:flex">
+							<div className="items-center hidden w-full max-w-md gap-4 md:flex">
 								<NavbarSearchDropdown />
 							</div>
 						)}

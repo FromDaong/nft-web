@@ -25,6 +25,7 @@ module.exports = withTM({
 		ignoreDuringBuilds: true,
 	},
 	reactStrictMode: true,
+	serverComponents: true,
 	i18n: {
 		locales: ["en", "nl"],
 		defaultLocale: "en",

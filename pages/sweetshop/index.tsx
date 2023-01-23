@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import {SearchIcon} from "@heroicons/react/outline";
-import NFTDropdownSort from "@packages/Dropdowns/NFTDropdownSort";
+import NFTSort from "@packages/Dropdowns/NFTDropdownSort";
 import {TritPost} from "@packages/post/TritPost";
 import {SEOHead} from "@packages/seo/page";
 import {Button} from "@packages/shared/components/Button";
@@ -9,31 +9,39 @@ import {Input} from "@packages/shared/components/Input";
 import Pagination from "@packages/shared/components/Pagination";
 import {Heading} from "@packages/shared/components/Typography/Headings";
 import {useDebounce} from "@packages/shared/hooks";
-import {useQueryClient} from "@tanstack/react-query";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
-import {NextPageContext} from "next";
 import {useRouter} from "next/router";
 import {TreatNFTsInfinityScrollingContainer} from "packages/shared/components/ListingSection";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
 export default function NFTS({sort, q, p, nfts, error}) {
 	const posts = JSON.parse(nfts);
 	const nft_posts = posts.docs;
 	const router = useRouter();
-	const [page, setPage] = useState(p as number);
-	const [, setSortBy] = useState<string>(sort as string);
-	const [searchText, setSearchText] = useState(q as string);
+	const [page, setPage] = useState(p);
+	const [sortBy, setSortBy] = useState(sort);
+	const [searchText, setSearchText] = useState(q);
 	const search = useDebounce(searchText, 400);
+
+	const setSort = (s) => {
+		setSortBy(s);
+		router.push({
+			query: {
+				...router.query,
+				...{sort: s},
+				page: 1,
+			},
+		});
+	};
 
 	const nextPage = () => {
 		setPage(page + +1);
 		router.push({
 			query: {
-				...(sort ? {sort} : {sort: "3"}),
-				...(search ? {q: search} : {}),
+				...router.query,
 				...{p: page + +1},
 			},
 		});
@@ -43,56 +51,26 @@ export default function NFTS({sort, q, p, nfts, error}) {
 		setPage(page + -1);
 		router.push({
 			query: {
-				...(sort ? {sort} : {sort: "3"}),
-				...(search ? {q: search} : {}),
+				...router.query,
 				...{p: page + +1},
 			},
 		});
 	};
 
-	const performSearchWithNewParams = (e) => {
-		e.preventDefault();
-		router.reload();
+	const gotoPage = (page) => {
+		router.push({query: {...router.query, p: page}});
 	};
 
-	// T-44 Implement search bar for sweetshop NFTs + filters with inspiration form Airbnb
-	useEffect(() => {
-		router.push(
-			{
-				query: {
-					...(sort ? {sort} : {sort: "3"}),
-					...(search ? {q: search} : {}),
-					...{p: page},
-				},
+	const performSearchWithNewParams = (e) => {
+		e.preventDefault();
+		router.push({
+			query: {
+				...(sort ? {sort} : {sort: "3"}),
+				...(search ? {q: search} : {}),
+				...{p: 1},
 			},
-			undefined,
-			{
-				shallow: true,
-			}
-		);
-
-		if (!sort) {
-			setSortBy("3");
-		}
-	}, [search, sort]);
-
-	useEffect(() => {
-		router.push(
-			{
-				query: {
-					...(sort ? {sort} : {sort: "3"}),
-					...(search ? {q: search} : {}),
-					...{p: page},
-				},
-			},
-			undefined,
-			{
-				shallow: true,
-			}
-		);
-	}, [page]);
-
-	const sortMap = ["Lowest price first", "Highest price first", "Newest first"];
+		});
+	};
 
 	return (
 		<ApplicationLayout>
@@ -102,17 +80,16 @@ export default function NFTS({sort, q, p, nfts, error}) {
 					<Container className="flex flex-col gap-12 py-12">
 						<form
 							onSubmit={performSearchWithNewParams}
-							className="flex flex-wrap items-center w-full gap-4 px-4"
+							className="flex flex-col w-full gap-4 px-4"
 						>
 							<Container
-								className="flex w-full max-w-xl rounded-lg"
+								className="flex items-center w-full gap-1 px-2 py-1 rounded-lg"
 								css={{
 									backgroundColor: "$elementOnSurface",
 								}}
 							>
 								<Input
 									css={{
-										width: "100%",
 										padding: "8px 12px",
 										borderRadius: "8px",
 										backgroundColor: "transparent",
@@ -120,10 +97,12 @@ export default function NFTS({sort, q, p, nfts, error}) {
 									placeholder={"Start typing to search for NFTs"}
 									onChange={(e) => setSearchText(e.target.value)}
 									value={searchText}
+									className="flex-1"
 								/>
+
 								<Button
 									type={"submit"}
-									css={{backgroundColor: "transparent", color: "$text"}}
+									appearance={"subtle"}
 								>
 									<SearchIcon
 										width={20}
@@ -131,14 +110,14 @@ export default function NFTS({sort, q, p, nfts, error}) {
 									/>
 								</Button>
 							</Container>
-							<Container className="flex flex-1 gap-4">
-								<NFTDropdownSort
-									sort={sort}
-									setSort={setSortBy}
-									label={sortMap[Number(sort ?? 3) - 1]}
+							<Container className="flex gap-4 flex-noshrink">
+								<NFTSort
+									sort={sortBy}
+									setSort={setSort}
 								/>
 							</Container>
 						</form>
+
 						<Container className="flex flex-col gap-8 px-4 xl:px-0">
 							<TreatNFTsInfinityScrollingContainer>
 								{nft_posts.length > 0 ? (
@@ -162,9 +141,7 @@ export default function NFTS({sort, q, p, nfts, error}) {
 							<Pagination
 								hasNextPage={posts.hasNextPage}
 								hasPrevPage={page - 1 > 0}
-								gotoPage={(page) =>
-									router.push({query: {...router.query, p: page}})
-								}
+								gotoPage={gotoPage}
 								page={page}
 								totalPages={+posts.totalPages}
 								next={nextPage}
@@ -180,7 +157,7 @@ export default function NFTS({sort, q, p, nfts, error}) {
 	);
 }
 
-export const getServerSideProps = async (ctx: NextPageContext) => {
+export const getServerSideProps = async (ctx) => {
 	const {sort, q, p} = ctx.query;
 
 	try {
@@ -219,6 +196,14 @@ export const getServerSideProps = async (ctx: NextPageContext) => {
 			},
 		};
 	} catch (err) {
-		throw new TypeError("Oops, Server didn't return a reasonable response.");
+		return {
+			props: {
+				sort: sort ?? 3,
+				q: q ?? "",
+				p: p ?? 1,
+				nfts: JSON.stringify({docs: [], hasNextPage: false, totalPages: 1}),
+				error: true,
+			},
+		};
 	}
 };
