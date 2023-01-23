@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import NFTDropdownSort from "@packages/Dropdowns/NFTDropdownFilter";
+import NFTDropdownSort from "@packages/Dropdowns/NFTDropdownSort";
 import {TritPost} from "@packages/post/TritPost";
 import {ExpandableSearch} from "@packages/search/ExpandableSearch";
 import {SEOHead} from "@packages/seo/page";
@@ -44,14 +44,12 @@ export default function NFTS() {
 
 	const {
 		data,
-		isFetchingNextPage,
 		fetchNextPage,
 		hasNextPage,
 		isFetching,
 		refetch,
 		isLoading,
 		fetchPreviousPage,
-		hasPreviousPage,
 	} = TreatCore.useInfiniteQuery({
 		queryKey: [`sweetshopNFTsInfinite:${search}`],
 		queryFn: ({pageParam = 1}) => {
@@ -67,27 +65,24 @@ export default function NFTS() {
 	const posts = useMemo(() => {
 		if (pages.length > 0) {
 			setTotalPages(pages[0].totalPages);
-			return pages
-				.map((page) => page.docs)
-				.flat()
-				.map((post) =>
-					legacy_nft_to_new({
-						...post.nft,
-						price: post.price,
-						_id: post.nft._id,
-						creator: {
-							...post.creator,
-							profile: post.creator_profile,
-						},
-						seller: {
-							address: post.seller.address,
-							profile_pic: post.seller.profile_pic,
-							username: post.seller.username,
-							display_name: post.seller.display_name,
-							event_id: post._id,
-						},
-					})
-				);
+			return pages[page - 1].docs.map((post) =>
+				legacy_nft_to_new({
+					...post.nft,
+					price: post.price,
+					_id: post.nft._id,
+					creator: {
+						...post.creator,
+						profile: post.creator_profile,
+					},
+					seller: {
+						address: post.seller.address,
+						profile_pic: post.seller.profile_pic,
+						username: post.seller.username,
+						display_name: post.seller.display_name,
+						event_id: post._id,
+					},
+				})
+			);
 		} else {
 			return [];
 		}
@@ -136,7 +131,23 @@ export default function NFTS() {
 		if (!sort) {
 			setSortBy("3");
 		}
-	}, [search, sort, page]);
+	}, [search, sort]);
+
+	useEffect(() => {
+		router.push(
+			{
+				query: {
+					...(sort ? {sort} : {sort: "3"}),
+					...(search ? {q: search} : {}),
+					...(page ? {p: page} : {p: 1}),
+				},
+			},
+			undefined,
+			{
+				shallow: true,
+			}
+		);
+	}, [page]);
 
 	const sortMap = ["Lowest price first", "Highest price first", "Newest first"];
 
@@ -198,17 +209,21 @@ export default function NFTS() {
 								)}
 							</TreatNFTsInfinityScrollingContainer>
 						</Container>
-						<Pagination
-							hasNextPage={hasNextPage}
-							hasPrevPage={hasPreviousPage}
-							gotoPage={(page) => page}
-							page={page}
-							totalPages={+totalPages}
-							next={nextPage}
-							prev={prevPage}
-							nextPage={page + +1}
-							prevPage={page - +1}
-						/>
+						{!isFetching && (
+							<Pagination
+								hasNextPage={hasNextPage}
+								hasPrevPage={page - 1 > 0}
+								gotoPage={(page) =>
+									router.push({query: {...router.query, p: page}})
+								}
+								page={page}
+								totalPages={+totalPages}
+								next={nextPage}
+								prev={prevPage}
+								nextPage={page + +1}
+								prevPage={page - +1}
+							/>
+						)}
 					</Container>
 				</Container>
 			</ApplicationFrame>
