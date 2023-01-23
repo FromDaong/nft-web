@@ -58,8 +58,6 @@ export default function Pagination(props: PaginationProps) {
 		}
 	}, [props]);
 
-	console.log({pagesPreview, props});
-
 	if (pagesPreview.length === 0) return null;
 
 	return (
