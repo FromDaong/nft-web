@@ -1,7 +1,7 @@
 import {styled} from "@styles/theme";
 
 export const BoldLink = styled("a", {
-	fontWeight: "700 !important",
+	fontWeight: "600 !important",
 	color: "$textOnSurface",
 	cursor: "pointer",
 	variants: {

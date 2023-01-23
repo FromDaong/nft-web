@@ -1,4 +1,5 @@
 import {returnWithError} from "@db/engine/utils";
+import {getToken} from "next-auth/jwt";
 import {getSession} from "next-auth/react";
 
 export const onlyQueryProps = (ctx: {query: any}) => ({
@@ -32,7 +33,7 @@ export const returnProps = (props) => ({
 });
 
 export const protectedAPIRoute = (handler) => async (req, res) => {
-	const session = await getSession({req});
+	const session = await getToken({req});
 	if (!session) {
 		return returnWithError("Thou shalt not pass", 401, res);
 	}
@@ -40,7 +41,7 @@ export const protectedAPIRoute = (handler) => async (req, res) => {
 	req.session = {
 		...session,
 		// @ts-ignore
-		address: session.address.toLowerCase(),
+		address: session.sub.toLowerCase(),
 	};
 
 	return handler(req, res);

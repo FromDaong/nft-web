@@ -9,7 +9,12 @@ import NavbarSearchDropdown from "../search/NavbarSearchDropdown";
 
 import {styled} from "@styles/theme";
 import {BoldLink} from "@packages/shared/components/Typography/Text";
-import {BellIcon, ChatIcon, PhotographIcon} from "@heroicons/react/outline";
+import {
+	BellIcon,
+	ChatIcon,
+	PhotographIcon,
+	PlusCircleIcon,
+} from "@heroicons/react/outline";
 import {Container} from "@packages/shared/components/Container";
 import MobileNavbarDropdown from "./components/MobileNavbarDropdown";
 import {Button} from "@packages/shared/components/Button";
@@ -17,6 +22,7 @@ import {useSession} from "next-auth/react";
 import Spinner from "@packages/shared/icons/Spinner";
 import {ConnectButton} from "@rainbow-me/rainbowkit";
 import {useApplicationTheme} from "@packages/theme/provider";
+import {PlusIcon} from "@radix-ui/react-icons";
 
 const NavbarProfileAvatar = dynamic(
 	() => import("./components/NavbarProfileAvatar")
@@ -57,35 +63,35 @@ export default function Navbar() {
 							<div className="items-center hidden gap-8 md:flex">
 								<Link href="/sweetshop">
 									<a>
-										<BoldLink className="font-medium">Sweetshop</BoldLink>
+										<BoldLink>Sweetshop</BoldLink>
 									</a>
 								</Link>
 							</div>
 							<div className="items-center hidden gap-8 md:flex">
 								<Link href="/creators">
 									<a>
-										<BoldLink className="font-medium">Creators</BoldLink>
+										<BoldLink>Creators</BoldLink>
 									</a>
 								</Link>
 							</div>
 							<div className="items-center hidden gap-8 md:flex">
 								<Link href="https://treatdao.org/magazine">
 									<a>
-										<BoldLink className="font-medium">Magazine</BoldLink>
+										<BoldLink>Magazine</BoldLink>
 									</a>
 								</Link>
 							</div>
 							<div className="items-center hidden gap-8 md:flex">
 								<Link href="https://treatdao.com/farms">
 									<a>
-										<BoldLink className="font-medium">Farm</BoldLink>
+										<BoldLink>Farm</BoldLink>
 									</a>
 								</Link>
 							</div>
 							<div className="items-center hidden gap-8 md:flex">
 								<Link href="/dex/ramp">
 									<a>
-										<BoldLink className="font-medium">Buy Crypto</BoldLink>
+										<BoldLink>Buy Crypto</BoldLink>
 									</a>
 								</Link>
 							</div>
@@ -102,6 +108,30 @@ export default function Navbar() {
 								// eslint-disable-next-line no-constant-condition
 								(isConnected ? (
 									<Container className="flex items-center gap-4">
+										{creator && (
+											<Link href={"/create"}>
+												<a>
+													<Button
+														css={{
+															borderRadius: "9999px",
+															height: "40px",
+															width: "40px",
+															padding: 0,
+															alignItems: "center",
+															justifyContent: "center",
+														}}
+														appearance={"surface"}
+													>
+														<Container className="flex items-center justify-center w-full h-full">
+															<PlusCircleIcon
+																height={20}
+																width={20}
+															/>
+														</Container>
+													</Button>
+												</a>
+											</Link>
+										)}
 										<Link href={"/messages"}>
 											<a>
 												<Button
@@ -115,7 +145,7 @@ export default function Navbar() {
 													}}
 													appearance={"surface"}
 												>
-													<Container className="w-full h-full flex items-center justify-center">
+													<Container className="flex items-center justify-center w-full h-full">
 														<ChatIcon
 															height={20}
 															width={20}
@@ -137,7 +167,7 @@ export default function Navbar() {
 													}}
 													appearance={"surface"}
 												>
-													<Container className="w-full h-full flex items-center justify-center">
+													<Container className="flex items-center justify-center w-full h-full">
 														<BellIcon
 															height={20}
 															width={20}
@@ -146,22 +176,7 @@ export default function Navbar() {
 												</Button>
 											</a>
 										</Link>
-										{creator && (
-											<Link href={"/create"}>
-												<a>
-													<Button
-														appearance={"surface"}
-														css={{borderRadius: "9999px"}}
-													>
-														<PhotographIcon
-															width={18}
-															height={18}
-														/>
-														<span>Create NFT</span>
-													</Button>
-												</a>
-											</Link>
-										)}
+
 										<NavbarProfileAvatar />
 									</Container>
 								) : (

@@ -22,6 +22,7 @@ export class ChatEngine {
 	private fetchOlderMessages: () => Promise<ChatApiResponse>;
 	private clearAllMessages: () => void;
 	private setState: (state: any) => void;
+	private receiveMessageSound: () => void;
 
 	private channel: Channel;
 
@@ -34,7 +35,8 @@ export class ChatEngine {
 		messages: ChatApiResponse,
 		fetchOlderMessages: () => Promise<ChatApiResponse>,
 		clearAllMessages: () => void,
-		setState: (state) => void
+		setState: (state) => void,
+		receiveMessageSound: () => void
 	) {
 		this.chat_id = "messages"; // user.username + "-" + contact.username;
 		this.owner = user;
@@ -44,6 +46,7 @@ export class ChatEngine {
 		this.fetchOlderMessages = fetchOlderMessages;
 		this.clearAllMessages = clearAllMessages;
 		this.setState = setState;
+		this.receiveMessageSound = receiveMessageSound;
 
 		this.hydrateMessages(messages.docs);
 		this.bindToChannel();
@@ -68,6 +71,7 @@ export class ChatEngine {
 
 	private onReceiveMessage = (data: TMessage) => {
 		if (data.sender.username === this.owner.username) return;
+		this.receiveMessageSound();
 		this.addMessage(data.text, data.sender.username, data.timestamp);
 		this.setState(Array.from(this.chatBuckets));
 	};
@@ -160,8 +164,8 @@ export class ChatEngine {
 			}
 		}
 
-		// Message sent in the last 24 hours
-		if (new Date(timestamp).getDate() !== new Date(lastBucket.date).getDate()) {
+		// Message has been sent on same day but by a different participant
+		if (new Date(timestamp).getDate() === new Date(lastBucket.date).getDate()) {
 			lastBucket.messageBuckets.push({
 				sender: messageSender,
 				messages: [messageToAdd],
@@ -170,6 +174,7 @@ export class ChatEngine {
 			return;
 		}
 
+		// Message has been sent on a different day
 		this.chatBuckets.push(this.getNewSingleBucket(messageToAdd));
 		return;
 	};

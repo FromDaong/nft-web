@@ -8,18 +8,28 @@ export default function Message({
 	text: string;
 	timestamp: number;
 }) {
+	let hours = `${new Date(timestamp).getHours()}`;
+	let minutes = `${new Date(timestamp).getMinutes()}`;
+
+	if (parseInt(hours) < 10) {
+		hours = "0" + hours;
+	}
+
+	if (parseInt(minutes) < 10) {
+		minutes = "0" + minutes;
+	}
+
 	return (
-		<Container className="w-full relative group flex justify-between transition-opacity duration-150">
+		<Container className="relative flex justify-between w-full transition-opacity duration-150 group">
 			<Text>{text}</Text>
 			<MutedText
 				css={{
 					backgroundColor: "$surface",
 					padding: "4px",
 				}}
-				className="flex-noshrink opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-200"
+				className="transition-opacity duration-200 opacity-0 flex-noshrink group-hover:opacity-100 group-focus:opacity-100"
 			>
-				{new Date(timestamp).getHours()}:{new Date(timestamp).getUTCMinutes()}{" "}
-				{"\n"}
+				{hours}:{minutes} {"\n"}
 			</MutedText>
 		</Container>
 	);

@@ -3,39 +3,70 @@ import {PaperAirplaneIcon} from "@heroicons/react/solid";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Input} from "@packages/shared/components/Input";
-import {useState} from "react";
+import {useRef, useState} from "react";
 import * as Popover from "@radix-ui/react-popover";
-import {styled} from "@styles/theme";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
-const PopoverContent = styled(Popover.Content, {
-	padding: "8px",
+import {styled} from "@styles/theme";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
+import {useApplicationTheme} from "@packages/theme/provider";
+
+const PopoverContent = styled(DropdownMenu.Content, {
 	backgroundColor: "$surface",
 	boxShadow: "$shadow",
+	zIndex: 500,
 });
-const PopoverDemo = () => (
-	<Popover.Root>
-		<Popover.Trigger>
-			<EmojiHappyIcon
-				height={24}
-				width={24}
-			/>
-		</Popover.Trigger>
-		<Popover.Portal>
-			<PopoverContent>Some more info…</PopoverContent>
-		</Popover.Portal>
-	</Popover.Root>
-);
+const PopoverDemo = ({addEmoji}) => {
+	const {theme} = useApplicationTheme();
+
+	return (
+		<DropdownMenu.Root>
+			<DropdownMenu.Trigger>
+				<EmojiHappyIcon
+					height={24}
+					width={24}
+				/>
+			</DropdownMenu.Trigger>
+			<DropdownMenu.Portal className="relative z-50">
+				<PopoverContent>
+					<Picker
+						data={data}
+						theme={theme === "dark" ? "dark" : "light"}
+						onEmojiSelect={addEmoji}
+						previewPosition={"none"}
+					/>
+				</PopoverContent>
+			</DropdownMenu.Portal>
+		</DropdownMenu.Root>
+	);
+};
 
 export default function SendMessage({
 	sendMessage,
 }: {
 	sendMessage: (text) => void;
 }) {
+	const messageInputRef = useRef(null);
+
 	const [text, setText] = useState("");
+
 	const submit = () => {
 		setText("");
 		sendMessage(text);
 	};
+
+	const addEmoji = (emoji) => {
+		const cursor = messageInputRef.current.selectionStart;
+		setText(`${text.slice(0, cursor)}${emoji.native}${text.slice(cursor)}`);
+
+		const newCursor = cursor + emoji.length;
+		setTimeout(
+			() => messageInputRef.current.setSelectionRange(newCursor, newCursor),
+			10
+		);
+	};
+
 	return (
 		<form className="flex items-center w-full gap-4">
 			<Container
@@ -45,16 +76,19 @@ export default function SendMessage({
 					width: "100%",
 					borderRadius: "8px",
 				}}
-				className="relative flex w-full gap-4 items-center p-4"
+				className="relative flex items-center w-full gap-4 p-4"
 			>
 				<Input
 					className="w-full"
 					placeholder="Send a message"
 					value={text}
-					onChange={(e) => setText(e.target.value)}
+					onChange={(e) => {
+						setText(e.target.value);
+					}}
 					css={{padding: 0}}
+					ref={messageInputRef}
 				/>
-				<PopoverDemo />
+				<PopoverDemo addEmoji={addEmoji} />
 			</Container>
 			<Container className="flex items-center justify-center flex-1 h-full">
 				<Button
@@ -63,7 +97,7 @@ export default function SendMessage({
 					appearance={text ? "surface" : "disabled"}
 					disabled={!text}
 					type="submit"
-					className="transition-opacity duration-200"
+					className="relative transition-opacity duration-200"
 				>
 					<PaperAirplaneIcon
 						height={20}

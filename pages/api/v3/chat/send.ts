@@ -6,12 +6,10 @@ import {returnWithError, returnWithSuccess} from "server/helpers/core/utils";
 async function handler(req: NextApiRequest, res: NextApiResponse) {
 	const {chat_id, message} = req.body;
 	const pusher = new Pusher({
-		key: "app-key",
-		host: "127.0.0.1",
-		port: "6001",
-		useTLS: false,
-		appId: "app-id",
-		secret: "app-secret",
+		key: "68ea1848874450546ae7",
+		appId: "1376129",
+		secret: "58b196827262f0491e26",
+		cluster: "us2",
 	});
 
 	const trigger = await pusher.trigger(chat_id, "new-message", {...message});

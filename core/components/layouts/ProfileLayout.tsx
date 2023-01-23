@@ -1,4 +1,6 @@
 import {
+	ChatAlt2Icon,
+	ChatIcon,
 	ClipboardCheckIcon,
 	ClipboardCopyIcon,
 	LinkIcon,
@@ -32,6 +34,7 @@ import {useState} from "react";
 import axios from "axios";
 import {apiEndpoint} from "@utils/index";
 import {SocialProfileJsonLd} from "next-seo";
+import {useRouter} from "next/router";
 
 const AvatarContainer = styled("div", {
 	borderRadius: "9999px",
@@ -77,10 +80,13 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 	const {isLoading, isConnected, profile: loggedInUser} = useUser();
 	const [value, copy] = useCopyToClipboard();
 	const [copyFx] = useSound("/sound/toggle_on.wav");
+	const router = useRouter();
 
 	const profile = props.userProfile;
 
-	const [ownerOfUserProfile, setOwnerOfUserProfile] = useState({
+	const [openingMessages, setOpeningMessages] = useState(false);
+
+	const [ownerOfUserProfile] = useState({
 		username: profile.username,
 		display_name: profile ? profile.display_name : "",
 		bio: profile ? profile.bio : "",
@@ -93,34 +99,12 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 		creator: profile.creator,
 		badges: [
 			...profile.badges,
-			props.userProfile.creator &&
-			props.userProfile.creator?.approved === false &&
-			props.userProfile.creator?.pending === true
-				? {color: "purple", name: "Collector"}
-				: {color: "pink", name: "Verified Creator"},
+			(props.userProfile.creator || props.userProfile.creator?.approved) &&
+			!props.userProfile.creator?.pending
+				? {color: "pink", name: "Verified Creator"}
+				: {color: "purple", name: "Collector"},
 		],
 	});
-
-	const getSubscriptionNFTsCount = async () => {
-		const res = await axios.get(
-			`${apiEndpoint}/marketplace/methods/count/subscription?address=${ownerOfUserProfile.address}`
-		);
-		return res.data.data;
-	};
-
-	const getResaleNFTsCount = async () => {
-		const res = await axios.get(
-			`${apiEndpoint}/marketplace/methods/count/resale?address=${ownerOfUserProfile.address}`
-		);
-		return res.data.data;
-	};
-
-	const getCollectionsCount = async () => {
-		const res = await axios.get(
-			`${apiEndpoint}/marketplace/methods/count/collection?address=${ownerOfUserProfile.address}`
-		);
-		return res.data.data;
-	};
 
 	const getOwnedNFTsCount = async () => {
 		const res = await axios.get(
@@ -214,6 +198,20 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 		}
 	};
 
+	const createChatIfNotExist = () => {
+		setOpeningMessages(true);
+		console.log({loggedInUser});
+		axios
+			.get(`${apiEndpoint}/chat/username/${ownerOfUserProfile.username}`)
+			.then((res) => {
+				router.push(`/messages/${res.data.data.id}`);
+			})
+			.catch((err) => {
+				console.log({err});
+				setOpeningMessages(false);
+			});
+	};
+
 	const isFollowing = followers.includes(loggedInUser?._id);
 
 	return (
@@ -237,9 +235,9 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 				}}
 			/>
 
-			<Container className="container mx-auto py-8 px-4 xl:px-0">
+			<Container className="container px-4 py-8 mx-auto xl:px-0">
 				<FluidContainer className="flex justify-between px-4">
-					<ContextualContainer className="grid col-span-1 xl:grid-cols-3 justify-between w-full gap-y-4">
+					<ContextualContainer className="grid justify-between w-full col-span-1 xl:grid-cols-3 gap-y-4">
 						<Container className="col-span-1 xl:col-span-2">
 							<Container className="flex gap-8">
 								<Container>
@@ -263,7 +261,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 										</Heading>
 										<MutedText>@{ownerOfUserProfile.username}</MutedText>
 									</Container>
-									<Container className="flex gap-4 flex-row flex-wrap rounded-full mt-2">
+									<Container className="flex flex-row flex-wrap gap-4 mt-2 rounded-full">
 										{ownerOfUserProfile.badges?.map((badge) => (
 											<Container
 												key={badge.name}
@@ -278,10 +276,10 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 											</Container>
 										))}
 									</Container>
-									<Text className="mt-2 max-w-2xl hidden md:flex">
+									<Text className="hidden max-w-2xl mt-2 md:flex">
 										{ownerOfUserProfile.bio ?? "Loading profile details"}
 									</Text>
-									<Container className="w-full mb-4 mt-2 hidden md:flex">
+									<Container className="hidden w-full mt-2 mb-4 md:flex">
 										<>
 											<Text
 												appearance={"hiContrast"}
@@ -306,10 +304,10 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 								</Container>
 							</Container>
 							<Container className="flex flex-col gap-4 md:hidden">
-								<Text className="mt-2 max-w-2xl flex">
+								<Text className="flex max-w-2xl mt-2">
 									{ownerOfUserProfile.bio ?? "Loading profile details"}
 								</Text>
-								<Container className="w-full mb-4 mt-2 flex">
+								<Container className="flex w-full mt-2 mb-4">
 									<>
 										<Text
 											appearance={"hiContrast"}
@@ -334,8 +332,8 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 							</Container>
 						</Container>
 
-						<Container className="h-fit xl:justify-end flex">
-							<Container className="flex h-auto relative">
+						<Container className="flex h-fit xl:justify-end">
+							<Container className="relative flex h-auto">
 								<Container className="flex flex-wrap gap-4 h-fit">
 									{!isLoading &&
 										loggedInUser &&
@@ -355,6 +353,24 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 												)}
 											</Button>
 										)}
+									{isFollowing && (
+										<Button
+											onClick={createChatIfNotExist}
+											appearance={openingMessages ? "disabled" : "surface"}
+											className="transition-transform duration-100 hover:scale-105"
+										>
+											{!openingMessages && (
+												<>
+													<ChatIcon
+														width={20}
+														height={20}
+													/>
+													<span>Send message</span>
+												</>
+											)}
+											{openingMessages && "Opening messages..."}
+										</Button>
+									)}
 									<Link
 										href={`https://bscscan.com/address/${ownerOfUserProfile.address}`}
 									>
@@ -364,7 +380,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 										>
 											<Button
 												appearance={"surface"}
-												className="hover:scale-105 transition-transform duration-100"
+												className="transition-transform duration-100 hover:scale-105"
 											>
 												<span>View on Bscscan</span>
 												<LinkIcon
@@ -374,25 +390,6 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 											</Button>
 										</a>
 									</Link>
-									<Button
-										onClick={copyProfileUrlToClipboard}
-										appearance={"surface"}
-										className="hover:scale-105 transition-transform duration-100"
-									>
-										<span>Copy profile link</span>
-										{!value && (
-											<ClipboardCopyIcon
-												width={16}
-												height={16}
-											/>
-										)}
-										{value && (
-											<ClipboardCheckIcon
-												width={16}
-												height={16}
-											/>
-										)}
-									</Button>
 								</Container>
 							</Container>
 						</Container>

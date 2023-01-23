@@ -14,9 +14,12 @@ import {
 } from "@packages/navigation/components/DropdownContainer";
 import {useEffect, useMemo, useRef, useState} from "react";
 import {ChatEngine} from "../lib";
+import useSound from "use-sound";
 
 export default function ChatContainer({username, contact}) {
 	const chatContainerRef = useRef(null);
+	const [receiveMessageSound] = useSound("/sound/toggle_on.wav");
+
 	const [chatBucket, setChatBucket] = useState([
 		{
 			date: new Date().getTime(),
@@ -66,7 +69,8 @@ export default function ChatContainer({username, contact}) {
 					hasPreviousPage: false,
 				}),
 				clearAllMessages,
-				setChatBucket
+				setChatBucket,
+				receiveMessageSound
 			),
 
 		[]
@@ -104,7 +108,7 @@ export default function ChatContainer({username, contact}) {
 							</a>
 						</Link>
 					</Container>
-					<Container className="md:flex items-center gap-2 p-4">
+					<Container className="items-center gap-2 p-4 md:flex">
 						<Button appearance={"unstyled"}>
 							<DropdownMenu.Root>
 								<DropdownMenu.Trigger>
@@ -134,7 +138,7 @@ export default function ChatContainer({username, contact}) {
 			</Container>
 			<Container
 				ref={chatContainerRef}
-				className="flex-1 h-full w-full py-4 flex flex-col gap-12 overflow-y-auto scrollbar px-4 md:px-8"
+				className="relative flex flex-col flex-1 w-full h-full gap-12 px-4 py-4 overflow-y-auto scrollbar md:px-8"
 			>
 				{chatBucket[0].messageBuckets.length > 0 &&
 					chatBucket.map((bucket) => (
@@ -145,7 +149,7 @@ export default function ChatContainer({username, contact}) {
 						/>
 					))}
 			</Container>
-			<Container className="flex-noshrink p-4 md:px-8 ">
+			<Container className="p-4 flex-noshrink md:px-8 ">
 				<Container
 					css={{backgroundColor: "$surface"}}
 					className="flex items-center w-full py-2"
