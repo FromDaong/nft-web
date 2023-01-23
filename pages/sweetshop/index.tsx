@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import NFTDropdownSort from "@packages/navigation/components/NFTDropdownFilter";
+import NFTDropdownSort from "@packages/Dropdowns/NFTDropdownFilter";
 import {TritPost} from "@packages/post/TritPost";
 import {ExpandableSearch} from "@packages/search/ExpandableSearch";
 import {SEOHead} from "@packages/seo/page";
@@ -145,8 +145,8 @@ export default function NFTS() {
 			<ApplicationFrame>
 				<SEOHead title="Explore NFTs" />
 				<Container className="flex flex-col gap-12 py-12">
-					<Container className="w-full flex-wrap px-4 flex items-center gap-4">
-						<Container className="max-w-xl w-full ">
+					<Container className="flex flex-wrap items-center w-full gap-4 px-4">
+						<Container className="w-full max-w-xl ">
 							<Input
 								css={{width: "100%", padding: "8px 12px", borderRadius: "8px"}}
 								placeholder={"Start typing to search for NFTs"}
@@ -154,19 +154,12 @@ export default function NFTS() {
 								value={searchText}
 							/>
 						</Container>
-						<Container className="flex gap-4 flex-1">
+						<Container className="flex flex-1 gap-4">
 							<NFTDropdownSort
 								sort={sort}
 								setSort={setSortBy}
+								label={sortMap[Number(sort ?? 3) - 1]}
 							/>
-							<Container className="h-full flex items-center">
-								<Button
-									appearance={"surface"}
-									fullWidth
-								>
-									Showing: {sortMap[Number(sort ?? 3) - 1]}
-								</Button>
-							</Container>
 						</Container>
 					</Container>
 					<Container className="flex flex-col gap-8 px-4 xl:px-0">
@@ -199,7 +192,7 @@ export default function NFTS() {
 										</Container>
 									))
 								) : (
-									<Container className="col-span-1 md:col-span-2 flex flex-col items-center py-24 xl:col-span-5">
+									<Container className="flex flex-col items-center col-span-1 py-24 md:col-span-2 xl:col-span-5">
 										<Heading size="sm">No results found</Heading>
 									</Container>
 								)}

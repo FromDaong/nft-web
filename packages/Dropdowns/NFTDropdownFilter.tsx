@@ -1,20 +1,23 @@
 import {DropdownMenuItem} from "@packages/Dropdowns";
 import {Button} from "@packages/shared/components/Button";
-import {ImportantText, Text} from "@packages/shared/components/Typography/Text";
+import {ImportantText} from "@packages/shared/components/Typography/Text";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import {styled} from "@styles/theme";
 
 const DropDownContent = styled(DropdownMenu.Content, {
-	backgroundColor: "$surfaceOnSurface",
+	backgroundColor: "$surface",
 });
 
-const NFTDropdownSort = ({setSort, sort}) => (
+const NFTDropdownSort = ({setSort, sort, label}) => (
 	<DropdownMenu.Root>
 		<DropdownMenu.Trigger className="flex">
-			<Button appearance={"default"}>Sort</Button>
+			<Button appearance={"surface"}>Sort: {label}</Button>
 		</DropdownMenu.Trigger>
-		<DropdownMenu.Portal>
-			<DropDownContent className="z-30 p-3 transition-all duration-150 shadow-xl gap-y-3 rounded-xl">
+		<DropdownMenu.Portal className="transition-all duration-150">
+			<DropDownContent
+				className="z-30 p-3 border shadow-lg gap-y-3 rounded-xl"
+				css={{border: "$subtleBorder"}}
+			>
 				<DropdownMenuItem
 					onClick={() => setSort(1)}
 					className="flex gap-2 px-4 py-2"

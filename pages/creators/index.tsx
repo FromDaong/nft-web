@@ -1,4 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import CreatorsDropdownSort from "@packages/Dropdowns/CreatorsDropdownSort";
 import SuggestedCreatorCard from "@packages/feed/components/SuggestedCreatorCard";
 import {SEOHead} from "@packages/seo/page";
 import {Button} from "@packages/shared/components/Button";
@@ -33,6 +34,8 @@ export default function NFTS() {
 		(router.query.q ?? "") as string
 	);
 	const search = useDebounce(searchText, 400);
+	const [sort, setSortBy] = useState<string>(router.query.sort as string);
+	const [page, setPage] = useState(1);
 
 	const {
 		data,
@@ -42,6 +45,7 @@ export default function NFTS() {
 		isFetching,
 		refetch,
 		isLoading,
+		fetchPreviousPage,
 	} = TreatCore.useInfiniteQuery({
 		queryKey: [`creatorsInfinite:${search}`],
 		queryFn: ({pageParam = 1}) => getSweetshopNFTs(pageParam, search),
@@ -59,6 +63,22 @@ export default function NFTS() {
 		}
 	}, [pages]);
 
+	const nextPage = () => {
+		setPage(page + +1);
+		changePage();
+		fetchNextPage();
+	};
+
+	const prevPage = () => {
+		setPage(page + -1);
+		changePage();
+		fetchPreviousPage();
+	};
+
+	const changePage = () => {
+		window.scrollTo(0, 0);
+	};
+
 	useEffect(() => {
 		if (inView) {
 			fetchNextPage();
@@ -71,7 +91,9 @@ export default function NFTS() {
 		router.push(
 			{
 				query: {
+					...(sort ? {sort} : {sort: "3"}),
 					...(search ? {q: search} : {}),
+					...(page ? {p: page} : {p: 1}),
 				},
 			},
 			undefined,
@@ -79,15 +101,28 @@ export default function NFTS() {
 				shallow: true,
 			}
 		);
-	}, [search]);
+
+		if (!sort) {
+			setSortBy("1");
+		}
+	}, [search, sort, page]);
+
+	const sort_labels_map = [
+		"A-Z",
+		"Z-A",
+		"Most followers",
+		"Least followers",
+		"Most NFTs",
+		"Least NFTs",
+	];
 
 	return (
 		<ApplicationLayout>
 			<ApplicationFrame>
 				<SEOHead title="Explore Creators" />
 				<Container className="flex flex-col gap-12 py-12">
-					<Container className="w-full flex-wrap px-4 flex items-center gap-4">
-						<Container className="max-w-xl w-full ">
+					<Container className="flex flex-wrap items-center w-full gap-4 px-4">
+						<Container className="w-full max-w-xl ">
 							<Input
 								css={{
 									width: "100%",
@@ -100,6 +135,11 @@ export default function NFTS() {
 								value={searchText}
 							/>
 						</Container>
+						<CreatorsDropdownSort
+							sort={sort}
+							setSort={setSortBy}
+							label={sort_labels_map[parseInt(sort) - 1]}
+						/>
 					</Container>
 					<Container className="flex flex-col gap-8 px-4 xl:px-0">
 						<Container
@@ -137,7 +177,7 @@ export default function NFTS() {
 									</Container>
 								))
 							) : (
-								<Container className="col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-4 flex flex-col items-center py-24">
+								<Container className="flex flex-col items-center col-span-1 py-24 md:col-span-2 lg:col-span-3 xl:col-span-4">
 									<Heading size="sm">No results found</Heading>
 								</Container>
 							)}
