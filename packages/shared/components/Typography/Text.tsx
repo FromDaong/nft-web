@@ -1,6 +1,6 @@
 import {styled} from "@styles/theme";
 
-export const BoldLink = styled("a", {
+export const BoldLink = styled("p", {
 	fontWeight: "600 !important",
 	color: "$textOnSurface",
 	cursor: "pointer",

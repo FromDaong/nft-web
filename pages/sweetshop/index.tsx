@@ -73,8 +73,6 @@ export default function NFTS({sort, q, nfts, error}) {
 		});
 	};
 
-	console.log({posts});
-
 	return (
 		<ApplicationLayout>
 			<ApplicationFrame>

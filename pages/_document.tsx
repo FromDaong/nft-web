@@ -14,12 +14,6 @@ class MyDocument extends Document {
 		return {...initialProps};
 	}
 
-	webp = () =>
-		document
-			.createElement("canvas")
-			.toDataURL("image/webp")
-			.indexOf("data:image/webp") == 0;
-
 	render() {
 		return (
 			<Html>

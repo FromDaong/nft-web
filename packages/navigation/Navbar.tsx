@@ -9,12 +9,7 @@ import NavbarSearchDropdown from "../search/NavbarSearchDropdown";
 
 import {styled} from "@styles/theme";
 import {BoldLink} from "@packages/shared/components/Typography/Text";
-import {
-	BellIcon,
-	ChatIcon,
-	PhotographIcon,
-	PlusCircleIcon,
-} from "@heroicons/react/outline";
+import {BellIcon, ChatIcon, PlusCircleIcon} from "@heroicons/react/outline";
 import {Container} from "@packages/shared/components/Container";
 import MobileNavbarDropdown from "./components/MobileNavbarDropdown";
 import {Button} from "@packages/shared/components/Button";
@@ -22,7 +17,6 @@ import {useSession} from "next-auth/react";
 import Spinner from "@packages/shared/icons/Spinner";
 import {ConnectButton} from "@rainbow-me/rainbowkit";
 import {useApplicationTheme} from "@packages/theme/provider";
-import {PlusIcon} from "@radix-ui/react-icons";
 
 const NavbarProfileAvatar = dynamic(
 	() => import("./components/NavbarProfileAvatar")
@@ -45,7 +39,7 @@ export default function Navbar() {
 	return (
 		<Container>
 			<Nav className="hidden md:block fixed top-0 left-0 w-full xl:px-0 h-[60px] shadow">
-				<Container className="relative w-full h-full px-8 xl:px-0">
+				<Container className="relative w-full h-full px-8 xl:px-4">
 					<div className="absolute top-0 left-0 z-20 w-full h-full" />
 					<div className="container relative z-30 flex items-center justify-between py-3 mx-auto">
 						<div className="flex items-center gap-4">
@@ -60,6 +54,13 @@ export default function Navbar() {
 								</a>
 							</Link>
 
+							<div className="items-center hidden gap-4 md:flex">
+								<Link href="/explore/discover">
+									<a>
+										<BoldLink>Explore</BoldLink>
+									</a>
+								</Link>
+							</div>
 							<div className="items-center hidden gap-4 md:flex">
 								<Link href="/sweetshop">
 									<a>

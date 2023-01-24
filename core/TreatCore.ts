@@ -23,7 +23,6 @@ export default class TreatCore {
 		defaultOptions: {
 			queries: {
 				retry: 0,
-				suspense: true,
 				refetchOnWindowFocus: false,
 			},
 		},

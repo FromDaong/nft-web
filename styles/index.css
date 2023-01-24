@@ -141,3 +141,7 @@ iframe .bridgeBody {
 	width: 12px;
 	height: 12px;
 }
+
+span {
+	font-size: inherit;
+}

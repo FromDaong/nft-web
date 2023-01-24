@@ -12,7 +12,6 @@ import {
 	MoonIcon,
 	PresentationChartLineIcon,
 } from "@heroicons/react/outline";
-import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import TreatCore from "core/TreatCore";
 import axios from "axios";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
@@ -24,8 +23,8 @@ import {
 import {useApplicationTheme} from "@packages/theme/provider";
 import {Button} from "@packages/shared/components/Button";
 import {MixerVerticalIcon} from "@radix-ui/react-icons";
-
-// T-69 Use intersection observer to change navbar color.
+import Balancer from "react-wrap-balancer";
+import Image from "next/future/image";
 
 const getTrendingNFTs = async () => {
 	const res = await axios.get(`${apiEndpoint}/marketplace/trending`);
@@ -37,18 +36,8 @@ const getTrendingCreators = async () => {
 	return res.data.data;
 };
 
-const getTOTM = async () => {
-	const res = await axios.get(`${apiEndpoint}/marketplace/totm`);
-	return res.data;
-};
-
 export default function Index() {
 	const {theme} = useApplicationTheme();
-	const {
-		isLoading: totmIsLoading,
-		error: totmError,
-		data: totmData,
-	} = TreatCore.useQuery({queryKey: ["treatOfTheMonth"], queryFn: getTOTM});
 
 	const {
 		isLoading: trendingCreatorsLoading,
@@ -68,13 +57,8 @@ export default function Index() {
 		queryFn: getTrendingNFTs,
 	});
 
-	const totmCurated =
-		totmIsLoading || totmError
-			? []
-			: totmData.data.map((post) => legacy_nft_to_new(post));
-
 	const trendingNFTs =
-		totmIsLoading || totmError
+		trendingNFTsLoading || trendingNFTError
 			? []
 			: trendingNFTsData?.map((post) => legacy_nft_to_new(post));
 
@@ -112,7 +96,48 @@ export default function Index() {
 	);
 
 	return (
-		<Container className="flex flex-col gap-12 md:gap-16 lg:gap-24 py-12">
+		<Container className="flex flex-col gap-12 md:gap-16 lg:gap-24 py-12 px-4">
+			<Container className="flex flex-col items-center py-12 gap-8 md:gap-12">
+				<Container className="flex flex-col gap-4 items-center text-center max-w-3xl">
+					<Heading
+						css={{
+							fontSize: "2rem",
+							"@md": {
+								fontSize: "3rem",
+							},
+							"@lg": {
+								fontSize: "4rem",
+							},
+						}}
+						size="lg"
+					>
+						<Balancer>Empowering creators with web3</Balancer>
+					</Heading>
+					<Balancer>
+						<Text
+							css={{
+								fontSize: "1rem",
+								"@lg": {
+									fontSize: "1.5rem",
+								},
+							}}
+						>
+							TreatDAO is a Web3 project dedicated to creating opportunities and
+							an amazing platform for adult content creators and collectors.
+						</Text>
+					</Balancer>
+				</Container>
+				<Container className="flex items-center justify-center">
+					<Button>Visit the sweetshop</Button>
+				</Container>
+				<Container className="w-full h-[320px] relative md:mt-12">
+					<Image
+						fill
+						src={"/assets/treat_banner.svg"}
+						alt={"TreatDAO Community"}
+					/>
+				</Container>
+			</Container>
 			<Container>
 				<Container className="flex flex-col w-full gap-8 px-8 xl:px-0 container mx-auto">
 					<Container className="flex flex-col items-baseline gap-4">
