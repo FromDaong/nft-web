@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import {SearchIcon} from "@heroicons/react/outline";
+import {SearchIcon, XIcon} from "@heroicons/react/outline";
 import NFTSort from "@packages/Dropdowns/NFTDropdownSort";
 import {TritPost} from "@packages/post/TritPost";
 import {SEOHead} from "@packages/seo/page";
@@ -7,7 +7,11 @@ import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Input} from "@packages/shared/components/Input";
 import Pagination from "@packages/shared/components/Pagination";
-import {Heading} from "@packages/shared/components/Typography/Headings";
+import {
+	Heading,
+	SmallText,
+	Text,
+} from "@packages/shared/components/Typography/Headings";
 import {useDebounce} from "@packages/shared/hooks";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
@@ -17,11 +21,10 @@ import {useRouter} from "next/router";
 import {TreatNFTsInfinityScrollingContainer} from "packages/shared/components/ListingSection";
 import {useState} from "react";
 
-export default function NFTS({sort, q, p, nfts, error}) {
+export default function NFTS({sort, q, nfts, error}) {
 	const posts = JSON.parse(nfts);
 	const nft_posts = posts.docs;
 	const router = useRouter();
-	const [page, setPage] = useState(p);
 	const [sortBy, setSortBy] = useState(sort);
 	const [searchText, setSearchText] = useState(q);
 	const search = useDebounce(searchText, 400);
@@ -38,21 +41,19 @@ export default function NFTS({sort, q, p, nfts, error}) {
 	};
 
 	const nextPage = () => {
-		setPage(page + +1);
 		router.push({
 			query: {
 				...router.query,
-				...{p: page + +1},
+				...{p: parseInt(posts.page) + +1},
 			},
 		});
 	};
 
 	const prevPage = () => {
-		setPage(page + -1);
 		router.push({
 			query: {
 				...router.query,
-				...{p: page + +1},
+				...{p: parseInt(posts.page) + +1},
 			},
 		});
 	};
@@ -71,6 +72,8 @@ export default function NFTS({sort, q, p, nfts, error}) {
 			},
 		});
 	};
+
+	console.log({posts});
 
 	return (
 		<ApplicationLayout>
@@ -116,6 +119,40 @@ export default function NFTS({sort, q, p, nfts, error}) {
 									setSort={setSort}
 								/>
 							</Container>
+							<Container className="flex gap-4">
+								<Button
+									appearance={"outline"}
+									css={{borderRadius: "9999px", padding: "8px"}}
+									className="transition-transform duration-200 shadow group group-hover:w-auto"
+								>
+									<SmallText>NSFW</SmallText>
+									<Container>
+										<Text>
+											<XIcon
+												height={16}
+												width={16}
+												className=" group-hover:flex"
+											/>
+										</Text>
+									</Container>
+								</Button>
+								<Button
+									appearance={"outline"}
+									css={{borderRadius: "9999px", padding: "4px 8px"}}
+									className="transition-transform duration-200 shadow group group-hover:w-auto"
+								>
+									<SmallText>Woman</SmallText>
+									<Container>
+										<Text>
+											<XIcon
+												height={16}
+												width={16}
+												className=" group-hover:flex"
+											/>
+										</Text>
+									</Container>
+								</Button>
+							</Container>
 						</form>
 
 						<Container className="flex flex-col gap-8 px-4 xl:px-0">
@@ -140,14 +177,14 @@ export default function NFTS({sort, q, p, nfts, error}) {
 							</TreatNFTsInfinityScrollingContainer>
 							<Pagination
 								hasNextPage={posts.hasNextPage}
-								hasPrevPage={page - 1 > 0}
+								hasPrevPage={posts.page - 1 > 0}
 								gotoPage={gotoPage}
-								page={page}
+								page={posts.page}
 								totalPages={+posts.totalPages}
 								next={nextPage}
 								prev={prevPage}
-								nextPage={page + +1}
-								prevPage={page - +1}
+								nextPage={posts.page + +1}
+								prevPage={posts.page - +1}
 							/>
 						</Container>
 					</Container>
