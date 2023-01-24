@@ -42,7 +42,7 @@ export default function Navbar() {
 				<Container className="relative w-full h-full px-8 xl:px-4">
 					<div className="absolute top-0 left-0 z-20 w-full h-full" />
 					<div className="container relative z-30 flex items-center justify-between py-3 mx-auto">
-						<div className="flex items-center gap-4">
+						<div className="flex items-center gap-8">
 							<Link href={isConnected ? "/" : "/"}>
 								<a className="relative w-8 h-8 text-3xl font-medium">
 									<Image
