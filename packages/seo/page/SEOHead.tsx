@@ -6,8 +6,13 @@ export default function SEOHead(seo_props: {
 	title?: string;
 	description?: string;
 	type?: "page" | "profile" | "nft";
+	data?: object;
 }) {
 	const content_type = seo_props.type ?? "page";
+	const search = new URLSearchParams({
+		...seo_props.data,
+		type: content_type,
+	});
 	return (
 		<Head>
 			<title>{seo_props.title}</title>
@@ -29,7 +34,7 @@ export default function SEOHead(seo_props: {
 			<meta
 				key="og:image"
 				property="og:image"
-				content={`/api/v3/og?type=${content_type}`}
+				content={`/api/v3/og?${search}`}
 			/>
 			<meta
 				key="og:url"

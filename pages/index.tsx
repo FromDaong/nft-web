@@ -101,6 +101,9 @@ export default function Index() {
 			<SEOHead
 				title={"TreatDAO"}
 				description="TreatDAO is a Web3 project dedicated to creating opportunities and an amazing platform for adult content creators and collectors."
+				data={{
+					official: true,
+				}}
 			/>
 			<Container className="flex flex-col items-center py-12 gap-8 md:gap-12">
 				<Container className="flex flex-col gap-4 items-center text-center max-w-3xl">

@@ -98,7 +98,7 @@ const profile_image = (username, display_name, bio, profile_picture) => (
 			"w-full h-full flex flex-col items-center justify-center bg-[#ffd4da] p-8 text-center"
 		}
 	>
-		<div tw={"h-32 w-32 bg-slate-300 flex rounded-full mb-8"}></div>
+		<div tw={"h-32 w-32 bg-white flex rounded-full mb-8"}></div>
 		<div tw="flex flex-col gap-2 w-full items-center">
 			<h1 tw="text-3xl font-bold my-0 text-center">{display_name}</h1>
 			<p tw="text-base text-gray-700 my-0 text-center">
