@@ -46,23 +46,6 @@ function MyApp({
 				<WagmiWrapper pageProps={pageProps}>
 					<Head>
 						<title>Treat DAO</title>
-						<meta
-							name="title"
-							content="Treat DAO"
-						/>
-						<meta
-							name="image"
-							content="https://i.imgur.com/OEiuwp4.jpg"
-						/>
-						<meta
-							property="og:image"
-							content="https://i.imgur.com/OEiuwp4.jpg"
-						/>
-
-						<meta
-							name="description"
-							content="Treat is an exclusive platform for creators to sell NFTs. Hold $TREAT to have a say on which creators are chosen & new platform features."
-						/>
 					</Head>
 
 					<AcceptAgeModal />
