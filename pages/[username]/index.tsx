@@ -6,7 +6,6 @@ import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import TreatCore from "core/TreatCore";
 import {useSession} from "next-auth/react";
-import {SocialProfileJsonLd} from "next-seo";
 import {useEffect, useMemo} from "react";
 import {useInView} from "react-intersection-observer";
 import {beforePageLoadGetUserProfile} from "server/page/userProfile";

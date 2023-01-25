@@ -1,10 +1,4 @@
-import {
-	ChatAlt2Icon,
-	ChatIcon,
-	ClipboardCheckIcon,
-	ClipboardCopyIcon,
-	LinkIcon,
-} from "@heroicons/react/outline";
+import { ChatIcon, LinkIcon } from "@heroicons/react/outline";
 import {SEOHead} from "@packages/seo/page";
 import NewAvatar from "@packages/shared/components/AvatarNew";
 import {Button} from "@packages/shared/components/Button";
@@ -24,7 +18,6 @@ import {
 } from "@packages/shared/components/Typography/Text";
 import {useCopyToClipboard} from "@packages/shared/hooks";
 import FollowUser from "@packages/shared/icons/FollowUser";
-import {styled} from "@styles/theme";
 import {useUser} from "core/auth/useUser";
 import TreatCore, {ComponentBasicProps} from "core/TreatCore";
 import ApplicationFrame from "./ApplicationFrame";
@@ -36,28 +29,6 @@ import {apiEndpoint} from "@utils/index";
 import {SocialProfileJsonLd} from "next-seo";
 import {useRouter} from "next/router";
 
-const AvatarContainer = styled("div", {
-	borderRadius: "9999px",
-	display: "flex",
-	alignItems: "center",
-	justifyContent: "center",
-	overflow: "hidden",
-	backgroundColor: "$surface",
-	padding: "2px",
-});
-
-const UserHeader = ({profile_pic}) => {
-	return (
-		<div
-			className="w-full"
-			style={{
-				height: "360px",
-				background: "linear-gradient(220.55deg, #FFED46 0%, #FF7EC7 100%)",
-				display: "flex",
-			}}
-		/>
-	);
-};
 
 type ProfileLayoutProps = ComponentBasicProps & {
 	userProfile?: {
@@ -77,8 +48,8 @@ type ProfileLayoutProps = ComponentBasicProps & {
 };
 
 export default function ProfileLayout(props: ProfileLayoutProps) {
-	const {isLoading, isConnected, profile: loggedInUser} = useUser();
-	const [value, copy] = useCopyToClipboard();
+	const {isLoading, profile: loggedInUser} = useUser();
+	const [, copy] = useCopyToClipboard();
 	const [copyFx] = useSound("/sound/toggle_on.wav");
 	const router = useRouter();
 
@@ -169,7 +140,6 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 	const [followers, setFollowers] = useState(profile.followers);
 
 	const copyProfileUrlToClipboard = () => {
-		// Get base domain
 		const baseDomain = window.location.origin;
 		copy(`${baseDomain}/${ownerOfUserProfile.username}`);
 		copyFx();
@@ -216,7 +186,10 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 
 	return (
 		<>
-			<SEOHead title={profile?.username + " - Treat"} />
+			<SEOHead
+				title={ownerOfUserProfile?.username + " - TreatDAO"}
+				description={ownerOfUserProfile?.bio}
+			/>
 			<SocialProfileJsonLd
 				type="Person"
 				name={ownerOfUserProfile?.username}
