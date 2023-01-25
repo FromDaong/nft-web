@@ -1,4 +1,4 @@
-import { ChatIcon, LinkIcon } from "@heroicons/react/outline";
+import {ChatIcon, LinkIcon} from "@heroicons/react/outline";
 import {SEOHead} from "@packages/seo/page";
 import NewAvatar from "@packages/shared/components/AvatarNew";
 import {Button} from "@packages/shared/components/Button";
@@ -28,7 +28,6 @@ import axios from "axios";
 import {apiEndpoint} from "@utils/index";
 import {SocialProfileJsonLd} from "next-seo";
 import {useRouter} from "next/router";
-
 
 type ProfileLayoutProps = ComponentBasicProps & {
 	userProfile?: {
@@ -189,6 +188,14 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 			<SEOHead
 				title={ownerOfUserProfile?.username + " - TreatDAO"}
 				description={ownerOfUserProfile?.bio}
+				type={"profile"}
+				data={{
+					bio: ownerOfUserProfile.bio,
+					username: ownerOfUserProfile.username,
+					display_name: ownerOfUserProfile.display_name ?? "TreatDAO Profile",
+					profile_picture: ownerOfUserProfile.profile_pic,
+					banner_pic: ownerOfUserProfile.banner_pic,
+				}}
 			/>
 			<SocialProfileJsonLd
 				type="Person"

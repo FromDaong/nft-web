@@ -31,6 +31,7 @@ import {
 } from "server/helpers/models";
 import {useAccount} from "wagmi";
 import {ArticleJsonLd} from "next-seo";
+import {SEOHead} from "@packages/seo/page";
 
 const getYouMightAlsoLike = async () => {
 	const res = await axios.get(`${apiEndpoint}/marketplace/trending`);
@@ -137,6 +138,18 @@ export default function NFT(props: {
 
 	return (
 		<>
+			<SEOHead
+				title={`${nft.name} - TreatDAO`}
+				description={nft.description}
+				data={{
+					name: nft.name,
+					description: nft.description,
+					price: nft.price,
+					seller: isResale ? seller.username : nft.creator.username,
+					id: nft.id,
+				}}
+			/>
+
 			<ArticleJsonLd
 				url={`https://treatnfts.com/post/nft/${nft._id}`}
 				title={nft.name}
