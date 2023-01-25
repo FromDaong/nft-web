@@ -63,6 +63,7 @@ export default async function auth(req: any, res: any) {
 					}
 					return null;
 				} catch (e) {
+					console.log({e});
 					return null;
 				}
 			},
@@ -97,7 +98,7 @@ export default async function auth(req: any, res: any) {
 				session.address = token.sub;
 				session.profile = profile._id ? profile : null;
 				session.user.name = token.sub;
-				session.user.image = "https://www.fillmurray.com/128/128";
+				session.user.image = profile ? profile.profile_picture : "";
 				return session;
 			},
 		},
