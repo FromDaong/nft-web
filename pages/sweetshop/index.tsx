@@ -117,40 +117,6 @@ export default function NFTS({sort, q, nfts, error}) {
 									setSort={setSort}
 								/>
 							</Container>
-							<Container className="flex gap-4">
-								<Button
-									appearance={"outline"}
-									css={{borderRadius: "9999px", padding: "8px"}}
-									className="transition-transform duration-200 shadow group group-hover:w-auto"
-								>
-									<SmallText>NSFW</SmallText>
-									<Container>
-										<Text>
-											<XIcon
-												height={16}
-												width={16}
-												className=" group-hover:flex"
-											/>
-										</Text>
-									</Container>
-								</Button>
-								<Button
-									appearance={"outline"}
-									css={{borderRadius: "9999px", padding: "4px 8px"}}
-									className="transition-transform duration-200 shadow group group-hover:w-auto"
-								>
-									<SmallText>Woman</SmallText>
-									<Container>
-										<Text>
-											<XIcon
-												height={16}
-												width={16}
-												className=" group-hover:flex"
-											/>
-										</Text>
-									</Container>
-								</Button>
-							</Container>
 						</form>
 
 						<Container className="flex flex-col gap-8 px-4">
