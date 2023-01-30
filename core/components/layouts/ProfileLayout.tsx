@@ -118,7 +118,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 	const creator_tabs = [
 		{
 			label: "Sweetshop",
-			href: "/",
+			href: "",
 			count: createNFTsCount.data,
 		},
 		{
@@ -215,7 +215,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 				}}
 			/>
 
-			<Container className="container px-4 py-8 mx-auto xl:px-0">
+			<Container className="container px-4 py-8 mx-auto ">
 				<FluidContainer className="flex justify-between px-4">
 					<ContextualContainer className="grid justify-between w-full col-span-1 xl:grid-cols-3 gap-y-4">
 						<Container className="col-span-1 xl:col-span-2">

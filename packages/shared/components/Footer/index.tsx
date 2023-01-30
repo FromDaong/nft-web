@@ -35,7 +35,7 @@ const FooterComponent = styled("footer", {
 
 export default function Footer() {
 	return (
-		<FooterComponent className="w-full px-4 pt-16 border-t md:px-8 xl:px-0">
+		<FooterComponent className="w-full px-4 pt-16 border-t md:px-8 ">
 			<div className="grid container grid-cols-1 gap-8 mx-auto md:grid-cols-4">
 				<div className="col-span-1">
 					<img

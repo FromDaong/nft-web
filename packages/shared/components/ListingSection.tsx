@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function ListingSection({title, href, children}) {
 	return (
-		<div className="px-4 my-24 md:px-8 xl:px-0">
+		<div className="px-4 my-24 md:px-8 ">
 			<div className="w-full">
 				<div className="flex items-baseline justify-between">
 					<h2 className="text-xl font-medium text-gray-900 md:text-3xl">

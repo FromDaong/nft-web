@@ -8,7 +8,7 @@ import {ImportantText} from "../Typography/Text";
 export const TabsContainer = ({children}: ComponentBasicProps) => {
 	return (
 		<Container
-			css={{borderBottom: "1px solid $subtleBorder"}}
+			css={{borderBottom: "1px solid $border"}}
 			variant={"unstyled"}
 			className="flex w-full gap-x-4 flex-start"
 		>
@@ -31,14 +31,17 @@ export const Tab = ({
 
 	return (
 		<Container
-			css={{margin: 0}}
-			variant={"tab"}
-			state={isActive ? "active" : "default"}
-			className={`relative`}
+			css={{
+				marginBottom: "12px",
+				backgroundColor: isActive ? "$elementSurface" : "$elementOnSurface",
+				borderRadius: "9999px",
+				padding: "8px 12px",
+			}}
+			className={`relative rounded-full`}
 		>
 			<Link href={href}>
 				<a className="flex gap-2 items-center">
-					<ImportantText css={{color: isActive ? "$accentText" : "$text"}}>
+					<ImportantText css={{color: isActive ? "$textOnSurface" : "$text"}}>
 						{label}
 					</ImportantText>
 					{(count || count === 0) && (

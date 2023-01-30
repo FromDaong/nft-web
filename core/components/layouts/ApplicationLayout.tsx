@@ -6,7 +6,7 @@ const ApplicationChildrenContainer = styled("div", {});
 
 export default function ApplicationLayout({children}: ComponentBasicProps) {
 	return (
-		<Container className="flex flex-col flex-1 w-screen">
+		<Container className="flex flex-col flex-1">
 			<ApplicationChildrenContainer>{children}</ApplicationChildrenContainer>
 		</Container>
 	);

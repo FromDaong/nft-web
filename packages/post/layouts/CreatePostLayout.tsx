@@ -39,7 +39,7 @@ export const CreatePostLayout = ({
 					backgroundColor: "$surface",
 				}}
 			>
-				<Container className="flex w-full justify-end gap-8 px-12 xl:px-0 py-4 container mx-auto">
+				<Container className="flex w-full justify-end gap-8 px-12  py-4 container mx-auto">
 					<Button appearance={"subtle"}>Cancel</Button>
 					<Button onClick={nextAction}>{nextActionString ?? "Next"}</Button>
 				</Container>

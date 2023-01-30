@@ -147,7 +147,7 @@ export default function Index() {
 				</Container>
 			</Container>
 			<Container>
-				<Container className="flex flex-col w-full gap-8 px-8 xl:px-0 container mx-auto">
+				<Container className="flex flex-col w-full gap-8 px-8  container mx-auto">
 					<Container className="flex flex-col items-baseline gap-4">
 						<Container className="flex flex-col gap-2">
 							<Heading size="sm">Discover sweetshop NFT's</Heading>
@@ -200,7 +200,7 @@ export default function Index() {
 			</Container>
 			<Divider dir={"horizontal"} />
 			<Container>
-				<Container className="flex flex-col w-full gap-8 px-8 xl:px-0 container mx-auto">
+				<Container className="flex flex-col w-full gap-8 px-8  container mx-auto">
 					<Container className="flex flex-col items-baseline gap-4">
 						<Container className="flex flex-col gap-2">
 							<Heading size="sm">Lots of new features</Heading>
@@ -333,7 +333,7 @@ export default function Index() {
 			</Container>
 			<Divider dir={"horizontal"} />
 			<Container>
-				<Container className="flex flex-col w-full gap-8 px-4 xl:px-0 container mx-auto">
+				<Container className="flex flex-col w-full gap-8 px-4  container mx-auto">
 					<Container className="flex flex-col gap-4">
 						<Container className="flex flex-col gap-2">
 							<Heading size="sm">Discover Treat creators</Heading>
@@ -390,7 +390,7 @@ export default function Index() {
 
 			<Divider dir={"horizontal"} />
 			<Container>
-				<Container className="flex flex-col w-full gap-8 px-8 xl:px-0 container mx-auto">
+				<Container className="flex flex-col w-full gap-8 px-8  container mx-auto">
 					<Container className="flex flex-col items-baseline gap-4">
 						<Container className="flex flex-col gap-2">
 							<Heading size="sm">Going multichain</Heading>
@@ -401,7 +401,7 @@ export default function Index() {
 						</Container>
 					</Container>
 					<Container className="pt-4">
-						<Container className="flex flex-col gap-8 px-4 xl:px-0 h-[70vh] w-full">
+						<Container className="flex flex-col gap-8 px-4  h-[70vh] w-full">
 							{theme === "light" && <LightWidget />}
 							{theme === "dark" && <DarkWidget />}
 							{theme === "pink" && <PinkWidget />}
@@ -411,7 +411,7 @@ export default function Index() {
 			</Container>
 			<Divider dir="horizontal" />
 			<Container>
-				<Container className="flex flex-col w-full gap-8 px-8 xl:px-0 container mx-auto py-24">
+				<Container className="flex flex-col w-full gap-8 px-8  container mx-auto py-24">
 					<Container className="flex flex-col items-baseline gap-4">
 						<Container className="flex flex-col gap-2">
 							<Heading size="sm">Frequently asked questions</Heading>
