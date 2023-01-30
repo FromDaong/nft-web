@@ -17,6 +17,7 @@ import {ApplicationProvider} from "core/provider";
 import AcceptAgeModal from "@packages/modals/AcceptAgeModal";
 import {Container} from "@packages/shared/components/Container";
 import Footer from "@packages/shared/components/Footer";
+import {Analytics} from "@vercel/analytics/react";
 
 const progress = new ProgressBar({
 	size: 3,
@@ -41,24 +42,27 @@ function MyApp({
 	// T-33 Implement master action tracker based on profile id. Should includes all actions, create, buy, relist, follow, etc.
 
 	return (
-		<ThemeProvider>
-			<ApplicationProvider>
-				<WagmiWrapper pageProps={pageProps}>
-					<Head>
-						<title>Treat DAO</title>
-					</Head>
+		<>
+			<ThemeProvider>
+				<ApplicationProvider>
+					<WagmiWrapper pageProps={pageProps}>
+						<Head>
+							<title>Treat DAO</title>
+						</Head>
 
-					<AcceptAgeModal />
-					<Navbar />
-					<main className="mt-[60px]">
-						<Component {...pageProps} />
-					</main>
-					<Container className="pb-12">
-						<Footer />
-					</Container>
-				</WagmiWrapper>
-			</ApplicationProvider>
-		</ThemeProvider>
+						<AcceptAgeModal />
+						<Navbar />
+						<main className="mt-[60px]">
+							<Component {...pageProps} />
+						</main>
+						<Container className="pb-12">
+							<Footer />
+						</Container>
+					</WagmiWrapper>
+				</ApplicationProvider>
+			</ThemeProvider>
+			<Analytics />
+		</>
 	);
 }
 
