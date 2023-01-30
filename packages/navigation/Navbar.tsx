@@ -38,7 +38,7 @@ export default function Navbar() {
 
 	return (
 		<Container>
-			<Nav className="hidden md:block fixed top-0 left-0 w-full xl:px-0 h-[60px] shadow">
+			<Nav className="hidden md:block fixed top-0 left-0 w-full  h-[60px] shadow">
 				<Container className="relative w-full h-full px-8 xl:px-4">
 					<div className="absolute top-0 left-0 z-20 w-full h-full" />
 					<div className="container relative z-30 flex items-center justify-between py-3 mx-auto">

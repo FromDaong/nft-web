@@ -131,7 +131,7 @@ export default function NFTS(props) {
 							label={sort_labels_map[parseInt(sortBy) - 1]}
 						/>
 					</Container>
-					<Container className="flex flex-col gap-8 px-4 xl:px-0">
+					<Container className="flex flex-col gap-8 px-4 ">
 						<Container
 							className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8`}
 						>
