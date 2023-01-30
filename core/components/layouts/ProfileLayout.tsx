@@ -118,7 +118,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 	const creator_tabs = [
 		{
 			label: "Sweetshop",
-			href: "/",
+			href: "",
 			count: createNFTsCount.data,
 		},
 		{
