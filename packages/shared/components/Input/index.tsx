@@ -6,6 +6,14 @@ export const Input = styled("input", {
 	color: "$textContrast",
 	width: "100%",
 	borderRadius: "8px",
+
+	variants: {
+		shadow: {
+			true: {
+				boxShadow: "$base",
+			},
+		},
+	},
 });
 
 export const Textarea = styled("textarea", {

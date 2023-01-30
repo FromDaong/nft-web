@@ -87,6 +87,7 @@ export default function NFTS({sort, q, nfts, error}) {
 								className="flex items-center w-full gap-1 px-2 py-1 rounded-lg"
 								css={{
 									backgroundColor: "$elementOnSurface",
+									border: "1px solid $border",
 								}}
 							>
 								<Input
