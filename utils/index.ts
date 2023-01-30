@@ -55,7 +55,7 @@ export const legacy_nft_to_new = (post: any): TritPostProps => ({
 	count: post.count,
 });
 
-export const apiEndpoint = "/api/v3";
+export const apiEndpoint = `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v3`;
 
 export const ironOptions: IronSessionOptions = {
 	cookieName: "siwe",

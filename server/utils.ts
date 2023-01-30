@@ -1,6 +1,5 @@
 import {returnWithError} from "@db/engine/utils";
-import {ironOptions} from "@utils/index";
-import {withIronSessionApiRoute} from "iron-session/next";
+import {getToken} from "next-auth/jwt";
 import {getSession} from "next-auth/react";
 
 export const onlyQueryProps = (ctx: {query: any}) => ({

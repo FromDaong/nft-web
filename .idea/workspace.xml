@@ -5,18 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="13ddaae3-483e-427b-8a07-e5e133fac976" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/pages/api/v3/marketplace/nft/listings-by-id.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pages/api/v3/marketplace/nft/listings-by-seller.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pages/sweetshop/nft/[id].tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pages/sweetshop/seller/[address].tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pages/sweetshop/tag/[tag].tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/modals/PurchaseResaleNFTModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/modals/PurchaseResaleNFTModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/post/BuyNFTButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/post/BuyNFTButton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/post/TritPost.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/post/TritPost.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/post/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/post/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/post/nft/[_id].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/post/nft/[_id].tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/feed/components/SuggestedCreatorCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/feed/components/SuggestedCreatorCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/navigation/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/navigation/Navbar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/shared/components/Pagination/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/shared/components/Pagination/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/sweetshop/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/sweetshop/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -63,7 +54,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/pagak/treat/frontend",
+    "last_opened_file_path": "C:/Users/pagak/work/cypress-metamask-v2",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
@@ -107,6 +98,7 @@
       <workItem from="1671387442123" duration="423000" />
       <workItem from="1671834274293" duration="595000" />
       <workItem from="1672276908555" duration="4185000" />
+      <workItem from="1674057364697" duration="596000" />
     </task>
     <servers />
   </component>

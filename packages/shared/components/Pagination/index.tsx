@@ -1,3 +1,4 @@
+import {useEffect, useMemo, useState} from "react";
 import {Container} from "../Container";
 import {
 	GotoFirstButton,
@@ -20,39 +21,47 @@ type PaginationProps = {
 	gotoPage: (page: number) => void;
 };
 
-const generatePreviewPages = (page, totalPages) => {
-	let pages = [];
+export default function Pagination(props: PaginationProps) {
+	const [pagesPreview, setPages] = useState([]);
+	useEffect(() => {
+		const {totalPages, page} = props;
+		let pages = [];
 
-	if (totalPages < 5) {
-		new Array(totalPages).fill(page).map((p, i) => pages.push(i + +1));
-		return pages;
-	}
-
-	if (page === 1) {
-		new Array(5).fill(page).map((p, i) => pages.push(i));
-		return pages;
-	}
-
-	if (page > 2) {
-		new Array(page + +3).fill(page).map((p, i) => pages.push(i));
-
-		if (page === totalPages) {
-			pages = pages.slice(totalPages - 3, totalPages + +1);
-			return pages;
+		if (totalPages < 5) {
+			new Array(totalPages).fill(page).map((p, i) => pages.push(i + +1));
+			setPages(pages);
+			return;
 		}
 
-		pages = pages.slice(page - 2, page + +3);
-		return pages;
-	}
-};
+		if (page === 1) {
+			new Array(5).fill(page).map((p, i) => pages.push(i));
+			pages = pages.slice(1, 5);
+			setPages(pages);
+			return;
+		}
 
-export default function Pagination(props: PaginationProps) {
-	const pagesPreview = generatePreviewPages(props.page, props.totalPages) ?? [];
+		if (page > 1) {
+			new Array(page + +3).fill(page).map((p, i) => pages.push(i));
+
+			if (page === totalPages) {
+				pages = pages.slice(totalPages - 3, totalPages + +1);
+				if (pages[0] === 0) pages = pages.slice(1, pages.length);
+				setPages(pages);
+				return;
+			}
+
+			pages = pages.slice(page - 2, page + +3);
+			if (pages[0] === 0) pages = pages.slice(1, pages.length);
+
+			setPages(pages);
+			return;
+		}
+	}, [props]);
 
 	if (pagesPreview.length === 0) return null;
 
 	return (
-		<Container className="flex w-full justify-center gap-2">
+		<Container className="flex justify-center w-full gap-2">
 			{props.page !== props.totalPages && (
 				<GotoFirstButton gotoFirst={() => props.gotoPage(1)} />
 			)}

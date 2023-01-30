@@ -12,6 +12,7 @@ import {styled} from "@styles/theme";
 import {useTritNFTUtils} from "./hooks";
 import {ActionSection} from "./UtilityComponents";
 import {useEffect, useState} from "react";
+import {useInView} from "react-intersection-observer";
 
 export const FrostyBackgroundContainer = styled(Container, {
 	backgroundColor: "#ffffff33",
@@ -30,15 +31,9 @@ export const FrostyBackgroundContainer = styled(Container, {
 });
 
 export const TritPost = (props: TritPostProps) => {
-	const {
-		liked,
-		likeNFT,
-		isMine,
-		isProtected,
-		toggleImageProtection,
-		loadingSigner,
-		remainingNfts,
-	} = useTritNFTUtils(props);
+	const {ref, inView} = useInView();
+	const {liked, likeNFT, isMine, isProtected, loadingSigner, remainingNfts} =
+		useTritNFTUtils(props);
 
 	const [imageURL, setImageURL] = useState("");
 
@@ -66,6 +61,7 @@ export const TritPost = (props: TritPostProps) => {
 
 	return (
 		<Container
+			ref={ref}
 			className={`grid grid-cols-1 gap-4 py-4 place-items-center w-full`}
 			css={{
 				borderColor: "$subtleBorder",
@@ -181,7 +177,7 @@ export const TritPost = (props: TritPostProps) => {
 					likeNFT={likeNFT}
 					unlikeNFT={likeNFT}
 					creator={props.author.username}
-					toggleImageProtection={toggleImageProtection}
+					toggleImageProtection={() => null}
 					isProtected={isProtected}
 					hideSeller={props.hideSeller}
 					count={props.count}

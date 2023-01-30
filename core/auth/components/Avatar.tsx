@@ -29,6 +29,7 @@ export default function UserAvatar(props: {
 		<Avvvatars
 			size={props.size}
 			value={props.data?.avatar ?? props.username}
+			style={"shape"}
 		/>
 	);
 }

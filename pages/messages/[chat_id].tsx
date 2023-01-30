@@ -1,23 +1,32 @@
-import {Container} from "@packages/shared/components/Container";
+import {SEOHead} from "@packages/seo/page";
+import ApplicationFrame from "core/components/layouts/ApplicationFrame";
+import ApplicationLayout from "core/components/layouts/ApplicationLayout";
+import ChatContainer from "@packages/chat/components/ChatContainer";
+import ChatPageLayout from "@packages/chat/components/ChatPageLayout";
+import {NextPageContext} from "next";
 
-type Participant = {
-	username: string;
-	profile_pic?: string;
-	display_name: string;
-	_id: string;
-};
-
-type Message = {
-	timestamp: number;
-	text: string;
-	sender: Participant;
-};
-
-type Chat = {
-	participants: [Participant];
-	messages: [Message];
-};
-
-export default function Chat() {
-	return <Container></Container>;
+export default function Chat({username, contact}) {
+	return (
+		<ApplicationLayout>
+			<SEOHead title="Messages" />
+			<ApplicationFrame>
+				<ChatPageLayout hideListInMobile>
+					<ChatContainer
+						username={username}
+						contact={contact}
+					/>
+				</ChatPageLayout>
+			</ApplicationFrame>
+		</ApplicationLayout>
+	);
 }
+
+export const getServerSideProps = async (ctx: NextPageContext) => {
+	console.log(ctx.query);
+	return {
+		props: {
+			username: (ctx.query.chat_id as string).split("-")[0],
+			contact: (ctx.query.chat_id as string).split("-")[1],
+		},
+	};
+};

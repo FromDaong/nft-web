@@ -309,7 +309,7 @@ export default function NFT(props: {
 						<Divider dir={"horizontal"} />
 						<Container className="flex flex-col gap-12 px-8">
 							<Container className="flex flex-col gap-4">
-								<Heading size="sm">People also bought</Heading>
+								<Heading size="sm">You might also like</Heading>
 							</Container>
 							<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 								{!youMightAlsoLikeError && !youMightAlsoLikeLoading

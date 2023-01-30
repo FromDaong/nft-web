@@ -22,6 +22,7 @@ export default class TreatCore {
 	static queryClient = new QueryClient({
 		defaultOptions: {
 			queries: {
+				retry: 0,
 				refetchOnWindowFocus: false,
 			},
 		},

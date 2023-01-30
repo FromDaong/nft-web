@@ -304,7 +304,9 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 								<Container className="flex flex-col gap-24 h-full px-8 py-12">
 									<Container className="flex flex-col gap-2">
 										<Heading size="xss">
-											<MutedText>NAVIGATION ACTIONS</MutedText>
+											<MutedText css={{color: "$textOnSurface"}}>
+												NAVIGATION ACTIONS
+											</MutedText>
 										</Heading>
 										{ExploreDropdownLinks.map((link) => (
 											<Link
