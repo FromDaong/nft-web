@@ -25,6 +25,7 @@ import {Button} from "@packages/shared/components/Button";
 import {MixerVerticalIcon} from "@radix-ui/react-icons";
 import Balancer from "react-wrap-balancer";
 import Image from "next/future/image";
+import {SEOHead} from "@packages/seo/page";
 
 const getTrendingNFTs = async () => {
 	const res = await axios.get(`${apiEndpoint}/marketplace/trending`);
@@ -97,6 +98,13 @@ export default function Index() {
 
 	return (
 		<Container className="flex flex-col gap-12 md:gap-16 lg:gap-24 py-12 px-4">
+			<SEOHead
+				title={"TreatDAO"}
+				description="TreatDAO is a Web3 project dedicated to creating opportunities and an amazing platform for adult content creators and collectors."
+				data={{
+					official: true,
+				}}
+			/>
 			<Container className="flex flex-col items-center py-12 gap-8 md:gap-12">
 				<Container className="flex flex-col gap-4 items-center text-center max-w-3xl">
 					<Heading
