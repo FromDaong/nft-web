@@ -160,6 +160,9 @@ export const darkTheme = createTheme("dark", {
 		buttonSurface: "$surface",
 		textOnSurface: "$text",
 		inputSurface: "$surfaceOnSurface",
+
+		shadow:
+			"0px 0px 2px rgba(0, 0, 0, 0.15), 0px 2px 5px rgba(0, 0, 0, 0.05), 0px 8px 40px rgba(0, 0, 0, 0.04)",
 	},
 	space: {
 		1: "5px",
@@ -187,7 +190,9 @@ export const darkTheme = createTheme("dark", {
 		tight: "8px",
 		full: "50%",
 	},
-	shadows: {},
+	shadows: {
+		base: "0px 0px 2px rgba(0, 0, 0, 0.15), 0px 2px 5px rgba(0, 0, 0, 0.05), 0px 8px 40px rgba(0, 0, 0, 0.04)",
+	},
 	zIndices: {},
 	transitions: {},
 });
@@ -300,7 +305,9 @@ export const lightTheme = createTheme("light", {
 		tight: "8px",
 		full: "50%",
 	},
-	shadows: {},
+	shadows: {
+		base: "0px 0px 2px rgba(0, 0, 0, 0.15), 0px 2px 5px rgba(0, 0, 0, 0.05), 0px 8px 40px rgba(0, 0, 0, 0.04)",
+	},
 	zIndices: {
 		base: 1,
 		navbar: 10,
@@ -389,6 +396,8 @@ export const ogPinkTheme = createTheme("pink", {
 		buttonSurface: "$primary4",
 		textOnSurface: "#ffffff",
 		inputSurface: "$primary2",
+		shadow:
+			"0px 0px 2px rgba(0, 0, 0, 0.15), 0px 2px 5px rgba(0, 0, 0, 0.05), 0px 8px 40px rgba(0, 0, 0, 0.04)",
 	},
 	space: {
 		1: "5px",
@@ -436,7 +445,9 @@ export const ogPinkTheme = createTheme("pink", {
 		tight: "8px",
 		full: "50%",
 	},
-	shadows: {},
+	shadows: {
+		base: "0px 0px 2px rgba(0, 0, 0, 0.15), 0px 2px 5px rgba(0, 0, 0, 0.05), 0px 8px 40px rgba(0, 0, 0, 0.04)",
+	},
 	zIndices: {},
 	transitions: {},
 });

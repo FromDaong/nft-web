@@ -68,9 +68,16 @@ export const Button = styled("button", {
 		},
 		outlined: {
 			true: {
-				border: "2px solid $subtleBorder",
-				backgroundColor: "transparent",
+				border: "1px solid $border",
+				backgroundColor: "$surface",
 				color: "$textContrast",
+				boxShadow: "$shadow",
+			},
+		},
+		active: {
+			true: {
+				backgroundColor: "$textContrast",
+				color: "$surface",
 			},
 		},
 		fullWidth: {

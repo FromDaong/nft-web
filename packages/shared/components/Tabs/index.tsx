@@ -33,7 +33,7 @@ export const Tab = ({
 		<Container
 			css={{
 				marginBottom: "12px",
-				backgroundColor: isActive ? "$elementSurface" : "$elementOnSurface",
+				backgroundColor: isActive ? "$elementOnSurface" : "$surface",
 				borderRadius: "9999px",
 				padding: "8px 12px",
 			}}
