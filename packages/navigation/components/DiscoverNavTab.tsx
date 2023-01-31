@@ -57,12 +57,12 @@ const NavTab = () => {
 
 	return (
 		<Container
-			className="flex mx-auto gap-4 rounded-full shadow mt-6 sticky"
+			className="flex mx-auto gap-4 shadow mt-6 sticky rounded-full"
 			css={{
 				boxShadow: "$shadow",
 				overflow: "hidden",
-				padding: "4px",
-				backgroundColor: "$elementSurface",
+				padding: "2px",
+				backgroundColor: "$elementOnSurface",
 			}}
 		>
 			<Tab
@@ -77,7 +77,7 @@ const NavTab = () => {
 			/>
 			<Tab
 				label="Subscribed"
-				route="//subscribed"
+				route="/subscribed"
 				icon={
 					<BankNotesIcon
 						width={14}

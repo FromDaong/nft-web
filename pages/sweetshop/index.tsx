@@ -19,21 +19,36 @@ import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import {useRouter} from "next/router";
 import {TreatNFTsInfinityScrollingContainer} from "packages/shared/components/ListingSection";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 export default function NFTS({sort, q, nfts, error}) {
 	const posts = JSON.parse(nfts);
 	const nft_posts = posts.docs;
 	const router = useRouter();
-	const [sortBy, setSortBy] = useState(sort);
+	const [sortBy, setSortBy] = useState(router.query.sort as string);
 	const [searchText, setSearchText] = useState(q);
 	const search = useDebounce(searchText, 400);
 
+	useEffect(() => {
+		router.push(
+			{
+				query: {
+					...{q: searchText},
+					...{sort: sortBy},
+					page: 1,
+				},
+			},
+			undefined,
+			{shallow: true}
+		);
+	}, [sortBy]);
+
 	const setSort = (s) => {
 		setSortBy(s);
+		console.log({s});
 		router.push({
 			query: {
-				...router.query,
+				...{q: searchText},
 				...{sort: s},
 				page: 1,
 			},
@@ -64,9 +79,11 @@ export default function NFTS({sort, q, nfts, error}) {
 
 	const performSearchWithNewParams = (e) => {
 		e.preventDefault();
+		console.log("searching params");
+
 		router.push({
 			query: {
-				...(sort ? {sort} : {sort: "3"}),
+				...router.query,
 				...(search ? {q: search} : {}),
 				...{p: 1},
 			},
@@ -112,13 +129,13 @@ export default function NFTS({sort, q, nfts, error}) {
 									/>
 								</Button>
 							</Container>
-							<Container className="flex gap-4 flex-noshrink">
-								<NFTSort
-									sort={sortBy}
-									setSort={setSort}
-								/>
-							</Container>
 						</form>
+						<Container className="flex gap-4 flex-noshrink px-4">
+							<NFTSort
+								sort={sortBy}
+								setSort={setSort}
+							/>
+						</Container>
 
 						<Container className="flex flex-col gap-8 px-4">
 							<TreatNFTsInfinityScrollingContainer>
@@ -161,6 +178,8 @@ export default function NFTS({sort, q, nfts, error}) {
 
 export const getServerSideProps = async (ctx) => {
 	const {sort, q, p} = ctx.query;
+
+	console.log({sort});
 
 	try {
 		const res = await axios.get(

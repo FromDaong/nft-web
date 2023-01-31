@@ -105,47 +105,6 @@ export default function Index() {
 					official: true,
 				}}
 			/>
-			<Container className="flex flex-col items-center py-12 gap-8 md:gap-12">
-				<Container className="flex flex-col gap-4 items-center text-center max-w-3xl">
-					<Heading
-						css={{
-							fontSize: "2rem",
-							"@md": {
-								fontSize: "3rem",
-							},
-							"@lg": {
-								fontSize: "4rem",
-							},
-						}}
-						size="lg"
-					>
-						<Balancer>Empowering creators with web3</Balancer>
-					</Heading>
-					<Balancer>
-						<Text
-							css={{
-								fontSize: "1rem",
-								"@lg": {
-									fontSize: "1.5rem",
-								},
-							}}
-						>
-							TreatDAO is a Web3 project dedicated to creating opportunities and
-							an amazing platform for adult content creators and collectors.
-						</Text>
-					</Balancer>
-				</Container>
-				<Container className="flex items-center justify-center">
-					<Button>Visit the sweetshop</Button>
-				</Container>
-				<Container className="w-full h-[320px] relative md:mt-12">
-					<Image
-						fill
-						src={"/assets/treat_banner.svg"}
-						alt={"TreatDAO Community"}
-					/>
-				</Container>
-			</Container>
 			<Container>
 				<Container className="flex flex-col w-full gap-8 px-8  container mx-auto">
 					<Container className="flex flex-col items-baseline gap-4">

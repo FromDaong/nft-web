@@ -22,7 +22,7 @@ export default function ExploreTabsButton() {
 			css={{
 				backgroundColor: "$elementOnSurface",
 			}}
-			className="shadow p-2 rounded-lg flex gap-2"
+			className="shadow p-1 rounded-full flex gap-2"
 		>
 			{tabs.map((tab) => (
 				<TabButton
@@ -45,6 +45,7 @@ const TabButton = ({label, isActive, href}) => {
 						background: isActive ? "$buttonSurface" : "transparent",
 						color: isActive ? "$textOnSurface" : "$text",
 						padding: "8px 12px",
+						borderRadius: "9999px",
 					}}
 					className="transition-all duration-200 rounded-xl"
 				>
