@@ -99,7 +99,7 @@ export default function NFTS(props) {
 							className="flex flex-col w-full gap-4"
 						>
 							<Container
-								className="flex items-center w-full px-2 gap-1 py-1 rounded-lg"
+								className="flex items-center w-full gap-1 px-2 py-1 rounded-lg"
 								css={{
 									backgroundColor: "$elementOnSurface",
 								}}

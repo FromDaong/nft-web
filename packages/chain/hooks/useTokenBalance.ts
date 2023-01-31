@@ -29,4 +29,29 @@ const useTokenBalance = (tokenAddress: string) => {
 	return balance;
 };
 
+export const useTokenBalanceForAddress = (
+	tokenAddress: string,
+	account: string
+) => {
+	const [balance, setBalance] = useState(new BigNumber(0));
+	const block = useBlock();
+
+	const fetchBalance = useCallback(async () => {
+		const balance = await getBalance(
+			web3.currentProvider as any,
+			tokenAddress,
+			account
+		);
+		setBalance(new BigNumber(balance));
+	}, [account, tokenAddress]);
+
+	useEffect(() => {
+		if (account) {
+			fetchBalance();
+		}
+	}, [account, setBalance, block, tokenAddress]);
+
+	return balance;
+};
+
 export default useTokenBalance;

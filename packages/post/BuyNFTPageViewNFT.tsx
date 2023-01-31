@@ -175,11 +175,11 @@ const NFTPresentationComponent = (props: {
 							/>
 						</Container>
 					</Container>
-					<Container className="flex flex-col col-span-2 md:col-span-1 gap-4">
+					<Container className="flex flex-col col-span-2 gap-4 md:col-span-1">
 						<Heading size="xs">Description</Heading>
 						<Text>{nft.description}</Text>
 					</Container>
-					<Container className="flex flex-col col-span-2 md:col-span-1 gap-4">
+					<Container className="flex flex-col col-span-2 gap-4 md:col-span-1">
 						<Heading size="xs">Tags</Heading>
 						<Container className="flex flex-wrap gap-4 py-2">
 							{nft.tags?.map((tag) => (
@@ -220,18 +220,12 @@ const NFTPresentationComponent = (props: {
 					<Container
 						className="flex flex-col w-full overflow-hidden border divide-y shadow rounded-xl"
 						css={{
-							backgroundColor: "$elementSurface",
-							borderColor: "$subtleBorder",
+							backgroundColor: "$surfaceOnSurface",
+							borderColor: "$border",
 							borderRadius: "16px",
 						}}
 					>
 						<Container className="flex flex-col gap-8 p-4">
-							<Container className="flex flex-col">
-								<Text>
-									<ImportantText>Reserve price</ImportantText>
-								</Text>
-								<SmallText>This is the buying price</SmallText>
-							</Container>
 							<Container className="flex flex-col items-center gap-4">
 								<Container className="flex items-baseline justify-between w-full">
 									<Heading size="sm">{displayedCost} BNB</Heading>
@@ -245,12 +239,12 @@ const NFTPresentationComponent = (props: {
 									)}
 								</Container>
 								{hasOpenOrders && (
-									<Text
+									<ImportantText
 										className="w-full"
 										css={{color: "$accentText"}}
 									>
 										You have listed your NFT for resale
-									</Text>
+									</ImportantText>
 								)}
 								{!hasOpenOrders &&
 									!(props.address === props.seller) &&
@@ -270,7 +264,10 @@ const NFTPresentationComponent = (props: {
 
 						<Container
 							className="p-4"
-							css={{backgroundColor: "$surfaceOnSurface"}}
+							css={{
+								backgroundColor: "$surfaceOnSurface",
+								borderColor: "$border",
+							}}
 						>
 							<Link href={`/sweetshop/nft/${props.nft.id}`}>
 								<a>

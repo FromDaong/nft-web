@@ -1,5 +1,6 @@
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
+import Pagination from "@packages/shared/components/Pagination";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import DynamicSkeleton from "@packages/skeleton";
 import {TritPostSkeleton} from "@packages/skeleton/config";
@@ -14,7 +15,6 @@ const RenderProfileNFTs = ({
 	posts,
 	profile,
 	username,
-	ref,
 	fetchNextPage,
 	isFetchingNextPage,
 	hasNextPage,
@@ -29,35 +29,35 @@ const RenderProfileNFTs = ({
 
 	return (
 		<ProfileLayout userProfile={data}>
-			<div className="grid grid-cols-1 gap-12">
-				{isFetching &&
-					[0, 1, 2, 3].map((i) => (
-						<Container
-							key={i}
-							className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-						>
-							<Container>
-								<DynamicSkeleton config={TritPostSkeleton} />
+			{
+				<Container className="flex flex-col w-full">
+					{isFetching &&
+						[0, 1, 2, 3].map((i) => (
+							<Container
+								key={i}
+								className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+							>
+								<Container>
+									<DynamicSkeleton config={TritPostSkeleton} />
+								</Container>
 							</Container>
+						))}
+
+					{posts.length === 0 && !isFetching && !error && (
+						<Container className="flex flex-col items-center col-span-4 gap-2 py-12 text-center">
+							<Heading size={"sm"}>Eish, we found nothing.</Heading>
+							<Text>The query returned no results from the server.</Text>
 						</Container>
-					))}
-
-				{error && (
-					<Container className="flex flex-col text-center items-center col-span-4 gap-2 py-12">
-						<Heading size={"sm"}>Eish, an error!</Heading>
-						<Text>
-							That was an error. Please reload the page and try again.
-						</Text>
-					</Container>
-				)}
-
-				{posts.length === 0 && !isFetching && !error && (
-					<Container className="flex flex-col items-center text-center col-span-4 gap-2 py-12">
-						<Heading size={"sm"}>Eish, we found nothing.</Heading>
-						<Text>The query returned no results from the server.</Text>
-					</Container>
-				)}
-
+					)}
+				</Container>
+			}
+			{!posts && error && (
+				<Container className="flex flex-col items-center col-span-4 gap-2 py-12 text-center">
+					<Heading size={"sm"}>Eish, an error!</Heading>
+					<Text>That was an error. Please reload the page and try again.</Text>
+				</Container>
+			)}
+			<Container>
 				{posts && (
 					<>
 						<Container className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -71,25 +71,14 @@ const RenderProfileNFTs = ({
 								/>
 							))}
 						</Container>
-						{posts.length > 0 && (
-							<Container className="flex justify-center w-full">
-								<Button
-									appearance={"surface"}
-									ref={ref}
-									onClick={() => fetchNextPage()}
-									disabled={!hasNextPage || isFetchingNextPage}
-								>
-									{isFetchingNextPage
-										? "Loading more..."
-										: hasNextPage
-										? "Load more"
-										: "Nothing more to load"}
-								</Button>
-							</Container>
-						)}
+						<Pagination
+							page={1}
+							totalPages={1}
+							gotoPage={() => {}}
+						/>
 					</>
 				)}
-			</div>
+			</Container>
 		</ProfileLayout>
 	);
 };

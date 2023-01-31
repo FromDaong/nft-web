@@ -53,14 +53,6 @@ export default function Navbar() {
 									/>
 								</a>
 							</Link>
-
-							<div className="items-center hidden gap-4 md:flex">
-								<Link href="/explore/discover">
-									<a>
-										<BoldLink>Explore</BoldLink>
-									</a>
-								</Link>
-							</div>
 							<div className="items-center hidden gap-4 md:flex">
 								<Link href="/sweetshop">
 									<a>
@@ -123,7 +115,8 @@ export default function Navbar() {
 														}}
 														appearance={"surface"}
 													>
-														<Container className="flex items-center justify-center w-full h-full">
+														Create
+														<Container className="flex items-center justify-center h-full">
 															<PlusCircleIcon
 																height={20}
 																width={20}

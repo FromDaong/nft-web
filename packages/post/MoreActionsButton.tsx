@@ -1,13 +1,10 @@
-import {DropdownMenuItem} from "@packages/Dropdowns";
 import {useDisclosure} from "@packages/hooks";
 import ListOrderModal from "@packages/modals/ListOrderModal";
 import RemoveListingModal from "@packages/modals/RemoveListingModal";
 import TransferNFTModal from "@packages/modals/TransferNFTModal";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
-import {ImportantText, Text} from "@packages/shared/components/Typography/Text";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import {DotsHorizontalIcon} from "@radix-ui/react-icons";
+import {ImportantText} from "@packages/shared/components/Typography/Text";
 
 export default function MoreActionsButton({
 	nft,
@@ -71,9 +68,7 @@ export default function MoreActionsButton({
 					onClick={onOpenListOrderModal}
 					className="flex gap-2 px-4 py-2"
 				>
-					<Text>
-						<ImportantText>List for resale</ImportantText>
-					</Text>
+					<ImportantText>List for resale</ImportantText>
 				</Button>
 			)}
 			{numberOfNFTsOwned > 0 && (
@@ -81,9 +76,7 @@ export default function MoreActionsButton({
 					onClick={onOpenTransferModal}
 					className="flex gap-2 px-4 py-2"
 				>
-					<Text>
-						<ImportantText>Transfer to address</ImportantText>
-					</Text>
+					<ImportantText>Transfer to address</ImportantText>
 				</Button>
 			)}
 			{hasOpenOrders && (
@@ -91,9 +84,7 @@ export default function MoreActionsButton({
 					onClick={onOpenRemoveModal}
 					className="flex gap-2 px-4 py-2"
 				>
-					<Text>
-						<ImportantText>Remove my listing</ImportantText>
-					</Text>
+					<ImportantText>Remove my listing</ImportantText>
 				</Button>
 			)}
 		</Container>

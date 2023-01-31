@@ -3,7 +3,7 @@ import Link from "next/link";
 import {useRouter} from "next/router";
 import {Button} from "../Button";
 import {Container} from "../Container";
-import {ImportantText} from "../Typography/Text";
+import {ImportantText, Text} from "../Typography/Text";
 
 export const TabsContainer = ({children}: ComponentBasicProps) => {
 	return (
@@ -40,10 +40,15 @@ export const Tab = ({
 			className={`relative rounded-full`}
 		>
 			<Link href={href}>
-				<a className="flex gap-2 items-center">
-					<ImportantText css={{color: isActive ? "$textOnSurface" : "$text"}}>
+				<a className="flex items-center gap-2">
+					<Text
+						css={{
+							color: isActive ? "$textContrast" : "$text",
+							fontWeight: isActive ? 700 : 500,
+						}}
+					>
 						{label}
-					</ImportantText>
+					</Text>
 					{(count || count === 0) && (
 						<Button
 							appearance={"subtle"}

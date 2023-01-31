@@ -16,6 +16,9 @@ import {
 	redDark,
 	tealDark,
 	pinkDark,
+	blue,
+	blueDark,
+	amberDark,
 } from "@radix-ui/colors";
 
 import {createStitches} from "@stitches/react";
@@ -92,6 +95,7 @@ const baseColors = {
 	...crimson,
 	...gray,
 	white: "#fff",
+	...blue,
 
 	// Black foreground text at step 9 bg
 };
@@ -104,6 +108,8 @@ const baseColorsDark = {
 	...pinkDark,
 	...crimsonDark,
 	...grayDark,
+	...blueDark,
+	...amberDark,
 };
 
 //T-40 Theme colors OG pink = https://www.happyhues.co/palettes/7

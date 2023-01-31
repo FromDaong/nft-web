@@ -23,11 +23,16 @@ import TreatCore, {ComponentBasicProps} from "core/TreatCore";
 import ApplicationFrame from "./ApplicationFrame";
 import useSound from "use-sound";
 import Link from "next/link";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import {apiEndpoint} from "@utils/index";
 import {SocialProfileJsonLd} from "next-seo";
 import {useRouter} from "next/router";
+import useTokenBalance, {
+	useTokenBalanceForAddress,
+} from "@packages/chain/hooks/useTokenBalance";
+import {contractAddresses} from "@packages/treat/lib/constants";
+import {useBalance} from "wagmi";
 
 type ProfileLayoutProps = ComponentBasicProps & {
 	userProfile?: {
@@ -71,9 +76,15 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 			...profile.badges,
 			(props.userProfile.creator || props.userProfile.creator?.approved) &&
 			!props.userProfile.creator?.pending
-				? {color: "pink", name: "Verified Creator"}
+				? {color: "pink", name: "Verified Creator 🎀"}
 				: {color: "purple", name: "Collector"},
 		],
+	});
+
+	const [userBadges, setBadges] = useState(ownerOfUserProfile.badges);
+	const {data: treatBalance, isLoading: isBalanceLoading} = useBalance({
+		addressOrName: ownerOfUserProfile.address,
+		token: contractAddresses.treat2[56],
 	});
 
 	const getOwnedNFTsCount = async () => {
@@ -98,7 +109,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 	};
 
 	// Fetch all in one batch using react query useQueries
-	const [ownedNFTsCount, badges, createNFTsCount] = TreatCore.useQueries({
+	const [ownedNFTsCount, _, createNFTsCount] = TreatCore.useQueries({
 		queries: [
 			{
 				queryKey: ["ownedNFTsCount", ownerOfUserProfile.address],
@@ -183,6 +194,94 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 
 	const isFollowing = followers.includes(loggedInUser?._id);
 
+	useEffect(() => {
+		if (ownedNFTsCount.data) {
+			if (
+				userBadges.find(
+					(badge) =>
+						badge.name === "Diamond Treator" ||
+						badge.name === "Gold Treator" ||
+						badge.name === "Silver Treator"
+				)
+			)
+				return;
+			if (ownedNFTsCount.data > 250) {
+				setBadges([
+					...userBadges,
+					{
+						color: "blue",
+						name: "Diamond Treator",
+					},
+				]);
+
+				return;
+			}
+
+			if (ownedNFTsCount.data > 100) {
+				setBadges([
+					...userBadges,
+					{
+						color: "amber",
+						name: "Gold Treator",
+					},
+				]);
+
+				return;
+			}
+
+			if (ownedNFTsCount.data > 50) {
+				setBadges([
+					...userBadges,
+					{
+						color: "mauve",
+						name: "Silver Treator",
+					},
+				]);
+
+				return;
+			}
+		}
+	}, [ownedNFTsCount.data]);
+
+	useEffect(() => {
+		if (treatBalance) {
+			if (
+				userBadges.find(
+					(badge) => badge.name === "Melon" || badge.name === "Hodlr"
+				)
+			)
+				return;
+			if (parseInt(treatBalance?.formatted) > 73400) {
+				setBadges([
+					...userBadges,
+					{
+						color: "teal",
+						name: "Melon",
+					},
+				]);
+
+				return;
+			}
+
+			if (parseInt(treatBalance?.formatted) > 36700) {
+				setBadges([
+					...userBadges,
+					{
+						color: "red",
+						name: "Hodlr",
+					},
+				]);
+
+				return;
+			}
+		}
+	}, [treatBalance]);
+
+	console.log({
+		treatBalance: parseInt(treatBalance?.formatted) > 36700,
+		isBalanceLoading,
+	});
+
 	return (
 		<>
 			<SEOHead
@@ -242,7 +341,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 										<MutedText>@{ownerOfUserProfile.username}</MutedText>
 									</Container>
 									<Container className="flex flex-row flex-wrap gap-4 mt-2 rounded-full">
-										{ownerOfUserProfile.badges?.map((badge) => (
+										{userBadges.map((badge) => (
 											<Container
 												key={badge.name}
 												css={{backgroundColor: `$${badge.color}2`}}
