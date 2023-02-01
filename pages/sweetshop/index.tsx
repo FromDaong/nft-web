@@ -177,15 +177,15 @@ export default function NFTS({sort, q, nfts, error}) {
 }
 
 export const getServerSideProps = async (ctx) => {
-	const {sort, q, p} = ctx.query;
-
+	const {q, p} = ctx.query;
+	const sort = ctx.query.sort ?? "3";
 	console.log({sort});
 
 	try {
 		const res = await axios.get(
-			`${apiEndpoint}/marketplace/activity?page=${p ?? 1}${
-				"&sort=" + sort ?? 3
-			}${q ? "&q=" + q : ""}`
+			`${apiEndpoint}/marketplace/activity?page=${p ?? 1}${"&sort=" + sort}${
+				q ? "&q=" + q : ""
+			}`
 		);
 
 		const {data} = res.data;
