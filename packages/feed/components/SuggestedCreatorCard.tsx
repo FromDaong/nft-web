@@ -98,7 +98,7 @@ const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 						border: `1px ${props.border ? "solid" : null} $border`,
 						padding: props.border ? "16px" : null,
 						borderRadius: "16px",
-						backgroundColor: !props.noBg ? "$surface" : "transparent",
+						backgroundColor: "rgba(255,255,255,.75)",
 
 						boxShadow: "$base",
 						height: "100%",
