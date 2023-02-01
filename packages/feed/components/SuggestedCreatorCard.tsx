@@ -1,6 +1,5 @@
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
-import OptimizedImage from "@packages/shared/components/OptimizedImage";
 import {Heading} from "@packages/shared/components/Typography/Headings";
 import {
 	ImportantText,
@@ -11,6 +10,7 @@ import {
 import DynamicSkeleton from "@packages/skeleton";
 import {FeaturedCreatorSkeleton} from "@packages/skeleton/config";
 import UserAvatar from "core/auth/components/Avatar";
+import Image from "next/image";
 import Link from "next/link";
 import LiveTag from "./LiveTag";
 
@@ -106,12 +106,11 @@ const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 				>
 					<Container className="flex flex-col justify-between w-full gap-4">
 						<Container className="relative w-full h-[320px]">
-							<OptimizedImage
+							<Image
 								src={props.avatar}
 								alt={props.username}
 								layout="fill"
 								sizes="100vw"
-								fill
 								objectFit="contain"
 							/>
 						</Container>
