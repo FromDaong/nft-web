@@ -10,7 +10,7 @@ import {
 import DynamicSkeleton from "@packages/skeleton";
 import {FeaturedCreatorSkeleton} from "@packages/skeleton/config";
 import UserAvatar from "core/auth/components/Avatar";
-import Image from "next/image";
+import Image from "next/future/image";
 import Link from "next/link";
 import LiveTag from "./LiveTag";
 
@@ -105,13 +105,11 @@ const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 					}}
 				>
 					<Container className="flex flex-col justify-between w-full gap-4">
-						<Container className="relative w-full h-[320px]">
-							<Image
-								src={props.avatar}
-								alt={props.username}
-								layout="fill"
-								sizes="100vw"
-								objectFit="contain"
+						<Container className="relative w-full h-[320px] flex items-center justify-center">
+							<UserAvatar
+								size={280}
+								profile_pic={props.avatar}
+								username={props.username}
 							/>
 						</Container>
 						<Container className="flex flex-col gap-2">
