@@ -125,11 +125,13 @@ export default function NFTS(props) {
 								</Button>
 							</Container>
 						</form>
-						<CreatorsDropdownSort
-							sort={sortBy}
-							setSort={setSort}
-							label={sort_labels_map[parseInt(sortBy) - 1]}
-						/>
+						{false && (
+							<CreatorsDropdownSort
+								sort={sortBy}
+								setSort={setSort}
+								label={sort_labels_map[parseInt(sortBy) - 1]}
+							/>
+						)}
 					</Container>
 					<Container className="flex flex-col gap-8 px-4 ">
 						<Container
