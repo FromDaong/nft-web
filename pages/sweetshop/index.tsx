@@ -184,7 +184,7 @@ export const getServerSideProps = async (ctx) => {
 	try {
 		const res = await axios.get(
 			`${apiEndpoint}/marketplace/activity?page=${p ?? 1}${
-				sort ? "&sort=" + sort : ""
+				"&sort=" + sort ?? 3
 			}${q ? "&q=" + q : ""}`
 		);
 
