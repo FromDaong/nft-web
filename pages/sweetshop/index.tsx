@@ -25,7 +25,7 @@ export default function NFTS({sort, q, nfts, error}) {
 	const posts = JSON.parse(nfts);
 	const nft_posts = posts.docs;
 	const router = useRouter();
-	const [sortBy, setSortBy] = useState(router.query.sort as string);
+	const [sortBy, setSortBy] = useState(sort);
 	const [searchText, setSearchText] = useState(q);
 	const search = useDebounce(searchText, 400);
 
@@ -130,7 +130,7 @@ export default function NFTS({sort, q, nfts, error}) {
 								</Button>
 							</Container>
 						</form>
-						<Container className="flex gap-4 flex-noshrink px-4">
+						<Container className="flex gap-4 px-4 flex-noshrink">
 							<NFTSort
 								sort={sortBy}
 								setSort={setSort}

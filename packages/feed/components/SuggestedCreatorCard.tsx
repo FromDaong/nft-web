@@ -1,5 +1,7 @@
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
+import OptimizedImage from "@packages/shared/components/OptimizedImage";
+import {Heading} from "@packages/shared/components/Typography/Headings";
 import {
 	ImportantText,
 	MutedText,
@@ -49,7 +51,9 @@ const CollapseSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 						border: `1px ${props.border ? "solid" : null} $border`,
 						padding: props.border ? "16px" : null,
 						borderRadius: "16px",
-						backgroundColor: "$surfaceOnSurface",
+						backgroundColor: "$surface",
+
+						boxShadow: "$base",
 						height: "auto",
 					}}
 					className="flex justify-between w-full"
@@ -94,59 +98,57 @@ const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 						border: `1px ${props.border ? "solid" : null} $border`,
 						padding: props.border ? "16px" : null,
 						borderRadius: "16px",
-						backgroundColor: !props.noBg ? "$surfaceOnSurface" : "transparent",
+						backgroundColor: !props.noBg ? "$surface" : "transparent",
+
+						boxShadow: "$base",
 						height: "100%",
 					}}
 				>
-					<Container className="flex w-full gap-4">
-						<Container css={{width: "40px", height: "40px"}}>
-							<UserAvatar
-								size={40}
-								username={props.username}
-								profile_pic={props.avatar}
+					<Container className="flex flex-col justify-between w-full gap-4">
+						<Container className="relative w-full h-[320px]">
+							<OptimizedImage
+								src={props.avatar}
+								alt={props.username}
+								layout="fill"
+								sizes="100vw"
+								fill
+								objectFit="contain"
 							/>
 						</Container>
-						<Container className="flex flex-col gap-4">
-							<Container className="flex w-full gap-2">
-								<Container>
-									<Container>
-										<Container className="flex items-center gap-4">
-											<Text>
-												<ImportantText>{props.display_name}</ImportantText>
-											</Text>
-											{props.live && <LiveTag />}
-										</Container>
-									</Container>
-									<p>
-										<MutedText>
-											<SmallText>@{props.username}</SmallText>
-										</MutedText>
-									</p>
-								</Container>
-							</Container>
-							<Container className="flex flex-col gap-2">
-								{props.isExpanded && (
-									<p>
-										<Text className="line-clamp-4">{props.bio}</Text>
-									</p>
-								)}
-								<Container className="flex gap-4">
-									<Text className="flex items-baseline gap-1">
+						<Container className="flex flex-col gap-2">
+							{props.username && (
+								<Container className="flex flex-col w-full text-center">
+									<MutedText className="flex justify-center">
 										<ImportantText>
-											{Intl.NumberFormat("en-US").format(props.followers ?? 0)}
+											<SmallText>CREATOR</SmallText>
 										</ImportantText>
-										<>Followers</>
-									</Text>
+									</MutedText>
+									<Container className="flex items-center justify-center gap-4 ">
+										<Heading
+											size="xs"
+											className="text-center"
+										>
+											<ImportantText>
+												{props.username.replaceAll(" ", "").trim()}
+											</ImportantText>
+										</Heading>
+										{props.live && <LiveTag />}
+									</Container>
 								</Container>
-								{props.isPromoted && (
-									<p>
-										<MutedText css={{color: "$accentText"}}>
-											<SmallText>Promoted</SmallText>
-										</MutedText>
-									</p>
-								)}
-							</Container>
+							)}
+							{props.isPromoted && (
+								<Container className="flex flex-col gap-2">
+									{props.isPromoted && (
+										<p>
+											<MutedText css={{color: "$accentText"}}>
+												<SmallText>Promoted</SmallText>
+											</MutedText>
+										</p>
+									)}
+								</Container>
+							)}
 						</Container>
+						<Button>View creator</Button>
 					</Container>
 				</Container>
 			</a>

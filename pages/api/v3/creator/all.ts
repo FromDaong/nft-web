@@ -6,12 +6,34 @@ import {MongoModelCreator} from "server/helpers/models";
 export default async function handler(req, res) {
 	await connectMongoDB();
 
-	const {page, q} = req.query;
+	const {page, q, sort} = req.query;
+
+	const sortMap = {
+		"1": {
+			username: 1,
+		},
+		"2": {
+			username: -1,
+		},
+		"3": {
+			"followers.length": -1,
+		},
+		"4": {
+			"nfts.length": -1,
+		},
+	};
 
 	const get_page = Number(page ?? 1) || 1;
 	const options = {
 		page: get_page,
 		limit: 24,
+		sort: {
+			...(sort && sortMap[sort]
+				? sortMap[sort]
+				: {
+						price: -1,
+				  }),
+		},
 	};
 
 	const pipeline = [
@@ -20,7 +42,7 @@ export default async function handler(req, res) {
 				index: "profiles",
 				text: {
 					query: `${q}`,
-					path: ["name", "description", "display_name"],
+					path: ["name", "bio", "display_name"],
 				},
 			},
 		},

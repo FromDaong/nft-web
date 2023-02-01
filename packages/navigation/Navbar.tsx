@@ -126,51 +126,6 @@ export default function Navbar() {
 												</a>
 											</Link>
 										)}
-										<Link href={"/messages"}>
-											<a>
-												<Button
-													css={{
-														borderRadius: "9999px",
-														height: "40px",
-														width: "40px",
-														padding: 0,
-														alignItems: "center",
-														justifyContent: "center",
-													}}
-													appearance={"surface"}
-												>
-													<Container className="flex items-center justify-center w-full h-full">
-														<ChatIcon
-															height={20}
-															width={20}
-														/>
-													</Container>
-												</Button>
-											</a>
-										</Link>
-										<Link href={"/notifications"}>
-											<a>
-												<Button
-													css={{
-														borderRadius: "9999px",
-														height: "40px",
-														width: "40px",
-														padding: 0,
-														alignItems: "center",
-														justifyContent: "center",
-													}}
-													appearance={"surface"}
-												>
-													<Container className="flex items-center justify-center w-full h-full">
-														<BellIcon
-															height={20}
-															width={20}
-														/>
-													</Container>
-												</Button>
-											</a>
-										</Link>
-
 										<NavbarProfileAvatar />
 									</Container>
 								) : (
