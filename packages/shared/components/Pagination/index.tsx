@@ -22,6 +22,8 @@ type PaginationProps = {
 };
 
 export default function Pagination(props: PaginationProps) {
+	console.log(props);
+
 	const [pagesPreview, setPages] = useState([]);
 	useEffect(() => {
 		const {totalPages, page} = props;
@@ -62,7 +64,7 @@ export default function Pagination(props: PaginationProps) {
 
 	return (
 		<Container className="flex justify-center w-full gap-2">
-			{props.page !== props.totalPages && (
+			{props.page !== 1 && (
 				<GotoFirstButton gotoFirst={() => props.gotoPage(1)} />
 			)}
 			{props.hasPrevPage && <PrevButton prev={props.prev} />}

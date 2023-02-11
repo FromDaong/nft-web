@@ -58,6 +58,8 @@ export default function UserProfile(props: {
 		return <Error500 />;
 	}
 
+	const totalPages = Number(((nfts_data.total - 1) / 24).toFixed(0));
+
 	return (
 		<RenderProfileNFTs
 			data={data}
@@ -65,7 +67,7 @@ export default function UserProfile(props: {
 			error={props.error}
 			profile={profile}
 			username={username}
-			nextPage={nextPage}
+			nextPage={nfts_data.page < totalPages && nfts_data.page + +1}
 			prevPage={prevPage}
 			gotoPage={gotoPage}
 			performSearchWithNewParams={performSearchWithNewParams}
@@ -76,7 +78,8 @@ export default function UserProfile(props: {
 			hideSeller
 			hidePrice
 			page={nfts_data.page}
-			hasNextPage={nfts_data.hasNextPage}
+			hasNextPage={nfts_data.page < totalPages}
+			totalPages={totalPages}
 		/>
 	);
 }

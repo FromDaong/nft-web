@@ -30,6 +30,8 @@ const RenderProfileNFTs = ({
 }) => {
 	// T-25 implement a reasonable empty state design
 
+	console.log({totalPages});
+
 	return (
 		<ProfileLayout userProfile={data}>
 			{
@@ -72,7 +74,7 @@ const RenderProfileNFTs = ({
 							next={nextPage}
 							prev={prevPage}
 							hasNextPage={hasNextPage}
-							hasPrevPage={page - 1 > 0}
+							hasPrevPage={page !== 1}
 						/>
 						<Container className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 							{posts.map((post: TritPostProps) => (
@@ -93,6 +95,8 @@ const RenderProfileNFTs = ({
 							prevPage={page - 1}
 							next={nextPage}
 							prev={prevPage}
+							hasPrevPage={page !== 1}
+							hasNextPage={hasNextPage}
 						/>
 					</>
 				)}

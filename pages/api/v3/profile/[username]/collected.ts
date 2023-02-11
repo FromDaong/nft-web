@@ -35,7 +35,7 @@ export default async function handler(req, res) {
 		const resp = await axios.get(
 			`https://deep-index.moralis.io/api/v2/${
 				profile.address
-			}/nft?chain=bsc&disable_total=false&limit=21&format=decimal${
+			}/nft?chain=bsc&disable_total=false&limit=24&format=decimal${
 				moralis_cursor ? "&cursor=" + moralis_cursor : ""
 			}&token_address=${[contractAddresses.treatNFTMinter[56]]}`,
 			{
@@ -55,7 +55,7 @@ export default async function handler(req, res) {
 
 	const options = {
 		page: 1,
-		limit: 21,
+		limit: 24,
 	};
 
 	// @ts-ignore
@@ -81,8 +81,8 @@ export default async function handler(req, res) {
 		{
 			...nfts,
 			cursor: data.cursor,
-			hasNextPage: data.page * 21 < data.total,
-			nextPage: data.page * 21 < data.total ? data.page + 1 : null,
+			hasNextPage: data.page * 24 < data.total,
+			nextPage: data.page * 24 < data.total ? data.page + 1 : null,
 			page: Number(p),
 			total: data.total,
 		},
