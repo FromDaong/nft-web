@@ -67,7 +67,7 @@ export default function UserProfile(props: {
 			error={props.error}
 			profile={profile}
 			username={username}
-			nextPage={nfts_data.page < totalPages && nfts_data.page + +1}
+			nextPage={nextPage}
 			prevPage={prevPage}
 			gotoPage={gotoPage}
 			performSearchWithNewParams={performSearchWithNewParams}

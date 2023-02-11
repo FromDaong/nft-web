@@ -128,7 +128,6 @@ export const usePaginatedPage = (
 				...router.query,
 				...{p: parseInt(`${data.page}`) + +1},
 				...(dynamic_param ? {username: dynamic_param.username} : {}),
-				cursor: data.cursor,
 			},
 		});
 	};
@@ -138,9 +137,8 @@ export const usePaginatedPage = (
 			...(href ? {href: "/[username]"} : {}),
 			query: {
 				...router.query,
-				...{p: parseInt(`${data.page}`) + +1},
+				...{p: parseInt(`${data.page}`) - +1},
 				...(dynamic_param ? {username: dynamic_param.username} : {}),
-				cursor: data.cursor,
 			},
 		});
 	};

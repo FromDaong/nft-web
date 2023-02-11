@@ -22,6 +22,10 @@ export default async function handler(
 	const options = {
 		page: get_page,
 		limit: 24,
+		sort: {
+			// sort by id descending
+			id: -1,
+		},
 	};
 
 	if (!username) {
@@ -29,8 +33,6 @@ export default async function handler(
 	}
 
 	const creator = await MongoModelCreator.findOne({username});
-
-	console.log({username, creator});
 
 	if (!creator) {
 		return res.status(404).json({error: "Creator not found"});
