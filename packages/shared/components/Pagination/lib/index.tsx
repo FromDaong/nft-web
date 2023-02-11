@@ -162,7 +162,7 @@ export const usePaginatedPage = (
 			...(href ? {href: "/[username]"} : {}),
 			query: {
 				...router.query,
-				...(search ? {q: search} : {}),
+				...(search ? {q: searchText} : {}),
 				...(dynamic_param ? {username: dynamic_param.username} : {}),
 				...{p: 1},
 			},
