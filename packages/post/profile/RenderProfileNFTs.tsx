@@ -13,13 +13,16 @@ const RenderProfileNFTs = ({
 	isFetching,
 	error,
 	posts,
+	totalPages,
+	nextPage,
+	prevPage,
+	gotoPage,
 	profile,
+	page,
 	username,
-	fetchNextPage,
-	isFetchingNextPage,
-	hasNextPage,
 	hideSeller,
 	hidePrice,
+	hasNextPage,
 }: {
 	[key: string]: any;
 	hideSeller?: boolean;
@@ -30,7 +33,7 @@ const RenderProfileNFTs = ({
 	return (
 		<ProfileLayout userProfile={data}>
 			{
-				<Container className="flex flex-col w-full">
+				<Container className="flex flex-col w-full mt-8">
 					{isFetching &&
 						[0, 1, 2, 3].map((i) => (
 							<Container
@@ -57,9 +60,20 @@ const RenderProfileNFTs = ({
 					<Text>That was an error. Please reload the page and try again.</Text>
 				</Container>
 			)}
-			<Container>
+			<Container className="flex flex-col gap-12">
 				{posts && (
 					<>
+						<Pagination
+							page={page}
+							totalPages={totalPages}
+							gotoPage={gotoPage}
+							nextPage={page + +1}
+							prevPage={page - 1}
+							next={nextPage}
+							prev={prevPage}
+							hasNextPage={hasNextPage}
+							hasPrevPage={page - 1 > 0}
+						/>
 						<Container className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 							{posts.map((post: TritPostProps) => (
 								<TritPost
@@ -72,9 +86,13 @@ const RenderProfileNFTs = ({
 							))}
 						</Container>
 						<Pagination
-							page={1}
-							totalPages={1}
-							gotoPage={() => {}}
+							page={page}
+							totalPages={totalPages}
+							gotoPage={gotoPage}
+							nextPage={page + +1}
+							prevPage={page - 1}
+							next={nextPage}
+							prev={prevPage}
 						/>
 					</>
 				)}

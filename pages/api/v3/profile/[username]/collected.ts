@@ -9,10 +9,11 @@ import {
 	MongoModelNFT,
 	MongoModelProfile,
 } from "server/helpers/models";
+import axios from "axios";
 
 export default async function handler(req, res) {
 	const {username} = req.query;
-	const {cursor} = req.query;
+	const {p} = req.query;
 
 	if (!username) {
 		return returnWithError("No username provided", 400, res);
@@ -27,19 +28,34 @@ export default async function handler(req, res) {
 		return returnWithError("No profile found", 400, res);
 	}
 
-	const response = await Moralis.EvmApi.nft.getWalletNFTs({
-		address: profile.address,
-		chain: EvmChain.BSC,
-		tokenAddresses: [contractAddresses.treatNFTMinter[56]],
-		cursor,
-	});
+	let moralis_cursor;
+	let response;
 
-	const ownedNfts = response.toJSON();
-	const ownedNftsIds = ownedNfts.result.map((nft) => Number(nft.token_id));
+	for (let i = 0; i < Number(p); i++) {
+		const resp = await axios.get(
+			`https://deep-index.moralis.io/api/v2/${
+				profile.address
+			}/nft?chain=bsc&disable_total=false&limit=21&format=decimal${
+				moralis_cursor ? "&cursor=" + moralis_cursor : ""
+			}&token_address=${[contractAddresses.treatNFTMinter[56]]}`,
+			{
+				headers: {
+					"X-API-Key": process.env.MORALIS_WEB3_API_KEY,
+				},
+			}
+		);
+
+		moralis_cursor = resp.data.cursor;
+		response = resp.data;
+	}
+
+	const data = response;
+
+	const ownedNftsIds = data.result.map((nft) => Number(nft.token_id));
 
 	const options = {
 		page: 1,
-		limit: response.pagination.pageSize,
+		limit: 21,
 	};
 
 	// @ts-ignore
@@ -59,12 +75,16 @@ export default async function handler(req, res) {
 		},
 	});
 
+	console.log({data, p});
+
 	return returnWithSuccess(
 		{
 			...nfts,
-			cursor: ownedNfts.cursor,
-			hasNextPage: response.hasNext(),
-			nextPage: response.hasNext() ? response.pagination.page + 1 : null,
+			cursor: data.cursor,
+			hasNextPage: data.page * 21 < data.total,
+			nextPage: data.page * 21 < data.total ? data.page + 1 : null,
+			page: Number(p),
+			total: data.total,
 		},
 		res
 	);

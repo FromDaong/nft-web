@@ -1,5 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import {SearchIcon, XIcon} from "@heroicons/react/outline";
+import {SearchIcon} from "@heroicons/react/outline";
 import NFTSort from "@packages/Dropdowns/NFTDropdownSort";
 import {TritPost} from "@packages/post/TritPost";
 import {SEOHead} from "@packages/seo/page";
@@ -7,88 +7,28 @@ import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Input} from "@packages/shared/components/Input";
 import Pagination from "@packages/shared/components/Pagination";
-import {
-	Heading,
-	SmallText,
-	Text,
-} from "@packages/shared/components/Typography/Headings";
-import {useDebounce} from "@packages/shared/hooks";
+import {usePaginatedPage} from "@packages/shared/components/Pagination/lib";
+import {Heading} from "@packages/shared/components/Typography/Headings";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
-import {useRouter} from "next/router";
 import {TreatNFTsInfinityScrollingContainer} from "packages/shared/components/ListingSection";
-import {useEffect, useState} from "react";
 
 export default function NFTS({sort, q, nfts, error}) {
 	const posts = JSON.parse(nfts);
 	const nft_posts = posts.docs;
-	const router = useRouter();
-	const [sortBy, setSortBy] = useState(sort);
-	const [searchText, setSearchText] = useState(q);
-	const search = useDebounce(searchText, 400);
 
-	useEffect(() => {
-		router.push(
-			{
-				query: {
-					...{q: searchText},
-					...{sort: sortBy},
-					page: 1,
-				},
-			},
-			undefined,
-			{shallow: true}
-		);
-	}, [sortBy]);
-
-	const setSort = (s) => {
-		setSortBy(s);
-		console.log({s});
-		router.push({
-			query: {
-				...{q: searchText},
-				...{sort: s},
-				page: 1,
-			},
-		});
-	};
-
-	const nextPage = () => {
-		router.push({
-			query: {
-				...router.query,
-				...{p: parseInt(posts.page) + +1},
-			},
-		});
-	};
-
-	const prevPage = () => {
-		router.push({
-			query: {
-				...router.query,
-				...{p: parseInt(posts.page) + +1},
-			},
-		});
-	};
-
-	const gotoPage = (page) => {
-		router.push({query: {...router.query, p: page}});
-	};
-
-	const performSearchWithNewParams = (e) => {
-		e.preventDefault();
-		console.log("searching params");
-
-		router.push({
-			query: {
-				...router.query,
-				...(search ? {q: search} : {}),
-				...{p: 1},
-			},
-		});
-	};
+	const {
+		gotoPage,
+		performSearchWithNewParams,
+		prevPage,
+		nextPage,
+		searchText,
+		sortBy,
+		setSort,
+		setSearchText,
+	} = usePaginatedPage(posts, sort, q);
 
 	return (
 		<ApplicationLayout>

@@ -1,3 +1,4 @@
+import axios from "axios";
 import {connectMongoDB} from "@db/engine";
 import {
 	populateNFTsWithProfileAndTx,
@@ -28,14 +29,19 @@ export default async function handler(req, res) {
 		return returnWithError("No profile found", 400, res);
 	}
 
-	const response = await Moralis.EvmApi.nft.getWalletNFTs({
-		address: profile.address,
-		chain: EvmChain.BSC,
-		tokenAddresses: [contractAddresses.treatNFTMinter[56]],
-		normalizeMetadata: true,
-	});
+	const resp = await axios.get(
+		`https://deep-index.moralis.io/api/v2/${
+			profile.address
+		}/nft?chain=bsc&disable_total=false&format=decimal&token_address=${[
+			contractAddresses.treatNFTMinter[56],
+		]}`,
+		{
+			headers: {
+				"X-API-Key":
+					"OnC1EoANtnaL6ijxI6jZbO0E3GAf5hFkHmYrn1hWTamNT7vuUQ1JUvBwFYchxdIu",
+			},
+		}
+	);
 
-	console.log(response.toJSON().result.map((nft) => Number(nft.token_id)));
-
-	return returnWithSuccess(response.pagination.total, res);
+	return returnWithSuccess(resp.data.total, res);
 }
