@@ -171,6 +171,9 @@ export default function AddTeamMemberModal({
 										id="team"
 										name="badge"
 										checked={badge === "team"}
+										onChange={(e) => {
+											setBadge("team");
+										}}
 										type="radio"
 										className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
 									/>
@@ -186,7 +189,7 @@ export default function AddTeamMemberModal({
 										id="council"
 										checked={badge === "council"}
 										onChange={(e) => {
-											setBadge(e.target.value);
+											setBadge("council");
 										}}
 										name="badge"
 										type="radio"

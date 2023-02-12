@@ -1,16 +1,17 @@
 import {useDisclosure} from "@packages/hooks";
 import AddTeamMemberModal from "@packages/modals/AddTeamMemberModal";
+import ConfirmActionModal from "@packages/modals/ConfirmActionModal";
 import {useContracts} from "@packages/post/hooks";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
-import {Input} from "@packages/shared/components/Input";
-import {THead, TRow} from "@packages/shared/components/Table";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {
 	ImportantText,
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
 import Spinner from "@packages/shared/icons/Spinner";
+import {apiEndpoint} from "@utils/index";
+import axios from "axios";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import {NextPage} from "next";
 import {useRouter} from "next/router";
@@ -40,6 +41,7 @@ const UnAuthed = () => {
 };
 
 function PendingCreators(props: {pending_creators}) {
+	const {address} = useAccount();
 	const creators = props.pending_creators;
 	const router = useRouter();
 	const {data} = useSigner();
@@ -115,8 +117,26 @@ function PendingCreators(props: {pending_creators}) {
 }
 
 function ManageTeamMembers(props: {team_members}) {
+	const [selectedMember, setSelectedMember] = useState(null);
+	const router = useRouter();
 	const {isOpen, onOpen, onClose} = useDisclosure();
-	console.log({props});
+	const {
+		isOpen: isConfirmOpen,
+		onOpen: setConfirmOpen,
+		onClose: setConfirmClose,
+	} = useDisclosure();
+
+	const removeTeamMember = () => {
+		axios
+			.post(`${apiEndpoint}/profile/remove-team-badge?_id=${selectedMember}`)
+			.then(() => router.reload());
+	};
+
+	const closeConfirm = () => {
+		setSelectedMember(null);
+		setConfirmClose();
+	};
+
 	return (
 		<Container
 			className="flex flex-col gap-8 p-4 md:p-8 rounded-xl"
@@ -128,38 +148,69 @@ function ManageTeamMembers(props: {team_members}) {
 					onClose={onClose}
 				/>
 			)}
+			{selectedMember && (
+				<ConfirmActionModal
+					action_verb="remove this team member"
+					action={removeTeamMember}
+					isOpen={isConfirmOpen}
+					onClose={closeConfirm}
+				/>
+			)}
 			<Container className="flex justify-between items-center">
 				<Heading size="xs">Team members ({props.team_members.length})</Heading>
 				<Button onClick={onOpen}>Add team member</Button>
 			</Container>
 			<Container>
-				{false && <Text>There are current team members.</Text>}
-				<Container className="flex flex-col gap-4">
-					{props.team_members.map((profile) => (
-						<Container
-							className="col-span-1 p-4 flex justify-between w-full gap-4 bg-gray-100 rounded-xl shadow"
-							key={profile._id}
-						>
-							<Container className="flex flex-col">
-								<Container className="flex gap-2">
+				{props.team_members.length === 0 && (
+					<Text>There are no current team members.</Text>
+				)}
+				{props.team_members.length > 0 && (
+					<Container className="flex flex-col gap-4">
+						{props.team_members.map((profile) => (
+							<Container
+								className="col-span-1 p-4 flex justify-between w-full gap-4 bg-gray-100 rounded-xl shadow"
+								key={profile._id}
+							>
+								<Container className="flex flex-col">
+									<Container className="flex gap-2">
+										<Text>
+											<ImportantText>{profile.display_name}</ImportantText>
+										</Text>
+										<Text>
+											<SmallText>@{profile.username}</SmallText>
+										</Text>
+									</Container>
 									<Text>
-										<ImportantText>{profile.display_name}</ImportantText>
+										<SmallText>@{profile.address}</SmallText>
 									</Text>
-									<Text>
-										<SmallText>@{profile.username}</SmallText>
-									</Text>
+									<Container>
+										<Button
+											css={{paddingX: "8px", paddingY: "4px"}}
+											appearance={"surface"}
+										>
+											<SmallText>
+												{profile.isCouncil && "Council"}
+												{profile.isTeam && "Team"}
+											</SmallText>
+										</Button>
+									</Container>
 								</Container>
-								<Text>
-									<SmallText>@{profile.address}</SmallText>
-								</Text>
-							</Container>
 
-							<Container className="flex flex-col gap-2">
-								<Button appearance="danger">Remove</Button>
+								<Container className="flex flex-col gap-2">
+									<Button
+										onClick={() => {
+											setSelectedMember(profile._id);
+											setConfirmOpen();
+										}}
+										appearance="danger"
+									>
+										Remove
+									</Button>
+								</Container>
 							</Container>
-						</Container>
-					))}
-				</Container>
+						))}
+					</Container>
+				)}
 			</Container>
 		</Container>
 	);
@@ -188,10 +239,12 @@ const AdminDashboard: NextPage<Props> = (props) => {
 						profiles and TOTM NFTs.
 					</Text>
 				</Container>
-				<Container className="flex flex-wrap gap-4">
-					<Button>Create TOTM NFTs</Button>
-					<Button>Create $Melon NFTs</Button>
-				</Container>
+				{false && (
+					<Container className="flex flex-wrap gap-4">
+						<Button>Create TOTM NFTs</Button>
+						<Button>Create $Melon NFTs</Button>
+					</Container>
+				)}
 				<PendingCreators pending_creators={pending_creators} />
 				<ManageTeamMembers team_members={team_members} />
 			</Container>
