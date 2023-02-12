@@ -225,9 +225,9 @@ const AdminDashboard: NextPage<Props> = (props) => {
 	const {address} = useAccount();
 
 	// T-77 add auth
-	if (address === "0x8c80F871f91b7E53859cbffebdb35311630B548a") {
+	/*if (address === "0x8c80F871f91b7E53859cbffebdb35311630B548a") {
 		return <UnAuthed />;
-	}
+	}*/
 
 	return (
 		<ApplicationFrame>
