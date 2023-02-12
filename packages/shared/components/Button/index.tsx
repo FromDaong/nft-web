@@ -50,7 +50,9 @@ export const Button = styled("button", {
 				padding: 0,
 			},
 			danger: {
-				backgroundColor: "$red2",
+				backgroundColor: "$red4",
+				color: "$red12",
+				boxShadow: "$shadow",
 			},
 			disabled: {
 				backgroundColor: "$surfaceOnSurface",

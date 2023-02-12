@@ -65,6 +65,14 @@ const ProfileSchema = new mongoose.Schema(
 				color: String,
 			},
 		],
+		isTeam: {
+			type: Boolean,
+			default: false,
+		},
+		isCouncil: {
+			type: Boolean,
+			default: false,
+		},
 		referred: [],
 		user: {
 			type: mongoose.Schema.Types.ObjectId,

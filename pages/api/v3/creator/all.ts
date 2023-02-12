@@ -42,7 +42,7 @@ export default async function handler(req, res) {
 				index: "profiles",
 				text: {
 					query: `${q}`,
-					path: ["name", "bio", "display_name"],
+					path: ["username", "bio", "display_name"],
 				},
 			},
 		},

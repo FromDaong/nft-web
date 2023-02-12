@@ -57,9 +57,10 @@ export default function Upgrade() {
 		},
 		validationSchema: Yup.object({
 			email: Yup.string().email("Invalid email address").required("Required"),
-			subscription_price: Yup.number()
-				.min(0.001, "Price should not be less than 0.001 BNB")
-				.required("Required"),
+			subscription_price: Yup.number().min(
+				0.001,
+				"Price should not be less than 0.001 BNB"
+			),
 			subscription_description: Yup.string(),
 		}),
 	});
@@ -130,43 +131,51 @@ export default function Upgrade() {
 											onBlur={upgradeForm.handleBlur}
 										/>
 									</Container>
-									<Container className="flex flex-col gap-1">
-										<label htmlFor="subscription_price">
+									{false && (
+										<Container className="flex flex-col gap-1">
+											<label htmlFor="subscription_price">
+												<Text>
+													<ImportantText>Subscription price</ImportantText>
+												</Text>
+											</label>
+											<Input
+												type="number"
+												name="subscription_price"
+												value={upgradeForm.values.subscription_price}
+												onChange={upgradeForm.handleChange}
+												onBlur={upgradeForm.handleBlur}
+											/>
+											{upgradeForm.errors.subscription_price && (
+												<Text appearance={"danger"}>
+													<SmallText>
+														{upgradeForm.errors.subscription_price}
+													</SmallText>
+												</Text>
+											)}
 											<Text>
-												<ImportantText>Subscription price</ImportantText>
+												<MutedText>
+													Price is in BNB and charged monthly
+												</MutedText>
 											</Text>
-										</label>
-										<Input
-											type="number"
-											name="subscription_price"
-											value={upgradeForm.values.subscription_price}
-											onChange={upgradeForm.handleChange}
-											onBlur={upgradeForm.handleBlur}
-										/>
-										{upgradeForm.errors.subscription_price && (
-											<Text appearance={"danger"}>
-												<SmallText>
-													{upgradeForm.errors.subscription_price}
-												</SmallText>
-											</Text>
-										)}
-										<Text>
-											<MutedText>Price is in BNB and charged monthly</MutedText>
-										</Text>
-									</Container>
-									<Container className="flex flex-col gap-1">
-										<label htmlFor="subscription_description">
-											<Text>
-												<ImportantText>Subscription description</ImportantText>
-											</Text>
-										</label>
-										<Textarea
-											name="subscription_description"
-											value={upgradeForm.values.subscription_description}
-											onChange={upgradeForm.handleChange}
-											onBlur={upgradeForm.handleBlur}
-										/>
-									</Container>
+										</Container>
+									)}
+									{false && (
+										<Container className="flex flex-col gap-1">
+											<label htmlFor="subscription_description">
+												<Text>
+													<ImportantText>
+														Subscription description
+													</ImportantText>
+												</Text>
+											</label>
+											<Textarea
+												name="subscription_description"
+												value={upgradeForm.values.subscription_description}
+												onChange={upgradeForm.handleChange}
+												onBlur={upgradeForm.handleBlur}
+											/>
+										</Container>
+									)}
 									<Button
 										className="mt-4"
 										appearance={

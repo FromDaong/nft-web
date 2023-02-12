@@ -29,17 +29,28 @@ const default_image = (
 const profile_image = (username, display_name, bio, profile_picture) => (
 	<div
 		tw={
-			"w-full h-full flex flex-col items-center justify-center bg-[#ffd4da] p-8 text-center"
+			"w-full h-full flex items-center justify-center bg-[#ffd4da] p-8 text-center"
 		}
 	>
-		<div tw={"h-32 w-32 bg-white flex rounded-full mb-8"}></div>
-		<div tw="flex flex-col gap-2 w-full items-center">
-			<h1 tw="text-3xl font-bold my-0 text-center">{display_name}</h1>
-			<p tw="text-base text-gray-700 my-0 text-center">
-				https://treatnfts.com/{username}
-			</p>
+		<div tw="flex flex-col w-full items-center w-1/2 h-full">
+			<h1 tw="text-3xl font-bold my-0">{display_name}</h1>
+			<p tw="text-base text-gray-700 my-0">https://treatnfts.com/{username}</p>
+			<p tw="text-lg text-gray-700 max-w-xl">{bio}</p>
 		</div>
-		<p tw="text-lg text-gray-700 text-center max-w-xl">{bio}</p>
+		<div
+			tw={
+				"h-full w-1/2 bg-white flex items-center rounded-full overflow-hidden mb-8 p-24 bg-transparent"
+			}
+		>
+			<img
+				src={profile_picture}
+				tw={"w-full h-full rounded-full"}
+				style={{
+					objectFit: "cover",
+					aspectRatio: "1/1",
+				}}
+			/>
+		</div>
 	</div>
 );
 
@@ -99,13 +110,8 @@ export default async function (req) {
 	}
 
 	if (page_type === "profile") {
-		const profile_picture_url = profile_picture.substring(
-			0,
-			profile_picture.length - 1
-		);
-
 		return new ImageResponse(
-			profile_image(username, display_name, bio, profile_picture_url),
+			profile_image(username, display_name, bio, profile_picture),
 			{
 				width: 1200,
 				height: 630,
