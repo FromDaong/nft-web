@@ -26,16 +26,15 @@ export const ActionSection = (props) => {
 						</MutedText>
 					)}
 					{props.count && <Text>{props.count} editions available</Text>}
+					{!props.noPrice && (
+						<Container className="flex items-baseline gap-1 mt-2">
+							<Heading size={"xss"}>
+								{props.price.value ?? "0.0"} {props.price.currency}
+							</Heading>
+							<MutedText>asking price</MutedText>
+						</Container>
+					)}
 				</Container>
-
-				{!props.noPrice && (
-					<Container className="flex items-baseline gap-1">
-						<Heading size={"xss"}>
-							{props.price.value} {props.price.currency}
-						</Heading>
-						<MutedText>asking price</MutedText>
-					</Container>
-				)}
 			</Container>
 		</Container>
 	);

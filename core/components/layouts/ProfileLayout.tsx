@@ -435,7 +435,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 												)}
 											</Button>
 										)}
-									{isFollowing && (
+									{false && isFollowing && (
 										<Button
 											onClick={createChatIfNotExist}
 											appearance={openingMessages ? "disabled" : "surface"}
