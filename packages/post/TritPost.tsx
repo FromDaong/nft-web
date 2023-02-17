@@ -76,7 +76,7 @@ export const TritPost = (props: TritPostProps) => {
 				}`}
 			>
 				<a className="flex flex-col w-full relative overflow-hidden">
-					{!loadingSigner && remainingNfts === 0 && (
+					{!loadingSigner && remainingNfts === 0 && !props.hideSoldOut && (
 						<Text
 							css={{
 								color: "$surface",

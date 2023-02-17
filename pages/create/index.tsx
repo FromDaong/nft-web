@@ -30,7 +30,11 @@ export default function Create() {
 				<Container className="flex flex-col items-center gap-8 py-12">
 					<Container
 						className="flex flex-col max-w-xl gap-8 p-4 border rounded shadow lg:p-8"
-						css={{background: "$elementSurface", borderRadius: "16px"}}
+						css={{
+							background: "$surfaceOnSurface",
+							borderRadius: "16px",
+							borderColor: "$border",
+						}}
 					>
 						<Container className="flex flex-col gap-2">
 							<Heading size="sm">Create new NFTs</Heading>
@@ -89,7 +93,7 @@ export default function Create() {
 									<Container className="flex flex-col gap-2">
 										<Button
 											disabled={props.isSubmitting}
-											appearance={props.isSubmitting ? "subtle" : "primary"}
+											appearance={props.isSubmitting ? "disabled" : "action"}
 											type="submit"
 										>
 											{props.isSubmitting ? "Submitting..." : "Continue"}

@@ -23,10 +23,12 @@ const RenderProfileNFTs = ({
 	hideSeller,
 	hidePrice,
 	hasNextPage,
+	hideSoldOut,
 }: {
 	[key: string]: any;
 	hideSeller?: boolean;
 	hidePrice?: boolean;
+	hideSoldOut?: boolean;
 }) => {
 	// T-25 implement a reasonable empty state design
 
@@ -84,6 +86,7 @@ const RenderProfileNFTs = ({
 									noPrice={hidePrice}
 									isMine={username === profile.username}
 									hideSeller={hideSeller}
+									hideSoldOut={hideSoldOut}
 								/>
 							))}
 						</Container>

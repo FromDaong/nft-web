@@ -71,6 +71,7 @@ export type TritPostProps = {
 	isMine?: boolean;
 	isSoldOut?: boolean;
 	hideSeller?: boolean;
+	hideSoldOut?: boolean;
 };
 
 export type LivestreamPost = {
