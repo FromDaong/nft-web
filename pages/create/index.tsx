@@ -33,7 +33,7 @@ export default function Create() {
 						css={{background: "$elementSurface", borderRadius: "16px"}}
 					>
 						<Container className="flex flex-col gap-2">
-							<Heading size="sm">Create new trits</Heading>
+							<Heading size="sm">Create new NFTs</Heading>
 							<Text>
 								Deploy a standard NFT contract that you can mint to at anytime.
 								The following details are used to create your own smart

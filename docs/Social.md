@@ -25,7 +25,7 @@
 
 - Expecting a surge in user base, capacity estimated to 100,000 daily active users
 - Targeting a gradual growth to 300,000 daily active users in 3 months
-- Platform is more read-heavy, optimize for fast read of trits
+- Platform is more read-heavy, optimize for fast read of nfts
 - Smart contracts more write-heavy so optimize for gas(Layer 2? State Channels?)
 
 ### Assumptions
@@ -73,7 +73,7 @@ Keep only a few hundred posts in memory cache. Inactive users, querying the User
 2. Post is sent to Fanout Service and pushed to Redis cache of home timelines
 3. Copy of the post is sent to Apache Storm to generate trending topics(or #tags)
 4. Same post is sent to Search Service to generate search index (first extracts users and hashtags from post)
-5. _Post is sent to Chain Service to generate trits - should be the second step_
+5. _Post is sent to Chain Service to generate nfts - should be the second step_
 
 ## Feed and Searches
 

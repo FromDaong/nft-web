@@ -59,7 +59,7 @@ export default function BecomeCreatorModal({isOpen, onClose}) {
 							</Container>
 							<DialogDescription>
 								Securely verify your identity to upgrade to a creator profile. A
-								creator profile allows you to create subscriptions and trits.
+								creator profile allows you to create subscriptions and nfts.
 							</DialogDescription>
 						</Container>
 						<Container className="flex flex-col gap-8">

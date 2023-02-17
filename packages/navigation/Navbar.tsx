@@ -101,15 +101,12 @@ export default function Navbar() {
 								// eslint-disable-next-line no-constant-condition
 								(isConnected ? (
 									<Container className="flex items-center gap-4">
-										{creator && (
+										{true && (
 											<Link href={"/create"}>
 												<a>
 													<Button
 														css={{
 															borderRadius: "9999px",
-															height: "40px",
-															width: "40px",
-															padding: 0,
 															alignItems: "center",
 															justifyContent: "center",
 														}}

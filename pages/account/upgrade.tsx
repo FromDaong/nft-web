@@ -103,8 +103,7 @@ export default function Upgrade() {
 							<Text>
 								<MutedText>
 									Securely verify your identity to upgrade to a creator profile.
-									A creator profile allows you to create subscriptions and
-									trits.
+									A creator profile allows you to create subscriptions and nfts.
 								</MutedText>
 							</Text>
 						</Container>
