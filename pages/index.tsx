@@ -22,10 +22,17 @@ import {
 } from "@packages/skeleton/config";
 import {useApplicationTheme} from "@packages/theme/provider";
 import {Button} from "@packages/shared/components/Button";
-import {MixerVerticalIcon} from "@radix-ui/react-icons";
+import {
+	CaretLeftIcon,
+	CaretRightIcon,
+	MixerVerticalIcon,
+} from "@radix-ui/react-icons";
 import Balancer from "react-wrap-balancer";
 import Image from "next/future/image";
 import {SEOHead} from "@packages/seo/page";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import {IFeatureProps, request} from "@lib/datocms";
 
 const getTrendingNFTs = async () => {
 	const res = await axios.get(`${apiEndpoint}/marketplace/trending`);
@@ -37,7 +44,7 @@ const getTrendingCreators = async () => {
 	return res.data.data;
 };
 
-export default function Index() {
+export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 	const {theme} = useApplicationTheme();
 
 	const {
@@ -105,6 +112,9 @@ export default function Index() {
 					official: true,
 				}}
 			/>
+			<Container>
+				<FeaturedCarousel features={props.allFeatures} />
+			</Container>
 			<Container>
 				<Container className="flex flex-col w-full gap-8 px-8  container mx-auto">
 					<Container className="flex flex-col items-baseline gap-4">
@@ -433,4 +443,150 @@ export default function Index() {
 			</Container>
 		</Container>
 	);
+}
+
+function FeaturedCarousel(props: {features: Array<IFeatureProps>}) {
+	const carouselRef = useRef(null);
+	const [scrollPosition, setScrollPosition] = useState(0);
+
+	const isNextEnabled = useMemo(() => {
+		if (carouselRef.current) {
+			return (
+				carouselRef.current.scrollWidth - carouselRef.current.scrollLeft >
+				carouselRef.current.clientWidth
+			);
+		}
+		return false;
+	}, [scrollPosition, carouselRef]);
+
+	const isPrevEnabled = useMemo(() => {
+		if (carouselRef.current) {
+			return carouselRef.current.scrollLeft > 0;
+		}
+		return false;
+	}, [scrollPosition, carouselRef]);
+
+	const next = () => {
+		carouselRef.current.scrollBy({
+			left: 384,
+			behavior: "smooth",
+		});
+		setScrollPosition(carouselRef.current.scrollLeft);
+	};
+
+	const prev = () => {
+		carouselRef.current.scrollBy({
+			left: -384,
+			behavior: "smooth",
+		});
+		setScrollPosition(carouselRef.current.scrollLeft);
+	};
+
+	return (
+		<Container className="relative container mx-auto flex flex-col gap-8 px-8">
+			<Container className="flex flex-col md:flex-row gap-4 justify-between w-full md:items-center">
+				<Container>
+					<Heading size="sm">Featured on TreatDAO</Heading>
+					<Text>
+						Discover the hottest content, creators and TreatDAO patners
+					</Text>
+				</Container>
+				<Container className="flex justify-between w-full md:w-fit h-fit md:gap-8">
+					<Button
+						onClick={prev}
+						css={{
+							borderRadius: "9999px",
+							padding: "0.5rem",
+						}}
+						appearance={"surface"}
+					>
+						<CaretLeftIcon className="w-6 h-6" />
+					</Button>
+					<Button
+						onClick={next}
+						css={{
+							borderRadius: "9999px",
+							padding: "0.5rem",
+						}}
+						appearance={"surface"}
+					>
+						<CaretRightIcon className="w-6 h-6" />
+					</Button>
+				</Container>
+			</Container>
+			<Container
+				ref={carouselRef}
+				className="@container flex flex-nowrap overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-hide w-full gap-8"
+			>
+				{props.features.map((feature) => (
+					<Link
+						href={feature.href}
+						key={feature.id}
+					>
+						<a className="w-96 group relative aspect-[2/3] flex-shrink-0 bg-gray-50 rounded-xl overflow-hidden">
+							<Image
+								src={feature.cover.responsiveImage.src}
+								sizes={feature.cover.responsiveImage.srcSet}
+								alt={feature.displayName}
+								fill
+								className="object-cover rounded-xl"
+							/>
+							<Container
+								css={{
+									background:
+										"linear-gradient(0deg, #000000 0%, rgba(0, 0, 0, 0) 100%)",
+								}}
+								className="absolute z-1 top-0 left-0 flex flex-col-reverse w-full h-full p-8 gap-2 group-hover:opacity-100 opacity-0 transition-opacity duration-300 delay-150"
+							>
+								<Text css={{color: "#f1f1f1"}}>
+									{feature.caption ??
+										`Some description to make things look much better than having
+									just the title alone because it looks terrible`}
+								</Text>
+								<Heading
+									size="xs"
+									css={{color: "#fff"}}
+								>
+									{feature.displayName}
+								</Heading>
+							</Container>
+						</a>
+					</Link>
+				))}
+			</Container>
+		</Container>
+	);
+}
+
+const FEATURES_QUERY = `{
+   allFeatures {
+    id
+    href
+    displayName
+	caption
+    cover {
+      responsiveImage {
+        srcSet
+        webpSrcSet
+        sizes
+        src
+        width
+        height
+        aspectRatio
+        alt
+        title
+        bgColor
+        base64
+      }
+    }
+  }
+}`;
+
+export async function getServerSideProps(context: any) {
+	const data = await request({
+		query: FEATURES_QUERY,
+	});
+	return {
+		props: {allFeatures: data.allFeatures},
+	};
 }

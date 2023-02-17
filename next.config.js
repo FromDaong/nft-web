@@ -30,6 +30,14 @@ module.exports = withTM({
 		defaultLocale: "en",
 		localeDetection: false,
 	},
+	images: {
+		domains: [
+			"localhost",
+			"localhost:3000",
+			"localhost:3001",
+			"www.datocms-assets.com",
+		],
+	},
 	/*pwa: {
     disable: process.env.NODE_ENV !== "production",
     dest: "public",

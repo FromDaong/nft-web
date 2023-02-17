@@ -57,10 +57,7 @@ export default function Upgrade() {
 		},
 		validationSchema: Yup.object({
 			email: Yup.string().email("Invalid email address").required("Required"),
-			subscription_price: Yup.number().min(
-				0.001,
-				"Price should not be less than 0.001 BNB"
-			),
+			subscription_price: Yup.number(),
 			subscription_description: Yup.string(),
 		}),
 	});
