@@ -344,8 +344,11 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 										{userBadges.map((badge) => (
 											<Container
 												key={badge.name}
-												css={{backgroundColor: `$${badge.color}2`}}
-												className="px-3 py-1 rounded-xl"
+												css={{
+													backgroundColor: `$${badge.color}2`,
+													borderColor: "$subtleBorder",
+												}}
+												className="px-3 py-1 rounded-xl shadow border"
 											>
 												<Text css={{color: `$${badge.color}10`}}>
 													<ImportantText>

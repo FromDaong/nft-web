@@ -32,8 +32,6 @@ const RenderProfileNFTs = ({
 }) => {
 	// T-25 implement a reasonable empty state design
 
-	console.log({totalPages});
-
 	return (
 		<ProfileLayout userProfile={data}>
 			{
