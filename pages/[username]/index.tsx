@@ -87,7 +87,7 @@ export const getServerSideProps = async (ctx) => {
 			if (ctx.resolvedUrl === `/${username}`) {
 				return {
 					redirect: {
-						destination: `/${username}/`,
+						destination: `/${username}/portfolio`,
 						permanent: false,
 					},
 				};

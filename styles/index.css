@@ -1,11 +1,36 @@
-@import "./init.css";
 @import "./overrides.css";
-@import "./pic-editor.css";
 @import "@radix-ui/colors/blackA.css";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+	font-size: 14px;
+	overscroll-behavior: none;
+}
+
+p,
+span {
+	font-family: "Inter", -apple-system, system-ui, sans-serif !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0;
+	font-family: "Inter", -apple-system, system-ui, sans-serif !important;
+	font-family: 700 !important;
+}
+
+* {
+	outline: none !important;
+	box-sizing: border-box !important;
+	font-family: "Inter", -apple-system, system-ui, sans-serif !important;
+}
 
 .linear-card-gradient {
 	background: linear-gradient(
