@@ -11,7 +11,6 @@ import {Container} from "@packages/shared/components/Container";
 import {useAccountModal, useConnectModal} from "@rainbow-me/rainbowkit";
 import {
 	ArrowRightIcon,
-	CubeIcon,
 	DotsVerticalIcon,
 	XIcon,
 } from "@heroicons/react/outline";
@@ -25,7 +24,30 @@ import {useUser} from "core/auth/useUser";
 import NewAvatar from "@packages/shared/components/AvatarNew";
 import {useRouter} from "next/router";
 import {useEffect} from "react";
-import {GridIcon, ImageIcon} from "@radix-ui/react-icons";
+import {ImageIcon} from "@radix-ui/react-icons";
+
+const ExploreDropdownLinks = [
+	{
+		label: "Sweetshop",
+		link: "/sweetshop",
+	},
+	{
+		label: "Creators",
+		link: "/creators",
+	},
+	{
+		label: "Magazine",
+		link: "https://treatdao.org/magazine",
+	},
+	{
+		label: "Farm",
+		link: "https://treatdao.com/farms",
+	},
+	{
+		label: "Buy Crypto",
+		link: "/dex/ramp",
+	},
+];
 
 const BankNotes = (props) => {
 	return (
@@ -144,100 +166,6 @@ const ShopIcon = (props) => (
 	</svg>
 );
 
-const CreditCardIcon = (props) => (
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		fill="none"
-		viewBox="0 0 24 24"
-		strokeWidth={1.5}
-		stroke="currentColor"
-		{...props}
-	>
-		<path
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"
-		/>
-	</svg>
-);
-
-const FarmIcon = (props) => (
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		fill="none"
-		viewBox="0 0 24 24"
-		strokeWidth={1.5}
-		stroke="currentColor"
-		{...props}
-	>
-		<path
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			d="M5.25 14.25h13.5m-13.5 0a3 3 0 01-3-3m3 3a3 3 0 100 6h13.5a3 3 0 100-6m-16.5-3a3 3 0 013-3h13.5a3 3 0 013 3m-19.5 0a4.5 4.5 0 01.9-2.7L5.737 5.1a3.375 3.375 0 012.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 01.9 2.7m0 0a3 3 0 01-3 3m0 3h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008zm-3 6h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008z"
-		/>
-	</svg>
-);
-
-const BeakerIcon = (props) => (
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		fill="none"
-		viewBox="0 0 24 24"
-		strokeWidth={1.5}
-		stroke="currentColor"
-		{...props}
-	>
-		<path
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5"
-		/>
-	</svg>
-);
-
-const ExploreDropdownLinks = [
-	{
-		label: "Sweetshop",
-		link: "/sweetshop",
-		icon: (
-			<ShopIcon
-				width={20}
-				height={20}
-			/>
-		),
-	},
-	{
-		label: "Magazine",
-		link: "https://treatdao.org/magazine",
-		icon: (
-			<ImageIcon
-				width={20}
-				height={20}
-			/>
-		),
-	},
-	{
-		label: "Farm",
-		link: "https://treatdao.com/farms",
-		icon: (
-			<FarmIcon
-				width={20}
-				height={20}
-			/>
-		),
-	},
-	{
-		label: "Buy Crypto",
-		link: "/dex/ramp",
-		icon: (
-			<CreditCardIcon
-				width={20}
-				height={20}
-			/>
-		),
-	},
-];
-
 // dec to binary
 
 const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
@@ -303,11 +231,6 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 								</Container>
 								<Container className="flex flex-col gap-24 h-full py-12">
 									<Container className="flex flex-col gap-2">
-										<Heading size="xss">
-											<MutedText css={{color: "$textOnSurface"}}>
-												NAVIGATION ACTIONS
-											</MutedText>
-										</Heading>
 										{ExploreDropdownLinks.map((link) => (
 											<Link
 												key={link.link}
@@ -318,9 +241,6 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 														onClick={onClose}
 														className="flex items-center gap-8 py-4"
 													>
-														<Text>
-															<ImportantText>{link.icon}</ImportantText>
-														</Text>
 														<Text>
 															<ImportantText> {link.label}</ImportantText>
 														</Text>
@@ -341,7 +261,7 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 							</Container>
 						)}
 						{props.isConnected && !isLoading && (
-							<Container className="relative flex flex-col gap-4 p-4 py-12">
+							<Container className="relative flex flex-col gap-4 p-4 py-8">
 								<Container className="absolute flex justify-end right-4 top-4">
 									<Button
 										className="flex items-center"
@@ -459,9 +379,6 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 								</Container>
 								<Container className="flex flex-col gap-2 p-4">
 									<Divider dir="horizontal" />
-									<Heading size="xss">
-										<MutedText>NAVIGATION ACTIONS</MutedText>
-									</Heading>
 
 									{ExploreDropdownLinks.map((link) => (
 										<Link
