@@ -33,7 +33,7 @@ const PostDropdownOptions = [
 
 export default function PostUserDropdown() {
 	return (
-		<DropdownMenu.Root>
+        <DropdownMenu.Root>
 			<DropdownMenu.Trigger>
 				<BoldLink className="flex items-center gap-1">
 					<DotsHorizontalIcon className="w-5 h-5" />
@@ -43,22 +43,22 @@ export default function PostUserDropdown() {
 				<DropdownContent>
 					<NavDropdownContainer className="p-2 drop-shadow-2xl">
 						{PostDropdownOptions.map((link) => (
-							<Link
+							(<Link
 								key={link.link}
 								href={link.link}
 							>
-								<a>
-									<NavDropdownItem>
-										<Text>
-											<ImportantText> {link.label}</ImportantText>
-										</Text>
-									</NavDropdownItem>
-								</a>
-							</Link>
+
+                                <NavDropdownItem>
+                                    <Text>
+                                        <ImportantText> {link.label}</ImportantText>
+                                    </Text>
+                                </NavDropdownItem>
+
+                            </Link>)
 						))}
 					</NavDropdownContainer>
 				</DropdownContent>
 			</DropdownMenu.Portal>
 		</DropdownMenu.Root>
-	);
+    );
 }

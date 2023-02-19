@@ -7,7 +7,7 @@ import {Overlay} from "./BenefitsCard";
 
 export default function MonthlyMagazine() {
 	return (
-		<HeadlessCard appearance={"gradient"}>
+        <HeadlessCard appearance={"gradient"}>
 			<Container
 				className="flex flex-col gap-8"
 				style={{maxWidth: "60%"}}
@@ -25,14 +25,14 @@ export default function MonthlyMagazine() {
 
 				<Container>
 					<Link href={"/magazine"}>
-						<a>
-							<Button css={{padding: "12px 24px"}}>
-								Explore TreatDAO magazines
-							</Button>
-						</a>
-					</Link>
+
+                        <Button css={{padding: "12px 24px"}}>
+                            Explore TreatDAO magazines
+                        </Button>
+
+                    </Link>
 				</Container>
 			</Container>
 		</HeadlessCard>
-	);
+    );
 }

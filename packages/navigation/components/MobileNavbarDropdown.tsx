@@ -189,7 +189,7 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 	}, [router.pathname]);
 
 	return (
-		<Container>
+        <Container>
 			<Button
 				appearance={"surface"}
 				css={{padding: "8px", borderRadius: "9999px"}}
@@ -232,22 +232,22 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 								<Container className="flex flex-col gap-24 h-full py-12">
 									<Container className="flex flex-col gap-2">
 										{ExploreDropdownLinks.map((link) => (
-											<Link
-												key={link.link}
-												href={link.link}
-											>
-												<a className="flex items-center justify-between">
-													<Container
-														onClick={onClose}
-														className="flex items-center gap-8 py-4"
-													>
-														<Text>
-															<ImportantText> {link.label}</ImportantText>
-														</Text>
-													</Container>
-													<ArrowRightIcon className="w-5 h-5" />
-												</a>
-											</Link>
+											(<Link
+                                                key={link.link}
+                                                href={link.link}
+                                                className="flex items-center justify-between">
+
+                                                <Container
+                                                    onClick={onClose}
+                                                    className="flex items-center gap-8 py-4"
+                                                >
+                                                    <Text>
+                                                        <ImportantText> {link.label}</ImportantText>
+                                                    </Text>
+                                                </Container>
+                                                <ArrowRightIcon className="w-5 h-5" />
+
+                                            </Link>)
 										))}
 									</Container>
 									<Button
@@ -307,61 +307,61 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 								</Container>
 								<Container className="py-1">
 									<Link href={`/${profile?.username}`}>
-										<a>
-											<Container
-												onClick={onClose}
-												className="flex items-center justify-between p-4 rounded-xl hover:cursor-pointer"
-											>
-												<div className="flex items-center gap-4">
-													<Text className="p-2 rounded-full">
-														<UserCircle
-															width={20}
-															height={20}
-														/>
-													</Text>
-													<BoldLink>Profile</BoldLink>
-												</div>
-											</Container>
-										</a>
-									</Link>
+
+                                        <Container
+                                            onClick={onClose}
+                                            className="flex items-center justify-between p-4 rounded-xl hover:cursor-pointer"
+                                        >
+                                            <div className="flex items-center gap-4">
+                                                <Text className="p-2 rounded-full">
+                                                    <UserCircle
+                                                        width={20}
+                                                        height={20}
+                                                    />
+                                                </Text>
+                                                <BoldLink>Profile</BoldLink>
+                                            </div>
+                                        </Container>
+
+                                    </Link>
 									{!isLoading && !creator && (
-										<Link href={"/account/upgrade"}>
-											<a>
-												<Container
-													onClick={onClose}
-													className="flex items-center justify-between p-4 rounded-xl hover:cursor-pointer"
-												>
-													<div className="flex items-center gap-4">
-														<Text className="p-2 rounded-full">
-															<BankNotes
-																width={20}
-																height={20}
-															/>
-														</Text>
-														<BoldLink>Become a Creator</BoldLink>
-													</div>
-												</Container>
-											</a>
-										</Link>
+										(<Link href={"/account/upgrade"}>
+
+                                            <Container
+                                                onClick={onClose}
+                                                className="flex items-center justify-between p-4 rounded-xl hover:cursor-pointer"
+                                            >
+                                                <div className="flex items-center gap-4">
+                                                    <Text className="p-2 rounded-full">
+                                                        <BankNotes
+                                                            width={20}
+                                                            height={20}
+                                                        />
+                                                    </Text>
+                                                    <BoldLink>Become a Creator</BoldLink>
+                                                </div>
+                                            </Container>
+
+                                        </Link>)
 									)}
 									<Link href={"/account"}>
-										<a>
-											<Container
-												onClick={onClose}
-												className="flex items-center justify-between p-4 rounded-xl hover:cursor-pointer"
-											>
-												<div className="flex items-center gap-4">
-													<Text className="p-2 rounded-full">
-														<CogIcon
-															width={20}
-															height={20}
-														/>
-													</Text>
-													<BoldLink>Manage account</BoldLink>
-												</div>
-											</Container>
-										</a>
-									</Link>
+
+                                        <Container
+                                            onClick={onClose}
+                                            className="flex items-center justify-between p-4 rounded-xl hover:cursor-pointer"
+                                        >
+                                            <div className="flex items-center gap-4">
+                                                <Text className="p-2 rounded-full">
+                                                    <CogIcon
+                                                        width={20}
+                                                        height={20}
+                                                    />
+                                                </Text>
+                                                <BoldLink>Manage account</BoldLink>
+                                            </div>
+                                        </Container>
+
+                                    </Link>
 									<Container
 										onClick={onOpen}
 										className="flex items-center justify-between p-4 rounded-xl hover:cursor-pointer"
@@ -381,22 +381,22 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 									<Divider dir="horizontal" />
 
 									{ExploreDropdownLinks.map((link) => (
-										<Link
+										(<Link
 											key={link.link}
 											href={link.link}
 										>
-											<a>
-												<Container
-													onClick={onClose}
-													className="flex items-center justify-between py-3 rounded-xl hover:cursor-pointer"
-												>
-													<div className="flex items-center justify-between w-full gap-4">
-														<BoldLink>{link.label}</BoldLink>
-														<ArrowRightIcon className="w-5 h-5" />
-													</div>
-												</Container>
-											</a>
-										</Link>
+
+                                            <Container
+                                                onClick={onClose}
+                                                className="flex items-center justify-between py-3 rounded-xl hover:cursor-pointer"
+                                            >
+                                                <div className="flex items-center justify-between w-full gap-4">
+                                                    <BoldLink>{link.label}</BoldLink>
+                                                    <ArrowRightIcon className="w-5 h-5" />
+                                                </div>
+                                            </Container>
+
+                                        </Link>)
 									))}
 								</Container>
 							</Container>
@@ -405,7 +405,7 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 				</Container>
 			)}
 		</Container>
-	);
+    );
 };
 
 export default MobileNavbarDropdown;

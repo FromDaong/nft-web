@@ -37,22 +37,22 @@ const NavTab = () => {
 		label: string;
 		icon: ReactNode;
 	}) => (
-		<Link href={route}>
-			<a>
-				<ImportantText
-					className="px-8 py-2 items-center rounded-full flex gap-2"
-					css={{
-						backgroundColor: isActive(route)
-							? "$elementOnSurface"
-							: "elementSurface",
-						color: isActive(route) ? "$textContrast" : "",
-					}}
-				>
-					{icon}
-					<p>{label}</p>
-				</ImportantText>
-			</a>
-		</Link>
+		(<Link href={route}>
+
+            <ImportantText
+                className="px-8 py-2 items-center rounded-full flex gap-2"
+                css={{
+                    backgroundColor: isActive(route)
+                        ? "$elementOnSurface"
+                        : "elementSurface",
+                    color: isActive(route) ? "$textContrast" : "",
+                }}
+            >
+                {icon}
+                <p>{label}</p>
+            </ImportantText>
+
+        </Link>)
 	);
 
 	return (

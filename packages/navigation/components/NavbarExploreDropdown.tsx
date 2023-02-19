@@ -42,18 +42,18 @@ const NavbarExploreDropdown = () => (
 					css={{borderRadius: "20px"}}
 				>
 					{ExploreDropdownLinks.map((link) => (
-						<Link
+						(<Link
 							key={link.link}
 							href={link.link}
 						>
-							<a>
-								<NavDropdownItem>
-									<Text className="py-3">
-										<ImportantText> {link.label}</ImportantText>
-									</Text>
-								</NavDropdownItem>
-							</a>
-						</Link>
+
+                            <NavDropdownItem>
+                                <Text className="py-3">
+                                    <ImportantText> {link.label}</ImportantText>
+                                </Text>
+                            </NavDropdownItem>
+
+                        </Link>)
 					))}
 				</NavDropdownContainer>
 			</DropdownContent>

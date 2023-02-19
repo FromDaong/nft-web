@@ -23,7 +23,7 @@ const NavbarActionDropdown = () => {
 	const {isOpen, onClose, onOpen} = useDisclosure();
 
 	return (
-		<DropdownMenu.Root>
+        <DropdownMenu.Root>
 			<CreateNftModal
 				isOpen={isOpen}
 				onClose={onClose}
@@ -41,52 +41,52 @@ const NavbarActionDropdown = () => {
 				<DropdownContent>
 					<DropdownContainer className="shadow-xl">
 						<Link href={"/create"}>
-							<a>
-								<NavDropdownItem className="flex items-center justify-between p-1 rounded-xl hover:cursor-pointer">
-									<Text className="flex items-center gap-4">
-										<LegibleText className="p-2 rounded-full">
-											<UploadIcon className="w-4 h-4" />
-										</LegibleText>
-										<ImportantText>Create new NFT</ImportantText>
-									</Text>
-									<span className="flex gap-2 text-sm">
-										<LegibleText>
-											<Kbd>{ctrl_button_emoji}</Kbd>
-										</LegibleText>
-										<LegibleText>
-											<Kbd>P</Kbd>
-										</LegibleText>
-									</span>
-								</NavDropdownItem>
-							</a>
-						</Link>
+
+                            <NavDropdownItem className="flex items-center justify-between p-1 rounded-xl hover:cursor-pointer">
+                                <Text className="flex items-center gap-4">
+                                    <LegibleText className="p-2 rounded-full">
+                                        <UploadIcon className="w-4 h-4" />
+                                    </LegibleText>
+                                    <ImportantText>Create new NFT</ImportantText>
+                                </Text>
+                                <span className="flex gap-2 text-sm">
+                                    <LegibleText>
+                                        <Kbd>{ctrl_button_emoji}</Kbd>
+                                    </LegibleText>
+                                    <LegibleText>
+                                        <Kbd>P</Kbd>
+                                    </LegibleText>
+                                </span>
+                            </NavDropdownItem>
+
+                        </Link>
 						{false && (
-							<Link href={"/create/live"}>
-								<a>
-									<NavDropdownItem className="flex items-center justify-between p-1 rounded-xl hover:cursor-pointer">
-										<Text className="flex items-center gap-4">
-											<LegibleText className="p-2 rounded-full">
-												<VideoCameraIcon className="w-4 h-4" />
-											</LegibleText>
-											<ImportantText>Start livestream</ImportantText>
-										</Text>
-										<span className="flex gap-2 text-sm">
-											<LegibleText>
-												<Kbd>{ctrl_button_emoji}</Kbd>
-											</LegibleText>
-											<LegibleText>
-												<Kbd>L</Kbd>
-											</LegibleText>
-										</span>{" "}
-									</NavDropdownItem>
-								</a>
-							</Link>
+							(<Link href={"/create/live"}>
+
+                                <NavDropdownItem className="flex items-center justify-between p-1 rounded-xl hover:cursor-pointer">
+                                    <Text className="flex items-center gap-4">
+                                        <LegibleText className="p-2 rounded-full">
+                                            <VideoCameraIcon className="w-4 h-4" />
+                                        </LegibleText>
+                                        <ImportantText>Start livestream</ImportantText>
+                                    </Text>
+                                    <span className="flex gap-2 text-sm">
+                                        <LegibleText>
+                                            <Kbd>{ctrl_button_emoji}</Kbd>
+                                        </LegibleText>
+                                        <LegibleText>
+                                            <Kbd>L</Kbd>
+                                        </LegibleText>
+                                    </span>{" "}
+                                </NavDropdownItem>
+
+                            </Link>)
 						)}
 					</DropdownContainer>
 				</DropdownContent>
 			</DropdownMenu.Portal>
 		</DropdownMenu.Root>
-	);
+    );
 };
 
 export default NavbarActionDropdown;

@@ -66,7 +66,7 @@ function PreviewCollection(props: {
 			? props.collectionItems.slice(0, 6)
 			: new Array(6).fill(0);
 	return (
-		<Container
+        <Container
 			className="flex flex-col h-auto gap-4 p-4 border rounded-xl drop-shadow-sm"
 			css={{
 				backgroundColor: "$elementSurface",
@@ -99,13 +99,13 @@ function PreviewCollection(props: {
 					<>
 						<Container className="flex">
 							<Link href={`/${props.author.username}`}>
-								<a>
-									<UserAvatar
-										username={props.author.username}
-										size={32}
-									/>
-								</a>
-							</Link>
+
+                                <UserAvatar
+                                    username={props.author.username}
+                                    size={32}
+                                />
+
+                            </Link>
 						</Container>
 						<Heading size="xs">{props.title}</Heading>
 					</>
@@ -114,5 +114,5 @@ function PreviewCollection(props: {
 				)}
 			</Container>
 		</Container>
-	);
+    );
 }

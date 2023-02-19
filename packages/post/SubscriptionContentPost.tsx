@@ -26,7 +26,7 @@ import {BookmarkIcon} from "@heroicons/react/outline";
 export const SubscriptionContentPost = (props: TritPostProps) => {
 	const imageUrl = props.image?.cdn;
 	return (
-		<PostCardContainer>
+        <PostCardContainer>
 			<Container
 				css={{
 					display: "flex",
@@ -39,14 +39,14 @@ export const SubscriptionContentPost = (props: TritPostProps) => {
 					css={{display: "flex"}}
 				>
 					<Link href={props.author.username}>
-						<a>
-							<NewAvatar
-								imageSrc={props.author.avatar}
-								size_def={{height: "48px", width: "48px"}}
-								username={props.author.display_name}
-							/>
-						</a>
-					</Link>
+
+                        <NewAvatar
+                            imageSrc={props.author.avatar}
+                            size_def={{height: "48px", width: "48px"}}
+                            username={props.author.display_name}
+                        />
+
+                    </Link>
 					<Container>
 						<PostCardCreatorInfoContainer>
 							<div
@@ -58,11 +58,11 @@ export const SubscriptionContentPost = (props: TritPostProps) => {
 							>
 								<div>
 									<Link href={props.author.username}>
-										<a>
-											<Text>{props.author.display_name}</Text>{" "}
-											<SmallText>@{props.author.username}</SmallText> <br />
-										</a>
-									</Link>
+
+                                        <Text>{props.author.display_name}</Text>{" "}
+                                        <SmallText>@{props.author.username}</SmallText> <br />
+
+                                    </Link>
 								</div>
 							</div>
 						</PostCardCreatorInfoContainer>
@@ -169,5 +169,5 @@ export const SubscriptionContentPost = (props: TritPostProps) => {
 				</PostCardMetaContainer>
 			)}
 		</PostCardContainer>
-	);
+    );
 };

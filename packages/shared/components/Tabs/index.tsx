@@ -30,7 +30,7 @@ export const Tab = ({
 	const isActive = asPath === href;
 
 	return (
-		<Container
+        <Container
 			css={{
 				marginBottom: "12px",
 				backgroundColor: isActive ? "$elementOnSurface" : "$surface",
@@ -39,26 +39,26 @@ export const Tab = ({
 			}}
 			className={`relative rounded-full`}
 		>
-			<Link href={href}>
-				<a className="flex items-center gap-2">
-					<Text
-						css={{
-							color: isActive ? "$textContrast" : "$text",
-							fontWeight: isActive ? 700 : 500,
-						}}
-					>
-						{label}
-					</Text>
-					{(count || count === 0) && (
-						<Button
-							appearance={"subtle"}
-							css={{padding: "2px 8px", fontSize: "12px"}}
-						>
-							{count}
-						</Button>
-					)}
-				</a>
-			</Link>
+			<Link href={href} className="flex items-center gap-2">
+
+                <Text
+                    css={{
+                        color: isActive ? "$textContrast" : "$text",
+                        fontWeight: isActive ? 700 : 500,
+                    }}
+                >
+                    {label}
+                </Text>
+                {(count || count === 0) && (
+                    <Button
+                        appearance={"subtle"}
+                        css={{padding: "2px 8px", fontSize: "12px"}}
+                    >
+                        {count}
+                    </Button>
+                )}
+
+            </Link>
 		</Container>
-	);
+    );
 };

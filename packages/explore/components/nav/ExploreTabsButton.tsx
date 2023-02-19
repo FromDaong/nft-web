@@ -37,21 +37,21 @@ export default function ExploreTabsButton() {
 
 const TabButton = ({label, isActive, href}) => {
 	return (
-		<Link href={href}>
-			<a>
-				<Button
-					appearance={"unstyled"}
-					css={{
-						background: isActive ? "$buttonSurface" : "transparent",
-						color: isActive ? "$textOnSurface" : "$text",
-						padding: "8px 12px",
-						borderRadius: "9999px",
-					}}
-					className="transition-all duration-200 rounded-xl"
-				>
-					{label}
-				</Button>
-			</a>
-		</Link>
-	);
+        (<Link href={href}>
+
+            <Button
+                appearance={"unstyled"}
+                css={{
+                    background: isActive ? "$buttonSurface" : "transparent",
+                    color: isActive ? "$textOnSurface" : "$text",
+                    padding: "8px 12px",
+                    borderRadius: "9999px",
+                }}
+                className="transition-all duration-200 rounded-xl"
+            >
+                {label}
+            </Button>
+
+        </Link>)
+    );
 };

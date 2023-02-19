@@ -44,111 +44,111 @@ export default function SuggestedCreatorCard(props: SuggestedCreatorData) {
 
 const CollapseSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 	return (
-		<Link href={`/${props.username}`}>
-			<a>
-				<Container
-					css={{
-						border: `1px ${props.border ? "solid" : null} $border`,
-						padding: props.border ? "16px" : null,
-						borderRadius: "16px",
-						backgroundColor: "$surface",
+        (<Link href={`/${props.username}`}>
 
-						boxShadow: "$base",
-						height: "auto",
-					}}
-					className="flex justify-between w-full"
-				>
-					<Container className="flex gap-2">
-						<UserAvatar
-							size={40}
-							profile_pic={props.avatar}
-						/>
-						<Container className="gap-2">
-							<Container>
-								<p>
-									<Text>
-										<ImportantText>{props.display_name}</ImportantText>
-									</Text>
-								</p>
-								<p className="text-ellipsis overflow-hidden ... w-[100px]">
-									<MutedText>
-										<SmallText>@{props.username}</SmallText>
-									</MutedText>
-								</p>
-							</Container>
-						</Container>
-					</Container>
-					{!props.noFollowButton && (
-						<Container>
-							<Button>Follow</Button>
-						</Container>
-					)}
-				</Container>
-			</a>
-		</Link>
-	);
+            <Container
+                css={{
+                    border: `1px ${props.border ? "solid" : null} $border`,
+                    padding: props.border ? "16px" : null,
+                    borderRadius: "16px",
+                    backgroundColor: "$surface",
+
+                    boxShadow: "$base",
+                    height: "auto",
+                }}
+                className="flex justify-between w-full"
+            >
+                <Container className="flex gap-2">
+                    <UserAvatar
+                        size={40}
+                        profile_pic={props.avatar}
+                    />
+                    <Container className="gap-2">
+                        <Container>
+                            <p>
+                                <Text>
+                                    <ImportantText>{props.display_name}</ImportantText>
+                                </Text>
+                            </p>
+                            <p className="text-ellipsis overflow-hidden ... w-[100px]">
+                                <MutedText>
+                                    <SmallText>@{props.username}</SmallText>
+                                </MutedText>
+                            </p>
+                        </Container>
+                    </Container>
+                </Container>
+                {!props.noFollowButton && (
+                    <Container>
+                        <Button>Follow</Button>
+                    </Container>
+                )}
+            </Container>
+
+        </Link>)
+    );
 };
 
 const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 	return (
-		<Link href={`/${props.username}`}>
-			<a>
-				<Container
-					css={{
-						border: `1px ${props.border ? "solid" : null} $border`,
-						padding: props.border ? "16px" : null,
-						borderRadius: "16px",
-						backgroundColor: "$surfaceOnSurface",
+        (<Link href={`/${props.username}`}>
 
-						boxShadow: "$base",
-						height: "100%",
-					}}
-				>
-					<Container className="flex flex-col justify-between w-full gap-4">
-						<Container className="relative w-full h-[320px] flex items-center justify-center">
-							<UserAvatar
-								size={280}
-								profile_pic={props.avatar}
-								username={props.username}
-							/>
-						</Container>
-						<Container className="flex flex-col gap-2">
-							{props.username && (
-								<Container className="flex flex-col w-full text-center">
-									<MutedText className="flex justify-center">
-										<ImportantText>
-											<SmallText>CREATOR</SmallText>
-										</ImportantText>
-									</MutedText>
-									<Container className="flex items-center justify-center gap-4 ">
-										<Heading
-											size="xs"
-											className="text-center"
-										>
-											<ImportantText>
-												{props.username.replaceAll(" ", "").trim()}
-											</ImportantText>
-										</Heading>
-										{props.live && <LiveTag />}
-									</Container>
-								</Container>
-							)}
-							{props.isPromoted && (
-								<Container className="flex flex-col gap-2">
-									{props.isPromoted && (
-										<p>
-											<MutedText css={{color: "$accentText"}}>
-												<SmallText>Promoted</SmallText>
-											</MutedText>
-										</p>
-									)}
-								</Container>
-							)}
-						</Container>
-						<Button>View creator</Button>
-					</Container>
-				</Container>
-			</a>
-		</Link>
-	);
+            <Container
+                css={{
+                    border: `1px ${props.border ? "solid" : null} $border`,
+                    padding: props.border ? "16px" : null,
+                    borderRadius: "16px",
+                    backgroundColor: "$surfaceOnSurface",
+
+                    boxShadow: "$base",
+                    height: "100%",
+                }}
+            >
+                <Container className="flex flex-col justify-between w-full gap-4">
+                    <Container className="relative w-full h-[320px] flex items-center justify-center">
+                        <UserAvatar
+                            size={280}
+                            profile_pic={props.avatar}
+                            username={props.username}
+                        />
+                    </Container>
+                    <Container className="flex flex-col gap-2">
+                        {props.username && (
+                            <Container className="flex flex-col w-full text-center">
+                                <MutedText className="flex justify-center">
+                                    <ImportantText>
+                                        <SmallText>CREATOR</SmallText>
+                                    </ImportantText>
+                                </MutedText>
+                                <Container className="flex items-center justify-center gap-4 ">
+                                    <Heading
+                                        size="xs"
+                                        className="text-center"
+                                    >
+                                        <ImportantText>
+                                            {props.username.replaceAll(" ", "").trim()}
+                                        </ImportantText>
+                                    </Heading>
+                                    {props.live && <LiveTag />}
+                                </Container>
+                            </Container>
+                        )}
+                        {props.isPromoted && (
+                            <Container className="flex flex-col gap-2">
+                                {props.isPromoted && (
+                                    <p>
+                                        <MutedText css={{color: "$accentText"}}>
+                                            <SmallText>Promoted</SmallText>
+                                        </MutedText>
+                                    </p>
+                                )}
+                            </Container>
+                        )}
+                    </Container>
+                    <Button>View creator</Button>
+                </Container>
+            </Container>
+
+        </Link>)
+    );
 };

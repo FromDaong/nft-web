@@ -42,18 +42,18 @@ export const ActionSection = (props) => {
 
 export const UserBadge = (props: {username: string; avatar: string}) => {
 	return (
-		<Link href={`/${props.username}`}>
-			<a>
-				<Container className="flex gap-2 pr-4 rounded-full ">
-					<UserAvatar
-						size={24}
-						username={props.username}
-					/>
-					<Text>
-						<ImportantText>@{props.username}</ImportantText>
-					</Text>
-				</Container>
-			</a>
-		</Link>
-	);
+        (<Link href={`/${props.username}`}>
+
+            <Container className="flex gap-2 pr-4 rounded-full ">
+                <UserAvatar
+                    size={24}
+                    username={props.username}
+                />
+                <Text>
+                    <ImportantText>@{props.username}</ImportantText>
+                </Text>
+            </Container>
+
+        </Link>)
+    );
 };

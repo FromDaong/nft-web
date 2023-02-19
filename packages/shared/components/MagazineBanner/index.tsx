@@ -20,19 +20,19 @@ export default function MagazineBanner() {
       </h2>
       <div className="flex flex-col gap-8 mt-8 md:flex-row">
         <Link href={"/magazine"}>
-          <a>
-            <Button className="flex items-center justify-center w-full gap-4 text-purple-600 bg-white md:w-auto">
-              <span>View magazine</span> <ArrowRightIcon className="w-4 h-4" />
-            </Button>
-          </a>
+
+          <Button className="flex items-center justify-center w-full gap-4 text-purple-600 bg-white md:w-auto">
+            <span>View magazine</span> <ArrowRightIcon className="w-4 h-4" />
+          </Button>
+
         </Link>
         <Link href={"/#"}>
-          <a>
-            <Button className="flex items-center justify-center w-full gap-4 text-white bg-white/20 md:w-auto">
-              <span>View Ethereum collection</span>{" "}
-              <ArrowRightIcon className="w-4 h-4" />
-            </Button>
-          </a>
+
+          <Button className="flex items-center justify-center w-full gap-4 text-white bg-white/20 md:w-auto">
+            <span>View Ethereum collection</span>{" "}
+            <ArrowRightIcon className="w-4 h-4" />
+          </Button>
+
         </Link>
       </div>
     </div>

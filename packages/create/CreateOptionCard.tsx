@@ -54,16 +54,16 @@ export default function CreateOptionCard({
 	icon: ReactNode;
 }) {
 	return (
-		<Link href={url}>
-			<a>
-				<Card className="border shadow">
-					<TextBoxContainer>
-						<CardHeading>{title}</CardHeading>
-						<MutedParagraph className="mt-1">{description}</MutedParagraph>
-					</TextBoxContainer>
-					<IconContainer>{icon}</IconContainer>
-				</Card>
-			</a>
-		</Link>
-	);
+        (<Link href={url}>
+
+            <Card className="border shadow">
+                <TextBoxContainer>
+                    <CardHeading>{title}</CardHeading>
+                    <MutedParagraph className="mt-1">{description}</MutedParagraph>
+                </TextBoxContainer>
+                <IconContainer>{icon}</IconContainer>
+            </Card>
+
+        </Link>)
+    );
 }

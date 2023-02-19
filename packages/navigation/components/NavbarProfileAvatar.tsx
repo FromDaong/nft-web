@@ -129,121 +129,119 @@ const NavbarProfileAvatar = () => {
 		return null;
 	}
 
-	return (
-		<>
-			<ThemeSwitcherModal
-				isOpen={isOpen}
-				onClose={onClose}
-			/>
-			<DropdownMenu.Root>
-				<DropdownMenu.Trigger>
-					<Container
-						css={{backgroundColor: "$surfaceOnSurface"}}
-						className="rounded-full"
-					>
-						{profile && profile.profile_pic && (
-							<NewAvatar
-								username={profile?.username}
-								imageSrc={profile?.profile_pic}
-								size={32}
-							/>
-						)}
+	return <>
+        <ThemeSwitcherModal
+            isOpen={isOpen}
+            onClose={onClose}
+        />
+        <DropdownMenu.Root>
+            <DropdownMenu.Trigger>
+                <Container
+                    css={{backgroundColor: "$surfaceOnSurface"}}
+                    className="rounded-full"
+                >
+                    {profile && profile.profile_pic && (
+                        <NewAvatar
+                            username={profile?.username}
+                            imageSrc={profile?.profile_pic}
+                            size={32}
+                        />
+                    )}
 
-						{!profile?.profile_pic && (
-							<Avvvatars
-								value={"something"}
-								size={32}
-								style="shape"
-							/>
-						)}
-					</Container>
-				</DropdownMenu.Trigger>
-				<DropdownMenu.Portal>
-					<DropdownContent>
-						<DropdownContainer className="drop-shadow-2xl">
-							<DropdownMenu.DropdownMenuGroup className="py-1">
-								<Link href={`/${profile?.username}`}>
-									<a>
-										<NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
-											<div className="flex items-center gap-4">
-												<Text className="p-2 rounded-full">
-													<UserCircle
-														width={20}
-														height={20}
-													/>
-												</Text>
-												<BoldLink>Profile</BoldLink>
-											</div>
-										</NavDropdownItem>
-									</a>
-								</Link>
-								{!isLoading && !creator && (
-									<Link href={"/account/upgrade"}>
-										<a>
-											<NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
-												<div className="flex items-center gap-4">
-													<Text className="p-2 rounded-full">
-														<BankNotes
-															width={20}
-															height={20}
-														/>
-													</Text>
-													<BoldLink>Become a Creator</BoldLink>
-												</div>
-											</NavDropdownItem>
-										</a>
-									</Link>
-								)}
-								<Link href={"/account"}>
-									<a>
-										<NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
-											<div className="flex items-center gap-4">
-												<Text className="p-2 rounded-full">
-													<CogIcon
-														width={20}
-														height={20}
-													/>
-												</Text>
-												<BoldLink>Manage account</BoldLink>
-											</div>
-										</NavDropdownItem>
-									</a>
-								</Link>
-								<NavDropdownItem
-									onClick={onOpen}
-									className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
-								>
-									<div className="flex items-center gap-4">
-										<Text className="p-2 rounded-full">
-											<ThemeIcon
-												width={20}
-												height={20}
-											/>
-										</Text>
-										<BoldLink>Change theme</BoldLink>
-									</div>
-								</NavDropdownItem>
-								<NavDropdownItem
-									onClick={openAccountModal}
-									className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
-								>
-									<div className="flex items-center gap-4">
-										<Text className="p-2 rounded-full">
-											<WalletConnectionIcon
-												width={20}
-												height={20}
-											/>
-										</Text>
-										<BoldLink>Manage wallet connection</BoldLink>
-									</div>
-								</NavDropdownItem>
-							</DropdownMenu.DropdownMenuGroup>
-						</DropdownContainer>
-					</DropdownContent>
-				</DropdownMenu.Portal>
-			</DropdownMenu.Root>
-		</>
-	);
+                    {!profile?.profile_pic && (
+                        <Avvvatars
+                            value={"something"}
+                            size={32}
+                            style="shape"
+                        />
+                    )}
+                </Container>
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Portal>
+                <DropdownContent>
+                    <DropdownContainer className="drop-shadow-2xl">
+                        <DropdownMenu.DropdownMenuGroup className="py-1">
+                            <Link href={`/${profile?.username}`}>
+
+                                <NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
+                                    <div className="flex items-center gap-4">
+                                        <Text className="p-2 rounded-full">
+                                            <UserCircle
+                                                width={20}
+                                                height={20}
+                                            />
+                                        </Text>
+                                        <BoldLink>Profile</BoldLink>
+                                    </div>
+                                </NavDropdownItem>
+
+                            </Link>
+                            {!isLoading && !creator && (
+                                (<Link href={"/account/upgrade"}>
+
+                                    <NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
+                                        <div className="flex items-center gap-4">
+                                            <Text className="p-2 rounded-full">
+                                                <BankNotes
+                                                    width={20}
+                                                    height={20}
+                                                />
+                                            </Text>
+                                            <BoldLink>Become a Creator</BoldLink>
+                                        </div>
+                                    </NavDropdownItem>
+
+                                </Link>)
+                            )}
+                            <Link href={"/account"}>
+
+                                <NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
+                                    <div className="flex items-center gap-4">
+                                        <Text className="p-2 rounded-full">
+                                            <CogIcon
+                                                width={20}
+                                                height={20}
+                                            />
+                                        </Text>
+                                        <BoldLink>Manage account</BoldLink>
+                                    </div>
+                                </NavDropdownItem>
+
+                            </Link>
+                            <NavDropdownItem
+                                onClick={onOpen}
+                                className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
+                            >
+                                <div className="flex items-center gap-4">
+                                    <Text className="p-2 rounded-full">
+                                        <ThemeIcon
+                                            width={20}
+                                            height={20}
+                                        />
+                                    </Text>
+                                    <BoldLink>Change theme</BoldLink>
+                                </div>
+                            </NavDropdownItem>
+                            <NavDropdownItem
+                                onClick={openAccountModal}
+                                className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
+                            >
+                                <div className="flex items-center gap-4">
+                                    <Text className="p-2 rounded-full">
+                                        <WalletConnectionIcon
+                                            width={20}
+                                            height={20}
+                                        />
+                                    </Text>
+                                    <BoldLink>Manage wallet connection</BoldLink>
+                                </div>
+                            </NavDropdownItem>
+                        </DropdownMenu.DropdownMenuGroup>
+                    </DropdownContainer>
+                </DropdownContent>
+            </DropdownMenu.Portal>
+        </DropdownMenu.Root>
+    </>;
 };
 
 export default NavbarProfileAvatar;

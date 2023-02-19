@@ -12,16 +12,16 @@ export default function MessageContainer({
 	messages: Array<TMessage>;
 }) {
 	return (
-		<Container className="flex gap-4">
-			<Link href={`/${user.username}`}>
-				<a className="flex-noshrink">
-					<UserAvatar
-						username={user.username}
-						profile_pic={user.profile_pic}
-						size={24}
-					/>
-				</a>
-			</Link>
+        <Container className="flex gap-4">
+			<Link href={`/${user.username}`} className="flex-noshrink">
+
+                <UserAvatar
+                    username={user.username}
+                    profile_pic={user.profile_pic}
+                    size={24}
+                />
+
+            </Link>
 			<Container className="w-full">
 				{messages.map((message) => (
 					<Message
@@ -32,5 +32,5 @@ export default function MessageContainer({
 				))}
 			</Container>
 		</Container>
-	);
+    );
 }

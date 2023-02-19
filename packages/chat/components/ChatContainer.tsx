@@ -89,24 +89,24 @@ export default function ChatContainer({username, contact}) {
 	}, [chatBucket]);
 
 	return (
-		<Container className="flex flex-col justify-between h-full">
+        <Container className="flex flex-col justify-between h-full">
 			<Container className="flex-noshrink">
 				<Container
 					className="flex justify-between items-center border-b px-4 md:px-8 h-[64px]"
 					css={{borderColor: "$border"}}
 				>
 					<Container>
-						<Link href={`/username`}>
-							<a className="flex items-center gap-2 py-2">
-								<UserAvatar
-									size={32}
-									username={"Andi Lane"}
-								/>
-								<Container>
-									<Heading size="xss">Andi Lane</Heading>
-								</Container>
-							</a>
-						</Link>
+						<Link href={`/username`} className="flex items-center gap-2 py-2">
+
+                            <UserAvatar
+                                size={32}
+                                username={"Andi Lane"}
+                            />
+                            <Container>
+                                <Heading size="xss">Andi Lane</Heading>
+                            </Container>
+
+                        </Link>
 					</Container>
 					<Container className="items-center gap-2 p-4 md:flex">
 						<Button appearance={"unstyled"}>
@@ -158,5 +158,5 @@ export default function ChatContainer({username, contact}) {
 				</Container>
 			</Container>
 		</Container>
-	);
+    );
 }

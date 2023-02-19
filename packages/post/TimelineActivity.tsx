@@ -70,7 +70,7 @@ export const TimelineActivity = (
 		props.actionMeta.verb !== "Subscribed";
 
 	return (
-		<PostCardContainer>
+        <PostCardContainer>
 			<Container
 				css={{
 					display: "flex",
@@ -84,13 +84,13 @@ export const TimelineActivity = (
 					css={{display: "flex"}}
 				>
 					<Link href={props.author.username}>
-						<a>
-							<UserAvatar
-								data={{...props.author}}
-								size={40}
-							/>
-						</a>
-					</Link>
+
+                        <UserAvatar
+                            data={{...props.author}}
+                            size={40}
+                        />
+
+                    </Link>
 					<Container>
 						<PostCardCreatorInfoContainer>
 							<div
@@ -102,15 +102,15 @@ export const TimelineActivity = (
 							>
 								<div>
 									<Link href={props.author.username}>
-										<a>
-											<Text>
-												<ImportantSmallText>
-													{props.author.display_name}
-												</ImportantSmallText>
-											</Text>{" "}
-											<SmallText>@{props.author.username}</SmallText> <br />
-										</a>
-									</Link>
+
+                                        <Text>
+                                            <ImportantSmallText>
+                                                {props.author.display_name}
+                                            </ImportantSmallText>
+                                        </Text>{" "}
+                                        <SmallText>@{props.author.username}</SmallText> <br />
+
+                                    </Link>
 								</div>
 							</div>
 						</PostCardCreatorInfoContainer>
@@ -232,5 +232,5 @@ export const TimelineActivity = (
 				</Container>
 			</Container>
 		</PostCardContainer>
-	);
+    );
 };

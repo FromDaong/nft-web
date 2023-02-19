@@ -23,40 +23,40 @@ export default function ChatListItem({
 	unreadMessages?: number;
 }) {
 	return (
-		<Link href={`/messages/${id}`}>
-			<a>
-				<Container
-					className="relative flex gap-4 p-4"
-					css={{
-						borderRadius: "16px",
-						backgroundColor: isSelected ? "$elementOnSurface" : "transparent",
-					}}
-				>
-					<Container className="flex-1">
-						<UserAvatar
-							size={44}
-							profile_pic={participant.profile_pic}
-							username={participant.username}
-						/>
-					</Container>
-					<Container className="w-full">
-						<Container className="flex justify-between">
-							<Text>{participant.display_name}</Text>
-							<MutedText>
-								<SmallText>
-									{timeFromNow(new Date(lastMessage.timestamp).toUTCString())}{" "}
-								</SmallText>
-							</MutedText>
-						</Container>
-						<MutedText
-							css={{display: "-webkit-box !important"}}
-							className="text-ellipsis ... line-clamp-1"
-						>
-							{lastMessage.text}
-						</MutedText>
-					</Container>
-				</Container>
-			</a>
-		</Link>
-	);
+        (<Link href={`/messages/${id}`}>
+
+            <Container
+                className="relative flex gap-4 p-4"
+                css={{
+                    borderRadius: "16px",
+                    backgroundColor: isSelected ? "$elementOnSurface" : "transparent",
+                }}
+            >
+                <Container className="flex-1">
+                    <UserAvatar
+                        size={44}
+                        profile_pic={participant.profile_pic}
+                        username={participant.username}
+                    />
+                </Container>
+                <Container className="w-full">
+                    <Container className="flex justify-between">
+                        <Text>{participant.display_name}</Text>
+                        <MutedText>
+                            <SmallText>
+                                {timeFromNow(new Date(lastMessage.timestamp).toUTCString())}{" "}
+                            </SmallText>
+                        </MutedText>
+                    </Container>
+                    <MutedText
+                        css={{display: "-webkit-box !important"}}
+                        className="text-ellipsis ... line-clamp-1"
+                    >
+                        {lastMessage.text}
+                    </MutedText>
+                </Container>
+            </Container>
+
+        </Link>)
+    );
 }

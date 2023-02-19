@@ -60,7 +60,7 @@ export const TritPost = (props: TritPostProps) => {
 	}, [props.protected, isMine]);
 
 	return (
-		<Container
+        <Container
 			ref={ref}
 			className={`grid grid-cols-1 gap-4 py-4 place-items-center w-full`}
 			css={{
@@ -69,106 +69,106 @@ export const TritPost = (props: TritPostProps) => {
 			}}
 		>
 			<Link
-				href={`/post/nft/${props._id}${
+                href={`/post/nft/${props._id}${
 					props.seller
 						? `?seller=${props.seller.address}&eid=${props.seller.event_id}`
 						: ""
 				}`}
-			>
-				<a className="flex flex-col w-full relative overflow-hidden">
-					{!loadingSigner && remainingNfts === 0 && !props.hideSoldOut && (
-						<Text
-							css={{
-								color: "$surface",
-								backgroundColor: "$red9",
-								transform: "rotate(-45deg)",
-								top: "16px",
-								left: "-24px",
-							}}
-							className="absolute z-10 h-fit w-fit px-8"
-						>
-							<SmallText>
-								<ImportantText>Sold Out</ImportantText>
-							</SmallText>
-						</Text>
-					)}
-					<Container
-						className="relative flex overflow-hidden"
-						css={{
-							backgroundColor: "$textContrast",
-							height: "256px",
-							borderRadius: "12px",
-							backdropFilter: isProtected ? "blur(10px)" : "none",
-						}}
-					>
-						<PostMediaContent
-							imageUrl={imageURL}
-							blurhash={props.blurhash}
-							isProtected={isProtected}
-							caption={props.text}
-							overrideText={
-								"The creator wants you to collect this NFT before you can preview the content"
-							}
-						/>
-						<Container
-							className="flex flex-col justify-between w-full h-full p-4"
-							css={{zIndex: 10}}
-						>
-							<Container className="flex items-center justify-between">
-								<Container className="flex gap-4">
-									{false && (
-										<FrostyBackgroundContainer
-											css={{borderRadius: "calc(8px + 16px)", padding: "8px"}}
-										>
-											<Container
-												css={{
-													height: "80px",
-													width: "80px",
+                className="flex flex-col w-full relative overflow-hidden">
 
-													borderRadius: "calc(16px)",
-												}}
-											/>
-										</FrostyBackgroundContainer>
-									)}
-									{(isProtected || soldOut || props.totm) && (
-										<Container className="flex justify-between w-full">
-											{isProtected && (
-												<FrostyBackgroundContainer
-													className="px-3 py-1 rounded-full"
-													css={{}}
-												>
-													{isProtected && (
-														<Container className="flex items-center justify-center gap-2">
-															<Text css={{color: "#ffffff"}}>
-																<EyeOffIcon
-																	width={20}
-																	height={20}
-																/>
-															</Text>
-															<Text css={{color: "#ffffff"}}>
-																<ImportantText>Protected</ImportantText>
-															</Text>
-														</Container>
-													)}
-												</FrostyBackgroundContainer>
-											)}
-											{soldOut && (
-												<FrostyBackgroundContainer className="px-3 py-1 rounded-full">
-													<Container className="flex items-center justify-center gap-2">
-														<Text css={{color: "$red6"}}>
-															<ImportantText>Sold out</ImportantText>
-														</Text>
-													</Container>
-												</FrostyBackgroundContainer>
-											)}
-										</Container>
-									)}
-								</Container>
-							</Container>
-						</Container>
-					</Container>
-				</a>
-			</Link>
+                {!loadingSigner && remainingNfts === 0 && !props.hideSoldOut && (
+                    <Text
+                        css={{
+                            color: "$surface",
+                            backgroundColor: "$red9",
+                            transform: "rotate(-45deg)",
+                            top: "16px",
+                            left: "-24px",
+                        }}
+                        className="absolute z-10 h-fit w-fit px-8"
+                    >
+                        <SmallText>
+                            <ImportantText>Sold Out</ImportantText>
+                        </SmallText>
+                    </Text>
+                )}
+                <Container
+                    className="relative flex overflow-hidden"
+                    css={{
+                        backgroundColor: "$textContrast",
+                        height: "256px",
+                        borderRadius: "12px",
+                        backdropFilter: isProtected ? "blur(10px)" : "none",
+                    }}
+                >
+                    <PostMediaContent
+                        imageUrl={imageURL}
+                        blurhash={props.blurhash}
+                        isProtected={isProtected}
+                        caption={props.text}
+                        overrideText={
+                            "The creator wants you to collect this NFT before you can preview the content"
+                        }
+                    />
+                    <Container
+                        className="flex flex-col justify-between w-full h-full p-4"
+                        css={{zIndex: 10}}
+                    >
+                        <Container className="flex items-center justify-between">
+                            <Container className="flex gap-4">
+                                {false && (
+                                    <FrostyBackgroundContainer
+                                        css={{borderRadius: "calc(8px + 16px)", padding: "8px"}}
+                                    >
+                                        <Container
+                                            css={{
+                                                height: "80px",
+                                                width: "80px",
+
+                                                borderRadius: "calc(16px)",
+                                            }}
+                                        />
+                                    </FrostyBackgroundContainer>
+                                )}
+                                {(isProtected || soldOut || props.totm) && (
+                                    <Container className="flex justify-between w-full">
+                                        {isProtected && (
+                                            <FrostyBackgroundContainer
+                                                className="px-3 py-1 rounded-full"
+                                                css={{}}
+                                            >
+                                                {isProtected && (
+                                                    <Container className="flex items-center justify-center gap-2">
+                                                        <Text css={{color: "#ffffff"}}>
+                                                            <EyeOffIcon
+                                                                width={20}
+                                                                height={20}
+                                                            />
+                                                        </Text>
+                                                        <Text css={{color: "#ffffff"}}>
+                                                            <ImportantText>Protected</ImportantText>
+                                                        </Text>
+                                                    </Container>
+                                                )}
+                                            </FrostyBackgroundContainer>
+                                        )}
+                                        {soldOut && (
+                                            <FrostyBackgroundContainer className="px-3 py-1 rounded-full">
+                                                <Container className="flex items-center justify-center gap-2">
+                                                    <Text css={{color: "$red6"}}>
+                                                        <ImportantText>Sold out</ImportantText>
+                                                    </Text>
+                                                </Container>
+                                            </FrostyBackgroundContainer>
+                                        )}
+                                    </Container>
+                                )}
+                            </Container>
+                        </Container>
+                    </Container>
+                </Container>
+
+            </Link>
 			<Container className="flex flex-col w-full transition-transform duration-150 hover:scale-95">
 				<ActionSection
 					{...props}
@@ -184,5 +184,5 @@ export const TritPost = (props: TritPostProps) => {
 				/>
 			</Container>
 		</Container>
-	);
+    );
 };

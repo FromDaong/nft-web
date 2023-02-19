@@ -37,56 +37,58 @@ export default function Navbar() {
 	const {creator} = (data as any) || {};
 
 	return (
-		<Container>
+        <Container>
 			<Nav className="hidden md:block fixed top-0 left-0 w-full  h-[60px] shadow">
 				<Container className="relative w-full h-full px-8 xl:px-4">
 					<div className="absolute top-0 left-0 z-20 w-full h-full" />
 					<div className="container relative z-30 flex items-center justify-between py-3 mx-auto">
 						<div className="flex items-center gap-8">
-							<Link href={isConnected ? "/" : "/"}>
-								<a className="relative w-8 h-8 text-3xl font-medium">
-									<Image
-										src={theme === "dark" ? DarkLogo : LightLogo}
-										alt="Logo"
-										layout="fill"
-										className="w-12 h-12"
-									/>
-								</a>
-							</Link>
+							<Link
+                                href={isConnected ? "/" : "/"}
+                                className="relative w-8 h-8 text-3xl font-medium">
+
+                                <Image
+                                    src={theme === "dark" ? DarkLogo : LightLogo}
+                                    alt="Logo"
+                                    layout="fill"
+                                    className="w-12 h-12"
+                                />
+
+                            </Link>
 							<div className="items-center hidden gap-4 md:flex">
 								<Link href="/sweetshop">
-									<a>
-										<BoldLink>Sweetshop</BoldLink>
-									</a>
-								</Link>
+
+                                    <BoldLink>Sweetshop</BoldLink>
+
+                                </Link>
 							</div>
 							<div className="items-center hidden gap-4 md:flex">
 								<Link href="/creators">
-									<a>
-										<BoldLink>Creators</BoldLink>
-									</a>
-								</Link>
+
+                                    <BoldLink>Creators</BoldLink>
+
+                                </Link>
 							</div>
 							<div className="items-center hidden gap-4 md:flex">
 								<Link href="https://treatdao.org/magazine">
-									<a>
-										<BoldLink>Magazine</BoldLink>
-									</a>
-								</Link>
+
+                                    <BoldLink>Magazine</BoldLink>
+
+                                </Link>
 							</div>
 							<div className="items-center hidden gap-4 md:flex">
 								<Link href="https://treatdao.com/farms">
-									<a>
-										<BoldLink>Farm</BoldLink>
-									</a>
-								</Link>
+
+                                    <BoldLink>Farm</BoldLink>
+
+                                </Link>
 							</div>
 							<div className="items-center hidden gap-4 md:flex">
 								<Link href="/dex/ramp">
-									<a>
-										<BoldLink>Buy Crypto</BoldLink>
-									</a>
-								</Link>
+
+                                    <BoldLink>Buy Crypto</BoldLink>
+
+                                </Link>
 							</div>
 						</div>
 						{false && (
@@ -102,26 +104,26 @@ export default function Navbar() {
 								(isConnected ? (
 									<Container className="flex items-center gap-4">
 										{creator && (
-											<Link href={"/create"}>
-												<a>
-													<Button
-														css={{
-															borderRadius: "9999px",
-															alignItems: "center",
-															justifyContent: "center",
-														}}
-														appearance={"surface"}
-													>
-														Create
-														<Container className="flex items-center justify-center h-full">
-															<PlusCircleIcon
-																height={20}
-																width={20}
-															/>
-														</Container>
-													</Button>
-												</a>
-											</Link>
+											(<Link href={"/create"}>
+
+                                                <Button
+                                                    css={{
+                                                        borderRadius: "9999px",
+                                                        alignItems: "center",
+                                                        justifyContent: "center",
+                                                    }}
+                                                    appearance={"surface"}
+                                                >
+                                                    Create
+                                                    <Container className="flex items-center justify-center h-full">
+                                                        <PlusCircleIcon
+                                                            height={20}
+                                                            width={20}
+                                                        />
+                                                    </Container>
+                                                </Button>
+
+                                            </Link>)
 										)}
 										<NavbarProfileAvatar />
 									</Container>
@@ -136,16 +138,18 @@ export default function Navbar() {
 			<Nav className="fixed top-0 left-0 w-full py-4 shadow md:hidden">
 				<Container className="flex flex-col h-full gap-2 px-8">
 					<Container className="flex items-center justify-between">
-						<Link href={isConnected ? "/" : "/"}>
-							<a className="relative w-8 h-8 text-3xl font-medium">
-								<Image
-									src={LightLogo}
-									alt="Logo"
-									layout="fill"
-									className="w-16 h-16"
-								/>
-							</a>
-						</Link>
+						<Link
+                            href={isConnected ? "/" : "/"}
+                            className="relative w-8 h-8 text-3xl font-medium">
+
+                            <Image
+                                src={LightLogo}
+                                alt="Logo"
+                                layout="fill"
+                                className="w-16 h-16"
+                            />
+
+                        </Link>
 						<Container className="flex gap-4">
 							<MobileNavbarDropdown isConnected={isConnected} />
 						</Container>
@@ -153,5 +157,5 @@ export default function Navbar() {
 				</Container>
 			</Nav>
 		</Container>
-	);
+    );
 }

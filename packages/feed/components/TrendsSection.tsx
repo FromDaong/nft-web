@@ -37,26 +37,26 @@ export default function TrendsSection(props: {data: Array<Trend>}) {
 
 const TrendingItem = (props: Trend) => {
 	return (
-		<Link href={""}>
-			<a>
-				<Container className="py-2 px-4 w-full flex flex-col gap-2">
-					<p>
-						<MutedText>
-							<SmallText>{props.channel}</SmallText>
-						</MutedText>
-					</p>
-					<p>
-						<Heading size="xs">{props.topic}</Heading>
-					</p>
-					<p>
-						<MutedText>
-							<SmallText>
-								{TreatCore.getFormattedNumber(props.totalPosts)} Trits
-							</SmallText>
-						</MutedText>
-					</p>
-				</Container>
-			</a>
-		</Link>
-	);
+        (<Link href={""}>
+
+            <Container className="py-2 px-4 w-full flex flex-col gap-2">
+                <p>
+                    <MutedText>
+                        <SmallText>{props.channel}</SmallText>
+                    </MutedText>
+                </p>
+                <p>
+                    <Heading size="xs">{props.topic}</Heading>
+                </p>
+                <p>
+                    <MutedText>
+                        <SmallText>
+                            {TreatCore.getFormattedNumber(props.totalPosts)} Trits
+                        </SmallText>
+                    </MutedText>
+                </p>
+            </Container>
+
+        </Link>)
+    );
 };
