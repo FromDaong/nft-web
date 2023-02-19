@@ -74,7 +74,7 @@ export default function UserProfile(props: {
 	}, [inView]);
 
 	return (
-		<ProfileLayout userProfile={data}>
+        <ProfileLayout userProfile={data}>
 			<Container className="grid grid-cols-1 gap-12">
 				{isFetching && collections.length === 0 && (
 					<Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
@@ -91,19 +91,19 @@ export default function UserProfile(props: {
 					<>
 						<Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
 							{collections.map((collection) => (
-								<Link
+								(<Link
 									key={collection._id}
 									href={`/collection/${collection._id}`}
 								>
-									<a>
-										<CollectionsPreview
-											key={`collection:${collection._id}}`}
-											nfts={collection.nfts}
-											creator={data}
-											collection={collection}
-										/>
-									</a>
-								</Link>
+
+                                    <CollectionsPreview
+                                        key={`collection:${collection._id}}`}
+                                        nfts={collection.nfts}
+                                        creator={data}
+                                        collection={collection}
+                                    />
+
+                                </Link>)
 							))}
 						</Container>
 						{collections.length > 0 && (
@@ -126,7 +126,7 @@ export default function UserProfile(props: {
 				)}
 			</Container>
 		</ProfileLayout>
-	);
+    );
 }
 
 const CollectionsPreview = ({

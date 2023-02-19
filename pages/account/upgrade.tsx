@@ -90,7 +90,7 @@ export default function Upgrade() {
 	};
 
 	return (
-		<ApplicationLayout>
+        <ApplicationLayout>
 			<SEOHead title="Become a Creator" />
 			<ApplicationFrame>
 				<Container className="flex flex-col gap-12 py-12 max-w-xl mx-auto">
@@ -234,10 +234,10 @@ export default function Upgrade() {
 										</Text>
 									</Container>
 									<Link href={`/${profile.username}`}>
-										<a>
-											<Button appearance={"surface"}>Go to your profile</Button>
-										</a>
-									</Link>
+
+                                        <Button appearance={"surface"}>Go to your profile</Button>
+
+                                    </Link>
 								</Container>
 							)}
 
@@ -263,7 +263,7 @@ export default function Upgrade() {
 				</Container>
 			</ApplicationFrame>
 		</ApplicationLayout>
-	);
+    );
 }
 
 const VerifyIdentity = (props: {

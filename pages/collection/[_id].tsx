@@ -66,7 +66,7 @@ export default function Collection(props) {
 	const {collection} = collectionData;
 
 	return (
-		<ApplicationLayout>
+        <ApplicationLayout>
 			<SEOHead title={collectionData.collection.name} />
 			<ApplicationFrame>
 				<Container className="flex flex-col gap-12 py-12">
@@ -81,17 +81,17 @@ export default function Collection(props) {
 										</ImportantText>{" "}
 									</Text>
 									<Link href={`/${collection.creator.username}`}>
-										<a>
-											<Container className="flex gap-1">
-												<UserAvatar size={24} />
-												<Text className="underline">
-													<ImportantText>
-														@{collection.creator.username}
-													</ImportantText>
-												</Text>
-											</Container>
-										</a>
-									</Link>
+
+                                        <Container className="flex gap-1">
+                                            <UserAvatar size={24} />
+                                            <Text className="underline">
+                                                <ImportantText>
+                                                    @{collection.creator.username}
+                                                </ImportantText>
+                                            </Text>
+                                        </Container>
+
+                                    </Link>
 								</Container>
 							</Container>
 							{false && (
@@ -136,7 +136,7 @@ export default function Collection(props) {
 				</Container>
 			</ApplicationFrame>
 		</ApplicationLayout>
-	);
+    );
 }
 
 export const getServerSideProps = async (ctx) => {

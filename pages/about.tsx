@@ -25,7 +25,7 @@ const cards_info = [
 
 export default function About() {
 	return (
-		<div className="mx-auto container">
+        <div className="mx-auto container">
 			<SEOHead title={"Treat - About Us"} />
 			<div className="max-w-4xl p-4 mx-auto lg:p-0">
 				<div className="flex flex-col max-w-3xl py-16 mx-auto">
@@ -101,16 +101,16 @@ export default function About() {
 					</p>
 					<div className="mt-8">
 						<Link href={"/dex/ramp"}>
-							<a>
-								<Button className="flex gap-4 border border-gray-600">
-									Buy Crypto
-									<ArrowRightIcon className="w-5 h-5" />
-								</Button>
-							</a>
-						</Link>
+
+                            <Button className="flex gap-4 border border-gray-600">
+                                Buy Crypto
+                                <ArrowRightIcon className="w-5 h-5" />
+                            </Button>
+
+                        </Link>
 					</div>
 				</div>
 			</div>
 		</div>
-	);
+    );
 }
