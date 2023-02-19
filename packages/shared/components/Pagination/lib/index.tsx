@@ -109,7 +109,6 @@ export const usePaginatedPage = (
 
 	const setSort = (s) => {
 		setSortBy(s);
-		console.log({s});
 		router.push({
 			...(href ? {href: "/[username]"} : {}),
 			query: {
@@ -156,7 +155,6 @@ export const usePaginatedPage = (
 
 	const performSearchWithNewParams = (e) => {
 		e.preventDefault();
-		console.log("searching params");
 
 		router.push({
 			...(href ? {href: "/[username]"} : {}),

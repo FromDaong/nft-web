@@ -34,7 +34,6 @@ export const SkeletonExpandedSuggestedCreatorCard = (props) => (
 );
 
 export default function SuggestedCreatorCard(props: SuggestedCreatorData) {
-	console.log(props);
 	return props.isExpanded ? (
 		<ExpandSuggestedCreatorCard {...props} />
 	) : (

@@ -22,7 +22,6 @@ type PaginationProps = {
 };
 
 export default function Pagination(props: PaginationProps) {
-	console.log(props);
 
 	const [pagesPreview, setPages] = useState([]);
 	useEffect(() => {

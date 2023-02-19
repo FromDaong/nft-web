@@ -22,7 +22,6 @@ export default function Chat({username, contact}) {
 }
 
 export const getServerSideProps = async (ctx: NextPageContext) => {
-	console.log(ctx.query);
 	return {
 		props: {
 			username: (ctx.query.chat_id as string).split("-")[0],

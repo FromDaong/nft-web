@@ -8,7 +8,6 @@ export default async function handler(
 	res: NextApiResponse
 ) {
 	const {q} = req.query;
-	console.log({q});
 
 	await connectMongoDB();
 

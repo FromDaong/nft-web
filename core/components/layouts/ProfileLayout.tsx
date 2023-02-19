@@ -180,7 +180,6 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 
 	const createChatIfNotExist = () => {
 		setOpeningMessages(true);
-		console.log({loggedInUser});
 		axios
 			.get(`${apiEndpoint}/chat/username/${ownerOfUserProfile.username}`)
 			.then((res) => {
@@ -282,219 +281,220 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 		isBalanceLoading,
 	});
 
-	return <>
-        <SEOHead
-            title={ownerOfUserProfile?.username + " - TreatDAO"}
-            description={ownerOfUserProfile?.bio}
-            type={"profile"}
-            data={{
-                bio: ownerOfUserProfile.bio,
-                username: ownerOfUserProfile.username,
-                display_name: ownerOfUserProfile.display_name ?? "TreatDAO Profile",
-                profile_picture: ownerOfUserProfile.profile_pic,
-                banner_pic: ownerOfUserProfile.banner_pic,
-            }}
-        />
-        <SocialProfileJsonLd
-            type="Person"
-            name={ownerOfUserProfile?.username}
-            url={`https://treatnfts.com/${ownerOfUserProfile?.username}`}
-            sameAs={[]}
-        />
+	return (
+		<>
+			<SEOHead
+				title={ownerOfUserProfile?.username + " - TreatDAO"}
+				description={ownerOfUserProfile?.bio}
+				type={"profile"}
+				data={{
+					bio: ownerOfUserProfile.bio,
+					username: ownerOfUserProfile.username,
+					display_name: ownerOfUserProfile.display_name ?? "TreatDAO Profile",
+					profile_picture: ownerOfUserProfile.profile_pic,
+					banner_pic: ownerOfUserProfile.banner_pic,
+				}}
+			/>
+			<SocialProfileJsonLd
+				type="Person"
+				name={ownerOfUserProfile?.username}
+				url={`https://treatnfts.com/${ownerOfUserProfile?.username}`}
+				sameAs={[]}
+			/>
 
-        <Container
-            className="w-full h-[256px]"
-            css={{
-                backgroundImage: `url("${ownerOfUserProfile.banner_pic}")`,
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "cover",
-                backgroundColor: "$surfaceOnSurface",
-            }}
-        />
+			<Container
+				className="w-full h-[256px]"
+				css={{
+					backgroundImage: `url("${ownerOfUserProfile.banner_pic}")`,
+					backgroundPosition: "center",
+					backgroundRepeat: "no-repeat",
+					backgroundSize: "cover",
+					backgroundColor: "$surfaceOnSurface",
+				}}
+			/>
 
-        <Container className="container px-4 py-8 mx-auto ">
-            <FluidContainer className="flex justify-between px-4">
-                <ContextualContainer className="grid justify-between w-full col-span-1 xl:grid-cols-3 gap-y-4">
-                    <Container className="col-span-1 xl:col-span-2">
-                        <Container className="flex gap-8">
-                            <Container>
-                                <NewAvatar
-                                    username="Tatenda Chris"
-                                    imageSrc={ownerOfUserProfile.profile_pic}
-                                    size={64}
-                                />
-                            </Container>
+			<Container className="container px-4 py-8 mx-auto ">
+				<FluidContainer className="flex justify-between px-4">
+					<ContextualContainer className="grid justify-between w-full col-span-1 xl:grid-cols-3 gap-y-4">
+						<Container className="col-span-1 xl:col-span-2">
+							<Container className="flex gap-8">
+								<Container>
+									<NewAvatar
+										username="Tatenda Chris"
+										imageSrc={ownerOfUserProfile.profile_pic}
+										size={64}
+									/>
+								</Container>
 
-                            <Container className="flex flex-col gap-1">
-                                <Container>
-                                    <Heading
-                                        size="sm"
-                                        className="flex items-center gap-1"
-                                    >
-                                        <span>
-                                            {ownerOfUserProfile.display_name ??
-                                                "Loading profile details"}
-                                        </span>
-                                    </Heading>
-                                    <MutedText>@{ownerOfUserProfile.username}</MutedText>
-                                </Container>
-                                <Container className="flex flex-row flex-wrap gap-4 mt-2 rounded-full">
-                                    {userBadges.map((badge) => (
-                                        <Container
-                                            key={badge.name}
-                                            css={{
-                                                backgroundColor: `$${badge.color}2`,
-                                                borderColor: "$subtleBorder",
-                                            }}
-                                            className="px-3 py-1 rounded-xl shadow border"
-                                        >
-                                            <Text css={{color: `$${badge.color}10`}}>
-                                                <ImportantText>
-                                                    <SmallText>{badge.name}</SmallText>
-                                                </ImportantText>
-                                            </Text>
-                                        </Container>
-                                    ))}
-                                </Container>
-                                <Text className="hidden max-w-2xl mt-2 md:flex">
-                                    {ownerOfUserProfile.bio ?? "Loading profile details"}
-                                </Text>
-                                <Container className="hidden w-full mt-2 mb-4 md:flex">
-                                    <>
-                                        <Text
-                                            appearance={"hiContrast"}
-                                            weight={"bold"}
-                                        >
-                                            {ownerOfUserProfile.following.length}
-                                        </Text>
-                                        {""}
-                                        <JustifiedSpan>Following</JustifiedSpan>
-                                    </>
-                                    <Bull />
-                                    <>
-                                        <Text
-                                            appearance={"hiContrast"}
-                                            weight={"bold"}
-                                        >
-                                            {followers.length}
-                                        </Text>
-                                        <JustifiedSpan>Followers</JustifiedSpan>
-                                    </>
-                                </Container>
-                            </Container>
-                        </Container>
-                        <Container className="flex flex-col gap-4 md:hidden">
-                            <Text className="flex max-w-2xl mt-2">
-                                {ownerOfUserProfile.bio ?? "Loading profile details"}
-                            </Text>
-                            <Container className="flex w-full mt-2 mb-4">
-                                <>
-                                    <Text
-                                        appearance={"hiContrast"}
-                                        weight={"bold"}
-                                    >
-                                        {ownerOfUserProfile.following.length}
-                                    </Text>
-                                    {""}
-                                    <JustifiedSpan>Following</JustifiedSpan>
-                                </>
-                                <Bull />
-                                <>
-                                    <Text
-                                        appearance={"hiContrast"}
-                                        weight={"bold"}
-                                    >
-                                        {followers.length}
-                                    </Text>
-                                    <JustifiedSpan>Followers</JustifiedSpan>
-                                </>
-                            </Container>
-                        </Container>
-                    </Container>
+								<Container className="flex flex-col gap-1">
+									<Container>
+										<Heading
+											size="sm"
+											className="flex items-center gap-1"
+										>
+											<span>
+												{ownerOfUserProfile.display_name ??
+													"Loading profile details"}
+											</span>
+										</Heading>
+										<MutedText>@{ownerOfUserProfile.username}</MutedText>
+									</Container>
+									<Container className="flex flex-row flex-wrap gap-4 mt-2 rounded-full">
+										{userBadges.map((badge) => (
+											<Container
+												key={badge.name}
+												css={{
+													backgroundColor: `$${badge.color}2`,
+													borderColor: "$subtleBorder",
+												}}
+												className="px-3 py-1 rounded-xl shadow border"
+											>
+												<Text css={{color: `$${badge.color}10`}}>
+													<ImportantText>
+														<SmallText>{badge.name}</SmallText>
+													</ImportantText>
+												</Text>
+											</Container>
+										))}
+									</Container>
+									<Text className="hidden max-w-2xl mt-2 md:flex">
+										{ownerOfUserProfile.bio ?? "Loading profile details"}
+									</Text>
+									<Container className="hidden w-full mt-2 mb-4 md:flex">
+										<>
+											<Text
+												appearance={"hiContrast"}
+												weight={"bold"}
+											>
+												{ownerOfUserProfile.following.length}
+											</Text>
+											{""}
+											<JustifiedSpan>Following</JustifiedSpan>
+										</>
+										<Bull />
+										<>
+											<Text
+												appearance={"hiContrast"}
+												weight={"bold"}
+											>
+												{followers.length}
+											</Text>
+											<JustifiedSpan>Followers</JustifiedSpan>
+										</>
+									</Container>
+								</Container>
+							</Container>
+							<Container className="flex flex-col gap-4 md:hidden">
+								<Text className="flex max-w-2xl mt-2">
+									{ownerOfUserProfile.bio ?? "Loading profile details"}
+								</Text>
+								<Container className="flex w-full mt-2 mb-4">
+									<>
+										<Text
+											appearance={"hiContrast"}
+											weight={"bold"}
+										>
+											{ownerOfUserProfile.following.length}
+										</Text>
+										{""}
+										<JustifiedSpan>Following</JustifiedSpan>
+									</>
+									<Bull />
+									<>
+										<Text
+											appearance={"hiContrast"}
+											weight={"bold"}
+										>
+											{followers.length}
+										</Text>
+										<JustifiedSpan>Followers</JustifiedSpan>
+									</>
+								</Container>
+							</Container>
+						</Container>
 
-                    <Container className="flex h-fit xl:justify-end">
-                        <Container className="relative flex h-auto">
-                            <Container className="flex flex-wrap gap-4 h-fit">
-                                {!isLoading &&
-                                    loggedInUser &&
-                                    loggedInUser.address !== ownerOfUserProfile.address && (
-                                        <Button
-                                            onClick={followOrUnfollow}
-                                            className="focus:scale-110"
-                                            appearance={isFollowing ? "surface" : "action"}
-                                        >
-                                            {isFollowing ? (
-                                                "Unfollow"
-                                            ) : (
-                                                <>
-                                                    <span>Follow</span>
-                                                    <FollowUser />
-                                                </>
-                                            )}
-                                        </Button>
-                                    )}
-                                {false && isFollowing && (
-                                    <Button
-                                        onClick={createChatIfNotExist}
-                                        appearance={openingMessages ? "disabled" : "surface"}
-                                        className="transition-transform duration-100 hover:scale-105"
-                                    >
-                                        {!openingMessages && (
-                                            <>
-                                                <ChatIcon
-                                                    width={20}
-                                                    height={20}
-                                                />
-                                                <span>Send message</span>
-                                            </>
-                                        )}
-                                        {openingMessages && "Opening messages..."}
-                                    </Button>
-                                )}
-                                <Link
-                                    href={`https://bscscan.com/address/${ownerOfUserProfile.address}`}
-                                    target={"_blank"}
-                                    rel={"noopener"}>
+						<Container className="flex h-fit xl:justify-end">
+							<Container className="relative flex h-auto">
+								<Container className="flex flex-wrap gap-4 h-fit">
+									{!isLoading &&
+										loggedInUser &&
+										loggedInUser.address !== ownerOfUserProfile.address && (
+											<Button
+												onClick={followOrUnfollow}
+												className="focus:scale-110"
+												appearance={isFollowing ? "surface" : "action"}
+											>
+												{isFollowing ? (
+													"Unfollow"
+												) : (
+													<>
+														<span>Follow</span>
+														<FollowUser />
+													</>
+												)}
+											</Button>
+										)}
+									{false && isFollowing && (
+										<Button
+											onClick={createChatIfNotExist}
+											appearance={openingMessages ? "disabled" : "surface"}
+											className="transition-transform duration-100 hover:scale-105"
+										>
+											{!openingMessages && (
+												<>
+													<ChatIcon
+														width={20}
+														height={20}
+													/>
+													<span>Send message</span>
+												</>
+											)}
+											{openingMessages && "Opening messages..."}
+										</Button>
+									)}
+									<Link
+										href={`https://bscscan.com/address/${ownerOfUserProfile.address}`}
+										target={"_blank"}
+										rel={"noopener"}
+									>
+										<Button
+											appearance={"surface"}
+											className="transition-transform duration-100 hover:scale-105"
+										>
+											<span>View on Bscscan</span>
+											<LinkIcon
+												width={16}
+												height={16}
+											/>
+										</Button>
+									</Link>
+								</Container>
+							</Container>
+						</Container>
+					</ContextualContainer>
+				</FluidContainer>
 
-                                    <Button
-                                        appearance={"surface"}
-                                        className="transition-transform duration-100 hover:scale-105"
-                                    >
-                                        <span>View on Bscscan</span>
-                                        <LinkIcon
-                                            width={16}
-                                            height={16}
-                                        />
-                                    </Button>
-
-                                </Link>
-                            </Container>
-                        </Container>
-                    </Container>
-                </ContextualContainer>
-            </FluidContainer>
-
-            <FluidContainer
-                justified
-                className="flex py-8 overflow-x-auto"
-            >
-                <TabsContainer>
-                    {(ownerOfUserProfile?.creator ? creator_tabs : profile_tabs).map(
-                        (tab) => (
-                            <Tab
-                                key={tab.href}
-                                href={`/${ownerOfUserProfile.username}${tab.href}`}
-                                label={tab.label}
-                                count={tab.count}
-                            />
-                        )
-                    )}
-                </TabsContainer>
-            </FluidContainer>
-        </Container>
-        <ApplicationFrame>
-            <Container className="px-4">{props.children}</Container>
-        </ApplicationFrame>
-    </>;
+				<FluidContainer
+					justified
+					className="flex py-8 overflow-x-auto"
+				>
+					<TabsContainer>
+						{(ownerOfUserProfile?.creator ? creator_tabs : profile_tabs).map(
+							(tab) => (
+								<Tab
+									key={tab.href}
+									href={`/${ownerOfUserProfile.username}${tab.href}`}
+									label={tab.label}
+									count={tab.count}
+								/>
+							)
+						)}
+					</TabsContainer>
+				</FluidContainer>
+			</Container>
+			<ApplicationFrame>
+				<Container className="px-4">{props.children}</Container>
+			</ApplicationFrame>
+		</>
+	);
 }

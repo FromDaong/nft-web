@@ -26,15 +26,12 @@ async function create(req: NextApiRequest, res: NextApiResponse) {
 	}
 
 	if (nft.likedBy && nft.likedBy.includes(profile._id)) {
-		console.log("Popping");
-
 		await MongoModelNFT.findByIdAndUpdate(nft._id, {
 			$pull: {
 				likedBy: profile._id,
 			},
 		});
 	} else {
-		console.log("Pushing");
 		await MongoModelNFT.findByIdAndUpdate(nft._id, {
 			$push: {
 				likedBy: profile._id,

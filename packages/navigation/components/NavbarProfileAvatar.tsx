@@ -121,7 +121,6 @@ const NavbarProfileAvatar = () => {
 	const {openAccountModal} = useAccountModal();
 	const {data: session} = useSession();
 	const {profile, creator, isLoading} = useUser();
-	console.log({session});
 
 	const {isOpen, onClose, onOpen} = useDisclosure();
 

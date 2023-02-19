@@ -25,7 +25,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		{new: true}
 	);
 
-	console.log({u});
 
 	return returnWithSuccess("Added", res);
 };

@@ -388,14 +388,6 @@ const LinksFormPresentation = (props: {
 		}
 	];
 }) => {
-	const [links] = useState(props.links);
-
-	const linksInformationForm = useFormik({
-		initialValues: {links},
-		onSubmit(values, formikHelpers) {
-			console.log(values);
-		},
-	});
 	return (
 		<Container className="col-span-1">
 			<Container className="grid grid-cols-1 gap-8 py-4 ">

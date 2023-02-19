@@ -24,7 +24,6 @@ export default async function handler(
 	} else if (req.method === "POST") {
 		try {
 			if (req.body.status !== "confirmed") returnWithSuccess("", res);
-			console.log("New sale", req.body);
 
 			const nftId =
 				(req.body.contractCall &&
@@ -37,7 +36,6 @@ export default async function handler(
 			if (!nftId)
 				return res.status(400).json({success: false, error: "no nft id"});
 
-			console.log({nftId}, "New Sale");
 			const nftData = await LegacyNFTModel.findOne({id: nftId});
 
 			if (!nftData)
@@ -61,11 +59,9 @@ export default async function handler(
 				},
 			};
 
-			console.log("attempting to send email");
 
 			try {
 				const sgClientResponse = await sgClient.send(msg);
-				console.log("email sent", sgClientResponse);
 				res.status(200).json({success: true});
 			} catch (e) {
 				console.error(e);

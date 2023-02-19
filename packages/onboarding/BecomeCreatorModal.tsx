@@ -20,7 +20,6 @@ const VerifyButton = dynamic(() => import("@passbase/button/react"), {
 export default function BecomeCreatorModal({isOpen, onClose}) {
 	const handleVerificationFinish = (returned) => {
 		// Post to DB and toggle profile status from "general" to "pending"
-		console.log({returned});
 	};
 
 	return (
