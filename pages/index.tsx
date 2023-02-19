@@ -104,7 +104,7 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 	);
 
 	return (
-        <Container className="flex flex-col gap-12 md:gap-16 lg:gap-24 py-12 px-4">
+		<Container className="flex flex-col gap-12 md:gap-16 lg:gap-24 py-12 px-4">
 			<SEOHead
 				title={"TreatDAO"}
 				description="TreatDAO is a Web3 project dedicated to creating opportunities and an amazing platform for adult content creators and collectors."
@@ -125,16 +125,14 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 							</Text>
 						</Container>
 						<Link href={"/sweetshop"}>
-
-                            <Button appearance={"default"}>
-                                <ImportantText>View all on sweetshop</ImportantText>
-                                <ArrowRightIcon
-                                    width={16}
-                                    height={16}
-                                />
-                            </Button>
-
-                        </Link>
+							<Button appearance={"default"}>
+								<ImportantText>View all on sweetshop</ImportantText>
+								<ArrowRightIcon
+									width={16}
+									height={16}
+								/>
+							</Button>
+						</Link>
 					</Container>
 					<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4 lg:gap-4">
 						{!trendingNFTError && !trendingNFTsLoading
@@ -313,16 +311,14 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 						</Container>
 
 						<Link href={"/creators"}>
-
-                            <Button appearance={"default"}>
-                                <ImportantText>View more creators</ImportantText>
-                                <ArrowRightIcon
-                                    width={16}
-                                    height={16}
-                                />
-                            </Button>
-
-                        </Link>
+							<Button appearance={"default"}>
+								<ImportantText>View more creators</ImportantText>
+								<ArrowRightIcon
+									width={16}
+									height={16}
+								/>
+							</Button>
+						</Link>
 					</Container>
 					<Container className="grid grid-cols-1 gap-8 md:grid-cols-2  xl:grid-cols-4">
 						{!trendingCreatorError && !trendingCreatorsLoading
@@ -403,17 +399,17 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 							<Text>
 								You can buy BNB or $TREAT directly from this website. Visit this{" "}
 								<Link href={"/dex/ramp"}>
-
-                                    <ImportantText css={{color: "$accentText"}}>
-                                        link
-                                    </ImportantText>
-
-                                </Link>{" "}
+									<ImportantText css={{color: "$accentText"}}>
+										link
+									</ImportantText>
+								</Link>{" "}
 								to buy crypto easily, powered by our friends at{" "}
-								<Link href={"https://flooz.trade"} target={"_blank"} rel={"nooopener"}>
-									
-										https://flooz.trade
-									
+								<Link
+									href={"https://flooz.trade"}
+									target={"_blank"}
+									rel={"nooopener"}
+								>
+									https://flooz.trade
 								</Link>
 								.
 							</Text>
@@ -439,7 +435,7 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 				</Container>
 			</Container>
 		</Container>
-    );
+	);
 }
 
 function FeaturedCarousel(props: {features: Array<IFeatureProps>}) {
@@ -480,7 +476,7 @@ function FeaturedCarousel(props: {features: Array<IFeatureProps>}) {
 	};
 
 	return (
-        <Container className="relative container mx-auto flex flex-col gap-8 px-8">
+		<Container className="relative container mx-auto flex flex-col gap-8 px-8">
 			<Container className="flex flex-col md:flex-row gap-4 justify-between w-full md:items-center">
 				<Container>
 					<Heading size="sm">Featured on TreatDAO</Heading>
@@ -516,43 +512,41 @@ function FeaturedCarousel(props: {features: Array<IFeatureProps>}) {
 				className="@container flex flex-nowrap overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-hide w-full gap-8"
 			>
 				{props.features.map((feature) => (
-					(<Link
-                        href={feature.href}
-                        key={feature.id}
-                        className="w-96 group relative aspect-[2/3] flex-shrink-0 bg-gray-50 rounded-xl overflow-hidden">
-
-                        <Image
-                            src={feature.cover.responsiveImage.src}
-                            sizes={feature.cover.responsiveImage.srcSet}
-                            alt={feature.displayName}
-                            fill
-                            className="object-cover rounded-xl"
-                        />
-                        <Container
-                            css={{
-                                background:
-                                    "linear-gradient(0deg, #000000 0%, rgba(0, 0, 0, 0) 100%)",
-                            }}
-                            className="absolute z-1 top-0 left-0 flex flex-col-reverse w-full h-full p-8 gap-2 group-hover:opacity-100 opacity-0 transition-opacity duration-300 delay-150"
-                        >
-                            <Text css={{color: "#f1f1f1"}}>
-                                {feature.caption ??
-                                    `Some description to make things look much better than having
+					<Link
+						href={feature.href}
+						key={feature.id}
+						className="w-96 group relative aspect-[2/3] flex-shrink-0 bg-gray-50 rounded-xl overflow-hidden"
+					>
+						<Image
+							src={feature.cover.responsiveImage.src}
+							sizes={feature.cover.responsiveImage.srcSet}
+							alt={feature.displayName}
+							className="object-cover rounded-xl"
+						/>
+						<Container
+							css={{
+								background:
+									"linear-gradient(0deg, #000000 0%, rgba(0, 0, 0, 0) 100%)",
+							}}
+							className="absolute z-1 top-0 left-0 flex flex-col-reverse w-full h-full p-8 gap-2 group-hover:opacity-100 opacity-0 transition-opacity duration-300 delay-150"
+						>
+							<Text css={{color: "#f1f1f1"}}>
+								{feature.caption ??
+									`Some description to make things look much better than having
                                 just the title alone because it looks terrible`}
-                            </Text>
-                            <Heading
-                                size="xs"
-                                css={{color: "#fff"}}
-                            >
-                                {feature.displayName}
-                            </Heading>
-                        </Container>
-
-                    </Link>)
+							</Text>
+							<Heading
+								size="xs"
+								css={{color: "#fff"}}
+							>
+								{feature.displayName}
+							</Heading>
+						</Container>
+					</Link>
 				))}
 			</Container>
 		</Container>
-    );
+	);
 }
 
 const FEATURES_QUERY = `{

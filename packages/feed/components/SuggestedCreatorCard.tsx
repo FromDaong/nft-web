@@ -10,7 +10,7 @@ import {
 import DynamicSkeleton from "@packages/skeleton";
 import {FeaturedCreatorSkeleton} from "@packages/skeleton/config";
 import UserAvatar from "core/auth/components/Avatar";
-import Image from "next/future/image";
+import Image from "next/image";
 import Link from "next/link";
 import LiveTag from "./LiveTag";
 

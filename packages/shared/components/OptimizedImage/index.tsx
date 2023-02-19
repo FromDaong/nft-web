@@ -1,4 +1,4 @@
-import Image from "next/future/image";
+import Image from "next/image";
 
 let dev = false;
 if (typeof window !== "undefined") {
@@ -34,7 +34,6 @@ const OptimizedImage = (props: OptimizedImageProps) => {
 			width={props.height}
 			height={props.height}
 			className={props.className}
-			fill={props.fill}
 			sizes={props.sizes}
 			style={{objectFit: props.objectFit}}
 			loading={"lazy"}

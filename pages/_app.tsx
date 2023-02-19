@@ -18,6 +18,7 @@ import AcceptAgeModal from "@packages/modals/AcceptAgeModal";
 import {Container} from "@packages/shared/components/Container";
 import Footer from "@packages/shared/components/Footer";
 import {Analytics} from "@vercel/analytics/react";
+import {Inter} from "@next/font/google";
 
 const progress = new ProgressBar({
 	size: 3,
@@ -28,6 +29,8 @@ const progress = new ProgressBar({
 Router.events.on("routeChangeStart", progress.start);
 Router.events.on("routeChangeComplete", progress.finish);
 Router.events.on("routeChangeError", progress.finish);
+
+const inter = Inter({subsets: ["latin"]});
 
 function MyApp({
 	Component,
@@ -42,7 +45,7 @@ function MyApp({
 	// T-33 Implement master action tracker based on profile id. Should includes all actions, create, buy, relist, follow, etc.
 
 	return (
-		<>
+		<div className={inter.className}>
 			<ThemeProvider>
 				<ApplicationProvider>
 					<WagmiWrapper pageProps={pageProps}>
@@ -62,7 +65,7 @@ function MyApp({
 				</ApplicationProvider>
 			</ThemeProvider>
 			<Analytics />
-		</>
+		</div>
 	);
 }
 
