@@ -38,6 +38,8 @@ module.exports = withTM({
 			"www.datocms-assets.com",
 		],
 	},
+	experimental: {appDir: true},
+
 	/*pwa: {
     disable: process.env.NODE_ENV !== "production",
     dest: "public",

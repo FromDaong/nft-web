@@ -398,7 +398,11 @@ export const getServerSideProps = async (context) => {
 
 	await pagePropsConnectMongoDB();
 
-	console.log({_id});
+	if (!_id) {
+		return {
+			notFound: true,
+		};
+	}
 
 	const nft = await MongoModelNFT.findById(_id).populate("creator").exec();
 	if (!nft) {

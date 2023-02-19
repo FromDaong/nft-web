@@ -78,211 +78,153 @@ const NFTPresentationComponent = (props: {
 
 	const displayedCost = props.seller ? props.event.price : nftCost;
 
-	return <>
-        <Container className="grid grid-cols-1 gap-12 lg:grid-cols-3">
-            <Container className="grid flex-col grid-cols-2 gap-12 py-8 lg:col-span-2 lg:flex">
-                <Container className="flex flex-wrap col-span-2 gap-4 bottom-4 right-4">
-                    {props.address && (
-                        <Button
-                            appearance={"surface"}
-                            onClick={postUtils.likeNFT}
-                        >
-                            {postUtils.liked ? (
-                                <>
-                                    <HeartFilledIcon
-                                        width={16}
-                                        height={16}
-                                    />
-                                </>
-                            ) : (
-                                <HeartIcon
-                                    width={16}
-                                    height={16}
-                                />
-                            )}
-                            <span>{postUtils.likedBy.length}</span>
-                        </Button>
-                    )}
-                    <Button
-                        onClick={copyUrlToClipboard}
-                        appearance={"surface"}
-                    >
-                        <Share2Icon
-                            width={16}
-                            height={16}
-                        />
-                        Copy link
-                    </Button>
-                    {false && (
-                        <Button
-                            appearance={"surface"}
-                            onClick={props.openFullScreen}
-                        >
-                            <EnterFullScreenIcon
-                                style={{strokeWidth: "2px"}}
-                                height={16}
-                                width={16}
-                            />
-                        </Button>
-                    )}
-                    {isOwned && (
-                        <MoreActionsButton
-                            nft={props.nft}
-                            seller={props.seller}
-                            address={props.address}
-                            hasOpenOrders={hasOpenOrders}
-                            numberOfNFTsOwned={numberOfNFTsOwned}
-                        />
-                    )}
-                </Container>
-                <Container className="flex justify-between col-span-2 gap-4">
-                    <Container className="flex flex-col gap-2">
-                        <Heading size="sm">{nft.name}</Heading>
-                        <Container className="flex">
-                            <Text>
-                                Listed by{" "}
-                                <Link
-                                    href={`/${
-                                        props.seller
-                                            ? props.seller.username
-                                            : nft.creator.username
-                                    }`}
-                                >
+	return (
+		<>
+			<Container className="grid grid-cols-1 gap-12 lg:grid-cols-3">
+				<Container className="grid flex-col grid-cols-2 gap-12 py-8 lg:col-span-2 lg:flex">
+					<Container className="flex justify-between col-span-2 gap-4">
+						<Container className="flex flex-col gap-2">
+							<Heading size="sm">{nft.name}</Heading>
+							<Container className="flex">
+								<Text>
+									Listed by{" "}
+									<Link
+										href={`/${
+											props.seller
+												? props.seller.username
+												: nft.creator.username
+										}`}
+									>
+										<ImportantText>
+											@
+											{props.seller
+												? props.seller.username
+												: nft.creator.username}
+										</ImportantText>
+									</Link>
+								</Text>
+							</Container>
+						</Container>
+						<Container>
+							<UserAvatar
+								username={
+									props.seller ? props.seller.username : nft.creator.username
+								}
+								profile_pic={
+									props.seller
+										? props.seller.profile_pic
+										: nft.creator.profile.profile_pic
+								}
+								size={48}
+							/>
+						</Container>
+					</Container>
+					<Container className="flex flex-col col-span-2 gap-4 md:col-span-1">
+						<Heading size="xs">Description</Heading>
+						<Text>{nft.description}</Text>
+					</Container>
+					<Container className="flex flex-col col-span-2 gap-4 md:col-span-1">
+						<Heading size="xs">Tags</Heading>
+						<Container className="flex flex-wrap gap-4 py-2">
+							{nft.tags?.map((tag) => (
+								<Link
+									href={`/sweetshop/tag/${tag}`}
+									key={tag}
+								>
+									<Container
+										className="px-3 py-1 border rounded-full shadow-sm"
+										css={{
+											backgroundColor: "$elementSurface",
+											borderColor: "$subtleBorder",
+										}}
+									>
+										<Text>
+											<ImportantText>{tag}</ImportantText>
+										</Text>
+									</Container>
+								</Link>
+							))}
+							<Container
+								className="px-3 py-1 border rounded-full shadow-sm"
+								css={{
+									backgroundColor: "$elementSurface",
+									borderColor: "$subtleBorder",
+								}}
+							>
+								<Text>
+									<ImportantText>NFT</ImportantText>
+								</Text>
+							</Container>
+						</Container>
+					</Container>
+				</Container>
+				<Container className="flex flex-col gap-4 py-8">
+					<Container
+						className="flex flex-col w-full overflow-hidden border divide-y shadow rounded-xl"
+						css={{
+							backgroundColor: "$surfaceOnSurface",
+							borderColor: "$border",
+							borderRadius: "16px",
+						}}
+					>
+						<Container className="flex flex-col gap-8 p-4">
+							<Container className="flex flex-col items-center gap-4">
+								<Container className="flex items-baseline justify-between w-full">
+									<Heading size="sm">{displayedCost} BNB</Heading>
 
-                                    <ImportantText>
-                                        @
-                                        {props.seller
-                                            ? props.seller.username
-                                            : nft.creator.username}
-                                    </ImportantText>
+									{!props.seller && (
+										<MutedText className="flex-shrink-0">
+											{remainingNfts === 0
+												? "Sold out"
+												: `${remainingNfts} left`}
+										</MutedText>
+									)}
+								</Container>
+								{hasOpenOrders && (
+									<ImportantText
+										className="w-full"
+										css={{color: "$accentText"}}
+									>
+										You have listed your NFT for resale
+									</ImportantText>
+								)}
+								{!hasOpenOrders &&
+									!(props.address === props.seller) &&
+									!(
+										props.nft.creator.profile.address.toLowerCase() ===
+										props.address?.toLowerCase()
+									) && (
+										<BuyNFTButton
+											seller={props.seller?.address ?? null}
+											nftData={nft}
+											event={props.event}
+											isResale={props.isResale}
+										/>
+									)}
+							</Container>
+						</Container>
 
-                                </Link>
-                            </Text>
-                        </Container>
-                    </Container>
-                    <Container>
-                        <UserAvatar
-                            username={
-                                props.seller ? props.seller.username : nft.creator.username
-                            }
-                            profile_pic={
-                                props.seller
-                                    ? props.seller.profile_pic
-                                    : nft.creator.profile.profile_pic
-                            }
-                            size={48}
-                        />
-                    </Container>
-                </Container>
-                <Container className="flex flex-col col-span-2 gap-4 md:col-span-1">
-                    <Heading size="xs">Description</Heading>
-                    <Text>{nft.description}</Text>
-                </Container>
-                <Container className="flex flex-col col-span-2 gap-4 md:col-span-1">
-                    <Heading size="xs">Tags</Heading>
-                    <Container className="flex flex-wrap gap-4 py-2">
-                        {nft.tags?.map((tag) => (
-                            (<Link
-                                href={`/sweetshop/tag/${tag}`}
-                                key={tag}
-                            >
-
-                                <Container
-                                    className="px-3 py-1 border rounded-full shadow-sm"
-                                    css={{
-                                        backgroundColor: "$elementSurface",
-                                        borderColor: "$subtleBorder",
-                                    }}
-                                >
-                                    <Text>
-                                        <ImportantText>{tag}</ImportantText>
-                                    </Text>
-                                </Container>
-
-                            </Link>)
-                        ))}
-                        <Container
-                            className="px-3 py-1 border rounded-full shadow-sm"
-                            css={{
-                                backgroundColor: "$elementSurface",
-                                borderColor: "$subtleBorder",
-                            }}
-                        >
-                            <Text>
-                                <ImportantText>NFT</ImportantText>
-                            </Text>
-                        </Container>
-                    </Container>
-                </Container>
-            </Container>
-            <Container className="flex flex-col gap-4 py-8">
-                <Container
-                    className="flex flex-col w-full overflow-hidden border divide-y shadow rounded-xl"
-                    css={{
-                        backgroundColor: "$surfaceOnSurface",
-                        borderColor: "$border",
-                        borderRadius: "16px",
-                    }}
-                >
-                    <Container className="flex flex-col gap-8 p-4">
-                        <Container className="flex flex-col items-center gap-4">
-                            <Container className="flex items-baseline justify-between w-full">
-                                <Heading size="sm">{displayedCost} BNB</Heading>
-
-                                {!props.seller && (
-                                    <MutedText className="flex-shrink-0">
-                                        {remainingNfts === 0
-                                            ? "Sold out"
-                                            : `${remainingNfts} left`}
-                                    </MutedText>
-                                )}
-                            </Container>
-                            {hasOpenOrders && (
-                                <ImportantText
-                                    className="w-full"
-                                    css={{color: "$accentText"}}
-                                >
-                                    You have listed your NFT for resale
-                                </ImportantText>
-                            )}
-                            {!hasOpenOrders &&
-                                !(props.address === props.seller) &&
-                                !(
-                                    props.nft.creator.profile.address.toLowerCase() ===
-                                    props.address?.toLowerCase()
-                                ) && (
-                                    <BuyNFTButton
-                                        seller={props.seller?.address ?? null}
-                                        nftData={nft}
-                                        event={props.event}
-                                        isResale={props.isResale}
-                                    />
-                                )}
-                        </Container>
-                    </Container>
-
-                    <Container
-                        className="p-4"
-                        css={{
-                            backgroundColor: "$surfaceOnSurface",
-                            borderColor: "$border",
-                        }}
-                    >
-                        <Link href={`/sweetshop/nft/${props.nft.id}`}>
-
-                            <Button
-                                fullWidth
-                                appearance={"surface"}
-                            >
-                                View other options
-                            </Button>
-
-                        </Link>
-                    </Container>
-                </Container>
-            </Container>
-        </Container>
-    </>;
+						<Container
+							className="p-4"
+							css={{
+								backgroundColor: "$surfaceOnSurface",
+								borderColor: "$border",
+							}}
+						>
+							<Link href={`/sweetshop/nft/${props.nft.id}`}>
+								<Button
+									fullWidth
+									appearance={"surface"}
+								>
+									View other options
+								</Button>
+							</Link>
+						</Container>
+					</Container>
+				</Container>
+			</Container>
+		</>
+	);
 };
 
 export default NFTPresentationComponent;

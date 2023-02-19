@@ -57,7 +57,7 @@ export const Button = styled("button", {
 			disabled: {
 				backgroundColor: "$elementOnSurface",
 				color: "$textOnSurface",
-				opacity: 0.6,
+				opacity: 0.8,
 			},
 			accent: {
 				backgroundColor: "$accentText",
