@@ -22,7 +22,7 @@ export default function UserProfile(props: {
 	const data = JSON.parse(props.data);
 	const {username} = data;
 	const {profile} = (session as any) ?? {profile: {}};
-	const nfts_data = JSON.parse(props.nfts);
+	const nfts_data = JSON.parse(props.nfts ?? "{}");
 
 	const {
 		gotoPage,

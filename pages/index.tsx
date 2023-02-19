@@ -27,11 +27,9 @@ import {
 	CaretRightIcon,
 	MixerVerticalIcon,
 } from "@radix-ui/react-icons";
-import Balancer from "react-wrap-balancer";
 import Image from "next/image";
 import {SEOHead} from "@packages/seo/page";
-import {useCallback, useEffect, useMemo, useRef, useState} from "react";
-import useEmblaCarousel from "embla-carousel-react";
+import {useMemo, useRef, useState} from "react";
 import {IFeatureProps, request} from "@lib/datocms";
 
 const getTrendingNFTs = async () => {
@@ -520,6 +518,7 @@ function FeaturedCarousel(props: {features: Array<IFeatureProps>}) {
 						<Image
 							src={feature.cover.responsiveImage.src}
 							sizes={feature.cover.responsiveImage.srcSet}
+							fill
 							alt={feature.displayName}
 							className="object-cover rounded-xl"
 						/>

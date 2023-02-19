@@ -37,6 +37,7 @@ const OptimizedImage = (props: OptimizedImageProps) => {
 			sizes={props.sizes}
 			style={{objectFit: props.objectFit}}
 			loading={"lazy"}
+			fill
 		/>
 	);
 };

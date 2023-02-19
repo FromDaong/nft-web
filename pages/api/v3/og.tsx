@@ -3,7 +3,7 @@ import {ImageResponse} from "@vercel/og";
 import {NextApiRequest} from "next";
 
 export const config = {
-	runtime: "experimental-edge",
+	runtime: "edge",
 };
 
 const default_image = (
