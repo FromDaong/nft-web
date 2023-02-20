@@ -12,7 +12,7 @@ export default async function handler(
 	const {data} = req.body;
 
 	if (!username) {
-		return returnWithError("No ID provided", 400, res);
+		return returnWithError("No username provided", 400, res);
 	}
 
 	await connectMongoDB();

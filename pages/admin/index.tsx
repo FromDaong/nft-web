@@ -49,7 +49,7 @@ function PendingCreators(props: {pending_creators}) {
 	const [loading, setLoading] = useState("");
 
 	const approve = useCallback(
-		(creatorAddress) => {
+		(creatorAddress, username) => {
 			if (!data) {
 				alert("Signer not found");
 				return;
@@ -62,7 +62,18 @@ function PendingCreators(props: {pending_creators}) {
 					from: address,
 					value: 0,
 				})
-				.then(router.reload)
+				.then(() =>
+					axios
+						.post(`${apiEndpoint}/creators/${username}/patch`, {
+							pending: false,
+							approved: true,
+						})
+						.then(router.reload)
+						.catch((err) => {
+							alert(err);
+							setLoading(null);
+						})
+				)
 				.catch((err) => {
 					alert(err);
 					setLoading(null);
@@ -95,7 +106,7 @@ function PendingCreators(props: {pending_creators}) {
 
 							<Container className="grid gap-2">
 								<Button
-									onClick={() => approve(creator.address)}
+									onClick={() => approve(creator.address, creator.username)}
 									appearance={
 										loading === creator.address ? "loading" : "action"
 									}

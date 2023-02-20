@@ -1,4 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import Guard from "@lib/guard";
 import Error404 from "@packages/error/404";
 import Error500 from "@packages/error/500";
 import RenderProfileNFTs from "@packages/post/profile/RenderProfileNFTs";
@@ -70,10 +71,12 @@ export const getServerSideProps = async (ctx) => {
 	const {username} = ctx.query;
 	const {p} = ctx.query;
 
+	const guardInstance = Guard.getInstance();
+
 	try {
 		const profile = await MongoModelProfile.findOne({username}).exec();
 
-		if (!profile) {
+		if (!guardInstance.exists(profile)) {
 			return {
 				props: {
 					notFound: true,
