@@ -104,7 +104,7 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 	);
 
 	return (
-		<Container className="flex flex-col gap-12 md:gap-16 lg:gap-24 py-12 px-4">
+		<Container className="flex flex-col gap-12 md:gap-16 lg:gap-24 py-12">
 			<SEOHead
 				title={"TreatDAO"}
 				description="TreatDAO is a Web3 project dedicated to creating opportunities and an amazing platform for adult content creators and collectors."
