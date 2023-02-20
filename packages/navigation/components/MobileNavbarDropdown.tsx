@@ -4,7 +4,6 @@ import {NavDropdownContainer} from "./DropdownContainer";
 import {
 	BoldLink,
 	ImportantText,
-	MutedText,
 	Text,
 } from "@packages/shared/components/Typography/Text";
 import {Container} from "@packages/shared/components/Container";
@@ -24,7 +23,6 @@ import {useUser} from "core/auth/useUser";
 import NewAvatar from "@packages/shared/components/AvatarNew";
 import {useRouter} from "next/router";
 import {useEffect} from "react";
-import {ImageIcon} from "@radix-ui/react-icons";
 
 const ExploreDropdownLinks = [
 	{
@@ -37,7 +35,7 @@ const ExploreDropdownLinks = [
 	},
 	{
 		label: "Magazine",
-		link: "https://treatdao.org/magazine",
+		link: "/magazine",
 	},
 	{
 		label: "Farm",

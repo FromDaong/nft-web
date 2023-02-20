@@ -9,7 +9,7 @@ import NavbarSearchDropdown from "../search/NavbarSearchDropdown";
 
 import {styled} from "@styles/theme";
 import {BoldLink} from "@packages/shared/components/Typography/Text";
-import {BellIcon, ChatIcon, PlusCircleIcon} from "@heroicons/react/outline";
+import {PlusCircleIcon} from "@heroicons/react/outline";
 import {Container} from "@packages/shared/components/Container";
 import MobileNavbarDropdown from "./components/MobileNavbarDropdown";
 import {Button} from "@packages/shared/components/Button";
@@ -68,7 +68,7 @@ export default function Navbar() {
 								</Link>
 							</div>
 							<div className="items-center hidden gap-4 md:flex">
-								<Link href="https://treatdao.org/magazine">
+								<Link href="/magazine">
 									<a>
 										<BoldLink>Magazine</BoldLink>
 									</a>

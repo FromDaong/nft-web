@@ -64,7 +64,7 @@ function PendingCreators(props: {pending_creators}) {
 				})
 				.then(() =>
 					axios
-						.post(`${apiEndpoint}/creators/${username}/patch`, {
+						.post(`${apiEndpoint}/creator/${username}/patch`, {
 							pending: false,
 							approved: true,
 						})

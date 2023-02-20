@@ -14,13 +14,13 @@ export function request({query, variables, preview}: any) {
 }
 
 export interface IMagazineProps {
-	cover: {
-		responsiveImage: ResponsiveImageType;
-	};
-	title: string;
-	publishDate: string | number | Date;
-	description: any;
-	href: string;
+    cover: {
+        responsiveImage: ResponsiveImageType;
+    };
+    title: string;
+    publishDate: string | number | Date;
+    description: any;
+    href: string;
 }
 
 export interface IFeatureProps {
