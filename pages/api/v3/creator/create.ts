@@ -89,7 +89,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 			pending: true,
 			approved: false,
 			subscription: {
-				cost: subscription_price,
+				cost: Number(0.01),
 				description: subscription_description,
 			},
 			subscriptions_enabled: false,

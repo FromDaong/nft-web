@@ -64,7 +64,10 @@ export default function Upgrade() {
 
 	const handleVerificationFinish = (identityAccessKey) => {
 		// Post to DB and toggle profile status from "general" to "pending"
-		setIdentityAccessKey(identityAccessKey ?? "key");
+		if (!identityAccessKey) {
+			setStage("error");
+		}
+		setIdentityAccessKey(identityAccessKey);
 	};
 
 	useEffect(() => {
