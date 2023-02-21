@@ -27,7 +27,8 @@ export const Tab = ({
 	count?: number;
 }) => {
 	const {asPath} = useRouter();
-	const isActive = asPath === href;
+	const withoutParams = asPath.split("?")[0];
+	const isActive = href === withoutParams;
 
 	return (
 		<Container
