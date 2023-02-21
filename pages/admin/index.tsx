@@ -94,7 +94,8 @@ function PendingCreators(props: {pending_creators}) {
 				<Container className="flex flex-col gap-4">
 					{creators.map((creator) => (
 						<Container
-							className="col-span-1 p-4 flex justify-between w-full gap-4 bg-gray-100 rounded-xl shadow"
+							css={{background: "$surface"}}
+							className="col-span-1 p-4 flex justify-between w-full gap-4 rounded-xl shadow"
 							key={creator._id}
 						>
 							<Container className="flex flex-col">
@@ -179,7 +180,8 @@ function ManageTeamMembers(props: {team_members}) {
 					<Container className="flex flex-col gap-4">
 						{props.team_members.map((profile) => (
 							<Container
-								className="col-span-1 p-4 flex justify-between w-full gap-4 bg-gray-100 rounded-xl shadow"
+								css={{background: "$surface"}}
+								className="col-span-1 p-4 flex justify-between w-full gap-4 rounded-xl shadow"
 								key={profile._id}
 							>
 								<Container className="flex flex-col">
