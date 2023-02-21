@@ -7,12 +7,7 @@ import {protectedAPIRoute} from "server/utils";
 async function handler(req: NextApiRequest, res: NextApiResponse) {
 	await connectMongoDB();
 	const {session} = req;
-	const {
-		subscription_price,
-		subscription_description,
-		email,
-		identity_access_key,
-	} = req.body;
+	const {email, identity_access_key} = req.body;
 
 	if (!email) {
 		return returnWithError(
@@ -23,25 +18,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 			res
 		);
 	}
-	if (!subscription_price) {
-		return returnWithError(
-			{
-				subscription_cost: "Please enter a valid subscription cost.",
-			},
-			401,
-			res
-		);
-	}
-	if (!subscription_description) {
-		return returnWithError(
-			{
-				subscription_description:
-					"Please enter a valid subscription description.",
-			},
-			401,
-			res
-		);
-	}
+
 	if (!identity_access_key) {
 		return returnWithError(
 			{
@@ -90,7 +67,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 			approved: false,
 			subscription: {
 				cost: Number(0.01),
-				description: subscription_description,
+				description: "Temporary description",
 			},
 			subscriptions_enabled: false,
 			identity_access_key,
