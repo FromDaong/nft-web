@@ -9,7 +9,7 @@ export default async function handler(
 	res: NextApiResponse
 ) {
 	const {username} = req.query;
-	const {data} = req.body;
+	const data = req.body;
 
 	if (!username) {
 		return returnWithError("No username provided", 400, res);
@@ -33,6 +33,7 @@ export default async function handler(
 
 		return returnWithSuccess(creator, res);
 	} catch (err) {
+		console.log({err});
 		return returnWithError(err, 400, res);
 	}
 }
