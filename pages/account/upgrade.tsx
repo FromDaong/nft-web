@@ -225,19 +225,17 @@ export default function Upgrade() {
 									<Container className="flex flex-col w-full gap-2 items-center text-center">
 										<Text>
 											<ImportantText>
-												Your creator application has been submitted.
+												Congratulations. You are now a creator
 											</ImportantText>
 										</Text>
 										<Text>
-											We will notify you as soon as your creator profile has
-											been approved
+											Welcome to the TreatDAO creator community. To celebrate
+											this, you can start by creating a new NFT.
 										</Text>
 									</Container>
-									<Link href={`/${profile.username}`}>
-										<a>
-											<Button appearance={"surface"}>Go to your profile</Button>
-										</a>
-									</Link>
+									<a href={`/create`}>
+										<Button appearance={"surface"}>Create NFT</Button>
+									</a>
 								</Container>
 							)}
 

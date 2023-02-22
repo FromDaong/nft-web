@@ -10,7 +10,7 @@ import {contractAddresses} from "@packages/treat/lib/constants";
 const TreatMinterContract = () => {
 	const provider = new ethers.providers.JsonRpcProvider(
 		process.env.NEXT_PUBLIC_RPC_NODE_URL,
-		1
+		56
 	);
 	const signer = new ethers.Wallet(
 		process.env.WHITELIST_ADMIN_PRIVATE_KEY,
@@ -96,8 +96,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 				current: false,
 			},
 			user: profile.user,
-			pending: true,
-			approved: false,
+			pending: false,
+			approved: true,
 			subscription: {
 				cost: Number(0.01),
 				description: "Temporary description",
