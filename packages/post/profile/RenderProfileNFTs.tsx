@@ -50,7 +50,7 @@ const RenderProfileNFTs = ({
 
 					{posts.length === 0 && !isFetching && !error && (
 						<Container className="flex flex-col items-center col-span-4 gap-2 py-12 text-center">
-							<Heading size={"sm"}>Eish, we found nothing.</Heading>
+							<Heading size={"sm"}>Eish, no nfts found.</Heading>
 							<Text>The query returned no results from the server.</Text>
 						</Container>
 					)}
@@ -63,7 +63,7 @@ const RenderProfileNFTs = ({
 				</Container>
 			)}
 			<Container className="flex flex-col gap-12">
-				{posts && (
+				{posts && posts?.length > 0 && (
 					<>
 						<Pagination
 							page={page}
