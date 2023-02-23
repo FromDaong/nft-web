@@ -31,7 +31,7 @@ export const FrostyBackgroundContainer = styled(Container, {
 });
 
 export const TritPost = (props: TritPostProps) => {
-	const {ref, inView} = useInView();
+	const {ref} = useInView();
 	const {liked, likeNFT, isMine, isProtected, loadingSigner, remainingNfts} =
 		useTritNFTUtils(props);
 
@@ -39,14 +39,8 @@ export const TritPost = (props: TritPostProps) => {
 
 	const soldOut = props.collection?.minted === props.max_supply;
 
-	// T-28 check if user owns this nft and get the units owned
-
-	// T-42 Add hover card with nft details including, original cretor listing tag, current owner, price, units owned, etc
-
-	// T-43 Check if seller === creator , determine if resale or original listing
 	const ipfs_parts = props.image?.ipfs.split("/");
 	const ipfs_id = ipfs_parts[ipfs_parts.length - 1];
-
 	const blurred_image = `${ipfs_id}?blurhash=true`;
 	const sd_image = `${ipfs_id}?`;
 
@@ -75,7 +69,7 @@ export const TritPost = (props: TritPostProps) => {
 						: ""
 				}`}
 			>
-				<a className="flex flex-col w-full relative overflow-hidden">
+				<a className="relative flex flex-col w-full overflow-hidden">
 					{!loadingSigner && remainingNfts === 0 && !props.hideSoldOut && (
 						<Text
 							css={{
@@ -85,7 +79,7 @@ export const TritPost = (props: TritPostProps) => {
 								top: "16px",
 								left: "-24px",
 							}}
-							className="absolute z-10 h-fit w-fit px-8"
+							className="absolute z-10 px-8 h-fit w-fit"
 						>
 							<SmallText>
 								<ImportantText>Sold Out</ImportantText>

@@ -58,7 +58,6 @@ export default function UserProfile(props: {
 			setSort={setSort}
 			setSearchText={setSearchText}
 			hideSeller
-			hidePrice
 			page={nfts_data.page}
 			hasNextPage={nfts_data.page < nfts_data.totalPages}
 			totalPages={nfts_data.totalPages}

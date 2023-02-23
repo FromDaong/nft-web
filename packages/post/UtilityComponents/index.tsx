@@ -3,6 +3,7 @@ import {Container} from "@packages/shared/components/Container";
 import {
 	ImportantText,
 	MutedText,
+	SmallText,
 } from "@packages/shared/components/Typography/Text";
 import Link from "next/link";
 import UserAvatar from "core/auth/components/Avatar";
@@ -28,10 +29,27 @@ export const ActionSection = (props) => {
 					{props.count && <Text>{props.count} editions available</Text>}
 					{!props.noPrice && (
 						<Container className="flex items-baseline gap-1 mt-2">
-							<Heading size={"xss"}>
-								{props.price.value ?? "0.0"} {props.price.currency}
-							</Heading>
-							<MutedText>asking price</MutedText>
+							{props.melon_nft && (
+								<Container
+									css={{
+										backgroundColor: "$teal4",
+										padding: "4px 12px",
+										borderRadius: "999px",
+									}}
+								>
+									<SmallText css={{color: "$teal12"}}>
+										<ImportantText>Melon 🍈</ImportantText>
+									</SmallText>
+								</Container>
+							)}
+							{!props.melon_nft && (
+								<>
+									<Heading size={"xss"}>
+										{props.price.value ?? "0.0"} {props.price.currency}
+									</Heading>
+									<MutedText>asking price</MutedText>
+								</>
+							)}
 						</Container>
 					)}
 				</Container>
