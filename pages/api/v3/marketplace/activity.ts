@@ -1,6 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import {returnWithSuccess} from "@db/engine/utils";
 import {connectMongoDB} from "server/helpers/core";
+import {MongoModelNFT} from "server/helpers/models";
 import NFTEvent from "server/helpers/models/posts/activity";
 
 export default async function handler(req, res) {
@@ -16,19 +17,7 @@ export default async function handler(req, res) {
 			price: -1,
 		},
 		"3": {
-			"nft.listedDate": -1,
-		},
-	};
-
-	const groupSortMap = {
-		"1": {
-			"first.price": 1,
-		},
-		"2": {
-			"first.price": -1,
-		},
-		"3": {
-			"first.nft.listedDate": -1,
+			listedDate: -1,
 		},
 	};
 
@@ -50,16 +39,7 @@ export default async function handler(req, res) {
 		},
 	];
 
-	const nftsAggregate = NFTEvent.aggregate([
-		{
-			$lookup: {
-				from: "marketplacenfts",
-				localField: "id",
-				foreignField: "id",
-				as: "nft",
-				pipeline: q ? pipeline : [],
-			},
-		},
+	const nftsAggregate = MongoModelNFT.aggregate([
 		{
 			$lookup: {
 				from: "profiles",
@@ -71,7 +51,7 @@ export default async function handler(req, res) {
 		{
 			$lookup: {
 				from: "creators",
-				localField: "nft.creator",
+				localField: "creator",
 				foreignField: "_id",
 				as: "creator",
 			},
@@ -88,10 +68,10 @@ export default async function handler(req, res) {
 			$match: {
 				$or: [
 					{
-						"nft.subscription_nft": false,
+						subscription_nft: false,
 					},
 					{
-						"nft.subscription_nft": {
+						subscription_nft: {
 							$exists: false,
 						},
 					},
@@ -102,10 +82,10 @@ export default async function handler(req, res) {
 			$match: {
 				$or: [
 					{
-						"nft.totm_nft": false,
+						melon_nft: false,
 					},
 					{
-						"nft.totm_nft": {
+						melon_nft: {
 							$exists: false,
 						},
 					},
@@ -115,7 +95,7 @@ export default async function handler(req, res) {
 		{
 			$match: {
 				id: {
-					$gte: 300,
+					$gte: 96,
 				},
 			},
 		},
@@ -135,11 +115,6 @@ export default async function handler(req, res) {
 			},
 		},
 		{
-			$unwind: {
-				path: "$nft",
-			},
-		},
-		{
 			$sort: {
 				...(sort && sortMap[sort]
 					? sortMap[sort]
@@ -148,29 +123,12 @@ export default async function handler(req, res) {
 					  }),
 			},
 		},
-		{
-			$group: {
-				_id: "$id",
-				count: {$sum: 1},
-				first: {$first: "$$ROOT"},
-			},
-		},
-		{
-			$sort: {
-				...(sort && groupSortMap[sort]
-					? groupSortMap[sort]
-					: {
-							price: 1,
-					  }),
-			},
-		},
 	]);
 
 	// @ts-ignore
-	const nfts = await NFTEvent.aggregatePaginate(nftsAggregate, options);
+	const nfts = await MongoModelNFT.aggregatePaginate(nftsAggregate, options);
 	nfts.docs = nfts.docs.map((nft) => ({
-		...nft.first,
-		count: nft.count,
+		...nft,
 	}));
 	return returnWithSuccess(nfts, res);
 }

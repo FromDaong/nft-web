@@ -10,6 +10,7 @@ const BackgroundImage = ({url, caption, isProtected}) => {
 				src={url}
 				sizes="100vw"
 				fill
+				className="rounded-xl"
 			/>
 		);
 	}
@@ -22,6 +23,7 @@ const BackgroundImage = ({url, caption, isProtected}) => {
 				src={`${url}`}
 				sizes="100vw"
 				fill
+				className="rounded-xl"
 			/>
 		</>
 	);

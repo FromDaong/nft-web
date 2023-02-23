@@ -87,12 +87,9 @@ export const TritPost = (props: TritPostProps) => {
 						</Text>
 					)}
 					<Container
-						className="relative flex overflow-hidden"
+						className="relative flex overflow-hidden rounded-xl"
 						css={{
-							backgroundColor: "$textContrast",
 							height: "256px",
-							borderRadius: "12px",
-							backdropFilter: isProtected ? "blur(10px)" : "none",
 						}}
 					>
 						<PostMediaContent

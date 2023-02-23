@@ -42,7 +42,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		})
 	);
 
-	return returnWithSuccess(formatOpenOrders(openOrders), res);
+	return returnWithSuccess(
+		formatOpenOrders(openOrders.flat().filter((order) => !!order)),
+		res
+	);
 };
 
 export default handler;

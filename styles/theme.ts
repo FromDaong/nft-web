@@ -164,7 +164,7 @@ export const darkTheme = createTheme("dark", {
 		accentCallToAction: "#9b22d3",
 		totmPurple: "#9c24ff",
 		buttonSurface: "$surface",
-		textOnSurface: "$text",
+		textOnSurface: "$textContrast",
 		inputSurface: "$surfaceOnSurface",
 
 		shadow:

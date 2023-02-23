@@ -32,8 +32,6 @@ export default function NFTS({sort, q, nfts, error}) {
 		setSearchText,
 	} = usePaginatedPage(posts, sort, q);
 
-	console.log({error});
-
 	return (
 		<ApplicationLayout>
 			<ApplicationFrame>
@@ -139,18 +137,18 @@ export const getServerSideProps = async (ctx) => {
 
 		data.docs = data.docs.map((post) =>
 			legacy_nft_to_new({
-				...post,
+				...post.nft,
 				price: post.price,
-				_id: post._id,
+				_id: post.nft._id,
 				creator: {
 					...post.creator,
 					profile: post.creator_profile,
 				},
 				seller: {
-					address: post.creator.address,
-					profile_pic: post.creator.profile_pic,
-					username: post.creator.username,
-					display_name: post.creator.display_name,
+					address: post.seller.address,
+					profile_pic: post.seller.profile_pic,
+					username: post.seller.username,
+					display_name: post.seller.display_name,
 					event_id: post._id,
 				},
 			})
@@ -164,8 +162,6 @@ export const getServerSideProps = async (ctx) => {
 			},
 		};
 	} catch (err) {
-		console.log(err);
-
 		return {
 			props: {
 				sort: sort ?? 3,
