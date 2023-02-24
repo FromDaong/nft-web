@@ -1,5 +1,6 @@
 import {returnWithSuccess} from "@db/engine/utils";
 import {connectMongoDB} from "server/helpers/core";
+import {MongoModelNFT} from "server/helpers/models";
 import NFTEvent from "server/helpers/models/posts/activity";
 
 export default async function handler(req, res) {
@@ -13,18 +14,7 @@ export default async function handler(req, res) {
 		limit: 24,
 	};
 
-	console.log({tag});
-
-	const nftsAggregate = NFTEvent.aggregate([
-		{
-			$lookup: {
-				from: "marketplacenfts",
-				localField: "id",
-				foreignField: "id",
-				as: "nft",
-			},
-		},
-
+	const nftsAggregate = MongoModelNFT.aggregate([
 		{
 			$sort: {
 				createdAt: -1,
@@ -55,13 +45,8 @@ export default async function handler(req, res) {
 			},
 		},
 		{
-			$unwind: {
-				path: "$nft",
-			},
-		},
-		{
 			$match: {
-				"nft.tags": tag,
+				tags: tag,
 			},
 		},
 		{

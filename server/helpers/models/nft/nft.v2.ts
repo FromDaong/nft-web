@@ -95,9 +95,6 @@ const V2NftSchema = new mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "NFTCollection",
 		},
-		listedBy: {
-			type: String,
-		},
 		views: [
 			{
 				type: String,
@@ -120,6 +117,6 @@ const V2NftSchema = new mongoose.Schema(
 V2NftSchema.plugin(paginate);
 V2NftSchema.plugin(aggregatePaginate);
 
-const V2NFTModel = createMongoDBModel("V2Nft", V2NftSchema);
+const V2NFTModel = createMongoDBModel("V2NFT", V2NftSchema);
 
 export default V2NFTModel;

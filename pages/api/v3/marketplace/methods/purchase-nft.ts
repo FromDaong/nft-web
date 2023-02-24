@@ -7,7 +7,6 @@ import {
 	MongoModelNFT,
 	MongoModelProfile,
 	MongoModelTimelineEvent,
-	MongoModelTransaction,
 } from "server/helpers/models";
 import {protectedAPIRoute} from "server/utils";
 

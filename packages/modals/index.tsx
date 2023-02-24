@@ -63,9 +63,7 @@ export const Modal = ({
 
 			{
 				//@ts-ignore
-				<DialogContent css={{width: compact ? "fit-content" : "auto"}}>
-					{children}
-				</DialogContent>
+				<DialogContent css={{width: "auto"}}>{children}</DialogContent>
 			}
 		</Dialog>
 	);

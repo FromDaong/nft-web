@@ -7,7 +7,24 @@ const NFTSchema = new mongoose.Schema(
 	{
 		id: {
 			type: Number,
-			required: [true, "Please add an NFT ID"],
+			required: true,
+		},
+		seller: {
+			type: String,
+			required: true,
+		},
+		creator: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Creator",
+			required: true,
+		},
+		price: {
+			type: Number,
+			required: true,
+			default: 0.0,
+		},
+		listDate: {
+			type: Number,
 		},
 		tx_hash: {
 			type: String,
@@ -19,9 +36,6 @@ const NFTSchema = new mongoose.Schema(
 		description: {
 			type: String,
 			required: [true, "Please add an NFT description"],
-		},
-		price: {
-			type: Number,
 		},
 		external_url: {
 			type: String,
@@ -77,19 +91,16 @@ const NFTSchema = new mongoose.Schema(
 				ref: "Profile",
 			},
 		],
-		creator: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "Creator",
-			required: true,
-		},
 		nftCollection: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "NFTCollection",
 		},
-		listedBy: {
-			type: String,
-		},
 		views: [
+			{
+				type: String,
+			},
+		],
+		purchases: [
 			{
 				type: String,
 			},
@@ -106,6 +117,6 @@ const NFTSchema = new mongoose.Schema(
 NFTSchema.plugin(paginate);
 NFTSchema.plugin(aggregatePaginate);
 
-const NFTModel = createMongoDBModel("MarketplaceNFT", NFTSchema);
+const NFTModel = createMongoDBModel("V2NFT", NFTSchema);
 
 export default NFTModel;

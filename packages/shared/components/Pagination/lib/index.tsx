@@ -109,7 +109,6 @@ export const usePaginatedPage = (
 
 	const setSort = (s) => {
 		setSortBy(s);
-		console.log({s});
 		router.push({
 			...(href ? {href: "/[username]"} : {}),
 			query: {

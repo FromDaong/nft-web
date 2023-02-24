@@ -31,7 +31,7 @@ export const FrostyBackgroundContainer = styled(Container, {
 });
 
 export const TritPost = (props: TritPostProps) => {
-	const {ref, inView} = useInView();
+	const {ref} = useInView();
 	const {liked, likeNFT, isMine, isProtected, loadingSigner, remainingNfts} =
 		useTritNFTUtils(props);
 
@@ -39,14 +39,8 @@ export const TritPost = (props: TritPostProps) => {
 
 	const soldOut = props.collection?.minted === props.max_supply;
 
-	// T-28 check if user owns this nft and get the units owned
-
-	// T-42 Add hover card with nft details including, original cretor listing tag, current owner, price, units owned, etc
-
-	// T-43 Check if seller === creator , determine if resale or original listing
 	const ipfs_parts = props.image?.ipfs.split("/");
 	const ipfs_id = ipfs_parts[ipfs_parts.length - 1];
-
 	const blurred_image = `${ipfs_id}?blurhash=true`;
 	const sd_image = `${ipfs_id}?`;
 
@@ -60,22 +54,22 @@ export const TritPost = (props: TritPostProps) => {
 	}, [props.protected, isMine]);
 
 	return (
-		<Container
-			ref={ref}
-			className={`grid grid-cols-1 gap-4 py-4 place-items-center w-full`}
-			css={{
-				borderColor: "$subtleBorder",
-				borderRadius: "12px",
-			}}
+		<Link
+			href={`/post/nft/${props._id}${
+				props.seller
+					? `?seller=${props.seller.address}&eid=${props.seller.event_id}`
+					: ""
+			}`}
 		>
-			<Link
-				href={`/post/nft/${props._id}${
-					props.seller
-						? `?seller=${props.seller.address}&eid=${props.seller.event_id}`
-						: ""
-				}`}
-			>
-				<a className="flex flex-col w-full relative overflow-hidden">
+			<a className="relative flex flex-col w-full overflow-hidden">
+				<Container
+					ref={ref}
+					className={`grid grid-cols-1 gap-4 py-4 place-items-center w-full`}
+					css={{
+						borderColor: "$subtleBorder",
+						borderRadius: "12px",
+					}}
+				>
 					{!loadingSigner && remainingNfts === 0 && !props.hideSoldOut && (
 						<Text
 							css={{
@@ -85,7 +79,7 @@ export const TritPost = (props: TritPostProps) => {
 								top: "16px",
 								left: "-24px",
 							}}
-							className="absolute z-10 h-fit w-fit px-8"
+							className="absolute z-10 px-8 h-fit w-fit"
 						>
 							<SmallText>
 								<ImportantText>Sold Out</ImportantText>
@@ -93,12 +87,9 @@ export const TritPost = (props: TritPostProps) => {
 						</Text>
 					)}
 					<Container
-						className="relative flex overflow-hidden"
+						className="relative w-full flex overflow-hidden rounded-xl"
 						css={{
-							backgroundColor: "$textContrast",
 							height: "256px",
-							borderRadius: "12px",
-							backdropFilter: isProtected ? "blur(10px)" : "none",
 						}}
 					>
 						<PostMediaContent
@@ -167,22 +158,22 @@ export const TritPost = (props: TritPostProps) => {
 							</Container>
 						</Container>
 					</Container>
-				</a>
-			</Link>
-			<Container className="flex flex-col w-full transition-transform duration-150 hover:scale-95">
-				<ActionSection
-					{...props}
-					isMine={isMine}
-					liked={liked}
-					likeNFT={likeNFT}
-					unlikeNFT={likeNFT}
-					creator={props.author.username}
-					toggleImageProtection={() => null}
-					isProtected={isProtected}
-					hideSeller={props.hideSeller}
-					count={props.count}
-				/>
-			</Container>
-		</Container>
+					<Container className="flex flex-col w-full">
+						<ActionSection
+							{...props}
+							isMine={isMine}
+							liked={liked}
+							likeNFT={likeNFT}
+							unlikeNFT={likeNFT}
+							creator={props.author.username}
+							toggleImageProtection={() => null}
+							isProtected={isProtected}
+							hideSeller={props.hideSeller}
+							count={props.count}
+						/>
+					</Container>
+				</Container>
+			</a>
+		</Link>
 	);
 };

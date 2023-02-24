@@ -5,10 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="13ddaae3-483e-427b-8a07-e5e133fac976" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/packages/feed/components/SuggestedCreatorCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/feed/components/SuggestedCreatorCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/navigation/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/navigation/Navbar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/shared/components/Pagination/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/shared/components/Pagination/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/sweetshop/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/sweetshop/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/logger.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/logger.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +52,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/pagak/work/cypress-metamask-v2",
+    "last_opened_file_path": "C:/Users/pagak/contractor/frontend",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
@@ -99,6 +97,7 @@
       <workItem from="1671834274293" duration="595000" />
       <workItem from="1672276908555" duration="4185000" />
       <workItem from="1674057364697" duration="596000" />
+      <workItem from="1677149982695" duration="611000" />
     </task>
     <servers />
   </component>

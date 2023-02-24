@@ -3,6 +3,7 @@ import Guard from "@lib/guard";
 import Error404 from "@packages/error/404";
 import Error500 from "@packages/error/500";
 import RenderProfileNFTs from "@packages/post/profile/RenderProfileNFTs";
+import {TritPost} from "@packages/post/TritPost";
 import {usePaginatedPage} from "@packages/shared/components/Pagination/lib";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
@@ -18,10 +19,10 @@ export default function UserProfile(props: {
 	p: number;
 }) {
 	const {data: session} = useSession();
-	const data = props.data ? JSON.parse(props.data) : {};
+	const data = props.data ? JSON.parse(props.data ?? "{}") : {};
 	const {username} = data;
 	const {profile} = (session as any) ?? {profile: {}};
-	const nfts_data = JSON.parse(props.nfts);
+	const nfts_data = JSON.parse(props.nfts ?? "{}");
 
 	const {
 		gotoPage,
@@ -58,10 +59,10 @@ export default function UserProfile(props: {
 			setSort={setSort}
 			setSearchText={setSearchText}
 			hideSeller
-			hidePrice
 			page={nfts_data.page}
 			hasNextPage={nfts_data.page < nfts_data.totalPages}
 			totalPages={nfts_data.totalPages}
+			Component={TritPost}
 		/>
 	);
 }

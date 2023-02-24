@@ -1,3 +1,5 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
+
 import {returnWithSuccess} from "@db/engine/utils";
 import {
 	treatMarketplaceContract,
@@ -6,6 +8,8 @@ import {
 import {formatOpenOrders} from "@utils/chain-methods";
 import {NextApiResponse} from "next";
 import {NextApiRequest} from "next";
+import {connectMongoDB} from "server/helpers/core";
+import {MongoModelNFT} from "server/helpers/models";
 
 const getMinMaxArray = (num) => {
 	const arr = [];
@@ -19,6 +23,22 @@ const getMinMaxArray = (num) => {
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+	await connectMongoDB();
+
+	const {page, q, sort} = req.query;
+
+	const sortMap = {
+		"1": {
+			price: 1,
+		},
+		"2": {
+			price: -1,
+		},
+		"3": {
+			listedDate: -1,
+		},
+	};
+
 	const maxId = await treatMarketplaceContract.maxTokenId();
 	const minMax = getMinMaxArray(maxId.toNumber());
 
@@ -42,10 +62,47 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		})
 	);
 
-	return returnWithSuccess(
-		formatOpenOrders(openOrders.flat().filter((order) => !!order)),
-		res
+	const orderIds = formatOpenOrders(
+		openOrders.flat().filter((order) => !!order)
 	);
+
+	const aggregate = MongoModelNFT.aggregate([
+		{
+			$match: {
+				id: {$in: orderIds.map((order) => order.nftId)},
+			},
+		},
+		{
+			$sort: {
+				...(sort && sortMap[sort as string]
+					? sortMap[sort as string]
+					: {
+							price: -1,
+					  }),
+			},
+		},
+	]);
+
+	const options = {
+		page: page ?? 1,
+		limit: 24,
+		collation: {
+			locale: "en",
+		},
+	};
+
+	// @ts-ignore
+	const nfts = await MongoModelNFT.aggregatePaginate(aggregate, options);
+
+	nfts.docs = nfts.docs.map((doc) => {
+		const openOrder = orderIds.find((order) => order.nftId === doc.id);
+		return {
+			...doc,
+			openOrder,
+		};
+	});
+
+	return returnWithSuccess(nfts, res);
 };
 
 export default handler;

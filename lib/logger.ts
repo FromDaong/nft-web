@@ -5,26 +5,11 @@ export default class Logger {
 	}
 
 	private generateDate(): number {
-		switch (this.config.date_format) {
-			case "JS":
-				return Date.now();
-			case "UNIX":
-				return Date.now() / 1000;
-			default:
-				return Date.now() / 1000;
-		}
+		return this.config.date_format === "JS" ? Date.now() : Date.now() / 1000;
 	}
 
 	private serialize(data: any): string {
-		if (typeof data === "string") return data;
-		let serialized: string;
-		try {
-			serialized = JSON.stringify(data);
-		} catch (err) {
-			serialized = `${data}`;
-		}
-
-		return serialized;
+		return typeof data === "string" ? data : JSON.stringify(data);
 	}
 
 	static generateID(seed = 10) {
@@ -32,54 +17,47 @@ export default class Logger {
 	}
 
 	private generateLogEvent(data: {level: string; content: string}) {
-		const event = {
+		return {
 			content: this.serialize(data.content),
 			timestamp: this.generateDate(),
 			id: Logger.generateID(10),
 			level: data.level,
 		};
-
-		return event;
 	}
 
 	log(content: any, level = "info") {
-		const event = this.generateLogEvent({level, content});
-		console.info(event);
+		console.info(this.generateLogEvent({level, content}));
 	}
 
 	success(content) {
-		const event = this.generateLogEvent({level: "success", content});
-		console.info(event);
+		console.info(this.generateLogEvent({level: "success", content}));
 	}
 
 	info(content) {
-		const event = this.generateLogEvent({level: "info", content});
-		console.info(event);
+		console.info(this.generateLogEvent({level: "info", content}));
 	}
 
 	warn(content) {
-		const event = this.generateLogEvent({level: "warn", content});
-		console.warn(event);
+		console.warn(this.generateLogEvent({level: "warn", content}));
 	}
 
 	debug(content) {
-		const event = this.generateLogEvent({level: "debug", content});
-		console.debug(event);
+		console.debug(this.generateLogEvent({level: "debug", content}));
 	}
 
 	fatal(content) {
-		const event = this.generateLogEvent({level: "fatal", content});
-		console.error(event);
+		console.error(this.generateLogEvent({level: "fatal", content}));
 	}
 
 	trace(content) {
-		const event = this.generateLogEvent({
-			level: "fatal",
-			content: `An error occured, here is the stack trace.\n\n${this.serialize(
-				content
-			)}`,
-		});
-		console.trace(event);
+		console.trace(
+			this.generateLogEvent({
+				level: "fatal",
+				content: `An error occured, here is the stack trace.\n\n${this.serialize(
+					content
+				)}`,
+			})
+		);
 	}
 
 	errorOccured(content) {
