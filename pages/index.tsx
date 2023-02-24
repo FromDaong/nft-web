@@ -324,7 +324,7 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 					</Container>
 					<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4">
 						{!trendingCreatorError && !trendingCreatorsLoading
-							? trendingCreators?.slice(0, 4).map((creator) => (
+							? trendingCreators?.slice(0, 8).map((creator) => (
 									<SuggestedCreatorCard
 										key={creator._id}
 										username={creator.username}

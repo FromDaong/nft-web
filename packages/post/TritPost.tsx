@@ -54,13 +54,7 @@ export const TritPost = (props: TritPostProps) => {
 	}, [props.protected, isMine]);
 
 	return (
-		<Link
-			href={`/post/nft/${props._id}${
-				props.seller
-					? `?seller=${props.seller.address}&eid=${props.seller.event_id}`
-					: ""
-			}`}
-		>
+		<Link href={`/post/nft/${props._id}`}>
 			<a className="relative flex flex-col w-full overflow-hidden">
 				<Container
 					ref={ref}
@@ -70,28 +64,28 @@ export const TritPost = (props: TritPostProps) => {
 						borderRadius: "12px",
 					}}
 				>
-					{!loadingSigner && remainingNfts === 0 && !props.hideSoldOut && (
-						<Text
-							css={{
-								color: "$surface",
-								backgroundColor: "$red9",
-								transform: "rotate(-45deg)",
-								top: "16px",
-								left: "-24px",
-							}}
-							className="absolute z-10 px-8 h-fit w-fit"
-						>
-							<SmallText>
-								<ImportantText>Sold Out</ImportantText>
-							</SmallText>
-						</Text>
-					)}
 					<Container
 						className="relative w-full flex overflow-hidden rounded-xl"
 						css={{
 							height: "256px",
 						}}
 					>
+						{!loadingSigner && remainingNfts === 0 && !props.hideSoldOut && (
+							<Text
+								css={{
+									color: "$surface",
+									backgroundColor: "$red9",
+									transform: "rotate(-45deg)",
+									top: "16px",
+									left: "-24px",
+								}}
+								className="absolute z-10 px-8 h-fit w-fit"
+							>
+								<SmallText>
+									<ImportantText>Sold Out</ImportantText>
+								</SmallText>
+							</Text>
+						)}
 						<PostMediaContent
 							imageUrl={imageURL}
 							blurhash={props.blurhash}

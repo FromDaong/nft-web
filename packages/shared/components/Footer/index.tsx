@@ -153,7 +153,7 @@ export default function Footer() {
 						>
 							<BoldLink css={{color: "$text"}}>Merch Store</BoldLink>
 						</ListLinkItem>
-						<ListLinkItem href="/about">
+						<ListLinkItem href="https://treatdao.com">
 							<BoldLink css={{color: "$text"}}>About</BoldLink>
 						</ListLinkItem>
 						<ListLinkItem href="/privacy">
