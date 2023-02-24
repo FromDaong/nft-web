@@ -103,7 +103,7 @@ export const usePaginatedPage = (
 				},
 			},
 			undefined,
-			{unstable_skipClientCache: true}
+			{shallow: true}
 		);
 	}, [sortBy]);
 

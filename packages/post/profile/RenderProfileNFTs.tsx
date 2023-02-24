@@ -5,8 +5,9 @@ import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import DynamicSkeleton from "@packages/skeleton";
 import {TritPostSkeleton} from "@packages/skeleton/config";
 import ProfileLayout from "core/components/layouts/ProfileLayout";
+import {ReactNode} from "react";
 import {TritPost} from "../TritPost";
-import {TritPostProps} from "../types";
+import {TritPostProps, TritResalePostProps} from "../types";
 
 const RenderProfileNFTs = ({
 	data,
@@ -24,11 +25,15 @@ const RenderProfileNFTs = ({
 	hidePrice,
 	hasNextPage,
 	hideSoldOut,
+	Component,
 }: {
 	[key: string]: any;
 	hideSeller?: boolean;
 	hidePrice?: boolean;
 	hideSoldOut?: boolean;
+	Component:
+		| ((props: TritResalePostProps) => JSX.Element)
+		| ((props: TritPostProps) => JSX.Element);
 }) => {
 	// T-25 implement a reasonable empty state design
 
@@ -78,7 +83,7 @@ const RenderProfileNFTs = ({
 						/>
 						<Container className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 							{posts.map((post: TritPostProps) => (
-								<TritPost
+								<Component
 									key={post.id}
 									{...post}
 									noPrice={hidePrice}

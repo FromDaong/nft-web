@@ -2,6 +2,7 @@
 import Error404 from "@packages/error/404";
 import Error500 from "@packages/error/500";
 import RenderProfileNFTs from "@packages/post/profile/RenderProfileNFTs";
+import {TritPortfolioPost} from "@packages/post/TritPortfolioPost";
 import {usePaginatedPage} from "@packages/shared/components/Pagination/lib";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
@@ -81,6 +82,7 @@ export default function UserProfile(props: {
 			page={nfts_data.page}
 			hasNextPage={nfts_data.page < totalPages}
 			totalPages={totalPages}
+			Component={TritPortfolioPost}
 		/>
 	);
 }
