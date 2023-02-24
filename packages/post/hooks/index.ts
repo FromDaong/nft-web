@@ -9,7 +9,7 @@ import {apiEndpoint} from "@utils/index";
 import axios from "axios";
 import {BigNumber, ethers} from "ethers";
 import {useSession} from "next-auth/react";
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {useAccount, useContract, useSigner} from "wagmi";
 
 export const useTritNFTUtils = (nft: any) => {
@@ -27,6 +27,8 @@ export const useTritNFTUtils = (nft: any) => {
 	const mintedNfts = useWagmiGetNFTTotalSupply(nft.id);
 	const remainingNfts = maxNftSupply - mintedNfts;
 
+	const ref = useRef(null);
+
 	useEffect(() => {
 		if (signer) {
 			setLoadingSigner(false);
@@ -35,8 +37,8 @@ export const useTritNFTUtils = (nft: any) => {
 
 	useEffect(() => {
 		// @ts-ignore
-
-		if (session?.profile && liked !== undefined) {
+		if (!ref && session?.profile && liked !== undefined) {
+			ref.current = "loaded";
 			// @ts-ignore
 			if (nft.likedBy?.includes(session.profile._id)) {
 				setLikedNFT(true);

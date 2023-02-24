@@ -44,11 +44,6 @@ import {
 } from "@packages/chain/hooks";
 import BuyNFTButton from "@packages/post/BuyNFTButton";
 
-const getYouMightAlsoLike = async () => {
-	const res = await axios.get(`${apiEndpoint}/marketplace/trending`);
-	return res.data.data;
-};
-
 export default function NFT(props: {
 	notFound?: boolean;
 	data: any;
@@ -85,23 +80,9 @@ export default function NFT(props: {
 		queryFn: getMoreNFTsFromCreator,
 	});
 
-	const {
-		isLoading: youMightAlsoLikeLoading,
-		error: youMightAlsoLikeError,
-		data: youMightAlsoLikeData,
-	} = TreatCore.useQuery({
-		queryKey: ["youMightAlsoLikeNFTs"],
-		queryFn: getYouMightAlsoLike,
-	});
-
 	if (props.notFound) {
 		return <Error404 />;
 	}
-
-	const trendingNFTs =
-		youMightAlsoLikeError || youMightAlsoLikeLoading
-			? []
-			: youMightAlsoLikeData?.map((post) => legacy_nft_to_new(post));
 
 	const ipfs_parts = nft.image?.ipfs.split("/");
 	const ipfs_id = ipfs_parts[ipfs_parts.length - 1];
@@ -372,6 +353,7 @@ function ImagePreviewSection({
 	nft,
 	postUtils,
 }) {
+	console.log({postUtils});
 	return (
 		<Container className="w-full 2xl:h-[80vh] lg:h-[90vh] h-[calc(100vh-64px)] flex items-center justify-center col-span-1 lg:col-span-2 xl:col-span-1">
 			<Container
