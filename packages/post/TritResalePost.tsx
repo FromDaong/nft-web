@@ -1,11 +1,7 @@
 import {Text} from "@packages/shared/components/Typography/Headings";
-import Link from "next/link";
 import {Container} from "@packages/shared/components/Container";
-import {TritPostProps, TritResalePostProps} from "./types";
-import {
-	ImportantText,
-	SmallText,
-} from "@packages/shared/components/Typography/Text";
+import {TritResalePostProps} from "./types";
+import {ImportantText} from "@packages/shared/components/Typography/Text";
 import {EyeOffIcon, ShoppingCartIcon} from "@heroicons/react/outline";
 import {PostMediaContent} from "./PostMediaContent";
 import {styled} from "@styles/theme";
@@ -14,6 +10,9 @@ import {ActionSection} from "./UtilityComponents";
 import {useEffect, useState} from "react";
 import {useInView} from "react-intersection-observer";
 import {Button} from "@packages/shared/components/Button";
+import PurchaseNFTModal from "@packages/modals/PurchaseOrderModal";
+import {useDisclosure} from "@packages/hooks";
+import {useUser} from "core/auth/useUser";
 
 export const FrostyBackgroundContainer = styled(Container, {
 	backgroundColor: "#ffffff33",
@@ -33,13 +32,10 @@ export const FrostyBackgroundContainer = styled(Container, {
 
 export const TritResalePost = (props: TritResalePostProps) => {
 	const {ref} = useInView();
-	const {liked, likeNFT, isMine, isProtected, loadingSigner, remainingNfts} =
-		useTritNFTUtils(props);
+	const {profile: address} = useUser();
+	const {liked, likeNFT, isMine, isProtected} = useTritNFTUtils(props);
 
 	const [imageURL, setImageURL] = useState("");
-
-	const soldOut = props.collection?.minted === props.max_supply;
-
 	const ipfs_parts = props.image?.ipfs.split("/");
 	const ipfs_id = ipfs_parts[ipfs_parts.length - 1];
 	const blurred_image = `${ipfs_id}?blurhash=true`;
@@ -142,16 +138,31 @@ export const TritResalePost = (props: TritResalePostProps) => {
 					count={null}
 				/>
 			</Container>
-			<Container className="flex flex-col w-full">
-				<BuyFromResaleButton />
-			</Container>
+			{address && (
+				<Container className="flex flex-col w-full">
+					<BuyFromResaleButton nft={props} />
+				</Container>
+			)}
 		</Container>
 	);
 };
 
-const BuyFromResaleButton = () => {
+const BuyFromResaleButton = ({nft}) => {
+	const {
+		onOpen: onOpenPurchaseNFTModal,
+		onClose: onClosePurchaseNFTModal,
+		isOpen: isPurchaseNFTModalOpen,
+	} = useDisclosure();
+
 	return (
 		<>
+			{isPurchaseNFTModalOpen && (
+				<PurchaseNFTModal
+					isOpen={onOpenPurchaseNFTModal}
+					onClose={onClosePurchaseNFTModal}
+					nft={nft}
+				/>
+			)}
 			<Button
 				appearance={"surface"}
 				fullWidth
@@ -161,6 +172,7 @@ const BuyFromResaleButton = () => {
 						color: "$surface",
 					},
 				}}
+				onClick={onOpenPurchaseNFTModal}
 			>
 				<ShoppingCartIcon className="w-5 h-5" />
 				Purchase

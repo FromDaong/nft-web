@@ -1,15 +1,8 @@
-import {
-	useCancelOrder,
-	useGetRemainingOrderBalance,
-	useGetResaleOrders,
-	useTritNFTUtils,
-} from "@packages/post/hooks";
+import {useCancelOrder} from "@packages/post/hooks";
 import {TritPostProps} from "@packages/post/types";
-import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
-import {Heading, Text} from "@packages/shared/components/Typography/Headings";
+import {Text} from "@packages/shared/components/Typography/Headings";
 import {useState} from "react";
-import {Modal} from ".";
 import GenericChainModal from "./GenericChainModal";
 
 export default function CancelOrderModal(props: {

@@ -129,6 +129,28 @@ export const useTransferNFTs = (signer) => {
 	return {transferNFT};
 };
 
+export const usePurchaseResaleOrder = (signer) => {
+	const {address} = useAccount();
+
+	const treatMarketplaceContract = useContract({
+		addressOrName: contractAddresses.treatMarketplace[56],
+		contractInterface: ABI.treatMarketplace,
+		signerOrProvider: signer,
+	});
+
+	const purchaseResaleOrder = useCallback(
+		async (id: number, amount: number, totalPrice, seller: string) => {
+			return treatMarketplaceContract.purchase(id, amount, seller, {
+				from: address,
+				value: Number(totalPrice),
+			});
+		},
+		[address, treatMarketplaceContract]
+	);
+
+	return {purchaseResaleOrder};
+};
+
 export const useListOrder = () => {
 	const {data: signer} = useSigner();
 	const {address} = useAccount();

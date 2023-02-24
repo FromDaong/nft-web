@@ -77,20 +77,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		formatedOrders as Array<OpenOrder>
 	);
 
-	const sortMap = {
-		"1": {
-			price: ordersManager.cheapestFirst,
-		},
-		"2": {
-			price: ordersManager.expensiveFirst,
-		},
-		"3": {
-			listedDate: ordersManager.newestFirst,
-		},
-	};
-
 	const paginatedOpenOrders = ordersManager.paginate(
-		1,
+		parseInt(page as string),
 		sort === "1"
 			? ordersManager.cheapestFirst()
 			: sort === "2"

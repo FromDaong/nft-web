@@ -1,7 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import {SearchIcon} from "@heroicons/react/outline";
 import NFTSort from "@packages/Dropdowns/NFTDropdownSort";
-import {TritPost} from "@packages/post/TritPost";
 import {TritResalePost} from "@packages/post/TritResalePost";
 import {SEOHead} from "@packages/seo/page";
 import {Button} from "@packages/shared/components/Button";
@@ -11,15 +10,20 @@ import Pagination from "@packages/shared/components/Pagination";
 import {usePaginatedPage} from "@packages/shared/components/Pagination/lib";
 import {Heading} from "@packages/shared/components/Typography/Headings";
 import SweetshopTabs from "@packages/sweetshop/SweetshopTabs";
-import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
+import {apiEndpoint} from "@utils/index";
 import axios from "axios";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
-import {TreatNFTsInfinityScrollingContainer} from "packages/shared/components/ListingSection";
+import {useEffect, useState} from "react";
 
 export default function NFTS({sort, q, nfts, error}) {
 	const posts = JSON.parse(nfts);
-	const nft_posts = posts.docs;
+	const [nft_posts, setNFTPosts] = useState(posts.docs);
+
+	useEffect(() => {
+		const posts = JSON.parse(nfts);
+		setNFTPosts(posts.docs);
+	}, [nfts]);
 
 	const {
 		gotoPage,
@@ -31,8 +35,6 @@ export default function NFTS({sort, q, nfts, error}) {
 		setSort,
 		setSearchText,
 	} = usePaginatedPage(posts, sort, q);
-
-	console.log({nft_posts});
 
 	return (
 		<ApplicationLayout>
@@ -84,12 +86,12 @@ export default function NFTS({sort, q, nfts, error}) {
 							/>
 						</Container>
 
-						<Container className="flex flex-col gap-8 px-4">
-							<TreatNFTsInfinityScrollingContainer>
-								{nft_posts.length > 0 ? (
+						<Container className="flex flex-col gap-8 px-4 ">
+							<Container className="grid grid-cols-1 md:grid-cols-2 place-content-center xl:grid-cols-4 2xl:grid-cols-5 gap-8">
+								{nft_posts.length > 0 &&
 									nft_posts.map((nft) => (
 										<div
-											key={nft._id}
+											key={nft._id + "-" + nft.seller + "-" + nft.price}
 											className="col-span-1"
 										>
 											<TritResalePost
@@ -97,13 +99,13 @@ export default function NFTS({sort, q, nfts, error}) {
 												{...nft}
 											/>
 										</div>
-									))
-								) : (
+									))}
+								{nft_posts.length === 0 && (
 									<Container className="flex flex-col items-center col-span-1 py-24 md:col-span-2 xl:col-span-5">
 										<Heading size="sm">No results found</Heading>
 									</Container>
 								)}
-							</TreatNFTsInfinityScrollingContainer>
+							</Container>
 							<Pagination
 								hasNextPage={posts.hasNextPage}
 								hasPrevPage={posts.page - 1 > 0}
