@@ -45,25 +45,25 @@ export class PaginationManager {
 
 	newestFirst() {
 		return this.items.sort(function (a, b) {
-			return b.listDate - a.listDate;
+			return (b.listedDate ?? b.listDate) - (a.listedDate ?? a.listDate);
 		});
 	}
 
 	oldestFirst() {
 		return this.items.sort(function (a, b) {
-			return a.listDate - b.listDate;
+			return (a.listedDate ?? a.listDate) - (b.listedDate ?? b.listDate);
 		});
 	}
 
 	cheapestFirst() {
 		return this.items.sort(function (a, b) {
-			return a.price - b.price;
+			return (a.list_price ?? a.price) - (b.list_price ?? b.price);
 		});
 	}
 
 	expensiveFirst() {
 		return this.items.sort(function (a, b) {
-			return b.price - a.price;
+			return (b.list_price ?? b.price) - (a.list_price ?? a.price);
 		});
 	}
 

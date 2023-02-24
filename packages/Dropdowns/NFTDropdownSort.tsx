@@ -8,7 +8,7 @@ const NFTSort = ({prefix, sort}) => {
 		<>
 			<a
 				href={`/sweetshop${prefix}?sort=${3}&p=1${
-					router.query.s ? `&s=${router.query.s}` : ""
+					router.query.q ? `&s=${router.query.q}` : ""
 				}`}
 			>
 				<Button
@@ -22,7 +22,7 @@ const NFTSort = ({prefix, sort}) => {
 
 			<a
 				href={`/sweetshop${prefix}?sort=${1}&p=1${
-					router.query.s ? `&s=${router.query.s}` : ""
+					router.query.q ? `&s=${router.query.q}` : ""
 				}`}
 			>
 				<Button
@@ -36,7 +36,7 @@ const NFTSort = ({prefix, sort}) => {
 
 			<a
 				href={`/sweetshop${prefix}?sort=${2}&p=1${
-					router.query.s ? `&s=${router.query.s}` : ""
+					router.query.q ? `&s=${router.query.q}` : ""
 				}`}
 			>
 				<Button

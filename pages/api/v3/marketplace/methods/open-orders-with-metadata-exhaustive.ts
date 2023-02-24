@@ -53,17 +53,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		onChainOpenOrders.flat().filter((order) => !!order)
 	);
 
-	const orderIds = formatedOrders.map((order) => order.nftId);
-
 	const nfts = await MongoModelNFT.find({
 		id: {
-			$in: orderIds,
+			$in: Array.from(new Set(formatedOrders.map((order) => order.nftId))),
 		},
 	}).populate("creator");
 
-	const populatedNFTOrders = formatedOrders
-		.map((doc) => {
-			const metadata = nfts.find((nft) => nft.id === doc.nftId);
+	const populatedNFTOrders = nfts
+		.map((nft) => {
+			const metadata = nft;
+			const doc = formatedOrders.find((doc) => nft.id === doc.nftId);
+
 			if (!metadata) return;
 
 			return {
@@ -108,6 +108,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 				},
 				isResale: true,
 				melon_nft: false,
+				list_price: doc.price,
 			};
 		})
 		.filter((order) => !!order);
@@ -115,10 +116,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const searchManager = new SearchManager(populatedNFTOrders);
 	searchManager.hydrate();
 	const searchResults = await searchManager.search(q as string);
-	console.log(searchResults.length);
 	const paginationManager = new PaginationManager(
-		populatedNFTOrders.filter((nft) => searchResults.includes(nft.id))
+		populatedNFTOrders
+			.filter((nft) => searchResults.includes(nft.id))
+			.map((order) => ({
+				...order,
+				list_price: Number(order.list_price),
+			}))
 	);
+
+	console.log({sort});
 
 	return returnWithSuccess(
 		paginationManager.paginate(

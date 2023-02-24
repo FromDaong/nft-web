@@ -32,7 +32,6 @@ export default function NFTS({sort, q, nfts, error}) {
 		nextPage,
 		searchText,
 		sortBy,
-		setSort,
 		setSearchText,
 	} = usePaginatedPage(posts, sort, q);
 
