@@ -34,14 +34,7 @@ export default function UserProfile(props: {
 		sortBy,
 		setSort,
 		setSearchText,
-	} = usePaginatedPage(
-		nfts_data,
-		props.sort,
-		props.q,
-		true,
-		{username},
-		props.p
-	);
+	} = usePaginatedPage(nfts_data, props.sort, true, {username}, props.p);
 
 	if (props.notFound) {
 		return <Error404 />;
