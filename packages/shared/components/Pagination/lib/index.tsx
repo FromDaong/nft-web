@@ -79,7 +79,6 @@ export const usePaginatedPage = (
 		cursor?: string;
 	},
 	sort = "",
-	q = "",
 	href = false,
 	dynamic_param?: {
 		username: string;
@@ -88,7 +87,7 @@ export const usePaginatedPage = (
 ) => {
 	const router = useRouter();
 	const [sortBy, setSortBy] = useState(sort);
-	const [searchText, setSearchText] = useState(q ?? router.query.q);
+	const [searchText, setSearchText] = useState(router.query.q);
 	const search = useDebounce(searchText, 400);
 
 	useEffect(() => {
@@ -96,7 +95,7 @@ export const usePaginatedPage = (
 			{
 				...(href ? {href: "/[username]"} : {}),
 				query: {
-					...(router.query.q || q ? {q: searchText ?? router.query.q} : ""),
+					...(searchText ? {q: searchText} : ""),
 					...(sort ? {sort: sortBy} : {}),
 					...(dynamic_param ? {username: dynamic_param.username} : {}),
 					p: p ?? 1,
