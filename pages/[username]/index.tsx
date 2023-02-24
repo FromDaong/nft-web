@@ -33,7 +33,7 @@ export default function UserProfile(props: {
 		sortBy,
 		setSort,
 		setSearchText,
-	} = usePaginatedPage(nfts_data, "", "", true, {username}, props.p);
+	} = usePaginatedPage(nfts_data, "", true, {username}, props.p);
 
 	if (props.notFound) {
 		return <Error404 />;
@@ -87,10 +87,8 @@ export const getServerSideProps = async (ctx) => {
 		}
 
 		const creator = await MongoModelCreator.findOne({username}).exec();
-		if (
-			!guardInstance.exists(creator) ||
-			guardInstance.falsey(creator.approved)
-		) {
+		console.log({creator});
+		if (!guardInstance.exists(creator) || creator.pending === true) {
 			if (ctx.resolvedUrl === `/${username}`) {
 				return {
 					redirect: {

@@ -101,7 +101,7 @@ export default function Navbar() {
 								// eslint-disable-next-line no-constant-condition
 								(isConnected ? (
 									<Container className="flex items-center gap-4">
-										{creator && creator?.approved && (
+										{creator && !creator?.pending && (
 											<Link href={"/create"}>
 												<a>
 													<Button
