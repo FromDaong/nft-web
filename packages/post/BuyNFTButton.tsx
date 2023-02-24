@@ -71,6 +71,7 @@ const purchaseNFTTransporter = async (data: {
 const InsufficientBalanceButton = () => {
 	return (
 		<Button
+			fullWidth
 			appearance={"disabled"}
 			disabled
 		>
@@ -82,6 +83,7 @@ const InsufficientBalanceButton = () => {
 const SoldOutButton = () => {
 	return (
 		<Button
+			fullWidth
 			appearance={"disabled"}
 			disabled
 		>
@@ -93,6 +95,7 @@ const SoldOutButton = () => {
 const ErrorButton = ({error}) => {
 	return (
 		<Button
+			fullWidth
 			appearance={"danger"}
 			disabled
 		>
@@ -104,6 +107,7 @@ const ErrorButton = ({error}) => {
 const LoadingButton = () => {
 	return (
 		<Button
+			fullWidth
 			key={"loadingBtn"}
 			appearance={"disabled"}
 			disabled
@@ -114,7 +118,14 @@ const LoadingButton = () => {
 };
 
 const RedeemFreeNFT = ({mint}) => {
-	return <Button onClick={mint}>Redeem free NFT</Button>;
+	return (
+		<Button
+			fullWidth
+			onClick={mint}
+		>
+			Redeem free NFT
+		</Button>
+	);
 };
 
 const BuyCreatorMartNFTButton = ({
@@ -215,6 +226,7 @@ const BuyCreatorMartNFTButton = ({
 		<>
 			<SuccessModal />
 			<Button
+				fullWidth
 				key={"buyBtn"}
 				onClick={buyNFT}
 			>
@@ -226,7 +238,14 @@ const BuyCreatorMartNFTButton = ({
 
 const ConnectWalletButton = () => {
 	const {openConnectModal} = useConnectModal();
-	return <Button onClick={openConnectModal}>Connect wallet</Button>;
+	return (
+		<Button
+			fullWidth
+			onClick={openConnectModal}
+		>
+			Connect wallet
+		</Button>
+	);
 };
 
 const ContextAwarePurchaseButton = ({nft, address}) => {
@@ -298,6 +317,7 @@ const BuyNFTButton = ({nftData}) => {
 	if (nftData.melon_nft || nftData.totm_nft) {
 		return (
 			<Button
+				fullWidth
 				appearance={"disabled"}
 				disabled
 			>
@@ -309,6 +329,7 @@ const BuyNFTButton = ({nftData}) => {
 	if (nftData.subscription_nft && !isSubscribed) {
 		return (
 			<Button
+				fullWidth
 				appearance={"disabled"}
 				disabled
 			>
