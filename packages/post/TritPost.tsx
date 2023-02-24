@@ -87,7 +87,7 @@ export const TritPost = (props: TritPostProps) => {
 						</Text>
 					)}
 					<Container
-						className="relative flex overflow-hidden rounded-xl"
+						className="relative w-full flex overflow-hidden rounded-xl"
 						css={{
 							height: "256px",
 						}}

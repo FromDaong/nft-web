@@ -18,11 +18,7 @@ import {useFullScreen} from "@packages/shared/hooks";
 import RectangleStack from "@packages/shared/icons/RectangleStack";
 import DynamicSkeleton from "@packages/skeleton";
 import {TritPostSkeleton} from "@packages/skeleton/config";
-import {
-	EnterFullScreenIcon,
-	HeartFilledIcon,
-	ImageIcon,
-} from "@radix-ui/react-icons";
+import {HeartFilledIcon, ImageIcon} from "@radix-ui/react-icons";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import UserAvatar from "core/auth/components/Avatar";
@@ -32,7 +28,6 @@ import TreatCore from "core/TreatCore";
 import Link from "next/link";
 import {useEffect, useState} from "react";
 import {
-	MongoModelEvent,
 	MongoModelNFT,
 	MongoModelProfile,
 	MongoModelTransaction,

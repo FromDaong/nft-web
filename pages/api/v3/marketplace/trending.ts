@@ -17,12 +17,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const nfts = await MongoModelNFT.aggregate([
 		{
 			$match: {
-				subscription_nft: {
-					$exists: false,
-				},
-				melon_nft: {
-					$exists: false,
-				},
+				melon_nft: false,
+				subscription_nft: false,
 			},
 		},
 		{
