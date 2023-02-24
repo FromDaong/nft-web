@@ -43,7 +43,10 @@ export default async function handler(req, res) {
 		}
 	);
 
-	console.log(new Set(resp.data.result.map((nft) => nft.token_id)));
+	console.log(
+		new Set(resp.data.result.map((nft) => nft.token_id)).size,
+		resp.data.total
+	);
 
 	return returnWithSuccess(
 		new Set(resp.data.result.map((nft) => nft.token_id)).size,

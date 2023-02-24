@@ -77,7 +77,7 @@ export const TritPortfolioPost = (props: TritResalePostProps) => {
 			)}
 			<Container
 				ref={ref}
-				className={`lex flex-col gap-4 py-4 w-full`}
+				className={`flex flex-col gap-4 py-4 w-full`}
 				css={{
 					borderColor: "$subtleBorder",
 					borderRadius: "12px",
@@ -251,20 +251,22 @@ const ManageMyNFTButtons = ({nft, getOpenOrdersForSeller}) => {
 				</Container>
 			}
 			<Container className="flex gap-2 py-2">
-				<Button
-					appearance={"surface"}
-					fullWidth
-					css={{
-						"&hover": {
-							backgroundColor: "$textContrast",
-							color: "$surface",
-						},
-					}}
-					onClick={onOpenListOrderModal}
-				>
-					<ShoppingBagIcon className="w-5 h-5" />
-					Re-sell
-				</Button>
+				{balance > 0 && (
+					<Button
+						appearance={"surface"}
+						fullWidth
+						css={{
+							"&hover": {
+								backgroundColor: "$textContrast",
+								color: "$surface",
+							},
+						}}
+						onClick={onOpenListOrderModal}
+					>
+						<ShoppingBagIcon className="w-5 h-5" />
+						Re-sell
+					</Button>
+				)}
 				{balance > 0 && (
 					<Button
 						appearance={"surface"}

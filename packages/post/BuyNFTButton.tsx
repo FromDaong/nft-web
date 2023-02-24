@@ -1,6 +1,5 @@
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
-import {useToggle} from "@packages/shared/hooks";
 import Spinner from "@packages/shared/icons/Spinner";
 import {useConnectModal} from "@rainbow-me/rainbowkit";
 import {apiEndpoint} from "@utils/index";
@@ -10,8 +9,6 @@ import TreatCore from "core/TreatCore";
 import {useEffect, useState} from "react";
 import {useAccount, useBalance, useWaitForTransaction} from "wagmi";
 import {BuyButtonProps, get_nft_type, useNFTFactory} from "./hooks/helpers";
-import {useBuyFromResale} from "@packages/post/hooks";
-import Web3 from "web3";
 import GenericChainModal from "@packages/modals/GenericChainModal";
 import {useUser} from "core/auth/useUser";
 import {useRouter} from "next/router";
@@ -35,7 +32,7 @@ import {useDisclosure} from "@packages/hooks";
 
 const purchaseNFTTransporter = async (data: {
 	tx_hash: string;
-	seller: string;
+	creator: string;
 	nftId: number;
 	price: number;
 	eid?: string;
@@ -60,7 +57,7 @@ const purchaseNFTTransporter = async (data: {
 		icon: "🎉",
 		tags: {
 			address: data.metadata.wallet.address,
-			seller: data.seller,
+			creator: data.creator,
 			id: data.nftId,
 		},
 		notify: true,
@@ -121,7 +118,7 @@ const RedeemFreeNFT = ({mint}) => {
 const BuyCreatorMartNFTButton = ({
 	nft,
 	mint,
-	seller,
+	creator,
 	price,
 	address,
 	remaining,
@@ -130,24 +127,24 @@ const BuyCreatorMartNFTButton = ({
 }) => {
 	const router = useRouter();
 	const {profile} = useUser();
-	const {isOpen, onOpen, onClose} = useDisclosure();
+	const {isOpen, onOpen} = useDisclosure();
 	const gotoPortfolio = () => router.push(`/${profile.username}/portfolio`);
-	const {isSuccess, isError, isLoading, data} = useWaitForTransaction({
+	const {isError, isLoading, data} = useWaitForTransaction({
 		hash,
 	});
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");
 
 	const buyNFT = () => {
-		// if seller address exists, we will use resale open orders automatically
+		// if creator address exists, we will use resale open orders automatically
 		setLoading(true);
-		mint(price, seller?.address)
+		mint(price, creator.address)
 			.then((res) => {
 				setHash(res.hash);
 				setLoading(false);
 				return purchaseNFTTransporter({
 					tx_hash: res.hash,
-					seller: nft.seller.address,
+					creator: nft.creator.address,
 					nftId: nft.id,
 					price: nft.price,
 					timestamp: Date.now(),
@@ -232,8 +229,8 @@ const ConnectWalletButton = () => {
 
 const ContextAwarePurchaseButton = ({nft, address}) => {
 	const nft_type = get_nft_type(nft);
-	const {useNFT} = useNFTFactory(nft_type, nft.seller?.address);
-	const nftUtils = useNFT(nft, nft.seller?.address);
+	const {useNFT} = useNFTFactory(nft_type, nft.creator?.address);
+	const nftUtils = useNFT(nft, nft.creator?.address);
 	const [txHash, setTxHash] = useState("");
 
 	if (nftUtils.remainingNfts === 0) {
@@ -245,7 +242,7 @@ const ContextAwarePurchaseButton = ({nft, address}) => {
 			nft={nft}
 			address={address}
 			mint={nftUtils.mint as any}
-			seller={nft.seller}
+			creator={nft.creator}
 			price={nftUtils.cost}
 			remaining={Number(nftUtils.remainingNfts) - 1}
 			hash={txHash}
@@ -293,156 +290,16 @@ const PurchaseButtonWrapper = (nft: BuyButtonProps) => {
 	);
 };
 
-const BuyFromResaleButtonWrapper = ({price, event, id}) => {
-	const {status, address} = useAccount();
-	const [tx, setTx] = useState("");
-	const {isOpen, onOpen} = useDisclosure();
-	const {profile} = useUser();
-	const router = useRouter();
-	const gotoPortfolio = () => router.push(`/${profile.username}/portfolio`);
-
-	const [isLoading, toggleLoading] = useToggle(false);
-	const {
-		data,
-		isLoading: isBalanceFetching,
-		error: balanceFetchError,
-		isError: didBalanceFetchError,
-	} = useBalance({
-		addressOrName: address,
-	});
-
-	const {buyFromResale} = useBuyFromResale();
-
-	const {
-		isLoading: isTxLoading,
-		isSuccess,
-		isError,
-	} = useWaitForTransaction({
-		hash: tx,
-	});
-
-	const balance = Number(data?.formatted);
-	const cost = Web3.utils.toWei(price.toString());
-	const purchaseNFT = async () => {
-		toggleLoading();
-		buyFromResale(id, 1, event.seller, cost)
-			.then((t) => {
-				setTx(t.hash);
-			})
-			.catch((err) => {
-				console.error(err);
-				toggleLoading();
-			});
-	};
-
-	useEffect(() => {
-		if (isSuccess) {
-			purchaseNFTTransporter({
-				tx_hash: tx,
-				seller: event.seller,
-				eid: event._id,
-				nftId: id,
-				price: price,
-				timestamp: Date.now(),
-				nft_type: "resaleMart",
-				remaining: 0,
-				metadata: {
-					browser: navigator.userAgent,
-					os: navigator.platform,
-					wallet: {
-						address,
-						name: "metamask",
-					},
-				},
-			}).then(() => onOpen());
-		}
-
-		if (isError) {
-			toggleLoading();
-			return;
-		}
-	}, [isSuccess, isError]);
-
-	const SuccessModal = () => (
-		<GenericChainModal
-			isOpen={isOpen}
-			onClose={() => {
-				gotoPortfolio();
-			}}
-			title="Congratulations. NFT Purchase was successful"
-			subtitle="You have successfully purchased the NFT. It will now show in your wallet and on your portfolio page."
-			action={gotoPortfolio}
-			buttonLabel="Go to portfolio"
-			hideClose
-		/>
-	);
-
-	if (isOpen) {
-		return <SuccessModal />;
-	}
-
-	if (
-		status === "connecting" ||
-		isBalanceFetching ||
-		isLoading ||
-		isTxLoading
-	) {
-		return <LoadingButton />;
-	}
-
-	if (status === "disconnected") {
-		return <ConnectWalletButton />;
-	}
-
-	if (!address) return null;
-
-	if (didBalanceFetchError) {
-		return <ErrorButton error={balanceFetchError} />;
-	}
-
-	if (balance < Number(price)) {
-		return <InsufficientBalanceButton />;
-	}
-
-	return (
-		<>
-			<BuyFromResaleButton purchaseNFT={purchaseNFT} />
-		</>
-	);
-};
-
-const BuyFromResaleButton = ({purchaseNFT}) => {
-	return (
-		<Button
-			onClick={purchaseNFT}
-			fullWidth
-		>
-			Buy from resale
-		</Button>
-	);
-};
-
-const BuyNFTButton = ({nftData, seller, event, isResale}) => {
-	if (nftData.melon_nft || nftData.subscription_nft || nftData.totm_nft)
+const BuyNFTButton = ({nftData}) => {
+	console.log({nftData});
+	if (nftData.melon_nft || nftData.totm_nft) {
 		return null;
-
-	if (isResale) {
-		return (
-			<Container className="flex flex-col w-full">
-				<BuyFromResaleButtonWrapper
-					event={event}
-					id={nftData.id}
-					price={event.price}
-				/>
-			</Container>
-		);
 	}
 
 	return (
 		<Container className="flex flex-col w-full">
 			<PurchaseButtonWrapper
 				{...nftData}
-				seller={seller}
 				creator={nftData.creator}
 			/>
 		</Container>

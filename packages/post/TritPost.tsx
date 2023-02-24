@@ -54,22 +54,22 @@ export const TritPost = (props: TritPostProps) => {
 	}, [props.protected, isMine]);
 
 	return (
-		<Container
-			ref={ref}
-			className={`grid grid-cols-1 gap-4 py-4 place-items-center w-full`}
-			css={{
-				borderColor: "$subtleBorder",
-				borderRadius: "12px",
-			}}
+		<Link
+			href={`/post/nft/${props._id}${
+				props.seller
+					? `?seller=${props.seller.address}&eid=${props.seller.event_id}`
+					: ""
+			}`}
 		>
-			<Link
-				href={`/post/nft/${props._id}${
-					props.seller
-						? `?seller=${props.seller.address}&eid=${props.seller.event_id}`
-						: ""
-				}`}
-			>
-				<a className="relative flex flex-col w-full overflow-hidden">
+			<a className="relative flex flex-col w-full overflow-hidden">
+				<Container
+					ref={ref}
+					className={`grid grid-cols-1 gap-4 py-4 place-items-center w-full`}
+					css={{
+						borderColor: "$subtleBorder",
+						borderRadius: "12px",
+					}}
+				>
 					{!loadingSigner && remainingNfts === 0 && !props.hideSoldOut && (
 						<Text
 							css={{
@@ -158,22 +158,22 @@ export const TritPost = (props: TritPostProps) => {
 							</Container>
 						</Container>
 					</Container>
-				</a>
-			</Link>
-			<Container className="flex flex-col w-full">
-				<ActionSection
-					{...props}
-					isMine={isMine}
-					liked={liked}
-					likeNFT={likeNFT}
-					unlikeNFT={likeNFT}
-					creator={props.author.username}
-					toggleImageProtection={() => null}
-					isProtected={isProtected}
-					hideSeller={props.hideSeller}
-					count={props.count}
-				/>
-			</Container>
-		</Container>
+					<Container className="flex flex-col w-full">
+						<ActionSection
+							{...props}
+							isMine={isMine}
+							liked={liked}
+							likeNFT={likeNFT}
+							unlikeNFT={likeNFT}
+							creator={props.author.username}
+							toggleImageProtection={() => null}
+							isProtected={isProtected}
+							hideSeller={props.hideSeller}
+							count={props.count}
+						/>
+					</Container>
+				</Container>
+			</a>
+		</Link>
 	);
 };

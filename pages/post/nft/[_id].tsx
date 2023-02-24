@@ -2,19 +2,27 @@
 import {pagePropsConnectMongoDB} from "@db/engine/pagePropsDB";
 import Error404 from "@packages/error/404";
 import NFTPresentationComponent from "@packages/post/BuyNFTPageViewNFT";
-import {useGetIsNFTOwned} from "@packages/post/hooks";
+import {useGetIsNFTOwned, useTritNFTUtils} from "@packages/post/hooks";
 import {TritPost} from "@packages/post/TritPost";
 import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
 import OptimizedImage from "@packages/shared/components/OptimizedImage";
 import OptimizedNFTImage from "@packages/shared/components/OptimizedImage/OptimizedNFTImage";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
-import {SmallText} from "@packages/shared/components/Typography/Text";
+import {
+	ImportantText,
+	MutedText,
+	SmallText,
+} from "@packages/shared/components/Typography/Text";
 import {useFullScreen} from "@packages/shared/hooks";
 import RectangleStack from "@packages/shared/icons/RectangleStack";
 import DynamicSkeleton from "@packages/skeleton";
 import {TritPostSkeleton} from "@packages/skeleton/config";
-import {ImageIcon} from "@radix-ui/react-icons";
+import {
+	EnterFullScreenIcon,
+	HeartFilledIcon,
+	ImageIcon,
+} from "@radix-ui/react-icons";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import UserAvatar from "core/auth/components/Avatar";
@@ -32,6 +40,14 @@ import {
 import {useAccount} from "wagmi";
 import {ArticleJsonLd} from "next-seo";
 import {SEOHead} from "@packages/seo/page";
+import Guard from "@lib/guard";
+import {Button} from "@packages/shared/components/Button";
+import {HeartIcon} from "@heroicons/react/outline";
+import {
+	useWagmiGetNFTMaxSupply,
+	useWagmiGetNFTTotalSupply,
+} from "@packages/chain/hooks";
+import BuyNFTButton from "@packages/post/BuyNFTButton";
 
 const getYouMightAlsoLike = async () => {
 	const res = await axios.get(`${apiEndpoint}/marketplace/trending`);
@@ -41,29 +57,21 @@ const getYouMightAlsoLike = async () => {
 export default function NFT(props: {
 	notFound?: boolean;
 	data: any;
-	seller: {
-		username: string;
-		profile_pic: string;
-		address: string;
-		_id: string;
-		display_name: string;
-	};
 	isResale: boolean;
 }) {
-	// T-48 user wants to purchase resale NFT
-	// T-52 user wants to easily navigate to the search page with other listings of the NFT
-	// T-53 user wants to navigate to search page by clicking on a tag
-
+	const {isResale} = props;
 	const data = JSON.parse(props.data);
 	const {nft} = data;
-	const {seller} = data;
-	const {event} = data;
-
 	const {address} = useAccount();
+	const {isOwned, balance} = useGetIsNFTOwned(nft);
+	const maxNftSupply = useWagmiGetNFTMaxSupply(nft.id);
+	const mintedNfts = useWagmiGetNFTTotalSupply(nft.id);
+	const postUtils = useTritNFTUtils(nft);
 
 	const [showFullScreen, setShowFullScreen] = useState(false);
 	const [loadHD, setLoadHD] = useState(false);
 	const [imageURL, setImageURL] = useState("");
+
 	useFullScreen("nft_image", showFullScreen);
 
 	const getMoreNFTsFromCreator = async () => {
@@ -91,18 +99,9 @@ export default function NFT(props: {
 		queryFn: getYouMightAlsoLike,
 	});
 
-	const {isOwned, balance} = useGetIsNFTOwned(nft);
-
 	if (props.notFound) {
 		return <Error404 />;
 	}
-
-	useEffect(() => {
-		TreatCore.triggerEvent("post_impression", {
-			_id: nft._id,
-			nftId: nft.id,
-		});
-	}, []);
 
 	const trendingNFTs =
 		youMightAlsoLikeError || youMightAlsoLikeLoading
@@ -133,8 +132,7 @@ export default function NFT(props: {
 		}
 	}, [nft.protected, isOwned, loadHD]);
 
-	const isResale =
-		event && event.seller.toLowerCase() !== nft.creator.address.toLowerCase();
+	const remainingNfts = maxNftSupply - mintedNfts;
 
 	return (
 		<>
@@ -145,7 +143,7 @@ export default function NFT(props: {
 					name: nft.name,
 					description: nft.description,
 					price: nft.price,
-					seller: isResale ? seller.username : nft.creator.username,
+					seller: nft.creator.username,
 					id: nft.id,
 				}}
 			/>
@@ -160,165 +158,119 @@ export default function NFT(props: {
 				publisherLogo="https://www.treatnfts.com/logo.png"
 				description={nft.description}
 			/>
-			<Container
-				className="w-full 2xl:h-[80vh] lg:h-[90vh] h-[calc(100vh-64px)] flex items-center justify-center"
-				css={{backgroundColor: "$surfaceOnSurface"}}
-			>
-				<Container className="container flex-1 h-full py-12">
-					<Container
-						className="relative w-full h-full"
-						onClick={() => setShowFullScreen(!showFullScreen)}
-						id={"nft_image"}
-					>
-						{nft.protected && !isOwned && (
-							<OptimizedImage
-								src={imageURL}
-								className="cursor-zoom-in"
-								sizes="100vw"
-								fill
-								objectFit="contain"
-								alt={nft.name}
-							/>
-						)}
-						{nft.protected && isOwned && (
-							<OptimizedNFTImage
-								src={sd_image}
-								className="cursor-zoom-in"
-								sizes="100vw"
-								fill
-								objectFit="contain"
-								alt={nft.name}
-							/>
-						)}
-						{!nft.protected && (
-							<OptimizedNFTImage
-								src={hd_image}
-								className="cursor-zoom-in"
-								sizes="100vw"
-								fill
-								objectFit="contain"
-								alt={nft.name}
-								quality={100}
-							/>
-						)}
-					</Container>
-				</Container>
-			</Container>
 			<ApplicationLayout>
 				<ApplicationFrame>
-					<Container className="flex flex-col gap-12">
-						<Container className="flex flex-wrap gap-4 px-8">
-							{isOwned && balance > 0 && (
-								<Container className="flex mt-8">
-									<Container
-										className="flex items-center gap-4 px-8 py-4"
-										css={{
-											backgroundColor: "$accentBg",
-											borderRadius: "16px",
-										}}
-									>
-										<Container>
-											<Text css={{color: "$accentText"}}>
-												<RectangleStack
-													width={32}
-													height={32}
-												/>
-											</Text>
-										</Container>
-										<Container>
-											<Heading
-												css={{color: "$accentText"}}
-												size="xss"
-											>
-												You own this NFT
-											</Heading>
-											<Text css={{color: "$accentText"}}>
-												<SmallText>
-													You already own {balance} units of this NFT
-												</SmallText>
-											</Text>
-										</Container>
-									</Container>
+					<Container className="grid col-span-1 xl:grid-cols-3 py-12 gap-8 lg:gap-12 p-4">
+						<ImagePreviewSection
+							setShowFullScreen={setShowFullScreen}
+							showFullScreen={showFullScreen}
+							isOwned={isOwned}
+							imageURL={imageURL}
+							sd_image={sd_image}
+							hd_image={hd_image}
+							remainingNfts={remainingNfts}
+							mintedNfts={mintedNfts}
+							maxNftSupply={maxNftSupply}
+							address={address}
+							nft={nft}
+							postUtils={postUtils}
+						/>
+						<Container className="col-span-1 lg:col-span-2">
+							<Container
+								className="rounded-xl h-full p-4 md:p-8 lg:p-12 border drop-shadow-xl"
+								css={{backgroundColor: "$cardBg", borderColor: "$border"}}
+							>
+								<Text css={{color: "$accentText"}}>
+									<ImportantText>
+										Remaining Supply: 10 / Max Supply: 10
+									</ImportantText>
+								</Text>
+								<Container>
+									<NFTPresentationComponent
+										nft={nft}
+										isOwned={isOwned}
+										balance={balance}
+										openFullScreen={() => setShowFullScreen(true)}
+										loadHD={() => setLoadHD(true)}
+										address={address}
+										isResale={isResale}
+									/>
 								</Container>
-							)}
-							{isResale && (
-								<Container className="flex mt-8">
-									<Container
-										className="flex items-center gap-4 px-8 py-4"
-										css={{
-											backgroundColor: "$amber3",
-											borderRadius: "16px",
-										}}
-									>
-										<Container>
-											<Text css={{color: "$amber7"}}>
-												<RectangleStack
-													width={32}
-													height={32}
-												/>
-											</Text>
-										</Container>
-										<Container>
-											<Heading
-												css={{color: "$amber12"}}
-												size="xss"
+								<Container className="flex flex-wrap gap-4">
+									{isOwned && balance > 0 && (
+										<Container className="flex mt-8">
+											<Container
+												className="flex items-center gap-4 px-8 py-4"
+												css={{
+													backgroundColor: "$accentBg",
+													borderRadius: "16px",
+												}}
 											>
-												Resale Market
-											</Heading>
-											<Text css={{color: "$amber11"}}>
-												<SmallText>NFT listed on Resale Market</SmallText>
-											</Text>
-										</Container>
-									</Container>
-								</Container>
-							)}
-							{address &&
-								nft.creator.profile.address.toLowerCase() ===
-									address?.toLowerCase() && (
-									<Container className="flex mt-8">
-										<Container
-											className="flex items-center gap-4 px-8 py-4"
-											css={{
-												backgroundColor: "$pink3",
-												borderRadius: "16px",
-											}}
-										>
-											<Container>
-												<Text css={{color: "$pink7"}}>
-													<ImageIcon
-														width={32}
-														height={32}
-													/>
-												</Text>
+												<Container>
+													<Text css={{color: "$accentText"}}>
+														<RectangleStack
+															width={32}
+															height={32}
+														/>
+													</Text>
+												</Container>
+												<Container>
+													<Heading
+														css={{color: "$accentText"}}
+														size="xss"
+													>
+														You own this NFT
+													</Heading>
+													<Text css={{color: "$accentText"}}>
+														<SmallText>
+															You already own {balance} units of this NFT
+														</SmallText>
+													</Text>
+												</Container>
 											</Container>
-											<Container>
-												<Heading
-													css={{color: "$pink12"}}
-													size="xss"
+										</Container>
+									)}
+
+									{address &&
+										nft.creator.profile.address.toLowerCase() ===
+											address?.toLowerCase() && (
+											<Container className="flex mt-8">
+												<Container
+													className="flex items-center gap-4 px-8 py-4"
+													css={{
+														backgroundColor: "$pink3",
+														borderRadius: "16px",
+													}}
 												>
-													Your masterpiece
-												</Heading>
-												<Text css={{color: "$pink12"}}>
-													<SmallText>You are the creator of this NFT</SmallText>
-												</Text>
+													<Container>
+														<Text css={{color: "$pink7"}}>
+															<ImageIcon
+																width={32}
+																height={32}
+															/>
+														</Text>
+													</Container>
+													<Container>
+														<Heading
+															css={{color: "$pink12"}}
+															size="xss"
+														>
+															Your masterpiece
+														</Heading>
+														<Text css={{color: "$pink12"}}>
+															<SmallText>
+																You are the creator of this NFT
+															</SmallText>
+														</Text>
+													</Container>
+												</Container>
 											</Container>
-										</Container>
-									</Container>
-								)}
+										)}
+								</Container>
+							</Container>
 						</Container>
-						<Container className="px-8">
-							<NFTPresentationComponent
-								nft={nft}
-								isOwned={isOwned}
-								balance={balance}
-								openFullScreen={() => setShowFullScreen(true)}
-								loadHD={() => setLoadHD(true)}
-								address={address}
-								seller={seller}
-								isResale={isResale}
-								event={event}
-							/>
-						</Container>
+					</Container>
+					<Container className="flex flex-col gap-12">
 						<Divider dir={"horizontal"} />
 						<Container className="flex flex-col gap-12 px-8">
 							<Container className="flex flex-col gap-4">
@@ -395,13 +347,13 @@ export default function NFT(props: {
 }
 
 export const getServerSideProps = async (context) => {
-	const {_id} = context.params;
-	const {seller, eid} = context.query;
-
 	await pagePropsConnectMongoDB();
+	const {_id} = context.params;
+	const guard = Guard.getInstance();
 
 	const nft = await MongoModelNFT.findById(_id).populate("creator").exec();
-	if (!nft) {
+
+	if (!guard.exists(nft)) {
 		return {
 			notFound: true,
 		};
@@ -412,44 +364,154 @@ export const getServerSideProps = async (context) => {
 		model: MongoModelProfile,
 	});
 
-	const seller_profile = seller
-		? await MongoModelProfile.findOne({
-				address: seller?.toLowerCase(),
-		  })
-		: null;
-
-	const event = eid ? await MongoModelEvent.findById(eid) : null;
-
-	if (!nft) {
-		return {
-			notFound: true,
-		};
-	}
-
 	await MongoModelNFT.findByIdAndUpdate(_id, {
 		$push: {
 			views: "temporary",
 		},
 	});
 
-	const transactions = await MongoModelTransaction.find({
-		"metadata.nftId": nft.id,
-	});
-
 	nft.creator = creator;
 
 	const returnObj = {
 		id: nft.id,
-		mints: transactions,
 		nft: nft,
-		seller: seller_profile,
-		isResale: !!seller,
-		event: event,
 	};
 
 	return {
 		props: {
 			data: JSON.stringify(returnObj),
+			isResale: false,
 		},
 	};
 };
+
+function ImagePreviewSection({
+	setShowFullScreen,
+	showFullScreen,
+	isOwned,
+	imageURL,
+	sd_image,
+	hd_image,
+	remainingNfts,
+	mintedNfts,
+	maxNftSupply,
+	address,
+	nft,
+	postUtils,
+}) {
+	return (
+		<Container className="w-full 2xl:h-[80vh] lg:h-[90vh] h-[calc(100vh-64px)] flex items-center justify-center col-span-1 lg:col-span-2 xl:col-span-1">
+			<Container
+				css={{
+					backgroundColor: "$cardBg",
+					borderColor: "$border",
+				}}
+				className="container flex-1 flex flex-col gap-4 h-full rounded-2xl drop-shadow-xl p-3 border overflow-hidden"
+			>
+				<Container
+					className="relative w-full h-full bg-white rounded-xl"
+					onClick={() => setShowFullScreen(!showFullScreen)}
+					id={"nft_image"}
+				>
+					{nft.protected && !isOwned && (
+						<OptimizedImage
+							src={imageURL}
+							className="cursor-zoom-in"
+							sizes="100vw"
+							fill
+							objectFit="contain"
+							alt={nft.name}
+						/>
+					)}
+					{nft.protected && isOwned && (
+						<OptimizedNFTImage
+							src={sd_image}
+							className="cursor-zoom-in"
+							sizes="100vw"
+							fill
+							objectFit="contain"
+							alt={nft.name}
+						/>
+					)}
+					{!nft.protected && (
+						<OptimizedNFTImage
+							src={hd_image}
+							className="cursor-zoom-in"
+							sizes="100vw"
+							fill
+							objectFit="contain"
+							alt={nft.name}
+							quality={100}
+						/>
+					)}
+				</Container>
+				<MutedText className="flex-shrink-0"></MutedText>
+				<Container className="flex flex-col gap-2">
+					{remainingNfts !== 0 && (
+						<Container className="flex justify-between">
+							<>
+								<Text>
+									<ImportantText>{mintedNfts}</ImportantText>
+								</Text>
+								<Text>
+									<ImportantText>{maxNftSupply}</ImportantText>
+								</Text>
+							</>
+						</Container>
+					)}
+					<Container
+						className="relative rounded-full flex"
+						css={{
+							backgroundColor: "$overlay",
+						}}
+					>
+						<Container
+							className={`relative rounded-full p-1`}
+							role={"progress"}
+							css={{
+								width: `${Math.ceil((mintedNfts / maxNftSupply) * 100)}%`,
+								backgroundColor: mintedNfts === 0 && "$overlayContrast",
+							}}
+						/>
+					</Container>
+				</Container>
+				<Container className="flex gap-4">
+					<Button
+						onClick={postUtils.likeNFT}
+						appearance={"outline"}
+					>
+						{postUtils.liked ? (
+							<>
+								<HeartFilledIcon
+									width={16}
+									height={16}
+								/>
+							</>
+						) : (
+							<HeartIcon
+								width={16}
+								height={16}
+							/>
+						)}
+						{postUtils.likedBy.length}
+					</Button>
+					<Container className="flex-1">
+						{remainingNfts !== 0 &&
+							!(
+								nft.creator.address.toLowerCase() === address?.toLowerCase()
+							) && <BuyNFTButton nftData={nft} />}
+						{remainingNfts === 0 && (
+							<Button
+								fullWidth
+								appearance={"disabled"}
+								disabled
+							>
+								{remainingNfts === 0 ? "Sold out" : `Buy Now`}
+							</Button>
+						)}
+					</Container>
+				</Container>
+			</Container>
+		</Container>
+	);
+}

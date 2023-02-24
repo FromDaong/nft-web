@@ -119,6 +119,7 @@ export const darkTheme = createTheme("dark", {
 		...baseColorsDark,
 		overlay: "#606060a1",
 		overlayContrast: "#606060eb",
+		overlayPowerContrast: "#60606090",
 		accentBase: "$purple1",
 		accentBgSubtle: "$purple2",
 		accentBg: "$purple1",
@@ -158,6 +159,8 @@ export const darkTheme = createTheme("dark", {
 		mutedText: "$mauve11",
 		border: "$mauve7",
 		subtleBorder: "$mauve6",
+
+		cardBg: "$surface",
 
 		btnCallToAction: "#ff6988",
 		btnCallToActionDisabled: "#ffc1d7",
@@ -208,6 +211,8 @@ export const lightTheme = createTheme("light", {
 		...baseColors,
 		overlay: "#00000053",
 		overlayContrast: "#696969de",
+		overlayPowerContrast: "#69696990",
+
 		overlayInvert: "#ffffff0a",
 		overlayInvertContrast: "#ffffff2a",
 		shadow:
@@ -272,6 +277,7 @@ export const lightTheme = createTheme("light", {
 		buttonSurface: "$surface",
 		textOnSurface: "$text",
 		inputSurface: "$surfaceOnSurface",
+		cardBg: "$white",
 
 		featuresection_iconPinkBg: "hsl(339deg 70% 60%)",
 	},
@@ -339,6 +345,8 @@ export const ogPinkTheme = createTheme("pink", {
 		primary10: "#2E0514",
 		overlay: "#2c2c2c53",
 		overlayContrast: "#2c2c2cde",
+		overlayPowerContrast: "#2c2c2c90",
+
 		overlayInvert: "#ffffff0a",
 		overlayInvertContrast: "#ffffff2a",
 
@@ -394,6 +402,9 @@ export const ogPinkTheme = createTheme("pink", {
 		mutedText: "$gray11",
 		border: "$primary3",
 		subtleBorder: "#ffdce0",
+
+		cardBg: "$primary1",
+		cardText: "$textContrast",
 
 		btnCallToAction: "#ff6988",
 		btnCallToActionDisabled: "#ffc1d7",
