@@ -3,34 +3,13 @@ import {
 	treatMarketplaceContract,
 	treatMarketplaceReaderContract,
 } from "@packages/treat/lib/contract-defs";
-import {
-	formatOpenOrders,
-	OpenOrder,
-	OpenOrdersManager,
-} from "@utils/chain-methods";
-import {legacy_nft_to_new} from "@utils/index";
+import {formatOpenOrders} from "@utils/chain-methods";
+import {PaginationManager} from "@utils/pagination";
+import {SearchManager} from "@utils/search";
 import {NextApiResponse} from "next";
 import {NextApiRequest} from "next";
 import {connectMongoDB} from "server/helpers/core";
 import {MongoModelNFT} from "server/helpers/models";
-
-const searchDBForNFTs = async (q: string): Promise<Array<number>> => {
-	const nfts = await MongoModelNFT.aggregate([
-		{
-			$search: {
-				index: "nfts",
-				text: {
-					query: `${q}`,
-					path: ["name", "description"],
-				},
-			},
-		},
-	]).exec();
-
-	const nftIds = nfts.map((nft) => nft.id);
-
-	return nftIds;
-};
 
 const getMinMaxArray = (num) => {
 	const arr = [];
@@ -73,20 +52,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const formatedOrders = formatOpenOrders(
 		onChainOpenOrders.flat().filter((order) => !!order)
 	);
-	const ordersManager = new OpenOrdersManager(
-		formatedOrders as Array<OpenOrder>
-	);
 
-	const paginatedOpenOrders = ordersManager.paginate(
-		parseInt(page as string),
-		sort === "1"
-			? ordersManager.cheapestFirst()
-			: sort === "2"
-			? ordersManager.expensiveFirst()
-			: ordersManager.newestFirst()
-	);
-
-	const orderIds = paginatedOpenOrders.docs.map((order) => order.nftId);
+	const orderIds = formatedOrders.map((order) => order.nftId);
 
 	const nfts = await MongoModelNFT.find({
 		id: {
@@ -94,14 +61,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		},
 	}).populate("creator");
 
-	const docs = paginatedOpenOrders.docs
+	const populatedNFTOrders = formatedOrders
 		.map((doc) => {
 			const metadata = nfts.find((nft) => nft.id === doc.nftId);
+			console.log({metadata, doc});
 
 			if (!metadata) return;
 
 			return {
 				_id: metadata._id,
+				listDate: doc.listDate,
 				name: metadata.name,
 				image: {
 					cdn: metadata.image.ipfs,
@@ -145,7 +114,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		})
 		.filter((order) => !!order);
 
-	return returnWithSuccess({...paginatedOpenOrders, docs}, res);
+	const searchManager = new SearchManager(populatedNFTOrders);
+	searchManager.hydrate();
+	const searchResults = await searchManager.search(q as string);
+	const paginationManager = new PaginationManager(
+		populatedNFTOrders.filter((nft) => searchResults.includes(nft.id))
+	);
+
+	return returnWithSuccess(
+		paginationManager.paginate(
+			Number((page as string) ?? 1),
+			sort === "1"
+				? paginationManager.cheapestFirst()
+				: sort === "2"
+				? paginationManager.expensiveFirst()
+				: paginationManager.newestFirst()
+		),
+		res
+	);
 };
 
 export default handler;

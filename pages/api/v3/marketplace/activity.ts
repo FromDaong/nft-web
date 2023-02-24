@@ -1,53 +1,16 @@
+import {PaginationManager} from "./../../../../utils/pagination";
 /* eslint-disable no-mixed-spaces-and-tabs */
 import {returnWithSuccess} from "@db/engine/utils";
 import {connectMongoDB} from "server/helpers/core";
 import {MongoModelNFT} from "server/helpers/models";
-import NFTEvent from "server/helpers/models/posts/activity";
+import {SearchManager} from "@utils/search";
 
 export default async function handler(req, res) {
 	await connectMongoDB();
 
 	const {page, q, sort} = req.query;
 
-	const sortMap = {
-		"1": {
-			price: 1,
-		},
-		"2": {
-			price: -1,
-		},
-		"3": {
-			listedDate: -1,
-		},
-	};
-
-	const get_page = Number(page ?? 1) || 1;
-	const options = {
-		page: get_page,
-		limit: 24,
-	};
-
-	const pipeline = [
-		{
-			$search: {
-				index: "nfts",
-				text: {
-					query: `${q}`,
-					path: ["name", "description"],
-				},
-			},
-		},
-	];
-
-	const nftsAggregate = MongoModelNFT.aggregate([
-		{
-			$lookup: {
-				from: "profiles",
-				localField: "seller",
-				foreignField: "address",
-				as: "seller",
-			},
-		},
+	const nfts = await MongoModelNFT.aggregate([
 		{
 			$lookup: {
 				from: "creators",
@@ -94,6 +57,20 @@ export default async function handler(req, res) {
 		},
 		{
 			$match: {
+				$or: [
+					{
+						totm_nft: false,
+					},
+					{
+						totm_nft: {
+							$exists: false,
+						},
+					},
+				],
+			},
+		},
+		{
+			$match: {
 				id: {
 					$gte: 96,
 				},
@@ -109,26 +86,24 @@ export default async function handler(req, res) {
 				path: "$creator_profile",
 			},
 		},
-		{
-			$unwind: {
-				path: "$seller",
-			},
-		},
-		{
-			$sort: {
-				...(sort && sortMap[sort]
-					? sortMap[sort]
-					: {
-							price: -1,
-					  }),
-			},
-		},
-	]);
+	]).exec();
 
-	// @ts-ignore
-	const nfts = await MongoModelNFT.aggregatePaginate(nftsAggregate, options);
-	nfts.docs = nfts.docs.map((nft) => ({
-		...nft,
-	}));
-	return returnWithSuccess(nfts, res);
+	const searchManager = new SearchManager(nfts);
+	searchManager.hydrate();
+	const searchResults = await searchManager.search(q);
+	const paginationManager = new PaginationManager(
+		nfts.filter((nft) => searchResults.includes(nft.id))
+	);
+
+	return returnWithSuccess(
+		paginationManager.paginate(
+			Number((page as string) ?? 1),
+			sort === "1"
+				? paginationManager.cheapestFirst()
+				: sort === "2"
+				? paginationManager.expensiveFirst()
+				: paginationManager.newestFirst()
+		),
+		res
+	);
 }

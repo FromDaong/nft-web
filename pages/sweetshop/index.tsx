@@ -80,7 +80,7 @@ export default function NFTS({sort, q, nfts, error}) {
 						<Container className="flex gap-4 px-4 flex-noshrink">
 							<NFTSort
 								sort={sortBy}
-								setSort={setSort}
+								prefix={""}
 							/>
 						</Container>
 

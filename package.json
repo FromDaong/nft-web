@@ -114,7 +114,7 @@
 		"filepond-plugin-image-preview": "^4.6.11",
 		"filepond-plugin-image-resize": "^2.0.10",
 		"filepond-plugin-image-transform": "^3.8.7",
-		"flexsearch": "^0.7.21",
+		"flexsearch": "0.7.2",
 		"formik": "^2.2.9",
 		"framer-motion": "^7.3.6",
 		"fuse.js": "^6.4.6",

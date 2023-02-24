@@ -1,14 +1,13 @@
 import {Button} from "@packages/shared/components/Button";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
-import Link from "next/link";
 import {useRouter} from "next/router";
 
-const NFTSort = ({setSort, sort}) => {
+const NFTSort = ({prefix, sort}) => {
 	const router = useRouter();
 	return (
 		<>
 			<a
-				href={`/sweetshop/resale?sort=${3}&p=1${
+				href={`/sweetshop${prefix}?sort=${3}&p=1${
 					router.query.s ? `&s=${router.query.s}` : ""
 				}`}
 			>
@@ -22,7 +21,7 @@ const NFTSort = ({setSort, sort}) => {
 			</a>
 
 			<a
-				href={`/sweetshop/resale?sort=${1}&p=1${
+				href={`/sweetshop${prefix}?sort=${1}&p=1${
 					router.query.s ? `&s=${router.query.s}` : ""
 				}`}
 			>
@@ -36,7 +35,7 @@ const NFTSort = ({setSort, sort}) => {
 			</a>
 
 			<a
-				href={`/sweetshop/resale?sort=${2}&p=1${
+				href={`/sweetshop${prefix}?sort=${2}&p=1${
 					router.query.s ? `&s=${router.query.s}` : ""
 				}`}
 			>

@@ -16769,10 +16769,10 @@ flatten-vertex-data@^1.0.2:
   dependencies:
     dtype "^2.0.0"
 
-flexsearch@^0.7.21:
-  version "0.7.31"
-  resolved "https://registry.yarnpkg.com/flexsearch/-/flexsearch-0.7.31.tgz#065d4110b95083110b9b6c762a71a77cc52e4702"
-  integrity sha512-XGozTsMPYkm+6b5QL3Z9wQcJjNYxp0CYn3U1gO7dwD6PAqU1SVWZxI9CCg3z+ml3YfqdPnrBehaBrnH2AGKbNA==
+flexsearch@0.7.2:
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/flexsearch/-/flexsearch-0.7.2.tgz#c292f982c858747831c202245c99b1de0a81e526"
+  integrity sha512-Giy6ye2pPL2ZZT/36+TNsmYHqpzmuWF9Gwv5cHZwjiqhcIjvic1LcUpIAEJSFSc7va0bUHj1YfjXmFuDSreWrQ==
 
 flow-stoplight@^1.0.0:
   version "1.0.0"
