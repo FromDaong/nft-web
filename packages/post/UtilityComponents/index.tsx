@@ -19,13 +19,6 @@ export const ActionSection = (props) => {
 					>
 						<ImportantText>{props.name}</ImportantText>
 					</Text>
-					{!props.hideSeller && (
-						<MutedText css={{lineHeight: "12px"}}>
-							{props.seller
-								? `Listed by ${props.seller.username}`
-								: props.creator && `Listed by ${props.creator}`}
-						</MutedText>
-					)}
 					{props.count && <Text>{props.count} editions available</Text>}
 					{!props.noPrice && (
 						<Container className="flex items-baseline gap-1 mt-2">

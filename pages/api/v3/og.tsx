@@ -8,7 +8,7 @@ export const config = {
 const default_image = (
 	<div tw={"w-full h-full flex items-center justify-center"}>
 		<img
-			src={"og/platform.png"}
+			src={`${process.env.NEXT_PUBLIC_HOSTNAME}/og/platform.png`}
 			tw={"w-full h-full"}
 			style={{
 				objectFit: "cover",
@@ -20,11 +20,11 @@ const default_image = (
 const profile_image = (username, display_name, bio, profile_picture) => (
 	<div
 		tw={
-			"w-full h-full flex items-center justify-center bg-[#ffd4da] p-8 text-center relative"
+			"w-full h-full flex items-center justify-center bg-[#ffd4da] text-center relative"
 		}
 	>
 		<img
-			src={"og/platform.png"}
+			src={`${process.env.NEXT_PUBLIC_HOSTNAME}/og/user.png`}
 			tw={"w-full h-full"}
 			style={{
 				objectFit: "cover",
@@ -41,11 +41,33 @@ const profile_image = (username, display_name, bio, profile_picture) => (
 				background: "linear-gradient(90.68deg, #FE7AC5 0.67%, #F67DCB 99.53%)",
 				zIndex: 10,
 			}}
-			tw="flex flex-col w-full items-center w-1/2 h-full absolute top-0 right-0"
+			tw="flex flex-col w-full w-1/2 h-full absolute top-0 right-0"
 		>
-			<h1 tw="text-3xl font-bold my-0">{display_name}</h1>
-			<p tw="text-lg text-gray-700 max-w-xl">{bio}</p>
-			<p tw="text-base text-gray-700 my-8">https://treatnfts.com/{username}</p>
+			<h1
+				style={{
+					fontSize: "48px",
+				}}
+				tw="text-white font-black"
+			>
+				{display_name !== "" ? display_name : username}
+			</h1>
+			<p
+				style={{
+					fontSize: "24px",
+					textAlign: "left",
+				}}
+				tw="font-medium text-white "
+			>
+				{bio}
+			</p>
+			<p
+				style={{
+					fontSize: "24px",
+				}}
+				tw="font-medium text-white my-8"
+			>
+				https://treatnfts.com/{username}
+			</p>
 		</div>
 		<div
 			style={{
@@ -56,8 +78,9 @@ const profile_image = (username, display_name, bio, profile_picture) => (
 				top: "73px",
 				borderRadius: "9999px",
 				zIndex: 170,
-				overflow: "clip",
+				overflow: "hidden",
 			}}
+			tw={"flex"}
 		>
 			<img
 				src={profile_picture}
