@@ -2,6 +2,7 @@
 import Error404 from "@packages/error/404";
 import Error500 from "@packages/error/500";
 import RenderProfileNFTs from "@packages/post/profile/RenderProfileNFTs";
+import {TritPost} from "@packages/post/TritPost";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import {useUser} from "core/auth/useUser";
@@ -81,6 +82,7 @@ export default function UserProfile(props: {
 			fetchNextPage={fetchNextPage}
 			isFetchingNextPage={isFetchingNextPage}
 			hasNextPage={hasNextPage}
+			Component={TritPost}
 		/>
 	);
 }
