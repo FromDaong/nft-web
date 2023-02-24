@@ -64,8 +64,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const populatedNFTOrders = formatedOrders
 		.map((doc) => {
 			const metadata = nfts.find((nft) => nft.id === doc.nftId);
-			console.log({metadata, doc});
-
 			if (!metadata) return;
 
 			return {
@@ -117,6 +115,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const searchManager = new SearchManager(populatedNFTOrders);
 	searchManager.hydrate();
 	const searchResults = await searchManager.search(q as string);
+	console.log(searchResults.length);
 	const paginationManager = new PaginationManager(
 		populatedNFTOrders.filter((nft) => searchResults.includes(nft.id))
 	);

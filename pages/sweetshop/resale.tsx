@@ -133,7 +133,7 @@ export const getServerSideProps = async (ctx) => {
 		const res = await axios.get(
 			`${apiEndpoint}/marketplace/methods/open-orders-with-metadata-exhaustive?sort=${sort}&page=${
 				p ?? 1
-			}`
+			}&q=${q}`
 		);
 
 		const {data} = res.data;
