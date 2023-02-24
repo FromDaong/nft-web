@@ -18,10 +18,10 @@ export default function UserProfile(props: {
 	p: number;
 }) {
 	const {data: session} = useSession();
-	const data = props.data ? JSON.parse(props.data) : {};
+	const data = props.data ? JSON.parse(props.data ?? "{}") : {};
 	const {username} = data;
 	const {profile} = (session as any) ?? {profile: {}};
-	const nfts_data = JSON.parse(props.nfts);
+	const nfts_data = JSON.parse(props.nfts ?? "{}");
 
 	const {
 		gotoPage,

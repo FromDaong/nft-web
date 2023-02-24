@@ -2,6 +2,7 @@
 import {SearchIcon} from "@heroicons/react/outline";
 import NFTSort from "@packages/Dropdowns/NFTDropdownSort";
 import {TritPost} from "@packages/post/TritPost";
+import {TritResalePost} from "@packages/post/TritResalePost";
 import {SEOHead} from "@packages/seo/page";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
@@ -14,7 +15,6 @@ import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
-import Link from "next/link";
 import {TreatNFTsInfinityScrollingContainer} from "packages/shared/components/ListingSection";
 
 export default function NFTS({sort, q, nfts, error}) {
@@ -31,6 +31,8 @@ export default function NFTS({sort, q, nfts, error}) {
 		setSort,
 		setSearchText,
 	} = usePaginatedPage(posts, sort, q);
+
+	console.log({nft_posts});
 
 	return (
 		<ApplicationLayout>
@@ -90,7 +92,7 @@ export default function NFTS({sort, q, nfts, error}) {
 											key={nft._id}
 											className="col-span-1"
 										>
-											<TritPost
+											<TritResalePost
 												inGrid
 												{...nft}
 											/>
@@ -124,35 +126,16 @@ export default function NFTS({sort, q, nfts, error}) {
 export const getServerSideProps = async (ctx) => {
 	const {q, p} = ctx.query;
 	const sort = ctx.query.sort ?? "3";
-	console.log({sort});
 
 	try {
 		const res = await axios.get(
-			`${apiEndpoint}/marketplace/activity?page=${p ?? 1}${"&sort=" + sort}${
-				q ? "&q=" + q : ""
+			`${apiEndpoint}/marketplace/methods/open-orders-with-metadata-exhaustive?sort=${sort}&page=${
+				p ?? 1
 			}`
 		);
 
 		const {data} = res.data;
 
-		data.docs = data.docs.map((post) =>
-			legacy_nft_to_new({
-				...post.nft,
-				price: post.price,
-				_id: post.nft._id,
-				creator: {
-					...post.creator,
-					profile: post.creator_profile,
-				},
-				seller: {
-					address: post.seller.address,
-					profile_pic: post.seller.profile_pic,
-					username: post.seller.username,
-					display_name: post.seller.display_name,
-					event_id: post._id,
-				},
-			})
-		);
 		return {
 			props: {
 				sort: sort ?? 3,
@@ -162,6 +145,7 @@ export const getServerSideProps = async (ctx) => {
 			},
 		};
 	} catch (err) {
+		console.log({err});
 		return {
 			props: {
 				sort: sort ?? 3,

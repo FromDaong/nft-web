@@ -160,7 +160,7 @@ export const TritPost = (props: TritPostProps) => {
 					</Container>
 				</a>
 			</Link>
-			<Container className="flex flex-col w-full transition-transform duration-150 hover:scale-95">
+			<Container className="flex flex-col w-full">
 				<ActionSection
 					{...props}
 					isMine={isMine}

@@ -27,11 +27,9 @@ import {
 	CaretRightIcon,
 	MixerVerticalIcon,
 } from "@radix-ui/react-icons";
-import Balancer from "react-wrap-balancer";
 import Image from "next/future/image";
 import {SEOHead} from "@packages/seo/page";
-import {useCallback, useEffect, useMemo, useRef, useState} from "react";
-import useEmblaCarousel from "embla-carousel-react";
+import {useMemo, useRef, useState} from "react";
 import {IFeatureProps, request} from "@lib/datocms";
 
 const getTrendingNFTs = async () => {
@@ -104,7 +102,7 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 	);
 
 	return (
-		<Container className="flex flex-col gap-12 md:gap-16 lg:gap-24 py-12">
+		<Container className="flex flex-col gap-12 py-12 md:gap-16 lg:gap-24">
 			<SEOHead
 				title={"TreatDAO"}
 				description="TreatDAO is a Web3 project dedicated to creating opportunities and an amazing platform for adult content creators and collectors."
@@ -116,7 +114,7 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 				<FeaturedCarousel features={props.allFeatures} />
 			</Container>
 			<Container>
-				<Container className="flex flex-col w-full gap-8 px-8  container mx-auto">
+				<Container className="container flex flex-col w-full gap-8 px-8 mx-auto">
 					<Container className="flex flex-col items-baseline gap-4">
 						<Container className="flex flex-col gap-2">
 							<Heading size="sm">Discover sweetshop NFT's</Heading>
@@ -169,7 +167,7 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 			</Container>
 			<Divider dir={"horizontal"} />
 			<Container>
-				<Container className="flex flex-col w-full gap-8 px-8  container mx-auto">
+				<Container className="container flex flex-col w-full gap-8 px-8 mx-auto">
 					<Container className="flex flex-col items-baseline gap-4">
 						<Container className="flex flex-col gap-2">
 							<Heading size="sm">Lots of new features</Heading>
@@ -179,15 +177,15 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 							</Text>
 						</Container>
 					</Container>
-					<Container className="pt-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 xl:gap-12">
+					<Container className="grid grid-cols-1 gap-8 pt-4 md:grid-cols-2 xl:grid-cols-4 xl:gap-12">
 						<Container
 							css={{
 								backgroundColor: "$accentBg",
 								borderRadius: "16px",
 							}}
-							className="p-8 flex flex-col gap-2"
+							className="flex flex-col gap-2 p-8"
 						>
-							<Container className="py-8 flex">
+							<Container className="flex py-8">
 								<Container
 									css={{
 										backgroundColor: "$accentText",
@@ -214,9 +212,9 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 								backgroundColor: "$accentBg",
 								borderRadius: "16px",
 							}}
-							className="p-8 flex flex-col gap-2"
+							className="flex flex-col gap-2 p-8"
 						>
-							<Container className="py-8 flex">
+							<Container className="flex py-8">
 								<Container
 									css={{
 										backgroundColor: "$accentText",
@@ -244,9 +242,9 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 								backgroundColor: "$accentBg",
 								borderRadius: "16px",
 							}}
-							className="p-8 flex flex-col gap-2"
+							className="flex flex-col gap-2 p-8"
 						>
-							<Container className="py-8 flex">
+							<Container className="flex py-8">
 								<Container
 									css={{
 										backgroundColor: "$accentText",
@@ -273,9 +271,9 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 								backgroundColor: "$accentBg",
 								borderRadius: "16px",
 							}}
-							className="p-8 flex flex-col gap-2"
+							className="flex flex-col gap-2 p-8"
 						>
-							<Container className="py-8 flex">
+							<Container className="flex py-8">
 								<Container
 									css={{
 										backgroundColor: "$accentText",
@@ -302,7 +300,7 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 			</Container>
 			<Divider dir={"horizontal"} />
 			<Container>
-				<Container className="flex flex-col w-full gap-8 px-4  container mx-auto">
+				<Container className="container flex flex-col w-full gap-8 px-4 mx-auto">
 					<Container className="flex flex-col gap-4">
 						<Container className="flex flex-col gap-2">
 							<Heading size="sm">Discover Treat creators</Heading>
@@ -324,7 +322,7 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 							</a>
 						</Link>
 					</Container>
-					<Container className="grid grid-cols-1 gap-8 md:grid-cols-2  xl:grid-cols-4">
+					<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4">
 						{!trendingCreatorError && !trendingCreatorsLoading
 							? trendingCreators?.slice(0, 4).map((creator) => (
 									<SuggestedCreatorCard
@@ -359,7 +357,7 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 
 			<Divider dir={"horizontal"} />
 			<Container>
-				<Container className="flex flex-col w-full gap-8 px-8  container mx-auto">
+				<Container className="container flex flex-col w-full gap-8 px-8 mx-auto">
 					<Container className="flex flex-col items-baseline gap-4">
 						<Container className="flex flex-col gap-2">
 							<Heading size="sm">Going multichain</Heading>
@@ -380,7 +378,7 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 			</Container>
 			<Divider dir="horizontal" />
 			<Container>
-				<Container className="flex flex-col w-full gap-8 px-8  container mx-auto py-24">
+				<Container className="container flex flex-col w-full gap-8 px-8 py-24 mx-auto">
 					<Container className="flex flex-col items-baseline gap-4">
 						<Container className="flex flex-col gap-2">
 							<Heading size="sm">Frequently asked questions</Heading>
@@ -390,7 +388,7 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 							</Text>
 						</Container>
 					</Container>
-					<Container className="pt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+					<Container className="grid grid-cols-1 gap-12 pt-4 md:grid-cols-2 lg:grid-cols-4">
 						<Container className="flex flex-col gap-2">
 							<Heading size="xss">What is an NFT?</Heading>
 							<Text>
@@ -483,8 +481,8 @@ function FeaturedCarousel(props: {features: Array<IFeatureProps>}) {
 	};
 
 	return (
-		<Container className="relative container mx-auto flex flex-col gap-8 px-8">
-			<Container className="flex flex-col md:flex-row gap-4 justify-between w-full md:items-center">
+		<Container className="container relative flex flex-col gap-8 px-8 mx-auto">
+			<Container className="flex flex-col justify-between w-full gap-4 md:flex-row md:items-center">
 				<Container>
 					<Heading size="sm">Featured on TreatDAO</Heading>
 					<Text>
@@ -536,7 +534,7 @@ function FeaturedCarousel(props: {features: Array<IFeatureProps>}) {
 									background:
 										"linear-gradient(0deg, #000000 0%, rgba(0, 0, 0, 0) 100%)",
 								}}
-								className="absolute z-1 top-0 left-0 flex flex-col-reverse w-full h-full p-8 gap-2 group-hover:opacity-100 opacity-0 transition-opacity duration-300 delay-150"
+								className="absolute top-0 left-0 flex flex-col-reverse w-full h-full gap-2 p-8 transition-opacity duration-300 delay-150 opacity-0 z-1 group-hover:opacity-100"
 							>
 								<Text css={{color: "#f1f1f1"}}>
 									{feature.caption ??
