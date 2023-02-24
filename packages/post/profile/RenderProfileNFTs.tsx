@@ -55,7 +55,7 @@ const RenderProfileNFTs = ({
 
 					{posts.length === 0 && !isFetching && !error && (
 						<Container className="flex flex-col items-center col-span-4 gap-2 py-12 text-center">
-							<Heading size={"sm"}>Eish, no nfts found.</Heading>
+							<Heading size={"sm"}>No nfts found.</Heading>
 							<Text>The query returned no results from the server.</Text>
 						</Container>
 					)}
@@ -63,7 +63,7 @@ const RenderProfileNFTs = ({
 			}
 			{!posts && error && (
 				<Container className="flex flex-col items-center col-span-4 gap-2 py-12 text-center">
-					<Heading size={"sm"}>Eish, an error!</Heading>
+					<Heading size={"sm"}>An error occurred!</Heading>
 					<Text>That was an error. Please reload the page and try again.</Text>
 				</Container>
 			)}

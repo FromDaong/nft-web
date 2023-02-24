@@ -87,7 +87,10 @@ export const getServerSideProps = async (ctx) => {
 		}
 
 		const creator = await MongoModelCreator.findOne({username}).exec();
-		if (!creator) {
+		if (
+			!guardInstance.exists(creator) ||
+			guardInstance.falsey(creator.approved)
+		) {
 			if (ctx.resolvedUrl === `/${username}`) {
 				return {
 					redirect: {

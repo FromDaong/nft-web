@@ -21,4 +21,8 @@ export default class Guard {
 	exists(param: any) {
 		return this.notNull(param) && this.isDefined(param);
 	}
+
+	falsey(param: any) {
+		return !param;
+	}
 }
