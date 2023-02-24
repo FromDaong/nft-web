@@ -13,6 +13,8 @@ import GenericChainModal from "@packages/modals/GenericChainModal";
 import {useUser} from "core/auth/useUser";
 import {useRouter} from "next/router";
 import {useDisclosure} from "@packages/hooks";
+import useGetIsSubscribed from "@packages/chain/hooks/useGetIsSubscribed";
+import NFTEvent from "server/helpers/models/posts/activity";
 
 /**
  *
@@ -216,7 +218,7 @@ const BuyCreatorMartNFTButton = ({
 				key={"buyBtn"}
 				onClick={buyNFT}
 			>
-				Buy NFT
+				Buy Now
 			</Button>
 		</>
 	);
@@ -291,9 +293,28 @@ const PurchaseButtonWrapper = (nft: BuyButtonProps) => {
 };
 
 const BuyNFTButton = ({nftData}) => {
-	console.log({nftData});
+	const {address} = useAccount();
+	const isSubscribed = useGetIsSubscribed(address);
 	if (nftData.melon_nft || nftData.totm_nft) {
-		return null;
+		return (
+			<Button
+				appearance={"disabled"}
+				disabled
+			>
+				Purchasing is disabled
+			</Button>
+		);
+	}
+
+	if (nftData.subscription_nft && !isSubscribed) {
+		return (
+			<Button
+				appearance={"disabled"}
+				disabled
+			>
+				You are not subscribed
+			</Button>
+		);
 	}
 
 	return (

@@ -1,7 +1,4 @@
-import {
-	populateNFTsWithProfileAndTx,
-	returnWithSuccess,
-} from "@db/engine/utils";
+import {returnWithSuccess} from "@db/engine/utils";
 import {ironOptions} from "@utils/index";
 import {withIronSessionApiRoute} from "iron-session/next";
 import {NextApiResponse} from "next";
@@ -18,6 +15,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	// get 4 random nfts from the same collection
 	await connectMongoDB();
 	const nfts = await MongoModelNFT.aggregate([
+		{
+			$match: {
+				subscription_nft: {
+					$exists: false,
+				},
+				melon_nft: {
+					$exists: false,
+				},
+			},
+		},
 		{
 			$sample: {size: 4},
 		},
