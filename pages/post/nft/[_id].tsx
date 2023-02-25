@@ -367,14 +367,14 @@ function ImagePreviewSection({
 				className="container flex flex-col flex-1 h-full gap-4 p-3 overflow-hidden border rounded-2xl drop-shadow-xl"
 			>
 				<Container
-					className="relative w-full h-full bg-white rounded-xl"
+					className="relative w-full h-full rounded-xl"
 					onClick={() => setShowFullScreen(!showFullScreen)}
 					id={"nft_image"}
 				>
 					{nft.protected && !isOwned && (
 						<OptimizedImage
 							src={imageURL}
-							className="cursor-zoom-in"
+							className="rounded-xl cursor-zoom-in"
 							sizes="100vw"
 							fill
 							objectFit="contain"
@@ -384,7 +384,7 @@ function ImagePreviewSection({
 					{nft.protected && isOwned && (
 						<OptimizedNFTImage
 							src={nft.image.ipfs}
-							className="cursor-zoom-in"
+							className="cursor-zoom-in rounded-xl"
 							sizes="100vw"
 							fill
 							objectFit="contain"
@@ -394,7 +394,7 @@ function ImagePreviewSection({
 					{!nft.protected && (
 						<OptimizedNFTImage
 							src={nft.image.ipfs}
-							className="cursor-zoom-in"
+							className="cursor-zoom-in rounded-xl"
 							sizes="100vw"
 							fill
 							objectFit="contain"
