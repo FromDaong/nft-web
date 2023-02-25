@@ -1,5 +1,4 @@
-import {PostMediaContent} from "./PostMediaContent";
-import {LivestreamPost, TritPostProps} from "./types";
+import {LivestreamPost} from "./types";
 import {Container} from "@packages/shared/components/Container";
 import {Button} from "@packages/shared/components/Button";
 import {LiveMediaPostContainer} from "./blocks";
@@ -27,13 +26,6 @@ export const LivestreamingPostCard = (props: LivestreamPost) => {
 						<Button>Subscribe</Button>
 					</Container>
 				</Container>
-				<PostMediaContent
-					imageUrl={imageUrl}
-					blurhash={props.blurhash}
-					overrideText={"Subscribe to join livestream"}
-					caption={props.text}
-					ipfs={props.image?.ipfs}
-				/>
 			</LivestreamMediaContainer>
 		</LiveMediaPostContainer>
 	);

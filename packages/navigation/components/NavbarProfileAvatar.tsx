@@ -162,21 +162,19 @@ const NavbarProfileAvatar = () => {
 					<DropdownContent>
 						<DropdownContainer className="drop-shadow-2xl">
 							<DropdownMenu.DropdownMenuGroup className="py-1">
-								<Link href={`/${profile?.username}`}>
-									<a>
-										<NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
-											<div className="flex items-center gap-4">
-												<Text className="p-2 rounded-full">
-													<UserCircle
-														width={20}
-														height={20}
-													/>
-												</Text>
-												<BoldLink>Profile</BoldLink>
-											</div>
-										</NavDropdownItem>
-									</a>
-								</Link>
+								<a href={`/${profile?.username}`}>
+									<NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
+										<div className="flex items-center gap-4">
+											<Text className="p-2 rounded-full">
+												<UserCircle
+													width={20}
+													height={20}
+												/>
+											</Text>
+											<BoldLink>Profile</BoldLink>
+										</div>
+									</NavDropdownItem>
+								</a>
 								{!isLoading && !creator && (
 									<Link href={"/account/upgrade"}>
 										<a>

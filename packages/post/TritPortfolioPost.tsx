@@ -98,9 +98,10 @@ export const TritPortfolioPost = (props: TritResalePostProps) => {
 						<PostMediaContent
 							imageUrl={imageURL}
 							blurhash={props.blurhash}
-							isProtected={isProtected}
+							isProtected={isProtected && !isMine}
 							caption={props.text}
 							ipfs={props.image?.ipfs}
+							id={props.id}
 							overrideText={
 								"The creator wants you to collect this NFT before you can preview the content"
 							}

@@ -13,7 +13,7 @@ import {
 	PostCardCreatorInfoContainer,
 	PostCardMetaContainer,
 } from "./blocks";
-import {ChatAltIcon, GiftIcon} from "@heroicons/react/outline";
+import {GiftIcon} from "@heroicons/react/outline";
 import PostUserDropdown from "./PostUserDropdown";
 import UserAvatar from "core/auth/components/Avatar";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
@@ -169,6 +169,7 @@ export const TimelineActivity = (
 							overrideText={"Subscribe to view"}
 							caption={props.text}
 							ipfs={props.image?.ipfs}
+							id={props.id}
 						/>
 					</Container>
 				</Container>

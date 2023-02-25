@@ -10,6 +10,7 @@ export default function FullScreenImagePreview(props: {
 	isOpen: boolean;
 	onClose: () => void;
 	alt: string;
+	id: string;
 }) {
 	return (
 		<Transition

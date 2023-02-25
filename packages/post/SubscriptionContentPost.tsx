@@ -4,8 +4,7 @@ import {
 	Text,
 } from "@packages/shared/components/Typography/Headings";
 import {HeartIcon} from "@radix-ui/react-icons";
-import {DotsHorizontalIcon, GiftIcon} from "@heroicons/react/solid";
-import {BoldLink} from "@packages/shared/components/Typography/Text";
+import {GiftIcon} from "@heroicons/react/solid";
 import Link from "next/link";
 import NewAvatar from "@packages/shared/components/AvatarNew";
 import {PostMediaContent} from "./PostMediaContent";
@@ -18,8 +17,6 @@ import {
 	PostCardContainer,
 	PostCardCreatorInfoContainer,
 	PostCardMetaContainer,
-	PostMediaContainer,
-	PostVisualMediaWrapper,
 } from "./blocks";
 import {BookmarkIcon} from "@heroicons/react/outline";
 
@@ -109,6 +106,7 @@ export const SubscriptionContentPost = (props: TritPostProps) => {
 						overrideText={"Subscribe to view"}
 						caption={props.text}
 						ipfs={props.image?.ipfs}
+						id={props.id}
 					/>
 				</Container>
 			</Container>

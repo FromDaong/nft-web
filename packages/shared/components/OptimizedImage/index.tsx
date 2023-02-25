@@ -1,13 +1,6 @@
 import Image from "next/future/image";
 
-let dev = false;
-if (typeof window !== "undefined") {
-	dev = window.origin === "http://localhost:3000";
-}
-
 const gumletLoader = ({src}) => {
-	if (dev) return;
-
 	return `${src}`;
 };
 
@@ -22,7 +15,6 @@ type OptimizedImageProps = {
 	objectFit?: "contain" | "cover" | "fill";
 	sizes?: string;
 	layout?: string;
-	id: string;
 };
 
 const OptimizedImage = (props: OptimizedImageProps) => {
@@ -30,7 +22,7 @@ const OptimizedImage = (props: OptimizedImageProps) => {
 		<Image
 			loader={gumletLoader}
 			quality={props.quality}
-			src={`/api/v3/media/https://treatdaoipfs.gumlet.io/${props.src}&id=${props.id}`}
+			src={`/api/v3/media/${props.src}`}
 			alt={props.alt}
 			width={props.height}
 			height={props.height}
