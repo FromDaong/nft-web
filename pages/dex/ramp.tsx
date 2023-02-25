@@ -13,8 +13,8 @@ export default function OnRamp() {
 					<Container className="flex flex-col gap-2">
 						<Heading size="sm">Buy Crypto</Heading>
 						<Text>
-							You can buy BNB easily through floorz.trade's widget below. Use
-							BNB throughout the Treat site or purchase $TREAT.
+							You can buy BNB easily through flooz.trade's widget below. Use BNB
+							throughout the Treat site or purchase $TREAT.
 						</Text>
 					</Container>
 					<Container>
