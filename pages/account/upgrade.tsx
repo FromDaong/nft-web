@@ -93,10 +93,10 @@ export default function Upgrade() {
 		<ApplicationLayout>
 			<SEOHead title="Become a Creator" />
 			<ApplicationFrame>
-				<Container className="flex flex-col gap-12 py-12 max-w-xl mx-auto">
+				<Container className="flex flex-col max-w-xl gap-12 py-12 mx-auto">
 					<Container
-						className="flex flex-col gap-8 p-8 shadow"
-						css={{borderRadius: "16px"}}
+						className="flex flex-col gap-8 p-8 border"
+						css={{borderRadius: "16px", borderColor: "$border"}}
 					>
 						<Container className="flex flex-col gap-2">
 							<Heading size="sm">Upgrade to a creator profile</Heading>
@@ -172,6 +172,23 @@ export default function Upgrade() {
 											/>
 										</Container>
 									)}
+									<Container className="flex items-center gap-4">
+										<input
+											id="tos"
+											type="checkbox"
+											required
+										/>
+										<label htmlFor="tos">
+											<Text>
+												Accept our Terms of Service. You can read them{" "}
+												<ImportantText>
+													<Link href={"/tos"}>
+														<a>here</a>
+													</Link>
+												</ImportantText>
+											</Text>
+										</label>
+									</Container>
 									<Button
 										className="mt-4"
 										appearance={
@@ -204,7 +221,7 @@ export default function Upgrade() {
 							)}
 
 							{stage === "submitting" && (
-								<Container className="flex flex-col gap-4 items-center">
+								<Container className="flex flex-col items-center gap-4">
 									<Spinner />
 									<Text>
 										<ImportantText>
@@ -215,14 +232,14 @@ export default function Upgrade() {
 							)}
 
 							{stage === "success" && (
-								<Container className="flex flex-col gap-4 items-center">
+								<Container className="flex flex-col items-center gap-4">
 									<Text css={{color: "$teal9"}}>
 										<CheckCircleIcon
 											width={40}
 											height={40}
 										/>
 									</Text>
-									<Container className="flex flex-col w-full gap-2 items-center text-center">
+									<Container className="flex flex-col items-center w-full gap-2 text-center">
 										<Text>
 											<ImportantText>
 												Congratulations. You are now a creator
@@ -240,7 +257,7 @@ export default function Upgrade() {
 							)}
 
 							{stage === "error" && (
-								<Container className="flex flex-col gap-4 items-center">
+								<Container className="flex flex-col items-center gap-4">
 									<Text appearance={"danger"}>
 										<XCircleIcon
 											width={40}
@@ -280,7 +297,7 @@ const VerifyIdentity = (props: {
 	return (
 		<Container>
 			{stage === "verify_identity" && (
-				<Container className="w-full flex flex-col gap-2">
+				<Container className="flex flex-col w-full gap-2">
 					<Text>
 						<ImportantText>
 							Securely verify your identity with Passbase
