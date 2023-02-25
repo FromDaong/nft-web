@@ -90,6 +90,8 @@ const CollapseSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 };
 
 const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
+	const profilePicUrl = `https://treatdao.com/api/v2/utils/images/fetchWithFallback?default=${props.avatar}`;
+
 	return (
 		<Link href={`/${props.username}`}>
 			<a>
@@ -105,13 +107,15 @@ const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 					}}
 				>
 					<Container className="flex flex-col justify-between w-full gap-4">
-						<Container className="relative w-full h-[320px] flex items-center justify-center">
-							<UserAvatar
-								size={280}
-								profile_pic={props.avatar}
-								username={props.username}
-							/>
-						</Container>
+						<Container
+							className="relative w-full h-[320px] flex items-center justify-center rounded-xl"
+							css={{
+								backgroundColor: "$elementOnSurface",
+								backgroundImage: `url("${profilePicUrl}")`,
+								backgroundSize: "cover",
+								backgroundPosition: "center",
+							}}
+						></Container>
 						<Container className="flex flex-col gap-2">
 							{props.username && (
 								<Container className="flex flex-col w-full text-center">

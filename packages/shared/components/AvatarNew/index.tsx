@@ -48,6 +48,8 @@ type AvatarProps = {
 };
 
 export default function NewAvatar(props: AvatarProps) {
+	const profilePicUrl = `https://treatdao.com/api/v2/utils/images/fetchWithFallback?default=${props.imageSrc}`;
+
 	const size = {
 		height: props.size ? `${props.size}px` : "45px",
 		width: props.size ? `${props.size}px` : "45px",
@@ -55,18 +57,9 @@ export default function NewAvatar(props: AvatarProps) {
 	return (
 		<AvatarRoot css={props.size_def ? {...props.size_def} : {...size}}>
 			<AvatarImage
-				src={props.imageSrc}
+				src={profilePicUrl}
 				alt={props.username}
 			/>
-			<AvatarFallback
-				className="AvatarFallback"
-				delayMs={600}
-			>
-				<Avvvatars
-					size={props.size}
-					value={props.username}
-				/>
-			</AvatarFallback>
 		</AvatarRoot>
 	);
 }
