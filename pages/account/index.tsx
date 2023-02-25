@@ -10,9 +10,8 @@ export default function Settings() {
 		<ApplicationLayout>
 			<ApplicationFrame>
 				<Container
-					className="flex flex-col w-full max-w-4xl gap-12 p-4 mx-auto mt-16 border rounded-xl shadow"
+					className="flex flex-col w-full max-w-4xl gap-12 p-4 mx-auto mt-16 border shadow rounded-xl"
 					css={{
-						backgroundColor: "$surfaceOnSurface",
 						borderColor: "$border",
 					}}
 				>
