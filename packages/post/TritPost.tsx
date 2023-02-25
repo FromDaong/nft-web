@@ -65,7 +65,7 @@ export const TritPost = (props: TritPostProps) => {
 					}}
 				>
 					<Container
-						className="relative w-full flex overflow-hidden rounded-xl"
+						className="relative flex w-full overflow-hidden rounded-xl"
 						css={{
 							height: "256px",
 						}}
@@ -91,6 +91,7 @@ export const TritPost = (props: TritPostProps) => {
 							blurhash={props.blurhash}
 							isProtected={isProtected}
 							caption={props.text}
+							ipfs={props.image?.ipfs}
 							overrideText={
 								"The creator wants you to collect this NFT before you can preview the content"
 							}

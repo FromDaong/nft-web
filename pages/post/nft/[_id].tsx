@@ -136,7 +136,7 @@ export default function NFT(props: {
 			/>
 			<ApplicationLayout>
 				<ApplicationFrame>
-					<Container className="grid col-span-1 xl:grid-cols-3 py-12 gap-8 lg:gap-12 p-4">
+					<Container className="grid col-span-1 gap-8 p-4 py-12 xl:grid-cols-3 lg:gap-12">
 						<ImagePreviewSection
 							setShowFullScreen={setShowFullScreen}
 							showFullScreen={showFullScreen}
@@ -153,13 +153,16 @@ export default function NFT(props: {
 						/>
 						<Container className="col-span-1 lg:col-span-2">
 							<Container
-								className="rounded-xl h-full p-4 md:p-8 lg:p-12 border drop-shadow-xl"
+								className="h-full p-4 border rounded-xl md:p-8 lg:p-12 drop-shadow-xl"
 								css={{backgroundColor: "$cardBg", borderColor: "$border"}}
 							>
 								<Text css={{color: "$accentText"}}>
-									<ImportantText>
-										Remaining Supply: 10 / Max Supply: 10
-									</ImportantText>
+									{remainingNfts && (
+										<ImportantText>
+											Remaining Supply: {remainingNfts} / Max Supply:{" "}
+											{maxNftSupply}
+										</ImportantText>
+									)}
 								</Text>
 								<Container>
 									<NFTPresentationComponent
@@ -361,7 +364,7 @@ function ImagePreviewSection({
 					backgroundColor: "$cardBg",
 					borderColor: "$border",
 				}}
-				className="container flex-1 flex flex-col gap-4 h-full rounded-2xl drop-shadow-xl p-3 border overflow-hidden"
+				className="container flex flex-col flex-1 h-full gap-4 p-3 overflow-hidden border rounded-2xl drop-shadow-xl"
 			>
 				<Container
 					className="relative w-full h-full bg-white rounded-xl"
@@ -380,7 +383,7 @@ function ImagePreviewSection({
 					)}
 					{nft.protected && isOwned && (
 						<OptimizedNFTImage
-							src={sd_image}
+							src={nft.image.ipfs}
 							className="cursor-zoom-in"
 							sizes="100vw"
 							fill
@@ -390,7 +393,7 @@ function ImagePreviewSection({
 					)}
 					{!nft.protected && (
 						<OptimizedNFTImage
-							src={hd_image}
+							src={nft.image.ipfs}
 							className="cursor-zoom-in"
 							sizes="100vw"
 							fill
@@ -401,35 +404,37 @@ function ImagePreviewSection({
 					)}
 				</Container>
 				<MutedText className="flex-shrink-0"></MutedText>
-				<Container className="flex flex-col gap-2">
-					{remainingNfts !== 0 && (
-						<Container className="flex justify-between">
-							<>
-								<Text>
-									<ImportantText>{mintedNfts}</ImportantText>
-								</Text>
-								<Text>
-									<ImportantText>{maxNftSupply}</ImportantText>
-								</Text>
-							</>
-						</Container>
-					)}
-					<Container
-						className="relative rounded-full flex"
-						css={{
-							backgroundColor: "$overlay",
-						}}
-					>
+				{false && (
+					<Container className="flex flex-col gap-2">
+						{remainingNfts !== 0 && (
+							<Container className="flex justify-between">
+								<>
+									<Text>
+										<ImportantText>{mintedNfts}</ImportantText>
+									</Text>
+									<Text>
+										<ImportantText>{maxNftSupply}</ImportantText>
+									</Text>
+								</>
+							</Container>
+						)}
 						<Container
-							className={`relative rounded-full p-1`}
-							role={"progress"}
+							className="relative flex rounded-full"
 							css={{
-								width: `${Math.ceil((mintedNfts / maxNftSupply) * 100)}%`,
-								backgroundColor: mintedNfts === 0 && "$overlayContrast",
+								backgroundColor: "$overlay",
 							}}
-						/>
+						>
+							<Container
+								className={`relative rounded-full p-1`}
+								role={"progress"}
+								css={{
+									width: `${Math.ceil((mintedNfts / maxNftSupply) * 100)}%`,
+									backgroundColor: mintedNfts === 0 && "$overlayContrast",
+								}}
+							/>
+						</Container>
 					</Container>
-				</Container>
+				)}
 				<Container className="flex gap-4">
 					<Button
 						onClick={postUtils.likeNFT}

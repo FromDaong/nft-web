@@ -1,5 +1,4 @@
 export default async function navigateToPage(previous: any, numPages: number) {
-	console.log({previous});
 	// Define results for the remaining pages
 	const result = previous.result || [];
 

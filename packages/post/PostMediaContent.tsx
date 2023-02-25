@@ -6,9 +6,11 @@ export const PostMediaContent = (props: {
 	overrideText?: string;
 	caption: string;
 	isProtected?: boolean;
+	ipfs: string;
 }) => {
 	return (
 		<BackgroundImage
+			ipfs={props.ipfs}
 			url={props.imageUrl}
 			caption={props.caption}
 			isProtected={props.isProtected}

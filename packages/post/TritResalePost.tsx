@@ -71,6 +71,7 @@ export const TritResalePost = (props: TritResalePostProps) => {
 						blurhash={props.blurhash}
 						isProtected={isProtected}
 						caption={props.text}
+						ipfs={props.image?.ipfs}
 						overrideText={
 							"The creator wants you to collect this NFT before you can preview the content"
 						}

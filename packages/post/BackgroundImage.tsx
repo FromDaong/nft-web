@@ -1,7 +1,7 @@
 import OptimizedImage from "@packages/shared/components/OptimizedImage";
 import OptimizedNFTImage from "@packages/shared/components/OptimizedImage/OptimizedNFTImage";
 
-const BackgroundImage = ({url, caption, isProtected}) => {
+const BackgroundImage = ({url, caption, isProtected, ipfs}) => {
 	if (isProtected) {
 		return (
 			<OptimizedImage
@@ -20,7 +20,7 @@ const BackgroundImage = ({url, caption, isProtected}) => {
 			<OptimizedNFTImage
 				objectFit={"cover"}
 				alt={caption}
-				src={`${url}`}
+				src={`${ipfs}`}
 				sizes="100vw"
 				fill
 				className="rounded-xl"

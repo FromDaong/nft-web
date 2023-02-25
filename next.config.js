@@ -36,6 +36,7 @@ module.exports = withTM({
 			"localhost:3000",
 			"localhost:3001",
 			"www.datocms-assets.com",
+			"www.treatdao.com",
 		],
 	},
 	/*pwa: {
