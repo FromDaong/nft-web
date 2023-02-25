@@ -32,6 +32,7 @@ export const LivestreamingPostCard = (props: LivestreamPost) => {
 					blurhash={props.blurhash}
 					overrideText={"Subscribe to join livestream"}
 					caption={props.text}
+					ipfs={props.image?.ipfs}
 				/>
 			</LivestreamMediaContainer>
 		</LiveMediaPostContainer>

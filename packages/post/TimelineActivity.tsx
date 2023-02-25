@@ -132,7 +132,7 @@ export const TimelineActivity = (
 						</Container>
 					</Container>
 				</Container>
-				<Container className="flex h-full items-center">
+				<Container className="flex items-center h-full">
 					<PostUserDropdown />
 				</Container>
 			</Container>
@@ -157,7 +157,7 @@ export const TimelineActivity = (
 					}}
 				>
 					<Container
-						className="relative h-full w-full "
+						className="relative w-full h-full "
 						css={{
 							overflow: "hidden",
 							// borderRadius: "8px",
@@ -168,13 +168,14 @@ export const TimelineActivity = (
 							blurhash={props.blurhash}
 							overrideText={"Subscribe to view"}
 							caption={props.text}
+							ipfs={props.image?.ipfs}
 						/>
 					</Container>
 				</Container>
 				<Container className="flex justify-between">
 					<Container className="flex gap-4">
 						<button>
-							<Text className="flex gap-1 items-center">
+							<Text className="flex items-center gap-1">
 								<HeartIcon
 									width={20}
 									height={20}
@@ -183,7 +184,7 @@ export const TimelineActivity = (
 							</Text>
 						</button>
 						<button>
-							<Text className="flex gap-1 items-center">
+							<Text className="flex items-center gap-1">
 								<ChatBubbleIcon
 									width={20}
 									height={20}

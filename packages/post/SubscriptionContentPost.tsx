@@ -100,7 +100,7 @@ export const SubscriptionContentPost = (props: TritPostProps) => {
 				}}
 			>
 				<Container
-					className="relative h-full w-full "
+					className="relative w-full h-full "
 					css={{borderRadius: "8px", overflow: "hidden"}}
 				>
 					<PostMediaContent
@@ -108,10 +108,11 @@ export const SubscriptionContentPost = (props: TritPostProps) => {
 						blurhash={props.blurhash}
 						overrideText={"Subscribe to view"}
 						caption={props.text}
+						ipfs={props.image?.ipfs}
 					/>
 				</Container>
 			</Container>
-			<Container className="py-2 flex gap-8 mt-4">
+			<Container className="flex gap-8 py-2 mt-4">
 				<PostCardAction>
 					<button>
 						<HeartIcon className="w-6 h-6" />
