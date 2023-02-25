@@ -53,6 +53,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		onChainOpenOrders.flat().filter((order) => !!order)
 	);
 
+	console.log(formatOpenOrders.length);
+
 	const nfts = await MongoModelNFT.find({
 		id: {
 			$in: Array.from(new Set(formatedOrders.map((order) => order.nftId))),
@@ -124,8 +126,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 				list_price: Number(order.list_price),
 			}))
 	);
-
-	console.log({sort});
 
 	return returnWithSuccess(
 		paginationManager.paginate(

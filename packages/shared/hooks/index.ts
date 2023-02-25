@@ -2,7 +2,6 @@
 import uploadcareClient from "@utils/uploadcare";
 import axios from "axios";
 import {File} from "filepond";
-import {useSession} from "next-auth/react";
 import {useEffect, useState} from "react";
 import {Dispatch, SetStateAction, useCallback} from "react";
 

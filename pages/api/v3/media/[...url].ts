@@ -1,10 +1,12 @@
 import axios from "axios";
 import {decode} from "blurhash";
+import {connectMongoDB} from "server/helpers/core";
+import {MongoModelNFT} from "server/helpers/models";
 const atob = require("atob");
 const sharp = require("sharp");
 const {encode} = require("blurhash");
 
-const encodeImage = async (sharpObj, res) => {
+export const encodeImage = async (sharpObj, res, id) => {
 	try {
 		const obj = await sharpObj
 			.raw()
@@ -12,15 +14,20 @@ const encodeImage = async (sharpObj, res) => {
 			.resize(32, 32, {fit: "inside"});
 
 		await obj.toBuffer(async (err, buffer, info) => {
-			if (err) return res.send("null");
-
-			const encoded = await encode(
-				new Uint8ClampedArray(buffer),
-				info.width,
-				info.height,
-				4,
-				4
-			);
+			let encoded;
+			if (err) {
+				await connectMongoDB();
+				const nft = await MongoModelNFT.findOne({id});
+				encoded = nft.blurhash;
+			} else {
+				encoded = await encode(
+					new Uint8ClampedArray(buffer),
+					info.width,
+					info.height,
+					4,
+					4
+				);
+			}
 
 			const hashWidth = 400;
 			const hashHeight = Math.round(hashWidth * (400 / 400));
@@ -43,11 +50,12 @@ const encodeImage = async (sharpObj, res) => {
 			res.setHeader("Content-Type", "image/webp");
 			return res.send(resizedImageBuf);
 		});
-	} catch (err) {
-		console.log(err);
-		return res.send(null);
+	} catch (encodingError) {
+		console.log({encodingError});
+		return res.json({error: true});
 	}
 };
+
 function dataURLtoFile(dataurl) {
 	const arr = dataurl.split(",");
 	const bstr = atob(arr[1]);
@@ -64,7 +72,7 @@ function dataURLtoFile(dataurl) {
 // Checks if image does not return error from CDN
 // If it does it then downloads and sends the base64 encoded image from pinata
 export default async function fetchWithFallback(req, res) {
-	const {url, blurhash} = req.query;
+	const {url, blurhash, id} = req.query;
 
 	if (!url || url === "undefined") {
 		res.status(404).send("Not Found");
@@ -74,88 +82,44 @@ export default async function fetchWithFallback(req, res) {
 	const defaultUrl =
 		"https://" + (url as Array<string>).slice(1).join("/") + "?q=20";
 
-	if (defaultUrl.includes("treatdaoipfs")) {
-		try {
-			const response = await axios.get(defaultUrl, {
-				responseType: "arraybuffer",
-			});
-			const image = await sharp(Buffer.from(response.data));
+	try {
+		const response = await axios.get(defaultUrl, {
+			responseType: "arraybuffer",
+		});
+		const image = await sharp(Buffer.from(response.data));
 
-			if (blurhash) {
-				return await encodeImage(image, res);
-			}
-
-			res.setHeader("Content-Type", "image/webp");
-			return res.send(
-				await image
-					.toFormat("webp", {
-						nearLossless: true,
-						alphaQuality: 100,
-					})
-					.toBuffer()
-			);
-		} catch (err) {
-			console.log({err});
-			const response = await axios.get(defaultUrl);
-
-			const blob = dataURLtoFile(response.data); //response.data.replace(`"`, "").replace(/["']/g, "");
-			const image = await sharp(blob);
-
-			if (blurhash) {
-				return encodeImage(image, res);
-			}
-
-			res.setHeader("Content-Type", "image/webp");
-			return res.send(
-				await image
-					.toFormat("webp", {
-						nearLossless: true,
-						alphaQuality: 100,
-					})
-					.toBuffer()
-			);
+		if (blurhash) {
+			return await encodeImage(image, res, id);
 		}
-	} else {
-		try {
-			const cdnurl = `${defaultUrl}-/quality/lighter/-/format/webp/`;
-			const image_data = await fetch(cdnurl);
-			const img = await image_data.arrayBuffer();
-			const image = await sharp(Buffer.from(img));
 
-			if (blurhash) {
-				return encodeImage(image, res);
-			}
+		res.setHeader("Content-Type", "image/webp");
+		return res.send(
+			await image
+				.toFormat("webp", {
+					nearLossless: true,
+					alphaQuality: 100,
+				})
+				.toBuffer()
+		);
+	} catch (err) {
+		console.log({err});
+		const response = await axios.get(defaultUrl);
 
-			res.setHeader("Content-Type", "image/webp");
-			return res.send(
-				await image
-					.toFormat("webp", {
-						nearLossless: true,
-						alphaQuality: 100,
-					})
-					.toBuffer()
-			);
-		} catch (err) {
-			const response = await axios.get(defaultUrl, {
-				responseType: "arraybuffer",
-			});
+		const blob = dataURLtoFile(response.data); //response.data.replace(`"`, "").replace(/["']/g, "");
+		const image = await sharp(blob);
 
-			const blob = response.data;
-			const image = await sharp(Buffer.from(blob));
-
-			if (blurhash) {
-				return encodeImage(image, res);
-			}
-
-			res.setHeader("Content-Type", "image/webp");
-			return res.send(
-				await image
-					.toFormat("webp", {
-						nearLossless: true,
-						alphaQuality: 100,
-					})
-					.toBuffer()
-			);
+		if (blurhash) {
+			return encodeImage(image, res, id);
 		}
+
+		res.setHeader("Content-Type", "image/webp");
+		return res.send(
+			await image
+				.toFormat("webp", {
+					nearLossless: true,
+					alphaQuality: 100,
+				})
+				.toBuffer()
+		);
 	}
 }

@@ -1,12 +1,6 @@
 import axios from "axios";
 import {connectMongoDB} from "@db/engine";
-import {
-	populateNFTsWithProfileAndTx,
-	returnWithError,
-	returnWithSuccess,
-} from "@db/engine/utils";
-import Moralis from "moralis";
-import {EvmChain} from "@moralisweb3/common-evm-utils";
+import {returnWithError, returnWithSuccess} from "@db/engine/utils";
 import {contractAddresses} from "@packages/treat/lib/constants";
 import connectMoralis from "@utils/moralis";
 import {MongoModelProfile} from "server/helpers/models";
@@ -43,13 +37,7 @@ export default async function handler(req, res) {
 		}
 	);
 
-	console.log(
-		new Set(resp.data.result.map((nft) => nft.token_id)).size,
-		resp.data.total
-	);
+	console.log(resp.data.total);
 
-	return returnWithSuccess(
-		new Set(resp.data.result.map((nft) => nft.token_id)).size,
-		res
-	);
+	return returnWithSuccess(resp.data.total, res);
 }

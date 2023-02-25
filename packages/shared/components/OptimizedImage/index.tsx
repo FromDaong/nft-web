@@ -22,6 +22,7 @@ type OptimizedImageProps = {
 	objectFit?: "contain" | "cover" | "fill";
 	sizes?: string;
 	layout?: string;
+	id: string;
 };
 
 const OptimizedImage = (props: OptimizedImageProps) => {
@@ -29,7 +30,7 @@ const OptimizedImage = (props: OptimizedImageProps) => {
 		<Image
 			loader={gumletLoader}
 			quality={props.quality}
-			src={`/api/v3/media/https://treatdaoipfs.gumlet.io/${props.src}`}
+			src={`/api/v3/media/https://treatdaoipfs.gumlet.io/${props.src}&id=${props.id}`}
 			alt={props.alt}
 			width={props.height}
 			height={props.height}
