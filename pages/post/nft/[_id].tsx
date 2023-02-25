@@ -110,6 +110,8 @@ export default function NFT(props: {
 
 	const remainingNfts = maxNftSupply - mintedNfts;
 
+	console.log({remainingNfts, mintedNfts, maxNftSupply});
+
 	return (
 		<>
 			<SEOHead
@@ -157,12 +159,10 @@ export default function NFT(props: {
 								css={{backgroundColor: "$cardBg", borderColor: "$border"}}
 							>
 								<Text css={{color: "$accentText"}}>
-									{remainingNfts && (
-										<ImportantText>
-											Remaining Supply: {remainingNfts} / Max Supply:{" "}
-											{maxNftSupply}
-										</ImportantText>
-									)}
+									<ImportantText>
+										Remaining Supply: {remainingNfts} / Max Supply:{" "}
+										{maxNftSupply}
+									</ImportantText>
 								</Text>
 								<Container>
 									<NFTPresentationComponent
