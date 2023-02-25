@@ -37,7 +37,5 @@ export default async function handler(req, res) {
 		}
 	);
 
-	console.log(resp.data.total);
-
 	return returnWithSuccess(resp.data.total, res);
 }
