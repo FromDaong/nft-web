@@ -3,7 +3,7 @@ import {connectMongoDB} from "@db/engine";
 import {returnWithError, returnWithSuccess} from "@db/engine/utils";
 import {contractAddresses} from "@packages/treat/lib/constants";
 import connectMoralis from "@utils/moralis";
-import {MongoModelProfile} from "server/helpers/models";
+import {MongoModelNFT, MongoModelProfile} from "server/helpers/models";
 
 export default async function handler(req, res) {
 	const {address} = req.query;
