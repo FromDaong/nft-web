@@ -86,7 +86,7 @@ export default function NFTS({sort, q, nfts, error}) {
 						</Container>
 
 						<Container className="flex flex-col gap-8 px-4 ">
-							<Container className="grid grid-cols-1 md:grid-cols-2 place-content-center xl:grid-cols-4 2xl:grid-cols-5 gap-8">
+							<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 place-content-center xl:grid-cols-4">
 								{nft_posts.length > 0 &&
 									nft_posts.map((nft) => (
 										<div

@@ -72,7 +72,10 @@ export default function Navbar() {
 							</div>
 							<div className="items-center hidden gap-4 md:flex">
 								<Link href="https://treatdao.com/farms">
-									<a>
+									<a
+										target="_blank"
+										rel="norefferer"
+									>
 										<BoldLink>Farm</BoldLink>
 									</a>
 								</Link>
