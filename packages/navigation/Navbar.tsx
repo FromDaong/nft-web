@@ -4,7 +4,6 @@ import * as DarkLogo from "../../public/brand/logo_white.svg";
 
 import Image from "next/image";
 import {useAccount} from "wagmi";
-import dynamic from "next/dynamic";
 import NavbarSearchDropdown from "../search/NavbarSearchDropdown";
 
 import {styled} from "@styles/theme";
@@ -17,10 +16,7 @@ import {useSession} from "next-auth/react";
 import Spinner from "@packages/shared/icons/Spinner";
 import {ConnectButton} from "@rainbow-me/rainbowkit";
 import {useApplicationTheme} from "@packages/theme/provider";
-
-const NavbarProfileAvatar = dynamic(
-	() => import("./components/NavbarProfileAvatar")
-);
+import NavbarProfileAvatar from "./components/NavbarProfileAvatar";
 
 const Nav = styled("nav", {
 	backgroundColor: "$elementSurface",

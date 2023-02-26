@@ -1,7 +1,5 @@
 import {connectMongoDB} from "@db/engine";
 import {returnWithError, returnWithSuccess} from "@db/engine/utils";
-import Moralis from "moralis";
-import {EvmChain} from "@moralisweb3/common-evm-utils";
 import {contractAddresses} from "@packages/treat/lib/constants";
 import connectMoralis from "@utils/moralis";
 import {
@@ -13,7 +11,11 @@ import axios from "axios";
 
 export default async function handler(req, res) {
 	const {username} = req.query;
-	const {p} = req.query;
+	let {p} = req.query;
+
+	if (!p) {
+		p = 1;
+	}
 
 	if (!username) {
 		return returnWithError("No username provided", 400, res);
@@ -35,7 +37,7 @@ export default async function handler(req, res) {
 		const resp = await axios.get(
 			`https://deep-index.moralis.io/api/v2/${
 				profile.address
-			}/nft?chain=bsc&disable_total=false&limit=24&format=decimal${
+			}/nft?chain=bsc&disable_total=false&limit=100&format=decimal${
 				moralis_cursor ? "&cursor=" + moralis_cursor : ""
 			}&token_address=${[contractAddresses.treatNFTMinter[56]]}`,
 			{
@@ -55,7 +57,7 @@ export default async function handler(req, res) {
 
 	const options = {
 		page: 1,
-		limit: 24,
+		limit: 100,
 	};
 
 	// @ts-ignore
@@ -75,16 +77,15 @@ export default async function handler(req, res) {
 		},
 	});
 
-	console.log({data, p});
-
 	return returnWithSuccess(
 		{
-			...nfts,
+			docs: nfts.docs,
 			cursor: data.cursor,
-			hasNextPage: data.page * 24 < data.total,
-			nextPage: data.page * 24 < data.total ? data.page + 1 : null,
+			hasNextPage: data.page * 100 < data.total,
+			nextPage: data.page * 100 < data.total ? data.page + 1 : null,
 			page: Number(p),
 			total: data.total,
+			totalPages: Math.ceil(Number(data.total) / 100),
 		},
 		res
 	);
