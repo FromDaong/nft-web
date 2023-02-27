@@ -89,7 +89,7 @@ export const TritPortfolioPost = (props: TritResalePostProps) => {
 						isMine && "hover:cursor-pointer"
 					}`}
 				>
-					<Container className="relative flex w-full overflow-hidden rounded-xl md:aspect-square">
+					<Container className="relative flex w-full overflow-hidden rounded-xl aspect-square">
 						<PostMediaContent
 							isProtected={isProtected && !isMine}
 							caption={props.text}
