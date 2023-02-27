@@ -41,7 +41,7 @@ export default async function image(req, res) {
 	if (content_type === "nft") {
 		const nft = await MongoModelNFT.findById(_id);
 
-		if (!nft.blurred_image) {
+		if (!nft.blurhash) {
 			const axios_image = await axios.get(
 				`${process.env.NEXT_PUBLIC_HOSTNAME}/api/v3/media/${nft.image.ipfs}?id=${_id}`,
 				{responseType: "arraybuffer"}
@@ -53,24 +53,18 @@ export default async function image(req, res) {
 			await blurhashManager.encodeImage(async (blurhash) => {
 				const blurredImage = await renderImage(blurhash);
 
-				const blurredImageUrl = await uploadFileToIPFS(
-					blurredImage,
-					`nft-blurred-${_id}.png`
-				);
-
 				await MongoModelNFT.findByIdAndUpdate(_id, {
-					$set: {
-						blurhash,
-						blurredImageUrl,
-					},
+					blurhash,
 				});
 
-				return res.redirect(blurredImageUrl);
+				res.setHeader("Content-Type", "image/webp");
+				return res.send(blurredImage.toBuffer());
 			});
 			return;
 		}
 
-		return res.redirect(nft.blurred_image);
+		res.setHeader("Content-Type", "image/webp");
+		return res.send(await (await renderImage(nft.blurhash)).toBuffer());
 	} else {
 		return returnWithError("Not found", 404, res);
 	}
