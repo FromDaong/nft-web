@@ -25,6 +25,11 @@ export default async function sd(req, res: NextApiResponse) {
 				480
 			);
 			const metadata = await compressed_image.metadata();
+
+			if (metadata.format === "gif") {
+				return res.redirect(nft.image.ipfs);
+			}
+
 			const ipfsUrl = await uploadFileToIPFS(
 				compressed_image,
 				`nft-${_id}.${metadata.format}`
@@ -35,6 +40,8 @@ export default async function sd(req, res: NextApiResponse) {
 					sd_image: ipfsUrl,
 				},
 			});
+
+			return res.redirect(ipfsUrl);
 		}
 
 		return res.redirect(nft.sd_image);

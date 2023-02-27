@@ -22,6 +22,11 @@ export default class SharpManager {
 				responseType: "arraybuffer",
 			});
 			const image = await sharp(Buffer.from(response.data));
+
+			const metadata = await image.metadata();
+			if (metadata.format === "gif") {
+				return image.gif();
+			}
 			return image.resize(size);
 		} catch (err) {
 			const response = await axios.get(url);
@@ -30,6 +35,11 @@ export default class SharpManager {
 				response.data.replace(`"`, "").replace(/["']/g, "")
 			);
 			const image = await sharp(blob);
+
+			const metadata = await image.metadata();
+			if (metadata.format === "gif") {
+				return image;
+			}
 
 			return image.resize(size);
 		}
