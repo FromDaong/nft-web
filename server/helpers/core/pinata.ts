@@ -1,3 +1,5 @@
+import {Readable} from "stream";
+
 import pinataSDK from "@pinata/sdk";
 const pinata = new pinataSDK(
 	process.env.PINATA_API_KEY,
@@ -8,17 +10,16 @@ export const getPinataUrl = (IpfsHash: string) =>
 	`https://treatdao.mypinata.cloud/ipfs/${IpfsHash}`;
 
 export async function uploadFileToIPFS(compressed_image, filename) {
-	const pinataResponse = await pinata.pinFileToIPFS(
-		compressed_image.toFormat("png").toBuffer(),
-		{
-			pinataMetadata: {
-				name: filename,
-			},
-			pinataOptions: {
-				cidVersion: 0,
-			},
-		}
-	);
+	const stream = Readable.from(compressed_image.toBuffer());
+
+	const pinataResponse = await pinata.pinFileToIPFS(stream, {
+		pinataMetadata: {
+			name: filename,
+		},
+		pinataOptions: {
+			cidVersion: 0,
+		},
+	});
 
 	const {IpfsHash} = pinataResponse;
 	const ipfsUrl = getPinataUrl(IpfsHash);
