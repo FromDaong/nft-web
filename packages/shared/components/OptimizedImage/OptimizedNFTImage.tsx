@@ -17,7 +17,7 @@ const OptimizedNFTImage = (props: OptimizedImageProps) => {
 	return (
 		<Image
 			quality={props.quality}
-			src={`https://www.treatdao.com/api/v2/utils/images/fetchWithFallback?default=${props.src}`}
+			src={props.src}
 			alt={props.alt}
 			width={props.height}
 			height={props.height}

@@ -35,23 +35,7 @@ export const TritPost = (props: TritPostProps) => {
 	const {liked, likeNFT, isMine, isProtected, loadingSigner, remainingNfts} =
 		useTritNFTUtils(props);
 
-	const [imageURL, setImageURL] = useState("");
-
 	const soldOut = props.collection?.minted === props.max_supply;
-
-	const ipfs_parts = props.image?.ipfs.split("/");
-	const ipfs_id = ipfs_parts[ipfs_parts.length - 1];
-	const blurred_image = `${ipfs_id}?blurhash=true`;
-	const sd_image = `${ipfs_id}?`;
-
-	useEffect(() => {
-		if (props.protected && !isMine) {
-			setImageURL(blurred_image);
-			return;
-		}
-
-		setImageURL(sd_image);
-	}, [props.protected, isMine]);
 
 	return (
 		<Link href={`/post/nft/${props._id}`}>
@@ -87,9 +71,8 @@ export const TritPost = (props: TritPostProps) => {
 							</Text>
 						)}
 						<PostMediaContent
-							imageUrl={imageURL}
 							blurhash={props.blurhash}
-							isProtected={isProtected}
+							isProtected={isProtected && !isMine}
 							caption={props.text}
 							ipfs={props.image?.ipfs}
 							id={props.id}

@@ -110,6 +110,7 @@ const NFTSchema = new mongoose.Schema(
 		},
 		thumbnail: String,
 		sd_image: String,
+		blurred_image: String,
 	},
 	{
 		timestamps: {createdAt: true, updatedAt: false},

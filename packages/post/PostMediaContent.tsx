@@ -1,21 +1,19 @@
 import BackgroundImage from "./BackgroundImage";
 
 export const PostMediaContent = (props: {
-	imageUrl?: string;
 	blurhash?: string;
 	overrideText?: string;
 	caption: string;
 	isProtected?: boolean;
 	ipfs: string;
-	id: string;
+	_id: string;
 }) => {
 	return (
 		<BackgroundImage
 			ipfs={props.ipfs}
-			url={props.imageUrl}
+			url={`/api/v3/image/nft/${props._id}/sd`}
 			caption={props.caption}
 			isProtected={props.isProtected}
-			id={props.id}
 		/>
 	);
 };
