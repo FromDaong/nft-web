@@ -91,7 +91,7 @@ export const TritPortfolioPost = (props: TritResalePostProps) => {
 				>
 					<Container className="relative flex w-full overflow-hidden rounded-xl aspect-square">
 						<PostMediaContent
-							isProtected={isProtected && !isMine}
+							isProtected={props.protected && !isMine}
 							caption={props.text}
 							_id={props._id}
 						/>
