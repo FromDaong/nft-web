@@ -161,7 +161,7 @@ export default async function (req) {
 	}
 
 	if (page_type === "nft") {
-		const profile_picture_url = profile_picture.substring(
+		const profile_picture_url = profile_picture?.substring(
 			0,
 			profile_picture.length - 1
 		);

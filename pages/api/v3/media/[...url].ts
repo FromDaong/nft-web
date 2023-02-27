@@ -93,14 +93,7 @@ export default async function fetchWithFallback(req, res) {
 		}
 
 		res.setHeader("Content-Type", "image/webp");
-		return res.send(
-			await image
-				.toFormat("webp", {
-					nearLossless: true,
-					alphaQuality: 100,
-				})
-				.toBuffer()
-		);
+		return res.send(await image.toBuffer());
 	} catch (err) {
 		console.log({err});
 		const response = await axios.get(defaultUrl);
@@ -113,13 +106,6 @@ export default async function fetchWithFallback(req, res) {
 		}
 
 		res.setHeader("Content-Type", "image/webp");
-		return res.send(
-			await image
-				.toFormat("webp", {
-					nearLossless: true,
-					alphaQuality: 100,
-				})
-				.toBuffer()
-		);
+		return res.send(await image.toBuffer());
 	}
 }

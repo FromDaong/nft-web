@@ -27,11 +27,7 @@ import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import TreatCore from "core/TreatCore";
 import Link from "next/link";
 import {useEffect, useState} from "react";
-import {
-	MongoModelNFT,
-	MongoModelProfile,
-	MongoModelTransaction,
-} from "server/helpers/models";
+import {MongoModelNFT, MongoModelProfile} from "server/helpers/models";
 import {useAccount} from "wagmi";
 import {ArticleJsonLd} from "next-seo";
 import {SEOHead} from "@packages/seo/page";
@@ -43,6 +39,7 @@ import {
 	useWagmiGetNFTTotalSupply,
 } from "@packages/chain/hooks";
 import BuyNFTButton from "@packages/post/BuyNFTButton";
+import Image from "next/future/image";
 
 export default function NFT(props: {
 	notFound?: boolean;
@@ -87,18 +84,12 @@ export default function NFT(props: {
 	const ipfs_parts = nft.image?.ipfs.split("/");
 	const ipfs_id = ipfs_parts[ipfs_parts.length - 1];
 
-	const blurred_image = `${ipfs_id}?blurhash=true`;
-	const sd_image = `${ipfs_id}?`;
-	const hd_image = `${ipfs_id}?`;
+	const blurred_image = `/api/v3/media/${nft.image?.ipfs}?blurhash=true`;
+	const hd_image = `${nft.image?.ipfs}`;
 
 	useEffect(() => {
 		if (nft.protected && !isOwned) {
 			setImageURL(blurred_image);
-			return;
-		}
-
-		if (!loadHD) {
-			setImageURL(sd_image);
 			return;
 		}
 
@@ -123,7 +114,9 @@ export default function NFT(props: {
 					price: nft.price,
 					seller: nft.creator.username,
 					id: nft.id,
+					protected: nft.protected,
 				}}
+				type="nft"
 			/>
 
 			<ArticleJsonLd
@@ -144,8 +137,6 @@ export default function NFT(props: {
 							showFullScreen={showFullScreen}
 							isOwned={isOwned}
 							imageURL={imageURL}
-							sd_image={sd_image}
-							hd_image={hd_image}
 							remainingNfts={remainingNfts}
 							mintedNfts={mintedNfts}
 							maxNftSupply={maxNftSupply}
@@ -347,8 +338,6 @@ function ImagePreviewSection({
 	showFullScreen,
 	isOwned,
 	imageURL,
-	sd_image,
-	hd_image,
 	remainingNfts,
 	mintedNfts,
 	maxNftSupply,
@@ -372,32 +361,29 @@ function ImagePreviewSection({
 					id={"nft_image"}
 				>
 					{nft.protected && !isOwned && (
-						<OptimizedImage
+						<Image
 							src={imageURL}
-							className="rounded-xl cursor-zoom-in"
+							className="object-cover rounded-xl cursor-zoom-in"
 							sizes="100vw"
 							fill
-							objectFit="contain"
 							alt={nft.name}
 						/>
 					)}
 					{nft.protected && isOwned && (
-						<OptimizedNFTImage
+						<Image
 							src={nft.image.ipfs}
-							className="cursor-zoom-in rounded-xl"
+							className="object-contain cursor-zoom-in rounded-xl"
 							sizes="100vw"
 							fill
-							objectFit="contain"
 							alt={nft.name}
 						/>
 					)}
 					{!nft.protected && (
-						<OptimizedNFTImage
+						<Image
 							src={nft.image.ipfs}
-							className="cursor-zoom-in rounded-xl"
+							className="object-contain cursor-zoom-in rounded-xl"
 							sizes="100vw"
 							fill
-							objectFit="contain"
 							alt={nft.name}
 							quality={100}
 						/>
