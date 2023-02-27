@@ -1,7 +1,5 @@
 import {ReactNode} from "react";
 import {Button} from "../Button";
-import {Container} from "../Container";
-import {Text} from "../Typography/Text";
 
 export function PaginationButton(props: {
 	children: ReactNode;
@@ -16,6 +14,7 @@ export function PaginationButton(props: {
 				display: "flex",
 				backgroundColor: props.active ? "$elementOnSurface" : "$elementSurface",
 				color: props.active ? "$textContrast" : "$textOnSurface",
+				padding: "4px 8px",
 			}}
 		>
 			{props.children}
