@@ -89,10 +89,6 @@ export default async function fetchWithFallback(req, res) {
 		const image = await sharp(Buffer.from(response.data));
 		const metadata = await image.metadata();
 
-		if (blurhash) {
-			return await encodeImage(image, res, id);
-		}
-
 		res.setHeader("Content-Type", `image/${metadata.format}`);
 		return res.send(await image.toBuffer());
 	} catch (err) {
@@ -115,10 +111,6 @@ export default async function fetchWithFallback(req, res) {
 				},
 			},
 		});
-
-		if (blurhash) {
-			return encodeImage(image, res, id);
-		}
 
 		res.setHeader("Content-Type", `image/${metadata.format}`);
 		return res.send(await image.toBuffer());
