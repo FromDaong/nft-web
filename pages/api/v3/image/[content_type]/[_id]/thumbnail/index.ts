@@ -5,7 +5,7 @@ import {uploadFileToIPFS} from "server/helpers/core/pinata";
 import SharpManager from "server/helpers/core/sharp";
 import {MongoModelCreator, MongoModelNFT} from "server/helpers/models";
 
-export default async function image(req, res) {
+export default async function thumb(req, res) {
 	const {_id, content_type} = req.query;
 	const content_types = ["nft", "creator"];
 
@@ -35,7 +35,7 @@ export default async function image(req, res) {
 			return res.redirect(ipfsUrl);
 		}
 
-		return res.redirect(nft.image.thumbnail);
+		return res.redirect(nft.thumbnail);
 	}
 
 	if (content_type === "creator") {

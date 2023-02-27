@@ -6,7 +6,7 @@ import {uploadFileToIPFS} from "server/helpers/core/pinata";
 import SharpManager from "server/helpers/core/sharp";
 import {MongoModelNFT} from "server/helpers/models";
 
-export default async function image(req, res: NextApiResponse) {
+export default async function sd(req, res: NextApiResponse) {
 	const {_id, content_type} = req.query;
 	const content_types = ["nft", "creator"];
 
