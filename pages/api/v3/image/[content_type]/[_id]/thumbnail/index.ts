@@ -20,7 +20,8 @@ export default async function thumb(req, res) {
 
 		if (!nft.thumbnail) {
 			const compressed_image = await SharpManager.getCompressedImage(
-				nft.image.ipfs
+				nft.image.ipfs,
+				480
 			);
 			const metadata = await compressed_image.metadata();
 			const ipfsUrl = await uploadFileToIPFS(
@@ -32,10 +33,10 @@ export default async function thumb(req, res) {
 				$set: {thumbnail: ipfsUrl},
 			});
 
-			return res.redirect(ipfsUrl);
+			return res.redirect(301, ipfsUrl);
 		}
 
-		return res.redirect(nft.thumbnail);
+		return res.redirect(301, nft.thumbnail);
 	}
 
 	if (content_type === "creator") {
@@ -65,9 +66,9 @@ export default async function thumb(req, res) {
 				},
 			});
 
-			return res.redirect(ipfsUrl);
+			return res.redirect(301, ipfsUrl);
 		}
 
-		return res.redirect(creator.profile_pic);
+		return res.redirect(301, creator.profile_pic);
 	}
 }

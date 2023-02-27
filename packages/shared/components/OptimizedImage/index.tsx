@@ -1,9 +1,5 @@
 import Image from "next/future/image";
 
-const gumletLoader = ({src}) => {
-	return `${src}`;
-};
-
 type OptimizedImageProps = {
 	src?: string;
 	alt: string;
@@ -20,9 +16,8 @@ type OptimizedImageProps = {
 const OptimizedImage = (props: OptimizedImageProps) => {
 	return (
 		<Image
-			loader={gumletLoader}
 			quality={props.quality}
-			src={`/api/v3/media/${props.src}`}
+			src={props.src}
 			alt={props.alt}
 			width={props.height}
 			height={props.height}

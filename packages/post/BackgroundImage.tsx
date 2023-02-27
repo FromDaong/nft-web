@@ -1,29 +1,12 @@
 import OptimizedImage from "@packages/shared/components/OptimizedImage";
-import OptimizedNFTImage from "@packages/shared/components/OptimizedImage/OptimizedNFTImage";
 
-const BackgroundImage = ({caption, isProtected, ipfs, _id}) => {
-	if (isProtected) {
-		return (
-			<OptimizedImage
-				objectFit={"cover"}
-				alt={caption}
-				src={`/api/v3/image/nft/${_id}/blur`}
-				sizes="100vw"
-				fill
-				className="rounded-xl"
-			/>
-		);
-	}
-
+const BackgroundImage = ({caption, isProtected, _id}) => {
 	return (
 		<>
-			<OptimizedNFTImage
-				objectFit={"cover"}
+			<img
 				alt={caption}
-				src={`${ipfs}`}
-				sizes="100vw"
-				fill
-				className="rounded-xl"
+				src={`/api/v3/image/nft/${_id}/${isProtected ? "blur" : "thumbnail"}`}
+				className="rounded-xl w-full h-full object-cover"
 			/>
 		</>
 	);

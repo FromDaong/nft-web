@@ -1,19 +1,33 @@
-import BackgroundImage from "./BackgroundImage";
+import {Container} from "@packages/shared/components/Container";
+import Spinner from "@packages/shared/icons/Spinner";
 
 export const PostMediaContent = (props: {
 	blurhash?: string;
 	overrideText?: string;
 	caption: string;
 	isProtected?: boolean;
-	ipfs: string;
 	_id: string;
 }) => {
 	return (
-		<BackgroundImage
-			ipfs={props.ipfs}
-			url={`/api/v3/image/nft/${props._id}/sd`}
-			caption={props.caption}
-			isProtected={props.isProtected}
-		/>
+		<Container className="w-full h-full flex flex-col bg-zinc-900 absolute top-0 left-0">
+			<img
+				alt={props.caption}
+				src={`/api/v3/image/nft/${props._id}/${
+					props.isProtected ? "blur" : "thumbnail"
+				}`}
+				className="rounded-xl w-full h-full object-cover absolute top-0 left-0"
+				style={{
+					zIndex: 2,
+				}}
+			/>
+			<Container
+				className="w-full relative h-full flex items-center justify-center"
+				style={{
+					zIndex: 1,
+				}}
+			>
+				<Spinner color={"$white"} />
+			</Container>
+		</Container>
 	);
 };
