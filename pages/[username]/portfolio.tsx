@@ -52,7 +52,7 @@ export default function UserProfile(props: {
 		return <Error500 />;
 	}
 
-	const totalPages = Number(((nfts_data.total - 1) / 24).toFixed(0));
+	const totalPages = Number(((nfts_data.total - 1) / 100).toFixed(0));
 
 	return (
 		<RenderProfileNFTs
