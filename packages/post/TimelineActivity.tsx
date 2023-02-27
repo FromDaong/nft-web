@@ -164,12 +164,8 @@ export const TimelineActivity = (
 						}}
 					>
 						<PostMediaContent
-							imageUrl={imageUrl}
-							blurhash={props.blurhash}
-							overrideText={"Subscribe to view"}
 							caption={props.text}
-							ipfs={props.image?.ipfs}
-							id={props.id}
+							_id={props._id}
 						/>
 					</Container>
 				</Container>

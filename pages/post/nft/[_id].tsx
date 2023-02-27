@@ -345,7 +345,6 @@ function ImagePreviewSection({
 	nft,
 	postUtils,
 }) {
-	console.log({postUtils});
 	return (
 		<Container className="w-full 2xl:h-[80vh] lg:h-[90vh] h-[calc(100vh-64px)] flex items-center justify-center col-span-1 lg:col-span-2 xl:col-span-1">
 			<Container
@@ -353,42 +352,19 @@ function ImagePreviewSection({
 					backgroundColor: "$cardBg",
 					borderColor: "$border",
 				}}
-				className="container flex flex-col flex-1 h-full gap-4 p-3 overflow-hidden border rounded-2xl drop-shadow-xl"
+				className="container flex flex-col flex-1 h-full gap-4 p-3 overflow-hidden border rounded-2xl drop-shadow-xl justify-center"
 			>
-				<Container
-					className="relative w-full h-full rounded-xl"
-					onClick={() => setShowFullScreen(!showFullScreen)}
-					id={"nft_image"}
-				>
-					{nft.protected && !isOwned && (
-						<Image
-							src={imageURL}
-							className="object-cover rounded-xl cursor-zoom-in"
-							sizes="100vw"
-							fill
-							alt={nft.name}
-						/>
-					)}
-					{nft.protected && isOwned && (
-						<Image
-							src={nft.image.ipfs}
-							className="object-contain cursor-zoom-in rounded-xl"
-							sizes="100vw"
-							fill
-							alt={nft.name}
-						/>
-					)}
-					{!nft.protected && (
-						<Image
-							src={nft.image.ipfs}
-							className="object-contain cursor-zoom-in rounded-xl"
-							sizes="100vw"
-							fill
-							alt={nft.name}
-							quality={100}
-						/>
-					)}
+				<Container className="relative w-full h-full rounded-xl">
+					<img
+						src={`/api/v3/image/nft/${nft._id}/${
+							nft.isProtected && !nft.isOwned ? "blur" : "sd"
+						}`}
+						className="object-contain rounded-xl absolute top-0 left-0"
+						sizes="100vw"
+						alt={nft.name}
+					/>
 				</Container>
+
 				<MutedText className="flex-shrink-0"></MutedText>
 				{false && (
 					<Container className="flex flex-col gap-2">

@@ -22,7 +22,7 @@ export default async function sd(req, res: NextApiResponse) {
 		if (!nft.sd_image) {
 			const compressed_image = await SharpManager.getCompressedImage(
 				nft.image.ipfs,
-				720
+				1080
 			);
 			const metadata = await compressed_image.metadata();
 

@@ -101,12 +101,9 @@ export const SubscriptionContentPost = (props: TritPostProps) => {
 					css={{borderRadius: "8px", overflow: "hidden"}}
 				>
 					<PostMediaContent
-						imageUrl={imageUrl}
-						blurhash={props.blurhash}
-						overrideText={"Subscribe to view"}
 						caption={props.text}
-						ipfs={props.image?.ipfs}
-						id={props.id}
+						isProtected={false}
+						_id={props._id}
 					/>
 				</Container>
 			</Container>
