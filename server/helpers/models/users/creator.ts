@@ -83,6 +83,7 @@ const CreatorSchema = new mongoose.Schema(
 			default: false,
 			required: true,
 		},
+		profile_pic: String,
 	},
 	{
 		timestamps: {createdAt: true, updatedAt: true},

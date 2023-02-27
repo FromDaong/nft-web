@@ -1,9 +1,10 @@
 import axios from "axios";
 import {decode} from "blurhash";
 import {connectMongoDB} from "server/helpers/core";
+import {uploadFileToIPFS} from "server/helpers/core/pinata";
 import {MongoModelNFT} from "server/helpers/models";
+import sharp from "sharp";
 const atob = require("atob");
-const sharp = require("sharp");
 const {encode} = require("blurhash");
 
 export const encodeImage = async (sharpObj, res, id) => {
@@ -72,7 +73,7 @@ function dataURLtoFile(dataurl) {
 // Checks if image does not return error from CDN
 // If it does it then downloads and sends the base64 encoded image from pinata
 export default async function fetchWithFallback(req, res) {
-	const {url, blurhash, id} = req.query;
+	const {url, blurhash, id, _id} = req.query;
 
 	if (!url || url === "undefined") {
 		res.status(404).send("Not Found");
@@ -87,12 +88,13 @@ export default async function fetchWithFallback(req, res) {
 			responseType: "arraybuffer",
 		});
 		const image = await sharp(Buffer.from(response.data));
+		const metadata = await image.metadata();
 
 		if (blurhash) {
 			return await encodeImage(image, res, id);
 		}
 
-		res.setHeader("Content-Type", "image/webp");
+		res.setHeader("Content-Type", `image/${metadata.format}`);
 		return res.send(await image.toBuffer());
 	} catch (err) {
 		console.log({err});
@@ -100,12 +102,23 @@ export default async function fetchWithFallback(req, res) {
 
 		const blob = dataURLtoFile(response.data); //response.data.replace(`"`, "").replace(/["']/g, "");
 		const image = await sharp(blob);
+		const metadata = await image.metadata();
+
+		const bufferImage = await image.toFormat("png").toBuffer();
+		const ipfsUrl = await uploadFileToIPFS(bufferImage);
+		await MongoModelNFT.findById(_id, {
+			$set: {
+				image: {
+					ipfs: ipfsUrl,
+				},
+			},
+		});
 
 		if (blurhash) {
 			return encodeImage(image, res, id);
 		}
 
-		res.setHeader("Content-Type", "image/webp");
+		res.setHeader("Content-Type", `image/${metadata.format}`);
 		return res.send(await image.toBuffer());
 	}
 }
