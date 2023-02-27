@@ -60,12 +60,7 @@ export const TritResalePost = (props: TritResalePostProps) => {
 			}}
 		>
 			<Container className="relative flex flex-col w-full overflow-hidden">
-				<Container
-					className="relative flex overflow-hidden rounded-xl"
-					css={{
-						height: "256px",
-					}}
-				>
+				<Container className="relative flex w-full overflow-hidden rounded-xl md:aspect-square">
 					<PostMediaContent
 						isProtected={isProtected}
 						caption={props.text}
