@@ -28,7 +28,7 @@ export default async function image(req, res) {
 
 			const blurhashManager = new BlurhashManager(image);
 			await blurhashManager.encodeImage(async (blurhash) => {
-				await MongoModelNFT.findOneAndUpdate(_id, {
+				await MongoModelNFT.findByIdAndUpdate(_id, {
 					$set: {
 						blurhash,
 					},

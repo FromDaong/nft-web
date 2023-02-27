@@ -28,7 +28,7 @@ export default async function image(req, res) {
 				`nft-${_id}.${metadata.format}`
 			);
 
-			await MongoModelNFT.findById(_id, {
+			await MongoModelNFT.findByIdAndUpdate(_id, {
 				$set: {thumbnail: ipfsUrl},
 			});
 

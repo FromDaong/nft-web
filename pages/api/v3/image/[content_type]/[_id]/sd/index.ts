@@ -30,7 +30,7 @@ export default async function image(req, res: NextApiResponse) {
 				`nft-${_id}.${metadata.format}`
 			);
 
-			await MongoModelNFT.findById(_id, {
+			await MongoModelNFT.findByIdAndUpdate(_id, {
 				$set: {
 					sd_image: ipfsUrl,
 				},
