@@ -27,7 +27,11 @@ export default class SharpManager {
 			if (metadata.format === "gif") {
 				return image.gif();
 			}
-			return image.resize(size);
+			return image
+				.toFormat("webp", {
+					lossless: true,
+				})
+				.resize(size);
 		} catch (err) {
 			const response = await axios.get(url);
 
@@ -41,7 +45,11 @@ export default class SharpManager {
 				return image;
 			}
 
-			return image.resize(size);
+			return image
+				.toFormat("webp", {
+					lossless: true,
+				})
+				.resize(size);
 		}
 	}
 }

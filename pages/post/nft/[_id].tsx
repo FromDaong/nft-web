@@ -359,7 +359,7 @@ function ImagePreviewSection({
 						src={`/api/v3/image/nft/${nft._id}/${
 							nft.isProtected && !nft.isOwned ? "blur" : "sd"
 						}`}
-						className="object-contain rounded-xl absolute top-0 left-0"
+						className="object-contain absolute top-0 left-0 h-full w-full rounded-xl"
 						sizes="100vw"
 						alt={nft.name}
 					/>

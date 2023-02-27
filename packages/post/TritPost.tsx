@@ -48,12 +48,7 @@ export const TritPost = (props: TritPostProps) => {
 						borderRadius: "12px",
 					}}
 				>
-					<Container
-						className="relative flex w-full overflow-hidden rounded-xl md:aspect-square"
-						css={{
-							height: "256px",
-						}}
-					>
+					<Container className="relative flex w-full overflow-hidden rounded-xl md:aspect-square">
 						{!loadingSigner && remainingNfts === 0 && !props.hideSoldOut && (
 							<Text
 								css={{
