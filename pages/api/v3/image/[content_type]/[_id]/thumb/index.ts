@@ -1,10 +1,7 @@
 // Return the blurhash of the image
 import {returnWithError} from "@db/engine/utils";
 import {connectMongoDB} from "server/helpers/core";
-import pinata, {
-	getPinataUrl,
-	uploadFileToIPFS,
-} from "server/helpers/core/pinata";
+import {uploadFileToIPFS} from "server/helpers/core/pinata";
 import SharpManager from "server/helpers/core/sharp";
 import {MongoModelCreator, MongoModelNFT} from "server/helpers/models";
 
@@ -25,8 +22,11 @@ export default async function image(req, res) {
 			const compressed_image = await SharpManager.getCompressedImage(
 				nft.image.ipfs
 			);
-
-			const ipfsUrl = await uploadFileToIPFS(compressed_image);
+			const metadata = await compressed_image.metadata();
+			const ipfsUrl = await uploadFileToIPFS(
+				compressed_image,
+				`nft-${_id}.${metadata.format}`
+			);
 
 			await MongoModelNFT.findById(_id, {
 				$set: {thumbnail: ipfsUrl},
@@ -54,7 +54,11 @@ export default async function image(req, res) {
 				creator.profile.profile_pic
 			);
 
-			const ipfsUrl = await uploadFileToIPFS(compressed_image);
+			const metadata = await compressed_image.metadata();
+			const ipfsUrl = await uploadFileToIPFS(
+				compressed_image,
+				`nft-${_id}.${metadata.format}`
+			);
 
 			await MongoModelCreator.findByIdAndUpdate(_id, {
 				set: {

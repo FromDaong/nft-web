@@ -80,8 +80,7 @@ export default async function fetchWithFallback(req, res) {
 		return;
 	}
 
-	const defaultUrl =
-		"https://" + (url as Array<string>).slice(1).join("/") + "?q=20";
+	const defaultUrl = "https://" + (url as Array<string>).slice(1).join("/");
 
 	try {
 		const response = await axios.get(defaultUrl, {
@@ -105,7 +104,10 @@ export default async function fetchWithFallback(req, res) {
 		const metadata = await image.metadata();
 
 		const bufferImage = await image.toFormat("png").toBuffer();
-		const ipfsUrl = await uploadFileToIPFS(bufferImage);
+		const ipfsUrl = await uploadFileToIPFS(
+			bufferImage,
+			`image-${_id}.${metadata.format}`
+		);
 		await MongoModelNFT.findById(_id, {
 			$set: {
 				image: {

@@ -7,9 +7,17 @@ const pinata = new pinataSDK(
 export const getPinataUrl = (IpfsHash: string) =>
 	`https://treatdao.mypinata.cloud/ipfs/${IpfsHash}`;
 
-export async function uploadFileToIPFS(compressed_image) {
+export async function uploadFileToIPFS(compressed_image, filename) {
 	const pinataResponse = await pinata.pinFileToIPFS(
-		compressed_image.toFormat("png").toBuffer()
+		compressed_image.toFormat("png").toBuffer(),
+		{
+			pinataMetadata: {
+				name: filename,
+			},
+			pinataOptions: {
+				cidVersion: 0,
+			},
+		}
 	);
 
 	const {IpfsHash} = pinataResponse;

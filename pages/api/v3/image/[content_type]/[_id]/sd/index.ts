@@ -24,8 +24,11 @@ export default async function image(req, res: NextApiResponse) {
 				nft.image.ipfs,
 				480
 			);
-
-			const ipfsUrl = await uploadFileToIPFS(compressed_image);
+			const metadata = await compressed_image.metadata();
+			const ipfsUrl = await uploadFileToIPFS(
+				compressed_image,
+				`nft-${_id}.${metadata.format}`
+			);
 
 			await MongoModelNFT.findById(_id, {
 				$set: {

@@ -1,5 +1,6 @@
 import axios from "axios";
 import sharp from "sharp";
+const atob = require("atob");
 
 function dataURLtoFile(dataurl) {
 	const arr = dataurl.split(",");
@@ -25,7 +26,9 @@ export default class SharpManager {
 		} catch (err) {
 			const response = await axios.get(url);
 
-			const blob = dataURLtoFile(response.data); //response.data.replace(`"`, "").replace(/["']/g, "");
+			const blob = dataURLtoFile(
+				response.data.replace(`"`, "").replace(/["']/g, "")
+			);
 			const image = await sharp(blob);
 
 			return image.resize(size);
