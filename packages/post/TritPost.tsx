@@ -71,13 +71,9 @@ export const TritPost = (props: TritPostProps) => {
 							</Text>
 						)}
 						<PostMediaContent
-							blurhash={props.blurhash}
 							isProtected={isProtected && !isMine}
 							caption={props.text}
 							_id={props._id}
-							overrideText={
-								"The creator wants you to collect this NFT before you can preview the content"
-							}
 						/>
 						<Container
 							className="flex flex-col justify-between w-full h-full p-4"

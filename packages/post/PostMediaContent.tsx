@@ -2,8 +2,6 @@ import {Container} from "@packages/shared/components/Container";
 import Spinner from "@packages/shared/icons/Spinner";
 
 export const PostMediaContent = (props: {
-	blurhash?: string;
-	overrideText?: string;
 	caption: string;
 	isProtected?: boolean;
 	_id: string;

@@ -67,15 +67,9 @@ export const TritResalePost = (props: TritResalePostProps) => {
 					}}
 				>
 					<PostMediaContent
-						imageUrl={imageURL}
-						blurhash={props.blurhash}
 						isProtected={isProtected}
 						caption={props.text}
-						ipfs={props.image?.ipfs}
-						id={props.id}
-						overrideText={
-							"The creator wants you to collect this NFT before you can preview the content"
-						}
+						_id={props._id}
 					/>
 					<Container
 						className="flex flex-col justify-between w-full h-full p-4"
