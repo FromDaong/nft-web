@@ -37,7 +37,7 @@ export default async function image(req, res: NextApiResponse) {
 			});
 		}
 
-		return res.redirect(301, nft.sd_image);
+		return res.redirect(nft.sd_image);
 	}
 
 	return res.status(400).send("not found");

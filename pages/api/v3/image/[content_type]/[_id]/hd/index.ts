@@ -16,7 +16,7 @@ export default async function image(req, res: NextApiResponse) {
 	if (content_type === "nft") {
 		const nft = await MongoModelNFT.findById(_id);
 
-		return res.redirect(301, nft.image.ipfs);
+		return res.redirect(nft.image.ipfs);
 	}
 
 	return res.status(400).send("not found");

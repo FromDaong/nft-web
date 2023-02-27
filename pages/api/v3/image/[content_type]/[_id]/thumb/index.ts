@@ -32,10 +32,10 @@ export default async function image(req, res) {
 				$set: {thumbnail: ipfsUrl},
 			});
 
-			return res.redirect(301, ipfsUrl);
+			return res.redirect(ipfsUrl);
 		}
 
-		return res.redirect(301, nft.image.thumbnail);
+		return res.redirect(nft.image.thumbnail);
 	}
 
 	if (content_type === "creator") {
@@ -45,7 +45,6 @@ export default async function image(req, res) {
 
 		if (!creator.profile.profile_pic) {
 			return res.redirect(
-				301,
 				"https://treatdao.mypinata.cloud/ipfs/QmdRewQfGbQP95hcyabRwRnXKWFH8Lyrr8ak6xc2y4uWTP"
 			);
 		}
@@ -66,9 +65,9 @@ export default async function image(req, res) {
 				},
 			});
 
-			return res.redirect(301, ipfsUrl);
+			return res.redirect(ipfsUrl);
 		}
 
-		return res.redirect(301, creator.profile_pic);
+		return res.redirect(creator.profile_pic);
 	}
 }
