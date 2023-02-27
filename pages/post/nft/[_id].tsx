@@ -346,7 +346,7 @@ function ImagePreviewSection({
 
 	return (
 		<Container className="w-full 2xl:h-[80vh] lg:h-[90vh] h-[calc(100vh-64px)] flex items-center justify-center col-span-1 lg:col-span-2 xl:col-span-1">
-			{isLightboxOpen && isOwned && (
+			{isLightboxOpen && (isOwned || !nft.protected) && (
 				<Lightbox
 					mainSrc={`/api/v3/image/nft/${nft._id}/hd`}
 					onCloseRequest={onLightboxClose}
@@ -361,7 +361,7 @@ function ImagePreviewSection({
 			>
 				<Container className="relative w-full h-full rounded-xl">
 					<img
-						onClick={onLightboxClose}
+						onClick={onLightboxOpen}
 						src={`/api/v3/image/nft/${nft._id}/${
 							nft.isProtected && !isOwned ? "blur" : "sd"
 						}`}
