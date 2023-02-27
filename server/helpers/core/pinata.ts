@@ -10,7 +10,8 @@ export const getPinataUrl = (IpfsHash: string) =>
 	`https://treatdao.mypinata.cloud/ipfs/${IpfsHash}`;
 
 export async function uploadFileToIPFS(compressed_image, filename) {
-	const stream = Readable.from(compressed_image.toBuffer());
+	const imageBuffer = compressed_image.toBuffer();
+	const stream = Readable.from(imageBuffer);
 
 	const pinataResponse = await pinata.pinFileToIPFS(stream, {
 		pinataMetadata: {
