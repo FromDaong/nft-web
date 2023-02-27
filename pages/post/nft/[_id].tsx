@@ -6,8 +6,6 @@ import {useGetIsNFTOwned, useTritNFTUtils} from "@packages/post/hooks";
 import {TritPost} from "@packages/post/TritPost";
 import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
-import OptimizedImage from "@packages/shared/components/OptimizedImage";
-import OptimizedNFTImage from "@packages/shared/components/OptimizedImage/OptimizedNFTImage";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {
 	ImportantText,
@@ -39,7 +37,8 @@ import {
 	useWagmiGetNFTTotalSupply,
 } from "@packages/chain/hooks";
 import BuyNFTButton from "@packages/post/BuyNFTButton";
-import Image from "next/future/image";
+import Lightbox from "react-image-lightbox";
+import {useDisclosure} from "@packages/hooks";
 
 export default function NFT(props: {
 	notFound?: boolean;
@@ -133,10 +132,7 @@ export default function NFT(props: {
 				<ApplicationFrame>
 					<Container className="grid col-span-1 gap-8 p-4 py-12 xl:grid-cols-3 lg:gap-12">
 						<ImagePreviewSection
-							setShowFullScreen={setShowFullScreen}
-							showFullScreen={showFullScreen}
 							isOwned={isOwned}
-							imageURL={imageURL}
 							remainingNfts={remainingNfts}
 							mintedNfts={mintedNfts}
 							maxNftSupply={maxNftSupply}
@@ -334,19 +330,28 @@ export const getServerSideProps = async (context) => {
 };
 
 function ImagePreviewSection({
-	setShowFullScreen,
-	showFullScreen,
-	isOwned,
-	imageURL,
 	remainingNfts,
 	mintedNfts,
 	maxNftSupply,
 	address,
 	nft,
 	postUtils,
+	isOwned,
 }) {
+	const {
+		isOpen: isLightboxOpen,
+		onOpen: onLightboxOpen,
+		onClose: onLightboxClose,
+	} = useDisclosure();
+
 	return (
 		<Container className="w-full 2xl:h-[80vh] lg:h-[90vh] h-[calc(100vh-64px)] flex items-center justify-center col-span-1 lg:col-span-2 xl:col-span-1">
+			{isLightboxOpen && isOwned && (
+				<Lightbox
+					mainSrc={`/api/v3/image/nft/${nft._id}/hd`}
+					onCloseRequest={onLightboxClose}
+				/>
+			)}
 			<Container
 				css={{
 					backgroundColor: "$cardBg",
@@ -356,10 +361,11 @@ function ImagePreviewSection({
 			>
 				<Container className="relative w-full h-full rounded-xl">
 					<img
+						onClick={onLightboxClose}
 						src={`/api/v3/image/nft/${nft._id}/${
-							nft.isProtected && !nft.isOwned ? "blur" : "sd"
+							nft.isProtected && !isOwned ? "blur" : "sd"
 						}`}
-						className="object-contain absolute top-0 left-0 h-full w-full rounded-xl"
+						className="object-contain hover:cursor-zoom-in absolute top-0 left-0 h-full w-full rounded-xl"
 						sizes="100vw"
 						alt={nft.name}
 					/>
