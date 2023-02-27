@@ -84,7 +84,7 @@ export default function NFTS({sort, q, nfts, error}) {
 							/>
 						</Container>
 
-						<Container className="flex flex-col gap-8 px-4">
+						<Container className="flex flex-col gap-8 px-4 overflow-x-hidden">
 							<TreatNFTsInfinityScrollingContainer>
 								{nft_posts.length > 0 ? (
 									nft_posts.map((nft) => (
