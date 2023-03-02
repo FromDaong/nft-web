@@ -424,17 +424,17 @@ function ImagePreviewSection({
 						{postUtils.likedBy.length}
 					</Button>
 					<Container className="flex-1">
-						{remainingNfts !== 0 &&
+						{mintedNfts !== maxNftSupply &&
 							!(
 								nft.creator.address.toLowerCase() === address?.toLowerCase()
 							) && <BuyNFTButton nftData={nft} />}
-						{remainingNfts === 0 && (
+						{mintedNfts === maxNftSupply && (
 							<Button
 								fullWidth
 								appearance={"disabled"}
 								disabled
 							>
-								{remainingNfts === 0 ? "Sold out" : `Buy Now`}
+								Sold out
 							</Button>
 						)}
 					</Container>

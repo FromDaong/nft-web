@@ -71,7 +71,7 @@ export const TritPortfolioPost = (props: TritResalePostProps) => {
 		<>
 			{isLightboxOpen && isMine && (
 				<Lightbox
-					mainSrc={`https://treatdao.com/api/v2/utils/images/fetchWithFallback?default=${props.image.ipfs}`}
+					mainSrc={`/api/v3/image/nft/${props._id}/hd`}
 					onCloseRequest={onLightboxClose}
 				/>
 			)}
