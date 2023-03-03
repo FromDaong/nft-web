@@ -6,7 +6,7 @@ import {apiEndpoint} from "@utils/index";
 import logsnag from "@utils/logsnag";
 import axios from "axios";
 import TreatCore from "core/TreatCore";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {useAccount, useBalance, useWaitForTransaction} from "wagmi";
 import {BuyButtonProps, get_nft_type, useNFTFactory} from "./hooks/helpers";
 import GenericChainModal from "@packages/modals/GenericChainModal";
@@ -181,6 +181,7 @@ const BuyCreatorMartNFTButton = ({
 				setLoading(false);
 				setError(err);
 				await TreatCore.logThis("error", event.message, event.metadata);
+				alert(`An error occured: ` + err);
 			});
 	};
 
@@ -248,13 +249,14 @@ const ConnectWalletButton = () => {
 	);
 };
 
-const ContextAwarePurchaseButton = ({nft, address}) => {
+const ContextAwarePurchaseButton = ({nft, address, postUtils}) => {
 	const nft_type = get_nft_type(nft);
-	const {useNFT} = useNFTFactory(nft_type, nft.creator?.address);
-	const nftUtils = useNFT(nft, nft.creator?.address);
+	const {useNFT} = useNFTFactory(nft_type);
+	const nftUtils = useNFT(nft, nft.creator.address);
+
 	const [txHash, setTxHash] = useState("");
 
-	if (nftUtils.remainingNfts === 0) {
+	if (postUtils.remainingNfts === 0) {
 		return <SoldOutButton />;
 	}
 
@@ -264,8 +266,8 @@ const ContextAwarePurchaseButton = ({nft, address}) => {
 			address={address}
 			mint={nftUtils.mint as any}
 			creator={nft.creator}
-			price={nftUtils.cost}
-			remaining={Number(nftUtils.remainingNfts) - 1}
+			price={postUtils.cost}
+			remaining={Number(postUtils.remainingNfts) - 1}
 			hash={txHash}
 			setHash={setTxHash}
 		/>
@@ -274,18 +276,6 @@ const ContextAwarePurchaseButton = ({nft, address}) => {
 
 const PurchaseButtonWrapper = (nft: BuyButtonProps) => {
 	const {status, address} = useAccount();
-	const {
-		data,
-		isLoading: isBalanceFetching,
-		error: balanceFetchError,
-		isError: didBalanceFetchError,
-	} = useBalance({
-		addressOrName: address,
-	});
-
-	if (status === "connecting" || isBalanceFetching) {
-		return <LoadingButton />;
-	}
 
 	if (status === "disconnected") {
 		return <ConnectWalletButton />;
@@ -293,25 +283,16 @@ const PurchaseButtonWrapper = (nft: BuyButtonProps) => {
 
 	if (!address) return null;
 
-	if (didBalanceFetchError) {
-		return <ErrorButton error={balanceFetchError} />;
-	}
-
-	const balance = Number(data?.formatted);
-
-	if (balance < Number(nft.price)) {
-		return <InsufficientBalanceButton />;
-	}
-
 	return (
 		<ContextAwarePurchaseButton
 			address={address}
 			nft={nft}
+			postUtils={nft.postUtils}
 		/>
 	);
 };
 
-const BuyNFTButton = ({nftData}) => {
+const BuyNFTButton = ({nftData, postUtils}) => {
 	const {address} = useAccount();
 	const isSubscribed = useGetIsSubscribed(address);
 	if (nftData.melon_nft || nftData.totm_nft) {
@@ -342,6 +323,7 @@ const BuyNFTButton = ({nftData}) => {
 		<Container className="flex flex-col w-full">
 			<PurchaseButtonWrapper
 				{...nftData}
+				postUtils={postUtils}
 				creator={nftData.creator}
 			/>
 		</Container>
