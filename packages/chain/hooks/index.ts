@@ -251,6 +251,7 @@ export const useWagmiMintCreatorNFT = (id: number, treatCost: number) => {
 
 	const mintNFT = useCallback(async () => {
 		if (signer && creatorMartContract) {
+			console.log({id, treatCost});
 			const tx = await creatorMartContract?.redeem(id, {
 				from: address,
 				value: ethers.utils.parseEther(treatCost.toString()),
@@ -276,20 +277,17 @@ export const useWagmiMintTOTMNFT = (id: number, treatCost: number) => {
 		signerOrProvider: signer,
 	});
 
-	const mintNFT = useCallback(
-		async (nft_id) => {
-			if (signer && totmMartContract) {
-				const tx = await totmMartContract?.redeem(nft_id, {
-					from: address,
-					value: ethers.utils.parseEther(treatCost.toString()),
-				});
-				return tx;
-			}
+	const mintNFT = useCallback(async () => {
+		if (signer && totmMartContract) {
+			const tx = await totmMartContract?.redeem(id, {
+				from: address,
+				value: ethers.utils.parseEther(treatCost.toString()),
+			});
+			return tx;
+		}
 
-			return null;
-		},
-		[totmMartContract, id, signer]
-	);
+		return null;
+	}, [totmMartContract, id, signer]);
 
 	return {
 		mintNFT,

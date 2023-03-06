@@ -136,13 +136,13 @@ const RedeemFreeNFT = ({mint}) => {
 const BuyCreatorMartNFTButton = ({
 	nft,
 	mint,
-	creator,
-	price,
 	address,
 	remaining,
 	setHash,
 	hash,
 }) => {
+	const nftUtils = usePrimaryNFT(nft);
+
 	const router = useRouter();
 	const {profile} = useUser();
 	const {isOpen, onOpen} = useDisclosure();
@@ -156,7 +156,8 @@ const BuyCreatorMartNFTButton = ({
 	const buyNFT = () => {
 		// if creator address exists, we will use resale open orders automatically
 		setLoading(true);
-		mint(price, creator.address)
+		nftUtils
+			.mint()
 			.then((res) => {
 				setHash(res.hash);
 				setLoading(false);
@@ -263,13 +264,13 @@ const ContextAwarePurchaseButton = ({nft, address, postUtils}) => {
 		return <SoldOutButton />;
 	}
 
+	console.log({nftUtils, nft});
+
 	return (
 		<BuyCreatorMartNFTButton
 			nft={nft}
 			address={address}
 			mint={nftUtils.mint as any}
-			creator={nft.creator}
-			price={postUtils.cost}
 			remaining={Number(postUtils.remainingNfts) - 1}
 			hash={txHash}
 			setHash={setTxHash}
