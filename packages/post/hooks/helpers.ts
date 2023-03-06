@@ -169,17 +169,9 @@ export const useSecondaryNFT = (nft, seller_address) => {
 	};
 };
 
-export const useNFTFactory = (nft, seller_address?) => {
-	const useNFT = useMemo(() => {
-		if (seller_address) {
-			return useSecondaryNFT;
-		}
-
-		return usePrimaryNFT;
-	}, [seller_address]);
-
+export const useNFTFactory = () => {
 	return {
-		useNFT,
+		useNFT: usePrimaryNFT,
 	};
 };
 

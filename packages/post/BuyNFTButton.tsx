@@ -8,7 +8,12 @@ import axios from "axios";
 import TreatCore from "core/TreatCore";
 import {useEffect, useMemo, useState} from "react";
 import {useAccount, useBalance, useWaitForTransaction} from "wagmi";
-import {BuyButtonProps, get_nft_type, useNFTFactory} from "./hooks/helpers";
+import {
+	BuyButtonProps,
+	get_nft_type,
+	useNFTFactory,
+	usePrimaryNFT,
+} from "./hooks/helpers";
 import GenericChainModal from "@packages/modals/GenericChainModal";
 import {useUser} from "core/auth/useUser";
 import {useRouter} from "next/router";
@@ -250,9 +255,7 @@ const ConnectWalletButton = () => {
 };
 
 const ContextAwarePurchaseButton = ({nft, address, postUtils}) => {
-	const nft_type = get_nft_type(nft);
-	const {useNFT} = useNFTFactory(nft_type);
-	const nftUtils = useNFT(nft, nft.creator.address);
+	const nftUtils = usePrimaryNFT(nft);
 
 	const [txHash, setTxHash] = useState("");
 

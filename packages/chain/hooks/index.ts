@@ -1,7 +1,6 @@
 import {useCallback, useEffect, useState} from "react";
 import {ABI} from "@packages/treat/lib/abi";
 import {contractAddresses} from "@packages/treat/lib/constants";
-import {getBalanceNumber} from "@utils/formatBalance";
 import {BigNumber, Contract, ethers} from "ethers";
 import {
 	useAccount,
@@ -277,17 +276,20 @@ export const useWagmiMintTOTMNFT = (id: number, treatCost: number) => {
 		signerOrProvider: signer,
 	});
 
-	const mintNFT = useCallback(async () => {
-		if (signer && totmMartContract) {
-			const tx = await totmMartContract?.redeem(id, {
-				from: address,
-				value: ethers.utils.parseEther(treatCost.toString()),
-			});
-			return tx;
-		}
+	const mintNFT = useCallback(
+		async (nft_id) => {
+			if (signer && totmMartContract) {
+				const tx = await totmMartContract?.redeem(nft_id, {
+					from: address,
+					value: ethers.utils.parseEther(treatCost.toString()),
+				});
+				return tx;
+			}
 
-		return null;
-	}, [totmMartContract, id, signer]);
+			return null;
+		},
+		[totmMartContract, id, signer]
+	);
 
 	return {
 		mintNFT,
