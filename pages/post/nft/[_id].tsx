@@ -56,7 +56,7 @@ export default function NFT(props: {
 
 	const [showFullScreen, setShowFullScreen] = useState(false);
 	const [loadHD, setLoadHD] = useState(false);
-	const [imageURL, setImageURL] = useState("");
+	console.log({nft});
 
 	useFullScreen("nft_image", showFullScreen);
 
@@ -79,24 +79,6 @@ export default function NFT(props: {
 	if (props.notFound) {
 		return <Error404 />;
 	}
-
-	const ipfs_parts = nft.image?.ipfs.split("/");
-	const ipfs_id = ipfs_parts[ipfs_parts.length - 1];
-
-	const blurred_image = `/api/v3/media/${nft.image?.ipfs}?blurhash=true`;
-	const hd_image = `${nft.image?.ipfs}`;
-
-	useEffect(() => {
-		if (nft.protected && !isOwned) {
-			setImageURL(blurred_image);
-			return;
-		}
-
-		if (loadHD) {
-			setImageURL(hd_image);
-			return;
-		}
-	}, [nft.protected, isOwned, loadHD]);
 
 	const remainingNfts = maxNftSupply - mintedNfts;
 
@@ -356,15 +338,15 @@ function ImagePreviewSection({
 					backgroundColor: "$cardBg",
 					borderColor: "$border",
 				}}
-				className="container flex flex-col flex-1 h-full gap-4 p-3 overflow-hidden border rounded-2xl drop-shadow-xl justify-center"
+				className="container flex flex-col justify-center flex-1 h-full gap-4 p-3 overflow-hidden border rounded-2xl drop-shadow-xl"
 			>
 				<Container className="relative w-full h-full rounded-xl">
 					<img
 						onClick={onLightboxOpen}
 						src={`/api/v3/image/nft/${nft._id}/${
-							nft.isProtected && !isOwned ? "blur" : "sd"
+							(nft.isProtected && !isOwned) || nft.protected ? "blur" : "sd"
 						}`}
-						className="object-contain hover:cursor-zoom-in absolute top-0 left-0 h-full w-full rounded-xl"
+						className="absolute top-0 left-0 object-contain w-full h-full hover:cursor-zoom-in rounded-xl"
 						sizes="100vw"
 						alt={nft.name}
 					/>
