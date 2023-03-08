@@ -11,6 +11,8 @@ import {useAccount, useBalance, useWaitForTransaction} from "wagmi";
 import {
 	BuyButtonProps,
 	get_nft_type,
+	useMinterFactory,
+	useDefaultMinterProvider,
 	useNFTFactory,
 	usePrimaryNFT,
 } from "./hooks/helpers";
@@ -133,15 +135,11 @@ const RedeemFreeNFT = ({mint}) => {
 	);
 };
 
-const BuyCreatorMartNFTButton = ({
-	nft,
-	mint,
-	address,
-	remaining,
-	setHash,
-	hash,
-}) => {
-	const nftUtils = usePrimaryNFT(nft);
+const BuyCreatorMartNFTButton = ({nft, address, remaining, setHash, hash}) => {
+	const nftPrice = Number(nft.price ?? 0);
+
+	const {useMinter} = useDefaultMinterProvider(nftPrice);
+	const {mintNFT} = useMinter(nft.id, nftPrice);
 
 	const router = useRouter();
 	const {profile} = useUser();
@@ -155,9 +153,9 @@ const BuyCreatorMartNFTButton = ({
 
 	const buyNFT = () => {
 		// if creator address exists, we will use resale open orders automatically
+		console.log("Minting");
 		setLoading(true);
-		nftUtils
-			.mint()
+		mintNFT()
 			.then((res) => {
 				setHash(res.hash);
 				setLoading(false);
@@ -186,8 +184,7 @@ const BuyCreatorMartNFTButton = ({
 				};
 				setLoading(false);
 				setError(err);
-				await TreatCore.logThis("error", event.message, event.metadata);
-				alert(`An error occured: ` + err);
+				console.log({err});
 			});
 	};
 
@@ -256,21 +253,16 @@ const ConnectWalletButton = () => {
 };
 
 const ContextAwarePurchaseButton = ({nft, address, postUtils}) => {
-	const nftUtils = usePrimaryNFT(nft);
-
 	const [txHash, setTxHash] = useState("");
 
 	if (postUtils.remainingNfts === 0) {
 		return <SoldOutButton />;
 	}
 
-	console.log({nftUtils, nft});
-
 	return (
 		<BuyCreatorMartNFTButton
 			nft={nft}
 			address={address}
-			mint={nftUtils.mint as any}
 			remaining={Number(postUtils.remainingNfts) - 1}
 			hash={txHash}
 			setHash={setTxHash}

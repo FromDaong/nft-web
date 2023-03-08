@@ -70,6 +70,14 @@ const usePayingMinters = (type) => {
 	return {useMinter};
 };
 
+export const useDefaultMinterProvider = (cost: number) => {
+	const useMinter = useMemo(() => {
+		if (cost === 0) return useWagmiMintFreeNFT;
+		return useWagmiMintCreatorNFT;
+	}, [cost]);
+	return {useMinter};
+};
+
 const useMinterTypeSelector = (type) => {
 	const useSelectedMinter = useMemo(() => {
 		if (type === "free") return useFreeMinters;
