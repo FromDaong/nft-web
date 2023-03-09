@@ -3,12 +3,15 @@ import {NextApiResponse} from "next";
 import {NextApiRequest} from "next";
 import {returnWithError, returnWithSuccess} from "server/database/engine/utils";
 import {
-	MongoModelEvent,
+	MongoModelCreator,
 	MongoModelNFT,
 	MongoModelProfile,
 	MongoModelTimelineEvent,
 } from "server/helpers/models";
 import {protectedAPIRoute} from "server/utils";
+
+const sendgridClient = require("@sendgrid/mail");
+sendgridClient.setApiKey(process.env.SENDGRID_API_KEY);
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
 	await connectMongoDB();
@@ -46,17 +49,29 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 			],
 		},
 	});
-
-	if (payload.remaining === 0) {
-		await MongoModelEvent.findOneAndDelete({
-			id: payload.nftId,
-			seller: payload.seller
-				? payload.seller.toLowerCase()
-				: nft.creator.address,
-		});
-	}
-
 	await Promise.all([event.save()]);
+
+	const creator = await MongoModelCreator.findById(nft.creator);
+	const msg = {
+		to: creator.email,
+		from: {
+			email: "noreply@treatdao.com",
+			name: "Treat DAO",
+		},
+		templateId: "d-d5da0ec9d69f43db8e8001dbc280e47a",
+		dynamicTemplateData: {
+			nft_name: nft.name,
+			nft_price: nft.price,
+			nft_url: `https://treatnfts.com/post/nft/${nft._id}`,
+		},
+	};
+
+	try {
+		const sgClientResponse = await sendgridClient.send(msg);
+		console.log("email sent", sgClientResponse);
+	} catch (e) {
+		console.error(e);
+	}
 
 	return returnWithSuccess(event, res);
 }

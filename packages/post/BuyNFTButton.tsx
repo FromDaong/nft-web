@@ -5,23 +5,14 @@ import {useConnectModal} from "@rainbow-me/rainbowkit";
 import {apiEndpoint} from "@utils/index";
 import logsnag from "@utils/logsnag";
 import axios from "axios";
-import TreatCore from "core/TreatCore";
-import {useEffect, useMemo, useState} from "react";
-import {useAccount, useBalance, useWaitForTransaction} from "wagmi";
-import {
-	BuyButtonProps,
-	get_nft_type,
-	useMinterFactory,
-	useDefaultMinterProvider,
-	useNFTFactory,
-	usePrimaryNFT,
-} from "./hooks/helpers";
+import {useEffect, useState} from "react";
+import {useAccount, useWaitForTransaction} from "wagmi";
+import {BuyButtonProps, useDefaultMinterProvider} from "./hooks/helpers";
 import GenericChainModal from "@packages/modals/GenericChainModal";
 import {useUser} from "core/auth/useUser";
 import {useRouter} from "next/router";
 import {useDisclosure} from "@packages/hooks";
 import useGetIsSubscribed from "@packages/chain/hooks/useGetIsSubscribed";
-import NFTEvent from "server/helpers/models/posts/activity";
 
 /**
  *
