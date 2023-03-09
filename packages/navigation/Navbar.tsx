@@ -4,7 +4,6 @@ import * as DarkLogo from "../../public/brand/logo_white.svg";
 
 import Image from "next/image";
 import {useAccount} from "wagmi";
-import NavbarSearchDropdown from "../search/NavbarSearchDropdown";
 
 import {styled} from "@styles/theme";
 import {BoldLink} from "@packages/shared/components/Typography/Text";
@@ -70,16 +69,18 @@ export default function Navbar() {
 									</a>
 								</Link>
 							</div>
-							<div className="items-center hidden gap-4 md:flex">
-								<Link href="https://treatdao.com/farms">
-									<a
-										target="_blank"
-										rel="norefferer"
-									>
-										<BoldLink>Farm</BoldLink>
-									</a>
-								</Link>
-							</div>
+							{false && (
+								<div className="items-center hidden gap-4 md:flex">
+									<Link href="https://treatdao.com/farms">
+										<a
+											target="_blank"
+											rel="norefferer"
+										>
+											<BoldLink>Farm</BoldLink>
+										</a>
+									</Link>
+								</div>
+							)}
 							<div className="items-center hidden gap-4 md:flex">
 								<Link href="/dex/ramp">
 									<a>
@@ -88,11 +89,6 @@ export default function Navbar() {
 								</Link>
 							</div>
 						</div>
-						{false && (
-							<div className="items-center hidden w-full max-w-md gap-4 md:flex">
-								<NavbarSearchDropdown />
-							</div>
-						)}
 
 						<div className="flex gap-4">
 							<div className="flex md:hidden"></div>

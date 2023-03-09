@@ -37,10 +37,10 @@ const ExploreDropdownLinks = [
 		label: "Magazine",
 		link: "/magazine",
 	},
-	{
-		label: "Farm",
-		link: "https://treatdao.com/farms",
-	},
+	// {
+	//	 label: "Farm",
+	//	 link: "https://treatdao.com/farms",
+	// },
 	{
 		label: "Buy Crypto",
 		link: "/dex/ramp",
@@ -196,7 +196,7 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 						className="fixed top-0 left-0 w-screen h-screen"
 					>
 						{!props.isConnected && (
-							<Container className="relative top-0 left-0 w-full h-w-full p-8">
+							<Container className="relative top-0 left-0 w-full p-8 h-w-full">
 								<Container className="absolute flex justify-end right-8 top-8">
 									<Button
 										className="flex items-center"
@@ -210,7 +210,7 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 										/>
 									</Button>
 								</Container>
-								<Container className="flex flex-col gap-24 h-full py-12">
+								<Container className="flex flex-col h-full gap-24 py-12">
 									<Container className="flex flex-col gap-2">
 										{ExploreDropdownLinks.map((link) => (
 											<Link
