@@ -7,9 +7,10 @@ import Spinner from "@packages/shared/icons/Spinner";
 import {ABI} from "@packages/treat/lib/abi";
 import {contractAddresses} from "@packages/treat/lib/constants";
 import {useUser} from "core/auth/useUser";
+import {ethers} from "ethers";
 import {useRouter} from "next/router";
-import {useCallback, useState} from "react";
-import {useAccount, useContract, useSigner} from "wagmi";
+import {useCallback, useEffect, useState} from "react";
+import {useAccount, useContract, useSigner, useWaitForTransaction} from "wagmi";
 import GenericChainModal from "./GenericChainModal";
 
 export const usePurchaseResaleOrder = (signer) => {
@@ -23,9 +24,9 @@ export const usePurchaseResaleOrder = (signer) => {
 
 	const purchaseResaleOrder = useCallback(
 		async (id: number, amount: number, totalPrice, seller: string) => {
-			return treatMarketplaceContract.purchase(id, amount, seller, {
+			return treatMarketplaceContract.purchase(id, 1, seller, {
 				from: address,
-				value: Number(totalPrice),
+				value: ethers.utils.parseEther(`${totalPrice}`),
 			});
 		},
 		[address, treatMarketplaceContract]
@@ -45,7 +46,12 @@ export default function PurchaseNFTModal(props: {
 	const [amount] = useState(1);
 	const [purchaseNFTPending, setPurchaseNFTPending] = useState(false);
 	const [purchaseNFTSuccess, setPurchaseNFTSuccess] = useState(false);
-	const [purchaseNFTError, setPurchaseNFTError] = useState(false);
+	const [purchaseNFTError, setPurchaseNFTError] = useState<any>(false);
+	const [tx, setTx] = useState("");
+
+	const {isError, data, isSuccess} = useWaitForTransaction({
+		hash: tx,
+	});
 
 	const {purchaseResaleOrder} = usePurchaseResaleOrder(signer);
 
@@ -57,19 +63,28 @@ export default function PurchaseNFTModal(props: {
 		purchaseResaleOrder(
 			Number(props.nft.id),
 			amount,
-			props.nft.price,
+			props.nft.price.value,
 			props.nft.seller.address
 		)
-			.then(() => {
-				setPurchaseNFTPending(false);
-				setPurchaseNFTSuccess(true);
+			.then((tx) => {
+				setTx(tx.hash);
 			})
 			.catch((err) => {
 				setPurchaseNFTPending(false);
-				setPurchaseNFTError(err.reason);
+				setPurchaseNFTError(err.reason ?? err.data?.message ?? err);
 				console.log({err});
 			});
 	};
+
+	useEffect(() => {
+		if (data && isSuccess) {
+			setPurchaseNFTPending(false);
+			setPurchaseNFTSuccess(true);
+		} else if (isError) {
+			setPurchaseNFTPending(false);
+			setPurchaseNFTError("Transaction failed");
+		}
+	}, [isError, data, isSuccess]);
 
 	return (
 		<>
@@ -120,7 +135,7 @@ export default function PurchaseNFTModal(props: {
 								css={{
 									backgroundColor: "$elementOnSurface",
 								}}
-								className="max-w-full rounded p-2"
+								className="max-w-full p-2 rounded"
 							>
 								<Text
 									css={{
@@ -158,7 +173,7 @@ export default function PurchaseNFTModal(props: {
 					<Container className="flex flex-col gap-2 w-96">
 						<Text>Are you sure you would you like to purchase:</Text>
 						<Text
-							className="my-2 py-2 px-4 rounded"
+							className="px-4 py-2 my-2 rounded"
 							css={{backgroundColor: "$elementOnSurface"}}
 						>
 							<span>
