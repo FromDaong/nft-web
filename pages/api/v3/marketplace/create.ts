@@ -49,6 +49,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 					creator: creator._id,
 					collection: collection_id,
 					subscription_nft: nft.subscription_nft,
+					seller: creator.address,
 				});
 
 				await mongoNFT.save();
