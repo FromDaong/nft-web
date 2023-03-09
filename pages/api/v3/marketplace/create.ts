@@ -51,14 +51,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 					subscription_nft: nft.subscription_nft,
 				});
 
-				const event = new NFTEvent({
-					id: parseInt(nft.id),
-					seller: creator.address,
-					price: nft.price,
-				});
-
 				await mongoNFT.save();
-				await event.save();
 
 				return mongoNFT;
 			})

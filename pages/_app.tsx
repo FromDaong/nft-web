@@ -35,12 +35,6 @@ function MyApp({
 }: AppProps<{
 	session: Session;
 }>) {
-	// T-24 implement captcha
-
-	// T-27 Implement error and success toasts
-
-	// T-33 Implement master action tracker based on profile id. Should includes all actions, create, buy, relist, follow, etc.
-
 	return (
 		<>
 			<ThemeProvider>
