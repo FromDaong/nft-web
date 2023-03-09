@@ -51,9 +51,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 	});
 	await Promise.all([event.save()]);
 
-	const creator = await MongoModelCreator.findById(nft.creator);
+	const creator = await MongoModelCreator.findById(nft.creator).populate(
+		"profile"
+	);
+	console.log({creator, nft});
 	const msg = {
-		to: creator.email,
+		to: creator.profile.email,
 		from: {
 			email: "noreply@treatdao.com",
 			name: "Treat DAO",
@@ -70,7 +73,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 		const sgClientResponse = await sendgridClient.send(msg);
 		console.log("email sent", sgClientResponse);
 	} catch (e) {
-		console.error(e);
+		console.error({e});
 	}
 
 	return returnWithSuccess(event, res);
