@@ -110,6 +110,15 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 					official: true,
 				}}
 			/>
+			<Container className="container relative flex flex-col gap-8 px-8 mx-auto">
+				<Container className="flex flex-col gap-2">
+					<Heading size="sm">Welcome to our renewed Adult Marketplace</Heading>
+					<Text>
+						Support content creators, join the DAO, hold the token, and much
+						more!
+					</Text>
+				</Container>
+			</Container>
 			<Container>
 				<FeaturedCarousel features={props.allFeatures} />
 			</Container>
@@ -486,7 +495,7 @@ function FeaturedCarousel(props: {features: Array<IFeatureProps>}) {
 				<Container>
 					<Heading size="sm">Featured on TreatDAO</Heading>
 					<Text>
-						Discover the hottest content, creators and TreatDAO patners
+						Discover the hottest content, creators and TreatDAO partners
 					</Text>
 				</Container>
 				<Container className="flex justify-between w-full md:w-fit h-fit md:gap-8">
