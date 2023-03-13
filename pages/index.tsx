@@ -112,7 +112,7 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 			/>
 			<Container className="container relative flex flex-col gap-8 px-8 mx-auto">
 				<Container className="flex flex-col gap-2">
-					<Heading size="sm">Welcome to our renewed Adult Marketplace</Heading>
+					<Heading size="sm">Welcome to our renewed Adult NFT Marketplace</Heading>
 					<Text>
 						Support content creators, join the DAO, hold the token, and much
 						more!
