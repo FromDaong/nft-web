@@ -109,7 +109,7 @@ export default function Footer() {
 							<BoldLink css={{color: "$text"}}>Twitter</BoldLink>
 						</ListLinkItem>
 						<ListLinkItem
-							href="https://www.instagram.com/treat_dao/"
+							href="https://www.instagram.com/treat.dao/"
 							target="_blank"
 							rel="noreferrer"
 						>

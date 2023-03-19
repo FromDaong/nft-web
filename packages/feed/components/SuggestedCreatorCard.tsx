@@ -90,6 +90,7 @@ const CollapseSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 };
 
 const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
+	// T-83 Some profile pics not loading. Use base treatnfts.com - media endpoint /api/v3/media/
 	const profilePicUrl = `https://treatdao.com/api/v2/utils/images/fetchWithFallback?default=${props.avatar}`;
 
 	return (

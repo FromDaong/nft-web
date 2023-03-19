@@ -70,6 +70,7 @@ export const TritPortfolioPost = (props: TritResalePostProps) => {
 	return (
 		<>
 			{isLightboxOpen && isMine && (
+				// T-81 Replace with fullscreen modal with headless that shows an image, include closing control icons
 				<Lightbox
 					mainSrc={`/api/v3/image/nft/${props._id}/hd`}
 					onCloseRequest={onLightboxClose}

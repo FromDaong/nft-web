@@ -124,6 +124,7 @@ export default function NFTS({sort, q, nfts, error}) {
 	);
 }
 
+// T-82 Page is not loading, suspect error coming from getServerSideProps
 export const getServerSideProps = async (ctx) => {
 	const {q, p} = ctx.query;
 	const sort = ctx.query.sort ?? "3";
