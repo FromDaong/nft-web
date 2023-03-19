@@ -2,6 +2,7 @@ import {returnWithError} from "@db/engine/utils";
 import {NextApiResponse} from "next";
 import {connectMongoDB} from "server/helpers/core";
 import {MongoModelNFT} from "server/helpers/models";
+import {setCacheHeader} from "../blur";
 
 export default async function image(req, res: NextApiResponse) {
 	const {_id, content_type} = req.query;
@@ -15,7 +16,7 @@ export default async function image(req, res: NextApiResponse) {
 
 	if (content_type === "nft") {
 		const nft = await MongoModelNFT.findById(_id);
-
+		setCacheHeader(res);
 		return res.redirect(nft.image.ipfs);
 	}
 

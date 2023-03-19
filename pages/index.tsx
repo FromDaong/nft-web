@@ -532,7 +532,7 @@ function FeaturedCarousel(props: {features: Array<IFeatureProps>}) {
 						href={feature.href}
 						key={feature.id}
 					>
-						<a className="w-96 group relative aspect-[2/3] flex-shrink-0 bg-gray-50 rounded-xl overflow-hidden">
+						<a className="w-96 group relative aspect-[2/3] flex-shrink-0 bg-transparent rounded-xl overflow-hidden">
 							<Image
 								src={feature.cover.responsiveImage.src}
 								sizes={feature.cover.responsiveImage.srcSet}

@@ -4,6 +4,7 @@ import {connectMongoDB} from "server/helpers/core";
 import {uploadFileToIPFS} from "server/helpers/core/pinata";
 import SharpManager from "server/helpers/core/sharp";
 import {MongoModelCreator, MongoModelNFT} from "server/helpers/models";
+import {setCacheHeader} from "../blur";
 
 export default async function thumb(req, res) {
 	const {_id, content_type} = req.query;
@@ -14,6 +15,8 @@ export default async function thumb(req, res) {
 	}
 
 	await connectMongoDB();
+
+	setCacheHeader(res);
 
 	if (content_type === "nft") {
 		const nft = await MongoModelNFT.findById(_id);

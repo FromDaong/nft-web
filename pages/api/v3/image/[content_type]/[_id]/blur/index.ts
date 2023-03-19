@@ -8,6 +8,9 @@ import {uploadFileToIPFS} from "server/helpers/core/pinata";
 import {MongoModelNFT} from "server/helpers/models";
 import sharp from "sharp";
 
+export const setCacheHeader = (res) =>
+	res.setHeader("Cache-Control", "public, max-age=31557600");
+
 const renderImage = async (encoded: string): Promise<sharp.Sharp> => {
 	const hashWidth = 400;
 	const hashHeight = Math.round(hashWidth * (400 / 400));
@@ -41,6 +44,9 @@ export default async function image(req, res) {
 	if (content_type === "nft") {
 		const nft = await MongoModelNFT.findById(_id);
 
+		// Cache this response
+		setCacheHeader(res);
+
 		if (!nft.blurhash) {
 			const axios_image = await axios.get(
 				`${process.env.NEXT_PUBLIC_HOSTNAME}/api/v3/media/${nft.image.ipfs}?id=${_id}`,
@@ -64,6 +70,7 @@ export default async function image(req, res) {
 		}
 
 		res.setHeader("Content-Type", "image/webp");
+
 		return res.send(await (await renderImage(nft.blurhash)).toBuffer());
 	} else {
 		return returnWithError("Not found", 404, res);
