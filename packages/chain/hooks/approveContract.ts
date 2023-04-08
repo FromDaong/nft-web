@@ -1,21 +1,18 @@
 import {
 	approveTreatPancakeLPStaking,
 	approveTreatStaking,
-	getMasterMelonFarmerContract,
-	getTreat2Contract,
-	getTreatPancakeLPContract,
 } from "@packages/chain/utils";
 
 import {useCallback} from "react";
 import {useAccount} from "wagmi";
-import useTreat from "./useTreat";
 
-const useApproveContract = (pid) => {
+const useApproveContract = (
+	pid,
+	treatContract,
+	treatLpContract,
+	masterMelonFarmerContract
+) => {
 	const {address: account} = useAccount();
-	const treat = useTreat();
-	const treatContract = getTreat2Contract(treat);
-	const treatLpContract = getTreatPancakeLPContract(treat);
-	const masterMelonFarmerContract = getMasterMelonFarmerContract(treat);
 
 	const handleApprove = useCallback(async () => {
 		try {

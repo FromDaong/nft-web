@@ -1,17 +1,12 @@
-import {
-	getMasterMelonFarmerContract,
-	getPendingMelons,
-} from "@packages/chain/utils";
+import {getPendingMelons} from "@packages/chain/utils";
 import {useCallback, useEffect, useState} from "react";
 
-import {useAccount} from "wagmi";
-import useTreat from "./useTreat";
+import {useAccount, useSigner} from "wagmi";
 
-const useGetPendingMelons = (pid: number) => {
+const useGetPendingMelons = (pid: number, masterMelonFarmerContract) => {
 	const {address: account} = useAccount();
-	const treat = useTreat();
-	const [pendingMelons, setPendingMelons] = useState(null);
-	const masterMelonFarmerContract = getMasterMelonFarmerContract(treat);
+	const {data} = useSigner();
+	const [pendingMelons, setPendingMelons] = useState<number | null>(null);
 
 	const fetchPendingMelons = useCallback(async () => {
 		const amount = await getPendingMelons(
@@ -20,14 +15,14 @@ const useGetPendingMelons = (pid: number) => {
 			account
 		);
 
-		setPendingMelons(amount);
+		setPendingMelons(amount.toNumber());
 	}, [account, masterMelonFarmerContract, pid]);
 
 	useEffect(() => {
-		if (treat) {
+		if (data) {
 			fetchPendingMelons();
 		}
-	}, [pid, treat]);
+	}, [pid, data]);
 
 	return pendingMelons;
 };

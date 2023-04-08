@@ -114,9 +114,7 @@ export const getTreatMarketplaceAddress = (treat) => {
 };
 
 export const getTreatSupply = async (treat) => {
-	return new BigNumber(
-		await treat.contracts.treat.methods.totalSupply().call()
-	);
+	return new BigNumber(await treat.contracts.treat.methods.totalSupply());
 };
 export const getTreatMartBundleContract = (treat) => {
 	return treat && treat.contracts && treat.contracts.treatMartBundle;
@@ -127,26 +125,22 @@ export const getFreeTreatsContract = (treat) => {
 };
 
 export const getTreatNftCost = async (treatMartContract, nftId) => {
-	return new BigNumber(await treatMartContract.methods.nftCosts(nftId).call());
+	return new BigNumber(await treatMartContract.methods.nftCosts(nftId));
 };
 
 export const getSubscriberNftCost = async (subscriberMartContract, nftId) => {
-	return new BigNumber(
-		await subscriberMartContract.methods.nftCosts(nftId).call()
-	);
+	return new BigNumber(await subscriberMartContract.methods.nftCosts(nftId));
 };
 
 export const getCreatorNftCost = async (creatorMartContract, nftId) => {
-	return new BigNumber(
-		await creatorMartContract.methods.nftCosts(nftId).call()
-	);
+	return new BigNumber(await creatorMartContract.methods.nftCosts(nftId));
 };
 
 export const getSubCost = async (treatSubscriptionContract, creatorAddress) => {
 	return new BigNumber(
-		await treatSubscriptionContract.methods
-			.creatorSubscriptionCost(creatorAddress)
-			.call()
+		await treatSubscriptionContract.methods.creatorSubscriptionCost(
+			creatorAddress
+		)
 	);
 };
 
@@ -155,9 +149,10 @@ export const isSubscribed = async (
 	subscriberAddress,
 	creatorAddress
 ) => {
-	return await treatSubscriptionContract.methods
-		.getIsSubscribedNow(subscriberAddress, creatorAddress)
-		.call();
+	return await treatSubscriptionContract.methods.getIsSubscribedNow(
+		subscriberAddress,
+		creatorAddress
+	);
 };
 
 export const isSubLocked = async (
@@ -165,9 +160,10 @@ export const isSubLocked = async (
 	subscriberAddress,
 	creatorAddress
 ) => {
-	return await treatSubscriptionContract.methods
-		.hasCreatorLockedSubscriber(creatorAddress, subscriberAddress)
-		.call();
+	return await treatSubscriptionContract.methods.hasCreatorLockedSubscriber(
+		creatorAddress,
+		subscriberAddress
+	);
 };
 
 export const lockSub = async (
@@ -513,7 +509,7 @@ export const mintFreeCreatorTreat = async (
 
 export const getSetIds = async (treatMartContract, setId) => {
 	try {
-		const txHash = await treatMartContract.methods.getSetIds(setId).call();
+		const txHash = await treatMartContract.methods.getSetIds(setId);
 	} catch (e) {
 		console.error(e);
 		return undefined;
@@ -522,7 +518,7 @@ export const getSetIds = async (treatMartContract, setId) => {
 
 export const getSubscriberSetIds = async (subscriberMartContract, setId) => {
 	try {
-		const txHash = await subscriberMartContract.methods.getSetIds(setId).call();
+		const txHash = await subscriberMartContract.methods.getSetIds(setId);
 	} catch (e) {
 		console.error(e);
 		return undefined;
@@ -531,7 +527,7 @@ export const getSubscriberSetIds = async (subscriberMartContract, setId) => {
 
 export const getCreatorSetIds = async (creatorMartContract, setId) => {
 	try {
-		const txHash = await creatorMartContract.methods.getSetIds(setId).call();
+		const txHash = await creatorMartContract.methods.getSetIds(setId);
 	} catch (e) {
 		console.error(e);
 		return undefined;
@@ -540,7 +536,7 @@ export const getCreatorSetIds = async (creatorMartContract, setId) => {
 
 export const getSetPrice = async (treatMartContract, setId) => {
 	try {
-		return await treatMartContract.methods.nftSetCosts(setId).call();
+		return await treatMartContract.methods.nftSetCosts(setId);
 	} catch (e) {
 		console.error(e);
 		return undefined;
@@ -549,7 +545,7 @@ export const getSetPrice = async (treatMartContract, setId) => {
 
 export const getSubscriberSetPrice = async (subscriberMartContract, setId) => {
 	try {
-		return await subscriberMartContract.methods.nftSetCosts(setId).call();
+		return await subscriberMartContract.methods.nftSetCosts(setId);
 	} catch (e) {
 		console.error(e);
 		return undefined;
@@ -558,7 +554,7 @@ export const getSubscriberSetPrice = async (subscriberMartContract, setId) => {
 
 export const getCreatorSetPrice = async (creatorMartContract, setId) => {
 	try {
-		return await creatorMartContract.methods.nftSetCosts(setId).call();
+		return await creatorMartContract.methods.nftSetCosts(setId);
 	} catch (e) {
 		console.error(e);
 		return undefined;
@@ -649,9 +645,7 @@ export const tradeInV1ForV2 = async (treatV1ForV2Contract, account, amount) => {
 
 export const getNftBalance = async (treatNFTMinter, account, nftId) => {
 	try {
-		const amount = await treatNFTMinter.methods
-			.balanceOf(account, nftId)
-			.call();
+		const amount = await treatNFTMinter.methods.balanceOf(account, nftId);
 		return new BigNumber(amount);
 	} catch {
 		return new BigNumber(0);
@@ -660,9 +654,7 @@ export const getNftBalance = async (treatNFTMinter, account, nftId) => {
 
 export const getNftV1Balance = async (treatNFTMinterV1, account, nftId) => {
 	try {
-		const amount = await treatNFTMinterV1.methods
-			.balanceOf(account, nftId)
-			.call();
+		const amount = await treatNFTMinterV1.methods.balanceOf(account, nftId);
 		return new BigNumber(amount);
 	} catch {
 		return new BigNumber(0);
@@ -671,7 +663,7 @@ export const getNftV1Balance = async (treatNFTMinterV1, account, nftId) => {
 
 export const getIsGiveAwayNft = async (creatorMart, nftId) => {
 	try {
-		return await creatorMart.methods.isGiveAwayCard(nftId).call();
+		return await creatorMart.methods.isGiveAwayCard(nftId);
 	} catch (e) {
 		console.error(e);
 		return undefined;
@@ -680,7 +672,7 @@ export const getIsGiveAwayNft = async (creatorMart, nftId) => {
 
 export const getIsGiveAwaySubscriberNft = async (subscriberMart, nftId) => {
 	try {
-		return await subscriberMart.methods.isGiveAwayCard(nftId).call();
+		return await subscriberMart.methods.isGiveAwayCard(nftId);
 	} catch (e) {
 		console.error(e);
 		return undefined;
@@ -689,7 +681,7 @@ export const getIsGiveAwaySubscriberNft = async (subscriberMart, nftId) => {
 
 export const getNftCreator = async (treatNFTMinter, nftId) => {
 	try {
-		const modelAddress = await treatNFTMinter.methods.creators(nftId).call();
+		const modelAddress = await treatNFTMinter.methods.creators(nftId);
 		return new modelAddress();
 	} catch {
 		return treatNFTMinter.address;
@@ -698,9 +690,7 @@ export const getNftCreator = async (treatNFTMinter, nftId) => {
 
 export const getCreatorReferrer = async (treatNFTMinter, creatorAddress) => {
 	try {
-		const refAddress = await treatNFTMinter.methods
-			.referrers(creatorAddress)
-			.call();
+		const refAddress = await treatNFTMinter.methods.referrers(creatorAddress);
 		return new refAddress();
 	} catch {
 		return treatNFTMinter.address;
@@ -726,7 +716,7 @@ export const addReferrerToMinter = async (
 
 export const getNftMaxSupply = async (treatNFTMinter, nftId) => {
 	try {
-		const amount = await treatNFTMinter.methods.tokenMaxSupply(nftId).call();
+		const amount = await treatNFTMinter.methods.tokenMaxSupply(nftId);
 		if (amount) return new BigNumber(amount);
 		return null;
 	} catch {
@@ -736,7 +726,7 @@ export const getNftMaxSupply = async (treatNFTMinter, nftId) => {
 
 export const getNftTotalSupply = async (treatNFTMinter, nftId) => {
 	try {
-		const amount = await treatNFTMinter.methods.tokenSupply(nftId).call();
+		const amount = await treatNFTMinter.methods.tokenSupply(nftId);
 		return new BigNumber(amount);
 	} catch {
 		return new BigNumber(0);
@@ -780,7 +770,7 @@ export const isPerformerForMinter = async (
 	performerAddress
 ) => {
 	try {
-		return await treatNFTMinter.methods.isPerformer(performerAddress).call();
+		return await treatNFTMinter.methods.isPerformer(performerAddress);
 	} catch (e) {
 		console.error(e);
 		return undefined;
@@ -789,7 +779,7 @@ export const isPerformerForMinter = async (
 
 export const isAdminForMinter = async (treatNFTMinter, account) => {
 	try {
-		return await treatNFTMinter.methods.isWhitelistAdmin(account).call();
+		return await treatNFTMinter.methods.isWhitelistAdmin(account);
 	} catch (e) {
 		console.error(e);
 		return undefined;
@@ -819,14 +809,12 @@ export const hasApprovedTreatOneForTwoContract = async (
 	treatV1ForV2,
 	account
 ) => {
-	return await treat.methods
-		.allowance(account, treatV1ForV2.options.address)
-		.call();
+	return await treat.methods.allowance(account, treatV1ForV2.options.address);
 };
 
 // has approved
 export const hasApprovedContract = async (treat, address, account) => {
-	return await treat.methods.allowance(account, address).call();
+	return await treat.methods.allowance(account, address);
 };
 
 export const approveMarketplace = async (
@@ -890,9 +878,9 @@ export const cancelOrder = async (treatMarketplaceContract, nftId, seller) => {
 
 export const getOpenOrdersForNft = async (treatMarketplaceContract, nftId) => {
 	try {
-		const orders = await treatMarketplaceContract.methods
-			.getOpenOrdersForNft(nftId)
-			.call();
+		const orders = await treatMarketplaceContract.methods.getOpenOrdersForNft(
+			nftId
+		);
 		return orders;
 	} catch (err) {
 		console.error(`get orders for nft failed: ${err}`);
@@ -904,10 +892,8 @@ export const getOpenOrdersForSeller = async (
 	seller
 ) => {
 	try {
-		const orders = await treatMarketplaceContract.methods
-			.getOpenOrdersForSeller(seller)
-			.call();
-
+		const orders =
+			await treatMarketplaceContract.methods.getOpenOrdersForSeller(seller);
 		return orders.map((o) => parseInt(o));
 	} catch (err) {
 		console.error(`get orders for seller failed: ${err}`);
@@ -924,9 +910,7 @@ export const getResaleOrder = async (
 		return null;
 	}
 
-	const rO = await treatMarketplaceContract.methods
-		.orderBook(nftId, seller)
-		.call();
+	const rO = await treatMarketplaceContract.methods.orderBook(nftId, seller);
 	return rO;
 };
 
@@ -935,13 +919,11 @@ export const getRemainingBalanceForOrder = async (
 	seller,
 	nftId
 ) => {
-	return await treatMarketplaceContract.methods
-		.orderBalances(seller, nftId)
-		.call();
+	return await treatMarketplaceContract.methods.orderBalances(seller, nftId);
 };
 
 export const getMaxIdForSale = async (treatMarketplaceContract) => {
-	return await treatMarketplaceContract.methods.maxTokenId().call();
+	return await treatMarketplaceContract.methods.maxTokenId();
 };
 
 export const getNftRangeBalance = async (
@@ -951,9 +933,11 @@ export const getNftRangeBalance = async (
 	endNftId
 ) => {
 	try {
-		const amount = await treatMarketReaderContract.methods
-			.readNftRangeBalance(account, startNftId, endNftId)
-			.call();
+		const amount = await treatMarketReaderContract.methods.readNftRangeBalance(
+			account,
+			startNftId,
+			endNftId
+		);
 		return new BigNumber(amount);
 	} catch {
 		return new BigNumber(0);
@@ -965,10 +949,8 @@ export const getAllOrdersForSeller = async (
 	seller
 ) => {
 	try {
-		const orders = await treatMarketReaderContract.methods
-			.readAllOrdersForSeller(seller)
-			.call();
-
+		const orders =
+			await treatMarketReaderContract.methods.readAllOrdersForSeller(seller);
 		return orders.map((o) => parseInt(o));
 	} catch (err) {
 		console.error(`get orders for seller failed: ${err}`);
@@ -978,10 +960,9 @@ export const getAllOrdersForSeller = async (
 
 export const getAllOrdersForNft = async (treatMarketReaderContract, nftId) => {
 	try {
-		const orders = await treatMarketReaderContract.methods
-			.readAllOrdersForNft(nftId)
-			.call();
-
+		const orders = await treatMarketReaderContract.methods.readAllOrdersForNft(
+			nftId
+		);
 		return orders.map((o) => parseInt(o));
 	} catch (err) {
 		console.error(`get orders for seller failed: ${err}`);
@@ -995,10 +976,11 @@ export const getOrdersInfoForNftRange = async (
 	endNftId
 ) => {
 	try {
-		const orders = await treatMarketReaderContract.methods
-			.readOrderPricesForNftRange(startNftId, endNftId)
-			.call();
-
+		const orders =
+			await treatMarketReaderContract.methods.readOrderPricesForNftRange(
+				startNftId,
+				endNftId
+			);
 		const x = orders.sellers.map((o, i) => {
 			return {
 				seller: o,
@@ -1020,9 +1002,13 @@ export const approveTreatStaking = async (
 	masterMelonFarmer,
 	account
 ) => {
-	return await treat2.methods
-		.approve(masterMelonFarmer.options.address, ethers.constants.MaxUint256)
-		.send({from: account});
+	return await treat2.approve(
+		masterMelonFarmer.options.address,
+		ethers.constants.MaxUint256,
+		{
+			from: account,
+		}
+	);
 };
 
 export const approveTreatPancakeLPStaking = async (
@@ -1030,9 +1016,11 @@ export const approveTreatPancakeLPStaking = async (
 	masterMelonFarmer,
 	account
 ) => {
-	return await treatPancakeLP.methods
-		.approve(masterMelonFarmer.options.address, ethers.constants.MaxUint256)
-		.send({from: account});
+	return await treatPancakeLP.approve(
+		masterMelonFarmer.options.address,
+		ethers.constants.MaxUint256,
+		{from: account}
+	);
 };
 
 export const hasApprovedTreatStaking = async (
@@ -1040,9 +1028,7 @@ export const hasApprovedTreatStaking = async (
 	masterMelonFarmer,
 	account
 ) => {
-	return treat2.methods
-		.allowance(account, masterMelonFarmer.options.address)
-		.call();
+	return treat2.allowance(account, masterMelonFarmer.options.address);
 };
 
 export const hasApprovedTreatPancakeLPStaking = async (
@@ -1050,9 +1036,10 @@ export const hasApprovedTreatPancakeLPStaking = async (
 	masterMelonFarmer,
 	account
 ) => {
-	return treatPancakeLP.methods
-		.allowance(account, masterMelonFarmer.options.address)
-		.call();
+	return treatPancakeLP.methods.allowance(
+		account,
+		masterMelonFarmer.options.address
+	);
 };
 
 export const stakeFarm = async (
@@ -1064,9 +1051,9 @@ export const stakeFarm = async (
 	// const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString();
 	const value = Web3.utils.toWei(amount.toString());
 	if (pid === 0) {
-		const tx = await masterMelonFarmerContract.methods
-			.enterStaking(value)
-			.send({from: account});
+		const tx = await masterMelonFarmerContract.methods.enterStaking(value, {
+			from: account,
+		});
 
 		return tx;
 	}
@@ -1080,9 +1067,10 @@ export const stakeFarm = async (
 
 export const getStaked = async (masterMelonFarmerContract, pid, account) => {
 	try {
-		const {amount} = await masterMelonFarmerContract.methods
-			.userInfo(pid, account)
-			.call();
+		const {amount} = await masterMelonFarmerContract.methods.userInfo(
+			pid,
+			account
+		);
 		return new BigNumber(amount);
 	} catch {
 		return new BigNumber(0);
@@ -1093,11 +1081,9 @@ export const getPendingMelons = async (
 	masterMelonFarmerContract,
 	pid,
 	account
-) => {
+): Promise<BigNumber> => {
 	try {
-		const amount = await masterMelonFarmerContract.methods
-			.pendingMelon(pid, account)
-			.call();
+		const amount = await masterMelonFarmerContract.pendingMelon(pid, account);
 
 		return new BigNumber(amount);
 	} catch {
@@ -1114,9 +1100,9 @@ export const unstakeFarm = async (
 	// const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString();
 	const value = Web3.utils.toWei(amount.toString());
 	if (pid === 0) {
-		const tx = await masterMelonFarmerContract.methods
-			.leaveStaking(value)
-			.send({from: account});
+		const tx = await masterMelonFarmerContract.methods.leaveStaking(value, {
+			from: account,
+		});
 
 		return tx;
 	}

@@ -1,13 +1,9 @@
-import {getMasterMelonFarmerContract, stakeFarm} from "@packages/chain/utils";
-
+import {stakeFarm} from "@packages/treat/utils";
 import {useCallback} from "react";
 import {useAccount} from "wagmi";
-import useTreat from "./useTreat";
 
-const useStakeFarms = (pid: number) => {
+const useStakeFarms = (pid: number, masterMelonFarmerContract) => {
 	const {address: account} = useAccount();
-	const treat = useTreat();
-	const masterMelonFarmerContract = getMasterMelonFarmerContract(treat);
 
 	const handleStake = useCallback(
 		async (amount: string) => {

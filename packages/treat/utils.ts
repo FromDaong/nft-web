@@ -1060,14 +1060,14 @@ export const stakeFarm = async (
 	// const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString();
 	const value = Web3.utils.toWei(amount.toString());
 	if (pid === 0) {
-		const tx = await masterMelonFarmerContract.methods
-			.enterStaking(value)
-			.send({from: account});
+		const tx = await masterMelonFarmerContract.enterStaking(value, {
+			from: account,
+		});
 
 		return tx;
 	}
 
-	const tx = await masterMelonFarmerContract.methods
+	const tx = await masterMelonFarmerContract
 		.deposit(pid, value)
 		.send({from: account});
 

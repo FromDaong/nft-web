@@ -8,12 +8,15 @@ import {useCallback, useEffect, useState} from "react";
 import {useAccount} from "wagmi";
 import useTreat from "./useTreat";
 
-const useGetStakedAmount = (pid: number, v1: boolean) => {
+const useGetStakedAmount = (
+	pid: number,
+	v1: boolean,
+	masterMelonFarmerContract,
+	v1MasterMelonFarmerContract
+) => {
 	const {address: account} = useAccount();
 	const treat = useTreat();
 	const [stakedAmount, setStakedAmount] = useState(null);
-	const masterMelonFarmerContract = getMasterMelonFarmerContract(treat);
-	const v1MasterMelonFarmerContract = getV1MasterMelonFarmerContract(treat);
 
 	const fetchStakedAmount = useCallback(async () => {
 		const amount = await getStaked(
