@@ -59,7 +59,7 @@ export default function CreateProfileModal({
 					validationSchema={Yup.object().shape({
 						username: Yup.string()
 							.min(3, "Username must be at least 3 characters")
-							.max(12, "Username must be at most 20 characters")
+							.max(20, "Username must be at most 20 characters")
 							.required("Username is required")
 							.test(
 								"is-unique",
@@ -83,7 +83,7 @@ export default function CreateProfileModal({
 							),
 						display_name: Yup.string()
 							.min(3, "Display name must be at least 3 characters")
-							.max(20, "Display name must be at most 20 characters")
+							.max(50, "Display name must be at most 20 characters")
 							.required("Display name is required"),
 						bio: Yup.string()
 							.min(3, "Bio must be at least 3 characters")
@@ -92,7 +92,7 @@ export default function CreateProfileModal({
 					})}
 				>
 					{(props: FormikProps<any>) => (
-						<Form>
+						<Form className="flex flex-col gap-12">
 							<Container className="flex flex-col gap-4">
 								<Container className="flex flex-col gap-2">
 									<Text>
@@ -114,7 +114,7 @@ export default function CreateProfileModal({
 										)}
 									</Field>
 								</Container>
-								<Container className="gap-1 flex flex-col">
+								<Container className="flex flex-col gap-1">
 									<Text>
 										<ImportantText>Display name</ImportantText>
 									</Text>
@@ -134,7 +134,7 @@ export default function CreateProfileModal({
 										)}
 									</Field>
 								</Container>
-								<Container className="gap-1 flex flex-col">
+								<Container className="flex flex-col gap-1">
 									<Text>
 										<ImportantText>Bio</ImportantText>
 									</Text>
@@ -158,7 +158,7 @@ export default function CreateProfileModal({
 							<Container className="flex justify-end mt-4">
 								<Button
 									disabled={props.isSubmitting}
-									appearance={props.isSubmitting ? "subtle" : "primary"}
+									appearance={props.isSubmitting ? "subtle" : "action"}
 									type="submit"
 								>
 									{props.isSubmitting ? "Submitting..." : "Create my profile"}

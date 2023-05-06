@@ -44,7 +44,7 @@ const TabButton = ({label, isActive, href}) => {
 					appearance={"unstyled"}
 					css={{
 						background: isActive ? "$buttonSurface" : "transparent",
-						color: isActive ? "$textOnSurface" : "$text",
+						color: isActive ? "$textContrast" : "$text",
 						padding: "8px 12px",
 						borderRadius: "9999px",
 					}}

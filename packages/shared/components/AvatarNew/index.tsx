@@ -48,7 +48,7 @@ type AvatarProps = {
 };
 
 export default function NewAvatar(props: AvatarProps) {
-	const profilePicUrl = `https://treatdao.com/api/v2/utils/images/fetchWithFallback?default=${props.imageSrc}`;
+	const profilePicUrl = `${props.imageSrc}`;
 
 	const size = {
 		height: props.size ? `${props.size}px` : "45px",

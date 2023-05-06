@@ -3,7 +3,7 @@ import {styled} from "@styles/theme";
 
 export const DropdownContainer = styled("div", {
 	width: "max-content",
-	backgroundColor: "$elementSurface",
+	backgroundColor: "$surface",
 	border: "1px solid $border",
 	borderRadius: "16px",
 	padding: "8px",
@@ -30,7 +30,7 @@ export const NavDropdownItem = styled(Item, {
 	"&:hover": {
 		backgroundColor: "$elementOnSurface",
 		cursor: "pointer",
-		borderRadius: "15px",
+		borderRadius: "8px",
 	},
 });
 

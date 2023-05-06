@@ -4,7 +4,7 @@ let MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI)
 	MONGODB_URI =
-		"mongodb+srv://secureauth:pW3ItSEFBa8wDJ9P@treatcluster.9uuso.mongodb.net/treat?retryWrites=true&w=majority";
+		"mongodb://localhost:27017" // "mongodb+srv://secureauth:pW3ItSEFBa8wDJ9P@treatcluster.9uuso.mongodb.net/treat?retryWrites=true&w=majority";
 
 if (!MONGODB_URI) {
 	throw new Error(

@@ -24,3 +24,53 @@ export interface AuthAdapter {
 
   signOut: () => Promise<boolean>;
 }
+
+export interface TreatUser {
+  userId: string
+  profile: object
+  sendEmail()
+  updateProfile()
+  signOut()
+  checkPermissions()
+  buyNFT()
+}
+
+interface TreatCreatorTools {
+  mintNFT()
+  verifyCreatorProfile()
+}
+
+export class TreatCreator implements TreatUser, TreatCreatorTools {
+
+
+  profile: object;
+  userId: string;
+
+  mintNFT() {
+    return
+  }
+
+  buyNFT() {
+    return
+  }
+
+  checkPermissions() {
+    return
+  }
+
+  sendEmail() {
+    return
+  }
+
+  signOut() {
+    return
+  }
+
+  updateProfile() {
+    return
+  }
+
+  verifyCreatorProfile() {
+    return
+  }
+}

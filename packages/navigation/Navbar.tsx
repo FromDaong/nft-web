@@ -18,8 +18,10 @@ import {useApplicationTheme} from "@packages/theme/provider";
 import NavbarProfileAvatar from "./components/NavbarProfileAvatar";
 
 const Nav = styled("nav", {
-	backgroundColor: "$elementSurface",
+	backgroundColor: "$surfaceOnSurface",
 	zIndex: 30,
+	borderBottom: "1px solid",
+	borderColor: "$border",
 });
 
 export default function Navbar() {

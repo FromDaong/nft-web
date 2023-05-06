@@ -333,10 +333,8 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 											size="sm"
 											className="flex items-center gap-1"
 										>
-											<span>
-												{ownerOfUserProfile.display_name ??
-													"Loading profile details"}
-											</span>
+											{ownerOfUserProfile.display_name ??
+												"Loading profile details"}
 										</Heading>
 										<MutedText>@{ownerOfUserProfile.username}</MutedText>
 									</Container>
@@ -348,12 +346,14 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 													backgroundColor: `$${badge.color}2`,
 													borderColor: "$subtleBorder",
 												}}
-												className="px-3 py-1 rounded-xl shadow border"
+												className="px-4 py-1 border rounded-full shadow-sm"
 											>
-												<Text css={{color: `$${badge.color}10`}}>
-													<ImportantText>
-														<SmallText>{badge.name}</SmallText>
-													</ImportantText>
+												<Text
+													css={{color: `$${badge.color}10`, fontWeight: 500}}
+												>
+													<SmallText>
+														<ImportantText>{badge.name}</ImportantText>
+													</SmallText>
 												</Text>
 											</Container>
 										))}
@@ -435,24 +435,6 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 												)}
 											</Button>
 										)}
-									{false && isFollowing && (
-										<Button
-											onClick={createChatIfNotExist}
-											appearance={openingMessages ? "disabled" : "surface"}
-											className="transition-transform duration-100 hover:scale-105"
-										>
-											{!openingMessages && (
-												<>
-													<ChatIcon
-														width={20}
-														height={20}
-													/>
-													<span>Send message</span>
-												</>
-											)}
-											{openingMessages && "Opening messages..."}
-										</Button>
-									)}
 									<Link
 										href={`https://bscscan.com/address/${ownerOfUserProfile.address}`}
 									>
@@ -464,11 +446,11 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 												appearance={"surface"}
 												className="transition-transform duration-100 hover:scale-105"
 											>
-												<span>View on Bscscan</span>
 												<LinkIcon
 													width={16}
 													height={16}
 												/>
+												<ImportantText>View on Bscscan</ImportantText>
 											</Button>
 										</a>
 									</Link>

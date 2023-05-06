@@ -397,9 +397,9 @@ export const ogPinkTheme = createTheme("pink", {
 		selectedElementSurface: "$primary4",
 		solidSurface: "$primary3",
 		selectedSolidSurface: "$primary4",
-		text: "$mauve12",
+		text: "$mauve11",
 		textContrast: "$gray12",
-		mutedText: "$gray11",
+		mutedText: "$gray9",
 		border: "$primary3",
 		subtleBorder: "#ffdce0",
 

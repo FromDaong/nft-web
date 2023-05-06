@@ -42,8 +42,12 @@ const getTrendingCreators = async () => {
 	return res.data.data;
 };
 
-export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
+export default function Index(props: {
+	allFeatures: Array<IFeatureProps>;
+	allFeaturesError?: boolean;
+}) {
 	const {theme} = useApplicationTheme();
+	const {allFeaturesError} = props;
 
 	const {
 		isLoading: trendingCreatorsLoading,
@@ -122,13 +126,13 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 				</Container>
 			</Container>
 			<Container>
-				<FeaturedCarousel features={props.allFeatures} />
+				{!allFeaturesError && <FeaturedCarousel features={props.allFeatures} />}
 			</Container>
 			<Container>
 				<Container className="container flex flex-col w-full gap-8 px-8 mx-auto">
 					<Container className="flex flex-col items-baseline gap-4">
 						<Container className="flex flex-col gap-2">
-							<Heading size="sm">Discover sweetshop NFT's</Heading>
+							<Heading>Discover sweetshop NFT's</Heading>
 							<Text>
 								Buy and sell NFTs by TreatDAO content creators and resellers.
 							</Text>
@@ -145,35 +149,42 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 							</a>
 						</Link>
 					</Container>
-					<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4 lg:gap-4">
-						{!trendingNFTError && !trendingNFTsLoading
-							? trendingNFTs.map((item, i) => (
-									<Container
-										key={item}
-										className={
-											"flex col-span-1 " + (i > 3 ? "lg:hidden xl:flex" : "")
-										}
-									>
-										<TritPost
-											inGrid
-											{...item}
-										/>
-									</Container>
-							  ))
-							: [0, 1, 2, 3].map((i) => (
-									<Container
-										key={i}
-										className="col-span-1 border"
-										css={{
-											borderColor: "$subtleBorder",
-											padding: "8px",
-											borderRadius: "16px",
-										}}
-									>
-										<DynamicSkeleton config={TritPostSkeleton} />
-									</Container>
-							  ))}
-					</Container>
+					{!trendingNFTError && (
+						<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4 lg:gap-4">
+							{!trendingNFTError && !trendingNFTsLoading
+								? trendingNFTs.map((item, i) => (
+										<Container
+											key={item}
+											className={
+												"flex col-span-1 " + (i > 3 ? "lg:hidden xl:flex" : "")
+											}
+										>
+											<TritPost
+												inGrid
+												{...item}
+											/>
+										</Container>
+								  ))
+								: [0, 1, 2, 3].map((i) => (
+										<Container
+											key={i}
+											className="col-span-1 border"
+											css={{
+												borderColor: "$subtleBorder",
+												padding: "8px",
+												borderRadius: "16px",
+											}}
+										>
+											<DynamicSkeleton config={TritPostSkeleton} />
+										</Container>
+								  ))}
+						</Container>
+					)}
+					{trendingNFTError && (
+						<Container className={"flex justify-center"}>
+							<p>An error occurred while fetching NFTs</p>
+						</Container>
+					)}
 				</Container>
 			</Container>
 			<Divider dir={"horizontal"} />
@@ -181,131 +192,98 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 				<Container className="container flex flex-col w-full gap-8 px-8 mx-auto">
 					<Container className="flex flex-col items-baseline gap-4">
 						<Container className="flex flex-col gap-2">
-							<Heading size="sm">Lots of new features</Heading>
+							<Heading>Lots of new features</Heading>
 							<Text>
 								The new TreatDAO NFTs platform brings a lot of new features to
 								enhance your browsing experience.
 							</Text>
 						</Container>
 					</Container>
-					<Container className="grid grid-cols-1 gap-8 pt-4 md:grid-cols-2 xl:grid-cols-4 xl:gap-12">
+					<Container className="grid grid-cols-1 pt-4 gap-y-8 xl:gap-y-12">
 						<Container
-							css={{
-								backgroundColor: "$accentBg",
-								borderRadius: "16px",
-							}}
-							className="flex flex-col gap-2 p-8"
+							className={
+								"col-span-1 md:col-span-2 grid grid-cols-1 gap-8 md:grid-cols-2"
+							}
 						>
-							<Container className="flex py-8">
-								<Container
-									css={{
-										backgroundColor: "$accentText",
-										padding: "12px",
-										borderRadius: "8px",
-									}}
-								>
-									<Text css={{color: "$surface !important"}}>
-										<MoonIcon
-											width={24}
-											height={24}
-										/>
+							<FeaturesCard
+								backgroundImage={"/assets/backgrounds/mockups/themes.svg"}
+								title={"Eye candy"}
+								description={`Choose your theme from not only dark and light mode, but also including the OG Pink theme.`}
+								icon={
+									<MoonIcon
+										width={24}
+										height={24}
+									/>
+								}
+								cols={1}
+								action={
+									<Text
+										className="px-6 py-2 text-sm font-semibold rounded-lg shadow"
+										css={{
+											background: "$accentText",
+											color: "$surface",
+										}}
+									>
+										Try it out
 									</Text>
-								</Container>
-							</Container>
-							<Heading size="xss">Eye candy</Heading>
-							<Text>
-								Choose your theme from not only dark and light mode, but also
-								including the OG Pink theme.
-							</Text>
+								}
+							/>
+
+							<FeaturesCard
+								backgroundImage={"/assets/backgrounds/mockups/nft_bridge.svg"}
+								title={"NFT Bridge"}
+								description={`We have made it possible for you to bridge your NFTs from
+								Binance Smartchain to the Ethereum and Polygon networks.`}
+								cols={1}
+								icon={
+									<MixerVerticalIcon
+										width={24}
+										height={24}
+									/>
+								}
+								action={
+									<Text
+										className="px-6 py-2 text-sm font-semibold rounded-lg shadow"
+										css={{
+											background: "$accentText",
+											color: "$surface",
+										}}
+									>
+										Bridge your NFTs
+									</Text>
+								}
+							/>
 						</Container>
-						<Container
-							css={{
-								backgroundColor: "$accentBg",
-								borderRadius: "16px",
-							}}
-							className="flex flex-col gap-2 p-8"
-						>
-							<Container className="flex py-8">
-								<Container
-									css={{
-										backgroundColor: "$accentText",
-										padding: "12px",
-										borderRadius: "8px",
-									}}
-								>
-									<Text css={{color: "$surface !important"}}>
-										<FilmIcon
-											width={24}
-											height={24}
-										/>
-									</Text>
-								</Container>
-							</Container>
-							<Heading size="xss">Image Editor</Heading>
-							<Text>
-								Now you can edit your NFT images on the platform, with features
+
+						<FeaturesCard
+							backgroundImage={"/assets/backgrounds/mockups/image_editor.svg"}
+							title={"Image editing tools"}
+							description={`Now you can edit your NFT images on the platform, with features
 								such as filters, color correction and cropping with multiple
-								templates preconfigured.
-							</Text>
-						</Container>
-						<Container
-							css={{
-								backgroundColor: "$accentBg",
-								borderRadius: "16px",
-							}}
-							className="flex flex-col gap-2 p-8"
-						>
-							<Container className="flex py-8">
-								<Container
-									css={{
-										backgroundColor: "$accentText",
-										padding: "12px",
-										borderRadius: "8px",
-									}}
-								>
-									<Text css={{color: "$surface !important"}}>
-										<PresentationChartLineIcon
-											width={24}
-											height={24}
-										/>
-									</Text>
-								</Container>
-							</Container>
-							<Heading size="xss">Resell your NFTs</Heading>
-							<Text>
-								Fancy yourself a trade? You can buy and resell your TreatDAO
-								NFTs directly on the sweetshop and earn yourself some crypto
-							</Text>
-						</Container>
-						<Container
-							css={{
-								backgroundColor: "$accentBg",
-								borderRadius: "16px",
-							}}
-							className="flex flex-col gap-2 p-8"
-						>
-							<Container className="flex py-8">
-								<Container
-									css={{
-										backgroundColor: "$accentText",
-										padding: "12px",
-										borderRadius: "8px",
-									}}
-								>
-									<Text css={{color: "$surface !important"}}>
-										<MixerVerticalIcon
-											width={24}
-											height={24}
-										/>
-									</Text>
-								</Container>
-							</Container>
-							<Heading size="xss">NFT Bridge</Heading>
-							<Text>
-								We have made it possible for you to bridge your NFTs from
-								Binance Smartchain to the Ethereum and Polygon networks.
-							</Text>
-						</Container>
+								templates preconfigured.`}
+							icon={
+								<FilmIcon
+									width={24}
+									height={24}
+								/>
+							}
+							cols={1}
+							action={
+								<Link href={"#"}>
+									<a>
+										<Text
+											className="px-6 py-2 text-sm font-semibold rounded-lg shadow"
+											css={{
+												background: "$accentText",
+												color: "$surface",
+											}}
+										>
+											Become a creator
+										</Text>{" "}
+									</a>
+								</Link>
+							}
+						/>
 					</Container>
 				</Container>
 			</Container>
@@ -314,7 +292,7 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 				<Container className="container flex flex-col w-full gap-8 px-4 mx-auto">
 					<Container className="flex flex-col gap-4">
 						<Container className="flex flex-col gap-2">
-							<Heading size="sm">Discover Treat creators</Heading>
+							<Heading>Discover Treat creators</Heading>
 							<Text>
 								Meet our content creators, giving you your daily dose of spicy
 								content.
@@ -371,7 +349,7 @@ export default function Index(props: {allFeatures: Array<IFeatureProps>}) {
 				<Container className="container flex flex-col w-full gap-8 px-8 mx-auto">
 					<Container className="flex flex-col items-baseline gap-4">
 						<Container className="flex flex-col gap-2">
-							<Heading size="sm">Going multichain</Heading>
+							<Heading>Going multichain</Heading>
 							<Text>
 								Now you can bridge your TreatDAO NFTs to Ethereum and Polygon
 								networks.
@@ -591,11 +569,78 @@ const FEATURES_QUERY = `{
   }
 }`;
 
-export async function getServerSideProps(context: any) {
-	const data = await request({
-		query: FEATURES_QUERY,
-	});
-	return {
-		props: {allFeatures: data.allFeatures},
-	};
+export async function getServerSideProps() {
+	try {
+		const data = await request({
+			query: FEATURES_QUERY,
+		});
+		return {
+			props: {allFeatures: data.allFeatures},
+		};
+	} catch (err) {
+		console.warn(err);
+		return {
+			props: {
+				allFeaturesError: true,
+			},
+		};
+	}
+}
+
+function FeaturesCard({
+	title,
+	description,
+	icon,
+	cols,
+	action,
+	backgroundImage,
+}) {
+	return (
+		<Container
+			className={`col-span-${cols} overflow-hidden gap-2 flex flex-col xl:flex-row min-h-96 relative shadow border border-white lg:pb-0`}
+			css={{
+				backgroundColor: "$surfaceOnSurface",
+				borderRadius: "16px",
+				borderColor: "$border",
+			}}
+		>
+			<Container className="relative z-10 flex flex-col w-full gap-12 p-8 xl:max-w-sm">
+				<Container className="grid gap-4">
+					<Container className="relative z-10 flex py-4">
+						<Container
+							css={{
+								backgroundColor: "$accentText",
+								padding: "4px",
+								borderRadius: "8px",
+							}}
+						>
+							<Text
+								css={{
+									color: "$surface !important",
+								}}
+							>
+								{icon}
+							</Text>
+						</Container>
+					</Container>
+					<div className="relative">
+						<Heading size="xs">{title}</Heading>
+					</div>
+					<Text className="relative">{description}</Text>
+				</Container>
+				<Container>{action}</Container>
+			</Container>
+			<Container className="relative flex flex-1 h-full overflow-visible min-h-48">
+				<Container
+					css={{
+						backgroundImage: `url("${backgroundImage}")`,
+						backgroundPosition: "center right",
+						backgroundRepeat: "no-repeat",
+						backgroundSize: "contain",
+					}}
+					className="w-full h-full"
+				/>
+			</Container>
+		</Container>
+	);
 }

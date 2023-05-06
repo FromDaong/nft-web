@@ -180,10 +180,10 @@ export default function Upgrade() {
 										/>
 										<label htmlFor="tos">
 											<Text>
-												Accept our Terms of Service. You can read them{" "}
-												<ImportantText>
+												Accept our Terms of Service.{" "}
+												<ImportantText css={{color: "$accentText"}}>
 													<Link href={"/tos"}>
-														<a>here</a>
+														<a>You can read them here</a>
 													</Link>
 												</ImportantText>
 											</Text>
@@ -196,7 +196,7 @@ export default function Upgrade() {
 											!upgradeForm.isValid ||
 											!upgradeForm.dirty
 												? "disabled"
-												: "primary"
+												: "action"
 										}
 										type="submit"
 									>

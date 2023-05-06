@@ -136,7 +136,7 @@ const PersonalPresentationInformationForm = (props: {
 				.min(3, "Must be at least 3 characters")
 				.max(20, "Must be 20 characters or less")
 				.required("Required"),
-
+			email: Yup.string().required("Email is required"),
 			bio: Yup.string()
 				.min(3, "Must be at least 3 characters")
 				.max(100, "Must be 100 characters or less"),
@@ -227,8 +227,8 @@ const PersonalPresentationInformationForm = (props: {
 				content={toastMessage.content}
 			/>
 			<Container className="flex flex-col gap-2">
-				<ImportantText>
-					<Text>Banner Photo</Text>
+				<ImportantText css={{color: "$textContrast"}}>
+					Banner Photo
 				</ImportantText>
 				<Container className="flex items-center gap-12">
 					<Container
@@ -244,14 +244,14 @@ const PersonalPresentationInformationForm = (props: {
 						className="relative overflow-hidden w-full h-[200px] rounded-xl group flex items-center justify-center"
 					>
 						{!updatingBanner && (
-							<Container className="hidden group-hover:flex hover:transition-opacity duration-200 items-center justify-center  rounded-full w-full h-full">
+							<Container className="flex items-center justify-center w-full h-full duration-200 rounded-full hover:transition-opacity">
 								<label
 									htmlFor="banner_pic"
-									className="h-full w-full flex items-center justify-center"
+									className="flex items-center justify-center w-full h-full"
 								>
 									<Text
-										css={{backgroundColor: "$elementSurface"}}
-										className="p-2 relative rounded-full"
+										css={{backgroundColor: "$surfaceOnSurface"}}
+										className="relative p-2 rounded-full"
 									>
 										<PencilAltIcon
 											height={20}
@@ -274,8 +274,8 @@ const PersonalPresentationInformationForm = (props: {
 				<SmallText>Click in the box to update your banner picture.</SmallText>
 			</Container>
 			<Container className="flex flex-col gap-2">
-				<ImportantText>
-					<Text>Profile Photo</Text>
+				<ImportantText css={{color: "$textContrast"}}>
+					Profile Photo
 				</ImportantText>
 				<Container className="flex items-center gap-12">
 					<Container
@@ -291,14 +291,14 @@ const PersonalPresentationInformationForm = (props: {
 						className="relative overflow-hidden w-[120px] h-[120px] rounded-full group flex items-center justify-center"
 					>
 						{!updatingProfilePic && (
-							<Container className="hidden group-hover:flex hover:transition-opacity duration-200 items-center justify-center  rounded-full w-full h-full">
+							<Container className="items-center justify-center w-full h-full duration-200 rounded-full hover:transition-opacity">
 								<label
 									htmlFor="profile_pic"
-									className="h-full w-full flex items-center justify-center"
+									className="flex items-center justify-center w-full h-full"
 								>
 									<Text
-										css={{backgroundColor: "$elementSurface"}}
-										className="p-2 relative rounded-full"
+										css={{backgroundColor: "$surfaceOnSurface"}}
+										className="relative p-2 rounded-full shadow"
 									>
 										<PencilAltIcon
 											height={20}
@@ -320,9 +320,9 @@ const PersonalPresentationInformationForm = (props: {
 				</Container>
 			</Container>
 			<form className="flex flex-col gap-8">
-				<Container className="flex flex-col gap-1">
-					<ImportantText>
-						<Text>Display name</Text>
+				<Container className="flex flex-col gap-2">
+					<ImportantText css={{color: "$textContrast"}}>
+						Display name
 					</ImportantText>
 					<Input
 						value={personalInformationForm.values.display_name}
@@ -332,10 +332,21 @@ const PersonalPresentationInformationForm = (props: {
 						required
 					/>
 				</Container>
-				<Container className="flex flex-col gap-1">
-					<ImportantText>
-						<Text>Bio</Text>
+				<Container className="flex flex-col gap-2">
+					<ImportantText css={{color: "$textContrast"}}>
+						Email address
 					</ImportantText>
+					<Input
+						value={personalInformationForm.values.email}
+						onChange={personalInformationForm.handleChange}
+						onBlur={personalInformationForm.handleBlur}
+						name="email"
+						type={"email"}
+						required
+					/>
+				</Container>
+				<Container className="flex flex-col gap-2">
+					<ImportantText css={{color: "$textContrast"}}>Bio</ImportantText>
 					<Input
 						value={personalInformationForm.values.bio}
 						onChange={personalInformationForm.handleChange}
@@ -345,9 +356,9 @@ const PersonalPresentationInformationForm = (props: {
 					/>
 				</Container>
 				{false && (
-					<Container className="flex flex-col gap-1">
-						<ImportantText>
-							<Text>Email Address</Text>
+					<Container className="flex flex-col gap-2">
+						<ImportantText css={{color: "$textContrast"}}>
+							Email Address
 						</ImportantText>
 						<Input
 							value={personalInformationForm.values.email}
@@ -361,7 +372,10 @@ const PersonalPresentationInformationForm = (props: {
 					<Button
 						onClick={personalInformationForm.submitForm}
 						appearance={
-							personalInformationForm.isSubmitting ? "loading" : "action"
+							personalInformationForm.isSubmitting ||
+							!personalInformationForm.isValid
+								? "disabled"
+								: "action"
 						}
 						disabled={
 							personalInformationForm.isSubmitting ||
@@ -390,12 +404,6 @@ const LinksFormPresentation = (props: {
 }) => {
 	const [links] = useState(props.links);
 
-	const linksInformationForm = useFormik({
-		initialValues: {links},
-		onSubmit(values, formikHelpers) {
-			console.log(values);
-		},
-	});
 	return (
 		<Container className="col-span-1">
 			<Container className="grid grid-cols-1 gap-8 py-4 ">
