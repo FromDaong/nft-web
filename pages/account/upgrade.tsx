@@ -95,8 +95,8 @@ export default function Upgrade() {
 			<ApplicationFrame>
 				<Container className="flex flex-col max-w-xl gap-12 py-12 mx-auto">
 					<Container
-						className="flex flex-col gap-8 p-8 border"
-						css={{borderRadius: "16px", borderColor: "$border"}}
+						className="flex flex-col gap-8 p-8 shadow-sm"
+						css={{borderRadius: "16px", backgroundColor: "$gray1"}}
 					>
 						<Container className="flex flex-col gap-2">
 							<Heading size="sm">Upgrade to a creator profile</Heading>

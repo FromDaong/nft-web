@@ -304,7 +304,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 			/>
 
 			<Container
-				className="w-full h-[256px]"
+				className="w-full h-[320px]"
 				css={{
 					backgroundImage: `url("${ownerOfUserProfile.banner_pic}")`,
 					backgroundPosition: "center",

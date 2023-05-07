@@ -31,7 +31,7 @@ const Toast = (props: Props) => {
 				)}
 			>
 				<div className="flex">
-					<div className="w-0 flex-1 flex items-center pl-5 py-4">
+					<div className="flex items-center flex-1 w-0 py-4 pl-5">
 						<div className="w-full radix">
 							<ToastPrimitive.Title className="text-sm font-medium">
 								<Text>
@@ -46,7 +46,7 @@ const Toast = (props: Props) => {
 					<div className="flex">
 						<div className="flex flex-col px-3 py-2 space-y-1">
 							{props.action && (
-								<div className="h-0 flex-1 flex">
+								<div className="flex flex-1 h-0">
 									<ToastPrimitive.Action
 										altText="view now"
 										onClick={props.action}
@@ -55,8 +55,8 @@ const Toast = (props: Props) => {
 									</ToastPrimitive.Action>
 								</div>
 							)}
-							<div className="h-0 flex-1 flex">
-								<ToastPrimitive.Close className="w-full border border-transparent rounded-lg px-3 py-2 flex items-center justify-center text-sm font-medium text-gray-700 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-900 focus:z-10 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+							<div className="flex flex-1 h-0">
+								<ToastPrimitive.Close className="flex items-center justify-center w-full px-3 py-2 text-sm font-medium border border-transparent rounded-lg">
 									<Button appearance={"action"}>Dismiss</Button>
 								</ToastPrimitive.Close>
 							</div>

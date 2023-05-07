@@ -134,7 +134,7 @@ const PersonalPresentationInformationForm = (props: {
 		validationSchema: Yup.object({
 			display_name: Yup.string()
 				.min(3, "Must be at least 3 characters")
-				.max(20, "Must be 20 characters or less")
+				.max(50, "Must be 20 characters or less")
 				.required("Required"),
 			email: Yup.string().required("Email is required"),
 			bio: Yup.string()
@@ -158,6 +158,8 @@ const PersonalPresentationInformationForm = (props: {
 				});
 		},
 	});
+
+	console.log({personalInformationForm});
 
 	const onSelectBannerPic = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files[0];
@@ -340,7 +342,7 @@ const PersonalPresentationInformationForm = (props: {
 						value={personalInformationForm.values.email}
 						onChange={personalInformationForm.handleChange}
 						onBlur={personalInformationForm.handleBlur}
-						name="email"
+						name="email_address"
 						type={"email"}
 						required
 					/>

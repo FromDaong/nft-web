@@ -115,10 +115,8 @@ export default function Index(props: {
 				}}
 			/>
 			<Container className="container relative flex flex-col gap-8 px-8 mx-auto">
-				<Container className="flex flex-col gap-2">
-					<Heading size="md">
-						Welcome to our renewed Adult NFT Marketplace
-					</Heading>
+				<Container className="flex flex-col items-center max-w-screen-sm gap-2 py-12 mx-auto text-center">
+					<Heading>Welcome to our renewed Adult NFT Marketplace</Heading>
 					<Text>
 						Support content creators, join the DAO, hold the token, and much
 						more!
@@ -128,6 +126,8 @@ export default function Index(props: {
 			<Container>
 				{!allFeaturesError && <FeaturedCarousel features={props.allFeatures} />}
 			</Container>
+			<Divider dir={"horizontal"} />
+
 			<Container>
 				<Container className="container flex flex-col w-full gap-8 px-8 mx-auto">
 					<Container className="flex flex-col items-baseline gap-4">
@@ -139,7 +139,7 @@ export default function Index(props: {
 						</Container>
 						<Link href={"/sweetshop"}>
 							<a>
-								<Button appearance={"default"}>
+								<Button appearance={"action"}>
 									<ImportantText>View all on sweetshop</ImportantText>
 									<ArrowRightIcon
 										width={16}
@@ -301,7 +301,7 @@ export default function Index(props: {
 
 						<Link href={"/creators"}>
 							<a>
-								<Button appearance={"default"}>
+								<Button appearance={"action"}>
 									<ImportantText>View more creators</ImportantText>
 									<ArrowRightIcon
 										width={16}
@@ -370,7 +370,7 @@ export default function Index(props: {
 				<Container className="container flex flex-col w-full gap-8 px-8 py-24 mx-auto">
 					<Container className="flex flex-col items-baseline gap-4">
 						<Container className="flex flex-col gap-2">
-							<Heading size="sm">Frequently asked questions</Heading>
+							<Heading>Frequently asked questions</Heading>
 							<Text>
 								Common things you need to know about TreatDAO and the NFT
 								marketplace
@@ -471,46 +471,13 @@ function FeaturedCarousel(props: {features: Array<IFeatureProps>}) {
 
 	return (
 		<Container className="container relative flex flex-col gap-8 px-8 mx-auto">
-			<Container className="flex flex-col justify-between w-full gap-4 md:flex-row md:items-center">
-				<Container>
-					<Heading size="sm">Featured on TreatDAO</Heading>
-					<Text>
-						Discover the hottest content, creators and TreatDAO partners
-					</Text>
-				</Container>
-				<Container className="flex justify-between w-full md:w-fit h-fit md:gap-8">
-					<Button
-						onClick={prev}
-						css={{
-							borderRadius: "9999px",
-							padding: "0.5rem",
-						}}
-						appearance={"surface"}
-					>
-						<CaretLeftIcon className="w-6 h-6" />
-					</Button>
-					<Button
-						onClick={next}
-						css={{
-							borderRadius: "9999px",
-							padding: "0.5rem",
-						}}
-						appearance={"surface"}
-					>
-						<CaretRightIcon className="w-6 h-6" />
-					</Button>
-				</Container>
-			</Container>
-			<Container
-				ref={carouselRef}
-				className="@container flex flex-nowrap overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-hide w-full gap-8"
-			>
-				{props.features.map((feature) => (
+			<Container className="grid w-full grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4">
+				{props.features.slice(0, 4).map((feature) => (
 					<Link
 						href={feature.href}
 						key={feature.id}
 					>
-						<a className="w-96 group relative aspect-[2/3] flex-shrink-0 bg-transparent rounded-xl overflow-hidden">
+						<a className="w-96 group relative aspect-[2/3] flex-shrink-0 bg-transparent rounded-xl overflow-hidden shadow-lg">
 							<Image
 								src={feature.cover.responsiveImage.src}
 								sizes={feature.cover.responsiveImage.srcSet}
