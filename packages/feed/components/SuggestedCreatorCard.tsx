@@ -10,7 +10,6 @@ import {
 import DynamicSkeleton from "@packages/skeleton";
 import {FeaturedCreatorSkeleton} from "@packages/skeleton/config";
 import UserAvatar from "core/auth/components/Avatar";
-import Image from "next/future/image";
 import Link from "next/link";
 import LiveTag from "./LiveTag";
 
@@ -91,7 +90,7 @@ const CollapseSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 
 const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 	// T-83 Some profile pics not loading. Use base treatnfts.com - media endpoint /api/v3/media/
-	const profilePicUrl = `https://treatdao.com/api/v2/utils/images/fetchWithFallback?default=${props.avatar}`;
+	const profilePicUrl = props.avatar;
 
 	return (
 		<Link href={`/${props.username}`}>
@@ -99,17 +98,17 @@ const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 				<Container
 					css={{
 						border: `1px ${props.border ? "solid" : null} $border`,
-						padding: props.border ? "16px" : null,
 						borderRadius: "16px",
 						backgroundColor: "$surfaceOnSurface",
 
 						boxShadow: "$base",
 						height: "100%",
 					}}
+					className="pb-4 overflow-hidden"
 				>
 					<Container className="flex flex-col justify-between w-full gap-4">
 						<Container
-							className="relative w-full h-[320px] flex items-center justify-center rounded-xl"
+							className="relative w-full h-[320px] flex items-center justify-center"
 							css={{
 								backgroundColor: "$elementOnSurface",
 								backgroundImage: `url("${profilePicUrl}")`,
@@ -117,15 +116,15 @@ const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 								backgroundPosition: "center",
 							}}
 						></Container>
-						<Container className="flex flex-col gap-2">
+						<Container className="flex flex-col gap-2 px-4">
 							{props.username && (
-								<Container className="flex flex-col w-full text-center">
-									<MutedText className="flex justify-center">
+								<Container className="flex flex-col w-full">
+									<MutedText className="flex">
 										<ImportantText>
 											<SmallText>CREATOR</SmallText>
 										</ImportantText>
 									</MutedText>
-									<Container className="flex items-center justify-center gap-4 ">
+									<Container className="flex items-center gap-4 ">
 										<Heading
 											size="xs"
 											className="text-center"
@@ -150,7 +149,9 @@ const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 								</Container>
 							)}
 						</Container>
-						<Button>View creator</Button>
+						<Container className="px-4">
+							<Button>View creator</Button>
+						</Container>
 					</Container>
 				</Container>
 			</a>
