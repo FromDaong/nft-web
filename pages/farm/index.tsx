@@ -50,56 +50,55 @@ export default function Farm() {
 		<ApplicationLayout>
 			<ApplicationFrame>
 				{treatMelonLoading && !treatMelonError && (
-					<Container className="w-full min-h-screen flex flex-col items-center justify-center">
+					<Container className="flex flex-col items-center justify-center w-full min-h-screen">
 						<Spinner />
 						<Heading size="xs">Please wait. Loading...</Heading>
 					</Container>
 				)}
 				{!treatMelonLoading && !treatMelonBalance && (
-					<Container className="w-full min-h-screen gap-2 flex flex-col items-center justify-center text-center">
+					<Container className="flex flex-col items-center justify-center w-full min-h-screen gap-2 text-center">
 						<Heading size="xs">An error occured</Heading>
 						<Text>
 							Please check your internet connection and reload the page.
 						</Text>
 					</Container>
 				)}
-				{(!treatMelonLoading && !treatMelonError && treatMelonBalance) ||
-					(true && (
-						<Container className="flex flex-col max-w-screen-lg gap-12 pt-12 mx-auto">
-							<Container className="flex flex-col gap-2">
-								<Heading size="md">Farm Dashboard</Heading>
-								<Text>
-									Stake $Treat to earn $Melon. Exchange $Melon at the Farmers'
-									Market to get exclusive NFTs.
-								</Text>
-								<Heading
-									size="xss"
-									css={{
-										color: "$teal10",
-									}}
-								>
-									🍈 Melon balance:
-									{!treatMelonLoading
-										? ` ${treatMelonBalance?.formatted}`
-										: " Loading..."}
-								</Heading>
-							</Container>
-							<StakeTreat
-								pid={0}
-								contract={masterMelonContract}
-								treatBalance={treatMelonBalance}
-								treatLpBalance={treatLpBalance}
-								treatMelonBalance={treatMelonBalance}
-							/>
-							<StakeTreat
-								pid={1}
-								contract={masterMelonContract}
-								treatBalance={treatMelonBalance}
-								treatLpBalance={treatLpBalance}
-								treatMelonBalance={treatMelonBalance}
-							/>
+				{!treatMelonLoading && !treatMelonError && treatMelonBalance && (
+					<Container className="flex flex-col max-w-screen-lg gap-12 pt-12 mx-auto">
+						<Container className="flex flex-col gap-2">
+							<Heading size="md">Farm Dashboard</Heading>
+							<Text>
+								Stake $Treat to earn $Melon. Exchange $Melon at the Farmers'
+								Market to get exclusive NFTs.
+							</Text>
+							<Heading
+								size="xss"
+								css={{
+									color: "$teal10",
+								}}
+							>
+								🍈 Melon balance:
+								{!treatMelonLoading
+									? ` ${treatMelonBalance?.formatted}`
+									: " Loading..."}
+							</Heading>
 						</Container>
-					))}
+						<StakeTreat
+							pid={0}
+							contract={masterMelonContract}
+							treatBalance={treatMelonBalance}
+							treatLpBalance={treatLpBalance}
+							treatMelonBalance={treatMelonBalance}
+						/>
+						<StakeTreat
+							pid={1}
+							contract={masterMelonContract}
+							treatBalance={treatMelonBalance}
+							treatLpBalance={treatLpBalance}
+							treatMelonBalance={treatMelonBalance}
+						/>
+					</Container>
+				)}
 			</ApplicationFrame>
 		</ApplicationLayout>
 	);
@@ -195,7 +194,7 @@ function StakeTreat({
 						/>
 						<Button appearance={"action"}>Max</Button>
 					</Container>
-					<Container className="flex gap-2 items-center">
+					<Container className="flex items-center gap-2">
 						<MutedText>Balance:</MutedText>
 						<Text>
 							{treatBalance && (
@@ -245,7 +244,7 @@ function StakeTreat({
 						/>
 						<Button appearance={"action"}>Max</Button>
 					</Container>
-					<Container className="flex gap-2 items-center">
+					<Container className="flex items-center gap-2">
 						<MutedText>Balance:</MutedText>
 						{balances[pid] && (
 							<ImportantText>
