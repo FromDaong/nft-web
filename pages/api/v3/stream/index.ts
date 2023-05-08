@@ -6,7 +6,7 @@ import {connectMongoDB} from "server/database/engine";
 import LegacyCreatorModel from "server/database/legacy/profile/Creator";
 import Ban from "@db/legacy/privacy/Ban";
 import Web3 from "web3";
-import {contractAddresses} from "@packages/treat/lib/constants";
+import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import LegacyNFTModel from "@db/legacy/nft/NFT";
 
 const web3 = new Web3(

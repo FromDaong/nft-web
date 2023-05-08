@@ -1,6 +1,6 @@
 import {Contracts} from "./lib/contracts";
 import Web3 from "web3";
-import {contractAddresses} from "./lib/constants";
+import {contractAddresses} from "./lib/treat-contracts-constants";
 
 export class Treat {
 	web3: Web3;
@@ -39,7 +39,8 @@ export class Treat {
 			this.web3.eth.defaultAccount = options.defaultAccount;
 		}
 		this.contracts = new Contracts(realProvider, networkId, this.web3, options);
-		this.privateKey = this.treatAddress = contractAddresses.treat[networkId];
+		this.privateKey = this.treatAddress =
+			contractAddresses.treatV1Token[networkId];
 		this.wethAddress = contractAddresses.weth[networkId];
 		this.treatNFTMinterAddress = contractAddresses.treatNFTMinter[networkId];
 	}

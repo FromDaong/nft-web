@@ -1,4 +1,4 @@
-import {chains_map} from "./constants";
+import {chains_map} from "./chain-constants";
 
 export const getChainNameById = (id: number): string => {
 	return chains_map.find((chain) => chain.id === id)?.name || "Unknown network";
@@ -7,7 +7,7 @@ export const getChainNameById = (id: number): string => {
 // TODO: Look at subscriptions
 
 /**
- * 
+ *
  * address token: defines the token contract which payments are paid from.
 address provider: the address of the provider.
 uint256 time_unit: the number of seconds per time unit.

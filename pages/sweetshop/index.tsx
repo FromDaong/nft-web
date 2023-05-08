@@ -48,9 +48,9 @@ export default function NFTS({sort, q, nfts, error}) {
 							className="flex flex-col w-full gap-4 px-4"
 						>
 							<Container
-								className="flex items-center w-full gap-1 px-2 py-1 rounded-lg"
+								className="flex items-center w-full gap-1 px-2 py-1 rounded-lg shadow"
 								css={{
-									backgroundColor: "$elementOnSurface",
+									backgroundColor: "$surfaceOnSurface",
 									border: "1px solid $border",
 								}}
 							>

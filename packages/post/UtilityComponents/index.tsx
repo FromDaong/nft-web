@@ -13,12 +13,13 @@ export const ActionSection = (props) => {
 		<Container className="grid grid-cols-5 gap-2">
 			<Container className="flex flex-col col-span-4 gap-4">
 				<Container className="flex flex-col w-full">
-					<Text
+					<Heading
+						size={"xss"}
 						className="line-clamp-1"
 						css={{padding: 0}}
 					>
-						<ImportantText>{props.name}</ImportantText>
-					</Text>
+						{props.name}
+					</Heading>
 					{props.count && <Text>{props.count} editions available</Text>}
 					{!props.noPrice && (
 						<Container className="flex items-baseline gap-1 mt-2">

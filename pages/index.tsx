@@ -31,6 +31,7 @@ import Image from "next/future/image";
 import {SEOHead} from "@packages/seo/page";
 import {useMemo, useRef, useState} from "react";
 import {IFeatureProps, request} from "@lib/datocms";
+import Balancer from "react-wrap-balancer";
 
 const getTrendingNFTs = async () => {
 	const res = await axios.get(`${apiEndpoint}/marketplace/trending`);
@@ -106,369 +107,368 @@ export default function Index(props: {
 	);
 
 	return (
-		<Container className="flex flex-col gap-12 py-12 md:gap-16 lg:gap-24">
-			<SEOHead
-				title={"TreatDAO"}
-				description="TreatDAO is a Web3 project dedicated to creating opportunities and an amazing platform for adult content creators and collectors."
-				data={{
-					official: true,
+		<>
+			<Container
+				css={{
+					background: "$surfaceOnSurface",
+					backgroundSize: "cover",
+					backgroundPosition: "top",
 				}}
-			/>
-			<Container className="container relative flex flex-col gap-8 px-8 mx-auto">
-				<Container className="flex flex-col items-center max-w-screen-sm gap-2 py-12 mx-auto text-center">
-					<Heading>Welcome to our renewed Adult NFT Marketplace</Heading>
-					<Text>
-						Support content creators, join the DAO, hold the token, and much
-						more!
-					</Text>
-				</Container>
-			</Container>
-			<Container>
-				{!allFeaturesError && <FeaturedCarousel features={props.allFeatures} />}
-			</Container>
-			<Divider dir={"horizontal"} />
-
-			<Container>
-				<Container className="container flex flex-col w-full gap-8 px-8 mx-auto">
-					<Container className="flex flex-col items-baseline gap-4">
-						<Container className="flex flex-col gap-2">
-							<Heading>Discover sweetshop NFT's</Heading>
-							<Text>
-								Buy and sell NFTs by TreatDAO content creators and resellers.
-							</Text>
-						</Container>
-						<Link href={"/sweetshop"}>
-							<a>
-								<Button appearance={"action"}>
-									<ImportantText>View all on sweetshop</ImportantText>
-									<ArrowRightIcon
-										width={16}
-										height={16}
-									/>
-								</Button>
-							</a>
-						</Link>
-					</Container>
-					{!trendingNFTError && (
-						<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4 lg:gap-4">
-							{!trendingNFTError && !trendingNFTsLoading
-								? trendingNFTs.map((item, i) => (
-										<Container
-											key={item}
+				className={"py-24 flex flex-col gap-24"}
+			>
+				<Container className="container relative flex flex-col gap-12 px-8 mx-auto">
+					<Container className="flex flex-col items-center max-w-screen-sm gap-12 py-12 mx-auto text-center lg:gap-16">
+						<Container className={"flex justify-center"}>
+							<Link href={"/magazines"}>
+								<a>
+									<Container
+										css={{
+											backgroundColor: "$accentBg",
+											borderColor: "$subtleBorder",
+										}}
+										className={
+											"rounded-full hidden lg:flex font-semibold shadow-sm gap-2 p-2 border"
+										}
+									>
+										<Text
+											css={{color: "$accentText"}}
 											className={
-												"flex col-span-1 " + (i > 3 ? "lg:hidden xl:flex" : "")
+												"px-4 flex items-center font-semibold truncate ... max-w-screen-sm"
 											}
 										>
-											<TritPost
-												inGrid
-												{...item}
-											/>
-										</Container>
+											Read the latest TreatDAO Magazine
+											<ArrowRightIcon className={"w-4 h-4 ml-4"} />
+										</Text>
+									</Container>
+								</a>
+							</Link>
+						</Container>
+						<Container
+							className={"flex flex-col gap-4 items-center text-center"}
+						>
+							<Balancer>
+								<Heading>Welcome to our renewed Adult NFT Marketplace</Heading>
+							</Balancer>
+							<Balancer>
+								<Text css={{fontSize: "1.5rem", lineHeight: "2rem"}}>
+									Support content creators, join the DAO, hold the token, and
+									much more!
+								</Text>
+							</Balancer>
+						</Container>
+						<Container className={"flex gap-4 justify-center "}>
+							<Button appearance={"primary"}>
+								Visit the sweetshop <ArrowRightIcon className={"w-5 h-5"} />{" "}
+							</Button>
+							<Button
+								appearance={"subtle"}
+								outlined
+							>
+								Buy $TREAT
+							</Button>
+						</Container>
+					</Container>
+				</Container>
+				<Container>
+					{!allFeaturesError && (
+						<FeaturedCarousel features={props.allFeatures} />
+					)}
+				</Container>
+			</Container>
+			<Container className="flex flex-col gap-12 py-12 mt-12 md:gap-16 lg:gap-24">
+				<SEOHead
+					title={"TreatDAO"}
+					description="TreatDAO is a Web3 project dedicated to creating opportunities and an amazing platform for adult content creators and collectors."
+					data={{
+						official: true,
+					}}
+				/>
+				<Container>
+					<Container className="container flex flex-col w-full gap-8 px-8 mx-auto">
+						<Container className="flex flex-col items-baseline gap-4">
+							<Container className="flex flex-col gap-2">
+								<Heading>Discover sweetshop NFT's</Heading>
+								<Text>
+									Buy and sell NFTs by TreatDAO content creators and resellers.
+								</Text>
+							</Container>
+							<Link href={"/sweetshop"}>
+								<a>
+									<Button
+										outlined
+										appearance={"subtle"}
+									>
+										<ImportantText>View all on sweetshop</ImportantText>
+										<ArrowRightIcon
+											width={16}
+											height={16}
+										/>
+									</Button>
+								</a>
+							</Link>
+						</Container>
+						{!trendingNFTError && (
+							<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4 lg:gap-4">
+								{!trendingNFTError && !trendingNFTsLoading
+									? trendingNFTs.map((item, i) => (
+											<Container
+												key={item}
+												className={
+													"flex col-span-1 " +
+													(i > 3 ? "lg:hidden xl:flex" : "")
+												}
+											>
+												<TritPost
+													inGrid
+													{...item}
+												/>
+											</Container>
+									  ))
+									: [0, 1, 2, 3].map((i) => (
+											<Container
+												key={i}
+												className="col-span-1 border"
+												css={{
+													borderColor: "$subtleBorder",
+													padding: "8px",
+													borderRadius: "16px",
+												}}
+											>
+												<DynamicSkeleton config={TritPostSkeleton} />
+											</Container>
+									  ))}
+							</Container>
+						)}
+						{trendingNFTError && (
+							<Container className={"flex justify-center"}>
+								<p>An error occurred while fetching NFTs</p>
+							</Container>
+						)}
+					</Container>
+				</Container>
+				<Divider dir={"horizontal"} />
+				<Container>
+					<Container className="container flex flex-col w-full gap-8 px-8 mx-auto">
+						<Container className="flex flex-col items-baseline gap-4">
+							<Container className="flex flex-col gap-2">
+								<Heading>Lots of new features</Heading>
+								<Text>
+									The new TreatDAO NFTs platform brings a lot of new features to
+									enhance your browsing experience.
+								</Text>
+							</Container>
+						</Container>
+						<Container className="grid grid-cols-1 pt-4 gap-y-8 xl:gap-y-12">
+							<Container
+								className={
+									"col-span-1 md:col-span-2 grid grid-cols-1 gap-8 md:grid-cols-2"
+								}
+							>
+								<FeaturesCard
+									backgroundImage={"/assets/backgrounds/mockups/themes.svg"}
+									title={"Eye candy"}
+									description={`Choose your theme from not only dark and light mode, but also including the OG Pink theme.`}
+									icon={
+										<MoonIcon
+											width={24}
+											height={24}
+										/>
+									}
+									cols={1}
+									action={<Button appearance={"primary"}>Try it out</Button>}
+								/>
+
+								<FeaturesCard
+									backgroundImage={"/assets/backgrounds/mockups/nft_bridge.svg"}
+									title={"NFT Bridge"}
+									description={`We have made it possible for you to bridge your NFTs from
+								Binance Smartchain to the Ethereum and Polygon networks.`}
+									cols={1}
+									icon={
+										<MixerVerticalIcon
+											width={24}
+											height={24}
+										/>
+									}
+									action={
+										<Button appearance={"primary"}>Bridge your nfts</Button>
+									}
+								/>
+							</Container>
+
+							<FeaturesCard
+								backgroundImage={"/assets/backgrounds/mockups/image_editor.svg"}
+								title={"Image editing tools"}
+								description={`Now you can edit your NFT images on the platform, with features
+								such as filters, color correction and cropping with multiple
+								templates preconfigured.`}
+								icon={
+									<FilmIcon
+										width={24}
+										height={24}
+									/>
+								}
+								cols={1}
+								action={
+									<Button appearance={"primary"}>
+										Create an NFT <ArrowRightIcon className="w-4 h-4" />
+									</Button>
+								}
+							/>
+						</Container>
+					</Container>
+				</Container>
+				<Divider dir={"horizontal"} />
+				<Container>
+					<Container className="container flex flex-col w-full gap-8 px-4 mx-auto">
+						<Container className="flex flex-col gap-4">
+							<Container className="flex flex-col gap-2">
+								<Heading>Discover Treat creators</Heading>
+								<Text>
+									Meet our content creators, giving you your daily dose of spicy
+									content.
+								</Text>
+							</Container>
+
+							<Link href={"/creators"}>
+								<a>
+									<Button
+										outlined
+										appearance={"subtle"}
+									>
+										<ImportantText>View more creators</ImportantText>
+										<ArrowRightIcon
+											width={16}
+											height={16}
+										/>
+									</Button>
+								</a>
+							</Link>
+						</Container>
+						<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4">
+							{!trendingCreatorError && !trendingCreatorsLoading
+								? trendingCreators?.slice(0, 8).map((creator) => (
+										<SuggestedCreatorCard
+											key={creator._id}
+											username={creator.username}
+											display_name={creator.profile?.display_name}
+											avatar={creator.profile?.profile_pic}
+											bio={creator.profile?.bio}
+											isExpanded
+											border
+											live={creator.livestream_active}
+											followers={creator.profile?.followers?.length}
+											subscribers={creator.profile?.following?.length}
+										/>
 								  ))
-								: [0, 1, 2, 3].map((i) => (
+								: [0, 1, 2, 4].map((i) => (
 										<Container
 											key={i}
 											className="col-span-1 border"
 											css={{
 												borderColor: "$subtleBorder",
-												padding: "8px",
+												padding: "16px",
 												borderRadius: "16px",
 											}}
 										>
-											<DynamicSkeleton config={TritPostSkeleton} />
+											<DynamicSkeleton config={FeaturedCreatorSkeleton} />
 										</Container>
 								  ))}
 						</Container>
-					)}
-					{trendingNFTError && (
-						<Container className={"flex justify-center"}>
-							<p>An error occurred while fetching NFTs</p>
-						</Container>
-					)}
+					</Container>
 				</Container>
-			</Container>
-			<Divider dir={"horizontal"} />
-			<Container>
-				<Container className="container flex flex-col w-full gap-8 px-8 mx-auto">
-					<Container className="flex flex-col items-baseline gap-4">
-						<Container className="flex flex-col gap-2">
-							<Heading>Lots of new features</Heading>
-							<Text>
-								The new TreatDAO NFTs platform brings a lot of new features to
-								enhance your browsing experience.
-							</Text>
+
+				<Divider dir={"horizontal"} />
+				<Container>
+					<Container className="container flex flex-col w-full gap-8 px-8 mx-auto">
+						<Container className="flex flex-col items-baseline gap-4">
+							<Container className="flex flex-col gap-2">
+								<Heading>Going multichain</Heading>
+								<Text>
+									Now you can bridge your TreatDAO NFTs to Ethereum and Polygon
+									networks.
+								</Text>
+							</Container>
+						</Container>
+						<Container className="pt-4">
+							<Container className="flex flex-col gap-8 px-4  h-[70vh] w-full">
+								{theme === "light" && <LightWidget />}
+								{theme === "dark" && <DarkWidget />}
+								{theme === "pink" && <PinkWidget />}
+							</Container>
 						</Container>
 					</Container>
-					<Container className="grid grid-cols-1 pt-4 gap-y-8 xl:gap-y-12">
-						<Container
-							className={
-								"col-span-1 md:col-span-2 grid grid-cols-1 gap-8 md:grid-cols-2"
-							}
-						>
-							<FeaturesCard
-								backgroundImage={"/assets/backgrounds/mockups/themes.svg"}
-								title={"Eye candy"}
-								description={`Choose your theme from not only dark and light mode, but also including the OG Pink theme.`}
-								icon={
-									<MoonIcon
-										width={24}
-										height={24}
-									/>
-								}
-								cols={1}
-								action={
-									<Text
-										className="px-6 py-2 text-sm font-semibold rounded-lg shadow"
-										css={{
-											background: "$accentText",
-											color: "$surface",
-										}}
-									>
-										Try it out
-									</Text>
-								}
-							/>
-
-							<FeaturesCard
-								backgroundImage={"/assets/backgrounds/mockups/nft_bridge.svg"}
-								title={"NFT Bridge"}
-								description={`We have made it possible for you to bridge your NFTs from
-								Binance Smartchain to the Ethereum and Polygon networks.`}
-								cols={1}
-								icon={
-									<MixerVerticalIcon
-										width={24}
-										height={24}
-									/>
-								}
-								action={
-									<Text
-										className="px-6 py-2 text-sm font-semibold rounded-lg shadow"
-										css={{
-											background: "$accentText",
-											color: "$surface",
-										}}
-									>
-										Bridge your NFTs
-									</Text>
-								}
-							/>
+				</Container>
+				<Divider dir="horizontal" />
+				<Container>
+					<Container className="container flex flex-col w-full gap-8 px-8 py-24 mx-auto">
+						<Container className="flex flex-col items-baseline gap-4">
+							<Container className="flex flex-col gap-2">
+								<Heading>Frequently asked questions</Heading>
+								<Text>
+									Common things you need to know about TreatDAO and the NFT
+									marketplace
+								</Text>
+							</Container>
 						</Container>
-
-						<FeaturesCard
-							backgroundImage={"/assets/backgrounds/mockups/image_editor.svg"}
-							title={"Image editing tools"}
-							description={`Now you can edit your NFT images on the platform, with features
-								such as filters, color correction and cropping with multiple
-								templates preconfigured.`}
-							icon={
-								<FilmIcon
-									width={24}
-									height={24}
-								/>
-							}
-							cols={1}
-							action={
-								<Link href={"#"}>
-									<a>
-										<Text
-											className="px-6 py-2 text-sm font-semibold rounded-lg shadow"
-											css={{
-												background: "$accentText",
-												color: "$surface",
-											}}
+						<Container className="grid grid-cols-1 gap-12 pt-4 md:grid-cols-2 lg:grid-cols-4">
+							<Container className="flex flex-col gap-2">
+								<Heading size="xss">What is an NFT?</Heading>
+								<Text>
+									An NFT, also known as a non-fungible token is a record of
+									proof of ownership of a digital asset.
+								</Text>
+							</Container>
+							<Container className="flex flex-col gap-2">
+								<Heading size="xss">How do I buy BNB or $TREAT?</Heading>
+								<Text>
+									You can buy BNB or $TREAT directly from this website. Visit
+									this{" "}
+									<Link href={"/dex/ramp"}>
+										<a>
+											<ImportantText css={{color: "$accentText"}}>
+												link
+											</ImportantText>
+										</a>
+									</Link>{" "}
+									to buy crypto easily, powered by our friends at{" "}
+									<Link href={"https://flooz.trade"}>
+										<a
+											target={"_blank"}
+											rel={"nooopener"}
 										>
-											Become a creator
-										</Text>{" "}
-									</a>
-								</Link>
-							}
-						/>
-					</Container>
-				</Container>
-			</Container>
-			<Divider dir={"horizontal"} />
-			<Container>
-				<Container className="container flex flex-col w-full gap-8 px-4 mx-auto">
-					<Container className="flex flex-col gap-4">
-						<Container className="flex flex-col gap-2">
-							<Heading>Discover Treat creators</Heading>
-							<Text>
-								Meet our content creators, giving you your daily dose of spicy
-								content.
-							</Text>
-						</Container>
-
-						<Link href={"/creators"}>
-							<a>
-								<Button appearance={"action"}>
-									<ImportantText>View more creators</ImportantText>
-									<ArrowRightIcon
-										width={16}
-										height={16}
-									/>
-								</Button>
-							</a>
-						</Link>
-					</Container>
-					<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4">
-						{!trendingCreatorError && !trendingCreatorsLoading
-							? trendingCreators?.slice(0, 8).map((creator) => (
-									<SuggestedCreatorCard
-										key={creator._id}
-										username={creator.username}
-										display_name={creator.profile?.display_name}
-										avatar={creator.profile?.profile_pic}
-										bio={creator.profile?.bio}
-										isExpanded
-										border
-										live={creator.livestream_active}
-										followers={creator.profile?.followers?.length}
-										subscribers={creator.profile?.following?.length}
-									/>
-							  ))
-							: [0, 1, 2, 4].map((i) => (
-									<Container
-										key={i}
-										className="col-span-1 border"
-										css={{
-											borderColor: "$subtleBorder",
-											padding: "16px",
-											borderRadius: "16px",
-										}}
-									>
-										<DynamicSkeleton config={FeaturedCreatorSkeleton} />
-									</Container>
-							  ))}
-					</Container>
-				</Container>
-			</Container>
-
-			<Divider dir={"horizontal"} />
-			<Container>
-				<Container className="container flex flex-col w-full gap-8 px-8 mx-auto">
-					<Container className="flex flex-col items-baseline gap-4">
-						<Container className="flex flex-col gap-2">
-							<Heading>Going multichain</Heading>
-							<Text>
-								Now you can bridge your TreatDAO NFTs to Ethereum and Polygon
-								networks.
-							</Text>
-						</Container>
-					</Container>
-					<Container className="pt-4">
-						<Container className="flex flex-col gap-8 px-4  h-[70vh] w-full">
-							{theme === "light" && <LightWidget />}
-							{theme === "dark" && <DarkWidget />}
-							{theme === "pink" && <PinkWidget />}
+											https://flooz.trade
+										</a>
+									</Link>
+									.
+								</Text>
+							</Container>
+							<Container className="flex flex-col gap-2">
+								<Heading size="xss">Can I become a creator?</Heading>
+								<Text>
+									Anyone above the legal age can become a creator. We require
+									all creators to perform identity verification to guard against
+									exploitation and misuse, we also restrict people from creating
+									multiple creator profiles.
+								</Text>
+							</Container>
+							<Container className="flex flex-col gap-2">
+								<Heading size="xss">Which blockchain is supported</Heading>
+								<Text>
+									The TreatDAO NFT platform is deployed on the Binance Smart
+									Chain, however we fully support bridging NFTs bought on the
+									platform, to the Ethereum and Polygon blockchain networks.
+								</Text>
+							</Container>
 						</Container>
 					</Container>
 				</Container>
 			</Container>
-			<Divider dir="horizontal" />
-			<Container>
-				<Container className="container flex flex-col w-full gap-8 px-8 py-24 mx-auto">
-					<Container className="flex flex-col items-baseline gap-4">
-						<Container className="flex flex-col gap-2">
-							<Heading>Frequently asked questions</Heading>
-							<Text>
-								Common things you need to know about TreatDAO and the NFT
-								marketplace
-							</Text>
-						</Container>
-					</Container>
-					<Container className="grid grid-cols-1 gap-12 pt-4 md:grid-cols-2 lg:grid-cols-4">
-						<Container className="flex flex-col gap-2">
-							<Heading size="xss">What is an NFT?</Heading>
-							<Text>
-								An NFT, also known as a non-fungible token is a record of proof
-								of ownership of a digital asset.
-							</Text>
-						</Container>
-						<Container className="flex flex-col gap-2">
-							<Heading size="xss">How do I buy BNB or $TREAT?</Heading>
-							<Text>
-								You can buy BNB or $TREAT directly from this website. Visit this{" "}
-								<Link href={"/dex/ramp"}>
-									<a>
-										<ImportantText css={{color: "$accentText"}}>
-											link
-										</ImportantText>
-									</a>
-								</Link>{" "}
-								to buy crypto easily, powered by our friends at{" "}
-								<Link href={"https://flooz.trade"}>
-									<a
-										target={"_blank"}
-										rel={"nooopener"}
-									>
-										https://flooz.trade
-									</a>
-								</Link>
-								.
-							</Text>
-						</Container>
-						<Container className="flex flex-col gap-2">
-							<Heading size="xss">Can I become a creator?</Heading>
-							<Text>
-								Anyone above the legal age can become a creator. We require all
-								creators to perform identity verification to guard against
-								exploitation and misuse, we also restrict people from creating
-								multiple creator profiles.
-							</Text>
-						</Container>
-						<Container className="flex flex-col gap-2">
-							<Heading size="xss">Which blockchain is supported</Heading>
-							<Text>
-								The TreatDAO NFT platform is deployed on the Binance Smart
-								Chain, however we fully support bridging NFTs bought on the
-								platform, to the Ethereum and Polygon blockchain networks.
-							</Text>
-						</Container>
-					</Container>
-				</Container>
-			</Container>
-		</Container>
+		</>
 	);
 }
 
 function FeaturedCarousel(props: {features: Array<IFeatureProps>}) {
-	const carouselRef = useRef(null);
-	const [scrollPosition, setScrollPosition] = useState(0);
-
-	const isNextEnabled = useMemo(() => {
-		if (carouselRef.current) {
-			return (
-				carouselRef.current.scrollWidth - carouselRef.current.scrollLeft >
-				carouselRef.current.clientWidth
-			);
-		}
-		return false;
-	}, [scrollPosition, carouselRef]);
-
-	const isPrevEnabled = useMemo(() => {
-		if (carouselRef.current) {
-			return carouselRef.current.scrollLeft > 0;
-		}
-		return false;
-	}, [scrollPosition, carouselRef]);
-
-	const next = () => {
-		carouselRef.current.scrollBy({
-			left: 384,
-			behavior: "smooth",
-		});
-		setScrollPosition(carouselRef.current.scrollLeft);
-	};
-
-	const prev = () => {
-		carouselRef.current.scrollBy({
-			left: -384,
-			behavior: "smooth",
-		});
-		setScrollPosition(carouselRef.current.scrollLeft);
-	};
-
 	return (
 		<Container className="container relative flex flex-col gap-8 px-8 mx-auto">
 			<Container className="grid w-full grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4">
@@ -477,13 +477,13 @@ function FeaturedCarousel(props: {features: Array<IFeatureProps>}) {
 						href={feature.href}
 						key={feature.id}
 					>
-						<a className="w-96 group relative aspect-[2/3] flex-shrink-0 bg-transparent rounded-xl overflow-hidden shadow-lg">
+						<a className="w-full max-w-96 group relative aspect-[2/3] flex-shrink-0 bg-transparent rounded-xl overflow-hidden shadow-lg">
 							<Image
 								src={feature.cover.responsiveImage.src}
 								sizes={feature.cover.responsiveImage.srcSet}
 								alt={feature.displayName}
 								fill
-								className="object-cover rounded-xl"
+								className="object-cover"
 							/>
 							<Container
 								css={{
@@ -492,14 +492,18 @@ function FeaturedCarousel(props: {features: Array<IFeatureProps>}) {
 								}}
 								className="absolute top-0 left-0 flex flex-col-reverse w-full h-full gap-2 p-8 transition-opacity duration-300 delay-150 opacity-0 z-1 group-hover:opacity-100"
 							>
-								<Text css={{color: "#f1f1f1"}}>
+								<Heading
+									size={"xs"}
+									css={{color: "#f1f1f1"}}
+								>
 									{feature.caption ??
 										`Some description to make things look much better than having
 									just the title alone because it looks terrible`}
-								</Text>
+								</Heading>
 								<Heading
-									size="xs"
+									size="sm"
 									css={{color: "#fff"}}
+									className={"tracking-tighter"}
 								>
 									{feature.displayName}
 								</Heading>

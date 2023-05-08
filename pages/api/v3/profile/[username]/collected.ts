@@ -1,6 +1,6 @@
 import {connectMongoDB} from "@db/engine";
 import {returnWithError, returnWithSuccess} from "@db/engine/utils";
-import {contractAddresses} from "@packages/treat/lib/constants";
+import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import connectMoralis from "@utils/moralis";
 import {
 	MongoModelCreator,

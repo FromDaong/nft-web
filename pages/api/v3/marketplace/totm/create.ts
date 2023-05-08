@@ -1,7 +1,7 @@
 import TreatNFTMinterABI from "packages/treat/lib/abi/treatnftminter.json";
 
 import web3 from "@utils/web3";
-import {contractAddresses} from "@packages/treat/lib/constants";
+import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import {connectMongoDB} from "server/helpers/core";
 import {withIronSessionApiRoute} from "iron-session/next";
 import {ironOptions} from "@utils/index";

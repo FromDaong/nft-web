@@ -4,7 +4,7 @@ import {
 } from "@packages/chain/hooks";
 import {useDisclosure} from "@packages/hooks";
 import {ABI} from "@packages/treat/lib/abi";
-import {contractAddresses} from "@packages/treat/lib/constants";
+import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import {apiEndpoint} from "@utils/index";
 import axios from "axios";
 import {BigNumber, ethers} from "ethers";
@@ -135,7 +135,7 @@ export const usePurchaseResaleOrder = (signer) => {
 	const {address} = useAccount();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplace[56],
+		addressOrName: contractAddresses.treatMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});
@@ -158,7 +158,7 @@ export const useListOrder = () => {
 	const {address} = useAccount();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplace[56],
+		addressOrName: contractAddresses.treatMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});
@@ -190,7 +190,7 @@ export const useRemoveOrder = () => {
 	const {address} = useAccount();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplace[56],
+		addressOrName: contractAddresses.treatMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});
@@ -219,7 +219,7 @@ export const useApproveMarketplace = () => {
 
 	const approveMarketplace = useCallback(async () => {
 		return treatMinterContract.setApprovalForAll(
-			contractAddresses.treatMarketplace[56],
+			contractAddresses.treatMarketplaceMinter[56],
 			true,
 			{
 				from: address,
@@ -244,7 +244,7 @@ export const useGetMinterIsApprovedForAll = () => {
 		signerOrProvider: signer,
 	});
 
-	const treatMarketplaceAddress = contractAddresses.treatMarketplace[56];
+	const treatMarketplaceAddress = contractAddresses.treatMarketplaceMinter[56];
 
 	const fetchAllowance = useCallback(async () => {
 		const _allowance = await treatMinterContract.isApprovedForAll(
@@ -269,7 +269,7 @@ export const useGetResaleOrders = (id) => {
 	const [orders, setOrders] = useState([]);
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplace[56],
+		addressOrName: contractAddresses.treatMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});
@@ -299,7 +299,7 @@ export const useGetRemainingOrderBalance = (id) => {
 	const {data: signer} = useSigner();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplace[56],
+		addressOrName: contractAddresses.treatMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});
@@ -323,7 +323,7 @@ export const useGetRemainingOrderBalanceForSeller = (id, seller_address) => {
 	const {data: signer} = useSigner();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplace[56],
+		addressOrName: contractAddresses.treatMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});
@@ -350,7 +350,7 @@ export const useCancelOrder = (id) => {
 	const {address} = useAccount();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplace[56],
+		addressOrName: contractAddresses.treatMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});
@@ -369,7 +369,7 @@ export const useBuyFromResale = () => {
 	const {address} = useAccount();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplace[56],
+		addressOrName: contractAddresses.treatMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});
@@ -418,7 +418,7 @@ export const useContracts = () => {
 	const {data: signer} = useSigner();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplace[56],
+		addressOrName: contractAddresses.treatMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});

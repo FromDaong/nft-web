@@ -20,10 +20,10 @@ export default function SweetshopTabs() {
 	return (
 		<Container
 			css={{
-				backgroundColor: "$elementOnSurface",
-				border: "$border",
+				backgroundColor: "$surfaceOnSurface",
+				borderColor: "$border",
 			}}
-			className="flex gap-2 p-1 border rounded-full"
+			className="flex gap-2 p-1 border rounded-full shadow"
 		>
 			{tabs.map((tab) => (
 				<TabButton

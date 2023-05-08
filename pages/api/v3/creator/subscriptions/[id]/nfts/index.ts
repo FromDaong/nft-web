@@ -4,7 +4,7 @@ import Web3 from "web3";
 
 import LegacyNFTModel from "server/database/legacy/nft/NFT";
 import {MongoModelCreator} from "server/helpers/models";
-import {contractAddresses} from "@packages/treat/lib/constants";
+import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 
 import TreatNFTMinterABI from "packages/treat/lib/abi/treatnftminter.json";
 

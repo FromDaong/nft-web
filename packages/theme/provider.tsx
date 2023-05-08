@@ -12,7 +12,7 @@ import {useTheme} from "./hooks";
 const Div = styled("div", {
 	height: "100%",
 	width: "100%",
-	backgroundColor: "$bodyBackground",
+	backgroundColor: "$surface",
 	color: "$text",
 });
 

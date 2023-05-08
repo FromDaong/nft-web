@@ -1,7 +1,7 @@
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import {useAccount, useBalance, useContract} from "wagmi";
-import {contractAddresses} from "@packages/treat/lib/constants";
+import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import {Container} from "@packages/shared/components/Container";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {
@@ -28,7 +28,7 @@ export default function Farm() {
 		isError: treatMelonError,
 		isLoading: treatMelonLoading,
 	} = useBalance({
-		token: contractAddresses.melon[56],
+		token: contractAddresses.melonToken[56],
 		addressOrName: address,
 	});
 
@@ -132,7 +132,7 @@ function StakeTreat({
 
 	const {address} = useAccount();
 	const treatContract = useContract({
-		addressOrName: contractAddresses.treat2[56],
+		addressOrName: contractAddresses.treatToken[56],
 		contractInterface: ABI.treat,
 	});
 

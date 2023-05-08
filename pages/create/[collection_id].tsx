@@ -192,8 +192,8 @@ export default function PostType(props: {collection: string}) {
 
 	const createSubscriberNFTs = async (nfts) => {
 		const amounts_and_supply = {
-			amounts: nfts.map((n) => Web3.utils.toWei(n.price.toString())),
-			maxSupplys: nfts.map((n) => n.maxSupply.toString()),
+			amounts: nfts.map((nft) => Web3.utils.toWei(nft.price.toString())),
+			maxSupplys: nfts.map((nft) => nft.maxSupply.toString()),
 		};
 
 		const tx = await subscriptionsMart.createAndAddNFTs(

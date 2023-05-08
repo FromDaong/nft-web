@@ -1,6 +1,6 @@
 /* eslint-disable no-async-promise-executor */
 import {Context} from "@contexts/TreatProvider/TreatProvider";
-import {contractAddresses} from "@treat/lib/constants";
+import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import React, {useContext} from "react";
 import {useAccount} from "wagmi";
 import Web3 from "web3";

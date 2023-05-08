@@ -7,19 +7,19 @@ export const PostMediaContent = (props: {
 	_id: string;
 }) => {
 	return (
-		<Container className="w-full h-full flex flex-col bg-zinc-900 absolute top-0 left-0">
+		<Container className="absolute top-0 left-0 flex flex-col w-full h-full bg-zinc-900">
 			<img
 				alt={props.caption}
 				src={`/api/v3/image/nft/${props._id}/${
 					props.isProtected ? "blur" : "thumbnail"
 				}`}
-				className="rounded-xl w-full h-full object-cover absolute top-0 left-0"
+				className="absolute top-0 left-0 object-cover w-full h-full"
 				style={{
 					zIndex: 2,
 				}}
 			/>
 			<Container
-				className="w-full relative h-full flex items-center justify-center"
+				className="relative flex items-center justify-center w-full h-full"
 				style={{
 					zIndex: 1,
 				}}

@@ -31,7 +31,7 @@ import {useRouter} from "next/router";
 import useTokenBalance, {
 	useTokenBalanceForAddress,
 } from "@packages/chain/hooks/useTokenBalance";
-import {contractAddresses} from "@packages/treat/lib/constants";
+import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import {useBalance} from "wagmi";
 
 type ProfileLayoutProps = ComponentBasicProps & {
@@ -84,7 +84,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 	const [userBadges, setBadges] = useState(ownerOfUserProfile.badges);
 	const {data: treatBalance, isLoading: isBalanceLoading} = useBalance({
 		addressOrName: ownerOfUserProfile.address,
-		token: contractAddresses.treat2[56],
+		token: contractAddresses.treatToken[56],
 	});
 
 	const getOwnedNFTsCount = async () => {
@@ -423,13 +423,13 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 											<Button
 												onClick={followOrUnfollow}
 												className="focus:scale-110"
-												appearance={isFollowing ? "surface" : "action"}
+												appearance={isFollowing ? "subtle" : "primary"}
 											>
 												{isFollowing ? (
 													"Unfollow"
 												) : (
 													<>
-														<span>Follow</span>
+														<ImportantText>Follow</ImportantText>
 														<FollowUser />
 													</>
 												)}
@@ -443,7 +443,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 											rel={"noopener"}
 										>
 											<Button
-												appearance={"surface"}
+												appearance={"accent"}
 												className="transition-transform duration-100 hover:scale-105"
 											>
 												<LinkIcon

@@ -5,7 +5,7 @@ import {NextApiRequest, NextApiResponse} from "next";
 import {MongoModelCreator, MongoModelProfile} from "server/helpers/models";
 import {protectedAPIRoute} from "server/utils";
 import {ethers} from "ethers";
-import {contractAddresses} from "@packages/treat/lib/constants";
+import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 
 const TreatMinterContract = () => {
 	const provider = new ethers.providers.JsonRpcProvider(

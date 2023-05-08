@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useState} from "react";
 import {ABI} from "@packages/treat/lib/abi";
-import {contractAddresses} from "@packages/treat/lib/constants";
+import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import {BigNumber, Contract, ethers} from "ethers";
 import {
 	useAccount,
@@ -99,7 +99,7 @@ export const useWagmiGetResaleNFTsForNFT = (id: number) => {
 	const [isLoading, setIsLoading] = useState(true);
 
 	const {data: sellers} = useContractRead({
-		addressOrName: contractAddresses.treatMarketplace[56],
+		addressOrName: contractAddresses.treatMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		functionName: "getOpenOrdersForNft",
 		args: [id],
@@ -108,7 +108,7 @@ export const useWagmiGetResaleNFTsForNFT = (id: number) => {
 	const {data: signer} = useSigner();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplace[56],
+		addressOrName: contractAddresses.treatMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});

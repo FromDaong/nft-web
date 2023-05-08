@@ -5,7 +5,7 @@ import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
 import Spinner from "@packages/shared/icons/Spinner";
 import {ABI} from "@packages/treat/lib/abi";
-import {contractAddresses} from "@packages/treat/lib/constants";
+import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import {useUser} from "core/auth/useUser";
 import {ethers} from "ethers";
 import {useRouter} from "next/router";
@@ -17,7 +17,7 @@ export const usePurchaseResaleOrder = (signer) => {
 	const {address} = useAccount();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplace[56],
+		addressOrName: contractAddresses.treatMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});

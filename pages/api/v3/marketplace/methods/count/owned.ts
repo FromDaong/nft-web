@@ -1,7 +1,7 @@
 import axios from "axios";
 import {connectMongoDB} from "@db/engine";
 import {returnWithError, returnWithSuccess} from "@db/engine/utils";
-import {contractAddresses} from "@packages/treat/lib/constants";
+import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import connectMoralis from "@utils/moralis";
 import {MongoModelNFT, MongoModelProfile} from "server/helpers/models";
 

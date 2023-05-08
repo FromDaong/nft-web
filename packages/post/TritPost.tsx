@@ -11,7 +11,6 @@ import {PostMediaContent} from "./PostMediaContent";
 import {styled} from "@styles/theme";
 import {useTritNFTUtils} from "./hooks";
 import {ActionSection} from "./UtilityComponents";
-import {useEffect, useState} from "react";
 import {useInView} from "react-intersection-observer";
 
 export const FrostyBackgroundContainer = styled(Container, {
@@ -39,16 +38,17 @@ export const TritPost = (props: TritPostProps) => {
 
 	return (
 		<Link href={`/post/nft/${props._id}`}>
-			<a className="relative flex flex-col w-full overflow-hidden">
+			<a className="relative flex flex-col w-full">
 				<Container
 					ref={ref}
-					className={`grid grid-cols-1 gap-4 py-4 place-items-center w-full`}
+					className={`grid grid-cols-1 gap-4 pb-4 place-items-center w-full overflow-hidden rounded-xl shadow-sm border`}
 					css={{
 						borderColor: "$subtleBorder",
 						borderRadius: "12px",
+						backgroundColor: "$surfaceOnSurface",
 					}}
 				>
-					<Container className="relative flex w-full overflow-hidden rounded-xl aspect-square">
+					<Container className="relative flex w-full overflow-hidden aspect-square">
 						{!loadingSigner && remainingNfts === 0 && !props.hideSoldOut && (
 							<Text
 								css={{
@@ -127,7 +127,7 @@ export const TritPost = (props: TritPostProps) => {
 							</Container>
 						</Container>
 					</Container>
-					<Container className="flex flex-col w-full">
+					<Container className="flex flex-col w-full px-4">
 						<ActionSection
 							{...props}
 							isMine={isMine}
