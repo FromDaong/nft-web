@@ -14,9 +14,9 @@ export const Button = styled("button", {
 	alignItems: "center",
 	gap: "8px",
 	display: "flex",
-	borderRadius: "12px",
+	borderRadius: "9999px",
 	fontFamily: "'Helvetica', sans-serif",
-	fontWeight: "700",
+	fontWeight: "600",
 	justifyContent: "center",
 	alignContent: "center",
 
@@ -25,6 +25,9 @@ export const Button = styled("button", {
 			default: {
 				backgroundColor: "$buttonSurface",
 				color: "$textOnSurface",
+				"&hover:": {
+					backgroundColor: "$elementSurface",
+				},
 			},
 			primary: {
 				backgroundColor: "$btnCallToAction",
@@ -68,11 +71,14 @@ export const Button = styled("button", {
 				opacity: 0.6,
 				color: "$text",
 			},
+			link: {
+				backgroundColor: "inherit",
+				color: "$accentColor",
+			},
 		},
 		outlined: {
 			true: {
-				border: "1px solid $border",
-				backgroundColor: "$surface",
+				backgroundColor: "$white",
 				color: "$textContrast",
 				boxShadow: "$shadow",
 			},
@@ -88,11 +94,10 @@ export const Button = styled("button", {
 				width: "100%",
 			},
 		},
-		link: {
+		activeLink: {
 			true: {
-				backgroundColor: "transparent",
-				color: "$textContrast",
-				padding: 0,
+				backgroundColor: "$accentSolid",
+				color: "$accentBase",
 			},
 		},
 		size: {

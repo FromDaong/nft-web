@@ -6,11 +6,20 @@ export const Input = styled("input", {
 	color: "$textContrast",
 	width: "100%",
 	borderRadius: "8px",
+	"&focus:": {
+		border: "1px solid $accentText",
+	},
+	border: "1px solid $border",
 
 	variants: {
 		shadow: {
 			true: {
 				boxShadow: "$base",
+			},
+		},
+		outlined: {
+			true: {
+				border: "1px solid $border",
 			},
 		},
 	},

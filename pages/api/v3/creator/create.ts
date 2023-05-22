@@ -6,7 +6,7 @@ import {MongoModelCreator, MongoModelProfile} from "server/helpers/models";
 import {protectedAPIRoute} from "server/utils";
 import {ethers} from "ethers";
 import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
-
+/*
 const TreatMinterContract = () => {
 	const provider = new ethers.providers.JsonRpcProvider(
 		process.env.NEXT_PUBLIC_RPC_NODE_URL,
@@ -24,7 +24,6 @@ const TreatMinterContract = () => {
 
 	return {contract, signer};
 };
-
 const approveWalletOnChain = async (creatorAddress: string) => {
 	const {contract, signer} = TreatMinterContract();
 	return contract.addPerformer(creatorAddress, {
@@ -32,6 +31,7 @@ const approveWalletOnChain = async (creatorAddress: string) => {
 		value: 0,
 	});
 };
+*/
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
 	await connectMongoDB();
@@ -85,7 +85,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 		);
 
 		// On-chain approval
-		await approveWalletOnChain(session.address);
+		// await approveWalletOnChain(session.address);
 
 		// Create new creator profile
 		const creatorProfile = new MongoModelCreator({

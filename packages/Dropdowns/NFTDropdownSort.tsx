@@ -1,11 +1,12 @@
 import {Button} from "@packages/shared/components/Button";
+import {Container} from "@packages/shared/components/Container";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
 import {useRouter} from "next/router";
 
 const NFTSort = ({prefix, sort}) => {
 	const router = useRouter();
 	return (
-		<>
+		<Container className="flex flex-wrap gap-4">
 			<a
 				href={`/sweetshop${prefix}?sort=${3}&p=1${
 					router.query.q ? `&q=${router.query.q}` : ""
@@ -15,6 +16,7 @@ const NFTSort = ({prefix, sort}) => {
 					className="flex gap-2 px-4 py-2"
 					outlined={Number(sort) !== 3}
 					active={Number(sort) === 3}
+					size={"sm"}
 				>
 					<ImportantText>Newest first</ImportantText>
 				</Button>
@@ -29,6 +31,7 @@ const NFTSort = ({prefix, sort}) => {
 					className="flex gap-2 px-4 py-2"
 					outlined={Number(sort) !== 1}
 					active={Number(sort) === 1}
+					size={"sm"}
 				>
 					<ImportantText>Lowest price first</ImportantText>
 				</Button>
@@ -43,11 +46,12 @@ const NFTSort = ({prefix, sort}) => {
 					className="flex gap-2 px-4 py-2"
 					outlined={Number(sort) !== 2}
 					active={Number(sort) === 2}
+					size={"sm"}
 				>
 					<ImportantText>Highest price first</ImportantText>
 				</Button>
 			</a>
-		</>
+		</Container>
 	);
 };
 

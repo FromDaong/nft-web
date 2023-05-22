@@ -46,7 +46,7 @@ function MyApp({
 
 						<AcceptAgeModal />
 						<Navbar />
-						<main className="mt-[60px]">
+						<main className="mt-[54px]">
 							<Component {...pageProps} />
 						</main>
 						<Container className="pb-12">

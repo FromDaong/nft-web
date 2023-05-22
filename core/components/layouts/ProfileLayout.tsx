@@ -33,6 +33,7 @@ import useTokenBalance, {
 } from "@packages/chain/hooks/useTokenBalance";
 import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import {useBalance} from "wagmi";
+import {ExternalLinkIcon} from "@radix-ui/react-icons";
 
 type ProfileLayoutProps = ComponentBasicProps & {
 	userProfile?: {
@@ -233,7 +234,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 				setBadges([
 					...userBadges,
 					{
-						color: "mauve",
+						color: "sand",
 						name: "Silver Treator",
 					},
 				]);
@@ -446,7 +447,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 												appearance={"accent"}
 												className="transition-transform duration-100 hover:scale-105"
 											>
-												<LinkIcon
+												<ExternalLinkIcon
 													width={16}
 													height={16}
 												/>

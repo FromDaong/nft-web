@@ -7,7 +7,6 @@ import {Container} from "@packages/shared/components/Container";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {
 	ImportantText,
-	MutedText,
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
 import UserAvatar from "core/auth/components/Avatar";
@@ -21,6 +20,7 @@ const NFTPresentationComponent = (props: {
 	openFullScreen: () => void;
 	address: string;
 	isResale: boolean;
+	maxSupply: number;
 }) => {
 	const {nft} = props;
 	const {cost: creatorCost} = useWagmiGetCreatorNftCost(nft.id);
@@ -34,52 +34,97 @@ const NFTPresentationComponent = (props: {
 
 	return (
 		<>
-			<Container className="grid grid-cols-1 gap-12 lg:grid-cols-3">
-				<Container className="grid flex-col grid-cols-2 gap-12 py-8 lg:col-span-2 lg:flex">
+			<Container className="grid grid-cols-1">
+				<Container className="grid flex-col grid-cols-1 gap-12 py-8 lg:gap-16 md:grid-cols-2 lg:col-span-2 lg:flex">
 					<Container className="flex flex-col gap-4">
-						<Heading
-							size="md"
-							className="tracking-tighter"
-						>
-							{nft.name}
-						</Heading>
-						<Link href={`/${nft.creator.username}`}>
-							<a>
-								<Container className="flex gap-4 items-center">
-									<UserAvatar
-										username={nft.creator.username}
-										profile_pic={nft.creator.profile.profile_pic}
-										size={48}
-									/>
-									<Container className="flex flex-col gap-2 justify-between">
-										<SmallText>
-											<MutedText>
-												<ImportantText>Creator</ImportantText>
-											</MutedText>
-										</SmallText>
-										<Text>
-											<ImportantText>
-												{nft.creator.profile.display_name?.trim() === ""
-													? `@${nft.creator.username}`
-													: nft.creator.profile.display_name}
-											</ImportantText>
-										</Text>
+						<Heading className="tracking-tighter">{nft.name}</Heading>
+						<Container className="flex gap-4">
+							<Link href={`/${nft.creator.username}`}>
+								<a>
+									<Container
+										className="flex items-center gap-4 p-2 pr-3 rounded-lg shadow-sm w-fit"
+										css={{
+											backgroundColor: "$surfaceOnSurface",
+										}}
+									>
+										<UserAvatar
+											username={nft.creator.username}
+											profile_pic={nft.creator.profile.profile_pic}
+											size={24}
+										/>
+										<Container className="flex gap-2">
+											<SmallText>Created by</SmallText>
+											<SmallText css={{color: "$textContrast"}}>
+												<ImportantText>
+													{nft.creator.profile.display_name?.trim() === ""
+														? `@${nft.creator.username}`
+														: nft.creator.profile.display_name}
+												</ImportantText>
+											</SmallText>
+										</Container>
 									</Container>
-								</Container>
-							</a>
-						</Link>
-					</Container>
-					{nft.description?.trim() && (
-						<Container className="flex flex-col col-span-2 gap-4 md:col-span-1">
-							<Heading
-								className="tracking-tighter"
-								size="xs"
-							>
-								Description
-							</Heading>
-							<Text>{nft.description}</Text>
+								</a>
+							</Link>
+							<Link href={`/${nft.creator.username}`}>
+								<a>
+									<Container
+										className="flex items-center gap-4 p-2 pr-3 rounded-lg shadow-sm w-fit"
+										css={{backgroundColor: "$surfaceOnSurface"}}
+									>
+										<UserAvatar
+											username={nft.creator.username}
+											profile_pic={nft.creator.profile.profile_pic}
+											size={24}
+										/>
+										<Container className="flex gap-2">
+											<SmallText>FROM</SmallText>
+											<SmallText css={{color: "$textContrast"}}>
+												<ImportantText>THE KILLER COLLECTION</ImportantText>
+											</SmallText>
+										</Container>
+									</Container>
+								</a>
+							</Link>
 						</Container>
-					)}
+					</Container>
+
+					<Container className="flex flex-col col-span-2 gap-4 md:col-span-1">
+						{nft.description?.trim() && (
+							<Container className="flex flex-col gap-2">
+								<Heading
+									className="tracking-tighter"
+									size="xs"
+								>
+									Description
+								</Heading>
+								<Text>{nft.description}</Text>
+							</Container>
+						)}
+						<Container className="flex gap-4">
+							<Container
+								className="flex items-center gap-2 p-2 pr-3 border rounded-lg shadow-sm w-fit"
+								css={{
+									backgroundColor: "$surfaceOnSurface",
+									borderColor: "$subtleBorder",
+								}}
+							>
+								<UserAvatar
+									username={nft.creator.username}
+									profile_pic={nft.creator.profile.profile_pic}
+									size={16}
+								/>
+								<Container className="flex gap-2">
+									<SmallText>
+										Liked by{" "}
+										<ImportantText css={{color: "$textContrast"}}>
+											0x0093...0832{" "}
+										</ImportantText>
+										and 14k others
+									</SmallText>
+								</Container>
+							</Container>
+						</Container>
+					</Container>
 
 					<Container className="flex flex-col col-span-2 gap-2 md:col-span-1">
 						<Heading
@@ -98,7 +143,7 @@ const NFTPresentationComponent = (props: {
 										<Container
 											className="px-3 py-1 rounded-full"
 											css={{
-												backgroundColor: "$elementOnSurface",
+												backgroundColor: "$surfaceOnSurface",
 											}}
 										>
 											<Text>
@@ -108,30 +153,32 @@ const NFTPresentationComponent = (props: {
 									</a>
 								</Link>
 							))}
-							<Container
-								className="px-3 py-1 rounded-full"
-								css={{
-									backgroundColor: "$elementOnSurface",
-								}}
-							>
-								<Text>
-									<ImportantText>NFT</ImportantText>
-								</Text>
-							</Container>
+							<Tag name={"NFT"} />
 						</Container>
 					</Container>
-					<Container className="flex flex-col items-center gap-4">
-						<Container className="flex flex-col gap-4 items-baseline justify-between w-full">
-							<Text className="tracking-tighter">
-								<ImportantText>List price</ImportantText>
-							</Text>
-							<Heading
+					<Container className="flex gap-4">
+						<Container
+							className="flex flex-col items-baseline overflow-hidden border rounded-lg shadow-sm"
+							css={{borderColor: "$border"}}
+						>
+							<SmallText
 								className="tracking-tighter"
-								size="sm"
+								css={{backgroundColor: "$surface", padding: "0.5rem"}}
+							>
+								<ImportantText>Price</ImportantText>
+							</SmallText>
+							<Heading
+								className="w-full tracking-tighter"
+								css={{backgroundColor: "$surfaceOnSurface", padding: "0.5rem"}}
+								size="xs"
 							>
 								{displayedCost} BNB
 							</Heading>
 						</Container>
+						<Stat
+							title={"Max Supply"}
+							value={props.maxSupply}
+						/>
 					</Container>
 				</Container>
 			</Container>
@@ -140,3 +187,50 @@ const NFTPresentationComponent = (props: {
 };
 
 export default NFTPresentationComponent;
+
+function Tag({name}) {
+	return (
+		<Container
+			className="px-3 py-1 border rounded-full shadow-sm"
+			css={{
+				backgroundColor: "$surfaceOnSurface",
+				borderColor: "$border",
+			}}
+		>
+			<SmallText>
+				<ImportantText>{name}</ImportantText>
+			</SmallText>
+		</Container>
+	);
+}
+
+function Stat({title, value}) {
+	return (
+		<Container
+			className="flex flex-col items-baseline overflow-hidden border rounded-lg shadow-sm"
+			css={{
+				borderColor: "$border",
+			}}
+		>
+			<SmallText
+				className="tracking-tighter"
+				css={{
+					backgroundColor: "$surface",
+					padding: "0.5rem",
+				}}
+			>
+				<ImportantText>{title}</ImportantText>
+			</SmallText>
+			<Heading
+				className="w-full tracking-tighter text-center"
+				css={{
+					backgroundColor: "$surfaceOnSurface",
+					padding: "0.5rem",
+				}}
+				size="xs"
+			>
+				{value}
+			</Heading>
+		</Container>
+	);
+}

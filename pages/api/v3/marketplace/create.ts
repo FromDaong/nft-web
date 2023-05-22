@@ -7,9 +7,7 @@ import {
 	MongoModelCollection,
 	MongoModelCreator,
 	MongoModelNFT,
-	MongoModelProfile,
 } from "server/helpers/models";
-import NFTEvent from "server/helpers/models/posts/activity";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
 	await connectMongoDB();

@@ -13,6 +13,9 @@ import {useUser} from "core/auth/useUser";
 import {useRouter} from "next/router";
 import {useDisclosure} from "@packages/hooks";
 import useGetIsSubscribed from "@packages/chain/hooks/useGetIsSubscribed";
+import {Text} from "@packages/shared/components/Typography/Text";
+import {SparklesIcon} from "@heroicons/react/solid";
+import CoinsIcon from "@packages/shared/icons/CoinsIcon";
 
 /**
  *
@@ -78,18 +81,6 @@ const InsufficientBalanceButton = () => {
 	);
 };
 
-const SoldOutButton = () => {
-	return (
-		<Button
-			fullWidth
-			appearance={"disabled"}
-			disabled
-		>
-			Sold out
-		</Button>
-	);
-};
-
 const ErrorButton = ({error}) => {
 	return (
 		<Button
@@ -110,7 +101,7 @@ const LoadingButton = () => {
 			appearance={"disabled"}
 			disabled
 		>
-			<Spinner />
+			<Spinner /> Please wait ...
 		</Button>
 	);
 };
@@ -121,7 +112,8 @@ const RedeemFreeNFT = ({mint}) => {
 			fullWidth
 			onClick={mint}
 		>
-			Redeem free NFT
+			<CoinsIcon className="w-5 h-5" />
+			Collect for free
 		</Button>
 	);
 };
@@ -225,7 +217,7 @@ const BuyCreatorMartNFTButton = ({nft, address, remaining, setHash, hash}) => {
 				key={"buyBtn"}
 				onClick={buyNFT}
 			>
-				Buy Now
+				<CoinsIcon className="w-5 h-5" /> Collect for {nft.price} BNB
 			</Button>
 		</>
 	);
@@ -247,7 +239,7 @@ const ContextAwarePurchaseButton = ({nft, address, postUtils}) => {
 	const [txHash, setTxHash] = useState("");
 
 	if (postUtils.remainingNfts === 0) {
-		return <SoldOutButton />;
+		return;
 	}
 
 	return (
@@ -284,25 +276,31 @@ const BuyNFTButton = ({nftData, postUtils}) => {
 	const isSubscribed = useGetIsSubscribed(address);
 	if (nftData.melon_nft || nftData.totm_nft) {
 		return (
-			<Button
-				fullWidth
-				appearance={"disabled"}
-				disabled
-			>
-				Purchasing is disabled
-			</Button>
+			<Container className="flex flex-col gap-2">
+				<Button
+					fullWidth
+					appearance={"disabled"}
+					disabled
+				>
+					Collect
+				</Button>
+				<Text>Buying Melon NFT is not supported</Text>
+			</Container>
 		);
 	}
 
 	if (nftData.subscription_nft && !isSubscribed) {
 		return (
-			<Button
-				fullWidth
-				appearance={"disabled"}
-				disabled
-			>
-				You are not subscribed
-			</Button>
+			<Container className="flex flex-col gap-2">
+				<Button
+					fullWidth
+					appearance={"disabled"}
+					disabled
+				>
+					Collect
+				</Button>
+				<Text>Buying subscription sets is not supported</Text>
+			</Container>
 		);
 	}
 

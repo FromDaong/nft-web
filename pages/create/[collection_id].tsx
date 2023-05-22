@@ -75,7 +75,11 @@ export default function PostType(props: {collection: string}) {
 		setIsSubmitting(true);
 		setError("");
 		setModalStep(processStages.sendingToServer);
-		if (mintTxData && !isMintTxError && nftValues.length > 0) {
+		if (
+			// mintTxData &&
+			// !isMintTxError &&
+			nftValues.length > 0
+		) {
 			axios
 				.post(`${apiEndpoint}/marketplace/create`, {
 					collection: data,
@@ -301,7 +305,11 @@ export default function PostType(props: {collection: string}) {
 	}, [files]);
 
 	useEffect(() => {
-		if (nftValues.length > 0 && isMintTxConfirmed && !isMintTxError) {
+		if (
+			nftValues.length > 0
+			// && isMintTxConfirmed
+			// && !isMintTxError
+		) {
 			addNFTsToCollection();
 		} else if (isMintTxError) {
 			setModalStep(processStages.chainError);
@@ -337,7 +345,7 @@ export default function PostType(props: {collection: string}) {
 								background: title ? "inherit" : "$elementOnSurface",
 								width: title ? "auto" : "400px",
 							}}
-							size="sm"
+							size="md"
 						>
 							{title}
 						</Heading>

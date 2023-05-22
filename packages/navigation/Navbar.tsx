@@ -6,7 +6,7 @@ import Image from "next/image";
 import {useAccount} from "wagmi";
 
 import {styled} from "@styles/theme";
-import {BoldLink} from "@packages/shared/components/Typography/Text";
+import {BoldLink, Text} from "@packages/shared/components/Typography/Text";
 import {PlusCircleIcon} from "@heroicons/react/outline";
 import {Container} from "@packages/shared/components/Container";
 import MobileNavbarDropdown from "./components/MobileNavbarDropdown";
@@ -15,7 +15,11 @@ import {useSession} from "next-auth/react";
 import Spinner from "@packages/shared/icons/Spinner";
 import {ConnectButton} from "@rainbow-me/rainbowkit";
 import {useApplicationTheme} from "@packages/theme/provider";
-import NavbarProfileAvatar from "./components/NavbarProfileAvatar";
+import NavbarUser from "./components/NavbarUser";
+import {useDisclosure} from "@packages/hooks";
+import NotificationsTray from "@components/Notifications/NotificationsTray";
+import TransactionHistoryTray from "@components/Notifications/TransactionHistoryTray";
+import RectangleStack from "@packages/shared/icons/RectangleStack";
 
 const Nav = styled("nav", {
 	backgroundColor: "$surfaceOnSurface",
@@ -33,66 +37,52 @@ export default function Navbar() {
 
 	const {creator} = (data as any) || {};
 
+	const {
+		isOpen: isTransactionsTrayOpen,
+		onOpen: onOpenTransactionsTray,
+		onClose: onCloseTransactionsTray,
+	} = useDisclosure();
+
 	return (
 		<Container>
-			<Nav className="hidden md:block fixed top-0 left-0 w-full  h-[60px] shadow">
-				<Container className="relative w-full h-full px-8 xl:px-4">
-					<div className="absolute top-0 left-0 z-20 w-full h-full" />
-					<div className="container relative z-30 flex items-center justify-between py-3 mx-auto">
-						<div className="flex items-center gap-8">
-							<Link href={isConnected ? "/" : "/"}>
-								<a className="relative w-8 h-8 text-3xl font-medium">
-									<Image
-										src={theme === "dark" ? DarkLogo : LightLogo}
-										alt="Logo"
-										layout="fill"
-										className="w-12 h-12"
-									/>
-								</a>
-							</Link>
+			<Nav className="fixed top-0 left-0 flex-col hidden w-full md:flex">
+				<Container className="relative w-full h-full px-8 divide-y xl:px-4">
+					<div className="container relative z-30 flex items-center justify-between py-2 mx-auto">
+						<Link href={isConnected ? "/" : "/"}>
+							<a className="relative w-8 h-8 text-3xl font-medium">
+								<Image
+									src={theme === "dark" ? DarkLogo : LightLogo}
+									alt="Logo"
+									layout="fill"
+									className="w-12 h-12"
+								/>
+							</a>
+						</Link>
+						<Container className={"flex gap-4"}>
 							<div className="items-center hidden gap-4 md:flex">
 								<Link href="/sweetshop">
 									<a>
-										<BoldLink>Sweetshop</BoldLink>
-									</a>
-								</Link>
-							</div>
-							<div className="items-center hidden gap-4 md:flex">
-								<Link href="/creators">
-									<a>
-										<BoldLink>Creators</BoldLink>
+										<Button appearance={"link"}>Marketplace</Button>
 									</a>
 								</Link>
 							</div>
 							<div className="items-center hidden gap-4 md:flex">
 								<Link href="/magazine">
 									<a>
-										<BoldLink>Magazine</BoldLink>
+										<Button appearance={"link"}>Magazine</Button>
 									</a>
 								</Link>
 							</div>
-							{false && (
-								<div className="items-center hidden gap-4 md:flex">
-									<Link href="https://treatdao.com/farms">
-										<a
-											target="_blank"
-											rel="norefferer"
-										>
-											<BoldLink>Farm</BoldLink>
-										</a>
-									</Link>
-								</div>
-							)}
 							<div className="items-center hidden gap-4 md:flex">
-								<Link href="/dex/ramp">
+								<Link href="/creators">
 									<a>
-										<BoldLink>Buy Crypto</BoldLink>
+										<Button appearance={"link"}>Creators</Button>
 									</a>
 								</Link>
 							</div>
-						</div>
+						</Container>
 
-						<div className="flex gap-4">
+						<div className="flex gap-8">
 							<div className="flex md:hidden"></div>
 							{!loading &&
 								// eslint-disable-next-line no-constant-condition
@@ -109,18 +99,28 @@ export default function Navbar() {
 														}}
 														appearance={"surface"}
 													>
+														<PlusCircleIcon
+															height={20}
+															width={20}
+														/>
 														Create
-														<Container className="flex items-center justify-center h-full">
-															<PlusCircleIcon
-																height={20}
-																width={20}
-															/>
-														</Container>
 													</Button>
 												</a>
 											</Link>
 										)}
-										<NavbarProfileAvatar />
+
+										<NotificationsTray />
+										<TransactionHistoryTray
+											isOpen={isTransactionsTrayOpen}
+											onClose={onCloseTransactionsTray}
+										/>
+										<Button
+											appearance={"surface"}
+											onClick={onOpenTransactionsTray}
+										>
+											<RectangleStack className={"w-5 h-5"} />
+										</Button>
+										<NavbarUser />
 									</Container>
 								) : (
 									<ConnectButton />

@@ -32,63 +32,11 @@ export const SkeletonExpandedSuggestedCreatorCard = (props) => (
 	<DynamicSkeleton config={FeaturedCreatorSkeleton} />
 );
 
-export default function SuggestedCreatorCard(props: SuggestedCreatorData) {
-	console.log(props);
-	return props.isExpanded ? (
-		<ExpandSuggestedCreatorCard {...props} />
-	) : (
-		<CollapseSuggestedCreatorCard {...props} />
-	);
+export default function CreatorCard(props: SuggestedCreatorData) {
+	return <DefaultCreatorCard {...props} />;
 }
 
-const CollapseSuggestedCreatorCard = (props: SuggestedCreatorData) => {
-	return (
-		<Link href={`/${props.username}`}>
-			<a>
-				<Container
-					css={{
-						border: `1px ${props.border ? "solid" : null} $border`,
-						padding: props.border ? "16px" : null,
-						borderRadius: "16px",
-						backgroundColor: "$surface",
-
-						boxShadow: "$base",
-						height: "auto",
-					}}
-					className="flex justify-between w-full"
-				>
-					<Container className="flex gap-2">
-						<UserAvatar
-							size={40}
-							profile_pic={props.avatar}
-						/>
-						<Container className="gap-2">
-							<Container>
-								<p>
-									<Text>
-										<ImportantText>{props.display_name}</ImportantText>
-									</Text>
-								</p>
-								<p className="text-ellipsis overflow-hidden ... w-[100px]">
-									<MutedText>
-										<SmallText>@{props.username}</SmallText>
-									</MutedText>
-								</p>
-							</Container>
-						</Container>
-					</Container>
-					{!props.noFollowButton && (
-						<Container>
-							<Button>Follow</Button>
-						</Container>
-					)}
-				</Container>
-			</a>
-		</Link>
-	);
-};
-
-const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
+const DefaultCreatorCard = (props: SuggestedCreatorData) => {
 	// T-83 Some profile pics not loading. Use base treatnfts.com - media endpoint /api/v3/media/
 	const profilePicUrl = props.avatar;
 
@@ -149,8 +97,13 @@ const ExpandSuggestedCreatorCard = (props: SuggestedCreatorData) => {
 								</Container>
 							)}
 						</Container>
-						<Container className="px-4">
-							<Button>View creator</Button>
+						<Container className="flex gap-4 px-4">
+							<Link href={`/${props.username}`}>
+								<a>
+									<Button>View creator</Button>
+								</a>
+							</Link>
+							<Button>Follow</Button>
 						</Container>
 					</Container>
 				</Container>

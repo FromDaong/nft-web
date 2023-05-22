@@ -106,7 +106,7 @@ export default function ImagePreviewWitEditor(props: {
 						className="rounded-full shadow"
 						css={{
 							color: "$surface",
-							backgroundColor: "$overlayContrast",
+							backgroundColor: "$text",
 							padding: "8px",
 						}}
 					>

@@ -342,24 +342,6 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 											</a>
 										</Link>
 									)}
-									<Link href={"/account"}>
-										<a>
-											<Container
-												onClick={onClose}
-												className="flex items-center justify-between p-4 rounded-xl hover:cursor-pointer"
-											>
-												<div className="flex items-center gap-4">
-													<Text className="p-2 rounded-full">
-														<CogIcon
-															width={20}
-															height={20}
-														/>
-													</Text>
-													<BoldLink>Manage account</BoldLink>
-												</div>
-											</Container>
-										</a>
-									</Link>
 									<Container
 										onClick={onOpen}
 										className="flex items-center justify-between p-4 rounded-xl hover:cursor-pointer"

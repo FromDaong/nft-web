@@ -3,10 +3,9 @@ import {styled} from "@styles/theme";
 
 export const DropdownContainer = styled("div", {
 	width: "max-content",
-	backgroundColor: "$surface",
+	backgroundColor: "$surfaceOnSurface",
 	border: "1px solid $border",
 	borderRadius: "16px",
-	padding: "8px",
 	zIndex: "100",
 	minWidth: "280px",
 });

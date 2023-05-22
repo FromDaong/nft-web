@@ -95,18 +95,25 @@ export default function Upgrade() {
 			<ApplicationFrame>
 				<Container className="flex flex-col max-w-xl gap-12 py-12 mx-auto">
 					<Container
-						className="flex flex-col gap-8 p-8 shadow-sm"
-						css={{borderRadius: "16px", backgroundColor: "$gray1"}}
+						className="flex flex-col gap-8 p-8 border shadow-sm"
+						css={{
+							borderRadius: "16px",
+							backgroundColor: "$surfaceOnSurface",
+							borderColor: "$border",
+						}}
 					>
-						<Container className="flex flex-col gap-2">
-							<Heading size="sm">Upgrade to a creator profile</Heading>
-							<Text>
-								<MutedText>
-									Securely verify your identity to upgrade to a creator profile.
-									A creator profile allows you to create subscriptions and nfts.
-								</MutedText>
-							</Text>
-						</Container>
+						{stage !== "success" && stage !== "error" && (
+							<Container className="flex flex-col gap-2">
+								<Heading size="sm">Upgrade to a creator profile</Heading>
+								<Text>
+									<MutedText>
+										Securely verify your identity to upgrade to a creator
+										profile. A creator profile allows you to create
+										subscriptions and nfts.
+									</MutedText>
+								</Text>
+							</Container>
+						)}
 						<Container>
 							{stage === "form" && (
 								<form

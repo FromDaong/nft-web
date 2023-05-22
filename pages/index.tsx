@@ -3,7 +3,7 @@ import {Container} from "packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {TritPost} from "@packages/post/TritPost";
-import SuggestedCreatorCard from "@packages/feed/components/SuggestedCreatorCard";
+import CreatorCard from "@packages/feed/components/SuggestedCreatorCard";
 import Link from "next/link";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
 import {
@@ -23,8 +23,10 @@ import {
 import {useApplicationTheme} from "@packages/theme/provider";
 import {Button} from "@packages/shared/components/Button";
 import {
+	CameraIcon,
 	CaretLeftIcon,
 	CaretRightIcon,
+	MixIcon,
 	MixerVerticalIcon,
 } from "@radix-ui/react-icons";
 import Image from "next/future/image";
@@ -157,9 +159,13 @@ export default function Index(props: {
 							</Balancer>
 						</Container>
 						<Container className={"flex gap-4 justify-center "}>
-							<Button appearance={"primary"}>
-								Visit the sweetshop <ArrowRightIcon className={"w-5 h-5"} />{" "}
-							</Button>
+							<Link href="/sweetshop">
+								<a>
+									<Button appearance={"primary"}>
+										Visit the sweetshop <ArrowRightIcon className={"w-5 h-5"} />{" "}
+									</Button>
+								</a>
+							</Link>
 							<Button
 								appearance={"subtle"}
 								outlined
@@ -275,7 +281,15 @@ export default function Index(props: {
 										/>
 									}
 									cols={1}
-									action={<Button appearance={"primary"}>Try it out</Button>}
+									action={
+										<Button appearance={"primary"}>
+											<MoonIcon
+												width={16}
+												height={16}
+											/>{" "}
+											Try it out
+										</Button>
+									}
 								/>
 
 								<FeaturesCard
@@ -291,7 +305,13 @@ export default function Index(props: {
 										/>
 									}
 									action={
-										<Button appearance={"primary"}>Bridge your nfts</Button>
+										<Button appearance={"primary"}>
+											<MixIcon
+												width={16}
+												height={16}
+											/>
+											Bridge your nfts
+										</Button>
 									}
 								/>
 							</Container>
@@ -311,7 +331,11 @@ export default function Index(props: {
 								cols={1}
 								action={
 									<Button appearance={"primary"}>
-										Create an NFT <ArrowRightIcon className="w-4 h-4" />
+										<CameraIcon
+											width={16}
+											height={16}
+										/>
+										Create an NFT
 									</Button>
 								}
 							/>
@@ -348,7 +372,7 @@ export default function Index(props: {
 						<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4">
 							{!trendingCreatorError && !trendingCreatorsLoading
 								? trendingCreators?.slice(0, 8).map((creator) => (
-										<SuggestedCreatorCard
+										<CreatorCard
 											key={creator._id}
 											username={creator.username}
 											display_name={creator.profile?.display_name}

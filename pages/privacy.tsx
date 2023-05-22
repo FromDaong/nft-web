@@ -1,5 +1,6 @@
 import {SEOHead} from "@packages/seo/page";
 import {Container} from "@packages/shared/components/Container";
+import {Heading} from "@packages/shared/components/Typography/Headings";
 
 export default function Privacy() {
 	return (
@@ -10,9 +11,7 @@ export default function Privacy() {
 					<p className="text-purple-500">
 						As of {new Date().toLocaleDateString()}
 					</p>
-					<h1 className="text-5xl font-medium text-slate-900">
-						We care about your privacy
-					</h1>
+					<Heading>We care about your privacy</Heading>
 				</div>
 			</div>
 			<div className="flex flex-col max-w-3xl gap-16 py-12 mx-auto">

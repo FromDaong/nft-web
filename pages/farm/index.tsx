@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import {useAccount, useBalance, useContract} from "wagmi";
@@ -18,6 +19,15 @@ import useUnstakeFarms from "@packages/chain/hooks/useUnstakeFarms";
 import useGetPendingMelons from "@packages/chain/hooks/useGetPendingMelons";
 import useGetStakedAmount from "@packages/chain/hooks/useGetStakedAmount";
 import Spinner from "@packages/shared/icons/Spinner";
+import {Divider} from "@packages/shared/components/Divider";
+import StudioNavigation, {
+	TabNavigationLink,
+} from "@components/CreatorDashboard/StudioNavigation";
+import {ArrowRightIcon, SparklesIcon} from "@heroicons/react/outline";
+import Link from "next/link";
+import {MagnifyingGlassIcon} from "@radix-ui/react-icons";
+import {useDisclosure} from "@packages/hooks";
+import SwapModal from "@components/Farms/SwapModal";
 
 // T-78 Use intersection observer to change navbar color.
 
@@ -49,6 +59,11 @@ export default function Farm() {
 	return (
 		<ApplicationLayout>
 			<ApplicationFrame>
+				<Container className="flex flex-col gap-4 px-4 py-4 pt-0 lg:px-0">
+					<Container className="flex items-baseline justify-between">
+						<StudioNavigation />
+					</Container>
+				</Container>
 				{treatMelonLoading && !treatMelonError && (
 					<Container className="flex flex-col items-center justify-center w-full min-h-screen">
 						<Spinner />
@@ -64,39 +79,84 @@ export default function Farm() {
 					</Container>
 				)}
 				{!treatMelonLoading && !treatMelonError && treatMelonBalance && (
-					<Container className="flex flex-col max-w-screen-lg gap-12 pt-12 mx-auto">
-						<Container className="flex flex-col gap-2">
-							<Heading size="md">Farm Dashboard</Heading>
-							<Text>
-								Stake $Treat to earn $Melon. Exchange $Melon at the Farmers'
-								Market to get exclusive NFTs.
-							</Text>
-							<Heading
-								size="xss"
-								css={{
-									color: "$teal10",
-								}}
-							>
-								🍈 Melon balance:
-								{!treatMelonLoading
-									? ` ${treatMelonBalance?.formatted}`
-									: " Loading..."}
-							</Heading>
+					<Container className="flex flex-col w-full gap-12 pt-12 mx-auto">
+						<Container className="flex flex-col w-full md:flex-row">
+							<Container className="flex flex-col gap-1">
+								<Heading size="md">
+									{!treatMelonLoading
+										? ` ${Intl.NumberFormat().format(
+												parseInt(treatMelonBalance?.formatted)
+										  )}`
+										: " Loading..."}{" "}
+									<Text>
+										<ImportantText>MELON</ImportantText>
+									</Text>
+								</Heading>
+								<Text>
+									{Intl.NumberFormat().format(parseInt("673672"))} TREAT
+								</Text>
+								<Container className="flex gap-4 mt-4">
+									<Button>Stake more</Button>
+									<Button>Redeem rewards</Button>
+								</Container>
+							</Container>
 						</Container>
-						<StakeTreat
-							pid={0}
-							contract={masterMelonContract}
-							treatBalance={treatMelonBalance}
-							treatLpBalance={treatLpBalance}
-							treatMelonBalance={treatMelonBalance}
-						/>
-						<StakeTreat
-							pid={1}
-							contract={masterMelonContract}
-							treatBalance={treatMelonBalance}
-							treatLpBalance={treatLpBalance}
-							treatMelonBalance={treatMelonBalance}
-						/>
+						<Container className="grid grid-cols-2 gap-12">
+							<Container
+								css={{
+									backgroundColor: "$surfaceOnSurface",
+									borderColor: "$border",
+								}}
+								className="flex flex-col overflow-hidden divide-y rounded-xl h-fit"
+							>
+								<Container className="p-4">
+									<Heading size={"xss"}>Portfolio</Heading>
+								</Container>
+								<FarmPortfolioItem
+									balance={93783}
+									id={1}
+									name="Melon"
+									currency={"MELON"}
+								/>
+								<FarmPortfolioItem
+									balance={27682}
+									id={3}
+									name={"TREAT/BNB"}
+									currency={"SBNB"}
+								/>
+								<FarmPortfolioItem
+									balance={278738723}
+									id={2}
+									name="Unclaimed Rewards"
+									currency={"MELON"}
+								/>
+							</Container>
+							<Container
+								css={{
+									backgroundColor: "$surfaceOnSurface",
+									borderColor: "$border",
+								}}
+								className="flex flex-col overflow-hidden divide-y rounded-xl"
+							>
+								<Container className="flex items-center justify-between p-4">
+									<Heading size={"xss"}>Collected melon NFTs</Heading>
+									<Container className="flex gap-2">
+										<Button appearance={"surface"}>
+											<MagnifyingGlassIcon className="w-5 h-5" />
+										</Button>
+										<Button appearance={"surface"}>
+											<SparklesIcon className="w-5 h-5" />
+											Mint exclusive NFT
+										</Button>
+									</Container>
+								</Container>
+								<Container className="grid grid-cols-3 gap-4 p-4">
+									<MelonNFTCard />
+									<MelonNFTCard />
+									<MelonNFTCard />
+								</Container>
+							</Container>
+						</Container>
 					</Container>
 				)}
 			</ApplicationFrame>
@@ -104,55 +164,55 @@ export default function Farm() {
 	);
 }
 
-function StakeTreat({
+interface StakeTreatProps {
+	contract: any;
+	pid: number;
+	treatBalance: {formatted: string};
+	treatLpBalance: {formatted: string};
+	treatMelonBalance: {formatted: string};
+}
+const StakeTreat: React.FC<StakeTreatProps> = ({
 	contract: masterMelonContract,
 	pid,
 	treatBalance,
 	treatLpBalance,
 	treatMelonBalance,
-}: {
-	contract: any;
-	pid: number;
-	treatBalance: {
-		formatted: string;
-	};
-	treatLpBalance: {
-		formatted: string;
-	};
-	treatMelonBalance: {
-		formatted: string;
-	};
-}) {
+}) => {
 	const pools = ["$Treat", "$Treat/BNB"];
 	const balances = [treatBalance, treatLpBalance];
 	const lPBalance = balances[pid];
-	const [unstakeAmount, setUnstakeAmount] = useState(0);
-	const [stakeAmount, setStakeAmount] = useState(0);
-
+	const [unstakeAmount, setUnstakeAmount] = useState<number>(0);
+	const [stakeAmount, setStakeAmount] = useState<number>(0);
 	const {address} = useAccount();
 	const treatContract = useContract({
 		addressOrName: contractAddresses.treatToken[56],
 		contractInterface: ABI.treat,
 	});
-
 	const hasApproved = useMemo(
 		() => hasApprovedStaking(pid, treatContract, address),
-		[]
+		[pid, treatContract, address]
 	);
-	const {handleHarvest} =
-		masterMelonContract && useHarvestFarms(pid, masterMelonContract);
+	const {handleHarvest} = useHarvestFarms(pid, masterMelonContract);
 	// change 2nd arg to treatLpContract
-	const {onApprove} =
-		masterMelonContract &&
-		useApproveContract(pid, treatContract, treatContract, masterMelonContract);
-	const {onStake} =
-		masterMelonContract && useStakeFarms(pid, masterMelonContract);
-	const {onUnstake: onV1Unstake} =
-		masterMelonContract &&
-		useUnstakeFarms(pid, true, masterMelonContract, masterMelonContract);
-	const {onUnstake} =
-		masterMelonContract &&
-		useUnstakeFarms(pid, false, masterMelonContract, masterMelonContract);
+	const {onApprove} = useApproveContract(
+		pid,
+		treatContract,
+		treatContract,
+		masterMelonContract
+	);
+	const {onStake} = useStakeFarms(pid, masterMelonContract);
+	const {onUnstake: onV1Unstake} = useUnstakeFarms(
+		pid,
+		true,
+		masterMelonContract,
+		masterMelonContract
+	);
+	const {onUnstake} = useUnstakeFarms(
+		pid,
+		false,
+		masterMelonContract,
+		masterMelonContract
+	);
 	const pendingMelons = useGetPendingMelons(pid, masterMelonContract);
 	const v1StakedAmount = useGetStakedAmount(
 		pid,
@@ -163,22 +223,23 @@ function StakeTreat({
 	const stakedAmount =
 		useGetStakedAmount(pid, false, masterMelonContract, masterMelonContract) ||
 		0;
-
 	return (
 		<Container
-			className="flex flex-col gap-4 p-4 rounded-xl"
+			className="flex flex-col gap-4 p-4 border shadow-sm rounded-xl"
 			css={{
-				background: "$elementOnSurface",
+				background: "$surfaceOnSurface",
+				borderColor: "$border",
 			}}
 		>
-			<Container className="w-full py-4 text-center">
+			<Container className="w-full py-4">
 				<Heading size={"xs"}>Stake {pools[pid]}</Heading>
 			</Container>
 			<Container className="grid grid-cols-1 gap-4 md:grid-cols-2">
 				<Container
 					className="flex flex-col col-span-1 gap-2 p-4 rounded-xl"
 					css={{
-						background: "$surfaceOnSurface",
+						background: "$surface",
+						borderColor: "$border",
 					}}
 				>
 					{
@@ -198,9 +259,11 @@ function StakeTreat({
 						<MutedText>Balance:</MutedText>
 						<Text>
 							{treatBalance && (
-								<ImportantText>
-									{Number(treatBalance.formatted ?? 0).toFixed(5)}
-								</ImportantText>
+								<Text css={{color: "$textContrast"}}>
+									<ImportantText>
+										{Number(treatBalance.formatted ?? 0).toFixed(5)}
+									</ImportantText>
+								</Text>
 							)}
 							{!treatBalance && <Spinner />}
 						</Text>
@@ -228,7 +291,8 @@ function StakeTreat({
 				<Container
 					className="flex flex-col col-span-1 gap-2 p-4 rounded-xl"
 					css={{
-						background: "$surfaceOnSurface",
+						background: "$surface",
+						borderColor: "$border",
 					}}
 				>
 					{
@@ -247,9 +311,11 @@ function StakeTreat({
 					<Container className="flex items-center gap-2">
 						<MutedText>Balance:</MutedText>
 						{balances[pid] && (
-							<ImportantText>
-								{Number(balances[pid].formatted ?? 0).toFixed(5)}
-							</ImportantText>
+							<Text css={{color: "$textContrast"}}>
+								<ImportantText>
+									{Number(balances[pid].formatted ?? 0).toFixed(5)}
+								</ImportantText>
+							</Text>
 						)}
 						{!balances[pid] && <Spinner />}
 					</Container>
@@ -265,18 +331,19 @@ function StakeTreat({
 				}}
 			>
 				<Container className="flex flex-col gap-2">
-					<Heading
-						size="xss"
-						css={{
-							color: "$accentText",
-						}}
-					>
-						Unclaimed Rewards
-					</Heading>
+					<SmallText>
+						<ImportantText
+							css={{
+								color: "$mint11",
+							}}
+						>
+							UNCLAIMED REWARDS
+						</ImportantText>
+					</SmallText>
 					<Heading
 						size="sm"
 						css={{
-							color: "$accentText",
+							color: "$mint11",
 						}}
 					>
 						{pendingMelons === null && <Spinner />}
@@ -295,7 +362,7 @@ function StakeTreat({
 			</Container>
 		</Container>
 	);
-}
+};
 
 const hasApprovedTreatStaking = async (treatContract, address) => {
 	return treatContract.allowance(
@@ -347,3 +414,47 @@ const useHarvestFarms = (farmPID: number, masterMelonFarmerContract) => {
 		handleHarvest,
 	};
 };
+
+function FarmPortfolioItem({name, balance, id, currency}) {
+	const {isOpen, onOpen, onClose} = useDisclosure();
+
+	return (
+		<Container
+			onClick={onOpen}
+			className="flex items-center justify-between hover:cursor-pointer"
+		>
+			<SwapModal
+				isOpen={isOpen}
+				onClose={onClose}
+				title={`Swap for ${id}`}
+			/>
+			<Container className="flex items-center gap-4 p-4">
+				<Container
+					className="w-12 h-12 rounded-full"
+					css={{backgroundColor: "$surfaceOnSurface"}}
+				/>
+				<Heading size={"xss"}>{name}</Heading>
+			</Container>
+			<Container className="flex items-center gap-4 p-4">
+				<Heading
+					size={"xss"}
+					className="uppercase"
+				>
+					{Intl.NumberFormat().format(balance)} {currency}
+				</Heading>
+			</Container>
+		</Container>
+	);
+}
+
+function MelonNFTCard({}) {
+	return (
+		<Container className="flex flex-col gap-4 hover:cursor-pointer">
+			<Container className="w-full aspect-square bg-zinc-100" />
+			<Container>
+				<Heading size={"xss"}>A Happy Puppy</Heading>
+				<Text>Claimed 3 minutes ago</Text>
+			</Container>
+		</Container>
+	);
+}

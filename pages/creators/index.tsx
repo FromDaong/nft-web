@@ -1,7 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import {SearchIcon} from "@heroicons/react/outline";
 import CreatorsDropdownSort from "@packages/Dropdowns/CreatorsDropdownSort";
-import SuggestedCreatorCard from "@packages/feed/components/SuggestedCreatorCard";
+import CreatorCard from "@packages/feed/components/SuggestedCreatorCard";
 import {SEOHead} from "@packages/seo/page";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
@@ -110,6 +110,7 @@ export default function NFTS(props) {
 										padding: "8px 12px",
 										borderRadius: "8px",
 										backgroundColor: "transparent",
+										border: "none",
 									}}
 									placeholder={"Start typing to search for creators"}
 									onChange={(e) => setSearchText(e.target.value)}
@@ -140,7 +141,7 @@ export default function NFTS(props) {
 						>
 							{creators.length > 0 ? (
 								creators.map((creator) => (
-									<SuggestedCreatorCard
+									<CreatorCard
 										key={creator._id}
 										username={creator.username}
 										display_name={creator.profile?.display_name}

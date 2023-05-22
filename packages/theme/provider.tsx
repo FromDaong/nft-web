@@ -46,12 +46,14 @@ export default function ThemeProvider({children}: {children: ReactNode}) {
 	};
 
 	const currentTheme = useMemo(() => themes[theme], [theme]);
+	let didUpdate = useMemo(() => false, []);
 
 	useEffect(() => {
-		if (typeof window !== "undefined") {
+		if (typeof window !== "undefined" && !didUpdate) {
 			try {
 				const theme = localStorage.getItem("theme");
 				updateTheme((theme as "dark" | "pink" | "light") ?? "pink");
+				didUpdate = true;
 			} catch (err) {
 				console.error("[x] Error reading theme from local");
 			}

@@ -9,7 +9,7 @@ import {
 } from "./Text";
 
 export const Heading = styled("h1", {
-	fontWeight: "700",
+	fontWeight: "600",
 	color: "$textContrast",
 	padding: 0,
 	margin: 0,

@@ -29,20 +29,15 @@ export default function Create() {
 			<ApplicationFrame>
 				<Container className="flex flex-col items-center gap-8 py-12">
 					<Container
-						className="flex flex-col max-w-xl gap-8 p-4 border rounded shadow lg:p-8"
+						className="flex flex-col max-w-xl gap-8 p-4 border rounded lg:p-8"
 						css={{
 							background: "$surfaceOnSurface",
 							borderRadius: "16px",
 							borderColor: "$border",
 						}}
 					>
-						<Container className="flex flex-col gap-2">
-							<Heading size="sm">Create new NFTs</Heading>
-							<Text>
-								Deploy a standard NFT contract that you can mint to at anytime.
-								The following details are used to create your own smart
-								contract.{" "}
-							</Text>
+						<Container className="flex flex-col gap-2 w-[420px]">
+							<Heading size="xs">Create a new collection</Heading>
 						</Container>
 						<Formik
 							initialValues={initialValues}
@@ -71,7 +66,7 @@ export default function Create() {
 								<Form className="flex flex-col gap-8">
 									<Container className="flex flex-col gap-2">
 										<Text>
-											<ImportantText>Collection name</ImportantText>
+											<ImportantText>Name</ImportantText>
 										</Text>
 										<Field name="name">
 											{({field, meta}) => (
@@ -81,7 +76,7 @@ export default function Create() {
 														{...field}
 													/>
 													{meta.touched && meta.error && (
-														<Text appearance={"danger"}>
+														<Text css={{color: "$red10"}}>
 															<SmallText>{meta.error}</SmallText>
 														</Text>
 													)}
@@ -98,11 +93,7 @@ export default function Create() {
 										>
 											{props.isSubmitting ? "Submitting..." : "Continue"}
 										</Button>
-										{error && (
-											<Text appearance={"danger"}>
-												<SmallText>{error}</SmallText>
-											</Text>
-										)}
+										{error && <Text css={{color: "$red11"}}>{error}</Text>}
 									</Container>
 								</Form>
 							)}

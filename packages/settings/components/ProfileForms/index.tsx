@@ -10,7 +10,7 @@ import {Container} from "@packages/shared/components/Container";
 import {Input} from "@packages/shared/components/Input";
 import {useDisclosure} from "@packages/hooks";
 import CropPhotoModal from "../../../modals/CropPhotoModal/CropPhotoModal";
-import {useState, useEffect, useLayoutEffect} from "react";
+import {useState, useEffect, useLayoutEffect, useRef} from "react";
 import {useFormik} from "formik";
 import {useSession} from "next-auth/react";
 import DynamicSkeleton from "@packages/skeleton";
@@ -26,8 +26,13 @@ import Spinner from "@packages/shared/icons/Spinner";
 
 import * as Yup from "yup";
 import Toast from "@packages/shared/components/Toast";
+import {XIcon} from "@heroicons/react/solid";
+import {Divider} from "@packages/shared/components/Divider";
+import {ModalHeaderSection} from "@packages/modals";
 
-export default function PersonalInformationForm() {
+export default function PersonalInformationForm({
+	onClose: onCloseEditProfileModal,
+}) {
 	const {isOpen, onClose, onOpen} = useDisclosure();
 	const [newImage, setNewImage] = useState(null);
 	const {data: session} = useSession();
@@ -51,18 +56,16 @@ export default function PersonalInformationForm() {
 				onClose={closeCropModal}
 				image={newImage}
 			/>
-			<Container className="grid w-full max-w-3xl grid-cols-1 gap-8 mx-auto">
-				<Container className="col-span-1 px-1 py-1 mt-4">
-					<p>
-						<Heading size="sm">Personal Information</Heading>
-					</p>
-
-					<Text>
-						<MutedText>Update your personal details</MutedText>
-					</Text>
-				</Container>
-				<Container className="flex flex-col col-span-1 gap-10">
-					<Container className="flex flex-col gap-6 border-gray-100 rounded-2xl">
+			<Container className="grid w-full grid-cols-1 mx-auto">
+				<ModalHeaderSection
+					onClose={onCloseEditProfileModal}
+					title={"Profile"}
+				/>
+				<Container
+					css={{backgroundColor: "$surfaceOnSurface"}}
+					className="flex flex-col col-span-1 gap-10 p-4"
+				>
+					<Container className="flex flex-col gap-6 rounded-2xl">
 						{profile ? (
 							<PersonalPresentationInformationForm profile={profile} />
 						) : (
@@ -74,30 +77,6 @@ export default function PersonalInformationForm() {
 		</>
 	);
 }
-
-export const LinksForm = () => {
-	const {data: session} = useSession();
-	const profile = (session as unknown as any)?.profile;
-
-	return (
-		<Container className="grid w-full max-w-3xl grid-cols-1 gap-12 mx-auto">
-			<Container className="col-span-1 px-1 py-1 mt-4">
-				<p>
-					<Heading size="sm">Social media links</Heading>
-				</p>
-
-				<Text>
-					<MutedText>Add links to your social media profiles</MutedText>
-				</Text>
-			</Container>
-			{profile ? (
-				<LinksFormPresentation links={profile?.links ?? []} />
-			) : (
-				<DynamicSkeleton config={LinksFormSkeleton} />
-			)}
-		</Container>
-	);
-};
 
 const PersonalPresentationInformationForm = (props: {
 	profile: {
@@ -220,6 +199,8 @@ const PersonalPresentationInformationForm = (props: {
 		});
 	}, [profile]);
 
+	console.log({profile});
+
 	return (
 		<>
 			<Toast
@@ -228,57 +209,8 @@ const PersonalPresentationInformationForm = (props: {
 				title={toastMessage.title}
 				content={toastMessage.content}
 			/>
+
 			<Container className="flex flex-col gap-2">
-				<ImportantText css={{color: "$textContrast"}}>
-					Banner Photo
-				</ImportantText>
-				<Container className="flex items-center gap-12">
-					<Container
-						css={{
-							backgroundColor: "$surfaceOnSurface",
-							backgroundImage: `url(${
-								bannerUrl ||
-								"https://treatdao.mypinata.cloud/ipfs/QmdRewQfGbQP95hcyabRwRnXKWFH8Lyrr8ak6xc2y4uWTP"
-							})`,
-							backgroundSize: "cover",
-							backgroundPosition: "center",
-						}}
-						className="relative overflow-hidden w-full h-[200px] rounded-xl group flex items-center justify-center"
-					>
-						{!updatingBanner && (
-							<Container className="flex items-center justify-center w-full h-full duration-200 rounded-full hover:transition-opacity">
-								<label
-									htmlFor="banner_pic"
-									className="flex items-center justify-center w-full h-full"
-								>
-									<Text
-										css={{backgroundColor: "$surfaceOnSurface"}}
-										className="relative p-2 rounded-full"
-									>
-										<PencilAltIcon
-											height={20}
-											width={20}
-										/>
-									</Text>
-									<input
-										id="banner_pic"
-										name="banner_pic"
-										className="hidden"
-										type="file"
-										onChange={onSelectBannerPic}
-									/>
-								</label>
-							</Container>
-						)}
-						{updatingBanner && <Spinner />}
-					</Container>
-				</Container>
-				<SmallText>Click in the box to update your banner picture.</SmallText>
-			</Container>
-			<Container className="flex flex-col gap-2">
-				<ImportantText css={{color: "$textContrast"}}>
-					Profile Photo
-				</ImportantText>
 				<Container className="flex items-center gap-12">
 					<Container
 						css={{
@@ -319,6 +251,10 @@ const PersonalPresentationInformationForm = (props: {
 						)}
 						{updatingProfilePic && <Spinner />}
 					</Container>
+					<Container className="flex flex-col gap-2">
+						<Button appearance={"subtle"}>Change photo</Button>
+						<Button appearance={"danger"}>Remove photo</Button>
+					</Container>
 				</Container>
 			</Container>
 			<form className="flex flex-col gap-8">
@@ -332,6 +268,7 @@ const PersonalPresentationInformationForm = (props: {
 						onBlur={personalInformationForm.handleBlur}
 						name="display_name"
 						required
+						outlined
 					/>
 				</Container>
 				<Container className="flex flex-col gap-2">
@@ -342,9 +279,10 @@ const PersonalPresentationInformationForm = (props: {
 						value={personalInformationForm.values.email}
 						onChange={personalInformationForm.handleChange}
 						onBlur={personalInformationForm.handleBlur}
-						name="email_address"
+						name="email"
 						type={"email"}
 						required
+						outlined
 					/>
 				</Container>
 				<Container className="flex flex-col gap-2">
@@ -355,6 +293,7 @@ const PersonalPresentationInformationForm = (props: {
 						onBlur={personalInformationForm.handleBlur}
 						name="bio"
 						required
+						outlined
 					/>
 				</Container>
 				{false && (
@@ -376,7 +315,7 @@ const PersonalPresentationInformationForm = (props: {
 						appearance={
 							personalInformationForm.isSubmitting ||
 							!personalInformationForm.isValid
-								? "disabled"
+								? "subtle"
 								: "action"
 						}
 						disabled={
@@ -396,43 +335,52 @@ const PersonalPresentationInformationForm = (props: {
 	);
 };
 
-const LinksFormPresentation = (props: {
-	links: [
-		{
-			label: string;
-			value: string;
-		}
-	];
-}) => {
-	const [links] = useState(props.links);
-
+const CoverPhotoTab = ({bannerUrl, updatingBanner, onSelectBannerPic}) => {
 	return (
-		<Container className="col-span-1">
-			<Container className="grid grid-cols-1 gap-8 py-4 ">
-				<Container className="flex flex-col gap-4">
-					<Container>
-						<Text>
-							<MutedText>Website</MutedText>
-						</Text>
-						<Input />
-					</Container>
-					<Container>
-						<Text>
-							<MutedText>YouTube</MutedText>
-						</Text>
-						<Input />
-					</Container>
-					<Container>
-						<Text>
-							<MutedText>TikTok</MutedText>
-						</Text>
-						<Input />
-					</Container>
-				</Container>
-				<Container className="flex justify-end gap-2">
-					<Button appearance={"surface"}>Save Changes</Button>
+		<Container className="flex flex-col gap-2">
+			<ImportantText css={{color: "$textContrast"}}>Banner Photo</ImportantText>
+			<Container className="flex items-center gap-12">
+				<Container
+					css={{
+						backgroundColor: "$surfaceOnSurface",
+						backgroundImage: `url(${
+							bannerUrl ||
+							"https://treatdao.mypinata.cloud/ipfs/QmdRewQfGbQP95hcyabRwRnXKWFH8Lyrr8ak6xc2y4uWTP"
+						})`,
+						backgroundSize: "cover",
+						backgroundPosition: "center",
+					}}
+					className="relative overflow-hidden w-full h-[200px] rounded-xl group flex items-center justify-center"
+				>
+					{!updatingBanner && (
+						<Container className="flex items-center justify-center w-full h-full duration-200 rounded-full hover:transition-opacity">
+							<label
+								htmlFor="banner_pic"
+								className="flex items-center justify-center w-full h-full"
+							>
+								<Text
+									css={{backgroundColor: "$surfaceOnSurface"}}
+									className="relative p-2 rounded-full"
+								>
+									<PencilAltIcon
+										height={20}
+										width={20}
+									/>
+								</Text>
+								<input
+									id="banner_pic"
+									name="banner_pic"
+									className="hidden"
+									type="file"
+									onChange={onSelectBannerPic}
+								/>
+							</label>
+						</Container>
+					)}
+					{updatingBanner && <Spinner />}
 				</Container>
 			</Container>
+			<SmallText>Click in the box to update your banner picture.</SmallText>
 		</Container>
 	);
 };

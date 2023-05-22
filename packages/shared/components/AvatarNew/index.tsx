@@ -59,6 +59,7 @@ export default function NewAvatar(props: AvatarProps) {
 			<AvatarImage
 				src={profilePicUrl}
 				alt={props.username}
+				className="object-cover"
 			/>
 		</AvatarRoot>
 	);
