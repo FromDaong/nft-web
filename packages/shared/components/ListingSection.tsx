@@ -25,7 +25,7 @@ export default function ListingSection({title, href, children}) {
 
 export const MarketplaceListingsContainer = ({children}) => {
 	return (
-		<div className="grid grid-cols-1 gap-8 md:grid-cols-2 place-content-center xl:grid-cols-3">
+		<div className="grid grid-cols-1 gap-8 md:grid-cols-2 place-content-center xl:grid-cols-4">
 			{children}
 		</div>
 	);

@@ -13,6 +13,8 @@ import {ArrowUpDown} from "lucide-react";
 export const SelectTrigger = styled(Select.Trigger, {
 	backgroundColor: "$surfaceOnSurface",
 	borderColor: "$subtleBorder",
+	padding: "4px 12px",
+	fontWeight: 600,
 });
 
 export const SelectContent = styled(Select.Content, {
@@ -25,8 +27,9 @@ export const SelectContent = styled(Select.Content, {
 const SelectDemo = () => (
 	<Select.Root>
 		<SelectTrigger
-			className="inline-flex items-center justify-between gap-4 p-2 border rounded-lg w-fit"
+			className="inline-flex items-center justify-between gap-4 p-2 border rounded-full w-fit"
 			aria-label="Sort by"
+			appearance={"surface"}
 		>
 			<Container className="flex items-center gap-2">
 				<ArrowUpDown className="w-5 h-5" />

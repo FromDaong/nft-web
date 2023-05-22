@@ -8,7 +8,12 @@ import {
 import Link from "next/link";
 import UserAvatar from "core/auth/components/Avatar";
 import {UserGroupIcon} from "@heroicons/react/outline";
-import {CalendarDaysIcon, CircleSlashIcon, VeganIcon} from "lucide-react";
+import {
+	CalendarDaysIcon,
+	CircleSlashIcon,
+	VeganIcon,
+	Verified,
+} from "lucide-react";
 
 export const ActionSection = (props) => {
 	return (
@@ -19,6 +24,7 @@ export const ActionSection = (props) => {
 					<TreatOfTheMonthTag />
 					<MelonTag />
 					<SoldOutTag />
+					<VerifiedTag />
 				</Container>
 
 				<Container className="flex flex-col w-full gap-1">
@@ -171,8 +177,8 @@ function SoldOutTag() {
 		<Container
 			className="flex items-center gap-2 p-1 px-2 border rounded-lg w-fit"
 			css={{
-				backgroundColor: "$red2",
-				borderColor: "$red6",
+				backgroundColor: "$red1",
+				borderColor: "$red5",
 			}}
 		>
 			<Text
@@ -189,6 +195,35 @@ function SoldOutTag() {
 					}}
 				>
 					<ImportantText>Sold out</ImportantText>
+				</SmallText>
+			</Container>
+		</Container>
+	);
+}
+
+function VerifiedTag() {
+	return (
+		<Container
+			className="flex items-center gap-2 p-1 px-2 border rounded-lg w-fit"
+			css={{
+				backgroundColor: "$pink2",
+				borderColor: "$pink6",
+			}}
+		>
+			<Text
+				css={{
+					color: "$pink5",
+				}}
+			>
+				<Verified className="w-4 h-4" />
+			</Text>
+			<Container className="flex gap-2">
+				<SmallText
+					css={{
+						color: "$pink5",
+					}}
+				>
+					<ImportantText>Verified Creator</ImportantText>
 				</SmallText>
 			</Container>
 		</Container>

@@ -2,23 +2,32 @@
 import SearchForm from "@components/MarketPlace/Listings/SearchForm";
 import SortBy from "@components/MarketPlace/SortByDropdownFilter";
 import {Checkbox} from "@components/ui/checkbox";
-import {SearchIcon, TrashIcon} from "@heroicons/react/outline";
-import NFTSort from "@packages/Dropdowns/NFTDropdownSort";
+import {
+	CalendarIcon,
+	FilterIcon,
+	UserGroupIcon,
+	XIcon,
+} from "@heroicons/react/outline";
 import {Tag} from "@packages/post/BuyNFTPageViewNFT";
 import {TritPost} from "@packages/post/TritPost";
 import {SEOHead} from "@packages/seo/page";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
-import {Input} from "@packages/shared/components/Input";
 import Pagination from "@packages/shared/components/Pagination";
 import {usePaginatedPage} from "@packages/shared/components/Pagination/lib";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
-import SweetshopTabs from "@packages/sweetshop/SweetshopTabs";
+import {
+	ImportantText,
+	MutedText,
+} from "@packages/shared/components/Typography/Text";
+import CoinsIcon from "@packages/shared/icons/CoinsIcon";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
+import {CircleSlash} from "lucide-react";
+import {VeganIcon, Verified} from "lucide-react";
 import {MarketplaceListingsContainer} from "packages/shared/components/ListingSection";
 
 export default function NFTS({sort, q, nfts, error}) {
@@ -43,7 +52,6 @@ export default function NFTS({sort, q, nfts, error}) {
 			<ApplicationFrame>
 				<SEOHead title="Explore NFTs" />
 				<Container className="relative flex w-full h-full gap-8 py-12">
-					<ResultsFilter sortBy={sortBy} />
 					<Container className="flex-1 w-full">
 						{!error && (
 							<MarketplaceListingResults
@@ -209,20 +217,69 @@ function MarketplaceListingResults({
 					searchText={searchText}
 					setSearchText={setSearchText}
 				/>
-				<Container className="flex justify-between w-full">
+				<Container className="flex flex-wrap items-center gap-2">
+					<Button
+						appearance={"subtle"}
+						size={"sm"}
+						css={{padding: "4px 12px", color: "$pink5"}}
+					>
+						<Verified className="w-4 h-4" />
+						Verified Creator
+					</Button>
+					<Button
+						appearance={"subtle"}
+						size={"sm"}
+						css={{padding: "4px 12px", color: "$amber11"}}
+					>
+						<UserGroupIcon className="w-4 h-4" />
+						Secondary Listing
+					</Button>
+					<Button
+						appearance={"subtle"}
+						size={"sm"}
+						css={{padding: "4px 12px", color: "$mint11"}}
+					>
+						<VeganIcon className="w-4 h-4" />
+						Melon
+					</Button>
+					<Button
+						appearance={"subtle"}
+						size={"sm"}
+						css={{padding: "4px 12px", color: "$purple11"}}
+					>
+						<CalendarIcon className="w-4 h-4" />
+						Treat of The Month
+					</Button>
+					<Button
+						appearance={"subtle"}
+						size={"sm"}
+						css={{padding: "4px 12px", color: "$red11"}}
+					>
+						<CircleSlash className="w-4 h-4" />
+						Sold out
+					</Button>
+				</Container>
+				<Container className="flex flex-wrap justify-between w-full mt-8 md:flex-row">
 					<Container className="flex flex-wrap items-center gap-4">
 						<Button
-							appearance={"subtle"}
-							size={"sm"}
-							css={{padding: "4px 12px"}}
+							css={{padding: "4px 8px"}}
+							className="flex gap-4 border rounded-lg"
+							appearance={"surface"}
 						>
-							<TrashIcon className="w-4 h-4" />
-							Reset filters
+							<MutedText>Tags:</MutedText>
+							<ImportantText
+								className="flex"
+								css={{color: "$textContrast", padding: 0}}
+							>
+								NSFW +1 more
+							</ImportantText>
 						</Button>
-						<Text>Showing 24 of 537 results</Text>
 					</Container>
 					<SortBy />
 				</Container>
+				<Text>
+					Showing <ImportantText>24</ImportantText> of 537 results
+				</Text>
 			</Container>
 			<Container className="flex flex-col gap-8 overflow-x-hidden">
 				<MarketplaceListingsContainer>
