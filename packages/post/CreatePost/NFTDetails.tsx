@@ -76,10 +76,11 @@ const AddNFTDetails = ({
 									return (
 										<Container
 											key={temp_file.file.id}
-											className="flex flex-col gap-8 p-8 border shadow-sm"
+											className="flex flex-col gap-4 p-4 border"
 											css={{
-												background: "$elementSurface",
+												background: "$surfaceOnSurface",
 												borderRadius: "16px",
+												borderColor: "$border",
 											}}
 										>
 											<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">

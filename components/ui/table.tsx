@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import {cn} from "@lib/utils";
+import {styled} from "@styles/theme";
 
 const Table = React.forwardRef<
 	HTMLTableElement,
@@ -16,11 +17,14 @@ const Table = React.forwardRef<
 ));
 Table.displayName = "Table";
 
+const Thead = styled("thead", {
+	borderColor: "$border",
+});
 const TableHeader = React.forwardRef<
 	HTMLTableSectionElement,
 	React.HTMLAttributes<HTMLTableSectionElement>
 >(({className, ...props}, ref) => (
-	<thead
+	<Thead
 		ref={ref}
 		className={cn("[&_tr]:border-b", className)}
 		{...props}
@@ -28,11 +32,14 @@ const TableHeader = React.forwardRef<
 ));
 TableHeader.displayName = "TableHeader";
 
+const Tbody = styled("tbody", {
+	borderColor: "$border",
+});
 const TableBody = React.forwardRef<
 	HTMLTableSectionElement,
 	React.HTMLAttributes<HTMLTableSectionElement>
 >(({className, ...props}, ref) => (
-	<tbody
+	<Tbody
 		ref={ref}
 		className={cn("[&_tr:last-child]:border-0", className)}
 		{...props}
@@ -46,17 +53,20 @@ const TableFooter = React.forwardRef<
 >(({className, ...props}, ref) => (
 	<tfoot
 		ref={ref}
-		className={cn("bg-primary font-medium text-primary-foreground", className)}
+		className={cn(className)}
 		{...props}
 	/>
 ));
 TableFooter.displayName = "TableFooter";
 
+const Trow = styled("tr", {
+	borderColor: "$border",
+});
 const TableRow = React.forwardRef<
 	HTMLTableRowElement,
 	React.HTMLAttributes<HTMLTableRowElement>
 >(({className, ...props}, ref) => (
-	<tr
+	<Trow
 		ref={ref}
 		className={cn(
 			"border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",

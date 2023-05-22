@@ -47,8 +47,8 @@ const UploadMedia = ({next: callback}) => {
 
 	return (
 		<Container
-			className="flex flex-col max-w-2xl gap-8 p-8 border shadow-sm"
-			css={{background: "$elementSurface", borderRadius: "16px"}}
+			className="flex flex-col max-w-2xl gap-8 p-8 shadow-sm"
+			css={{background: "$surfaceOnSurface", borderRadius: "16px"}}
 		>
 			<Container className="flex flex-col gap-4">
 				<Container className="flex flex-col gap-2">

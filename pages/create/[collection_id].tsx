@@ -336,7 +336,7 @@ export default function PostType(props: {collection: string}) {
 				<Container className="flex flex-col gap-12 px-4 py-12">
 					<Container className="flex flex-col w-full max-w-2xl gap-2">
 						<Text css={{color: "$accentText"}}>
-							<ImportantText>Creating collection</ImportantText>
+							<ImportantText>Create collection</ImportantText>
 						</Text>
 						<Heading
 							css={{

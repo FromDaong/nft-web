@@ -153,7 +153,7 @@ const NFTPresentationComponent = (props: {
 									</a>
 								</Link>
 							))}
-							<Tag name={"NFT"} />
+							<Tag>NFT</Tag>
 						</Container>
 					</Container>
 					<Container className="flex gap-4">
@@ -188,7 +188,7 @@ const NFTPresentationComponent = (props: {
 
 export default NFTPresentationComponent;
 
-function Tag({name}) {
+export function Tag({children}) {
 	return (
 		<Container
 			className="px-3 py-1 border rounded-full shadow-sm"
@@ -198,7 +198,7 @@ function Tag({name}) {
 			}}
 		>
 			<SmallText>
-				<ImportantText>{name}</ImportantText>
+				<ImportantText>{children ?? name}</ImportantText>
 			</SmallText>
 		</Container>
 	);

@@ -6,7 +6,6 @@ import Image from "next/image";
 import {useAccount} from "wagmi";
 
 import {styled} from "@styles/theme";
-import {BoldLink, Text} from "@packages/shared/components/Typography/Text";
 import {PlusCircleIcon} from "@heroicons/react/outline";
 import {Container} from "@packages/shared/components/Container";
 import MobileNavbarDropdown from "./components/MobileNavbarDropdown";
@@ -97,12 +96,8 @@ export default function Navbar() {
 															alignItems: "center",
 															justifyContent: "center",
 														}}
-														appearance={"surface"}
 													>
-														<PlusCircleIcon
-															height={20}
-															width={20}
-														/>
+														<PlusCircleIcon className={"w-5 h-5"} />
 														Create
 													</Button>
 												</a>

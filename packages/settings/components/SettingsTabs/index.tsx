@@ -1,10 +1,7 @@
 import * as Tabs from "@radix-ui/react-tabs";
-import PersonalInformationForm, {LinksForm} from "../ProfileForms";
 import {Divider} from "@packages/shared/components/Divider";
-import CollectedItems from "../collectedItems";
 import {Container} from "@packages/shared/components/Container";
 import {ImportantText, Text} from "@packages/shared/components/Typography/Text";
-import {Heading} from "@packages/shared/components/Typography/Headings";
 import NotificationPreferences from "../NotificationsPreferences";
 import SettingsAndPrivacy from "../SettingsAndPrivacy";
 import WalletPreferences from "../WalletPreferences";
@@ -53,12 +50,6 @@ export default function ProfileTabs() {
 				</Tabs.TabsList>
 				<Divider dir="horizontal" />
 				<Container className="pt-8">
-					<Tabs.Content value="personal">
-						<Container className="flex flex-col gap-12">
-							<PersonalInformationForm />
-							<LinksForm />
-						</Container>
-					</Tabs.Content>
 					<Tabs.Content value="wallet">
 						<Container className="flex flex-col gap-12">
 							<WalletPreferences />

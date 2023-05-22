@@ -41,11 +41,9 @@ export default function FullscreenImagePreviewModal(props: ImagePreviewProps) {
 			{
 				//@ts-ignore
 				<DialogContent>
-					<Container className="flex flex-col w-full h-full gap-8">
-						<Container className="container flex justify-between mx-auto">
-							<Heading size={"xss"}>{props.title}</Heading>
+					<Container className="relative flex flex-col w-full h-full gap-8 p-8">
+						<Container className="absolute top-0 right-0">
 							<Button
-								appearance={"surface"}
 								css={{padding: "8px"}}
 								onClick={props.onClose}
 							>
@@ -57,14 +55,8 @@ export default function FullscreenImagePreviewModal(props: ImagePreviewProps) {
 								src={props.url}
 								sizes="100vw"
 								alt={props.title}
-								className="h-auto max-h-full shadow-xl aspect-auto rounded-xl"
+								className="h-auto max-h-full shadow-xl aspect-auto"
 							/>
-						</Container>
-						<Container className="container flex justify-center gap-4 mx-auto">
-							<Button appearance={"surface"}>
-								<CopyIcon className="w-5 h-5" />
-								Copy link
-							</Button>
 						</Container>
 					</Container>
 				</DialogContent>

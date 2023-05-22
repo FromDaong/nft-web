@@ -14,7 +14,7 @@ import {ActionSection} from "./UtilityComponents";
 import {useInView} from "react-intersection-observer";
 
 export const FrostyBackgroundContainer = styled(Container, {
-	backgroundColor: "#ffffff33",
+	backgroundColor: "#00000033",
 	backdropFilter: "blur(10px)",
 
 	variants: {
@@ -59,7 +59,7 @@ export const TritPost = (props: TritPostProps) => {
 									top: "16px",
 									left: "-24px",
 								}}
-								className="absolute z-10 px-8 h-fit w-fit"
+								className="absolute px-8 h-fit w-fit"
 							>
 								<SmallText>
 									<ImportantText>Sold Out</ImportantText>
@@ -77,20 +77,6 @@ export const TritPost = (props: TritPostProps) => {
 						>
 							<Container className="flex items-center justify-between">
 								<Container className="flex gap-4">
-									{false && (
-										<FrostyBackgroundContainer
-											css={{borderRadius: "calc(8px + 16px)", padding: "8px"}}
-										>
-											<Container
-												css={{
-													height: "80px",
-													width: "80px",
-
-													borderRadius: "calc(16px)",
-												}}
-											/>
-										</FrostyBackgroundContainer>
-									)}
 									{(isProtected || soldOut || props.totm) && (
 										<Container className="flex justify-between w-full">
 											{isProtected && (
@@ -113,21 +99,12 @@ export const TritPost = (props: TritPostProps) => {
 													)}
 												</FrostyBackgroundContainer>
 											)}
-											{soldOut && (
-												<FrostyBackgroundContainer className="px-3 py-1 rounded-full">
-													<Container className="flex items-center justify-center gap-2">
-														<Text css={{color: "$red6"}}>
-															<ImportantText>Sold out</ImportantText>
-														</Text>
-													</Container>
-												</FrostyBackgroundContainer>
-											)}
 										</Container>
 									)}
 								</Container>
-								<img
-									src={props.author?.avatar}
-									className="w-8 h-8 overflow-hidden bg-white rounded-full shadow"
+								<CreatorTag
+									avatar={props.author.username}
+									username={props.author.username}
 								/>
 							</Container>
 						</Container>
@@ -152,3 +129,25 @@ export const TritPost = (props: TritPostProps) => {
 		</Link>
 	);
 };
+
+function CreatorTag({avatar, username}) {
+	return (
+		<Link href={`/${username}`}>
+			<a>
+				<FrostyBackgroundContainer className="flex items-center gap-2 p-2 rounded-full">
+					<img
+						src={avatar}
+						className="w-6 h-6 overflow-hidden rounded-full"
+					/>
+					<Text
+						css={{
+							color: "$white",
+						}}
+					>
+						<ImportantText>@{username}</ImportantText>
+					</Text>
+				</FrostyBackgroundContainer>
+			</a>
+		</Link>
+	);
+}

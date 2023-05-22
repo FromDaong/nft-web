@@ -79,7 +79,10 @@ class MyDocument extends Document {
 						dangerouslySetInnerHTML={{__html: getCssText()}}
 					/>
 				</Head>
-				<Body className="subpixel-antialiased">
+				<Body
+					style={{marginRight: "0 !important"}}
+					className="subpixel-antialiased"
+				>
 					<Main />
 					<NextScript />
 					<Script

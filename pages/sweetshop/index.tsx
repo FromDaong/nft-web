@@ -1,8 +1,10 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import SearchForm from "@components/MarketPlace/Listings/SearchForm";
+import SortBy from "@components/MarketPlace/SortByDropdownFilter";
 import {Checkbox} from "@components/ui/checkbox";
-import {SearchIcon} from "@heroicons/react/outline";
+import {SearchIcon, TrashIcon} from "@heroicons/react/outline";
 import NFTSort from "@packages/Dropdowns/NFTDropdownSort";
+import {Tag} from "@packages/post/BuyNFTPageViewNFT";
 import {TritPost} from "@packages/post/TritPost";
 import {SEOHead} from "@packages/seo/page";
 import {Button} from "@packages/shared/components/Button";
@@ -41,12 +43,7 @@ export default function NFTS({sort, q, nfts, error}) {
 			<ApplicationFrame>
 				<SEOHead title="Explore NFTs" />
 				<Container className="relative flex w-full h-full gap-8 py-12">
-					<ResultsFilter
-						performSearchWithNewParams={performSearchWithNewParams}
-						searchText={searchText}
-						setSearchText={setSearchText}
-						sortBy={sortBy}
-					/>
+					<ResultsFilter sortBy={sortBy} />
 					<Container className="flex-1 w-full">
 						{!error && (
 							<MarketplaceListingResults
@@ -55,6 +52,9 @@ export default function NFTS({sort, q, nfts, error}) {
 								gotoPage={gotoPage}
 								nextPage={nextPage}
 								prevPage={prevPage}
+								performSearchWithNewParams={performSearchWithNewParams}
+								searchText={searchText}
+								setSearchText={setSearchText}
 							/>
 						)}
 						{error && (
@@ -121,38 +121,18 @@ export const getServerSideProps = async (ctx) => {
 	}
 };
 
-function ResultsFilter({
-	performSearchWithNewParams,
-	searchText,
-	setSearchText,
-	sortBy,
-}) {
+function ResultsFilter({sortBy}) {
 	return (
 		<Container className="sticky top-0 flex-shrink-0 h-screen w-96">
 			<Container
-				css={{backgroundColor: "$surfaceOnSurface", borderColor: "$border"}}
-				className="flex flex-col border shadow-sm rounded-xl h-fit"
+				css={{
+					backgroundColor: "$surfaceOnSurface",
+					borderColor: "$subtleBorder",
+				}}
+				className="flex flex-col overflow-hidden border shadow-sm rounded-xl h-fit"
 			>
-				<Container className="p-4 pb-2">
-					<Heading size={"xss"}>Filters</Heading>
-				</Container>
-				<Divider />
-				<SearchForm
-					performSearchWithNewParams={performSearchWithNewParams}
-					searchText={searchText}
-					setSearchText={setSearchText}
-				/>
-				<Divider dir={"horizontal"} />
-				<Container className="flex flex-col gap-2 p-4 flex-noshrink">
-					<Heading size={"xss"}>Sort by</Heading>
-					<NFTSort
-						sort={sortBy}
-						prefix={""}
-					/>
-				</Container>
-				<Divider dir={"horizontal"} />
 				<Container className="flex flex-col gap-4 p-4 flex-noshrink">
-					<Heading size={"xss"}>Showing</Heading>
+					<Heading size={"xss"}>Filters</Heading>
 					<Container className="flex flex-col gap-2">
 						<Container className="flex items-center justify-between gap-2">
 							<label htmlFor="creator">
@@ -181,21 +161,28 @@ function ResultsFilter({
 								required
 							/>
 						</Container>
+						<Container className="flex items-center justify-between gap-2">
+							<label htmlFor="soldOut">
+								<Text>Show sold out</Text>
+							</label>
+							<Checkbox
+								id="soldOut"
+								required
+							/>
+						</Container>
 					</Container>
 				</Container>
 				<Divider dir={"horizontal"} />
-				<Container className="flex flex-col gap-2 p-4 flex-noshrink">
-					<Heading size={"xss"}>Other filters</Heading>
-					<Container className="flex items-center justify-between gap-2">
-						<label htmlFor="soldOut">
-							<Text>Show sold out</Text>
-						</label>
-						<Checkbox
-							id="soldOut"
-							required
-						/>
+				<Container className="flex flex-col gap-4 p-4 flex-noshrink">
+					<Heading size={"xss"}>Tags</Heading>
+					<Container className={"flex gap-2"}>
+						<Tag>NSFW</Tag>
+						<Tag>Sexy</Tag>
+						<Tag>TOTM</Tag>
 					</Container>
 				</Container>
+				<Divider dir={"horizontal"} />
+
 				<Container className="p-4">
 					<Button fullWidth>Show results</Button>
 				</Container>
@@ -210,10 +197,34 @@ function MarketplaceListingResults({
 	nextPage,
 	prevPage,
 	posts,
+	performSearchWithNewParams,
+	searchText,
+	setSearchText,
 }) {
 	return (
-		<Container className="flex flex-col gap-12">
-			<Container className="flex flex-col gap-8 px-4 overflow-x-hidden">
+		<Container className="flex flex-col gap-8">
+			<Container className="flex flex-col w-full gap-2">
+				<SearchForm
+					performSearchWithNewParams={performSearchWithNewParams}
+					searchText={searchText}
+					setSearchText={setSearchText}
+				/>
+				<Container className="flex justify-between w-full">
+					<Container className="flex flex-wrap items-center gap-4">
+						<Button
+							appearance={"subtle"}
+							size={"sm"}
+							css={{padding: "4px 12px"}}
+						>
+							<TrashIcon className="w-4 h-4" />
+							Reset filters
+						</Button>
+						<Text>Showing 24 of 537 results</Text>
+					</Container>
+					<SortBy />
+				</Container>
+			</Container>
+			<Container className="flex flex-col gap-8 overflow-x-hidden">
 				<MarketplaceListingsContainer>
 					{nft_posts.length > 0 ? (
 						nft_posts.map((nft) => (

@@ -83,25 +83,43 @@ const baseColors = {
 	// White foreground text at step 9 bg
 	...sand,
 	...purple,
-	...pink,
 	...mint, // Success
 	...crimson,
 	...blue,
 	...amber, // Warning
 	...red,
 	white: "#fff",
+	pink1: "#F3F1F2",
+	pink2: "#FFF5F7",
+	pink3: "#F396B8",
+	pink4: "#DA5184",
+	pink5: "#E94380",
+	pink6: "#E94380",
+	pink7: "#B71550",
+	pink8: "#89103C",
+	pink9: "#5B0B28",
+	pink10: "#2E0514",
 };
 
 const baseColorsDark = {
 	...sandDark,
 	...purpleDark,
-	...pinkDark,
 	...crimsonDark,
 	...blueDark,
 	...amberDark,
 	...mintDark,
 	...redDark,
 	white: "#fff",
+	pink1: "#F3F1F2",
+	pink2: "#FFF5F7",
+	pink3: "#F396B8",
+	pink4: "#DA5184",
+	pink5: "#E94380",
+	pink6: "#E94380",
+	pink7: "#B71550",
+	pink8: "#89103C",
+	pink9: "#5B0B28",
+	pink10: "#2E0514",
 };
 
 //T-40 Theme colors OG pink = https://www.happyhues.co/palettes/7
@@ -381,8 +399,8 @@ export const ogPinkTheme = createTheme("pink", {
 		errorText: "$red11",
 		errorTextContrast: "$red12",
 
-		surface: "$primary1",
-		surfaceOnSurface: "$primary1",
+		surface: "#FDE4EC",
+		surfaceOnSurface: "$white",
 		elementSurface: "$primary4",
 		elementOnSurface: "$primary2",
 		hoveredElementSurface: "$primary3",

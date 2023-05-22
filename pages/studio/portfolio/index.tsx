@@ -146,10 +146,10 @@ export default function PortfolioPage() {
 		<ApplicationLayout>
 			<ApplicationFrame>
 				<Container
-					className="py-4 md:pt-0 px-4 lg:px-0 flex flex-col gap-4"
+					className="flex flex-col gap-4 px-4 py-4 md:pt-0 lg:px-0"
 					css={{borderColor: "$border"}}
 				>
-					<Container className="flex justify-between items-baseline">
+					<Container className="flex items-baseline justify-between">
 						<StudioNavigation />
 					</Container>
 				</Container>
@@ -186,10 +186,10 @@ export default function PortfolioPage() {
 	);
 }
 
-function OwnedNFTCard({}) {
+function OwnedNFTCard() {
 	return (
-		<Container className="flex flex-col gap-4 rounded-xl bg-white p-4">
-			<Container className="h-96 w-full bg-gray-200 rounded-xl" />
+		<Container className="flex flex-col gap-4 p-4 bg-white rounded-xl">
+			<Container className="w-full bg-gray-200 h-96 rounded-xl" />
 			<Container className="flex flex-col gap-1">
 				<Container className="flex justify-between gap-4">
 					<Heading
@@ -202,21 +202,21 @@ function OwnedNFTCard({}) {
 						<DotsVerticalIcon className="w-5 h-5" />
 					</Button>
 				</Container>
-				<Container className="flex gap-2 bg-gray-100 rounded-xl p-1 pr-2 items-center w-fit">
-					<Container className="w-8 h-8 rounded-xl bg-white" />
+				<Container className="flex items-center gap-2 p-1 pr-2 bg-gray-100 rounded-xl w-fit">
+					<Container className="w-8 h-8 bg-white rounded-xl" />
 					<SmallText className="uppercase">
 						<ImportantText>The Legacy Collection</ImportantText>
 					</SmallText>
 				</Container>
 				<Container className="flex gap-4 mt-4">
-					<Container className="flex gap-2 items-center">
+					<Container className="flex items-center gap-2">
 						<RectangleStack className="w-4 h-4" />
 						<SmallText className="truncate line-clamp-1 text-ellipsis">
 							4 owned
 						</SmallText>
 					</Container>
 					<Text>&bull;</Text>
-					<Container className="flex gap-2 items-center flex-1">
+					<Container className="flex items-center flex-1 gap-2">
 						<CalendarIcon className="w-4 h-4" />
 						<SmallText>17 months ago</SmallText>
 					</Container>

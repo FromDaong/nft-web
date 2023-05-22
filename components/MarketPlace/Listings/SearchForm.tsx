@@ -10,34 +10,33 @@ const SearchForm = ({
 	searchText,
 }) => {
 	return (
-		<Container className="flex flex-col p-4">
+		<Container className="flex flex-col overflow-hidden">
 			<form
 				onSubmit={performSearchWithNewParams}
 				className="flex flex-col w-full"
 			>
 				<Container
-					className="flex items-center w-full gap-1 px-2 py-1 rounded-lg shadow"
+					className="flex items-center w-full gap-1 pr-4 rounded-lg"
 					css={{
 						backgroundColor: "$surfaceOnSurface",
-						border: "1px solid $border",
 					}}
 				>
 					<Input
 						css={{
-							padding: "8px 12px",
 							borderRadius: "8px",
 							backgroundColor: "transparent",
 							border: "none",
 						}}
-						placeholder={"Start typing to search for NFTs"}
+						placeholder={"Search for listings..."}
 						onChange={(e) => setSearchText(e.target.value)}
 						value={searchText}
-						className="flex-1"
+						className="flex-1 p-4"
 					/>
 
 					<Button
 						type={"submit"}
 						appearance={"subtle"}
+						css={{padding: 0}}
 					>
 						<SearchIcon
 							width={20}

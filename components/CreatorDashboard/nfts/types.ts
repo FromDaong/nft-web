@@ -1,7 +1,7 @@
 export type Payment = {
 	id: string;
 	amount: number;
-	status: "Minting" | "Sold out" | "Archived" | "Burnt";
+	status: string;
 	email: string;
 	price: number;
 	totalSales: number;

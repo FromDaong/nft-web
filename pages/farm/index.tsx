@@ -447,10 +447,13 @@ function FarmPortfolioItem({name, balance, id, currency}) {
 	);
 }
 
-function MelonNFTCard({}) {
+function MelonNFTCard() {
 	return (
 		<Container className="flex flex-col gap-4 hover:cursor-pointer">
-			<Container className="w-full aspect-square bg-zinc-100" />
+			<Container
+				className="w-full aspect-square"
+				css={{background: "$surfaceOnSurface"}}
+			/>
 			<Container>
 				<Heading size={"xss"}>A Happy Puppy</Heading>
 				<Text>Claimed 3 minutes ago</Text>

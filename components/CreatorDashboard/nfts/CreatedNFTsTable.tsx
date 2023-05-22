@@ -14,7 +14,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@components/ui/table";
-import {Payment} from "./types";
+import {Payment as NFT} from "./types";
 import {Container} from "@packages/shared/components/Container";
 import {Text} from "@packages/shared/components/Typography/Text";
 import {Checkbox} from "@components/ui/checkbox";
@@ -29,7 +29,7 @@ interface DataTableProps<TData, TValue> {
 	data: TData[];
 }
 
-export const CreatedNFTsColumns: ColumnDef<Payment>[] = [
+export const CreatedNFTsColumns: ColumnDef<NFT>[] = [
 	{
 		id: "select",
 		header: ({table}) => (

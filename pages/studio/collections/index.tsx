@@ -14,10 +14,10 @@ export default function CollectionsPage() {
 		<ApplicationLayout>
 			<ApplicationFrame>
 				<Container
-					className="py-4 md:pt-0 px-4 lg:px-0 flex flex-col gap-4"
+					className="flex flex-col gap-4 px-4 py-4 md:pt-0 lg:px-0"
 					css={{borderColor: "$border"}}
 				>
-					<Container className="flex justify-between items-baseline">
+					<Container className="flex items-baseline justify-between">
 						<StudioNavigation />
 					</Container>
 				</Container>
@@ -26,13 +26,13 @@ export default function CollectionsPage() {
 						<Heading size={"md"}>Collections</Heading>
 						<Link href={"/create"}>
 							<a>
-								<Button appearance={"surface"}>
+								<Button>
 									<PlusIcon className="w-5 h-5" /> Create new collection
 								</Button>
 							</a>
 						</Link>
 					</Container>
-					<Container className="grid grid-cols-1 md:grid-cols-4 gap-8">
+					<Container className="grid grid-cols-1 gap-8 md:grid-cols-4">
 						{[
 							{
 								name: "TreatDAO Legacy NFTs",

@@ -88,7 +88,7 @@ export default function Create() {
 									<Container className="flex flex-col gap-2">
 										<Button
 											disabled={props.isSubmitting}
-											appearance={props.isSubmitting ? "disabled" : "action"}
+											appearance={props.isSubmitting ? "disabled" : "default"}
 											type="submit"
 										>
 											{props.isSubmitting ? "Submitting..." : "Continue"}

@@ -23,10 +23,10 @@ export const Button = styled("button", {
 	variants: {
 		appearance: {
 			default: {
-				backgroundColor: "$buttonSurface",
-				color: "$textOnSurface",
+				backgroundColor: "$pink5",
+				color: "$white",
 				"&hover:": {
-					backgroundColor: "$elementSurface",
+					backgroundColor: "$pink3",
 				},
 			},
 			primary: {
@@ -58,9 +58,7 @@ export const Button = styled("button", {
 				boxShadow: "$shadow",
 			},
 			disabled: {
-				backgroundColor: "$elementOnSurface",
-				color: "$textOnSurface",
-				opacity: 0.6,
+				opacity: 0.7,
 			},
 			accent: {
 				backgroundColor: "$accentText",
@@ -108,7 +106,7 @@ export const Button = styled("button", {
 		},
 	},
 	defaultVariants: {
-		appearance: "action",
+		appearance: "default",
 	},
 });
 

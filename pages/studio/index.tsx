@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import ActivityItem from "@components/CreatorDashboard/Activity/Item";
 import NFTCollection from "@components/CreatorDashboard/NFTCollection";
 import StudioNavigation from "@components/CreatorDashboard/StudioNavigation";
@@ -26,16 +28,16 @@ export default function TreatCreatorStudio() {
 		<ApplicationLayout>
 			<ApplicationFrame>
 				<Container
-					className="py-4 md:pt-0 px-4 lg:px-0 flex flex-col gap-4"
+					className="flex flex-col gap-4 px-4 py-4 md:pt-0 lg:px-0"
 					css={{borderColor: "$border"}}
 				>
-					<Container className="flex justify-between items-baseline">
+					<Container className="flex items-baseline justify-between">
 						<StudioNavigation />
 					</Container>
 				</Container>
-				<Container className="grid grid-cols-3 py-8 gap-8">
+				<Container className="grid grid-cols-3 gap-8 py-8">
 					<Container
-						className="col-span-3 lg:col-span-2 p-8  rounded-xl grid grid-cols-2  shadow-sm"
+						className="grid grid-cols-2 col-span-3 p-8 shadow-sm lg:col-span-2 rounded-xl"
 						css={{
 							background: "$surfaceOnSurface",
 							borderColor: "$border",
@@ -46,7 +48,7 @@ export default function TreatCreatorStudio() {
 						}}
 					>
 						<Container className="flex flex-col col-span-1 gap-8">
-							<Container className="flex gap-2 items-center">
+							<Container className="flex items-center gap-2">
 								<Heading size={"xss"}>
 									<FilmIcon className="w-8 h-8" />
 								</Heading>
@@ -69,7 +71,7 @@ export default function TreatCreatorStudio() {
 						<Container></Container>
 					</Container>
 					<Container
-						className="col-span-2 lg:col-span-1 p-8  rounded-xl gap-8 flex flex-col"
+						className="flex flex-col col-span-2 gap-8 p-8 lg:col-span-1 rounded-xl"
 						css={{background: "$surfaceOnSurface", borderColor: "$border"}}
 					>
 						<Heading size={"xs"}>Analytics</Heading>
@@ -128,7 +130,7 @@ export default function TreatCreatorStudio() {
 						</Container>
 					</Container>
 					<Container
-						className="col-span-3 lg:col-span-1 p-8 rounded-xl gap-8 flex flex-col"
+						className="flex flex-col col-span-3 gap-8 p-8 lg:col-span-1 rounded-xl"
 						css={{background: "$surfaceOnSurface", borderColor: "$border"}}
 					>
 						<Container className={"flex justify-between"}>
@@ -152,7 +154,7 @@ export default function TreatCreatorStudio() {
 						</Container>
 					</Container>
 					<Container
-						className="col-span-3 lg:col-span-2 p-8 rounded-xl gap-8 flex flex-col"
+						className="flex flex-col col-span-3 gap-8 p-8 lg:col-span-2 rounded-xl"
 						css={{background: "$surfaceOnSurface", borderColor: "$border"}}
 					>
 						<Container className={"flex justify-between"}>
@@ -249,7 +251,7 @@ export default function TreatCreatorStudio() {
 							</Button>
 						</Link>
 					</Container>
-					<Container className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+					<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4">
 						{[
 							{
 								name: "TreatDAO Legacy NFTs",
@@ -288,7 +290,7 @@ export default function TreatCreatorStudio() {
 	);
 }
 
-function SalesItem({}) {
+function SalesItem() {
 	return (
 		<Container className="flex flex-col gap-2">
 			<Container className={"flex justify-between"}>
