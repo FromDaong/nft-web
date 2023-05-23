@@ -206,7 +206,6 @@ function VerifiedTag() {
 		<Container
 			className="flex items-center gap-2 p-1 px-2 border rounded-lg w-fit"
 			css={{
-				backgroundColor: "$pink2",
 				borderColor: "$pink6",
 			}}
 		>
