@@ -123,7 +123,7 @@ export default function NFT(props: {
 							postUtils={postUtils}
 						/>
 						<Container className="flex-1 w-full">
-							<Container className="relative flex flex-col h-full py-4 rounded-xl md:py-8 lg:py-12">
+							<Container className="relative flex flex-col h-full py-4 rounded-xl lg:py-4">
 								<Container className="flex gap-4">
 									{isOwned && balance && (
 										<Container
@@ -310,7 +310,7 @@ function ImagePreviewSection({
 					title={nft.name}
 				/>
 			)}
-			<Container className="container flex flex-col justify-center flex-1 h-full gap-4 py-3 ">
+			<Container className="container flex flex-col justify-center flex-1 h-full gap-4 py-4 lg:py-0">
 				<Container className="relative flex items-center justify-center w-full h-full overflow-hidden rounded-xl drop-shadow-xl">
 					<img
 						onClick={onLightboxOpen}
@@ -355,7 +355,7 @@ function ImagePreviewSection({
 										? Math.ceil((mintedNfts / maxNftSupply) * 100)
 										: 100
 								}%`,
-								backgroundColor: mintedNfts === 0 && "$textContrast",
+								backgroundColor: "$textContrast",
 							}}
 						/>
 					</Container>

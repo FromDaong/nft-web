@@ -20,11 +20,11 @@ export const ActionSection = (props) => {
 		<Container className="w-full gap-2">
 			<Container className="flex flex-col gap-4">
 				<Container className="flex flex-wrap gap-4">
-					<SecondaryListingTag />
-					<TreatOfTheMonthTag />
-					<MelonTag />
-					<SoldOutTag />
-					<VerifiedTag />
+					{false && <SecondaryListingTag />}
+					{false && <TreatOfTheMonthTag />}
+					{false && <MelonTag />}
+					{props.soldOut && <SoldOutTag />}
+					{false && <VerifiedTag />}
 				</Container>
 
 				<Container className="flex flex-col w-full gap-1">
