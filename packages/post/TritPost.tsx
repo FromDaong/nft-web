@@ -29,10 +29,6 @@ export const FrostyBackgroundContainer = styled(Container, {
 	},
 });
 
-type NFTDetailSectionProps = {
-	addWishlist: (id: string) => void;
-};
-
 // T-84 Sold out status should come from the subgraph
 export const TritPost = (props: TritPostProps) => {
 	const {ref} = useInView();
@@ -107,8 +103,8 @@ export const TritPost = (props: TritPostProps) => {
 									)}
 								</Container>
 								<CreatorTag
-									avatar={props.author.username}
-									username={props.author.username}
+									avatar={props.creator.username}
+									username={props.creator.username}
 								/>
 							</Container>
 						</Container>
@@ -120,7 +116,7 @@ export const TritPost = (props: TritPostProps) => {
 							liked={liked}
 							likeNFT={likeNFT}
 							unlikeNFT={likeNFT}
-							creator={props.author.username}
+							creator={props.creator.username}
 							toggleImageProtection={() => null}
 							isProtected={isProtected}
 							hideSeller={props.hideSeller}
@@ -133,6 +129,8 @@ export const TritPost = (props: TritPostProps) => {
 		</Link>
 	);
 };
+
+TritPost.DetailSection = ActionSection;
 
 function CreatorTag({avatar, username}) {
 	return (

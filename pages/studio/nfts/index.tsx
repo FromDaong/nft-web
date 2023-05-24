@@ -22,7 +22,7 @@ import {useRouter} from "next/router";
 const NFTs: Array<TritPostProps> = [
 	{
 		_id: "38893",
-		author: {
+		creator: {
 			avatar: "https://picsum.photos/seed/picsum/300/300",
 			display_name: "Chris",
 			username: "tatenda",
@@ -52,7 +52,7 @@ const NFTs: Array<TritPostProps> = [
 	},
 	{
 		_id: "38893",
-		author: {
+		creator: {
 			avatar: "https://picsum.photos/seed/picsum/300/300",
 			display_name: "Chris",
 			username: "tatenda",
@@ -82,7 +82,7 @@ const NFTs: Array<TritPostProps> = [
 	},
 	{
 		_id: "38893",
-		author: {
+		creator: {
 			avatar: "https://picsum.photos/seed/picsum/300/300",
 			display_name: "Chris",
 			username: "tatenda",
@@ -112,7 +112,7 @@ const NFTs: Array<TritPostProps> = [
 	},
 	{
 		_id: "38893",
-		author: {
+		creator: {
 			avatar: "https://picsum.photos/seed/picsum/300/300",
 			display_name: "Chris",
 			username: "tatenda",

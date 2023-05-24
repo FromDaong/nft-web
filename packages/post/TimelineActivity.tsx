@@ -83,10 +83,10 @@ export const TimelineActivity = (
 					className="gap-x-4"
 					css={{display: "flex"}}
 				>
-					<Link href={props.author.username}>
+					<Link href={props.creator.username}>
 						<a>
 							<UserAvatar
-								data={{...props.author}}
+								data={{...props.creator}}
 								size={40}
 							/>
 						</a>
@@ -101,14 +101,14 @@ export const TimelineActivity = (
 								}}
 							>
 								<div>
-									<Link href={props.author.username}>
+									<Link href={props.creator.username}>
 										<a>
 											<Text>
 												<ImportantSmallText>
-													{props.author.display_name}
+													{props.creator.display_name}
 												</ImportantSmallText>
 											</Text>{" "}
-											<SmallText>@{props.author.username}</SmallText> <br />
+											<SmallText>@{props.creator.username}</SmallText> <br />
 										</a>
 									</Link>
 								</div>

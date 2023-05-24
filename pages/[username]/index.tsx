@@ -1,9 +1,9 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import CreatorProfileNFT from "@components/NFTCard/cards/ProfileListingCard";
 import Guard from "@lib/guard";
 import Error404 from "@packages/error/404";
 import Error500 from "@packages/error/500";
 import RenderProfileNFTs from "@packages/post/profile/RenderProfileNFTs";
-import {TritPost} from "@packages/post/TritPost";
 import {usePaginatedPage} from "@packages/shared/components/Pagination/lib";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
@@ -62,7 +62,7 @@ export default function UserProfile(props: {
 			page={nfts_data.page}
 			hasNextPage={nfts_data.page < nfts_data.totalPages}
 			totalPages={nfts_data.totalPages}
-			Component={TritPost}
+			Component={CreatorProfileNFT}
 		/>
 	);
 }

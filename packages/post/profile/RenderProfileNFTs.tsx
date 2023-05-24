@@ -1,13 +1,11 @@
-import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import Pagination from "@packages/shared/components/Pagination";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import DynamicSkeleton from "@packages/skeleton";
 import {TritPostSkeleton} from "@packages/skeleton/config";
 import ProfileLayout from "core/components/layouts/ProfileLayout";
-import {ReactNode} from "react";
-import {TritPost} from "../TritPost";
 import {TritPostProps, TritResalePostProps} from "../types";
+import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
 
 const RenderProfileNFTs = ({
 	data,

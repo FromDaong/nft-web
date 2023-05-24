@@ -72,6 +72,9 @@ export const Button = styled("button", {
 			link: {
 				backgroundColor: "inherit",
 				color: "$accentColor",
+				"&hover:": {
+					backgroundColor: "$elementOnSurface",
+				},
 			},
 		},
 		outlined: {

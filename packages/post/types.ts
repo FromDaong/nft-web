@@ -8,7 +8,7 @@ export type TritPostProps = {
 		cdn: string;
 		ipfs: string;
 	};
-	author: {
+	creator: {
 		display_name: string;
 		username: string;
 		avatar: string;
@@ -85,7 +85,7 @@ export type TritResalePostProps = {
 		cdn: string;
 		ipfs: string;
 	};
-	author: {
+	creator: {
 		display_name: string;
 		username: string;
 		avatar: string;

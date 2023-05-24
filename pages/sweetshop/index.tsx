@@ -1,15 +1,10 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import SearchForm from "@components/MarketPlace/Listings/SearchForm";
 import SortBy from "@components/MarketPlace/SortByDropdownFilter";
+import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
 import {Checkbox} from "@components/ui/checkbox";
-import {
-	CalendarIcon,
-	FilterIcon,
-	UserGroupIcon,
-	XIcon,
-} from "@heroicons/react/outline";
+import {CalendarIcon, UserGroupIcon} from "@heroicons/react/outline";
 import {Tag} from "@packages/post/BuyNFTPageViewNFT";
-import {TritPost} from "@packages/post/TritPost";
 import {SEOHead} from "@packages/seo/page";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
@@ -21,7 +16,6 @@ import {
 	ImportantText,
 	MutedText,
 } from "@packages/shared/components/Typography/Text";
-import CoinsIcon from "@packages/shared/icons/CoinsIcon";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
@@ -101,7 +95,7 @@ export const getServerSideProps = async (ctx) => {
 				},
 				seller: {
 					address: post.creator.address,
-					profile_pic: post.creator.profile_pic,
+					profile_pic: post.creator_profile.profile_pic,
 					username: post.creator.username,
 					display_name: post.creator.display_name,
 					event_id: post._id,
@@ -128,76 +122,6 @@ export const getServerSideProps = async (ctx) => {
 		};
 	}
 };
-
-function ResultsFilter({sortBy}) {
-	return (
-		<Container className="sticky top-0 flex-shrink-0 h-screen w-96">
-			<Container
-				css={{
-					backgroundColor: "$surfaceOnSurface",
-					borderColor: "$subtleBorder",
-				}}
-				className="flex flex-col overflow-hidden border shadow-sm rounded-xl h-fit"
-			>
-				<Container className="flex flex-col gap-4 p-4 flex-noshrink">
-					<Heading size={"xss"}>Filters</Heading>
-					<Container className="flex flex-col gap-2">
-						<Container className="flex items-center justify-between gap-2">
-							<label htmlFor="creator">
-								<Text>From the creator</Text>
-							</label>
-							<Checkbox
-								id="creator"
-								required
-							/>
-						</Container>
-						<Container className="flex items-center justify-between gap-2">
-							<label htmlFor="resale">
-								<Text>Secondary market</Text>
-							</label>
-							<Checkbox
-								id="resale"
-								required
-							/>
-						</Container>
-						<Container className="flex items-center justify-between gap-2">
-							<label htmlFor="totm">
-								<Text>Treat of The Month</Text>
-							</label>
-							<Checkbox
-								id="totm"
-								required
-							/>
-						</Container>
-						<Container className="flex items-center justify-between gap-2">
-							<label htmlFor="soldOut">
-								<Text>Show sold out</Text>
-							</label>
-							<Checkbox
-								id="soldOut"
-								required
-							/>
-						</Container>
-					</Container>
-				</Container>
-				<Divider dir={"horizontal"} />
-				<Container className="flex flex-col gap-4 p-4 flex-noshrink">
-					<Heading size={"xss"}>Tags</Heading>
-					<Container className={"flex gap-2"}>
-						<Tag>NSFW</Tag>
-						<Tag>Sexy</Tag>
-						<Tag>TOTM</Tag>
-					</Container>
-				</Container>
-				<Divider dir={"horizontal"} />
-
-				<Container className="p-4">
-					<Button fullWidth>Show results</Button>
-				</Container>
-			</Container>
-		</Container>
-	);
-}
 
 function MarketplaceListingResults({
 	nft_posts,
@@ -250,20 +174,12 @@ function MarketplaceListingResults({
 						<CalendarIcon className="w-4 h-4" />
 						Treat of The Month
 					</Button>
-					<Button
-						appearance={"subtle"}
-						size={"sm"}
-						css={{padding: "4px 12px", color: "$red11"}}
-					>
-						<CircleSlash className="w-4 h-4" />
-						Sold out
-					</Button>
 				</Container>
 				<Container className="flex flex-wrap justify-between w-full mt-8 md:flex-row">
 					<Container className="flex flex-wrap items-center gap-4">
 						<Button
 							css={{padding: "4px 8px"}}
-							className="flex gap-4 border rounded-lg"
+							className="flex gap-4 rounded-lg"
 							appearance={"surface"}
 						>
 							<MutedText>Tags:</MutedText>
@@ -289,7 +205,7 @@ function MarketplaceListingResults({
 								key={nft._id}
 								className="col-span-1"
 							>
-								<TritPost
+								<SweetshopNFT
 									inGrid
 									{...nft}
 								/>

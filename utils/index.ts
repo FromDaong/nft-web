@@ -34,11 +34,11 @@ export const legacy_nft_to_new = (post: any): TritPostProps => ({
 		post.blurhash ||
 		"-qIFGCoMs:WBayay_NRjayj[ayj[IUWBayayj[fQIUt7j[ayayayj@WBRjoffkj[xuWBWCayj[ayWAt7fQj[ayayM{WBofj[j[fQ",
 	post_type: "colletible",
-	author: {
+	creator: {
 		username: post.creator.username,
 		display_name: post.creator.display_name,
-		live: true,
-		avatar: post.creator.profile_picture,
+		live: false,
+		avatar: post.creator.profile.profile_pic,
 	},
 	collection: {
 		name: post.collection_name,
