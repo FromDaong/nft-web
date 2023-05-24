@@ -29,6 +29,10 @@ export const FrostyBackgroundContainer = styled(Container, {
 	},
 });
 
+type NFTDetailSectionProps = {
+	addWishlist: (id: string) => void;
+};
+
 // T-84 Sold out status should come from the subgraph
 export const TritPost = (props: TritPostProps) => {
 	const {ref} = useInView();

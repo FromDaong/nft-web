@@ -99,7 +99,7 @@ export const useWagmiGetResaleNFTsForNFT = (id: number) => {
 	const [isLoading, setIsLoading] = useState(true);
 
 	const {data: sellers} = useContractRead({
-		addressOrName: contractAddresses.treatMarketplaceMinter[56],
+		addressOrName: contractAddresses.treatResaleMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		functionName: "getOpenOrdersForNft",
 		args: [id],
@@ -108,7 +108,7 @@ export const useWagmiGetResaleNFTsForNFT = (id: number) => {
 	const {data: signer} = useSigner();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplaceMinter[56],
+		addressOrName: contractAddresses.treatResaleMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});

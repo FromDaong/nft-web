@@ -7,7 +7,7 @@ const customHttpProvider = new ethers.providers.JsonRpcProvider(
 );
 
 export const treatMarketplaceContract = new ethers.Contract(
-	contractAddresses.treatMarketplaceMinter[56],
+	contractAddresses.treatResaleMarketplaceMinter[56],
 	ABI.treatMarketplace,
 	customHttpProvider
 );

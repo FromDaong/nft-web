@@ -12,6 +12,7 @@ import {FeaturedCreatorSkeleton} from "@packages/skeleton/config";
 import UserAvatar from "core/auth/components/Avatar";
 import Link from "next/link";
 import LiveTag from "./LiveTag";
+import {UserPlus} from "lucide-react";
 
 type SuggestedCreatorData = {
 	username: string;
@@ -98,12 +99,9 @@ const DefaultCreatorCard = (props: SuggestedCreatorData) => {
 							)}
 						</Container>
 						<Container className="flex gap-4 px-4">
-							<Link href={`/${props.username}`}>
-								<a>
-									<Button>View creator</Button>
-								</a>
-							</Link>
-							<Button>Follow</Button>
+							<Button>
+								<UserPlus className="w-5 h-5" /> Follow
+							</Button>
 						</Container>
 					</Container>
 				</Container>

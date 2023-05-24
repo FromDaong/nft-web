@@ -38,6 +38,7 @@ import {useDisclosure} from "@packages/hooks";
 import {SparklesIcon} from "@heroicons/react/solid";
 import {WishlistNFTCard} from "pages/studio/wishlist";
 import FullscreenImagePreviewModal from "@packages/modals/ImagePreview";
+import AvatarGroup from "@packages/avatars/AvatarGroup";
 
 export default function NFT(props: {
 	notFound?: boolean;
@@ -111,7 +112,7 @@ export default function NFT(props: {
 			/>
 			<ApplicationLayout>
 				<ApplicationFrame>
-					<Container className="relative flex gap-8 p-4 pb-12">
+					<Container className="relative flex flex-col gap-8 p-4 pb-12 lg:flex-row">
 						<ImagePreviewSection
 							isOwned={isOwned}
 							remainingNfts={remainingNfts}
@@ -121,8 +122,8 @@ export default function NFT(props: {
 							nft={nft}
 							postUtils={postUtils}
 						/>
-						<Container className="w-full lg:w-auto">
-							<Container className="relative flex flex-col h-full p-4 rounded-xl md:p-8 lg:p-12">
+						<Container className="flex-1 w-full">
+							<Container className="relative flex flex-col h-full py-4 rounded-xl md:py-8 lg:py-12">
 								<Container className="flex gap-4">
 									{isOwned && balance && (
 										<Container
@@ -309,7 +310,7 @@ function ImagePreviewSection({
 					title={nft.name}
 				/>
 			)}
-			<Container className="container flex flex-col justify-center flex-1 h-full gap-4 p-3 ">
+			<Container className="container flex flex-col justify-center flex-1 h-full gap-4 py-3 ">
 				<Container className="relative flex items-center justify-center w-full h-full overflow-hidden rounded-xl drop-shadow-xl">
 					<img
 						onClick={onLightboxOpen}
@@ -360,29 +361,7 @@ function ImagePreviewSection({
 					</Container>
 				</Container>
 
-				<Container className="flex justify-between gap-4">
-					<Container
-						className="flex items-center gap-2 p-2 pr-3 border rounded-lg shadow-sm w-fit"
-						css={{
-							backgroundColor: "$surfaceOnSurface",
-							borderColor: "$subtleBorder",
-						}}
-					>
-						<UserAvatar
-							username={nft.creator.username}
-							profile_pic={nft.creator.profile.profile_pic}
-							size={16}
-						/>
-						<Container className="flex gap-2">
-							<SmallText>
-								Collected by{" "}
-								<ImportantText css={{color: "$textContrast"}}>
-									0x0093...0832{" "}
-								</ImportantText>
-								and 34k others
-							</SmallText>
-						</Container>
-					</Container>
+				<Container className="flex flex-col justify-between gap-4 md:flex-row">
 					<Container>
 						{mintedNfts !== maxNftSupply && (
 							// &&!(nft.creator.address.toLowerCase() === address?.toLowerCase())

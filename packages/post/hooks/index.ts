@@ -135,7 +135,7 @@ export const usePurchaseResaleOrder = (signer) => {
 	const {address} = useAccount();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplaceMinter[56],
+		addressOrName: contractAddresses.treatResaleMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});
@@ -158,7 +158,7 @@ export const useListOrder = () => {
 	const {address} = useAccount();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplaceMinter[56],
+		addressOrName: contractAddresses.treatResaleMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});
@@ -190,7 +190,7 @@ export const useRemoveOrder = () => {
 	const {address} = useAccount();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplaceMinter[56],
+		addressOrName: contractAddresses.treatResaleMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});
@@ -219,7 +219,7 @@ export const useApproveMarketplace = () => {
 
 	const approveMarketplace = useCallback(async () => {
 		return treatMinterContract.setApprovalForAll(
-			contractAddresses.treatMarketplaceMinter[56],
+			contractAddresses.treatResaleMarketplaceMinter[56],
 			true,
 			{
 				from: address,
@@ -244,7 +244,8 @@ export const useGetMinterIsApprovedForAll = () => {
 		signerOrProvider: signer,
 	});
 
-	const treatMarketplaceAddress = contractAddresses.treatMarketplaceMinter[56];
+	const treatMarketplaceAddress =
+		contractAddresses.treatResaleMarketplaceMinter[56];
 
 	const fetchAllowance = useCallback(async () => {
 		const _allowance = await treatMinterContract.isApprovedForAll(
@@ -269,7 +270,7 @@ export const useGetResaleOrders = (id) => {
 	const [orders, setOrders] = useState([]);
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplaceMinter[56],
+		addressOrName: contractAddresses.treatResaleMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});
@@ -299,7 +300,7 @@ export const useGetRemainingOrderBalance = (id) => {
 	const {data: signer} = useSigner();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplaceMinter[56],
+		addressOrName: contractAddresses.treatResaleMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});
@@ -323,7 +324,7 @@ export const useGetRemainingOrderBalanceForSeller = (id, seller_address) => {
 	const {data: signer} = useSigner();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplaceMinter[56],
+		addressOrName: contractAddresses.treatResaleMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});
@@ -350,7 +351,7 @@ export const useCancelOrder = (id) => {
 	const {address} = useAccount();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplaceMinter[56],
+		addressOrName: contractAddresses.treatResaleMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});
@@ -369,7 +370,7 @@ export const useBuyFromResale = () => {
 	const {address} = useAccount();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplaceMinter[56],
+		addressOrName: contractAddresses.treatResaleMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});
@@ -418,7 +419,7 @@ export const useContracts = () => {
 	const {data: signer} = useSigner();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplaceMinter[56],
+		addressOrName: contractAddresses.treatResaleMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});

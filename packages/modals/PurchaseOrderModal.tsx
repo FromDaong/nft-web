@@ -17,7 +17,7 @@ export const usePurchaseResaleOrder = (signer) => {
 	const {address} = useAccount();
 
 	const treatMarketplaceContract = useContract({
-		addressOrName: contractAddresses.treatMarketplaceMinter[56],
+		addressOrName: contractAddresses.treatResaleMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
 		signerOrProvider: signer,
 	});

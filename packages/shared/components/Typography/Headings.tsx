@@ -68,6 +68,11 @@ export const Heading = styled("h1", {
 				lineHeight: "1.05em",
 			},
 		},
+		appearance: {
+			mute: {
+				color: "$text",
+			},
+		},
 	},
 
 	defaultVariants: {
