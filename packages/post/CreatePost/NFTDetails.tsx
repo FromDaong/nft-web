@@ -19,6 +19,8 @@ import {useStorageService} from "@packages/shared/hooks";
 import {File} from "filepond";
 import VideoPreview from "./VideoPreview";
 import Tiptap from "@components/ui/tiptap";
+import {PencilIcon} from "@heroicons/react/outline";
+import {UploadIcon} from "lucide-react";
 
 const AddNFTDetails = ({
 	prev,
@@ -211,15 +213,31 @@ const AddNFTDetails = ({
 													</Container>
 												</Container>
 											</Container>
-											<Container className="aspect-video col-span-1 w-full xl:w-96 ">
-												{temp_file.type === "image" ? (
-													<ImagePreviewWitEditor
-														image={temp_file.file}
-														save={(image) => console.log({image})}
-													/>
-												) : (
-													<VideoPreview file={temp_file.file} />
-												)}
+											<Container className="col-span-1 w-full xl:w-96 self-start flex flex-col gap-4">
+												<Container className="aspect-square w-full">
+													{temp_file.type === "image" ? (
+														<ImagePreviewWitEditor
+															image={temp_file.file}
+															save={(image) => console.log({image})}
+														/>
+													) : (
+														<VideoPreview file={temp_file.file} />
+													)}
+												</Container>
+												<Container className="flex gap-4">
+													<Button
+														size={"sm"}
+														appearance={"surface"}
+													>
+														<PencilIcon className="w-5 h-5" /> Edit image
+													</Button>
+													<Button
+														size={"sm"}
+														appearance={"surface"}
+													>
+														<UploadIcon className="w-5 h-5" /> Upload image
+													</Button>
+												</Container>
 											</Container>
 										</Container>
 									);

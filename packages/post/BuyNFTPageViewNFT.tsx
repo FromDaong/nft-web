@@ -61,16 +61,18 @@ const NFTPresentationComponent = (props: {
 				isOpen={isCollectorsModalOpen}
 				onClose={onCloseCollectorsModal}
 			/>
-			<Container className="flex-col gap-12 py-8 lg:gap-16 lg:flex">
+			<Container className="flex flex-col gap-12 py-8 lg:gap-16 lg:flex">
 				<Container className="flex flex-col gap-8">
-					<Container className={"flex flex-col gap-1"}>
+					<Container
+						className={"flex md:flex-col flex-col-reverse gap-2 md:gap-1"}
+					>
 						<Heading
 							size={"sm"}
 							className="tracking-tighter"
 						>
 							{nft.name}
 						</Heading>
-						<Container className="flex justify-between items-center">
+						<Container className="flex flex-col md:flex-row gap-2 justify-between md:items-center">
 							<Link href={`/${nft.creator.username}`}>
 								<a>
 									<Container className="flex gap-2">
@@ -91,7 +93,7 @@ const NFTPresentationComponent = (props: {
 							<Container className="flex gap-4">
 								<Button
 									size={"sm"}
-									appearance={"link"}
+									appearance={"surface"}
 									className="underline"
 									onClick={onOpenWishlistModal}
 								>
@@ -100,7 +102,7 @@ const NFTPresentationComponent = (props: {
 								</Button>
 								<Button
 									size={"sm"}
-									appearance={"link"}
+									appearance={"surface"}
 									className="underline"
 								>
 									<CopyIcon className="w-5 h-5" />
