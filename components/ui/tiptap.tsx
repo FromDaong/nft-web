@@ -56,7 +56,7 @@ const Tiptap = (props: {
 	);
 };
 
-export const TiptapPreview = (props: {value: any}) => {
+export const TiptapPreview = (props: {value: object}) => {
 	const editor = useEditor({
 		extensions: [StarterKit],
 		content: props.value,

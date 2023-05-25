@@ -1,19 +1,9 @@
 import AddToWishlist from "@components/MarketPlace/Details/Modals/AddToWishlist";
 import ShowAllCollectors from "@components/MarketPlace/Details/Modals/Collectors";
 import {TiptapPreview} from "@components/ui/tiptap";
-import {
-	ArrowRightIcon,
-	DotsCircleHorizontalIcon,
-	DotsHorizontalIcon,
-	HeartIcon,
-	LinkIcon,
-} from "@heroicons/react/outline";
+import {HeartIcon} from "@heroicons/react/outline";
 import AvatarGroup from "@packages/avatars/AvatarGroup";
-import {
-	useWagmiGetCreatorNftCost,
-	useWagmiGetSubscriberNftCost,
-	useWagmiGetTreatOfTheMonthNftCost,
-} from "@packages/chain/hooks";
+import {useWagmiGetCreatorNftCost} from "@packages/chain/hooks";
 import {useDisclosure} from "@packages/hooks";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
@@ -22,9 +12,7 @@ import {
 	ImportantText,
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
-import UserAvatar from "core/auth/components/Avatar";
 import {CopyIcon} from "lucide-react";
-import Image from "next/future/image";
 import Link from "next/link";
 
 const NFTPresentationComponent = (props: {
@@ -39,7 +27,8 @@ const NFTPresentationComponent = (props: {
 }) => {
 	const {nft} = props;
 	const {cost: creatorCost} = useWagmiGetCreatorNftCost(nft.id);
-	const description = JSON.parse(nft.description ?? "{}");
+	const description = JSON.parse(nft.description);
+	console.log({description});
 
 	const {
 		isOpen: isWishlistModalOpen,
@@ -52,8 +41,6 @@ const NFTPresentationComponent = (props: {
 		onOpen: onOpenCollectorsModal,
 		onClose: onCloseCollectorsModal,
 	} = useDisclosure();
-
-	console.log({description});
 
 	return (
 		<>

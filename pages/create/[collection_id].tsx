@@ -132,7 +132,7 @@ export default function PostType(props: {collection: string}) {
 						cdn,
 						ipfs,
 						subscription_nft: isSubscription,
-						description: JSON.stringify(n.description),
+						description: n.description,
 					};
 				})
 			);
