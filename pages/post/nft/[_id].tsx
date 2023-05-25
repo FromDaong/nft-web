@@ -272,7 +272,25 @@ export const getServerSideProps = async (context) => {
 	});
 
 	nft.creator = creator;
-	nft.description = JSON.parse(nft.description ?? "{}");
+	try {
+		nft.description = JSON.parse(nft.description ?? "{}");
+	} catch (e) {
+		// Create tiptap object with nft.description as one paragraph
+		nft.description = {
+			type: "doc",
+			content: [
+				{
+					type: "paragraph",
+					content: [
+						{
+							type: "text",
+							text: nft.description,
+						},
+					],
+				},
+			],
+		};
+	}
 
 	const returnObj = {
 		id: nft.id,
