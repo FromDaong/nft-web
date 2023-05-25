@@ -1,14 +1,17 @@
 import {PencilIcon} from "@heroicons/react/outline";
+import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Text} from "@packages/shared/components/Typography/Text";
 import Spinner from "@packages/shared/icons/Spinner";
 import PicEdtor from "@packages/shared/PicEditor";
-import {File} from "filepond";
+import {dataURLtoFile} from "@utils/index";
+import {TrashIcon} from "lucide-react";
 import {useEffect, useState} from "react";
 
-export default function ImagePreviewWitEditor(props: {
-	image: File;
-	save: (image: string) => void;
+export default function ImagePreviewWithEditor(props: {
+	image: any;
+	save: (image: File) => void;
+	reset: () => void;
 }) {
 	const [editorOpen, setEditorOpen] = useState(false);
 	const [editor, setEditor] = useState<any>(null);
@@ -57,8 +60,15 @@ export default function ImagePreviewWitEditor(props: {
 		};
 	}, [props.image]);
 
+	useEffect(() => {
+		if (image) {
+			const file = dataURLtoFile(image, props.image.file.name);
+			props.save(file);
+		}
+	}, [image]);
+
 	return (
-		<Container className="w-full h-full">
+		<Container className="w-full h-full flex flex-col gap-4">
 			<Container
 				css={{
 					backgroundImage: `url("${image}")`,
@@ -66,7 +76,7 @@ export default function ImagePreviewWitEditor(props: {
 					backgroundSize: "cover",
 					backgroundColor: "$surfaceOnSurface",
 				}}
-				className="flex items-center justify-center w-full h-full bg-gray-200 rounded-xl"
+				className="flex items-center justify-center aspect-square w-full bg-gray-200 rounded-xl"
 			>
 				{editorOpen && (
 					<Container
@@ -95,28 +105,24 @@ export default function ImagePreviewWitEditor(props: {
 						</Container>
 					</Container>
 				)}
-				<Container
-					css={{
-						backgroundPosition: "center",
-						backgroundSize: "cover",
-					}}
-					className="flex items-center justify-center w-full h-full rounded-xl"
+			</Container>
+			<Container className="flex gap-4">
+				<Button
+					size={"sm"}
+					appearance={"surface"}
+					onClick={openEditor}
+					type="button"
 				>
-					<Text
-						className="rounded-full shadow"
-						css={{
-							color: "$surface",
-							backgroundColor: "$text",
-							padding: "8px",
-						}}
-					>
-						<PencilIcon
-							width={24}
-							height={24}
-							onClick={openEditor}
-						/>
-					</Text>
-				</Container>
+					<PencilIcon className="w-5 h-5" /> Edit image
+				</Button>
+				<Button
+					size={"sm"}
+					appearance={"surface"}
+					onClick={() => props.reset()}
+					type="button"
+				>
+					<TrashIcon className="w-5 h-5" /> Discard changes
+				</Button>
 			</Container>
 		</Container>
 	);

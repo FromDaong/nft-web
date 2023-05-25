@@ -27,8 +27,8 @@ import logsnag from "@utils/logsnag";
 export default function PostType(props: {collection: string}) {
 	const data = JSON.parse(props.collection);
 	const isSubscription = data.isSubscription;
-	const [files, setFiles] = useState([]);
-	const {step, next, prev} = useStep(["upload", "detail"]);
+	const [finalImage, setFinalImage] = useState(null);
+	const {step, prev} = useStep(["upload", "detail"]);
 	const [title, setTitle] = useState("");
 	const [mintTxHash, setMintTxHash] = useState("");
 	const [nftValues, setNftValues] = useState([]);
@@ -110,7 +110,8 @@ export default function PostType(props: {collection: string}) {
 		}
 	}, [mintTxData, nftValues]);
 
-	const createNFTs = async (values, actions) => {
+	const createNFTs = async (values, actions, finalImage) => {
+		setFinalImage(finalImage);
 		setError("");
 		setSubmittedFormState({values, actions});
 		actions.setSubmitting(true);
@@ -119,10 +120,11 @@ export default function PostType(props: {collection: string}) {
 		setModalStep(processStages.uploading);
 
 		try {
+			console.log({values});
 			const with_uploaded_images = await Promise.all(
 				values.nfts.map(async (n) => {
-					const cdn = await uploadFile(n.file);
-					const ipfs = await uploadToIPFS(n.file);
+					const cdn = await uploadFile(finalImage);
+					const ipfs = await uploadToIPFS(finalImage);
 
 					return {...n, cdn, ipfs, subscription_nft: isSubscription};
 				})
@@ -211,16 +213,6 @@ export default function PostType(props: {collection: string}) {
 		return tx;
 	};
 
-	const proceedWithFiles = (
-		files: Array<{
-			file: File;
-			type: "image" | "video";
-		}>
-	) => {
-		setFiles(files);
-		next();
-	};
-
 	const processStages = {
 		uploading: {
 			status: "loading",
@@ -241,7 +233,11 @@ export default function PostType(props: {collection: string}) {
 				"We were denied permission to proceed with the transaction by your wallet.",
 			actionLabel: "Try again",
 			action: () =>
-				createNFTs(submittedFormState.values, submittedFormState.actions),
+				createNFTs(
+					submittedFormState.values,
+					submittedFormState.actions,
+					finalImage
+				),
 		},
 		uploadFailed: {
 			status: "error",
@@ -250,7 +246,11 @@ export default function PostType(props: {collection: string}) {
 				"An error happened while we were uploading your media. Please check your network connection and try again.",
 			actionLabel: "Try again",
 			action: () =>
-				createNFTs(submittedFormState.values, submittedFormState.actions),
+				createNFTs(
+					submittedFormState.values,
+					submittedFormState.actions,
+					finalImage
+				),
 		},
 		waitingForTx: {
 			status: "loading",
@@ -297,13 +297,6 @@ export default function PostType(props: {collection: string}) {
 		}
 	}, [data]);
 
-	// Go back to file selector if no media has been selected
-	useEffect(() => {
-		if (files.length === 0 && step === "detail") {
-			prev();
-		}
-	}, [files]);
-
 	useEffect(() => {
 		if (
 			nftValues.length > 0
@@ -335,15 +328,7 @@ export default function PostType(props: {collection: string}) {
 			<ApplicationFrame>
 				<Container className="flex flex-col gap-12 px-4 py-12">
 					<Container>
-						{step === "upload" ? (
-							<UploadMedia next={proceedWithFiles} />
-						) : (
-							<AddNFTDetails
-								prev={prev}
-								nft_data={files}
-								onSubmit={createNFTs}
-							/>
-						)}
+						<AddNFTDetails onSubmit={createNFTs} />
 					</Container>
 				</Container>
 			</ApplicationFrame>

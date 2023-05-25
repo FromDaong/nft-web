@@ -39,6 +39,7 @@ import {SparklesIcon} from "@heroicons/react/solid";
 import {WishlistNFTCard} from "pages/studio/wishlist";
 import FullscreenImagePreviewModal from "@packages/modals/ImagePreview";
 import AvatarGroup from "@packages/avatars/AvatarGroup";
+import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
 
 export default function NFT(props: {
 	notFound?: boolean;
@@ -118,7 +119,6 @@ export default function NFT(props: {
 							remainingNfts={remainingNfts}
 							mintedNfts={mintedNfts}
 							maxNftSupply={maxNftSupply}
-							address={address}
 							nft={nft}
 							postUtils={postUtils}
 						/>
@@ -226,7 +226,7 @@ export default function NFT(props: {
 											.map((post) => legacy_nft_to_new(post))
 											.slice(0, 3)
 											.map((item) => (
-												<TritPost
+												<SweetshopNFT
 													key={item._id}
 													inGrid
 													{...item}
@@ -290,7 +290,6 @@ function ImagePreviewSection({
 	remainingNfts,
 	mintedNfts,
 	maxNftSupply,
-	address,
 	nft,
 	postUtils,
 	isOwned,

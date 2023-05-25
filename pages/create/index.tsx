@@ -15,6 +15,7 @@ import UserAvatar from "core/auth/components/Avatar";
 import {useUser} from "core/auth/useUser";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
+import {set} from "date-fns";
 import {Field, Form, Formik} from "formik";
 import {ImageIcon, PlusIcon} from "lucide-react";
 import {useRouter} from "next/router";
@@ -67,7 +68,10 @@ export default function Create() {
 							initialValues={initialValues}
 							onSubmit={(values, actions) => {
 								axios
-									.post(`${apiEndpoint}/marketplace/collection/create`, values)
+									.post(`${apiEndpoint}/marketplace/collection/create`, {
+										...values,
+										description: JSON.stringify(values.description),
+									})
 									.then((res) => {
 										const {data} = res.data;
 										if (data) {
@@ -84,7 +88,7 @@ export default function Create() {
 									.required("Required")
 									.min(3, "Too short")
 									.max(50, "Too long"),
-								description: Yup.string(),
+								description: Yup.object(),
 							})}
 						>
 							{(props) => (
@@ -119,10 +123,12 @@ export default function Create() {
 											{({field, meta}) => (
 												<Container className="flex flex-col gap-2 max-w-xl">
 													<Tiptap
-														onChange={(e) =>
-															props.setFieldValue("description", e.target.value)
+														onChange={(val) =>
+															props.setFieldValue("description", val)
 														}
-														value={field.value}
+														onError={(e) =>
+															props.setFieldError("description", e)
+														}
 													/>
 
 													{meta.touched && meta.error && (

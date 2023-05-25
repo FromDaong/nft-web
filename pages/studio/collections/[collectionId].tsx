@@ -6,6 +6,7 @@ import {
 	PlusIcon,
 	UserAddIcon,
 } from "@heroicons/react/outline";
+import AvatarGroup from "@packages/avatars/AvatarGroup";
 import {TritPost} from "@packages/post/TritPost";
 import {TritPostProps} from "@packages/post/types";
 import {Button} from "@packages/shared/components/Button";
@@ -83,8 +84,6 @@ export default function CollectionPage() {
 		return data.data.data;
 	});
 
-	console.log(nfts, {collection});
-
 	return (
 		<ApplicationLayout>
 			<ApplicationFrame>
@@ -95,12 +94,16 @@ export default function CollectionPage() {
 				</Container>
 				<Container className="flex justify-end pt-8 ">
 					<Container className={"flex gap-4"}>
-						<Button appearance={"surface"}>
-							<UserAddIcon className="w-5 h-5" /> Invite collaborators
-						</Button>
 						<Button>
 							<ExternalLinkIcon className="w-5 h-5" /> Open in sweetshop
 						</Button>
+						{collection && (
+							<Container className="flex">
+								<Button appearance={"surface"}>
+									<UserAddIcon className="w-5 h-5" /> Invite collaborators
+								</Button>
+							</Container>
+						)}
 					</Container>
 				</Container>
 				{!isLoading && !isError && (
@@ -154,7 +157,7 @@ export default function CollectionPage() {
 						</Container>
 					</Container>
 				)}
-				<Container className="flex justify-between gap-4 pt-8 mt-8">
+				<Container className="flex justify-between gap-4 pt-8 mt-8 items-end">
 					<Heading size={"xs"}>
 						{isLoadingNFTs && !nfts && (
 							<Container
