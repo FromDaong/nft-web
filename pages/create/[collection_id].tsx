@@ -71,6 +71,8 @@ export default function PostType(props: {collection: string}) {
 		router.push(`/collection/${data._id}`);
 	};
 
+	console.log({nftValues});
+
 	const addNFTsToCollection = useCallback(() => {
 		setIsSubmitting(true);
 		setError("");
@@ -110,8 +112,8 @@ export default function PostType(props: {collection: string}) {
 		}
 	}, [mintTxData, nftValues]);
 
-	const createNFTs = async (values, actions, finalImage) => {
-		setFinalImage(finalImage);
+	const createNFTs = async (values, actions, image) => {
+		setFinalImage(image);
 		setError("");
 		setSubmittedFormState({values, actions});
 		actions.setSubmitting(true);
@@ -120,13 +122,18 @@ export default function PostType(props: {collection: string}) {
 		setModalStep(processStages.uploading);
 
 		try {
-			console.log({values});
 			const with_uploaded_images = await Promise.all(
-				values.nfts.map(async (n) => {
-					const cdn = await uploadFile(finalImage);
-					const ipfs = await uploadToIPFS(finalImage);
+				[values].map(async (n) => {
+					const cdn = await uploadFile(image);
+					const ipfs = await uploadToIPFS(image);
 
-					return {...n, cdn, ipfs, subscription_nft: isSubscription};
+					return {
+						...n,
+						cdn,
+						ipfs,
+						subscription_nft: isSubscription,
+						description: JSON.stringify(n.description),
+					};
 				})
 			);
 
@@ -146,7 +153,7 @@ export default function PostType(props: {collection: string}) {
 			setModalStep(processStages.waitingForTx);
 			transactionManager({
 				hash: mintTx.hash,
-				description: `Minting collection ${data.name} with ${values.nfts.length} NFTs`,
+				description: `Minting collection ${data.name} with ${values.length} NFTs`,
 			});
 
 			mintTx.wait().then((res) => {
@@ -262,21 +269,21 @@ export default function PostType(props: {collection: string}) {
 			status: "loading",
 			title: "💸 Listing on marketplace",
 			subtitle:
-				"Please wait while we list your collection on the marketplace. Please do not close or reload this page.",
+				"Please wait while we list your NFT on the marketplace. Please do not close or reload this page.",
 		},
 		txConfirmed: {
 			status: "success",
-			title: "💸 Your NFT Collection has been listed!",
+			title: "💸 Your NFT has been created and listed!",
 			subtitle:
 				"Your transaction has been confirmed on the blockchain. You can now visit the collection and other people can buy your NFTs.",
-			actionLabel: "Take me to the collection",
+			actionLabel: "Go to collection",
 			action: () => navigateToCollection(),
 		},
 		serverError: {
 			status: "error",
 			title: "⚠️ A server error occurred",
 			subtitle:
-				"We encountered an error while trying to list your collection on the marketplace. Please try again.",
+				"We encountered an error while trying to list your NFT on the marketplace. Please try again.",
 			actionLabel: "Try again",
 			action: () => addNFTsToCollection(),
 		},

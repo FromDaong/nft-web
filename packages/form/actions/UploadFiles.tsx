@@ -24,15 +24,15 @@ const UploadMedia = ({setFile}) => {
 
 	return (
 		<Container
-			className="flex flex-col max-w-2xl gap-8 p-8 shadow-sm"
+			className="flex flex-col w-full gap-8 p-8 shadow-sm"
 			css={{background: "$surfaceOnSurface", borderRadius: "16px"}}
 		>
 			<Container className="flex flex-col gap-4">
 				<Container className="flex flex-col gap-2">
-					<Heading size="xss">Add media to collection</Heading>
+					<Heading size="xss">Add NFT media</Heading>
 					<Text>
-						Add image, or video files here. Accepted formats are JPG, PNG, JPEG,
-						GIF & MP4
+						Upload your image file here. Accepted formats are JPG, PNG, JPEG,
+						GIF
 					</Text>
 				</Container>
 				<FilePond

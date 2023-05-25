@@ -1,5 +1,6 @@
 import AddToWishlist from "@components/MarketPlace/Details/Modals/AddToWishlist";
 import ShowAllCollectors from "@components/MarketPlace/Details/Modals/Collectors";
+import {TiptapPreview} from "@components/ui/tiptap";
 import {
 	ArrowRightIcon,
 	DotsCircleHorizontalIcon,
@@ -38,6 +39,7 @@ const NFTPresentationComponent = (props: {
 }) => {
 	const {nft} = props;
 	const {cost: creatorCost} = useWagmiGetCreatorNftCost(nft.id);
+	const description = JSON.parse(nft.description ?? "{}");
 
 	const {
 		isOpen: isWishlistModalOpen,
@@ -50,6 +52,8 @@ const NFTPresentationComponent = (props: {
 		onOpen: onOpenCollectorsModal,
 		onClose: onCloseCollectorsModal,
 	} = useDisclosure();
+
+	console.log({description});
 
 	return (
 		<>
@@ -92,7 +96,6 @@ const NFTPresentationComponent = (props: {
 							</Link>
 							<Container className="flex gap-4">
 								<Button
-									size={"sm"}
 									appearance={"surface"}
 									className="underline"
 									onClick={onOpenWishlistModal}
@@ -101,7 +104,6 @@ const NFTPresentationComponent = (props: {
 									Save
 								</Button>
 								<Button
-									size={"sm"}
 									appearance={"surface"}
 									className="underline"
 								>
@@ -167,7 +169,7 @@ const NFTPresentationComponent = (props: {
 							>
 								Description
 							</Heading>
-							<Text>{nft.description}</Text>
+							<TiptapPreview value={description} />
 						</Container>
 					)}
 				</Container>

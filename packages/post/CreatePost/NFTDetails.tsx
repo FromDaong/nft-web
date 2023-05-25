@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import {Container} from "@packages/shared/components/Container";
 import {Input} from "@packages/shared/components/Input";
 import {
@@ -16,6 +17,8 @@ import {Button} from "@packages/shared/components/Button";
 import {File as FilepondFile} from "filepond";
 import Tiptap from "@components/ui/tiptap";
 import UploadMedia from "@packages/form/actions/UploadFiles";
+import TreatCore from "core/TreatCore";
+import axios from "axios";
 
 export type MediaData = {
 	file: FilepondFile;
@@ -29,9 +32,18 @@ const AddNFTDetails = ({
 }) => {
 	const [mediaData, setMediaData] = useState<MediaData | null>(null);
 	const [finalImage, setFinalImage] = useState(null);
-	const {data: bnbPrice, error: bnbError} = useSWR(
-		`https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT`
+	const {data: bnbPrice, error: bnbError} = TreatCore.useQuery(
+		["bnbPrice1"],
+		async () => {
+			const data = await axios.get(
+				"https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd"
+			);
+
+			return data.data.binancecoin.usd;
+		}
 	);
+
+	console.log(bnbPrice);
 
 	return (
 		<Formik
@@ -42,14 +54,12 @@ const AddNFTDetails = ({
 				maxSupply: Yup.number()
 					.required("Max Supply is required")
 					.min(1, "Max Supply must be greater than 0"),
-				file: Yup.mixed().required("File is required"),
 				type: Yup.string().required("Type is required"),
 				protected: Yup.boolean().required("Protected is required"),
 			})}
 			initialValues={{
 				name: "",
 				description: "",
-				file: null,
 				type: "image",
 				price: "0.00",
 				maxSupply: "1",
@@ -79,7 +89,7 @@ const AddNFTDetails = ({
 														<Text>
 															<ImportantText>Name</ImportantText>
 														</Text>
-														<Field name={`nfts.name`}>
+														<Field name={`name`}>
 															{({field, meta}) => (
 																<Container className="flex flex-col gap-2">
 																	<Input
@@ -100,7 +110,7 @@ const AddNFTDetails = ({
 														<Text>
 															<ImportantText>Description</ImportantText>
 														</Text>
-														<Field name={`nfts.description`}>
+														<Field name={`description`}>
 															{({field, meta}) => (
 																<Container className="flex flex-col gap-2">
 																	<Tiptap
@@ -124,7 +134,7 @@ const AddNFTDetails = ({
 														<Text>
 															<ImportantText>Price in BNB</ImportantText>
 														</Text>
-														<Field name={`nfts.price`}>
+														<Field name={`price`}>
 															{({field, meta}) => (
 																<Container className="flex flex-col gap-2">
 																	<Input
@@ -135,6 +145,16 @@ const AddNFTDetails = ({
 																		defaultValue={0.02}
 																		{...field}
 																	/>
+																	<Text>
+																		<MutedText>
+																			{bnbPrice
+																				? `~$${(
+																						parseFloat(bnbPrice) *
+																						parseFloat(field.value)
+																				  ).toFixed(2)}`
+																				: "Loading..."}
+																		</MutedText>
+																	</Text>
 																	{meta.touched && meta.error && (
 																		<Text appearance={"danger"}>
 																			<SmallText>{meta.error}</SmallText>
@@ -148,7 +168,7 @@ const AddNFTDetails = ({
 														<Text>
 															<ImportantText>Maximum supply</ImportantText>
 														</Text>
-														<Field name={`nfts.maxSupply`}>
+														<Field name={`maxSupply`}>
 															{({field, meta}) => (
 																<Container className="flex flex-col gap-2">
 																	<Input
@@ -183,7 +203,7 @@ const AddNFTDetails = ({
 																className="SwitchRoot"
 																id="airplane-mode"
 																onCheckedChange={(e) =>
-																	form.setFieldValue(`nfts.protected`, e)
+																	form.setFieldValue(`protected`, e)
 																}
 															>
 																<Switch.Thumb className="SwitchThumb" />

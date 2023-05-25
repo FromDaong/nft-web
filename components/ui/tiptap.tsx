@@ -56,4 +56,24 @@ const Tiptap = (props: {
 	);
 };
 
+export const TiptapPreview = (props: {value: any}) => {
+	const editor = useEditor({
+		extensions: [StarterKit],
+		content: props.value,
+		editable: false,
+	});
+
+	if (!editor) return null;
+
+	return (
+		<Container>
+			<EditorContent
+				editor={editor}
+				disabled
+				className="h-fit"
+			/>
+		</Container>
+	);
+};
+
 export default Tiptap;

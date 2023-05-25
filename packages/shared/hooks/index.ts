@@ -1,7 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import uploadcareClient from "@utils/uploadcare";
 import axios from "axios";
-import {File} from "filepond";
 import {useEffect, useState} from "react";
 import {Dispatch, SetStateAction, useCallback} from "react";
 
@@ -19,9 +18,9 @@ export const useStorageService = () => {
 	const uploadFile = async (file: File): Promise<any> => {
 		try {
 			const formData = new FormData();
-			formData.append("file", file.file);
+			formData.append("file", file);
 
-			const cdn = await uploadcareClient.uploadFile(file.file);
+			const cdn = await uploadcareClient.uploadFile(file);
 
 			return cdn.cdnUrl;
 		} catch (err) {
@@ -35,8 +34,10 @@ export const useStorageService = () => {
 	};
 
 	const uploadToIPFS = async (file: File): Promise<any> => {
+		console.log({file});
+
 		const formData = new FormData();
-		formData.append("file", file.file);
+		formData.append("file", file);
 
 		const ipfs = await axios.post(
 			"https://api.pinata.cloud/pinning/pinFileToIPFS",

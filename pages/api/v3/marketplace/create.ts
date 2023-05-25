@@ -34,7 +34,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 					id: parseInt(nft.id),
 					tx_hash: hash,
 					name: nft.name,
-					description: nft.description,
+					description: JSON.stringify(nft.description),
 					price: nft.price,
 					external_url: process.env.NFT_EXTERNAL_URL,
 					image: {
@@ -57,7 +57,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 		);
 
 		await MongoModelCollection.findByIdAndUpdate(collection_id, {
-			nfts: created_nfts.map((nft) => nft._id),
+			$push: {nfts: {$each: created_nfts.map((nft) => nft._id)}},
 		});
 
 		return returnWithSuccess(

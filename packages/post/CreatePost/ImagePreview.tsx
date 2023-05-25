@@ -76,7 +76,7 @@ export default function ImagePreviewWithEditor(props: {
 					backgroundSize: "cover",
 					backgroundColor: "$surfaceOnSurface",
 				}}
-				className="flex items-center justify-center aspect-square w-full bg-gray-200 rounded-xl"
+				className="flex items-center justify-center aspect-square max-h-[80vh] lg:max-h-[60vh] w-full bg-gray-200 rounded-xl"
 			>
 				{editorOpen && (
 					<Container
