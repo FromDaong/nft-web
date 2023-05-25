@@ -89,7 +89,7 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 					height={20}
 				/>
 			</Button>
-			{!menuOpen && (
+			{menuOpen && (
 				<Container className="relative px-4">
 					<Container className="flex justify-end">
 						<Button css={{padding: "8px"}}>
