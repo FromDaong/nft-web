@@ -125,7 +125,7 @@ export default function Navbar() {
 					</div>
 				</Container>
 			</Nav>
-			<Nav className="sticky top-0 left-0 w-full py-4 shadow md:hidden">
+			<Nav className="fixed top-0 left-0 w-full py-4 shadow md:hidden">
 				<Container className="flex flex-col h-full gap-2 px-8">
 					<Container className="flex items-center justify-between">
 						<Link href={isConnected ? "/" : "/"}>

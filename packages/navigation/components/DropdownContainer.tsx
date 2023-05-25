@@ -12,9 +12,7 @@ export const DropdownContainer = styled("div", {
 
 export const NavDropdownContainer = styled("div", {
 	width: "fit-content",
-	background: "$elementSurface",
-
-	borderRadius: "8px",
+	background: "$surface",
 	zIndex: "100",
 	padding: "4px",
 	minWidth: "180px",
