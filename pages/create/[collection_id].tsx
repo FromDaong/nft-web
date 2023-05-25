@@ -334,23 +334,7 @@ export default function PostType(props: {collection: string}) {
 			<SEOHead title={`Create ${title} Collection - Treat`} />
 			<ApplicationFrame>
 				<Container className="flex flex-col gap-12 px-4 py-12">
-					<Container className="flex flex-col w-full max-w-2xl gap-2">
-						<Text css={{color: "$accentText"}}>
-							<ImportantText>Create collection</ImportantText>
-						</Text>
-						<Heading
-							css={{
-								minHeight: "16px",
-								borderRadius: "8px",
-								background: title ? "inherit" : "$elementOnSurface",
-								width: title ? "auto" : "400px",
-							}}
-							size="md"
-						>
-							{title}
-						</Heading>
-					</Container>
-					<Container className="max-w-6xl">
+					<Container>
 						{step === "upload" ? (
 							<UploadMedia next={proceedWithFiles} />
 						) : (

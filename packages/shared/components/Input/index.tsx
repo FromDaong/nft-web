@@ -22,6 +22,16 @@ export const Input = styled("input", {
 				border: "1px solid $border",
 			},
 		},
+		appearance: {
+			solid: {
+				backgroundColor: "$surface",
+				color: "$textContrast",
+				border: 0,
+				"&focus:": {
+					border: "1px solid $accentText",
+				},
+			},
+		},
 	},
 });
 

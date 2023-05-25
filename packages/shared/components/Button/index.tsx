@@ -14,7 +14,7 @@ export const Button = styled("button", {
 	alignItems: "center",
 	gap: "8px",
 	display: "flex",
-	borderRadius: "9999px",
+	borderRadius: "8px",
 	fontFamily: "'Helvetica', sans-serif",
 	fontWeight: "600",
 	justifyContent: "center",
@@ -71,7 +71,7 @@ export const Button = styled("button", {
 			},
 			link: {
 				backgroundColor: "inherit",
-				color: "$accentColor",
+				color: "$textContrast",
 				"&hover:": {
 					backgroundColor: "$elementOnSurface",
 				},
@@ -106,6 +106,9 @@ export const Button = styled("button", {
 				fontSize: "14px",
 				padding: "4px 8px",
 			},
+		},
+		noPadding: {
+			true: {padding: 0},
 		},
 	},
 	defaultVariants: {

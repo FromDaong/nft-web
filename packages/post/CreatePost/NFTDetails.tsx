@@ -18,6 +18,7 @@ import {useContracts} from "../hooks";
 import {useStorageService} from "@packages/shared/hooks";
 import {File} from "filepond";
 import VideoPreview from "./VideoPreview";
+import Tiptap from "@components/ui/tiptap";
 
 const AddNFTDetails = ({
 	prev,
@@ -41,7 +42,7 @@ const AddNFTDetails = ({
 				nfts: Yup.array().of(
 					Yup.object().shape({
 						name: Yup.string().required("Name is required"),
-						description: Yup.string().required("Description is required"),
+						description: Yup.object().required("Description is required"),
 						price: Yup.number().required("Price is required"),
 						maxSupply: Yup.number()
 							.required("Max Supply is required")
@@ -76,25 +77,15 @@ const AddNFTDetails = ({
 									return (
 										<Container
 											key={temp_file.file.id}
-											className="flex flex-col gap-4 p-4 border"
-											css={{
-												background: "$surfaceOnSurface",
-												borderRadius: "16px",
-												borderColor: "$border",
-											}}
+											className="flex gap-8 flex-col-reverse xl:flex-row"
 										>
-											<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-												<Container className="min-h-[320px] h-auto col-span-1">
-													{temp_file.type === "image" ? (
-														<ImagePreviewWitEditor
-															image={temp_file.file}
-															save={(image) => console.log({image})}
-														/>
-													) : (
-														<VideoPreview file={temp_file.file} />
-													)}
-												</Container>
-
+											<Container
+												className="flex flex-col gap-4 p-4 flex-1"
+												css={{
+													background: "$surfaceOnSurface",
+													borderRadius: "16px",
+												}}
+											>
 												<Container className="col-span-1 lg:col-span-2">
 													<Container className="grid grid-cols-2 gap-4">
 														<Container className="flex flex-col col-span-2 gap-1">
@@ -124,11 +115,16 @@ const AddNFTDetails = ({
 															<Field name={`nfts.${index}.description`}>
 																{({field, meta}) => (
 																	<Container className="flex flex-col gap-2">
-																		<Textarea
-																			type="text"
-																			{...field}
+																		<Tiptap
+																			onChange={(json) => {
+																				form.setFieldValue(field.name, json);
+																			}}
+																			onError={(error) => {
+																				console.log({error});
+																				form.setFieldError(field.name, error);
+																			}}
 																		/>
-																		{meta.touched && meta.error && (
+																		{meta.error && (
 																			<Text appearance={"danger"}>
 																				<SmallText>{meta.error}</SmallText>
 																			</Text>
@@ -215,35 +211,39 @@ const AddNFTDetails = ({
 													</Container>
 												</Container>
 											</Container>
+											<Container className="aspect-video col-span-1 w-full xl:w-96 ">
+												{temp_file.type === "image" ? (
+													<ImagePreviewWitEditor
+														image={temp_file.file}
+														save={(image) => console.log({image})}
+													/>
+												) : (
+													<VideoPreview file={temp_file.file} />
+												)}
+											</Container>
 										</Container>
 									);
 								});
 							}}
 						</FieldArray>
-						<Container className="flex justify-end gap-8 py-8">
-							<Container className="flex justify-end">
-								<Button
-									appearance={"unstyled"}
-									onClick={prev}
-								>
-									Previous
-								</Button>
-							</Container>
-							<Container className="flex justify-end">
-								<Button
-									disabled={
-										(props.dirty && !props.isValid) || props.isSubmitting
-									}
-									appearance={
-										(props.dirty && !props.isValid) || props.isSubmitting
-											? "disabled"
-											: "primary"
-									}
-									type="submit"
-								>
-									{props.isSubmitting ? "Creating your NFT..." : "Publish"}
-								</Button>
-							</Container>
+						<Container className="flex justify-start gap-8 py-8">
+							<Button
+								appearance={"unstyled"}
+								onClick={prev}
+							>
+								Previous
+							</Button>
+							<Button
+								disabled={(props.dirty && !props.isValid) || props.isSubmitting}
+								appearance={
+									(props.dirty && !props.isValid) || props.isSubmitting
+										? "disabled"
+										: "primary"
+								}
+								type="submit"
+							>
+								{props.isSubmitting ? "Creating your NFT..." : "Publish"}
+							</Button>
 						</Container>
 					</Container>
 				</Form>

@@ -19,6 +19,7 @@ const CollectionSchema = new Schema(
 		},
 		cover_image: {
 			type: String,
+			default: "/assets/bg.jpg",
 		},
 		nfts: [
 			{
@@ -30,6 +31,9 @@ const CollectionSchema = new Schema(
 			type: Boolean,
 			default: false,
 			required: true,
+		},
+		description: {
+			type: String,
 		},
 	},
 	{

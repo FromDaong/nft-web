@@ -43,21 +43,21 @@ export default function Navbar() {
 	} = useDisclosure();
 
 	return (
-		<Container>
-			<Nav className="fixed top-0 left-0 flex-col hidden w-full md:flex">
+		<Container className="sticky top-0 z-20">
+			<Nav className=" left-0 flex-col hidden w-full md:flex">
 				<Container className="relative w-full h-full px-8 divide-y xl:px-4">
 					<div className="container relative z-30 flex items-center justify-between py-2 mx-auto">
-						<Link href={isConnected ? "/" : "/"}>
-							<a className="relative w-8 h-8 text-3xl font-medium">
-								<Image
-									src={theme === "dark" ? DarkLogo : LightLogo}
-									alt="Logo"
-									layout="fill"
-									className="w-12 h-12"
-								/>
-							</a>
-						</Link>
-						<Container className={"flex gap-4"}>
+						<Container className={"flex gap-4 items-center"}>
+							<Link href={isConnected ? "/" : "/"}>
+								<a className="relative w-8 h-8 text-3xl font-medium">
+									<Image
+										src={theme === "dark" ? DarkLogo : LightLogo}
+										alt="Logo"
+										layout="fill"
+										className="w-12 h-12"
+									/>
+								</a>
+							</Link>
 							<div className="items-center hidden gap-4 md:flex">
 								<Link href="/sweetshop">
 									<a>
@@ -125,7 +125,7 @@ export default function Navbar() {
 					</div>
 				</Container>
 			</Nav>
-			<Nav className="fixed top-0 left-0 w-full py-4 shadow md:hidden">
+			<Nav className="sticky top-0 left-0 w-full py-4 shadow md:hidden">
 				<Container className="flex flex-col h-full gap-2 px-8">
 					<Container className="flex items-center justify-between">
 						<Link href={isConnected ? "/" : "/"}>

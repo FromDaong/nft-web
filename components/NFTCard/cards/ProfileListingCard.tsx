@@ -11,21 +11,12 @@ export default function CreatorProfileNFT(props: TritPostProps) {
 	const soldOut = props.collection?.minted === props.max_supply;
 	return (
 		<NFTCard _id={props._id}>
-			<Container className="relative flex w-full overflow-hidden aspect-square">
-				<NFTCard.Media
-					isProtected={isProtected && !isMine}
-					caption={props.text}
-					_id={props._id}
-				/>
-				<Container
-					className="flex flex-col justify-between w-full h-full p-2"
-					css={{zIndex: 10}}
-				>
-					<Container className="flex items-center justify-between">
-						<Container>{isProtected && <NFTCard.Protected />}</Container>
-					</Container>
-				</Container>
-			</Container>
+			<NFTCard.RenderMedia
+				isProtected={isProtected}
+				isMine={isMine}
+				text={props.text}
+				_id={props._id}
+			/>
 			<Container className="flex flex-col w-full gap-2 px-4">
 				<NFTCard.Detail
 					{...props}

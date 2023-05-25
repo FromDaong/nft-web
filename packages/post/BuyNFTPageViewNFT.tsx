@@ -1,6 +1,11 @@
+import AddToWishlist from "@components/MarketPlace/Details/Modals/AddToWishlist";
+import ShowAllCollectors from "@components/MarketPlace/Details/Modals/Collectors";
 import {
+	ArrowRightIcon,
 	DotsCircleHorizontalIcon,
 	DotsHorizontalIcon,
+	HeartIcon,
+	LinkIcon,
 } from "@heroicons/react/outline";
 import AvatarGroup from "@packages/avatars/AvatarGroup";
 import {
@@ -8,6 +13,7 @@ import {
 	useWagmiGetSubscriberNftCost,
 	useWagmiGetTreatOfTheMonthNftCost,
 } from "@packages/chain/hooks";
+import {useDisclosure} from "@packages/hooks";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
@@ -16,6 +22,7 @@ import {
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
 import UserAvatar from "core/auth/components/Avatar";
+import {CopyIcon} from "lucide-react";
 import Image from "next/future/image";
 import Link from "next/link";
 
@@ -31,45 +38,75 @@ const NFTPresentationComponent = (props: {
 }) => {
 	const {nft} = props;
 	const {cost: creatorCost} = useWagmiGetCreatorNftCost(nft.id);
-	const {cost: treatCost} = useWagmiGetTreatOfTheMonthNftCost(nft.id);
-	const {cost: subscriptionCost} = useWagmiGetSubscriberNftCost(nft.id);
 
-	let nftCost: any = nft.subscription_nft ? subscriptionCost : creatorCost;
-	nftCost = nft.totm_nft ? treatCost : nftCost;
+	const {
+		isOpen: isWishlistModalOpen,
+		onOpen: onOpenWishlistModal,
+		onClose: onCloseWishlistModal,
+	} = useDisclosure();
 
-	const displayedCost = nftCost;
+	const {
+		isOpen: isCollectorsModalOpen,
+		onOpen: onOpenCollectorsModal,
+		onClose: onCloseCollectorsModal,
+	} = useDisclosure();
 
 	return (
 		<>
+			<AddToWishlist
+				isOpen={isWishlistModalOpen}
+				onClose={onCloseWishlistModal}
+			/>
+			<ShowAllCollectors
+				isOpen={isCollectorsModalOpen}
+				onClose={onCloseCollectorsModal}
+			/>
 			<Container className="flex-col gap-12 py-8 lg:gap-16 lg:flex">
 				<Container className="flex flex-col gap-8">
-					<Container className={"flex flex-col gap-2"}>
-						<Link href={`/${nft.creator.username}`}>
-							<a>
-								<Container className="flex items-center gap-4 w-fit">
-									<UserAvatar
-										username={nft.creator.username}
-										profile_pic={nft.creator.profile.profile_pic}
-										size={24}
-									/>
+					<Container className={"flex flex-col gap-1"}>
+						<Heading
+							size={"sm"}
+							className="tracking-tighter"
+						>
+							{nft.name}
+						</Heading>
+						<Container className="flex justify-between items-center">
+							<Link href={`/${nft.creator.username}`}>
+								<a>
 									<Container className="flex gap-2">
-										<SmallText>Created by</SmallText>
-										<SmallText css={{color: "$textContrast"}}>
+										<Text>Created by</Text>
+										<Text
+											css={{color: "$textContrast"}}
+											className="underline"
+										>
 											<ImportantText>
 												{nft.creator.profile.display_name?.trim() === ""
 													? `@${nft.creator.username}`
 													: nft.creator.profile.display_name}
 											</ImportantText>
-										</SmallText>
+										</Text>
 									</Container>
-								</Container>
-							</a>
-						</Link>
-						<Container className="flex justify-between">
-							<Heading className="tracking-tighter">{nft.name}</Heading>
-							<Button appearance={"link"}>
-								<DotsHorizontalIcon className="w-5 h-5" />
-							</Button>
+								</a>
+							</Link>
+							<Container className="flex gap-4">
+								<Button
+									size={"sm"}
+									appearance={"link"}
+									className="underline"
+									onClick={onOpenWishlistModal}
+								>
+									<HeartIcon className="w-5 h-5" />
+									Save
+								</Button>
+								<Button
+									size={"sm"}
+									appearance={"link"}
+									className="underline"
+								>
+									<CopyIcon className="w-5 h-5" />
+									Copy link
+								</Button>
+							</Container>
 						</Container>
 					</Container>
 					<Container className="flex flex-wrap gap-4">
@@ -78,7 +115,7 @@ const NFTPresentationComponent = (props: {
 								appearance={"mute"}
 								size={"xss"}
 							>
-								Collected by
+								Owned by
 							</Heading>
 							<Container className="flex items-center w-fit">
 								<AvatarGroup
@@ -109,48 +146,7 @@ const NFTPresentationComponent = (props: {
 									<Button
 										appearance={"link"}
 										size={"sm"}
-									>
-										+3 more
-									</Button>
-								</Container>
-							</Container>
-						</Container>
-						<Container className="flex flex-col gap-2">
-							<Heading
-								appearance={"mute"}
-								size={"xss"}
-							>
-								Previous owners
-							</Heading>
-							<Container className="flex items-center w-fit">
-								<AvatarGroup
-									users={[
-										{
-											name: "Tatenda",
-											imageUrl: nft.creator.profile.profile_pic,
-											href: nft.creator.username,
-										},
-										{
-											name: "Tatenda",
-											imageUrl: nft.creator.profile.profile_pic,
-											href: nft.creator.username,
-										},
-										{
-											name: "Tatenda",
-											imageUrl: nft.creator.profile.profile_pic,
-											href: nft.creator.username,
-										},
-										{
-											name: "Tatenda",
-											imageUrl: nft.creator.profile.profile_pic,
-											href: nft.creator.username,
-										},
-									]}
-								/>
-								<Container className="flex gap-2">
-									<Button
-										appearance={"link"}
-										size={"sm"}
+										onClick={onOpenCollectorsModal}
 									>
 										+3 more
 									</Button>
@@ -158,31 +154,6 @@ const NFTPresentationComponent = (props: {
 							</Container>
 						</Container>
 					</Container>
-				</Container>
-
-				<Container className="col-span-2">
-					<Link href={`/${nft.creator.username}`}>
-						<a className={"flex flex-col gap-2"}>
-							<Heading size={"xss"}>Collection</Heading>
-							<Container
-								className="flex items-center gap-4 p-2 border rounded-lg w-fit"
-								css={{borderColor: "$subtleBorder"}}
-							>
-								<img
-									src={nft.creator.profile.profile_pic}
-									alt={"Collection name"}
-									height={32}
-									width={32}
-									className="object-cover rounded aspect-square"
-								/>
-								<Container className="flex gap-2">
-									<Text css={{color: "$textContrast"}}>
-										<ImportantText>THE KILLER COLLECTION</ImportantText>
-									</Text>
-								</Container>
-							</Container>
-						</a>
-					</Link>
 				</Container>
 
 				<Container className="flex flex-col col-span-2 gap-4 md:col-span-1">
@@ -228,30 +199,6 @@ const NFTPresentationComponent = (props: {
 						))}
 						<Tag>NFT</Tag>
 					</Container>
-				</Container>
-				<Container className="flex gap-4">
-					<Container
-						className="flex flex-col items-baseline overflow-hidden border rounded-lg shadow-sm"
-						css={{borderColor: "$border"}}
-					>
-						<SmallText
-							className="tracking-tighter"
-							css={{backgroundColor: "$surface", padding: "0.5rem"}}
-						>
-							<ImportantText>Price</ImportantText>
-						</SmallText>
-						<Heading
-							className="w-full tracking-tighter"
-							css={{backgroundColor: "$surfaceOnSurface", padding: "0.5rem"}}
-							size="xs"
-						>
-							{displayedCost} BNB
-						</Heading>
-					</Container>
-					<Stat
-						title={"Max Supply"}
-						value={props.maxSupply}
-					/>
 				</Container>
 			</Container>
 		</>
@@ -303,6 +250,60 @@ function Stat({title, value}) {
 			>
 				{value}
 			</Heading>
+		</Container>
+	);
+}
+
+function Collector({nft}) {
+	return (
+		<Container className="flex flex-col col-span-2 gap-2">
+			<Heading
+				appearance={"mute"}
+				size={"xss"}
+			>
+				Collection
+			</Heading>
+			<Container
+				css={{backgroundColor: "$surfaceOnSurface"}}
+				className="flex flex-wrap justify-between gap-4 shadow rounded-xl w-fit"
+			>
+				<Container className="flex items-center gap-4 p-2 pr-4">
+					<img
+						src={nft.creator.profile.profile_pic}
+						alt={"Collection name"}
+						className="object-cover w-20 rounded-xl aspect-square"
+					/>
+					<Container className="flex flex-col gap-2">
+						<Heading size={"xss"}>The Killer Collection</Heading>
+						<Container className={"flex gap-2"}>
+							<AvatarGroup
+								users={[
+									{
+										name: "Tatenda",
+										imageUrl: nft.creator.profile.profile_pic,
+										href: nft.creator.username,
+									},
+									{
+										name: "Tatenda",
+										imageUrl: nft.creator.profile.profile_pic,
+										href: nft.creator.username,
+									},
+									{
+										name: "Tatenda",
+										imageUrl: nft.creator.profile.profile_pic,
+										href: nft.creator.username,
+									},
+									{
+										name: "Tatenda",
+										imageUrl: nft.creator.profile.profile_pic,
+										href: nft.creator.username,
+									},
+								]}
+							/>
+						</Container>
+					</Container>
+				</Container>
+			</Container>
 		</Container>
 	);
 }

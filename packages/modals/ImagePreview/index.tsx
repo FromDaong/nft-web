@@ -55,7 +55,7 @@ export default function FullscreenImagePreviewModal(props: ImagePreviewProps) {
 								src={props.url}
 								sizes="100vw"
 								alt={props.title}
-								className="h-auto max-h-full shadow-xl aspect-auto"
+								className="h-auto max-h-[90vh] shadow-xl aspect-auto"
 							/>
 						</Container>
 					</Container>
