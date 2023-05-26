@@ -119,7 +119,6 @@ export const getServerSideProps = async (ctx) => {
 
 		const {data: nfts_data} = nfts_res.data;
 
-		console.log(nfts_data.base);
 		nfts_data.docs = nfts_data.docs.map((post, i) =>
 			legacy_nft_to_new({
 				...post,
