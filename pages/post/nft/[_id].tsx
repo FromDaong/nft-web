@@ -57,8 +57,6 @@ export default function NFT(props: {
 
 	const [showFullScreen, setShowFullScreen] = useState(false);
 	const [loadHD, setLoadHD] = useState(false);
-	console.log({nft});
-
 	useFullScreen("nft_image", showFullScreen);
 
 	const getMoreNFTsFromCreator = async () => {
@@ -81,6 +79,7 @@ export default function NFT(props: {
 		return <Error404 />;
 	}
 
+	nft.description = data.description;
 	const remainingNfts = maxNftSupply - mintedNfts;
 
 	console.log({remainingNfts, mintedNfts, maxNftSupply});
@@ -272,11 +271,12 @@ export const getServerSideProps = async (context) => {
 	});
 
 	nft.creator = creator;
+	let description = nft.description;
 	try {
-		nft.description = JSON.parse(nft.description ?? "{}");
+		description = JSON.parse(nft.description ?? "{}");
 	} catch (e) {
 		// Create tiptap object with nft.description as one paragraph
-		nft.description = {
+		description = {
 			type: "doc",
 			content: [
 				{
@@ -295,6 +295,7 @@ export const getServerSideProps = async (context) => {
 	const returnObj = {
 		id: nft.id,
 		nft,
+		description,
 	};
 
 	return {

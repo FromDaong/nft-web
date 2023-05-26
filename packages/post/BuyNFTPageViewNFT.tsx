@@ -14,6 +14,7 @@ import {
 } from "@packages/shared/components/Typography/Text";
 import {CopyIcon} from "lucide-react";
 import Link from "next/link";
+import {useMemo} from "react";
 
 const NFTPresentationComponent = (props: {
 	nft: any;
@@ -27,8 +28,13 @@ const NFTPresentationComponent = (props: {
 }) => {
 	const {nft} = props;
 	const {cost: creatorCost} = useWagmiGetCreatorNftCost(nft.id);
-	const description = JSON.parse(nft.description);
-	console.log({description});
+
+	const description = useMemo(() => {
+		if (typeof nft.description === "string") {
+			return JSON.parse(nft.description);
+		}
+		return nft.description;
+	}, [nft]);
 
 	const {
 		isOpen: isWishlistModalOpen,
@@ -41,6 +47,8 @@ const NFTPresentationComponent = (props: {
 		onOpen: onOpenCollectorsModal,
 		onClose: onCloseCollectorsModal,
 	} = useDisclosure();
+
+	console.log({description});
 
 	return (
 		<>
@@ -148,7 +156,7 @@ const NFTPresentationComponent = (props: {
 				</Container>
 
 				<Container className="flex flex-col col-span-2 gap-4 md:col-span-1">
-					{nft.description?.trim() && (
+					{nft.description && (
 						<Container className="flex flex-col gap-2">
 							<Heading
 								className="tracking-tighter"
