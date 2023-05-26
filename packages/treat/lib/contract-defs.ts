@@ -3,7 +3,7 @@ import {ABI} from "./abi";
 import {contractAddresses} from "./treat-contracts-constants";
 
 const customHttpProvider = new ethers.providers.JsonRpcProvider(
-	process.env.RPC_NODE_URL
+	"https://rpc.vnet.tenderly.co/devnet/treatdao/0077aa31-ff0e-4661-a507-6f5641b2230e"
 );
 
 export const treatMarketplaceContract = new ethers.Contract(

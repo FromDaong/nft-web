@@ -1,10 +1,12 @@
 import {
+	CashIcon,
 	ChartBarIcon,
 	ExternalLinkIcon,
 	GiftIcon,
 	HeartIcon,
 	HomeIcon,
 	PhotographIcon,
+	UserGroupIcon,
 } from "@heroicons/react/outline";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
@@ -18,7 +20,9 @@ import {useRouter} from "next/router";
 function StudioNavigation() {
 	const router = useRouter();
 	const {pathname} = router;
-	const {profile} = useUser();
+	const {creator, isLoading} = useUser();
+
+	if (isLoading) return null;
 
 	return (
 		<Container
@@ -37,28 +41,20 @@ function StudioNavigation() {
 						</Button>
 					</a>
 				</Link>
-				<Link href={"/studio/collections"}>
-					<a>
-						<Button
-							appearance={"link"}
-							activeLink={pathname.includes("/studio/collections")}
-						>
-							<StackIcon className={"w-5 h-5"} />
-							Collections
-						</Button>
-					</a>
-				</Link>
-				<Link href={"/studio/nfts"}>
-					<a>
-						<Button
-							appearance={"link"}
-							activeLink={pathname.includes("/studio/nfts")}
-						>
-							<PhotographIcon className={"w-5 h-5"} />
-							NFTs
-						</Button>
-					</a>
-				</Link>
+				{creator && (
+					<Link href={"/studio/collections"}>
+						<a>
+							<Button
+								appearance={"link"}
+								activeLink={pathname.includes("/studio/collections")}
+							>
+								<StackIcon className={"w-5 h-5"} />
+								Collections
+							</Button>
+						</a>
+					</Link>
+				)}
+
 				<Link href={"/studio/portfolio"}>
 					<a>
 						<Button
@@ -70,6 +66,17 @@ function StudioNavigation() {
 						</Button>
 					</a>
 				</Link>
+				<Link href={"/studio/nfts"}>
+					<a>
+						<Button
+							appearance={"link"}
+							activeLink={pathname.includes("/studio/nfts")}
+						>
+							<UserGroupIcon className={"w-5 h-5"} />
+							Resale
+						</Button>
+					</a>
+				</Link>
 				<Link href={"/studio/wishlist"}>
 					<a>
 						<Button
@@ -78,6 +85,17 @@ function StudioNavigation() {
 						>
 							<HeartIcon className={"w-5 h-5"} />
 							Wishlist
+						</Button>
+					</a>
+				</Link>
+				<Link href={"/studio/sales"}>
+					<a>
+						<Button
+							appearance={"link"}
+							activeLink={pathname.includes("/studio/sales")}
+						>
+							<CashIcon className={"w-5 h-5"} />
+							Sales
 						</Button>
 					</a>
 				</Link>

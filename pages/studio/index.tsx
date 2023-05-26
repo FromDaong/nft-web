@@ -17,6 +17,7 @@ import {
 	ArrowRightIcon,
 	ExternalLinkIcon,
 	PlusIcon,
+	StackIcon,
 } from "@radix-ui/react-icons";
 import Avvvatars from "avvvatars-react";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
@@ -50,9 +51,9 @@ export default function TreatCreatorStudio() {
 						<Container className="flex flex-col col-span-1 gap-8">
 							<Container className="flex items-center gap-2">
 								<Heading size={"xss"}>
-									<FilmIcon className="w-8 h-8" />
+									<StackIcon className="w-8 h-8" />
 								</Heading>
-								<Heading size={"xss"}>Sweetshop</Heading>
+								<Heading size={"xss"}>Collections</Heading>
 							</Container>
 							<Heading className={"lg:max-w-[320px]"}>
 								Sell NFTs on the sweetshop.
@@ -62,7 +63,7 @@ export default function TreatCreatorStudio() {
 								<Link href={"/create"}>
 									<a>
 										<Button css={{borderRadius: "9999px"}}>
-											Create a new NFT <ArrowRightIcon />
+											Create a new collection <ArrowRightIcon />
 										</Button>
 									</a>
 								</Link>
@@ -238,51 +239,6 @@ export default function TreatCreatorStudio() {
 								/>
 							))}
 						</Container>
-					</Container>
-				</Container>
-				<Divider dir={"horizontal"} />
-				<Container className="flex flex-col gap-8 py-8">
-					<Container className="flex justify-between">
-						<Heading size={"md"}>Collections</Heading>
-						<Link href={"/studio/collections"}>
-							<Button appearance={"surface"}>
-								<PlusIcon />
-								Create collection
-							</Button>
-						</Link>
-					</Container>
-					<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4">
-						{[
-							{
-								name: "TreatDAO Legacy NFTs",
-								cover_image: "https://picsum.photos/seed/picsum/720/720",
-								creator: "#fhhfj",
-								href: "9032932903",
-							},
-							{
-								name: "TreatDAO Legacy NFTs",
-								cover_image: "https://picsum.photos/seed/picsum/720/720",
-								creator: "#fhhfj",
-								href: "90329324903",
-							},
-							{
-								name: "TreatDAO Legacy NFTs",
-								cover_image: "https://picsum.photos/seed/picsum/720/720",
-								creator: "#fhhfj",
-								href: "90329329033",
-							},
-							{
-								name: "TreatDAO Legacy NFTs",
-								cover_image: "https://picsum.photos/seed/picsum/720/720",
-								creator: "#fhhfj",
-								href: "90329329e03",
-							},
-						].map((item) => (
-							<NFTCollection
-								item={item}
-								key={item.href}
-							/>
-						))}
 					</Container>
 				</Container>
 			</ApplicationFrame>

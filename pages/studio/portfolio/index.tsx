@@ -1,152 +1,44 @@
 import StudioNavigation from "@components/CreatorDashboard/StudioNavigation";
-import {
-	CalendarIcon,
-	DotsVerticalIcon,
-	PaperAirplaneIcon,
-} from "@heroicons/react/outline";
-import {TritPostProps} from "@packages/post/types";
+import {PaperAirplaneIcon} from "@heroicons/react/outline";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
-import {Heading, Text} from "@packages/shared/components/Typography/Headings";
-import {
-	ImportantText,
-	SmallText,
-} from "@packages/shared/components/Typography/Text";
+import {Heading} from "@packages/shared/components/Typography/Headings";
 import ListForSaleIcon from "@packages/shared/icons/ListForSale";
-import RectangleStack from "@packages/shared/icons/RectangleStack";
+import Spinner from "@packages/shared/icons/Spinner";
+import {ABI} from "@packages/treat/lib/abi";
+import {treatNFTMinterContract} from "@packages/treat/lib/contract-defs";
+import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import {MagnifyingGlassIcon} from "@radix-ui/react-icons";
+import {apiEndpoint} from "@utils/index";
+import web3 from "@utils/web3";
+import axios from "axios";
+import TreatCore from "core/TreatCore";
+import {useUser} from "core/auth/useUser";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
-
-const NFTs: Array<TritPostProps> = [
-	{
-		_id: "38893",
-		creator: {
-			avatar: "https://picsum.photos/seed/picsum/300/300",
-			display_name: "Chris",
-			username: "tatenda",
-			address: "0x0898239832",
-			bio: "My bio is private",
-		},
-		id: "19",
-		max_supply: 10,
-		image: {
-			cdn: "https://picsum.photos/seed/picsum/720/720",
-			ipfs: "https://picsum.photos/seed/picsum/720/720",
-		},
-		post_type: "colletible",
-		isSoldOut: true,
-		collection: {
-			avatar: "https://picsum.photos/seed/picsum/720/720",
-			minted: 10,
-			name: "My collection name",
-			totalSupply: 60,
-		},
-		blurhash: "",
-		name: "Trust the process",
-		price: {
-			currency: "BNB",
-			value: 0.001,
-		},
-	},
-	{
-		_id: "38893",
-		creator: {
-			avatar: "https://picsum.photos/seed/picsum/300/300",
-			display_name: "Chris",
-			username: "tatenda",
-			address: "0x0898239832",
-			bio: "My bio is private",
-		},
-		id: "19",
-		max_supply: 10,
-		image: {
-			cdn: "https://picsum.photos/seed/picsum/720/720",
-			ipfs: "https://picsum.photos/seed/picsum/720/720",
-		},
-		post_type: "colletible",
-		isSoldOut: true,
-		collection: {
-			avatar: "https://picsum.photos/seed/picsum/720/720",
-			minted: 10,
-			name: "My collection name",
-			totalSupply: 60,
-		},
-		blurhash: "",
-		name: "Trust the process",
-		price: {
-			currency: "BNB",
-			value: 0.001,
-		},
-	},
-	{
-		_id: "38893",
-		creator: {
-			avatar: "https://picsum.photos/seed/picsum/300/300",
-			display_name: "Chris",
-			username: "tatenda",
-			address: "0x0898239832",
-			bio: "My bio is private",
-		},
-		id: "19",
-		max_supply: 10,
-		image: {
-			cdn: "https://picsum.photos/seed/picsum/720/720",
-			ipfs: "https://picsum.photos/seed/picsum/720/720",
-		},
-		post_type: "colletible",
-		isSoldOut: true,
-		collection: {
-			avatar: "https://picsum.photos/seed/picsum/720/720",
-			minted: 10,
-			name: "My collection name",
-			totalSupply: 60,
-		},
-		blurhash: "",
-		name: "Trust the process",
-		price: {
-			currency: "BNB",
-			value: 0.001,
-		},
-	},
-	{
-		_id: "38893",
-		creator: {
-			avatar: "https://picsum.photos/seed/picsum/300/300",
-			display_name: "Chris",
-			username: "tatenda",
-			address: "0x0898239832",
-			bio: "My bio is private",
-		},
-		id: "19",
-		max_supply: 10,
-		image: {
-			cdn: "https://picsum.photos/seed/picsum/720/720",
-			ipfs: "https://picsum.photos/seed/picsum/720/720",
-		},
-		post_type: "colletible",
-		isSoldOut: true,
-		collection: {
-			avatar: "https://picsum.photos/seed/picsum/720/720",
-			minted: 10,
-			name: "My collection name",
-			totalSupply: 60,
-		},
-		blurhash: "",
-		name: "Trust the process",
-		price: {
-			currency: "BNB",
-			value: 0.001,
-		},
-	},
-];
+import {useEffect} from "react";
 
 export default function PortfolioPage() {
+	//const balances = treatNFTMinterContract.functions.balanceOfBatch([""], [""]);
+	const {profile} = useUser();
+
+	useEffect(() => {
+		if (profile) {
+			const treatMinterContract = new web3.eth.Contract(
+				ABI.treatMarketplace as any,
+				contractAddresses.treatResaleMarketplaceMinter[56]
+			);
+			(async () => {
+				console.log(await treatMinterContract.methods.creators.call());
+			})();
+		}
+	}, [profile]);
+
 	return (
 		<ApplicationLayout>
 			<ApplicationFrame>
 				<Container
-					className="flex flex-col gap-4 px-4 py-4 md:pt-0 lg:px-0"
+					className="flex flex-col gap-4 py-4 md:pt-0 lg:px-0"
 					css={{borderColor: "$border"}}
 				>
 					<Container className="flex items-baseline justify-between">
@@ -159,69 +51,35 @@ export default function PortfolioPage() {
 				>
 					<Heading size={"sm"}>Portfolio</Heading>
 					<Container className={"flex gap-2"}>
-						<Button>
+						<Button appearance={"surface"}>
 							<MagnifyingGlassIcon className="w-5 h-5" />
 						</Button>
-						<Button>
-							<PaperAirplaneIcon className="w-5 h-5" />
+						<Button appearance={"surface"}>
 							Send
+							<PaperAirplaneIcon className="w-5 h-5 rotate-90" />
 						</Button>
-						<Button>
+						<Button appearance={"surface"}>
 							<ListForSaleIcon className="w-5 h-5" />
 							List for sale
 						</Button>
 					</Container>
 				</Container>
-				<Container className="grid grid-cols-4 gap-8 mt-8">
-					<OwnedNFTCard />
-					<OwnedNFTCard />
-					<OwnedNFTCard />
-					<OwnedNFTCard />
-					<OwnedNFTCard />
-					<OwnedNFTCard />
-					<OwnedNFTCard />
+				<Container className="flex items-center justify-center">
+					{!profile && <Spinner />}
+					{profile && <PortfolioNFTsPresenter username={profile.username} />}
 				</Container>
 			</ApplicationFrame>
 		</ApplicationLayout>
 	);
 }
 
-function OwnedNFTCard() {
-	return (
-		<Container className="flex flex-col gap-4 p-4 bg-white rounded-xl">
-			<Container className="w-full bg-gray-200 h-96 rounded-xl" />
-			<Container className="flex flex-col gap-1">
-				<Container className="flex justify-between gap-4">
-					<Heading
-						size={"xss"}
-						className="flex-1"
-					>
-						A weird but good name
-					</Heading>
-					<Button appearance={"unstyled"}>
-						<DotsVerticalIcon className="w-5 h-5" />
-					</Button>
-				</Container>
-				<Container className="flex items-center gap-2 p-1 pr-2 bg-gray-100 rounded-xl w-fit">
-					<Container className="w-8 h-8 bg-white rounded-xl" />
-					<SmallText className="uppercase">
-						<ImportantText>The Legacy Collection</ImportantText>
-					</SmallText>
-				</Container>
-				<Container className="flex gap-4 mt-4">
-					<Container className="flex items-center gap-2">
-						<RectangleStack className="w-4 h-4" />
-						<SmallText className="truncate line-clamp-1 text-ellipsis">
-							4 owned
-						</SmallText>
-					</Container>
-					<Text>&bull;</Text>
-					<Container className="flex items-center flex-1 gap-2">
-						<CalendarIcon className="w-4 h-4" />
-						<SmallText>17 months ago</SmallText>
-					</Container>
-				</Container>
-			</Container>
-		</Container>
+const PortfolioNFTsPresenter = ({username}) => {
+	const {data, isLoading, isError} = TreatCore.useQuery(
+		["getOwnedNFTs", username],
+		() => {
+			return axios.get(`${apiEndpoint}/profile/${username}/collected`);
+		}
 	);
-}
+	console.log({data});
+	return <Container className="grid grid-cols-4 gap-8 mt-8"></Container>;
+};

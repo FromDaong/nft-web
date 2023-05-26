@@ -8,6 +8,10 @@ import {
 	MongoModelProfile,
 } from "server/helpers/models";
 import axios from "axios";
+import {
+	MoralisNFTApiURLBuilder,
+	generateNewNFTFromOwnedButLostNFT,
+} from "@lib/moralis";
 
 export default async function handler(req, res) {
 	const {username} = req.query;
@@ -54,12 +58,14 @@ export default async function handler(req, res) {
 	const data = response;
 
 	const ownedNftsIds = data.result.map((nft) => Number(nft.token_id));
+	const nftsFromMoralis = data.result.map((nft) => nft);
 
 	const options = {
 		page: 1,
 		limit: 100,
 	};
 
+	/*
 	// @ts-ignore
 	const nfts = await MongoModelNFT.paginate(
 		{
@@ -67,8 +73,25 @@ export default async function handler(req, res) {
 		},
 		options
 	);
+	*/
 
-	nfts.docs = await MongoModelCreator.populate(nfts.docs, {
+	// nfts = []
+	// loop through ownedNftsIds and find in Mongo and push to arr
+	// if not found, create new NFT and push to arr
+	let nfts = nftsFromMoralis.map(async (nftFromMoralis) => {
+		const nft = await MongoModelNFT.findOne({id: nftFromMoralis.token_id});
+
+		if (nft) {
+			return nft;
+		}
+
+		const newNFT = generateNewNFTFromOwnedButLostNFT(nftFromMoralis);
+
+		return newNFT;
+	});
+
+	nfts = nfts.filter((nft) => nft);
+	nfts = await MongoModelCreator.populate(nfts.docs, {
 		path: "creator",
 		select: "username address bio profile",
 		populate: {
@@ -79,7 +102,7 @@ export default async function handler(req, res) {
 
 	return returnWithSuccess(
 		{
-			docs: nfts.docs,
+			docs: nfts,
 			cursor: data.cursor,
 			hasNextPage: data.page * 100 < data.total,
 			nextPage: data.page * 100 < data.total ? data.page + 1 : null,

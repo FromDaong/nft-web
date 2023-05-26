@@ -266,7 +266,7 @@ export const lightTheme = createTheme("light", {
 		errorText: "$red11",
 		errorTextContrast: "$red12",
 
-		surface: "$sand2",
+		surface: "$sand1",
 		elementSurface: "#ffffff",
 		surfaceOnSurface: "#ffffff",
 		elementOnSurface: "$sand4",

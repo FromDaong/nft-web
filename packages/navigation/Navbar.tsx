@@ -21,9 +21,7 @@ import TransactionHistoryTray from "@components/Notifications/TransactionHistory
 import RectangleStack from "@packages/shared/icons/RectangleStack";
 
 const Nav = styled("nav", {
-	backgroundColor: "$surfaceOnSurface",
 	zIndex: 30,
-	borderBottom: "1px solid",
 	borderColor: "$border",
 });
 
@@ -43,7 +41,7 @@ export default function Navbar() {
 	} = useDisclosure();
 
 	return (
-		<Container className="sticky top-0 z-20">
+		<Container className="top-0 z-20">
 			<Nav className=" left-0 flex-col hidden w-full md:flex">
 				<Container className="relative w-full h-full px-8 divide-y xl:px-4">
 					<div className="container relative z-30 flex items-center justify-between py-2 mx-auto">
@@ -125,7 +123,7 @@ export default function Navbar() {
 					</div>
 				</Container>
 			</Nav>
-			<Nav className="fixed top-0 left-0 w-full py-4 shadow md:hidden">
+			<Nav className="top-0 left-0 w-full py-4 md:hidden">
 				<Container className="flex flex-col h-full gap-2 px-8">
 					<Container className="flex items-center justify-between">
 						<Link href={isConnected ? "/" : "/"}>
