@@ -123,6 +123,7 @@ export const generateNewNFTFromOwnedButLostNFT = async (
 			username: metadata.properties.model.handle,
 			profile: creatorProfile._id,
 		});
+		await creator.save();
 	}
 
 	const newNFT = new MongoModelNFT({

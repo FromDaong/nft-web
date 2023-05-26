@@ -13,6 +13,7 @@ import {Collection} from "./atoms/Collection";
 import MarketType, {SoldOutTag} from "./atoms/MarketType";
 import {ReactNode} from "react";
 import NFTMediaRenderer from "./media/MediaRenderer";
+import Owned from "./atoms/Owned";
 
 // T-84 Sold out status should come from the subgraph
 export const NFTCard = (props: {children: ReactNode; _id: string}) => {
@@ -47,3 +48,4 @@ NFTCard.ListedBy = ListedBy;
 NFTCard.Collection = Collection;
 NFTCard.MarketStatus = MarketType;
 NFTCard.SoldOut = SoldOutTag;
+NFTCard.Owned = Owned;

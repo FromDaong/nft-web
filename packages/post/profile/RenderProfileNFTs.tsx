@@ -76,12 +76,6 @@ const RenderProfileNFTs = ({
 									isMine={username === profile.username}
 									hideSeller={hideSeller}
 									hideSoldOut={hideSoldOut}
-									seller={profile}
-									creator={{
-										avatar: profile.avatar,
-										username: profile.username,
-										display_name: profile.display_name,
-									}}
 								/>
 							))}
 						</Container>

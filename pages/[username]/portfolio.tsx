@@ -1,4 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import PortfolioPublicListingCard from "@components/NFTCard/cards/PortfolioListingCard";
 import Error404 from "@packages/error/404";
 import Error500 from "@packages/error/500";
 import RenderProfileNFTs from "@packages/post/profile/RenderProfileNFTs";
@@ -75,7 +76,7 @@ export default function UserProfile(props: {
 			page={nfts_data.page}
 			hasNextPage={nfts_data.page < totalPages}
 			totalPages={totalPages}
-			Component={TritPortfolioPost}
+			Component={PortfolioPublicListingCard}
 		/>
 	);
 }
@@ -118,22 +119,25 @@ export const getServerSideProps = async (ctx) => {
 
 		const {data: nfts_data} = nfts_res.data;
 
-		nfts_data.docs = nfts_data.docs.map((post) =>
+		console.log(nfts_data.base);
+		nfts_data.docs = nfts_data.docs.map((post, i) =>
 			legacy_nft_to_new({
 				...post,
 				price: post.price,
 				_id: post._id,
 				creator: {
 					...post.creator,
-					profile: post.creator.profile,
+					profile: post.creator?.profile,
 				},
 				seller: {
-					address: post.creator.address,
-					profile_pic: post.creator.profile.profile_pic,
-					username: post.creator.username,
-					display_name: post.creator.profile.display_name,
+					address: post.creator?.address,
+					profile_pic: post.creator.profile?.profile_pic,
+					username: post.creator?.username,
+					display_name: post.creator.profile?.display_name,
 					event_id: post._id,
 				},
+				count: nfts_data.base[i].amount,
+				image: post.image ?? {},
 			})
 		);
 
@@ -149,6 +153,7 @@ export const getServerSideProps = async (ctx) => {
 			props,
 		};
 	} catch (err) {
+		console.log({err});
 		return {
 			props: {
 				sort: sort ?? 3,

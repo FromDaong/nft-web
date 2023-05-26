@@ -57,41 +57,28 @@ export default async function handler(req, res) {
 
 	const data = response;
 
-	const ownedNftsIds = data.result.map((nft) => Number(nft.token_id));
 	const nftsFromMoralis = data.result.map((nft) => nft);
-
-	const options = {
-		page: 1,
-		limit: 100,
-	};
-
-	/*
-	// @ts-ignore
-	const nfts = await MongoModelNFT.paginate(
-		{
-			id: {$in: ownedNftsIds},
-		},
-		options
-	);
-	*/
 
 	// nfts = []
 	// loop through ownedNftsIds and find in Mongo and push to arr
 	// if not found, create new NFT and push to arr
-	let nfts = nftsFromMoralis.map(async (nftFromMoralis) => {
-		const nft = await MongoModelNFT.findOne({id: nftFromMoralis.token_id});
+	let nfts = await Promise.all(
+		nftsFromMoralis.map(async (nftFromMoralis) => {
+			const nft = await MongoModelNFT.findOne({id: nftFromMoralis.token_id});
 
-		if (nft) {
-			return nft;
-		}
+			if (nft) {
+				return nft;
+			}
 
-		const newNFT = generateNewNFTFromOwnedButLostNFT(nftFromMoralis);
+			const newNFT = await generateNewNFTFromOwnedButLostNFT(nftFromMoralis);
+			if (!newNFT) return null;
 
-		return newNFT;
-	});
+			return newNFT;
+		})
+	);
 
 	nfts = nfts.filter((nft) => nft);
-	nfts = await MongoModelCreator.populate(nfts.docs, {
+	nfts = await MongoModelCreator.populate(nfts, {
 		path: "creator",
 		select: "username address bio profile",
 		populate: {
@@ -109,6 +96,7 @@ export default async function handler(req, res) {
 			page: Number(p),
 			total: data.total,
 			totalPages: Math.ceil(Number(data.total) / 100),
+			base: nftsFromMoralis,
 		},
 		res
 	);

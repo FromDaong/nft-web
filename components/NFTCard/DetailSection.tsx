@@ -3,7 +3,7 @@ import {Container} from "@packages/shared/components/Container";
 
 export const DetailSection = (props) => {
 	return (
-		<Container className="w-full gap-2">
+		<Container className="w-full gap-2 flex flex-col">
 			<Container className="flex flex-col w-full gap-1">
 				<Container className="flex items-baseline justify-between w-full gap-2">
 					<Heading
