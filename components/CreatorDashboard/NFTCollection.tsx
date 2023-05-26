@@ -7,7 +7,7 @@ import Link from "next/link";
 function NFTCollection({item}) {
 	return (
 		<Link
-			href={`/studio/collections/${item.href}`}
+			href={`${item.href}`}
 			key={item.href}
 		>
 			<a>
@@ -15,7 +15,7 @@ function NFTCollection({item}) {
 					className="rounded-xl relative col-span-1 overflow-hidden w-full aspect-video"
 					key={item.name}
 					css={{
-						background: `url("${item.cover_image}")`,
+						background: `url("${item.cover_image ?? "/assets/bg.jpg"}")`,
 						backgroundSize: "cover",
 					}}
 				></Container>
@@ -26,7 +26,7 @@ function NFTCollection({item}) {
 								href: `/${item.creator.username}`,
 								imageUrl: item.creator.avatar,
 								name: item.creator.username,
-								size: 24,
+								size: 32,
 							},
 						]}
 					/>
@@ -36,7 +36,9 @@ function NFTCollection({item}) {
 							<Verified className="w-4 h-4" />
 							<Text>{item.creator.username}</Text>
 						</Container>
-						<Text>{item.nfts?.length} </Text>
+						<Text>
+							{item.nfts?.length} nft{item.nfts?.length > 1 ? "s" : ""}
+						</Text>
 					</Container>
 				</Container>
 			</a>

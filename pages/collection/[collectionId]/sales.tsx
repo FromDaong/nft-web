@@ -1,15 +1,4 @@
-import NFTCollection from "@components/CreatorDashboard/NFTCollection";
-import StudioNavigation from "@components/CreatorDashboard/StudioNavigation";
-import {
-	ArchiveIcon,
-	CashIcon,
-	ExternalLinkIcon,
-	GiftIcon,
-	HomeIcon,
-	PencilIcon,
-	PlusIcon,
-	ShareIcon,
-} from "@heroicons/react/outline";
+import {CashIcon, GiftIcon, HomeIcon} from "@heroicons/react/outline";
 import {TritPost} from "@packages/post/TritPost";
 import {TritPostProps} from "@packages/post/types";
 import {Button} from "@packages/shared/components/Button";
@@ -17,7 +6,6 @@ import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
-import {ArrowRightIcon} from "@radix-ui/react-icons";
 import Avvvatars from "avvvatars-react";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";

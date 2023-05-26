@@ -71,8 +71,6 @@ export default function PostType(props: {collection: string}) {
 		router.push(`/collection/${data._id}`);
 	};
 
-	console.log({nftValues});
-
 	const addNFTsToCollection = useCallback(() => {
 		setIsSubmitting(true);
 		setError("");
@@ -177,9 +175,9 @@ export default function PostType(props: {collection: string}) {
 			// 2. Upload related, network or some issues with IPFS & Uploadcare
 			console.error({error});
 			setError(error);
-			setModalStep(processStages.confirmationDenied);
-			// setModalStep(processStages.uploadFailed)
 			actions.setSubmitting(false);
+			setModalStep(processStages.confirmationDenied);
+			setIsSubmitting(false);
 		}
 	};
 
@@ -235,9 +233,8 @@ export default function PostType(props: {collection: string}) {
 		},
 		confirmationDenied: {
 			status: "error",
-			title: "⚠️ Transaction denied",
-			subtitle:
-				"We were denied permission to proceed with the transaction by your wallet.",
+			title: "⚠️ Error",
+			subtitle: "An error occurred, please try again.",
 			actionLabel: "Try again",
 			action: () =>
 				createNFTs(
@@ -333,7 +330,7 @@ export default function PostType(props: {collection: string}) {
 			</GenericChainModal>
 			<SEOHead title={`Create ${title} Collection - Treat`} />
 			<ApplicationFrame>
-				<Container className="flex flex-col gap-12 px-4 py-12">
+				<Container className="flex flex-col gap-12 py-12">
 					<Container>
 						<AddNFTDetails onSubmit={createNFTs} />
 					</Container>

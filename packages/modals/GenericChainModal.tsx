@@ -28,9 +28,14 @@ export default function GenericChainModal(props: {
 				title={!props.noTitle && (props.title || "Action Complete ✅ 💝")}
 			/>
 
-			<Container className="flex flex-col gap-8 p-8 w-[320px] md:w-[520px]">
+			<Container className="flex flex-col gap-8 p-4 lg:p-8 w-full md:w-[520px]">
+				{props.loading && (
+					<Container className="flex justify-center">
+						<Spinner />
+					</Container>
+				)}
 				{props.subtitle && (
-					<Container className={"flex max-w-full"}>
+					<Container className={"flex max-w-full text-center"}>
 						<Text>{props.subtitle}</Text>
 					</Container>
 				)}

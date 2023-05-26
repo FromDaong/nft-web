@@ -1,4 +1,11 @@
-import {ChatIcon, LinkIcon} from "@heroicons/react/outline";
+import {
+	BriefcaseIcon,
+	ChatIcon,
+	CollectionIcon,
+	HomeIcon,
+	LinkIcon,
+	UserGroupIcon,
+} from "@heroicons/react/outline";
 import {SEOHead} from "@packages/seo/page";
 import NewAvatar from "@packages/shared/components/AvatarNew";
 import {Button} from "@packages/shared/components/Button";
@@ -34,6 +41,8 @@ import useTokenBalance, {
 import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import {useBalance} from "wagmi";
 import {ExternalLinkIcon} from "@radix-ui/react-icons";
+import Spinner from "@packages/shared/icons/Spinner";
+import {ShoppingBagIcon} from "lucide-react";
 
 type ProfileLayoutProps = ComponentBasicProps & {
 	userProfile?: {
@@ -129,14 +138,29 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 
 	const creator_tabs = [
 		{
-			label: "Sweetshop",
+			label: "Home",
 			href: "",
-			count: createNFTsCount.data,
+			icon: <HomeIcon className="w-5 h-5" />,
+		},
+		{
+			label: "Marketplace",
+			href: "/listings",
+			icon: <ShoppingBagIcon className="w-5 h-5" />,
+		},
+		{
+			label: "Resale",
+			href: "/resale",
+			icon: <UserGroupIcon className="w-5 h-5" />,
+		},
+		{
+			label: "Collections",
+			href: "/collections",
+			icon: <CollectionIcon className="w-5 h-5" />,
 		},
 		{
 			label: "Owned",
 			href: "/portfolio",
-			count: ownedNFTsCount.data,
+			icon: <BriefcaseIcon className="w-5 h-5" />,
 		},
 	];
 
@@ -144,7 +168,12 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 		{
 			label: "Owned",
 			href: "/portfolio",
-			count: ownedNFTsCount.data,
+			icon: <BriefcaseIcon className="w-5 h-5" />,
+		},
+		{
+			label: "Resale",
+			href: "/resale",
+			icon: <UserGroupIcon className="w-5 h-5" />,
 		},
 	];
 
@@ -278,11 +307,6 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 		}
 	}, [treatBalance]);
 
-	console.log({
-		treatBalance: parseInt(treatBalance?.formatted) > 36700,
-		isBalanceLoading,
-	});
-
 	return (
 		<>
 			<SEOHead
@@ -315,8 +339,8 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 				}}
 			/>
 
-			<Container className="container px-4 py-8 mx-auto ">
-				<FluidContainer className="flex justify-between px-4">
+			<Container className="px-2 py-8 pb-0 mx-auto ">
+				<FluidContainer className="container mx-auto flex justify-between px-4">
 					<ContextualContainer className="grid justify-between w-full col-span-1 xl:grid-cols-3 gap-y-4">
 						<Container className="col-span-1 xl:col-span-2">
 							<Container className="flex gap-8">
@@ -339,7 +363,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 										</Heading>
 										<MutedText>@{ownerOfUserProfile.username}</MutedText>
 									</Container>
-									<Container className="flex flex-row flex-wrap gap-4 mt-2 rounded-full">
+									<Container className="flex flex-row flex-wrap gap-2 mt-2 rounded-full">
 										{userBadges.map((badge) => (
 											<Container
 												key={badge.name}
@@ -363,32 +387,29 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 										{ownerOfUserProfile.bio ?? "Loading profile details"}
 									</Text>
 									<Container className="hidden w-full mt-2 mb-4 md:flex">
-										<>
+										<Container className="flex gap-2">
 											<Text
 												appearance={"hiContrast"}
 												weight={"bold"}
 											>
-												{ownerOfUserProfile.following.length}
+												{ownerOfUserProfile.following.length} Following
 											</Text>
-											{""}
-											<JustifiedSpan>Following</JustifiedSpan>
-										</>
+										</Container>
 										<Bull />
-										<>
+										<Container className="flex gap-2">
 											<Text
 												appearance={"hiContrast"}
 												weight={"bold"}
 											>
-												{followers.length}
+												{followers.length} Followers
 											</Text>
-											<JustifiedSpan>Followers</JustifiedSpan>
-										</>
+										</Container>
 									</Container>
 								</Container>
 							</Container>
 							<Container className="flex flex-col gap-4 md:hidden">
 								<Text className="flex max-w-2xl mt-2">
-									{ownerOfUserProfile.bio ?? "Loading profile details"}
+									{ownerOfUserProfile.bio ?? <Spinner />}
 								</Text>
 								<Container className="flex w-full mt-2 mb-4">
 									<>
@@ -463,7 +484,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 
 				<FluidContainer
 					justified
-					className="flex py-8 overflow-x-auto"
+					className="flex py-4 overflow-x-auto"
 				>
 					<TabsContainer>
 						{(ownerOfUserProfile?.creator ? creator_tabs : profile_tabs).map(
@@ -472,7 +493,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 									key={tab.href}
 									href={`/${ownerOfUserProfile.username}${tab.href}`}
 									label={tab.label}
-									count={tab.count}
+									icon={tab.icon}
 								/>
 							)
 						)}
@@ -480,7 +501,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 				</FluidContainer>
 			</Container>
 			<ApplicationFrame>
-				<Container className="px-4">{props.children}</Container>
+				<Container>{props.children}</Container>
 			</ApplicationFrame>
 		</>
 	);

@@ -5,7 +5,6 @@ import DynamicSkeleton from "@packages/skeleton";
 import {TritPostSkeleton} from "@packages/skeleton/config";
 import ProfileLayout from "core/components/layouts/ProfileLayout";
 import {TritPostProps, TritResalePostProps} from "../types";
-import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
 
 const RenderProfileNFTs = ({
 	data,
@@ -65,20 +64,9 @@ const RenderProfileNFTs = ({
 					<Text>That was an error. Please reload the page and try again.</Text>
 				</Container>
 			)}
-			<Container className="flex flex-col gap-12">
+			<Container className="flex flex-col gap-8">
 				{posts && posts?.length > 0 && (
 					<>
-						<Pagination
-							page={page}
-							totalPages={totalPages}
-							gotoPage={gotoPage}
-							nextPage={page + +1}
-							prevPage={page - 1}
-							next={nextPage}
-							prev={prevPage}
-							hasNextPage={hasNextPage}
-							hasPrevPage={page !== 1}
-						/>
 						<Container className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 							{posts.map((post: TritPostProps) => (
 								<Component
@@ -88,6 +76,12 @@ const RenderProfileNFTs = ({
 									isMine={username === profile.username}
 									hideSeller={hideSeller}
 									hideSoldOut={hideSoldOut}
+									seller={profile}
+									creator={{
+										avatar: profile.avatar,
+										username: profile.username,
+										display_name: profile.display_name,
+									}}
 								/>
 							))}
 						</Container>

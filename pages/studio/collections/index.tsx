@@ -1,18 +1,13 @@
-import NFTCollection from "@components/CreatorDashboard/NFTCollection";
+import {StudioCollectionsPresentation} from "@components/Collections/CollectionsPresentation/CollectionsForStudio";
 import StudioNavigation from "@components/CreatorDashboard/StudioNavigation";
 import {PlusIcon} from "@heroicons/react/outline";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Heading} from "@packages/shared/components/Typography/Headings";
-import {ArrowRightIcon} from "@radix-ui/react-icons";
-import axios from "axios";
-import TreatCore from "core/TreatCore";
 import {useUser} from "core/auth/useUser";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
-import {useSession} from "next-auth/react";
 import Link from "next/link";
-import {useAccount} from "wagmi";
 
 export default function CollectionsPage() {
 	const {isLoading, creator} = useUser();
@@ -39,44 +34,9 @@ export default function CollectionsPage() {
 							</a>
 						</Link>
 					</Container>
-					{!isLoading && creator && <CollectionsPresentation />}
+					{!isLoading && creator && <StudioCollectionsPresentation />}
 				</Container>
 			</ApplicationFrame>
 		</ApplicationLayout>
 	);
 }
-
-const CollectionsPresentation = () => {
-	// fetch nfts from /api/v3/marketplace/collections/
-	// store them as collections
-	// use react-query
-	const {creator} = useUser();
-	const {
-		data: collections,
-		isLoading,
-		isError,
-		error,
-	} = TreatCore.useQuery([`collection:${creator._id}`], async () => {
-		const {data} = await axios.get(
-			`${process.env.NEXT_PUBLIC_HOSTNAME}/api/v3/marketplace/collection/seller/${creator._id}`
-		);
-		return data.data.map((item) => ({
-			name: item.name,
-			cover_image: item.cover_image ?? "/assets/bg.jpg",
-			creator: item.creator,
-			href: item._id,
-		}));
-	});
-	return (
-		<Container className="grid grid-cols-1 gap-8 md:grid-cols-4">
-			{!isLoading &&
-				!isError &&
-				collections.map((item) => (
-					<NFTCollection
-						item={item}
-						key={item.href}
-					/>
-				))}
-		</Container>
-	);
-};

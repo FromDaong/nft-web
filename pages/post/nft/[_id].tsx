@@ -112,7 +112,7 @@ export default function NFT(props: {
 			/>
 			<ApplicationLayout>
 				<ApplicationFrame>
-					<Container className="relative flex flex-col gap-8 p-4 pb-12 xl:flex-row">
+					<Container className="relative flex flex-col gap-8 px-0 p-4 pb-12 xl:flex-row">
 						<ImagePreviewSection
 							isOwned={isOwned}
 							remainingNfts={remainingNfts}
@@ -320,7 +320,7 @@ function ImagePreviewSection({
 		onClose: onLightboxClose,
 	} = useDisclosure();
 	return (
-		<Container className="w-full xl:w-1/2 flex-shrink-0 2xl:h-[80vh] lg:h-[90vh] h-[calc(100vh-64px)] flex items-center justify-center sticky top-0">
+		<Container className="w-full xl:w-1/2 flex-shrink-0 2xl:h-[80vh] lg:h-[90vh] h-[calc(80vh-64px)] flex items-center justify-center sticky top-0">
 			{isLightboxOpen && (isOwned || !nft.protected) && (
 				<FullscreenImagePreviewModal
 					isOpen={isLightboxOpen}

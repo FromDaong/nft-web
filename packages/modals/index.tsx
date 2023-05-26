@@ -76,12 +76,12 @@ export const Modal = ({
 export const ModalHeaderSection = ({title, onClose}) => {
 	return (
 		<Container
-			className="flex justify-between items-center p-4 border-b w-[320px] md:w-[520px]"
+			className="flex justify-between items-center p-2 lg:p-4 border-b w-full md:w-[520px]"
 			css={{backgroundColor: "$surface", borderColor: "$border"}}
 		>
 			<Heading size={"xss"}>{title}</Heading>
 			<Button
-				appearance={"default"}
+				appearance={"surface"}
 				onClick={onClose}
 				css={{borderRadius: "50%", padding: "8px", borderColor: "$border"}}
 				className="border"

@@ -1,4 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
 import Error404 from "@packages/error/404";
 import Error500 from "@packages/error/500";
 import RenderProfileNFTs from "@packages/post/profile/RenderProfileNFTs";
@@ -83,7 +84,7 @@ export default function UserProfile(props: {
 			fetchNextPage={fetchNextPage}
 			isFetchingNextPage={isFetchingNextPage}
 			hasNextPage={hasNextPage}
-			Component={TritPost}
+			Component={SweetshopNFT}
 		/>
 	);
 }
