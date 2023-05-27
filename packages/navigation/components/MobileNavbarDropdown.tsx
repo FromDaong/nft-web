@@ -11,6 +11,7 @@ import {useAccountModal, useConnectModal} from "@rainbow-me/rainbowkit";
 import {
 	ArrowRightIcon,
 	DotsVerticalIcon,
+	LogoutIcon,
 	XIcon,
 } from "@heroicons/react/outline";
 import {Button} from "@packages/shared/components/Button";
@@ -32,6 +33,9 @@ import {
 	WalletIcon,
 } from "lucide-react";
 import {DashboardIcon} from "@radix-ui/react-icons";
+import SearchModal from "../search";
+import {Transition} from "@headlessui/react";
+import {DialogOverlay} from "@packages/modals";
 
 const ExploreDropdownLinks = [
 	{
@@ -79,16 +83,19 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 
 	return (
 		<Container>
-			<Button
-				appearance={"surface"}
-				css={{padding: "8px", borderRadius: "9999px"}}
-				onClick={onMenuOpen}
-			>
-				<DotsVerticalIcon
-					width={20}
-					height={20}
-				/>
-			</Button>
+			<Container className="flex items-center justify-center gap-4">
+				<SearchModal>
+					<></>
+				</SearchModal>
+				<Button
+					appearance={"surface"}
+					css={{padding: "0.5rem", borderRadius: "9999px"}}
+					onClick={onMenuOpen}
+					className="shadow"
+				>
+					<DotsVerticalIcon className="w-5 h-5" />
+				</Button>
+			</Container>
 			{menuOpen && (
 				<Container className="relative px-4">
 					<Container className="flex justify-end">
@@ -99,104 +106,115 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 							/>
 						</Button>
 					</Container>
-					<NavDropdownContainer
-						css={{zIndex: 9999, width: "100vw !important"}}
-						className="fixed top-0 left-0 w-screen h-screen"
+					<span
+						className="inline-block h-screen align-middle"
+						aria-hidden="true"
 					>
-						{!props.isConnected && (
-							<Container className="relative top-0 left-0 w-full p-8 h-w-full">
-								<Container className="absolute flex justify-end right-8 top-8">
-									<Button
-										className="flex items-center"
-										appearance={"subtle"}
-										onClick={onMenuClose}
-										css={{padding: "8px", borderRadius: "9999px"}}
-									>
-										<XIcon
-											width={20}
-											height={20}
-										/>
-									</Button>
-								</Container>
-								<Container className="flex flex-col h-full gap-24 py-12">
-									<Container className="flex flex-col gap-2">
-										{ExploreDropdownLinks.map((link) => (
-											<Link
-												key={link.link}
-												href={link.link}
-											>
-												<a className="flex items-center justify-between">
-													<Container
-														onClick={onClose}
-														className="flex items-center gap-8 py-4"
-													>
-														<Text>
-															<ImportantText> {link.label}</ImportantText>
-														</Text>
-													</Container>
-													<ArrowRightIcon className="w-5 h-5" />
-												</a>
-											</Link>
-										))}
-									</Container>
-									<Button
-										css={{padding: "16px"}}
-										fullWidth
-										onClick={openConnectModal}
-									>
-										Login with wallet
-									</Button>
-								</Container>
-							</Container>
-						)}
-						{props.isConnected && !isLoading && (
-							<Container className="relative flex flex-col gap-4 p-4 py-8">
-								<Container className="absolute flex justify-end right-4 top-4">
-									<Button
-										className="flex items-center"
-										appearance={"surface"}
-										onClick={onMenuClose}
-										css={{padding: "8px", borderRadius: "9999px"}}
-									>
-										<XIcon
-											width={20}
-											height={20}
-										/>
-									</Button>
-								</Container>
-								<ThemeSwitcherModal
-									isOpen={isOpen}
-									onClose={onClose}
-								/>
-								<BecomeCreatorModal
-									isOpen={upgradeToCreatorIsOpen}
-									onClose={onCloseUpgradeToCreator}
-								/>
-								<Container className="flex flex-col w-full gap-4">
-									<NewAvatar
-										username={profile?.username}
-										imageSrc={profile.profile_pic}
-										size={80}
-									/>
-									<Container>
-										<Heading size="xs">{profile?.display_name}</Heading>
-										<Text>@{profile?.username}</Text>
-									</Container>
-									<Container className="flex gap-4">
+						&#8203;
+					</span>
+					<Transition
+						enter="transition ease-out duration-300 transform"
+						enterFrom="opacity-0 scale-95"
+						enterTo="opacity-100 scale-100"
+						leave="transition ease-in duration-200 transform"
+						leaveFrom="opacity-100 scale-100"
+						leaveTo="opacity-0 scale-95"
+						show={menuOpen}
+					>
+						<DialogOverlay />
+						<NavDropdownContainer
+							css={{
+								zIndex: 9999,
+								width: "100vw !important",
+								top: "50%",
+								left: "50%",
+								transform: "translate(-50%, -50%)",
+							}}
+							className="fixed top-[50%] left-[50%] align-middle transform w-[80vw] h-[80vh] max-w-[400px] max-h-[720px] overflow-y-scroll drop-shadow-xl rounded-xl"
+						>
+							{!props.isConnected && (
+								<Container className="relative top-0 left-0 w-full p-8 h-w-full">
+									<Container className="absolute flex justify-end right-8 top-8">
 										<Button
-											className="w-full"
-											onClick={openAccountModal}
-											appearance={"surface"}
-											fullWidth
+											className="flex items-center"
+											appearance={"subtle"}
+											onClick={onMenuClose}
+											css={{padding: "8px", borderRadius: "9999px"}}
 										>
-											<WalletIcon className="w-5 h-5" />
-											Wallet
+											<XIcon
+												width={20}
+												height={20}
+											/>
 										</Button>
+									</Container>
+									<Container className="flex flex-col h-full gap-24 py-12">
+										<Container className="flex flex-col gap-2">
+											{ExploreDropdownLinks.map((link) => (
+												<Link
+													key={link.link}
+													href={link.link}
+												>
+													<a className="flex items-center justify-between">
+														<Container
+															onClick={onClose}
+															className="flex items-center gap-8 py-4"
+														>
+															<Text>
+																<ImportantText> {link.label}</ImportantText>
+															</Text>
+														</Container>
+														<ArrowRightIcon className="w-5 h-5" />
+													</a>
+												</Link>
+											))}
+										</Container>
+										<Button
+											css={{padding: "16px"}}
+											fullWidth
+											onClick={openConnectModal}
+										>
+											Login with wallet
+										</Button>
+									</Container>
+								</Container>
+							)}
+							{props.isConnected && !isLoading && (
+								<Container className="relative flex flex-col gap-4 p-4 py-8">
+									<Container className="absolute flex justify-end right-4 top-4">
+										<Button
+											className="flex items-center"
+											appearance={"surface"}
+											onClick={onMenuClose}
+											css={{padding: "8px", borderRadius: "9999px"}}
+										>
+											<XIcon
+												width={20}
+												height={20}
+											/>
+										</Button>
+									</Container>
+									<ThemeSwitcherModal
+										isOpen={isOpen}
+										onClose={onClose}
+									/>
+									<BecomeCreatorModal
+										isOpen={upgradeToCreatorIsOpen}
+										onClose={onCloseUpgradeToCreator}
+									/>
+									<Container className="flex flex-col items-center w-full gap-4 text-center">
+										<NewAvatar
+											username={profile?.username}
+											imageSrc={profile.profile_pic}
+											size={80}
+										/>
+										<Container>
+											<Heading size="xs">{profile?.display_name}</Heading>
+											<Text>@{profile?.username}</Text>
+										</Container>
 										{creator && !creator?.pending && (
 											<Link href={"/create"}>
-												<a>
+												<a className="flex flex-col w-full">
 													<Button
-														className="w-full"
 														onClick={openAccountModal}
 														fullWidth
 													>
@@ -206,101 +224,110 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 											</Link>
 										)}
 									</Container>
-								</Container>
-								<Container className="py-1">
-									<Link href={`/studio`}>
-										<a>
-											<Container
-												onClick={onClose}
-												className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
-											>
-												<div className="flex items-center gap-4">
-													<Text className="p-2 rounded-full">
-														<DashboardIcon className="w-5 h-5" />
-													</Text>
-													<BoldLink>Dashboard</BoldLink>
-												</div>
-											</Container>
-										</a>
-									</Link>
-									<Link href={`/${profile?.username}`}>
-										<a>
-											<Container
-												onClick={onClose}
-												className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
-											>
-												<div className="flex items-center gap-4">
-													<Text className="p-2 rounded-full">
-														<UserIcon className="w-5 h-5" />
-													</Text>
-													<BoldLink>Profile</BoldLink>
-												</div>
-											</Container>
-										</a>
-									</Link>
-									{!isLoading && !creator && (
-										<Link href={"/account/upgrade"}>
+									<Container className="py-1">
+										<Link href={`/studio`}>
 											<a>
 												<Container
 													onClick={onClose}
 													className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
 												>
 													<div className="flex items-center gap-4">
-														<Text className="p-2 rounded-full"></Text>
-														<BoldLink>Become a Creator</BoldLink>
+														<Text className="p-2 rounded-full">
+															<DashboardIcon className="w-5 h-5" />
+														</Text>
+														<BoldLink>Dashboard</BoldLink>
 													</div>
 												</Container>
 											</a>
 										</Link>
-									)}
-									<Container
-										onClick={onOpen}
-										className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
-									>
-										<div className="flex items-center gap-4">
-											<Text className="p-2 rounded-full">
-												<Settings className="w-5 h-5" />
-											</Text>
-											<BoldLink>Manage account</BoldLink>
-										</div>
-									</Container>
-									<Container
-										onClick={onOpen}
-										className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
-									>
-										<div className="flex items-center gap-4">
-											<Text className="p-2 rounded-full">
-												<SunMoonIcon className="w-5 h-5" />
-											</Text>
-											<BoldLink>Change theme</BoldLink>
-										</div>
-									</Container>
-								</Container>
-								<Container className="flex flex-col gap-2 p-4">
-									<Divider dir="horizontal" />
-
-									{ExploreDropdownLinks.map((link) => (
-										<Link
-											key={link.link}
-											href={link.link}
-										>
+										<Link href={`/${profile?.username}`}>
 											<a>
 												<Container
 													onClick={onClose}
-													className="flex items-center justify-between py-3 rounded-xl hover:cursor-pointer"
+													className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
 												>
-													<div className="flex items-center justify-between w-full gap-4">
-														<BoldLink>{link.label}</BoldLink>
-														<ArrowRightIcon className="w-5 h-5" />
+													<div className="flex items-center gap-4">
+														<Text className="p-2 rounded-full">
+															<UserIcon className="w-5 h-5" />
+														</Text>
+														<BoldLink>Profile</BoldLink>
 													</div>
 												</Container>
 											</a>
 										</Link>
-									))}
+										{!isLoading && !creator && (
+											<Link href={"/account/upgrade"}>
+												<a>
+													<Container
+														onClick={onClose}
+														className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
+													>
+														<div className="flex items-center gap-4">
+															<Text className="p-2 rounded-full"></Text>
+															<BoldLink>Become a Creator</BoldLink>
+														</div>
+													</Container>
+												</a>
+											</Link>
+										)}
+										<Container
+											onClick={onOpen}
+											className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
+										>
+											<div className="flex items-center gap-4">
+												<Text className="p-2 rounded-full">
+													<Settings className="w-5 h-5" />
+												</Text>
+												<BoldLink>Manage account</BoldLink>
+											</div>
+										</Container>
+										<Container
+											onClick={onOpen}
+											className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
+										>
+											<div className="flex items-center gap-4">
+												<Text className="p-2 rounded-full">
+													<SunMoonIcon className="w-5 h-5" />
+												</Text>
+												<BoldLink>Change theme</BoldLink>
+											</div>
+										</Container>
+									</Container>
+									<Container className="flex flex-col gap-2 p-4">
+										<Divider dir="horizontal" />
+
+										{ExploreDropdownLinks.map((link) => (
+											<Link
+												key={link.link}
+												href={link.link}
+											>
+												<a>
+													<Container
+														onClick={onClose}
+														className="flex items-center justify-between py-3 rounded-xl hover:cursor-pointer"
+													>
+														<div className="flex items-center justify-between w-full gap-4">
+															<BoldLink>{link.label}</BoldLink>
+															<ArrowRightIcon className="w-5 h-5" />
+														</div>
+													</Container>
+												</a>
+											</Link>
+										))}
+									</Container>
+									<Button
+										className="w-full"
+										onClick={openAccountModal}
+										appearance={"danger"}
+										fullWidth
+									>
+										<LogoutIcon className="w-5 h-5" />
+										Sign out
+									</Button>
 								</Container>
-							</Container>
-						)}
-					</NavDropdownContainer>
+							)}
+						</NavDropdownContainer>
+					</Transition>
 				</Container>
 			)}
 		</Container>

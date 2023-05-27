@@ -87,17 +87,8 @@ export default function Navbar() {
 						<div className="flex h-full w-96">
 							<SearchModal>
 								<SearchModal.SearchInput />
-								<Container className="flex flex-col gap-4 mt-4">
+								<Container className="flex flex-col gap-4 ">
 									<SearchModal.ResultSection heading="Creators">
-										<></>
-									</SearchModal.ResultSection>
-									<SearchModal.ResultSection heading="Collections">
-										<></>
-									</SearchModal.ResultSection>
-									<SearchModal.ResultSection heading="NFTs">
-										<></>
-									</SearchModal.ResultSection>
-									<SearchModal.ResultSection heading="People">
 										<></>
 									</SearchModal.ResultSection>
 								</Container>

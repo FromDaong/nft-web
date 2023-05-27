@@ -22,23 +22,39 @@ export default function SearchModal({children}) {
 	});
 	return (
 		<>
-			<Button
-				fullWidth
-				appearance={"surface"}
-				css={{
-					display: "flex",
-					alignItems: "center",
-					justifyContent: "between",
-					gap: "1.5rem",
-				}}
-				onClick={onOpen}
-			>
-				<Container className="flex flex-1 gap-2">
+			<Container className="hidden lg:flex">
+				<Button
+					fullWidth
+					appearance={"surface"}
+					css={{
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "between",
+						gap: "1.5rem",
+					}}
+					onClick={onOpen}
+				>
+					<Container className="flex flex-1 gap-2">
+						<Search className="w-5 h-5" />
+						<span>Search</span>
+					</Container>
+					<SmallText>⌘ K</SmallText>
+				</Button>
+			</Container>
+			<Container className="flex lg:hidden">
+				<Button
+					fullWidth
+					appearance={"surface"}
+					css={{
+						padding: "0.5rem",
+						borderRadius: "50%",
+					}}
+					onClick={onOpen}
+					className="shadow-2xl"
+				>
 					<Search className="w-5 h-5" />
-					<span>Search</span>
-				</Container>
-				<SmallText>⌘ K</SmallText>
-			</Button>
+				</Button>
+			</Container>
 			<Transition
 				appear
 				show={isOpen}
