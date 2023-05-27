@@ -140,7 +140,7 @@ export default function Navbar() {
 				</Container>
 			</Nav>
 			<Nav className="top-0 left-0 w-full py-4 md:hidden">
-				<Container className="flex flex-col h-full gap-2 px-8">
+				<Container className="flex flex-col h-full gap-2 px-2">
 					<Container className="flex items-center justify-between">
 						<Link href={isConnected ? "/" : "/"}>
 							<a className="relative w-8 h-8 text-3xl font-medium">

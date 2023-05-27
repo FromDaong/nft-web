@@ -45,6 +45,36 @@ export default function NFTS({sort, q, nfts, error}) {
 		<ApplicationLayout>
 			<ApplicationFrame>
 				<SEOHead title="Explore NFTs" />
+				<Container className="flex items-center w-full max-w-full gap-2 py-4 overflow-x-scroll border-b flex-nowrap">
+					<Button
+						appearance={"surface"}
+						className="flex-shrink-0"
+					>
+						<Verified className="w-4 h-4" />
+						Verified creators
+					</Button>
+					<Button
+						appearance={"subtle"}
+						className="flex-shrink-0"
+					>
+						<UserGroupIcon className="w-4 h-4" />
+						Secondary market
+					</Button>
+					<Button
+						appearance={"subtle"}
+						className="flex-shrink-0"
+					>
+						<VeganIcon className="w-4 h-4" />
+						Melon
+					</Button>
+					<Button
+						appearance={"subtle"}
+						className="flex-shrink-0"
+					>
+						<CalendarIcon className="w-4 h-4" />
+						Treat of The Month
+					</Button>
+				</Container>
 				<Container className="relative flex w-full h-full gap-8">
 					<Container className="flex-1 w-full">
 						{!error && (
@@ -136,24 +166,6 @@ function MarketplaceListingResults({
 	return (
 		<Container className="flex flex-col gap-8">
 			<Container className="flex flex-col w-full">
-				<Container className="flex flex-wrap items-center w-full gap-2 py-4 border-b">
-					<Button appearance={"surface"}>
-						<Verified className="w-4 h-4" />
-						Verified creators
-					</Button>
-					<Button appearance={"subtle"}>
-						<UserGroupIcon className="w-4 h-4" />
-						Secondary market
-					</Button>
-					<Button appearance={"subtle"}>
-						<VeganIcon className="w-4 h-4" />
-						Melon
-					</Button>
-					<Button appearance={"subtle"}>
-						<CalendarIcon className="w-4 h-4" />
-						Treat of The Month
-					</Button>
-				</Container>
 				<Container className="flex flex-wrap justify-between w-full py-4 border-b md:flex-row">
 					<Container className="flex flex-wrap items-center gap-4">
 						<Button

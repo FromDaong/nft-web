@@ -130,24 +130,25 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 								left: "50%",
 								transform: "translate(-50%, -50%)",
 							}}
-							className="fixed top-[50%] left-[50%] align-middle transform w-[80vw] h-[80vh] max-w-[400px] max-h-[720px] overflow-y-scroll drop-shadow-xl rounded-xl"
+							className={`fixed top-[50%] left-[50%] align-middle transform ${
+								props.isConnected ? "w-[80vw]" : `w-96`
+							} ${
+								props.isConnected ? "h-[80vh]" : `h-fit`
+							} max-w-[400px] max-h-[720px] overflow-y-scroll drop-shadow-xl rounded-xl`}
 						>
 							{!props.isConnected && (
-								<Container className="relative top-0 left-0 w-full p-8 h-w-full">
-									<Container className="absolute flex justify-end right-8 top-8">
+								<Container className="relative top-0 left-0 w-full p-4 h-w-full">
+									<Container className="flex justify-end">
 										<Button
 											className="flex items-center"
-											appearance={"subtle"}
+											appearance={"surface"}
 											onClick={onMenuClose}
 											css={{padding: "8px", borderRadius: "9999px"}}
 										>
-											<XIcon
-												width={20}
-												height={20}
-											/>
+											<XIcon className="w-5 h-5" />
 										</Button>
 									</Container>
-									<Container className="flex flex-col h-full gap-24 py-12">
+									<Container className="flex flex-col h-full gap-24 py-8">
 										<Container className="flex flex-col gap-2">
 											{ExploreDropdownLinks.map((link) => (
 												<Link
