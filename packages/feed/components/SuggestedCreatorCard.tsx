@@ -69,7 +69,7 @@ const DefaultCreatorCard = (props: SuggestedCreatorData) => {
 						>
 							{!props.avatar && (
 								<Avvvatars
-									size={"100%"}
+									size={320}
 									style="shape"
 									value={props.username}
 									radius={16}
