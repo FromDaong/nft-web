@@ -45,7 +45,7 @@ export default function NFTS({sort, q, nfts, error}) {
 		<ApplicationLayout>
 			<ApplicationFrame>
 				<SEOHead title="Explore NFTs" />
-				<Container className="relative flex w-full h-full gap-8 py-12">
+				<Container className="relative flex w-full h-full gap-8">
 					<Container className="flex-1 w-full">
 						{!error && (
 							<MarketplaceListingResults
@@ -135,47 +135,26 @@ function MarketplaceListingResults({
 }) {
 	return (
 		<Container className="flex flex-col gap-8">
-			<Container className="flex flex-col w-full gap-2">
-				<SearchForm
-					performSearchWithNewParams={performSearchWithNewParams}
-					searchText={searchText}
-					setSearchText={setSearchText}
-				/>
-				<Container className="flex flex-wrap items-center gap-2">
-					<Button
-						appearance={"subtle"}
-						size={"sm"}
-						css={{padding: "4px 12px", color: "$pink5"}}
-					>
+			<Container className="flex flex-col w-full">
+				<Container className="flex flex-wrap items-center w-full gap-2 py-4 border-b">
+					<Button appearance={"surface"}>
 						<Verified className="w-4 h-4" />
-						Verified Creator
+						Verified creators
 					</Button>
-					<Button
-						appearance={"subtle"}
-						size={"sm"}
-						css={{padding: "4px 12px", color: "$amber11"}}
-					>
+					<Button appearance={"subtle"}>
 						<UserGroupIcon className="w-4 h-4" />
-						Secondary Listing
+						Secondary market
 					</Button>
-					<Button
-						appearance={"subtle"}
-						size={"sm"}
-						css={{padding: "4px 12px", color: "$mint11"}}
-					>
+					<Button appearance={"subtle"}>
 						<VeganIcon className="w-4 h-4" />
 						Melon
 					</Button>
-					<Button
-						appearance={"subtle"}
-						size={"sm"}
-						css={{padding: "4px 12px", color: "$purple11"}}
-					>
+					<Button appearance={"subtle"}>
 						<CalendarIcon className="w-4 h-4" />
 						Treat of The Month
 					</Button>
 				</Container>
-				<Container className="flex flex-wrap justify-between w-full mt-8 md:flex-row">
+				<Container className="flex flex-wrap justify-between w-full py-4 border-b md:flex-row">
 					<Container className="flex flex-wrap items-center gap-4">
 						<Button
 							css={{padding: "4px 8px"}}
@@ -193,9 +172,6 @@ function MarketplaceListingResults({
 					</Container>
 					<SortBy />
 				</Container>
-				<Text>
-					Showing <ImportantText>24</ImportantText> of 537 results
-				</Text>
 			</Container>
 			<Container className="flex flex-col gap-8 overflow-x-hidden">
 				<MarketplaceListingsContainer>

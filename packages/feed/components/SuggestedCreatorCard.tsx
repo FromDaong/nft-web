@@ -13,6 +13,7 @@ import UserAvatar from "core/auth/components/Avatar";
 import Link from "next/link";
 import LiveTag from "./LiveTag";
 import {UserPlus} from "lucide-react";
+import Avvvatars from "avvvatars-react";
 
 type SuggestedCreatorData = {
 	username: string;
@@ -57,14 +58,24 @@ const DefaultCreatorCard = (props: SuggestedCreatorData) => {
 				>
 					<Container className="flex flex-col justify-between w-full gap-4">
 						<Container
-							className="relative w-full h-[320px] flex items-center justify-center"
+							className="relative p-4 overflow-hidden w-full h-[320px] flex border-b items-center justify-center"
 							css={{
-								backgroundColor: "$elementOnSurface",
 								backgroundImage: `url("${profilePicUrl}")`,
 								backgroundSize: "cover",
 								backgroundPosition: "center",
+								backgroundColor: "$surface",
+								borderColor: "$border",
 							}}
-						></Container>
+						>
+							{!props.avatar && (
+								<Avvvatars
+									size={"100%"}
+									style="shape"
+									value={props.username}
+									radius={16}
+								/>
+							)}
+						</Container>
 						<Container className="flex flex-col gap-2 px-4">
 							{props.username && (
 								<Container className="flex flex-col w-full">

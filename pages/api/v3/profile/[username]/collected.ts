@@ -8,10 +8,7 @@ import {
 	MongoModelProfile,
 } from "server/helpers/models";
 import axios from "axios";
-import {
-	MoralisNFTApiURLBuilder,
-	generateNewNFTFromOwnedButLostNFT,
-} from "@lib/moralis";
+import {generateNewNFTFromOwnedButLostNFT} from "@lib/moralis";
 
 export default async function handler(req, res) {
 	const {username} = req.query;

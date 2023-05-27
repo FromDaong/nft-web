@@ -19,7 +19,12 @@ export default function NotificationsTray() {
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger>
 				<Container>
-					<Button appearance={"surface"}>
+					<Button
+						css={{
+							padding: "0.5rem",
+						}}
+						appearance={"surface"}
+					>
 						<BellRingIcon className={"w-5 h-5"} />
 					</Button>
 				</Container>

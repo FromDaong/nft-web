@@ -6,7 +6,7 @@ import Image from "next/image";
 import {useAccount} from "wagmi";
 
 import {styled} from "@styles/theme";
-import {PlusCircleIcon} from "@heroicons/react/outline";
+import {ChevronDownIcon, PlusCircleIcon} from "@heroicons/react/outline";
 import {Container} from "@packages/shared/components/Container";
 import MobileNavbarDropdown from "./components/MobileNavbarDropdown";
 import {Button} from "@packages/shared/components/Button";
@@ -19,6 +19,9 @@ import {useDisclosure} from "@packages/hooks";
 import NotificationsTray from "@components/Notifications/NotificationsTray";
 import TransactionHistoryTray from "@components/Notifications/TransactionHistoryTray";
 import RectangleStack from "@packages/shared/icons/RectangleStack";
+import {Search} from "lucide-react";
+import {SmallText, Text} from "@packages/shared/components/Typography/Text";
+import SearchModal from "./search";
 
 const Nav = styled("nav", {
 	zIndex: 30,
@@ -42,7 +45,7 @@ export default function Navbar() {
 
 	return (
 		<Container className="top-0 z-20">
-			<Nav className=" left-0 flex-col hidden w-full md:flex">
+			<Nav className="left-0 flex-col hidden w-full md:flex">
 				<Container className="relative w-full h-full px-8 divide-y xl:px-4">
 					<div className="container relative z-30 flex items-center justify-between py-2 mx-auto">
 						<Container className={"flex gap-4 items-center"}>
@@ -56,29 +59,50 @@ export default function Navbar() {
 									/>
 								</a>
 							</Link>
-							<div className="items-center hidden gap-4 md:flex">
+							<div className="items-center hidden gap-2 md:flex">
 								<Link href="/sweetshop">
 									<a>
-										<Button appearance={"link"}>Marketplace</Button>
+										<Button
+											size={"sm"}
+											appearance={"link"}
+										>
+											Marketplace
+										</Button>
 									</a>
 								</Link>
 							</div>
 							<div className="items-center hidden gap-4 md:flex">
 								<Link href="/magazine">
 									<a>
-										<Button appearance={"link"}>Magazine</Button>
-									</a>
-								</Link>
-							</div>
-							<div className="items-center hidden gap-4 md:flex">
-								<Link href="/creators">
-									<a>
-										<Button appearance={"link"}>Creators</Button>
+										<Button
+											size={"sm"}
+											appearance={"link"}
+										>
+											Browse <ChevronDownIcon className="w-4 h-4" />
+										</Button>
 									</a>
 								</Link>
 							</div>
 						</Container>
-
+						<div className="flex h-full w-96">
+							<SearchModal>
+								<SearchModal.SearchInput />
+								<Container className="flex flex-col gap-4 mt-4">
+									<SearchModal.ResultSection heading="Creators">
+										<></>
+									</SearchModal.ResultSection>
+									<SearchModal.ResultSection heading="Collections">
+										<></>
+									</SearchModal.ResultSection>
+									<SearchModal.ResultSection heading="NFTs">
+										<></>
+									</SearchModal.ResultSection>
+									<SearchModal.ResultSection heading="People">
+										<></>
+									</SearchModal.ResultSection>
+								</Container>
+							</SearchModal>
+						</div>
 						<div className="flex gap-8">
 							<div className="flex md:hidden"></div>
 							{!loading &&
@@ -95,13 +119,11 @@ export default function Navbar() {
 															justifyContent: "center",
 														}}
 													>
-														<PlusCircleIcon className={"w-5 h-5"} />
 														Create
 													</Button>
 												</a>
 											</Link>
 										)}
-
 										<NotificationsTray />
 										<TransactionHistoryTray
 											isOpen={isTransactionsTrayOpen}
@@ -110,6 +132,9 @@ export default function Navbar() {
 										<Button
 											appearance={"surface"}
 											onClick={onOpenTransactionsTray}
+											css={{
+												padding: "0.5rem",
+											}}
 										>
 											<RectangleStack className={"w-5 h-5"} />
 										</Button>

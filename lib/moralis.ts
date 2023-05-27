@@ -89,9 +89,12 @@ export const generateNewNFTFromOwnedButLostNFT = async (
 ) => {
 	const metadata: MoralisNFTReponseMetadata = JSON.parse(nft.metadata);
 	console.log(metadata);
-	if (!metadata) return;
+	if (!metadata?.properties) return;
+	if (!nft.minter_address) return;
 
-	const creator_address = metadata.properties.model.address.toLocaleLowerCase();
+	const creator_address =
+		metadata.properties?.model?.address?.toLocaleLowerCase() ??
+		nft.minter_address?.toLocaleLowerCase();
 	let creator = await MongoModelCreator.findOne({address: creator_address});
 
 	if (!creator) {
@@ -104,7 +107,14 @@ export const generateNewNFTFromOwnedButLostNFT = async (
 			// Creator profile does not exist, create it
 			creatorProfile = new MongoModelProfile({
 				address: creator_address,
-				username: metadata.properties.model.handle,
+				username:
+					metadata.properties?.model?.handle ??
+					nft.minter_address.slice(0, 6) +
+						"..." +
+						nft.minter_address.slice(
+							nft.minter_address.length - 4,
+							nft.minter_address.length
+						),
 				bio: "I am a Treat explorer.",
 				display_name:
 					creator_address.slice(0, 6) +
@@ -120,7 +130,7 @@ export const generateNewNFTFromOwnedButLostNFT = async (
 
 		creator = new MongoModelCreator({
 			address: creator_address,
-			username: metadata.properties.model.handle,
+			username: metadata.properties?.model?.handle ?? creatorProfile.username,
 			profile: creatorProfile._id,
 		});
 		await creator.save();

@@ -152,7 +152,6 @@ export const getServerSideProps = async (ctx) => {
 			props,
 		};
 	} catch (err) {
-		console.log({err});
 		return {
 			props: {
 				sort: sort ?? 3,
