@@ -1,9 +1,7 @@
 import {
 	BriefcaseIcon,
-	ChatIcon,
 	CollectionIcon,
 	HomeIcon,
-	LinkIcon,
 	UserGroupIcon,
 } from "@heroicons/react/outline";
 import {SEOHead} from "@packages/seo/page";
@@ -35,9 +33,6 @@ import axios from "axios";
 import {apiEndpoint} from "@utils/index";
 import {SocialProfileJsonLd} from "next-seo";
 import {useRouter} from "next/router";
-import useTokenBalance, {
-	useTokenBalanceForAddress,
-} from "@packages/chain/hooks/useTokenBalance";
 import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import {useBalance} from "wagmi";
 import {ExternalLinkIcon} from "@radix-ui/react-icons";
@@ -339,8 +334,8 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 				}}
 			/>
 
-			<Container className="px-2 py-8 pb-0 mx-auto ">
-				<FluidContainer className="container mx-auto flex justify-between px-4">
+			<Container className="py-8 pb-0 mx-auto ">
+				<FluidContainer className="container flex justify-between px-4 mx-auto">
 					<ContextualContainer className="grid justify-between w-full col-span-1 xl:grid-cols-3 gap-y-4">
 						<Container className="col-span-1 xl:col-span-2">
 							<Container className="flex gap-8">
@@ -484,7 +479,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 
 				<FluidContainer
 					justified
-					className="flex py-4 overflow-x-auto"
+					className="flex py-4"
 				>
 					<TabsContainer>
 						{(ownerOfUserProfile?.creator ? creator_tabs : profile_tabs).map(

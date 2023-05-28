@@ -14,9 +14,9 @@ export const TabsContainer = ({children}: ComponentBasicProps) => {
 				borderTop: "1px solid $subtleBorder",
 			}}
 			variant={"unstyled"}
-			className="flex w-full"
+			className="flex w-full px-2 overflow-x-auto"
 		>
-			<Container className="container mx-auto flex w-full gap-x-2 flex-start">
+			<Container className="container flex w-full mx-auto gap-x-2 flex-start">
 				{children}
 			</Container>
 		</Container>
@@ -53,7 +53,7 @@ export const Tab = ({
 							color: isActive ? "$textContrast" : "$text",
 							fontWeight: isActive ? 700 : 500,
 						}}
-						className="flex gap-2 items-center"
+						className="flex items-center gap-2"
 					>
 						{icon}
 						{label}
