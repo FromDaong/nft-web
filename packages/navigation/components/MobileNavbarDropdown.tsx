@@ -69,6 +69,12 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 
 	const {isOpen, onClose, onOpen} = useDisclosure();
 	const {
+		isOpen: isThemesOpen,
+		onClose: onCloseThemes,
+		onOpen: onOpenThemes,
+	} = useDisclosure();
+
+	const {
 		isOpen: menuOpen,
 		onClose: onMenuClose,
 		onOpen: onMenuOpen,
@@ -83,6 +89,10 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 
 	return (
 		<Container>
+			<ThemeSwitcherModal
+				isOpen={isThemesOpen}
+				onClose={onCloseThemes}
+			/>
 			<Container className="flex items-center justify-center gap-4">
 				<SearchModal>
 					<></>
@@ -283,7 +293,10 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 											</div>
 										</Container>
 										<Container
-											onClick={onOpen}
+											onClick={() => {
+												onMenuClose();
+												onOpenThemes();
+											}}
 											className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
 										>
 											<div className="flex items-center gap-4">
