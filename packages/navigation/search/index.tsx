@@ -22,7 +22,7 @@ export default function SearchModal({children}) {
 	});
 	return (
 		<>
-			<Container className="hidden lg:flex">
+			<Container className="hidden w-full lg:flex">
 				<Button
 					fullWidth
 					appearance={"surface"}

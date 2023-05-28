@@ -3,7 +3,12 @@ import {useTritNFTUtils} from "@packages/post/hooks";
 import {TritPostProps} from "@packages/post/types";
 import {NFTCard} from "..";
 import {Button} from "@packages/shared/components/Button";
-import {DotsHorizontalIcon} from "@heroicons/react/outline";
+import {
+	DotsHorizontalIcon,
+	ExclamationCircleIcon,
+	SaveIcon,
+} from "@heroicons/react/outline";
+import {Gift, GiftIcon, ShareIcon, StarIcon} from "lucide-react";
 
 export default function SweetshopNFT(props: TritPostProps) {
 	const {liked, likeNFT, isMine, isProtected} = useTritNFTUtils(props);
@@ -11,14 +16,14 @@ export default function SweetshopNFT(props: TritPostProps) {
 	const soldOut = props.collection?.minted === props.max_supply;
 	return (
 		<NFTCard _id={props._id}>
-			<Container className="relative flex w-full overflow-hidden aspect-square">
+			<Container className="relative w-full overflow-hidden aspect-square">
 				<NFTCard.Media
 					isProtected={isProtected && !isMine}
 					caption={props.text}
 					_id={props._id}
 				/>
 				<Container
-					className="flex flex-col justify-between w-full h-full p-2"
+					className="absolute flex flex-col justify-between w-full p-2 top-2 left-2 h-fit"
 					css={{zIndex: 10}}
 				>
 					<Container className="flex items-center justify-between">
@@ -31,7 +36,6 @@ export default function SweetshopNFT(props: TritPostProps) {
 				</Container>
 			</Container>
 			<Container className="flex flex-col w-full gap-2 px-4">
-				<NFTCard.MarketStatus market={"creator"} />
 				<NFTCard.Detail
 					{...props}
 					isMine={isMine}
@@ -48,12 +52,25 @@ export default function SweetshopNFT(props: TritPostProps) {
 					ListedBy={NFTCard.ListedBy}
 				>
 					<NFTCard.Actions>
-						<Button
-							size={"sm"}
-							appearance={"link"}
-						>
-							<DotsHorizontalIcon className="w-5 h-5" />
-						</Button>
+						<NFTCard.DropdownActions
+							actions={[
+								{
+									label: "Add to favorites",
+									action: () => null,
+									icon: <StarIcon className="w-5 h-5" />,
+								},
+								{
+									label: "Share",
+									action: () => null,
+									icon: <ShareIcon className="w-5 h-5" />,
+								},
+								{
+									label: "Report",
+									action: () => null,
+									icon: <ExclamationCircleIcon className="w-5 h-5" />,
+								},
+							]}
+						/>
 					</NFTCard.Actions>
 				</NFTCard.Detail>
 			</Container>

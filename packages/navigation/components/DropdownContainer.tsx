@@ -4,7 +4,7 @@ import {styled} from "@styles/theme";
 export const DropdownContainer = styled("div", {
 	width: "max-content",
 	backgroundColor: "$surfaceOnSurface",
-	border: "1px solid $border",
+	border: "1px solid $subtleBorder",
 	borderRadius: "16px",
 	zIndex: "100",
 	minWidth: "280px",

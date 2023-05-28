@@ -26,7 +26,7 @@ import EditProfile from "@components/settings/EditProfile";
 import RectangleStack from "@packages/shared/icons/RectangleStack";
 import {UserIcon} from "@heroicons/react/outline";
 
-const NavbarUser = () => {
+const ManageUserDropdown = () => {
 	const {isConnected, address} = useAccount();
 	const {openAccountModal} = useAccountModal();
 	const {profile, creator, isLoading} = useUser();
@@ -81,7 +81,7 @@ const NavbarUser = () => {
 				</DropdownMenu.Trigger>
 				<DropdownMenu.Portal>
 					<DropdownContent>
-						<DropdownContainer className="shadow-2xl">
+						<DropdownContainer className="drop-shadow-2xl">
 							<DropdownMenu.DropdownMenuGroup className="flex flex-col px-2 mt-2">
 								<NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
 									<BoldLink className="flex items-center gap-4">
@@ -282,4 +282,4 @@ const WalletConnectionIcon = (props) => {
 	);
 };
 
-export default NavbarUser;
+export default ManageUserDropdown;

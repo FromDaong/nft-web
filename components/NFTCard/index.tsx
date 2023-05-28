@@ -14,24 +14,21 @@ import MarketType, {SoldOutTag} from "./atoms/MarketType";
 import {ReactNode} from "react";
 import NFTMediaRenderer from "./media/MediaRenderer";
 import Owned from "./atoms/Owned";
+import {NFTCardDropdownMenu} from "./dropdowns";
 
 // T-84 Sold out status should come from the subgraph
 export const NFTCard = (props: {children: ReactNode; _id: string}) => {
 	return (
-		<Link href={`/post/nft/${props._id}`}>
-			<a className="relative flex flex-col w-full">
-				<Container
-					className={`grid grid-cols-1 gap-2 pb-4 place-items-center w-full overflow-hidden rounded-xl shadow-sm border`}
-					css={{
-						borderColor: "$subtleBorder",
-						borderRadius: "12px",
-						backgroundColor: "$surfaceOnSurface",
-					}}
-				>
-					{props.children}
-				</Container>
-			</a>
-		</Link>
+		<Container
+			className={`flex flex-col gap-2 pb-4 w-full overflow-hidden rounded-xl shadow-sm border`}
+			css={{
+				borderColor: "$subtleBorder",
+				borderRadius: "12px",
+				backgroundColor: "$surfaceOnSurface",
+			}}
+		>
+			{props.children}
+		</Container>
 	);
 };
 
@@ -49,3 +46,4 @@ NFTCard.Collection = Collection;
 NFTCard.MarketStatus = MarketType;
 NFTCard.SoldOut = SoldOutTag;
 NFTCard.Owned = Owned;
+NFTCard.DropdownActions = NFTCardDropdownMenu;

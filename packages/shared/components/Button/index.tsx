@@ -19,6 +19,7 @@ export const Button = styled("button", {
 	fontWeight: "600",
 	justifyContent: "center",
 	alignContent: "center",
+	flexShrink: 0,
 
 	variants: {
 		appearance: {

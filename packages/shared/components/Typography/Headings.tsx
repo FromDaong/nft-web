@@ -12,7 +12,6 @@ export const Heading = styled("h1", {
 	fontWeight: "600",
 	color: "$textContrast",
 	padding: 0,
-	margin: 0,
 	fontSize: "56px",
 
 	"@sm": {
