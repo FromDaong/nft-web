@@ -84,12 +84,7 @@ export const TimelineActivity = (
 					css={{display: "flex"}}
 				>
 					<Link href={props.creator.username}>
-						<a>
-							<UserAvatar
-								data={{...props.creator}}
-								size={40}
-							/>
-						</a>
+						<a></a>
 					</Link>
 					<Container>
 						<PostCardCreatorInfoContainer>
