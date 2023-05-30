@@ -12,7 +12,7 @@ import Staking from "@packages/farm/Staking";
 import TreatCore from "core/TreatCore";
 import axios from "axios";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
-import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
+import FarmNFT from "@components/NFTCard/cards/FarmNFT";
 
 // T-78 Use intersection observer to change navbar color.
 
@@ -104,9 +104,9 @@ const FarmersMarket = () => {
 
 	if (isLoading) return <Spinner />;
 	return (
-		<Container className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+		<Container className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{data.map((nft) => (
-				<SweetshopNFT
+				<FarmNFT
 					{...nft}
 					key={nft._id}
 				/>
