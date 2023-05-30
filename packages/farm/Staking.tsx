@@ -35,7 +35,7 @@ export default function Staking({
 	const {hasApproved: lpApproved, approve: approveLp} = useHasApprovedFarm(1);
 
 	return (
-		<Container className="grid w-full gap-8 lg:w-96">
+		<Container className="grid w-full gap-8 lg:w-96 self-start">
 			<Container className="grid grid-cols-1 p-4 rounded-xl shadow gap-2">
 				<Heading size={"xss"}>Farm Contracts</Heading>
 				<Container className="flex justify-between items-center mt-4">
