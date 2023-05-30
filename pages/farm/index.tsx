@@ -5,30 +5,14 @@ import {useAccount, useBalance, useContract} from "wagmi";
 import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import {Container} from "@packages/shared/components/Container";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
-import {
-	ImportantText,
-	MutedText,
-	SmallText,
-} from "@packages/shared/components/Typography/Text";
-import {Button} from "@packages/shared/components/Button";
 import {ABI} from "@packages/treat/lib/abi";
-import {useCallback, useMemo, useState} from "react";
-import useApproveContract from "@packages/chain/hooks/approveContract";
-import useStakeFarms from "@packages/chain/hooks/useStakeFarms";
-import useUnstakeFarms from "@packages/chain/hooks/useUnstakeFarms";
-import useGetPendingMelons from "@packages/chain/hooks/useGetPendingMelons";
-import useGetStakedAmount from "@packages/chain/hooks/useGetStakedAmount";
 import Spinner from "@packages/shared/icons/Spinner";
-import {Divider} from "@packages/shared/components/Divider";
-import StudioNavigation, {
-	TabNavigationLink,
-} from "@components/CreatorDashboard/StudioNavigation";
-import {ArrowRightIcon, SparklesIcon} from "@heroicons/react/outline";
-import Link from "next/link";
-import {MagnifyingGlassIcon} from "@radix-ui/react-icons";
-import {useDisclosure} from "@packages/hooks";
-import SwapModal from "@components/Farms/SwapModal";
+import StudioNavigation from "@components/CreatorDashboard/StudioNavigation";
 import Staking from "@packages/farm/Staking";
+import TreatCore from "core/TreatCore";
+import axios from "axios";
+import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
+import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
 
 // T-78 Use intersection observer to change navbar color.
 
@@ -80,8 +64,9 @@ export default function Farm() {
 					</Container>
 				)}
 				<Container className="flex flex-wrap w-full gap-12 pt-12 mx-auto">
-					<Container className="grid flex-1 grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+					<Container className="grid flex-1 grid-cols-1 gap-8">
 						<Heading size={"xss"}>Available Melon NFTs</Heading>
+						<FarmersMarket />
 					</Container>
 					<Staking
 						treatMelonLoading={treatMelonLoading}
@@ -97,3 +82,35 @@ export default function Farm() {
 		</ApplicationLayout>
 	);
 }
+
+const FarmersMarket = () => {
+	const {data, isLoading, isError} = TreatCore.useQuery(
+		["melon_nfts"],
+		async () => {
+			try {
+				const res = await axios.get(`${apiEndpoint}/marketplace/melon`);
+				return res.data.data.map((nft) =>
+					legacy_nft_to_new({
+						...nft,
+						price: 0,
+					})
+				);
+			} catch (err) {
+				console.error(err);
+				return [];
+			}
+		}
+	);
+
+	if (isLoading) return <Spinner />;
+	return (
+		<Container className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+			{data.map((nft) => (
+				<SweetshopNFT
+					{...nft}
+					key={nft._id}
+				/>
+			))}
+		</Container>
+	);
+};
