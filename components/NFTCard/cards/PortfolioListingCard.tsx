@@ -9,7 +9,7 @@ export default function PortfolioPublicListingCard(props: TritPostProps) {
 	const soldOut = props.collection?.minted === props.max_supply;
 	return (
 		<NFTCard _id={props._id}>
-			<Container className="relative flex w-full overflow-hidden aspect-square">
+			<Container className="relative w-full overflow-hidden aspect-square">
 				<NFTCard.Media
 					isProtected={isProtected && !isMine}
 					caption={props.text}

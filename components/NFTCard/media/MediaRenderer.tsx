@@ -10,7 +10,7 @@ export default function NFTMediaRenderer({isProtected, isMine, text, _id}) {
 				_id={_id}
 			/>
 			<Container
-				className="flex flex-col justify-between w-full h-full p-2"
+				className="flex flex-col justify-between w-full h-full p-2 absolute top-2 left-2"
 				css={{
 					zIndex: 10,
 				}}
