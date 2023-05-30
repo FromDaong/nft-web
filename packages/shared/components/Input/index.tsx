@@ -24,7 +24,7 @@ export const Input = styled("input", {
 		},
 		appearance: {
 			solid: {
-				backgroundColor: "$surface",
+				backgroundColor: "$elementOnSurface",
 				color: "$textContrast",
 				border: 0,
 				"&focus:": {

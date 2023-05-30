@@ -67,7 +67,9 @@ export const Modal = ({
 
 			{
 				//@ts-ignore
-				<DialogContent css={{width: "auto"}}>{children}</DialogContent>
+				<DialogContent css={{width: "auto"}}>
+					<Container className={"md:w-[520px] w-full"}>{children}</Container>
+				</DialogContent>
 			}
 		</Dialog>
 	);
@@ -76,7 +78,7 @@ export const Modal = ({
 export const ModalHeaderSection = ({title, onClose}) => {
 	return (
 		<Container
-			className="flex justify-between items-center p-2 lg:p-4 border-b w-full md:w-[520px]"
+			className="flex justify-between items-center p-2 lg:p-4 border-b"
 			css={{backgroundColor: "$surface", borderColor: "$border"}}
 		>
 			<Heading size={"xss"}>{title}</Heading>

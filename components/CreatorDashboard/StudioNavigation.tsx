@@ -25,92 +25,87 @@ function StudioNavigation() {
 	if (isLoading) return null;
 
 	return (
-		<Container
-			className={"w-full flex justify-between border-b p-2"}
-			css={{borderColor: "$border"}}
-		>
-			<Container className="flex gap-4">
-				<Link href={"/studio"}>
+		<Container className={"w-full flex gap-2 py-2"}>
+			<Link href={"/studio"}>
+				<a>
+					<Button
+						appearance={"link"}
+						activeLink={pathname === "/studio"}
+					>
+						<HomeIcon className={"w-5 h-5"} />
+						Dashboard
+					</Button>
+				</a>
+			</Link>
+			{creator && (
+				<Link href={"/studio/collections"}>
 					<a>
 						<Button
 							appearance={"link"}
-							activeLink={pathname === "/studio"}
+							activeLink={pathname.includes("/studio/collections")}
 						>
-							<HomeIcon className={"w-5 h-5"} />
-							Dashboard
+							<StackIcon className={"w-5 h-5"} />
+							Collections
 						</Button>
 					</a>
 				</Link>
-				{creator && (
-					<Link href={"/studio/collections"}>
-						<a>
-							<Button
-								appearance={"link"}
-								activeLink={pathname.includes("/studio/collections")}
-							>
-								<StackIcon className={"w-5 h-5"} />
-								Collections
-							</Button>
-						</a>
-					</Link>
-				)}
+			)}
 
-				<Link href={"/studio/portfolio"}>
-					<a>
-						<Button
-							appearance={"link"}
-							activeLink={pathname.includes("/studio/portfolio")}
-						>
-							<RectangleStack className={"w-5 h-5"} />
-							Portfolio
-						</Button>
-					</a>
-				</Link>
-				<Link href={"/studio/nfts"}>
-					<a>
-						<Button
-							appearance={"link"}
-							activeLink={pathname.includes("/studio/nfts")}
-						>
-							<UserGroupIcon className={"w-5 h-5"} />
-							Resale
-						</Button>
-					</a>
-				</Link>
-				<Link href={"/studio/wishlist"}>
-					<a>
-						<Button
-							appearance={"link"}
-							activeLink={pathname.includes("/studio/wishlist")}
-						>
-							<HeartIcon className={"w-5 h-5"} />
-							Wishlist
-						</Button>
-					</a>
-				</Link>
-				<Link href={"/studio/sales"}>
-					<a>
-						<Button
-							appearance={"link"}
-							activeLink={pathname.includes("/studio/sales")}
-						>
-							<CashIcon className={"w-5 h-5"} />
-							Sales
-						</Button>
-					</a>
-				</Link>
-				<Link href={"/farm"}>
-					<a>
-						<Button
-							appearance={"link"}
-							activeLink={pathname.includes("/farm")}
-						>
-							<GiftIcon className={"w-5 h-5"} />
-							Farm
-						</Button>
-					</a>
-				</Link>
-			</Container>
+			<Link href={"/studio/portfolio"}>
+				<a>
+					<Button
+						appearance={"link"}
+						activeLink={pathname.includes("/studio/portfolio")}
+					>
+						<RectangleStack className={"w-5 h-5"} />
+						Portfolio
+					</Button>
+				</a>
+			</Link>
+			<Link href={"/studio/nfts"}>
+				<a>
+					<Button
+						appearance={"link"}
+						activeLink={pathname.includes("/studio/nfts")}
+					>
+						<UserGroupIcon className={"w-5 h-5"} />
+						Resale
+					</Button>
+				</a>
+			</Link>
+			<Link href={"/studio/wishlist"}>
+				<a>
+					<Button
+						appearance={"link"}
+						activeLink={pathname.includes("/studio/wishlist")}
+					>
+						<HeartIcon className={"w-5 h-5"} />
+						Wishlist
+					</Button>
+				</a>
+			</Link>
+			<Link href={"/studio/sales"}>
+				<a>
+					<Button
+						appearance={"link"}
+						activeLink={pathname.includes("/studio/sales")}
+					>
+						<CashIcon className={"w-5 h-5"} />
+						Sales
+					</Button>
+				</a>
+			</Link>
+			<Link href={"/farm"}>
+				<a>
+					<Button
+						appearance={"link"}
+						activeLink={pathname.includes("/farm")}
+					>
+						<GiftIcon className={"w-5 h-5"} />
+						Farm
+					</Button>
+				</a>
+			</Link>
 		</Container>
 	);
 }
