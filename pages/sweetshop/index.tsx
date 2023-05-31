@@ -49,9 +49,9 @@ export default function NFTS({sort, q, nfts, error}) {
 
 	return (
 		<ApplicationLayout>
+			<SweetshopTabs />
 			<ApplicationFrame>
 				<SEOHead title="Explore NFTs" />
-				<SweetshopTabs />
 				<ManageSearchTags />
 
 				<Container className="relative flex w-full h-full gap-8">
@@ -276,43 +276,53 @@ const ManageSearchTags = () => {
 function SweetshopTabs() {
 	const [selectedTab, setSelectedTab] = useState("verified");
 	return (
-		<RadioGroup
-			onSelect={(selected) => setSelectedTab(selected.target.value)}
-			className="flex items-center w-full max-w-full gap-2 py-4 overflow-x-auto flex-nowrap"
-			defaultValue="verified"
+		<Container
+			css={{
+				backgroundColor: "$surface",
+				borderColor: "$border",
+			}}
+			className="sticky top-0 z-50 border-b overflow-x-auto"
 		>
-			<RadioGroup.Option
-				appearance={selectedTab === "verified" ? "surface" : "subtle"}
-				className="flex-shrink-0"
-				value="verified"
-				as={Button}
-			>
-				Verified creators
-			</RadioGroup.Option>
-			<RadioGroup.Option
-				as={Button}
-				appearance={selectedTab === "resale" ? "surface" : "subtle"}
-				className="flex-shrink-0"
-				value="resale"
-			>
-				Resale market
-			</RadioGroup.Option>
-			<RadioGroup.Option
-				as={Button}
-				appearance={selectedTab === "all" ? "surface" : "subtle"}
-				className="flex-shrink-0"
-				value="melon"
-			>
-				Melon
-			</RadioGroup.Option>
-			<RadioGroup.Option
-				as={Button}
-				appearance={selectedTab === "treat" ? "surface" : "subtle"}
-				className="flex-shrink-0"
-				value="treat"
-			>
-				Treat of The Month
-			</RadioGroup.Option>
-		</RadioGroup>
+			<Container className="container mx-auto">
+				<RadioGroup
+					onSelect={(selected) => setSelectedTab(selected.target.value)}
+					className="flex items-center w-full max-w-full gap-2 py-2 overflow-x-auto flex-nowrap"
+					defaultValue="verified"
+				>
+					<RadioGroup.Option
+						appearance={selectedTab === "verified" ? "surface" : "subtle"}
+						className="flex-shrink-0"
+						value="verified"
+						as={Button}
+					>
+						Verified creators
+					</RadioGroup.Option>
+					<RadioGroup.Option
+						as={Button}
+						appearance={selectedTab === "resale" ? "surface" : "subtle"}
+						className="flex-shrink-0"
+						value="resale"
+					>
+						Resale market
+					</RadioGroup.Option>
+					<RadioGroup.Option
+						as={Button}
+						appearance={selectedTab === "all" ? "surface" : "subtle"}
+						className="flex-shrink-0"
+						value="melon"
+					>
+						Melon
+					</RadioGroup.Option>
+					<RadioGroup.Option
+						as={Button}
+						appearance={selectedTab === "treat" ? "surface" : "subtle"}
+						className="flex-shrink-0"
+						value="treat"
+					>
+						Treat of The Month
+					</RadioGroup.Option>
+				</RadioGroup>
+			</Container>
+		</Container>
 	);
 }
