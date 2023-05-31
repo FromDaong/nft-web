@@ -22,9 +22,7 @@ export const DialogContent = styled(Dialog.Panel, {
 	boxShadow:
 		"hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px",
 	position: "fixed",
-	top: "50%",
-	left: "50%",
-	transform: "translate(-50%, -50%)",
+
 	width: "100%",
 	// maxWidth: "720px",
 	height: "fit-content",
@@ -67,7 +65,12 @@ export const Modal = ({
 
 			{
 				//@ts-ignore
-				<DialogContent css={{width: "auto"}}>
+				<DialogContent
+					css={{width: "auto"}}
+					className={
+						"top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
+					}
+				>
 					<Container className={"md:w-[520px] w-full"}>{children}</Container>
 				</DialogContent>
 			}

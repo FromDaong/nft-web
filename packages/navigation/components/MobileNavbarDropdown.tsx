@@ -136,15 +136,9 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 							css={{
 								zIndex: 9999,
 								width: "100vw !important",
-								top: "50%",
-								left: "50%",
-								transform: "translate(-50%, -50%)",
+								bottom: 0,
 							}}
-							className={`fixed top-[50%] left-[50%] align-middle transform ${
-								props.isConnected ? "w-[80vw]" : `w-96`
-							} ${
-								props.isConnected ? "h-[80vh]" : `h-fit`
-							} max-w-[400px] max-h-[720px] overflow-y-scroll drop-shadow-xl rounded-xl`}
+							className={`fixed bottom-0 left-0 align-middle transform w-full h-fit max-h-[720px] overflow-y-scroll drop-shadow-xl rounded-t-2xl `}
 						>
 							{!props.isConnected && (
 								<Container className="relative top-0 left-0 w-full p-4 h-w-full">
@@ -228,8 +222,10 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 													<Button
 														onClick={openAccountModal}
 														fullWidth
+														outlined
+														appearance={"surface"}
 													>
-														<PlusIcon className="w-5 h-5" /> Create
+														<PlusIcon className="w-5 h-5" /> Create collection
 													</Button>
 												</a>
 											</Link>
@@ -332,7 +328,10 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 									<Button
 										className="w-full"
 										onClick={openAccountModal}
-										appearance={"danger"}
+										css={{
+											backgroundColor: "$red10",
+											color: "$white",
+										}}
 										fullWidth
 									>
 										<LogoutIcon className="w-5 h-5" />
