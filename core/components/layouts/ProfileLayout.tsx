@@ -476,25 +476,27 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 						</Container>
 					</ContextualContainer>
 				</FluidContainer>
-
-				<FluidContainer
-					justified
-					className="flex py-4"
-				>
-					<TabsContainer>
-						{(ownerOfUserProfile?.creator ? creator_tabs : profile_tabs).map(
-							(tab) => (
-								<Tab
-									key={tab.href}
-									href={`/${ownerOfUserProfile.username}${tab.href}`}
-									label={tab.label}
-									icon={tab.icon}
-								/>
-							)
-						)}
-					</TabsContainer>
-				</FluidContainer>
 			</Container>
+			<FluidContainer
+				justified
+				className="flex sticky top-0 z-50"
+				css={{
+					backgroundColor: "$surface",
+				}}
+			>
+				<TabsContainer>
+					{(ownerOfUserProfile?.creator ? creator_tabs : profile_tabs).map(
+						(tab) => (
+							<Tab
+								key={tab.href}
+								href={`/${ownerOfUserProfile.username}${tab.href}`}
+								label={tab.label}
+								icon={tab.icon}
+							/>
+						)
+					)}
+				</TabsContainer>
+			</FluidContainer>
 			<ApplicationFrame>
 				<Container>{props.children}</Container>
 			</ApplicationFrame>
