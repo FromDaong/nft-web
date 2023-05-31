@@ -18,7 +18,6 @@ export const DialogOverlay = styled("div", {
 
 export const DialogContent = styled(Dialog.Panel, {
 	backgroundColor: "$surface",
-	borderRadius: "16px",
 	boxShadow:
 		"hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px",
 	position: "fixed",
@@ -66,9 +65,8 @@ export const Modal = ({
 			{
 				//@ts-ignore
 				<DialogContent
-					css={{width: "auto"}}
 					className={
-						"top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
+						"md:top-[50%] md:left-[50%] md:translate-x-[-50%] md:translate-y-[-50%] bottom-0 left-0 w-full md:w-auto rounded-t-2xl md:rounded-xl  h-fit"
 					}
 				>
 					<Container className={"md:w-[520px] w-full"}>{children}</Container>
