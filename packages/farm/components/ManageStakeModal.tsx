@@ -1,5 +1,5 @@
 import {useHarvestFarm, useStaking} from "@packages/farm/utils";
-import {Modal, ModalHeaderSection} from "@packages/modals";
+import { Modal } from "@packages/modals";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Input} from "@packages/shared/components/Input";

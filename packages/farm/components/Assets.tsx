@@ -34,7 +34,7 @@ export default function AssetsOverview({
 	return (
 		<Container
 			css={{backgroundColor: "$surfaceOnSurface", borderColor: "$subtleBorder"}}
-			className="grid grid-cols-1 p-4 rounded-xl gap-8 border"
+			className="grid grid-cols-1 col-span-1 md:col-span-2 p-4 rounded-xl gap-8 border"
 		>
 			<Heading size={"xs"}>Assets overview</Heading>
 			<Container className="flex flex-col gap-4">

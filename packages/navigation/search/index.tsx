@@ -50,7 +50,8 @@ export default function SearchModal({children}) {
 						borderRadius: "50%",
 					}}
 					onClick={onOpen}
-					className="shadow-2xl"
+					className="shadow-sm"
+					outlined
 				>
 					<Search className="w-5 h-5" />
 				</Button>

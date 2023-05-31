@@ -42,47 +42,43 @@ export default function Farm() {
 
 	return (
 		<ApplicationLayout>
+			<StudioNavigation />
 			<ApplicationFrame>
-				<Container
-					className="flex gap-8 h-full w-full"
-					css={{borderColor: "$border"}}
-				>
-					<Container className="h-fit w-96">
-						<StudioNavigation />
-					</Container>
-					<Container className="flex-1 h-auto">
-						{false && treatMelonLoading && (
-							<Container className="flex flex-col items-center justify-center w-full min-h-screen">
-								<Spinner />
-								<Heading size="xs">Please wait. Loading...</Heading>
+				<Container>
+					{false && treatMelonLoading && (
+						<Container className="flex flex-col items-center justify-center w-full min-h-screen">
+							<Spinner />
+							<Heading size="xs">Please wait. Loading...</Heading>
+						</Container>
+					)}
+					{false && treatError && (
+						<Container className="flex flex-col items-center justify-center w-full min-h-screen gap-2 text-center">
+							<Heading size="xs">An error occured</Heading>
+							<Text>
+								Please check your internet connection and reload the page.
+							</Text>
+						</Container>
+					)}
+					<Container className="flex flex-col flex-wrap w-full gap-12 pt-12 mx-auto">
+						<Staking
+							treatMelonBalance={treatMelonBalance}
+							treatLpBalance={treatLpBalance}
+							address={address}
+							treatBalance={treatBalance}
+							masterMelonContract={masterMelonContract}
+						/>
+						<Container className="grid flex-1 grid-cols-1 gap-8">
+							<Container className="w-full flex flex-col md:flex-row gap-4 md:gap-2 justify-between items-baseline">
+								<Heading size={"xss"}>Available Melon NFTs</Heading>
+								<Button
+									outlined
+									className="shadow-sm"
+								>
+									<Sparkles className="w-4 h-4" />
+									Mint exclusive NFT
+								</Button>
 							</Container>
-						)}
-						{false && treatError && (
-							<Container className="flex flex-col items-center justify-center w-full min-h-screen gap-2 text-center">
-								<Heading size="xs">An error occured</Heading>
-								<Text>
-									Please check your internet connection and reload the page.
-								</Text>
-							</Container>
-						)}
-						<Container className="flex flex-col flex-wrap w-full gap-12 pt-12 mx-auto">
-							<Staking
-								treatMelonBalance={treatMelonBalance}
-								treatLpBalance={treatLpBalance}
-								address={address}
-								treatBalance={treatBalance}
-								masterMelonContract={masterMelonContract}
-							/>
-							<Container className="grid flex-1 grid-cols-1 gap-8">
-								<Container className="w-full flex justify-between items-baseline">
-									<Heading size={"xss"}>Available Melon NFTs</Heading>
-									<Button appearance={"accent"}>
-										<Sparkles className="w-4 h-4" />
-										Mint exclusive NFT
-									</Button>
-								</Container>
-								<FarmersMarket />
-							</Container>
+							<FarmersMarket />
 						</Container>
 					</Container>
 				</Container>

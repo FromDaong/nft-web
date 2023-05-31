@@ -98,10 +98,10 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 					<></>
 				</SearchModal>
 				<Button
-					appearance={"surface"}
+					outlined
 					css={{padding: "0.5rem", borderRadius: "9999px"}}
 					onClick={onMenuOpen}
-					className="shadow"
+					className="shadow-sm"
 				>
 					<DotsVerticalIcon className="w-5 h-5" />
 				</Button>

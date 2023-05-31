@@ -3,7 +3,8 @@ import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import BigNumber from "bignumber.js";
 import {ethers} from "ethers";
 import {useCallback, useEffect, useState} from "react";
-import {useAccount, useContract, useSigner} from "wagmi";
+import {toast} from "react-hot-toast";
+import {useAccount, useContract, useSigner, useWaitForTransaction} from "wagmi";
 import Web3 from "web3";
 
 export const useFarmContracts = () => {
@@ -96,6 +97,7 @@ export const useHarvestFarm = (pid: number) => {
 	const {address} = useAccount();
 	const [pendingMelons, setPendingMelons] = useState(null);
 	const [pendingMelonsLoading, setPendingMelonsLoading] = useState(false);
+	// usewaitfortransaction for the harvestFarm tx
 
 	const fetchPendingMelons = useCallback(async () => {
 		setPendingMelonsLoading(true);
@@ -107,13 +109,26 @@ export const useHarvestFarm = (pid: number) => {
 
 	const harvestFarm = useCallback(async () => {
 		if (masterMelon) {
+			let tx;
 			if (pid === 0) {
-				const tx = await masterMelon.leaveStaking("0").send({from: address});
+				tx = await masterMelon
+					.leaveStaking("0", {
+						from: address,
+					})
+					.catch((e) => {
+						throw "Error harvesting melons";
+					});
 
 				return tx;
 			}
 
-			const tx = await masterMelon.deposit(pid, "0").send({from: address});
+			tx = await masterMelon
+				.deposit(pid, "0", {
+					from: address,
+				})
+				.catch((e) => {
+					throw "Error harvesting melons";
+				});
 
 			return tx;
 		}
@@ -129,6 +144,7 @@ export const useHarvestFarm = (pid: number) => {
 		harvestFarm,
 		pendingMelons,
 		pendingMelonsLoading,
+		fetchPendingMelons,
 	};
 };
 
@@ -194,5 +210,11 @@ export const useStaking = (pid: number) => {
 		fetchStakedAmount();
 	}, [pid]);
 
-	return {handleStake, handleUnstake, stakedAmount, stakedAmountLoading};
+	return {
+		handleStake,
+		handleUnstake,
+		stakedAmount,
+		stakedAmountLoading,
+		fetchStakedAmount,
+	};
 };

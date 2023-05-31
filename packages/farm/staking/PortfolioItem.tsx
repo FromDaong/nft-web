@@ -1,18 +1,16 @@
-import SwapModal from "@components/Farms/SwapModal";
 import {InformationCircleIcon} from "@heroicons/react/outline";
 import {useDisclosure} from "@packages/hooks";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
-import {ABI} from "@packages/treat/lib/abi";
-import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
-import {useMemo, useState} from "react";
-import {useAccount, useBalance, useContract} from "wagmi";
-import {useStaking} from "../utils";
+import {useHarvestFarm, useStaking} from "../utils";
 import ManageStackModal from "../components/ManageStakeModal";
-import {CogIcon, Settings} from "lucide-react";
-import {Cog} from "lucide-react";
+import {Settings} from "lucide-react";
+import Spinner from "@packages/shared/icons/Spinner";
+import {toast} from "react-hot-toast";
+import {useEffect, useState} from "react";
+import {useWaitForTransaction} from "wagmi";
 
 export default function FarmPortfolioItem({
 	name,
@@ -23,11 +21,46 @@ export default function FarmPortfolioItem({
 	masterMelonContract,
 	pendingMelons,
 	pendingMelonsLoading,
-	harvestFarm,
 }) {
 	const {isOpen, onOpen, onClose} = useDisclosure();
-	const {stakedAmount, handleStake, handleUnstake, stakedAmountLoading} =
-		useStaking(id);
+	const {stakedAmount, stakedAmountLoading, fetchStakedAmount} = useStaking(id);
+	const {harvestFarm, fetchPendingMelons} = useHarvestFarm(id);
+
+	const [harvestHash, setHarvestHash] = useState(null);
+	const [harvesting, setHarvesting] = useState(false);
+
+	const harvestTx = useWaitForTransaction({
+		hash: harvestHash,
+	});
+
+	const harvest = async () => {
+		try {
+			setHarvesting(true);
+			const tx = await harvestFarm();
+			setHarvestHash(tx.hash);
+		} catch (err) {
+			console.log({err});
+			toast.error(`Harvest failed with reason: ${err}`);
+			setHarvesting(false);
+		}
+	};
+
+	useEffect(() => {
+		if (harvestTx.error) {
+			toast.error("Error harvesting melons");
+		}
+
+		if (harvestTx.data) {
+			toast.success("Harvested melons");
+			fetchPendingMelons();
+			fetchStakedAmount();
+		}
+
+		if (harvestTx.data) {
+			setHarvestHash(null);
+			setHarvesting(false);
+		}
+	}, [harvestTx]);
 
 	return (
 		<>
@@ -125,7 +158,22 @@ export default function FarmPortfolioItem({
 							Manage
 						</Button>
 					</Container>
-					<Button appearance={"accent"}>Harvest rewards</Button>
+					<Button
+						appearance={"accent"}
+						onClick={harvest}
+						css={{
+							opacity: 1, //pendingMelons?.toNumber() > 0 ? 1 : 0.5,
+						}}
+					>
+						{harvesting ? (
+							<>
+								<Spinner className="w-5 h-5" />
+								Harvesting...
+							</>
+						) : (
+							"Harvest rewards"
+						)}
+					</Button>
 				</Container>
 			</>
 		</>

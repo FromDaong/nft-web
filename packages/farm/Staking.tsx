@@ -1,23 +1,9 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
-import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
-import {Heading} from "@packages/shared/components/Typography/Headings";
-import {
-	ImportantText,
-	SmallText,
-	Text,
-} from "@packages/shared/components/Typography/Text";
 import FarmPortfolioItem, {
 	FarmPortfolioItemSkeleton,
 } from "./staking/PortfolioItem";
-import {useHarvestFarm, useHasApprovedFarm, useStaking} from "./utils";
-import {ArrowRight, CopyIcon, Sparkles, Wallet} from "lucide-react";
-import {ReactNode, useState} from "react";
-import TreatCore from "core/TreatCore";
-import axios from "axios";
-import {useCopyToClipboard} from "@packages/shared/hooks";
-import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
-import Link from "next/link";
+import {useHarvestFarm, useHasApprovedFarm} from "./utils";
+import {ReactNode} from "react";
 import AssetsOverview from "./components/Assets";
 
 export default function Staking({
@@ -32,7 +18,7 @@ export default function Staking({
 	const {hasApproved: lpApproved, approve: approveLp} = useHasApprovedFarm(1);
 
 	return (
-		<Container className="grid grid-cols-1 lg:grid-cols-3 w-full gap-8 self-start">
+		<Container className="grid grid-cols-1 md:grid-cols-2 w-full gap-8 self-start">
 			<AssetsOverview
 				treatApproved={treatApproved}
 				approveTreat={approveTreat}
@@ -76,7 +62,6 @@ const TreatFarm = ({balance, masterMelonContract}) => {
 							masterMelonContract={masterMelonContract}
 							pendingMelons={pendingMelons}
 							pendingMelonsLoading={pendingMelonsLoading}
-							harvestFarm={harvestFarm}
 						/>
 					</>
 				)}
@@ -111,7 +96,6 @@ const TreatLpFarm = ({balance, masterMelonContract}) => {
 							masterMelonContract={masterMelonContract}
 							pendingMelons={pendingMelons}
 							pendingMelonsLoading={pendingMelonsLoading}
-							harvestFarm={harvestFarm}
 						/>
 					</>
 				)}
@@ -127,7 +111,7 @@ const FarmCard = ({children}: {children: ReactNode}) => {
 				backgroundColor: "$elementOnSurface",
 				borderColor: "$border",
 			}}
-			className="flex flex-col rounded-xl h-fit sticky top-[1rem] align-top "
+			className="flex flex-col rounded-xl h-fit md:sticky top-[1rem] align-top "
 		>
 			{children}
 		</Container>

@@ -27,22 +27,15 @@ import Link from "next/link";
 export default function TreatCreatorStudio() {
 	return (
 		<ApplicationLayout>
+			<StudioNavigation />
+
 			<ApplicationFrame>
-				<Container
-					className="flex flex-col gap-4 px-4 py-4 md:pt-0 lg:px-0"
-					css={{borderColor: "$border"}}
-				>
-					<Container className="flex items-baseline justify-between">
-						<StudioNavigation />
-					</Container>
-				</Container>
-				<Container className="grid grid-cols-3 gap-8 py-8">
+				<Container className="grid grid-cols-1 lg:grid-cols-3 gap-8 py-8">
 					<Container
-						className="grid grid-cols-2 col-span-3 p-8 shadow-sm lg:col-span-2 rounded-xl"
+						className="grid grid-cols-1 md:grid-cols-2 col-span-1 p-8 shadow-sm border rounded-xl"
 						css={{
 							background: "$surfaceOnSurface",
 							borderColor: "$border",
-							backgroundImage: "url('/assets/backgrounds/teaser-drops.png')",
 							backgroundRepeat: "no-repeat",
 							backgroundSize: "contain",
 							backgroundPosition: "bottom right",
@@ -55,8 +48,11 @@ export default function TreatCreatorStudio() {
 								</Heading>
 								<Heading size={"xss"}>Collections</Heading>
 							</Container>
-							<Heading className={"lg:max-w-[320px]"}>
-								Sell NFTs on the sweetshop.
+							<Heading
+								size={"md"}
+								className={"lg:max-w-[320px]"}
+							>
+								Sell your NFTs on the sweetshop.
 							</Heading>
 
 							<Container className="mt-auto">
@@ -72,7 +68,7 @@ export default function TreatCreatorStudio() {
 						<Container></Container>
 					</Container>
 					<Container
-						className="flex flex-col col-span-2 gap-8 p-8 lg:col-span-1 rounded-xl"
+						className="flex flex-col col-span-1 gap-8 p-8 rounded-xl border"
 						css={{background: "$surfaceOnSurface", borderColor: "$border"}}
 					>
 						<Heading size={"xs"}>Analytics</Heading>
@@ -131,7 +127,7 @@ export default function TreatCreatorStudio() {
 						</Container>
 					</Container>
 					<Container
-						className="flex flex-col col-span-3 gap-8 p-8 lg:col-span-1 rounded-xl"
+						className="flex flex-col col-span-1 gap-8 p-8 rounded-xl border"
 						css={{background: "$surfaceOnSurface", borderColor: "$border"}}
 					>
 						<Container className={"flex justify-between"}>
@@ -155,7 +151,7 @@ export default function TreatCreatorStudio() {
 						</Container>
 					</Container>
 					<Container
-						className="flex flex-col col-span-3 gap-8 p-8 lg:col-span-2 rounded-xl"
+						className="flex flex-col col-span-1 gap-8 p-8 rounded-xl border"
 						css={{background: "$surfaceOnSurface", borderColor: "$border"}}
 					>
 						<Container className={"flex justify-between"}>
