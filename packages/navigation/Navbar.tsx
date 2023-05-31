@@ -58,7 +58,10 @@ export default function Navbar() {
 	} = useDisclosure();
 
 	return (
-		<Container className="top-0 z-20 border-b">
+		<Container
+			className="top-0 z-20 border-b"
+			css={{borderColor: "$border"}}
+		>
 			<Nav className="left-0 flex-col hidden w-full md:flex">
 				<Container className="relative w-full h-full px-8 divide-y xl:px-4">
 					<div className="container relative z-30 flex items-center justify-between py-2 mx-auto">

@@ -278,7 +278,7 @@ function SweetshopTabs() {
 	return (
 		<RadioGroup
 			onSelect={(selected) => setSelectedTab(selected.target.value)}
-			className="flex items-center w-full max-w-full gap-2 py-4 overflow-x-auto border-b flex-nowrap"
+			className="flex items-center w-full max-w-full gap-2 py-4 overflow-x-auto flex-nowrap"
 			defaultValue="verified"
 		>
 			<RadioGroup.Option

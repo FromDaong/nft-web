@@ -5,16 +5,11 @@ import classnames from "classnames";
 import {styled} from "@styles/theme";
 import {ChevronDownIcon, ChevronUpIcon} from "@heroicons/react/outline";
 import {Checkbox} from "@components/ui/checkbox";
-import {Container} from "@packages/shared/components/Container";
 import {ImportantText, Text} from "@packages/shared/components/Typography/Text";
-import {Heading} from "@packages/shared/components/Typography/Headings";
 import {ArrowUpDown} from "lucide-react";
 import {Button} from "@packages/shared/components/Button";
 
 export const SelectTrigger = styled(Select.Trigger, {
-	backgroundColor: "$surfaceOnSurface",
-	borderColor: "$subtleBorder",
-	padding: "4px 12px",
 	fontWeight: 600,
 });
 
@@ -75,7 +70,6 @@ export default function SortBy() {
 			<SelectTrigger
 				className="inline-flex items-center justify-between gap-4 p-2 rounded-full w-fit"
 				aria-label="Sort by"
-				appearance={"surface"}
 			>
 				<Button
 					appearance={"surface"}

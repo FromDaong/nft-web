@@ -39,7 +39,7 @@ const ManageUserDropdown = () => {
 
 	const {isOpen, onClose, onOpen} = useDisclosure();
 
-	if (!isConnected) {
+	if (!isConnected || !profile) {
 		return null;
 	}
 
