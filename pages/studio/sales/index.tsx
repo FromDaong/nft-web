@@ -6,15 +6,9 @@ import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 export default function AnalyticsPage() {
 	return (
 		<ApplicationLayout>
+			<StudioNavigation />
 			<ApplicationFrame>
-				<Container
-					className="py-4 md:pt-0 px-4 lg:px-0 flex flex-col gap-4 border-b"
-					css={{borderColor: "$border"}}
-				>
-					<Container className="flex justify-between items-baseline">
-						<StudioNavigation />
-					</Container>
-				</Container>
+				<Container></Container>
 			</ApplicationFrame>
 		</ApplicationLayout>
 	);

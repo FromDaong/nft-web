@@ -70,7 +70,7 @@ function StudioNavigation() {
 					<a>
 						<Button
 							appearance={"link"}
-							activeLink={pathname.includes("/studio/nfts")}
+							activeLink={pathname.includes("/studio/resale")}
 						>
 							<UserGroupIcon className={"w-5 h-5"} />
 							Resale
@@ -88,17 +88,19 @@ function StudioNavigation() {
 						</Button>
 					</a>
 				</Link>
-				<Link href={"/studio/sales"}>
-					<a>
-						<Button
-							appearance={"link"}
-							activeLink={pathname.includes("/studio/sales")}
-						>
-							<CashIcon className={"w-5 h-5"} />
-							Sales
-						</Button>
-					</a>
-				</Link>
+				{false && (
+					<Link href={"/studio/sales"}>
+						<a>
+							<Button
+								appearance={"link"}
+								activeLink={pathname.includes("/studio/sales")}
+							>
+								<CashIcon className={"w-5 h-5"} />
+								Sales
+							</Button>
+						</a>
+					</Link>
+				)}
 				<Link href={"/farm"}>
 					<a>
 						<Button

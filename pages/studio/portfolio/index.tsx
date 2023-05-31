@@ -22,45 +22,23 @@ export default function PortfolioPage() {
 	//const balances = treatNFTMinterContract.functions.balanceOfBatch([""], [""]);
 	const {profile} = useUser();
 
-	useEffect(() => {
-		if (profile) {
-			const treatMinterContract = new web3.eth.Contract(
-				ABI.treatMarketplace as any,
-				contractAddresses.treatResaleMarketplaceMinter[56]
-			);
-			(async () => {
-				console.log(await treatMinterContract.methods.creators.call());
-			})();
-		}
-	}, [profile]);
-
 	return (
 		<ApplicationLayout>
+			<StudioNavigation />
 			<ApplicationFrame>
 				<Container
-					className="flex flex-col gap-4 py-4 md:pt-0 lg:px-0"
 					css={{borderColor: "$border"}}
-				>
-					<Container className="flex items-baseline justify-between">
-						<StudioNavigation />
-					</Container>
-				</Container>
-				<Container
-					css={{borderColor: "$border"}}
-					className="flex justify-between gap-2 mt-8"
+					className="flex justify-between gap-4 mt-8 flex-col md:flex-row"
 				>
 					<Heading size={"sm"}>Portfolio</Heading>
 					<Container className={"flex gap-2"}>
-						<Button appearance={"surface"}>
-							<MagnifyingGlassIcon className="w-5 h-5" />
-						</Button>
 						<Button appearance={"surface"}>
 							Send
 							<PaperAirplaneIcon className="w-5 h-5 rotate-90" />
 						</Button>
 						<Button appearance={"surface"}>
 							<ListForSaleIcon className="w-5 h-5" />
-							List for sale
+							List for resale
 						</Button>
 					</Container>
 				</Container>

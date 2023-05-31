@@ -14,17 +14,10 @@ export default function CollectionsPage() {
 
 	return (
 		<ApplicationLayout>
+			<StudioNavigation />
 			<ApplicationFrame>
-				<Container
-					className="flex flex-col gap-4 px-4 py-4 md:pt-0 lg:px-0"
-					css={{borderColor: "$border"}}
-				>
-					<Container className="flex items-baseline justify-between">
-						<StudioNavigation />
-					</Container>
-				</Container>
 				<Container className="flex flex-col gap-8 py-8">
-					<Container className="flex justify-between">
+					<Container className="flex flex-col gap-4 md:flex-row justify-between">
 						<Heading size={"md"}>Collections</Heading>
 						<Link href={"/create"}>
 							<a>
