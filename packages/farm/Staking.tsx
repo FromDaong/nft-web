@@ -10,101 +10,126 @@ import {
 import FarmPortfolioItem, {
 	FarmPortfolioItemSkeleton,
 } from "./staking/PortfolioItem";
-import {useHasApprovedFarm} from "./utils";
-import {Sparkles, Wallet} from "lucide-react";
+import {useHarvestFarm, useHasApprovedFarm, useStaking} from "./utils";
+import {ArrowRight, CopyIcon, Sparkles, Wallet} from "lucide-react";
+import {ReactNode, useState} from "react";
+import TreatCore from "core/TreatCore";
+import axios from "axios";
+import {useCopyToClipboard} from "@packages/shared/hooks";
+import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
+import Link from "next/link";
+import AssetsOverview from "./components/Assets";
 
 export default function Staking({
-	treatMelonLoading,
-	parseInt,
 	treatMelonBalance,
 	treatBalance,
 	treatLpBalance,
 	address,
 	masterMelonContract,
 }) {
-	const bnb_logo_address =
-		"https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/smartchain/assets/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c/logo.png";
-	const treatdao_logo = "/favicon copy.png";
-
-	const balances = [treatBalance, treatLpBalance];
-
-	console.log({balances});
-
 	const {hasApproved: treatApproved, approve: approveTreat} =
 		useHasApprovedFarm(0);
 	const {hasApproved: lpApproved, approve: approveLp} = useHasApprovedFarm(1);
 
 	return (
-		<Container className="grid w-full gap-8 lg:w-96 self-start">
-			<Container className="grid grid-cols-1 p-4 rounded-xl shadow gap-2">
-				<Heading size={"xss"}>Farm Contracts</Heading>
-				<Container className="flex justify-between items-center mt-4">
-					<Text>Treat Staking</Text>
-					<Button
-						size={"sm"}
-						appearance={treatApproved ? "subtle" : "action"}
-						onClick={approveTreat}
-						disabled={lpApproved}
-					>
-						<Wallet className="w-5 h-5" />
-						{treatApproved ? "Approved" : "Approve"}
-					</Button>
-				</Container>
-				<Container className="flex justify-between items-center">
-					<Text>Treat Pancake LP</Text>
-					<Button
-						size={"sm"}
-						appearance={lpApproved ? "subtle" : "action"}
-						onClick={approveLp}
-						disabled={lpApproved}
-					>
-						<Wallet className="w-5 h-5" />
-						{lpApproved ? "Approved" : "Approve"}
-					</Button>{" "}
-				</Container>
-			</Container>
-			<Container
-				css={{
-					backgroundColor: "$surfaceOnSurface",
-					borderColor: "$border",
-				}}
-				className="flex flex-col shadow rounded-xl h-fit sticky top-[1rem] align-top "
-			>
-				<Container className="flex flex-col p-2 overflow-hidden rounded-xl">
-					{!treatMelonBalance ||
-					!treatBalance ||
-					!masterMelonContract ||
-					!treatLpBalance ? (
-						<>
-							<FarmPortfolioItemSkeleton />
-							<FarmPortfolioItemSkeleton />
-						</>
-					) : (
-						<>
-							<FarmPortfolioItem
-								balance={balances[0].formatted}
-								name="TREAT"
-								id={0}
-								currency="TREAT"
-								logo={bnb_logo_address}
-								masterMelonContract={masterMelonContract}
-							/>
-							<FarmPortfolioItem
-								balance={balances[1].formatted}
-								name="TREAT/BNB"
-								id={1}
-								currency="TREAT/BNB"
-								logo={bnb_logo_address}
-								masterMelonContract={masterMelonContract}
-							/>
-						</>
-					)}
-				</Container>
-			</Container>
-			<Button appearance={"accent"}>
-				<Sparkles className="w-5 h-5" />
-				Mint an exclusive NFT
-			</Button>
+		<Container className="grid grid-cols-1 lg:grid-cols-3 w-full gap-8 self-start">
+			<AssetsOverview
+				treatApproved={treatApproved}
+				approveTreat={approveTreat}
+				lpApproved={lpApproved}
+				approveLp={approveLp}
+				treatBalance={treatBalance?.formatted}
+				melonBalance={treatMelonBalance?.formatted}
+			/>
+			<TreatFarm
+				balance={treatBalance?.formatted}
+				masterMelonContract={masterMelonContract}
+			/>
+			<TreatLpFarm
+				balance={treatLpBalance?.formatted}
+				masterMelonContract={masterMelonContract}
+			/>
 		</Container>
 	);
 }
+
+const TreatFarm = ({balance, masterMelonContract}) => {
+	const pid = 0;
+	const {pendingMelons, pendingMelonsLoading, harvestFarm} =
+		useHarvestFarm(pid);
+
+	return (
+		<FarmCard>
+			<Container className="flex flex-col p-4 overflow-hidden rounded-xl gap-8">
+				{!balance || !masterMelonContract ? (
+					<>
+						<FarmPortfolioItemSkeleton />
+					</>
+				) : (
+					<>
+						<FarmPortfolioItem
+							balance={balance}
+							name="TREAT"
+							id={pid}
+							currency="TREAT"
+							logo={""}
+							masterMelonContract={masterMelonContract}
+							pendingMelons={pendingMelons}
+							pendingMelonsLoading={pendingMelonsLoading}
+							harvestFarm={harvestFarm}
+						/>
+					</>
+				)}
+			</Container>
+		</FarmCard>
+	);
+};
+
+const TreatLpFarm = ({balance, masterMelonContract}) => {
+	const pid = 1;
+	const {pendingMelons, pendingMelonsLoading, harvestFarm} =
+		useHarvestFarm(pid);
+
+	const bnb_logo_address =
+		"https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/smartchain/assets/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c/logo.png";
+
+	return (
+		<FarmCard>
+			<Container className="flex flex-col p-4 gap-8 overflow-hidden rounded-xl">
+				{!balance || !masterMelonContract ? (
+					<>
+						<FarmPortfolioItemSkeleton />
+					</>
+				) : (
+					<>
+						<FarmPortfolioItem
+							balance={balance}
+							name="TREAT/BNB"
+							id={pid}
+							currency="TREAT/BNB"
+							logo={bnb_logo_address}
+							masterMelonContract={masterMelonContract}
+							pendingMelons={pendingMelons}
+							pendingMelonsLoading={pendingMelonsLoading}
+							harvestFarm={harvestFarm}
+						/>
+					</>
+				)}
+			</Container>
+		</FarmCard>
+	);
+};
+
+const FarmCard = ({children}: {children: ReactNode}) => {
+	return (
+		<Container
+			css={{
+				backgroundColor: "$elementOnSurface",
+				borderColor: "$border",
+			}}
+			className="flex flex-col rounded-xl h-fit sticky top-[1rem] align-top "
+		>
+			{children}
+		</Container>
+	);
+};

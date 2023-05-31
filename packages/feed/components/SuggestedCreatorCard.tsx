@@ -14,6 +14,7 @@ import Link from "next/link";
 import LiveTag from "./LiveTag";
 import {UserPlus} from "lucide-react";
 import Avvvatars from "avvvatars-react";
+import Username from "./Username";
 
 type SuggestedCreatorData = {
 	username: string;
@@ -85,14 +86,10 @@ const DefaultCreatorCard = (props: SuggestedCreatorData) => {
 										</ImportantText>
 									</MutedText>
 									<Container className="flex items-center gap-4 ">
-										<Heading
-											size="xs"
-											className="text-center"
-										>
-											<ImportantText>
-												{props.username.replaceAll(" ", "").trim()}
-											</ImportantText>
-										</Heading>
+										<Username
+											username={props.username.replaceAll(" ", "").trim()}
+											verified={true}
+										/>
 										{props.live && <LiveTag />}
 									</Container>
 								</Container>

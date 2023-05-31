@@ -18,6 +18,7 @@ import AcceptAgeModal from "@packages/modals/AcceptAgeModal";
 import {Container} from "@packages/shared/components/Container";
 import Footer from "@packages/shared/components/Footer";
 import {Analytics} from "@vercel/analytics/react";
+import {Toaster} from "react-hot-toast";
 
 const progress = new ProgressBar({
 	size: 3,
@@ -40,6 +41,7 @@ function MyApp({
 			<ThemeProvider>
 				<ApplicationProvider>
 					<WagmiWrapper pageProps={pageProps}>
+						<Toaster />
 						<Head>
 							<title>Treat DAO</title>
 						</Head>

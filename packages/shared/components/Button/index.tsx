@@ -42,6 +42,9 @@ export const Button = styled("button", {
 				backgroundColor: "$elementOnSurface",
 				color: "$textContrast",
 			},
+			success: {
+				color: "$mint11",
+			},
 			outline: {
 				backgroundColor: "$surface",
 				color: "$textContrast",
@@ -80,9 +83,9 @@ export const Button = styled("button", {
 		},
 		outlined: {
 			true: {
-				backgroundColor: "$white",
+				backgroundColor: "$surfaceOnSurface",
 				color: "$textContrast",
-				boxShadow: "$shadow",
+				border: "1px solid $border",
 			},
 		},
 		active: {

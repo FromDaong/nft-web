@@ -13,6 +13,8 @@ import TreatCore from "core/TreatCore";
 import axios from "axios";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import FarmNFT from "@components/NFTCard/cards/FarmNFT";
+import {Button} from "@packages/shared/components/Button";
+import {Sparkles} from "lucide-react";
 
 // T-78 Use intersection observer to change navbar color.
 
@@ -42,41 +44,47 @@ export default function Farm() {
 		<ApplicationLayout>
 			<ApplicationFrame>
 				<Container
-					className="flex flex-col gap-4 overflow-x-auto border-b lg:px-0"
+					className="flex gap-8 h-full w-full"
 					css={{borderColor: "$border"}}
 				>
-					<Container className="flex items-baseline justify-between">
+					<Container className="h-fit w-96">
 						<StudioNavigation />
 					</Container>
-				</Container>
-				{treatMelonLoading && (
-					<Container className="flex flex-col items-center justify-center w-full min-h-screen">
-						<Spinner />
-						<Heading size="xs">Please wait. Loading...</Heading>
+					<Container className="flex-1 h-auto">
+						{false && treatMelonLoading && (
+							<Container className="flex flex-col items-center justify-center w-full min-h-screen">
+								<Spinner />
+								<Heading size="xs">Please wait. Loading...</Heading>
+							</Container>
+						)}
+						{false && treatError && (
+							<Container className="flex flex-col items-center justify-center w-full min-h-screen gap-2 text-center">
+								<Heading size="xs">An error occured</Heading>
+								<Text>
+									Please check your internet connection and reload the page.
+								</Text>
+							</Container>
+						)}
+						<Container className="flex flex-col flex-wrap w-full gap-12 pt-12 mx-auto">
+							<Staking
+								treatMelonBalance={treatMelonBalance}
+								treatLpBalance={treatLpBalance}
+								address={address}
+								treatBalance={treatBalance}
+								masterMelonContract={masterMelonContract}
+							/>
+							<Container className="grid flex-1 grid-cols-1 gap-8">
+								<Container className="w-full flex justify-between items-baseline">
+									<Heading size={"xss"}>Available Melon NFTs</Heading>
+									<Button appearance={"accent"}>
+										<Sparkles className="w-4 h-4" />
+										Mint exclusive NFT
+									</Button>
+								</Container>
+								<FarmersMarket />
+							</Container>
+						</Container>
 					</Container>
-				)}
-				{treatError && (
-					<Container className="flex flex-col items-center justify-center w-full min-h-screen gap-2 text-center">
-						<Heading size="xs">An error occured</Heading>
-						<Text>
-							Please check your internet connection and reload the page.
-						</Text>
-					</Container>
-				)}
-				<Container className="flex flex-wrap w-full gap-12 pt-12 mx-auto">
-					<Container className="grid flex-1 grid-cols-1 gap-8">
-						<Heading size={"xss"}>Available Melon NFTs</Heading>
-						<FarmersMarket />
-					</Container>
-					<Staking
-						treatMelonLoading={treatMelonLoading}
-						parseInt={parseInt}
-						treatMelonBalance={treatMelonBalance}
-						treatLpBalance={treatLpBalance}
-						address={address}
-						treatBalance={treatBalance}
-						masterMelonContract={masterMelonContract}
-					/>
 				</Container>
 			</ApplicationFrame>
 		</ApplicationLayout>

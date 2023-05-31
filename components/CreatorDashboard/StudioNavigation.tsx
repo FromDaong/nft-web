@@ -25,7 +25,7 @@ function StudioNavigation() {
 	if (isLoading) return null;
 
 	return (
-		<Container className={"w-full flex gap-2 py-2"}>
+		<Container className={"w-full flex flex-col gap-2 py-2"}>
 			<Link href={"/studio"}>
 				<a>
 					<Button

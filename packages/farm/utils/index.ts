@@ -94,6 +94,16 @@ export const useHasApprovedFarm = (pid: number) => {
 export const useHarvestFarm = (pid: number) => {
 	const {masterMelon} = useFarmContracts();
 	const {address} = useAccount();
+	const [pendingMelons, setPendingMelons] = useState(null);
+	const [pendingMelonsLoading, setPendingMelonsLoading] = useState(false);
+
+	const fetchPendingMelons = useCallback(async () => {
+		setPendingMelonsLoading(true);
+		const amount = await masterMelon.pendingMelon(pid, address);
+		if (amount) setPendingMelons(amount);
+
+		setPendingMelonsLoading(false);
+	}, [address, masterMelon, pid]);
 
 	const harvestFarm = useCallback(async () => {
 		if (masterMelon) {
@@ -109,13 +119,22 @@ export const useHarvestFarm = (pid: number) => {
 		}
 	}, [masterMelon]);
 
+	useEffect(() => {
+		if (address && masterMelon && !pendingMelons) {
+			fetchPendingMelons();
+		}
+	}, [pid, address, masterMelon, pendingMelons]);
+
 	return {
 		harvestFarm,
+		pendingMelons,
+		pendingMelonsLoading,
 	};
 };
 
 export const useStaking = (pid: number) => {
 	const [stakedAmount, setStakedAmount] = useState(new BigNumber(0));
+	const [stakedAmountLoading, setStakedAmountLoading] = useState(false);
 
 	const {address} = useAccount();
 	const {masterMelon} = useFarmContracts();
@@ -124,12 +143,16 @@ export const useStaking = (pid: number) => {
 		async (amount: string) => {
 			const value = Web3.utils.toWei(amount.toString());
 			if (pid === 0) {
-				const tx = await masterMelon.enterStaking(value).send({from: address});
+				const tx = await masterMelon.enterStaking(value, {
+					from: address,
+				});
 
 				return tx;
 			}
 
-			const tx = await masterMelon.deposit(pid, value).send({from: address});
+			const tx = await masterMelon.deposit(pid, value, {
+				from: address,
+			});
 			return tx;
 		},
 		[address, masterMelon, pid]
@@ -139,12 +162,16 @@ export const useStaking = (pid: number) => {
 		async (amount: string) => {
 			const value = Web3.utils.toWei(amount.toString());
 			if (pid === 0) {
-				const tx = await masterMelon.leaveStaking(value).send({from: address});
+				const tx = await masterMelon.leaveStaking(value, {
+					from: address,
+				});
 
 				return tx;
 			}
 
-			const tx = await masterMelon.withdraw(pid, value).send({from: address});
+			const tx = await masterMelon.withdraw(pid, value, {
+				from: address,
+			});
 
 			return tx;
 		},
@@ -152,13 +179,20 @@ export const useStaking = (pid: number) => {
 	);
 
 	const fetchStakedAmount = useCallback(async () => {
-		const {amount} = await masterMelon.userInfo(pid, address);
-		setStakedAmount(new BigNumber(amount));
+		setStakedAmountLoading(true);
+		try {
+			const {amount} = await masterMelon.userInfo(pid, address);
+			setStakedAmount(amount as BigNumber);
+		} catch (e) {
+			console.error(e);
+		} finally {
+			setStakedAmountLoading(false);
+		}
 	}, [address, masterMelon, pid]);
 
 	useEffect(() => {
 		fetchStakedAmount();
 	}, [pid]);
 
-	return {handleStake, handleUnstake, stakedAmount};
+	return {handleStake, handleUnstake, stakedAmount, stakedAmountLoading};
 };

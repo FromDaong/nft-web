@@ -2,13 +2,6 @@ import {Container} from "@packages/shared/components/Container";
 import {useTritNFTUtils} from "@packages/post/hooks";
 import {TritPostProps} from "@packages/post/types";
 import {NFTCard} from "..";
-import {Button} from "@packages/shared/components/Button";
-import {
-	DotsHorizontalIcon,
-	ExclamationCircleIcon,
-	SaveIcon,
-} from "@heroicons/react/outline";
-import {Gift, GiftIcon, ShareIcon, StarIcon} from "lucide-react";
 
 export default function FarmNFT(props: TritPostProps) {
 	const {liked, likeNFT, isMine, isProtected} = useTritNFTUtils(props);
