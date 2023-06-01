@@ -1,7 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import {SearchIcon} from "@heroicons/react/outline";
 import CreatorsDropdownSort from "@packages/Dropdowns/CreatorsDropdownSort";
-import CreatorCard from "@packages/feed/components/SuggestedCreatorCard";
+import CreatorCard from "@packages/feed/components/CreatorCard";
 import {SEOHead} from "@packages/seo/page";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
@@ -150,8 +150,8 @@ export default function NFTS(props) {
 										isExpanded
 										border
 										live={creator.livestream_active}
-										followers={creator.profile?.followers?.length}
-										subscribers={creator.profile?.following?.length}
+										followers={creator.profile?.followers}
+										subscribers={creator.profile?.following}
 									/>
 								))
 							) : (

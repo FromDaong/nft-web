@@ -36,6 +36,7 @@ import {DashboardIcon} from "@radix-ui/react-icons";
 import SearchModal from "../search";
 import {Transition} from "@headlessui/react";
 import {DialogOverlay} from "@packages/modals";
+import EditProfile from "@components/settings/EditProfile";
 
 const ExploreDropdownLinks = [
 	{
@@ -80,6 +81,12 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 		onOpen: onMenuOpen,
 	} = useDisclosure();
 
+	const {
+		isOpen: isEditProfileModalOpen,
+		onOpen: onOpenEditProfileModal,
+		onClose: onCloseEditProfileModal,
+	} = useDisclosure();
+
 	const {isOpen: upgradeToCreatorIsOpen, onClose: onCloseUpgradeToCreator} =
 		useDisclosure();
 
@@ -93,6 +100,10 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 				isOpen={isThemesOpen}
 				onClose={onCloseThemes}
 			/>
+			<EditProfile
+				isOpen={isEditProfileModalOpen}
+				onClose={onCloseEditProfileModal}
+			/>
 			<Container className="flex items-center justify-center gap-4">
 				<SearchModal>
 					<></>
@@ -102,6 +113,7 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 					css={{padding: "0.5rem", borderRadius: "9999px"}}
 					onClick={onMenuOpen}
 					className="shadow-sm"
+					appearance={"surface"}
 				>
 					<DotsVerticalIcon className="w-5 h-5" />
 				</Button>
@@ -220,7 +232,6 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 											<Link href={"/create"}>
 												<a className="flex flex-col w-full">
 													<Button
-														onClick={openAccountModal}
 														fullWidth
 														outlined
 														appearance={"surface"}
@@ -278,7 +289,10 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 											</Link>
 										)}
 										<Container
-											onClick={onOpen}
+											onClick={() => {
+												onMenuClose();
+												onOpenEditProfileModal();
+											}}
 											className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
 										>
 											<div className="flex items-center gap-4">

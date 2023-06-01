@@ -92,7 +92,6 @@ const NFTPresentationComponent = (props: {
 							<Container className="flex gap-4">
 								<Button
 									appearance={"surface"}
-									className="underline"
 									onClick={onOpenWishlistModal}
 								>
 									<HeartIcon className="w-5 h-5" />
@@ -100,7 +99,6 @@ const NFTPresentationComponent = (props: {
 								</Button>
 								<Button
 									appearance={"surface"}
-									className="underline"
 								>
 									<CopyIcon className="w-5 h-5" />
 									Copy link

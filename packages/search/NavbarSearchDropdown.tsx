@@ -2,7 +2,7 @@ import {useCallback, useEffect, useMemo, useState} from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import {ChevronDownIcon} from "@heroicons/react/solid";
 import Link from "next/link";
-import CreatorCard from "@packages/feed/components/SuggestedCreatorCard";
+import CreatorCard from "@packages/feed/components/CreatorCard";
 
 import {
 	DropdownContent,

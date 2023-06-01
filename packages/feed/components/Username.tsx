@@ -10,7 +10,7 @@ export default function Username({
 }) {
 	return (
 		<Text className="flex items-center gap-2">
-			<ImportantText>{username}</ImportantText>
+			{username}
 			{verified && <Verified className="w-4 h-4" />}
 		</Text>
 	);

@@ -20,6 +20,7 @@ export const Button = styled("button", {
 	justifyContent: "center",
 	alignContent: "center",
 	flexShrink: 0,
+	transition: "all 0.2s ease-in-out",
 
 	variants: {
 		appearance: {
@@ -41,6 +42,9 @@ export const Button = styled("button", {
 			surface: {
 				backgroundColor: "$elementOnSurface",
 				color: "$textContrast",
+				"&:hover": {
+					backgroundColor: "$surfaceOnSurface",
+				},
 			},
 			success: {
 				color: "$mint11",
@@ -75,9 +79,9 @@ export const Button = styled("button", {
 			},
 			link: {
 				backgroundColor: "inherit",
-				color: "$textContrast",
-				"&hover:": {
-					backgroundColor: "$elementOnSurface",
+				color: "$accentText",
+				"&:hover": {
+					backgroundColor: "$accentBg",
 				},
 			},
 		},

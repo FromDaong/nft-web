@@ -251,10 +251,6 @@ const PersonalPresentationInformationForm = (props: {
 						)}
 						{updatingProfilePic && <Spinner />}
 					</Container>
-					<Container className="flex flex-col gap-2">
-						<Button appearance={"subtle"}>Change photo</Button>
-						<Button appearance={"danger"}>Remove photo</Button>
-					</Container>
 				</Container>
 			</Container>
 			<form className="flex flex-col gap-8">

@@ -40,6 +40,7 @@ import {WishlistNFTCard} from "pages/studio/wishlist";
 import FullscreenImagePreviewModal from "@packages/modals/ImagePreview";
 import AvatarGroup from "@packages/avatars/AvatarGroup";
 import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
+import {FilterIcon} from "lucide-react";
 
 export default function NFT(props: {
 	notFound?: boolean;
@@ -122,7 +123,7 @@ export default function NFT(props: {
 							postUtils={postUtils}
 						/>
 						<Container className="flex-1 w-full">
-							<Container className="relative flex flex-col h-full py-4 rounded-xl lg:py-4">
+							<Container className="relative flex flex-col h-full py-4 rounded-xl lg:py-4 gap-12">
 								<Container className="flex gap-4">
 									{isOwned && balance && (
 										<Container
@@ -186,19 +187,18 @@ export default function NFT(props: {
 										maxSupply={maxNftSupply}
 									/>
 								</Container>
+								<Divider dir={"horizontal"} />
+								<ResaleListings />
+								<Divider dir={"horizontal"} />
+								<Activity />
+								<Divider dir={"horizontal"} />
 							</Container>
 						</Container>
 					</Container>
-					<Container className="flex flex-col gap-12">
-						<Divider dir={"horizontal"} />
-						<ResaleListings />
-						<Divider dir={"horizontal"} />
-						<Activity />
-						<Divider dir={"horizontal"} />
-
+					<Container className="flex flex-col mt-12">
 						<Container className="flex flex-col gap-12">
 							<Container className="flex flex-col gap-4">
-								<Heading size="xs">More from this creator</Heading>
+								<Heading size="sm">More from the creator</Heading>
 							</Container>
 							<Container className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 								<Link href={`/${nft.creator.username}`}>
@@ -320,7 +320,7 @@ function ImagePreviewSection({
 		onClose: onLightboxClose,
 	} = useDisclosure();
 	return (
-		<Container className="w-full xl:w-1/2 flex-shrink-0 2xl:h-[80vh] lg:h-[90vh] h-[calc(80vh-64px)] flex items-center justify-center sticky top-0">
+		<Container className="w-full xl:w-1/2 flex-shrink-0 lg:h-[95vh] h-[calc(80vh-64px)] flex items-center justify-center lg:sticky top-4">
 			{isLightboxOpen && (isOwned || !nft.protected) && (
 				<FullscreenImagePreviewModal
 					isOpen={isLightboxOpen}
@@ -409,14 +409,14 @@ function ResaleListings() {
 	return (
 		<Container className="flex flex-col gap-12">
 			<Container className="flex flex-col gap-4">
-				<Heading size="xs">Buy from the Resale Market</Heading>
+				<Heading size="xs">On the Resale Market</Heading>
 				<Container className="flex gap-4">
-					<Button appearance={"surface"}>Cheaper</Button>
-					<Button appearance={"surface"}>My contacts</Button>
-					<Button appearance={"surface"}>All</Button>
+					<Button appearance={"surface"}>
+						<FilterIcon className="w-4 h-4" /> Cheaper
+					</Button>
 				</Container>
 			</Container>
-			<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+			<Container className="grid grid-cols-1 gap-8 md:grid-cols-2">
 				<WishlistNFTCard />
 				<WishlistNFTCard />
 				<WishlistNFTCard />

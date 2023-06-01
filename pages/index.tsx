@@ -3,7 +3,7 @@ import {Container} from "packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {TritPost} from "@packages/post/TritPost";
-import CreatorCard from "@packages/feed/components/SuggestedCreatorCard";
+import CreatorCard from "@packages/feed/components/CreatorCard";
 import Link from "next/link";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
 import {
@@ -200,10 +200,7 @@ export default function Index(props: {
 							</Container>
 							<Link href={"/sweetshop"}>
 								<a>
-									<Button
-										outlined
-										appearance={"subtle"}
-									>
+									<Button appearance={"link"}>
 										<ImportantText>View all on sweetshop</ImportantText>
 										<ArrowRightIcon
 											width={16}
@@ -356,10 +353,7 @@ export default function Index(props: {
 
 							<Link href={"/creators"}>
 								<a>
-									<Button
-										outlined
-										appearance={"subtle"}
-									>
+									<Button appearance={"link"}>
 										<ImportantText>View more creators</ImportantText>
 										<ArrowRightIcon
 											width={16}
@@ -369,7 +363,7 @@ export default function Index(props: {
 								</a>
 							</Link>
 						</Container>
-						<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4">
+						<Container className="grid grid-cols-1 w-full lg:w-2/3 xl:w-1/2">
 							{!trendingCreatorError && !trendingCreatorsLoading
 								? trendingCreators?.slice(0, 8).map((creator) => (
 										<CreatorCard
@@ -381,8 +375,8 @@ export default function Index(props: {
 											isExpanded
 											border
 											live={creator.livestream_active}
-											followers={creator.profile?.followers?.length}
-											subscribers={creator.profile?.following?.length}
+											followers={creator.profile?.followers}
+											subscribers={creator.profile?.following}
 										/>
 								  ))
 								: [0, 1, 2, 4].map((i) => (

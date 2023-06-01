@@ -1,6 +1,6 @@
 import {Container} from "@packages/shared/components/Container";
 import {MutedText, Text} from "@packages/shared/components/Typography/Text";
-import CreatorCard from "./SuggestedCreatorCard";
+import CreatorCard from "./CreatorCard";
 
 export default function SuggestedCreatorsSection(props: {
 	title: string;
