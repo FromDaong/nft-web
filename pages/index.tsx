@@ -110,6 +110,13 @@ export default function Index(props: {
 
 	return (
 		<>
+			<SEOHead
+				title={"TreatDAO"}
+				description="TreatDAO is a Web3 project dedicated to creating opportunities and an amazing platform for adult content creators and collectors."
+				data={{
+					official: true,
+				}}
+			/>
 			<Container
 				css={{
 					background: "$surfaceOnSurface",
@@ -182,80 +189,13 @@ export default function Index(props: {
 				</Container>
 			</Container>
 			<Container className="flex flex-col gap-12 py-12 mt-12 md:gap-16 lg:gap-24">
-				<SEOHead
-					title={"TreatDAO"}
-					description="TreatDAO is a Web3 project dedicated to creating opportunities and an amazing platform for adult content creators and collectors."
-					data={{
-						official: true,
-					}}
-				/>
-				<Container>
-					<Container className="container flex flex-col w-full gap-8 px-8 mx-auto">
-						<Container className="flex flex-col items-baseline gap-4">
-							<Container className="flex flex-col gap-2">
-								<Heading>Discover sweetshop NFT's</Heading>
-								<Text>
-									Buy and sell NFTs by TreatDAO content creators and resellers.
-								</Text>
-							</Container>
-							<Link href={"/sweetshop"}>
-								<a>
-									<Button appearance={"link"}>
-										<ImportantText>View all on sweetshop</ImportantText>
-										<ArrowRightIcon
-											width={16}
-											height={16}
-										/>
-									</Button>
-								</a>
-							</Link>
-						</Container>
-						{!trendingNFTError && (
-							<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4 lg:gap-4">
-								{!trendingNFTError && !trendingNFTsLoading
-									? trendingNFTs.map((item, i) => (
-											<Container
-												key={item}
-												className={
-													"flex col-span-1 " +
-													(i > 3 ? "lg:hidden xl:flex" : "")
-												}
-											>
-												<TritPost
-													inGrid
-													{...item}
-												/>
-											</Container>
-									  ))
-									: [0, 1, 2, 3].map((i) => (
-											<Container
-												key={i}
-												className="col-span-1 border"
-												css={{
-													borderColor: "$subtleBorder",
-													padding: "8px",
-													borderRadius: "16px",
-												}}
-											>
-												<DynamicSkeleton config={TritPostSkeleton} />
-											</Container>
-									  ))}
-							</Container>
-						)}
-						{trendingNFTError && (
-							<Container className={"flex justify-center"}>
-								<p>An error occurred while fetching NFTs</p>
-							</Container>
-						)}
-					</Container>
-				</Container>
 				<Divider dir={"horizontal"} />
 				<Container>
 					<Container className="container flex flex-col w-full gap-8 px-8 mx-auto">
 						<Container className="flex flex-col items-baseline gap-4">
 							<Container className="flex flex-col gap-2">
 								<Heading>Lots of new features</Heading>
-								<Text>
+								<Text css={{fontSize: "1.3rem"}}>
 									The new TreatDAO NFTs platform brings a lot of new features to
 									enhance your browsing experience.
 								</Text>
@@ -345,7 +285,7 @@ export default function Index(props: {
 						<Container className="flex flex-col gap-4">
 							<Container className="flex flex-col gap-2">
 								<Heading>Discover Treat creators</Heading>
-								<Text>
+								<Text css={{fontSize: "1.3rem"}}>
 									Meet our content creators, giving you your daily dose of spicy
 									content.
 								</Text>

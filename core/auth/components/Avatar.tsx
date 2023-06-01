@@ -94,7 +94,7 @@ const UserAvatar = (props: {
 	) : (
 		<Avvvatars
 			size={props.size}
-			value={props.profile_pic ?? props.username}
+			value={props.username}
 			style={"shape"}
 		/>
 	);

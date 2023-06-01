@@ -65,70 +65,47 @@ const DefaultCreatorCard = (props: SuggestedCreatorData) => {
 		>
 			<Link href={`/${props.username}`}>
 				<a>
-					<Container className="flex justify-between w-full gap-4 px-2 py-4">
-						<Container className="flex gap-2 items-start">
+					<Container className="flex gap-2 items-start px-2 py-4">
+						<Container>
 							<UserAvatar
 								profile_pic={profilePicUrl}
 								username={props.username.replaceAll(" ", "").trim()}
 								size={48}
 							/>
-							<Container className="flex flex-col gap-2">
-								{props.username && (
-									<Container className="flex flex-col w-full">
-										<Heading size={"xss"}>{props.display_name?.trim()}</Heading>
-										<Container className="flex items-center gap-4 ">
-											<Username
-												username={props.username.replaceAll(" ", "").trim()}
-												verified={true}
-											/>
-											{props.live && <LiveTag />}
-										</Container>
-										<Text className="mt-2">{props.bio}</Text>
-									</Container>
-								)}
-								{props.isPromoted && (
-									<Container className="flex flex-col gap-2">
-										{props.isPromoted && (
-											<p>
-												<MutedText css={{color: "$accentText"}}>
-													<SmallText>Promoted</SmallText>
-												</MutedText>
-											</p>
-										)}
-									</Container>
-								)}
-							</Container>
 						</Container>
-						<Container className="flex gap-4 px-4 h-fit">
-							{profile && profile.username !== props.username && (
-								<>
-									{!isFollowing && (
-										<Button
-											appearance={"action"}
-											onClick={(e) => {
-												e.preventDefault();
-												e.stopPropagation();
-												follow();
-											}}
-										>
-											Follow
-										</Button>
+						<Container className="flex flex-col w-full">
+							<Container className="flex justify-between items-center gap-4 w-full">
+								<Container>
+									<Heading size={"xss"}>{props.display_name?.trim()}</Heading>
+									<Username
+										username={props.username.replaceAll(" ", "").trim()}
+										verified={true}
+									/>
+								</Container>
+								<Container className="flex gap-4 px-4 h-fit">
+									{profile && profile.username !== props.username && (
+										<>
+											<Button
+												size={"sm"}
+												appearance={isFollowing ? "surface" : "action"}
+												onClick={(e) => {
+													e.preventDefault();
+													e.stopPropagation();
+													if (isFollowing) {
+														follow();
+													} else {
+														unfollow();
+													}
+												}}
+											>
+												{isFollowing ? "Unfollow" : "Follow"}
+											</Button>
+										</>
 									)}
-									{isFollowing && (
-										<Button
-											appearance={"surface"}
-											onClick={(e) => {
-												e.preventDefault();
-												e.stopPropagation();
-												unfollow();
-											}}
-										>
-											Unfollow
-										</Button>
-									)}
-								</>
-							)}
-							{!profile && <Button appearance={"surface"}></Button>}
+									{!profile && <Button appearance={"surface"}></Button>}
+								</Container>
+							</Container>
+							<Text className="mt-2">{props.bio}</Text>
 						</Container>
 					</Container>
 				</a>

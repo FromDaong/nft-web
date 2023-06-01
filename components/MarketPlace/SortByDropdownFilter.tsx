@@ -30,7 +30,7 @@ const BaseSelectItem = styled(Select.Item, {
 	},
 });
 
-const SelectItem = forwardRef(
+export const SelectItem = forwardRef(
 	({children, className, ...props}, forwardedRef) => {
 		return (
 			<BaseSelectItem
