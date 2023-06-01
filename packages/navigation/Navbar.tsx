@@ -19,7 +19,7 @@ import {useDisclosure} from "@packages/hooks";
 import NotificationsTray from "@components/Notifications/NotificationsTray";
 import TransactionHistoryTray from "@components/Notifications/TransactionHistoryTray";
 import RectangleStack from "@packages/shared/icons/RectangleStack";
-import {CoinsIcon, Search, ShoppingBag, UserIcon} from "lucide-react";
+import {CoinsIcon, PlusIcon, Search, ShoppingBag, UserIcon} from "lucide-react";
 import {
 	BoldLink,
 	SmallText,
@@ -34,8 +34,9 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import {ShoppingBagIcon} from "@heroicons/react/solid";
 import {StackIcon} from "@radix-ui/react-icons";
-import {Transition} from "@headlessui/react";
-import {useState} from "react";
+import {Portal, Transition} from "@headlessui/react";
+import {useEffect, useRef, useState} from "react";
+import {useRouter} from "next/router";
 
 const Nav = styled("nav", {
 	zIndex: 30,
@@ -77,14 +78,9 @@ export default function Navbar() {
 								</a>
 							</Link>
 							<div className="items-center hidden gap-2 md:flex">
-								<Link href="/sweetshop">
+								<Link href="/magazine">
 									<a>
-										<Button
-											size={"sm"}
-											appearance={"link"}
-										>
-											Marketplace
-										</Button>
+										<Button appearance={"subtle"}>Magazine</Button>
 									</a>
 								</Link>
 							</div>
@@ -110,13 +106,14 @@ export default function Navbar() {
 											<Link href={"/create"}>
 												<a>
 													<Button
+														appearance={"action"}
 														css={{
-															borderRadius: "9999px",
-															alignItems: "center",
-															justifyContent: "center",
+															padding: "0.4rem 1rem",
+															height: "100%",
 														}}
 													>
-														Create
+														<PlusIcon className="w-5 h-5" />
+														Create collection
 													</Button>
 												</a>
 											</Link>
@@ -170,11 +167,31 @@ export default function Navbar() {
 
 function BrowseDropdownMenu() {
 	const [isOpen, setIsOpen] = useState(false);
+	const router = useRouter();
+
+	useEffect(() => {
+		if (isOpen) {
+			const onClose = () => {
+				setIsOpen(false);
+			};
+			onClose();
+		}
+	}, [router]);
+
+	useEffect(() => {
+		if (isOpen) {
+			document.body.style.overflow = "hidden";
+		}
+		return () => {
+			document.body.style.overflow = "unset";
+		};
+	}, [isOpen]);
+
 	return (
 		<div className="items-center hidden gap-4 md:flex">
 			<DropdownMenu onOpenChange={setIsOpen}>
 				<DropdownMenuTrigger>
-					<Button appearance={"link"}>
+					<Button appearance={"subtle"}>
 						Browse <ChevronDownIcon className="w-4 h-4" />
 					</Button>
 				</DropdownMenuTrigger>
@@ -187,47 +204,49 @@ function BrowseDropdownMenu() {
 					leaveFrom="transform opacity-100 scale-100"
 					leaveTo="transform opacity-0 scale-95"
 				>
-					<DropdownMenuContent className="w-48 p-2 transition-opacity duration-200 bg-white border shadow-2xl rounded-xl">
-						<DropdownMenuItem className="p-2 rounded-lg cursor-pointer hover:bg-zinc-100">
-							<Link href="/sweetshop">
-								<a>
-									<BoldLink className="flex items-center gap-4">
-										<ShoppingBag className="w-5 h-5" />
-										Sweetshop
-									</BoldLink>
-								</a>
-							</Link>
-						</DropdownMenuItem>
-						<DropdownMenuItem className="p-2 rounded-lg cursor-pointer hover:bg-zinc-100">
-							<Link href="/collection">
-								<a>
-									<BoldLink className="flex items-center gap-4">
-										<StackIcon className="w-5 h-5" />
-										Collections
-									</BoldLink>
-								</a>
-							</Link>
-						</DropdownMenuItem>
-						<DropdownMenuItem className="p-2 rounded-lg cursor-pointer hover:bg-zinc-100">
-							<Link href="/people">
-								<a>
-									<BoldLink className="flex items-center gap-4">
-										<UserIcon className="w-5 h-5" /> Profiles
-									</BoldLink>
-								</a>
-							</Link>
-						</DropdownMenuItem>
-						<DropdownMenuItem className="p-2 rounded-lg cursor-pointer hover:bg-zinc-100">
-							<Link href="/dex/ramp">
-								<a>
-									<BoldLink>
-										<CoinsIcon className="w-5 h-5" />
-										Buy crypto
-									</BoldLink>
-								</a>
-							</Link>
-						</DropdownMenuItem>
-					</DropdownMenuContent>
+					<Portal>
+						<DropdownMenuContent className="w-48 p-2 transition-opacity duration-200 bg-white border shadow-2xl rounded-xl z-50">
+							<DropdownMenuItem className="p-2 rounded-lg cursor-pointer hover:bg-zinc-100">
+								<Link href="/sweetshop">
+									<a>
+										<BoldLink className="flex items-center gap-4">
+											<ShoppingBag className="w-5 h-5" />
+											Sweetshop
+										</BoldLink>
+									</a>
+								</Link>
+							</DropdownMenuItem>
+							<DropdownMenuItem className="p-2 rounded-lg cursor-pointer hover:bg-zinc-100">
+								<Link href="/collection">
+									<a>
+										<BoldLink className="flex items-center gap-4">
+											<StackIcon className="w-5 h-5" />
+											Collections
+										</BoldLink>
+									</a>
+								</Link>
+							</DropdownMenuItem>
+							<DropdownMenuItem className="p-2 rounded-lg cursor-pointer hover:bg-zinc-100">
+								<Link href="/people">
+									<a>
+										<BoldLink className="flex items-center gap-4">
+											<UserIcon className="w-5 h-5" /> Profiles
+										</BoldLink>
+									</a>
+								</Link>
+							</DropdownMenuItem>
+							<DropdownMenuItem className="p-2 rounded-lg cursor-pointer hover:bg-zinc-100">
+								<Link href="/dex/ramp">
+									<a>
+										<BoldLink>
+											<CoinsIcon className="w-5 h-5" />
+											Buy crypto
+										</BoldLink>
+									</a>
+								</Link>
+							</DropdownMenuItem>
+						</DropdownMenuContent>
+					</Portal>
 				</Transition>
 			</DropdownMenu>
 		</div>

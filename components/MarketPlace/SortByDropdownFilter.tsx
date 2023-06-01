@@ -1,5 +1,5 @@
 // @ts-nocheck
-import {forwardRef} from "react";
+import {forwardRef, useEffect, useState} from "react";
 import * as Select from "@radix-ui/react-select";
 import classnames from "classnames";
 import {styled} from "@styles/theme";
@@ -8,6 +8,7 @@ import {Checkbox} from "@components/ui/checkbox";
 import {ImportantText, Text} from "@packages/shared/components/Typography/Text";
 import {ArrowUpDown} from "lucide-react";
 import {Button} from "@packages/shared/components/Button";
+import {useRouter} from "next/router";
 
 export const SelectTrigger = styled(Select.Trigger, {
 	fontWeight: 600,
@@ -54,19 +55,35 @@ const SelectItem = forwardRef(
 );
 SelectItem.displayName = "SelectItem";
 
-type Sort = {
-	config: {
-		default: string;
-		options: Array<{
-			label: string;
-			value: string;
-		}>;
-	};
-};
-
 export default function SortBy() {
+	const [sortBy, setSortBy] = useState("newest"); // router.query["sort"]
+	const router = useRouter();
+
+	const handleSortBy = (value) => {
+		setSortBy(value);
+	};
+
+	useEffect(() => {
+		if (router.query["sort"]) {
+			setSortBy(router.query["sort"]);
+		}
+	}, [router.query["sort"]]);
+
+	useEffect(() => {
+		// update query to include sort
+		router.push({
+			query: {
+				...router.query,
+				sort: sortBy,
+			},
+		});
+	}, [sortBy]);
+
 	return (
-		<Select.Root defaultValue="newest">
+		<Select.Root
+			defaultValue="newest"
+			onValueChange={handleSortBy}
+		>
 			<SelectTrigger
 				className="inline-flex items-center justify-between gap-4 p-2 rounded-full w-fit"
 				aria-label="Sort by"

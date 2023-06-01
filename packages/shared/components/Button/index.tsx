@@ -70,7 +70,7 @@ export const Button = styled("button", {
 			},
 			accent: {
 				backgroundColor: "$accentText",
-				color: "$accentBg",
+				color: "$white",
 			},
 			loading: {
 				backgroundColor: "$surfaceOnSurface",
