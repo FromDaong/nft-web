@@ -273,49 +273,51 @@ const NFTPresentationComponent = (props: {
 							</Container>
 						</Container>
 					</Container>
-					<Container className="flex flex-wrap gap-4">
-						<Container className="flex flex-col gap-2">
-							<Heading
-								appearance={"mute"}
-								size={"xss"}
-							>
-								Owned by
-							</Heading>
-							<Container className="flex items-center w-fit">
-								{!isLoading && (
-									<>
-										<AvatarGroup
-											size={32}
-											users={collectors.slice(0, 5).map((c) => ({
-												name: c.username,
-												imageUrl: c.profile_pic,
-												href: c.username,
-											}))}
+					{(isLoading || collectors?.length !== 0) && (
+						<Container className="flex flex-wrap gap-4">
+							<Container className="flex flex-col gap-2">
+								<Heading
+									appearance={"mute"}
+									size={"xss"}
+								>
+									Owned by
+								</Heading>
+								<Container className="flex items-center w-fit">
+									{!isLoading && (
+										<>
+											<AvatarGroup
+												size={32}
+												users={collectors.slice(0, 5).map((c) => ({
+													name: c.username,
+													imageUrl: c.profile_pic,
+													href: c.username,
+												}))}
+											/>
+											<Container className="flex gap-2">
+												<Button
+													appearance={"link"}
+													size={"sm"}
+													onClick={onOpenCollectorsModal}
+												>
+													{collectors.length > 5
+														? `+${collectors.length - 5} more`
+														: "View all"}
+												</Button>
+											</Container>
+										</>
+									)}
+									{isLoading && (
+										<Container
+											className="flex py-3 w-32 rounded-xl"
+											css={{
+												backgroundColor: "$elementOnSurface",
+											}}
 										/>
-										<Container className="flex gap-2">
-											<Button
-												appearance={"link"}
-												size={"sm"}
-												onClick={onOpenCollectorsModal}
-											>
-												{collectors.length > 5
-													? `+${collectors.length - 5} more`
-													: "View all"}
-											</Button>
-										</Container>
-									</>
-								)}
-								{isLoading && (
-									<Container
-										className="flex py-3 w-32 rounded-xl"
-										css={{
-											backgroundColor: "$elementOnSurface",
-										}}
-									/>
-								)}
+									)}
+								</Container>
 							</Container>
 						</Container>
-					</Container>
+					)}
 				</Container>
 
 				<Container className="flex flex-col col-span-2 gap-4 md:col-span-1">

@@ -17,14 +17,14 @@ import {useFullScreen} from "@packages/shared/hooks";
 import DynamicSkeleton from "@packages/skeleton";
 import {TritPostSkeleton} from "@packages/skeleton/config";
 import {ImageIcon} from "@radix-ui/react-icons";
-import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
+import {apiEndpoint, legacy_nft_to_new, timeFromNow} from "@utils/index";
 import axios from "axios";
 import UserAvatar from "core/auth/components/Avatar";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import TreatCore from "core/TreatCore";
 import Link from "next/link";
-import {useState} from "react";
+import {useMemo, useState} from "react";
 import {MongoModelNFT, MongoModelProfile} from "server/helpers/models";
 import {useAccount} from "wagmi";
 import {ArticleJsonLd} from "next-seo";
@@ -42,8 +42,10 @@ import {WishlistNFTCard} from "pages/studio/wishlist";
 import FullscreenImagePreviewModal from "@packages/modals/ImagePreview";
 import AvatarGroup from "@packages/avatars/AvatarGroup";
 import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
-import {FilterIcon} from "lucide-react";
+import {ExternalLink, ExternalLinkIcon, FilterIcon} from "lucide-react";
 import Spinner from "@packages/shared/icons/Spinner";
+import {Provider, gql, useQuery} from "urql";
+import {treatOldGraphClient} from "@lib/graphClients";
 
 export default function NFT(props: {
 	notFound?: boolean;
@@ -190,7 +192,7 @@ export default function NFT(props: {
 							<Divider dir={"horizontal"} />
 							<ResaleListings nft={nft} />
 							<Divider dir={"horizontal"} />
-							<Activity />
+							<Activity nft={nft} />
 							<Divider dir={"horizontal"} />
 						</Container>
 					</Container>
@@ -411,10 +413,6 @@ function ResaleListings({nft}) {
 		<Container className="flex flex-col gap-12">
 			{loadingResaleListings && (
 				<>
-					<Container className="flex justify-between gap-4">
-						<Heading size="xs">On the Resale Market</Heading>
-						<Button appearance={"subtle"}>View all</Button>
-					</Container>
 					<Container className="py-4 flex justify-center">
 						<Text>
 							<Spinner />
@@ -426,6 +424,10 @@ function ResaleListings({nft}) {
 				<>
 					{resaleListings.length > 0 && (
 						<Container className="flex flex-col">
+							<Container className="flex justify-between gap-4">
+								<Heading size="xs">On the Resale Market</Heading>
+								<Button appearance={"subtle"}>View all</Button>
+							</Container>
 							{resaleListings.map((listing) => (
 								<Container
 									key={listing.seller.address}
@@ -461,17 +463,157 @@ function ResaleListings({nft}) {
 	);
 }
 
-function Activity() {
+function Activity({nft}) {
 	return (
-		<Container className="flex flex-col gap-12">
-			<Container className="flex flex-col gap-4">
-				<Heading size="xs">Activity</Heading>
-				<Container className="flex gap-4">
-					<Button appearance={"surface"}>Transfer</Button>
-					<Button appearance={"surface"}>List</Button>
-					<Button appearance={"surface"}>Sale</Button>
+		<Provider value={treatOldGraphClient}>
+			<Container className="flex flex-col gap-12">
+				<Container className="flex flex-col gap-4">
+					<Heading size="xs">Activity</Heading>
+					<TransactionsPresentation nft={nft} />
 				</Container>
 			</Container>
-		</Container>
+		</Provider>
 	);
 }
+
+const resaleHistory = (nft) => gql`
+      query getSales($first: Int, $orderBy: String, $orderDirection: String) {
+        sales(
+          first: 200,
+          orderBy: "cost",
+          orderDirection: "asc",
+          where: {
+            treatsPurchased_contains: [${nft.id}],
+            sourceContract: "0xA38978E839c08046FA80B0fee55736253Ab3B8a3"
+          }
+        ) {
+          id
+          cost
+          sourceContract
+          treatsPurchased
+          seller
+          buyer
+          purchaseDate
+        }
+      }
+    `;
+
+const salesHistory = (nft) => gql`
+      query getSales($first: Int) {
+        sales(
+          first: 200
+          where: {
+            treatsPurchased_contains: [${nft.id}],
+            sourceContract_not_in: ["0xA38978E839c08046FA80B0fee55736253Ab3B8a3","0xe0f5df4915242e4c4c06d2964eda53c448fec442"]
+          }
+        ) {
+          id
+          cost
+          sourceContract
+          treatsPurchased
+          seller
+          buyer
+          purchaseDate
+        }
+      }
+    
+`;
+
+type SaleItem = {
+	id: string;
+	cost: string;
+	sourceContract: string;
+	treatsPurchased: string[];
+	seller: string;
+	buyer: string;
+	purchaseDate: string;
+};
+
+const TransactionsPresentation = ({nft}) => {
+	const [result, reexecuteQuery] = useQuery({
+		query: salesHistory(nft),
+	});
+
+	const txHistory = useMemo(() => {
+		if (!result.data) return [];
+		return result.data.sales as SaleItem[];
+	}, [result]);
+
+	const {isLoading, data} = TreatCore.useQuery({
+		queryKey: [`resaleHistory:${nft.id}`],
+		queryFn: async () => {
+			const addresses = txHistory.map((tx) => tx.seller.toLowerCase());
+			const res = await axios.post(`${apiEndpoint}/people/get-by-address`, {
+				addresses,
+			});
+			return res.data.data;
+		},
+		enabled: txHistory.length > 0,
+	});
+
+	const txHistoryWithProfile = useMemo(() => {
+		if (!data) return [];
+		return txHistory.map((tx) => {
+			const buyer = data.find(
+				(profile) => profile.address.toLowerCase() === tx.buyer.toLowerCase()
+			);
+			const seller = data.find(
+				(profile) => profile.address.toLowerCase() === tx.seller.toLowerCase()
+			);
+			return {
+				...tx,
+				buyer: buyer || {address: tx.buyer},
+				seller: seller || {address: tx.seller},
+				buyerAddress: tx.buyer,
+				sellerAddress: tx.seller,
+			};
+		});
+	}, [data]);
+
+	return (
+		<Container className="flex flex-col gap-4">
+			{isLoading && (
+				<Container className="py-4 justify-center">
+					<Spinner />
+				</Container>
+			)}
+			{!isLoading &&
+				txHistoryWithProfile.length ===
+				(
+					<Container className="py-4 justify-center">
+						<Button appearance={"surface"}>NFT has no sales history</Button>
+					</Container>
+				)}
+			{txHistoryWithProfile.map((tx) => (
+				<Container
+					key={tx.id}
+					className="p-2 flex rounded-xl justify-between"
+				>
+					<Container className="flex gap-4">
+						<UserAvatar
+							size={32}
+							username={tx.buyer.username}
+							profile_pic={tx.buyer.profile_pic}
+						/>
+						<Container>
+							<Heading size={"xss"}>Purchased for {tx.cost} BNB</Heading>
+							<Container className="flex gap-2">
+								<Text>
+									{tx.buyer.username ??
+										tx.buyer.address.slice(0, 5) +
+											"..." +
+											tx.buyer.address.slice(tx.buyer.address.length - 4)}
+								</Text>
+								<Text>&bull;</Text>
+								<Text>{timeFromNow(parseInt(tx.purchaseDate) * 1000)}</Text>
+							</Container>
+						</Container>
+					</Container>
+					<Button appearance={"link"}>
+						View on Bscscan <ExternalLinkIcon className="w-5 h-5" />
+					</Button>
+				</Container>
+			))}
+		</Container>
+	);
+};

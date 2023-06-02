@@ -208,6 +208,7 @@
 		"tailwind-merge": "^1.12.0",
 		"tailwindcss-radix": "^2.6.1",
 		"uploadcare-widget-tab-effects": "^1.6.0",
+		"urql": "^4.0.3",
 		"use-next-blurhash": "^1.0.5",
 		"use-sound": "^4.0.1",
 		"use-wallet": "0.10",
