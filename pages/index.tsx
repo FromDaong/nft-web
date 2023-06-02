@@ -165,10 +165,10 @@ export default function Index(props: {
 								</Text>
 							</Balancer>
 						</Container>
-						<Container className={"flex gap-4 justify-center "}>
+						<Container className={"flex flex-wrap gap-4 justify-center "}>
 							<Link href="/sweetshop">
 								<a>
-									<Button appearance={"primary"}>
+									<Button appearance={"default"}>
 										Visit the sweetshop <ArrowRightIcon className={"w-5 h-5"} />{" "}
 									</Button>
 								</a>

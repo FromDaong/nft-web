@@ -151,6 +151,7 @@ export default function FarmPortfolioItem({
 					<Container className="flex gap-4">
 						<Button
 							size={"sm"}
+							appearance={"surface"}
 							outlined
 							onClick={onOpen}
 						>

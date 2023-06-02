@@ -80,7 +80,12 @@ export default function Navbar() {
 							<div className="items-center hidden gap-2 md:flex">
 								<Link href="/magazine">
 									<a>
-										<Button appearance={"subtle"}>Magazine</Button>
+										<Button
+											appearance={"unstyled"}
+											css={{paddingX: "8px", color: "$textContrast"}}
+										>
+											Magazine
+										</Button>
 									</a>
 								</Link>
 							</div>
@@ -191,7 +196,10 @@ function BrowseDropdownMenu() {
 		<div className="items-center hidden gap-4 md:flex">
 			<DropdownMenu onOpenChange={setIsOpen}>
 				<DropdownMenuTrigger>
-					<Button appearance={"subtle"}>
+					<Button
+						appearance={"unstyled"}
+						css={{color: "$textContrast"}}
+					>
 						Browse <ChevronDownIcon className="w-4 h-4" />
 					</Button>
 				</DropdownMenuTrigger>

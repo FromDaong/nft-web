@@ -86,6 +86,7 @@ export default function AssetsOverview({
 					<a>
 						<Button
 							outlined
+							appearance={"surface"}
 							className="border shadow"
 						>
 							Buy $TREAT <ArrowRight className="w-4 h-4" />

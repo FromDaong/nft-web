@@ -44,21 +44,7 @@ export default function Farm() {
 		<ApplicationLayout>
 			<StudioNavigation />
 			<ApplicationFrame>
-				<Container>
-					{false && treatMelonLoading && (
-						<Container className="flex flex-col items-center justify-center w-full min-h-screen">
-							<Spinner />
-							<Heading size="xs">Please wait. Loading...</Heading>
-						</Container>
-					)}
-					{false && treatError && (
-						<Container className="flex flex-col items-center justify-center w-full min-h-screen gap-2 text-center">
-							<Heading size="xs">An error occured</Heading>
-							<Text>
-								Please check your internet connection and reload the page.
-							</Text>
-						</Container>
-					)}
+				<Container className="h-auto">
 					<Container className="flex flex-col flex-wrap w-full gap-12 pt-12 mx-auto">
 						<Staking
 							treatMelonBalance={treatMelonBalance}
@@ -67,19 +53,20 @@ export default function Farm() {
 							treatBalance={treatBalance}
 							masterMelonContract={masterMelonContract}
 						/>
-						<Container className="grid flex-1 grid-cols-1 gap-8">
-							<Container className="w-full flex flex-col md:flex-row gap-4 md:gap-2 justify-between items-baseline">
-								<Heading size={"xss"}>Available Melon NFTs</Heading>
-								<Button
-									outlined
-									className="shadow-sm"
-								>
-									<Sparkles className="w-4 h-4" />
-									Mint exclusive NFT
-								</Button>
-							</Container>
-							<FarmersMarket />
+					</Container>
+					<Container className="grid flex-1 grid-cols-1 gap-8 mt-12 lg:mt-24">
+						<Container className="w-full flex flex-col md:flex-row gap-4 md:gap-2 justify-between items-baseline">
+							<Heading size={"xss"}>Available Melon NFTs</Heading>
+							<Button
+								outlined
+								appearance={"surface"}
+								className="shadow-sm"
+							>
+								<Sparkles className="w-4 h-4" />
+								Mint exclusive NFT
+							</Button>
 						</Container>
+						<FarmersMarket />
 					</Container>
 				</Container>
 			</ApplicationFrame>
@@ -108,7 +95,7 @@ const FarmersMarket = () => {
 
 	if (isLoading) return <Spinner />;
 	return (
-		<Container className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+		<Container className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
 			{data.map((nft) => (
 				<FarmNFT
 					{...nft}
