@@ -189,14 +189,11 @@ export default function NFT(props: {
 									maxSupply={maxNftSupply}
 								/>
 							</Container>
-							<Divider dir={"horizontal"} />
 							<ResaleListings nft={nft} />
-							<Divider dir={"horizontal"} />
 							<Activity nft={nft} />
-							<Divider dir={"horizontal"} />
 						</Container>
 					</Container>
-					<Container className="flex flex-col xl:mt-12">
+					<Container className="flex flex-col mt-32">
 						<Container className="flex flex-col gap-12">
 							<Container className="flex flex-col gap-4">
 								<Heading size="sm">More from the creator</Heading>
@@ -410,7 +407,13 @@ function ResaleListings({nft}) {
 	const {isLoading: loadingResaleListings, resaleListings} =
 		useGetResaleListings(nft.id);
 	return (
-		<Container className="flex flex-col gap-12">
+		<Container className="flex flex-col gap-2">
+			<Container className="flex justify-between gap-4">
+				<Heading size="xss">Other listings</Heading>
+				{resaleListings.length !== 0 && (
+					<Button appearance={"subtle"}>View all</Button>
+				)}
+			</Container>
 			{loadingResaleListings && (
 				<>
 					<Container className="py-4 flex justify-center">
@@ -423,11 +426,7 @@ function ResaleListings({nft}) {
 			{!loadingResaleListings && (
 				<>
 					{resaleListings.length > 0 && (
-						<Container className="flex flex-col">
-							<Container className="flex justify-between gap-4">
-								<Heading size="xs">On the Resale Market</Heading>
-								<Button appearance={"subtle"}>View all</Button>
-							</Container>
+						<Container className="flex flex-col mt-4">
 							{resaleListings.map((listing) => (
 								<Container
 									key={listing.seller.address}
@@ -451,10 +450,8 @@ function ResaleListings({nft}) {
 					)}
 
 					{resaleListings.length === 0 && (
-						<Container className="flex justify-center">
-							<Button appearance={"surface"}>
-								No resale listings available for this NFT
-							</Button>
+						<Container className="flex">
+							<Text>No resale listings available for this NFT</Text>
 						</Container>
 					)}
 				</>
@@ -466,11 +463,9 @@ function ResaleListings({nft}) {
 function Activity({nft}) {
 	return (
 		<Provider value={treatOldGraphClient}>
-			<Container className="flex flex-col gap-12">
-				<Container className="flex flex-col gap-4">
-					<Heading size="xs">Activity</Heading>
-					<TransactionsPresentation nft={nft} />
-				</Container>
+			<Container className="flex flex-col gap-2">
+				<Heading size="xss">Activity</Heading>
+				<TransactionsPresentation nft={nft} />
 			</Container>
 		</Provider>
 	);
@@ -577,13 +572,11 @@ const TransactionsPresentation = ({nft}) => {
 					<Spinner />
 				</Container>
 			)}
-			{!isLoading &&
-				txHistoryWithProfile.length ===
-				(
-					<Container className="py-4 justify-center">
-						<Button appearance={"surface"}>NFT has no sales history</Button>
-					</Container>
-				)}
+			{!isLoading && txHistoryWithProfile.length === 0 && (
+				<Container className="py-4 justify-center">
+					<Button appearance={"surface"}>NFT has no sales history</Button>
+				</Container>
+			)}
 			{txHistoryWithProfile.map((tx) => (
 				<Container
 					key={tx.id}

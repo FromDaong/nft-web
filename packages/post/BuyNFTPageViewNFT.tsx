@@ -227,7 +227,7 @@ const NFTPresentationComponent = (props: {
 				/>
 			)}
 			<Container className="flex flex-col gap-12 py-8 lg:gap-16 lg:flex">
-				<Container className="flex flex-col gap-8">
+				<Container className="flex flex-col gap-4">
 					<Container
 						className={"flex md:flex-col flex-col-reverse gap-6 md:gap-1"}
 					>
@@ -273,15 +273,23 @@ const NFTPresentationComponent = (props: {
 							</Container>
 						</Container>
 					</Container>
+					<Container className="flex flex-col col-span-2 gap-4 md:col-span-1">
+						{nft.description && (
+							<Container className="flex flex-col gap-2">
+								<Heading
+									className="tracking-tighter"
+									size="xss"
+								>
+									Description
+								</Heading>
+								<TiptapPreview value={description} />
+							</Container>
+						)}
+					</Container>
 					{(isLoading || collectors?.length !== 0) && (
 						<Container className="flex flex-wrap gap-4">
 							<Container className="flex flex-col gap-2">
-								<Heading
-									appearance={"mute"}
-									size={"xss"}
-								>
-									Owned by
-								</Heading>
+								<Heading size={"xss"}>Owners</Heading>
 								<Container className="flex items-center w-fit">
 									{!isLoading && (
 										<>
@@ -293,17 +301,19 @@ const NFTPresentationComponent = (props: {
 													href: c.username,
 												}))}
 											/>
-											<Container className="flex gap-2">
-												<Button
-													appearance={"link"}
-													size={"sm"}
-													onClick={onOpenCollectorsModal}
-												>
-													{collectors.length > 5
-														? `+${collectors.length - 5} more`
-														: "View all"}
-												</Button>
-											</Container>
+											{collectors.length > 5 && (
+												<Container className="flex gap-2">
+													<Button
+														appearance={"link"}
+														size={"sm"}
+														onClick={onOpenCollectorsModal}
+													>
+														{collectors.length > 5
+															? `+${collectors.length - 5} more`
+															: "View all"}
+													</Button>
+												</Container>
+											)}
 										</>
 									)}
 									{isLoading && (
@@ -318,50 +328,35 @@ const NFTPresentationComponent = (props: {
 							</Container>
 						</Container>
 					)}
-				</Container>
-
-				<Container className="flex flex-col col-span-2 gap-4 md:col-span-1">
-					{nft.description && (
-						<Container className="flex flex-col gap-2">
-							<Heading
-								className="tracking-tighter"
-								size="xss"
-							>
-								Description
-							</Heading>
-							<TiptapPreview value={description} />
+					<Container className="flex flex-col col-span-2 gap-2 md:col-span-1">
+						<Heading
+							className="tracking-tighter"
+							size="xss"
+						>
+							Tags
+						</Heading>
+						<Container className="flex flex-wrap gap-4 py-2">
+							{nft.tags?.map((tag) => (
+								<Link
+									href={`/sweetshop/tag/${tag}`}
+									key={tag}
+								>
+									<a>
+										<Container
+											className="px-3 py-1 rounded-full"
+											css={{
+												backgroundColor: "$surfaceOnSurface",
+											}}
+										>
+											<Text>
+												<ImportantText>{tag}</ImportantText>
+											</Text>
+										</Container>
+									</a>
+								</Link>
+							))}
+							<Tag>NFT</Tag>
 						</Container>
-					)}
-				</Container>
-
-				<Container className="flex flex-col col-span-2 gap-2 md:col-span-1">
-					<Heading
-						className="tracking-tighter"
-						size="xss"
-					>
-						Tags
-					</Heading>
-					<Container className="flex flex-wrap gap-4 py-2">
-						{nft.tags?.map((tag) => (
-							<Link
-								href={`/sweetshop/tag/${tag}`}
-								key={tag}
-							>
-								<a>
-									<Container
-										className="px-3 py-1 rounded-full"
-										css={{
-											backgroundColor: "$surfaceOnSurface",
-										}}
-									>
-										<Text>
-											<ImportantText>{tag}</ImportantText>
-										</Text>
-									</Container>
-								</a>
-							</Link>
-						))}
-						<Tag>NFT</Tag>
 					</Container>
 				</Container>
 			</Container>
