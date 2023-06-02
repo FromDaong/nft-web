@@ -274,7 +274,7 @@ const NFTPresentationComponent = (props: {
 						</Container>
 					</Container>
 					<Container className="flex flex-col col-span-2 gap-4 md:col-span-1">
-						{nft.description && (
+						{!!nft.description && (
 							<Container className="flex flex-col gap-2">
 								<Heading
 									className="tracking-tighter"

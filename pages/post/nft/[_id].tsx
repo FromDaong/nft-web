@@ -472,8 +472,8 @@ function Activity({nft}) {
 	);
 }
 
-const resaleHistory = (nft) => gql`
-      query getSales($first: Int, $orderBy: String, $orderDirection: String) {
+const salesHistory = (nft) => gql`
+      query getSales($first: Int) {
         sales(
           first: 200,
           orderBy: "cost",
@@ -491,26 +491,7 @@ const resaleHistory = (nft) => gql`
           buyer
           purchaseDate
         }
-      }
-    `;
-
-const salesHistory = (nft) => gql`
-      query getSales($first: Int) {
-        sales(
-          first: 200
-          where: {
-            treatsPurchased_contains: [${nft.id}],
-            sourceContract_not_in: ["0xA38978E839c08046FA80B0fee55736253Ab3B8a3","0xe0f5df4915242e4c4c06d2964eda53c448fec442"]
-          }
-        ) {
-          id
-          cost
-          sourceContract
-          treatsPurchased
-          seller
-          buyer
-          purchaseDate
-        }
+      
       }
     
 `;
@@ -529,17 +510,11 @@ const TransactionsPresentation = ({nft}) => {
 	const [result] = useQuery({
 		query: salesHistory(nft),
 	});
-	const [resaleResult] = useQuery({
-		query: resaleHistory(nft),
-	});
 
 	const txHistory = useMemo(() => {
-		if (!result.data || !resaleResult.data) return [];
-		return [
-			...result.data.sales.map((item) => ({...item, market: "verified"})),
-			...resaleResult.data.sales.map((item) => ({...item, market: "resale"})),
-		] as SaleItem[];
-	}, [result, resaleResult]);
+		if (!result.data) return [];
+		return [...result.data.sales] as SaleItem[];
+	}, [result]);
 
 	const {isLoading, data} = TreatCore.useQuery({
 		queryKey: [`resaleHistory:${nft.id}`],
@@ -571,6 +546,7 @@ const TransactionsPresentation = ({nft}) => {
 			};
 		});
 	}, [data]);
+	console.log(txHistory);
 
 	return (
 		<Container className="flex flex-col gap-4">
@@ -607,7 +583,9 @@ const TransactionsPresentation = ({nft}) => {
 											tx.buyer.address.slice(tx.buyer.address.length - 4)}
 								</Text>
 								<Text>&bull;</Text>
-								<Text>{timeFromNow(parseInt(tx.purchaseDate) * 1000)}</Text>
+								<Text>
+									{timeFromNow(`${parseInt(tx.purchaseDate) * 1000}`)}
+								</Text>
 							</Container>
 						</Container>
 					</Container>
