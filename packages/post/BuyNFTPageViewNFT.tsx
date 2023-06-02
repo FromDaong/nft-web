@@ -12,9 +12,73 @@ import {
 	ImportantText,
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
+import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
+import {apiEndpoint} from "@utils/index";
+import axios from "axios";
+import TreatCore from "core/TreatCore";
 import {CopyIcon} from "lucide-react";
 import Link from "next/link";
-import {useMemo} from "react";
+import {useEffect, useMemo, useState} from "react";
+
+const useGetCollectors = (nftId) => {
+	const [isLoading, setIsLoading] = useState(true);
+	const [collectors, setCollectors] = useState([]);
+
+	const {
+		data: collectorsData,
+		isLoading: collectorsIsLoading,
+		refetch,
+	} = TreatCore.useQuery(
+		["getCollectors", nftId],
+		async () => {
+			const res = await axios.post(`${apiEndpoint}/people/get-by-address`, {
+				addresses: collectors.map((item) => item.owner_of),
+			});
+			return res.data.data;
+		},
+		{
+			enabled: !isLoading,
+		}
+	);
+
+	// fetch the collectors from moralis api
+	useEffect(() => {
+		const getCollectors = async () => {
+			try {
+				const res = await fetch(
+					`https://deep-index.moralis.io/api/v2/nft/${contractAddresses.treatNFTMinter[56]}/${nftId}/owners?chain=bsc&format=decimal&disable_total=false`,
+					{
+						headers: {
+							"X-API-Key": process.env.NEXT_PUBLIC_MORALIS_API_KEY,
+						},
+					}
+				);
+				const data: {
+					total: number;
+					result: {
+						token_id: string;
+						owner_of: string;
+						amount: string;
+					}[];
+				} = await res.json();
+				setCollectors(
+					data.result.map((item) => ({
+						token_id: item.token_id,
+						owner_of: item.owner_of,
+						amount: item.amount,
+					}))
+				);
+				refetch();
+				setIsLoading(false);
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		getCollectors();
+	}, [nftId]);
+
+	return {collectors: collectorsData, isLoading: collectorsIsLoading};
+};
 
 const NFTPresentationComponent = (props: {
 	nft: any;
@@ -27,7 +91,9 @@ const NFTPresentationComponent = (props: {
 	maxSupply: number;
 }) => {
 	const {nft} = props;
-	const {cost: creatorCost} = useWagmiGetCreatorNftCost(nft.id);
+	const {collectors, isLoading} = useGetCollectors(nft.id);
+
+	console.log({collectors, isLoading});
 
 	const description = useMemo(() => {
 		if (typeof nft.description === "string") {
@@ -48,8 +114,6 @@ const NFTPresentationComponent = (props: {
 		onClose: onCloseCollectorsModal,
 	} = useDisclosure();
 
-	console.log({description});
-
 	return (
 		<>
 			<AddToWishlist
@@ -59,6 +123,7 @@ const NFTPresentationComponent = (props: {
 			<ShowAllCollectors
 				isOpen={isCollectorsModalOpen}
 				onClose={onCloseCollectorsModal}
+				collectors={collectors}
 			/>
 			<Container className="flex flex-col gap-12 py-8 lg:gap-16 lg:flex">
 				<Container className="flex flex-col gap-8">
@@ -97,9 +162,7 @@ const NFTPresentationComponent = (props: {
 									<HeartIcon className="w-5 h-5" />
 									Save
 								</Button>
-								<Button
-									appearance={"surface"}
-								>
+								<Button appearance={"surface"}>
 									<CopyIcon className="w-5 h-5" />
 									Copy link
 								</Button>
@@ -115,39 +178,37 @@ const NFTPresentationComponent = (props: {
 								Owned by
 							</Heading>
 							<Container className="flex items-center w-fit">
-								<AvatarGroup
-									users={[
-										{
-											name: "Tatenda",
-											imageUrl: nft.creator.profile.profile_pic,
-											href: nft.creator.username,
-										},
-										{
-											name: "Tatenda",
-											imageUrl: nft.creator.profile.profile_pic,
-											href: nft.creator.username,
-										},
-										{
-											name: "Tatenda",
-											imageUrl: nft.creator.profile.profile_pic,
-											href: nft.creator.username,
-										},
-										{
-											name: "Tatenda",
-											imageUrl: nft.creator.profile.profile_pic,
-											href: nft.creator.username,
-										},
-									]}
-								/>
-								<Container className="flex gap-2">
-									<Button
-										appearance={"link"}
-										size={"sm"}
-										onClick={onOpenCollectorsModal}
-									>
-										+3 more
-									</Button>
-								</Container>
+								{!isLoading && (
+									<>
+										<AvatarGroup
+											size={32}
+											users={collectors.slice(0, 5).map((c) => ({
+												name: c.username,
+												imageUrl: c.profile_pic,
+												href: c.username,
+											}))}
+										/>
+										<Container className="flex gap-2">
+											<Button
+												appearance={"link"}
+												size={"sm"}
+												onClick={onOpenCollectorsModal}
+											>
+												{collectors.length > 5
+													? `+${collectors.length - 5} more`
+													: "View all"}
+											</Button>
+										</Container>
+									</>
+								)}
+								{isLoading && (
+									<Container
+										className="flex py-3 w-32 rounded-xl"
+										css={{
+											backgroundColor: "$elementOnSurface",
+										}}
+									/>
+								)}
 							</Container>
 						</Container>
 					</Container>

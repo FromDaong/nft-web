@@ -1,8 +1,8 @@
-import {Schema, model} from "mongoose";
+import {Schema} from "mongoose";
 import {Document} from "mongoose";
 import createMongoDBModel from "../../../utils";
 
-interface ResaleListing extends Document {
+interface Listing extends Document {
 	price: number;
 	quantity: number;
 	seller: string;
@@ -11,9 +11,10 @@ interface ResaleListing extends Document {
 		timestamp: number;
 	};
 	nft: any;
+	listing_type: "melon" | "totm" | "verified";
 }
 
-const ResaleListingSchema = new Schema({
+const ListingSchema = new Schema({
 	price: {
 		type: Number,
 		required: true,
@@ -23,8 +24,14 @@ const ResaleListingSchema = new Schema({
 		required: true,
 	},
 	seller: {
+		type: Schema.Types.ObjectId,
+		ref: "Creator",
+		required: true,
+	},
+	listing_type: {
 		type: String,
 		required: true,
+		default: "verified",
 	},
 	sales: {
 		buyer: {
@@ -43,9 +50,6 @@ const ResaleListingSchema = new Schema({
 	},
 });
 
-const ResaleListingModel = createMongoDBModel<ResaleListing>(
-	"ResaleListing",
-	ResaleListingSchema
-);
+const ListingModel = createMongoDBModel<Listing>("Listing", ListingSchema);
 
-export default ResaleListingModel;
+export default ListingModel;

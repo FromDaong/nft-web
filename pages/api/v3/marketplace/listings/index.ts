@@ -65,7 +65,7 @@ export default async function handler(
 
 		const _id = await treatMarketplaceContract.functions.maxTokenId();
 		const openOrders = await fetchOrders(_id);
-		console.log({_id, openOrders});
+		console.log({_id, openOrders: openOrders[0].value});
 		config.ids = ["0x495f947276749ce646f68ac8c248420045cb7b5e"];
 	}
 

@@ -29,7 +29,7 @@ type SuggestedCreatorData = {
 	noFollowButton?: boolean;
 	bio: string;
 	noBg?: boolean;
-	followers?: [];
+	followers?: any[];
 	subscribers?: number;
 };
 
