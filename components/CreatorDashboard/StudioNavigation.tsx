@@ -66,7 +66,7 @@ function StudioNavigation() {
 						</Button>
 					</a>
 				</Link>
-				<Link href={"/studio/nfts"}>
+				<Link href={"/studio/resale"}>
 					<a>
 						<Button
 							appearance={"link"}

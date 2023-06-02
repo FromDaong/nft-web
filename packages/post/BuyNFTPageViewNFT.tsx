@@ -13,6 +13,7 @@ import {
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
 import {useCopyToClipboard} from "@packages/shared/hooks";
+import {ABI} from "@packages/treat/lib/abi";
 import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import {apiEndpoint} from "@utils/index";
 import axios from "axios";
@@ -22,6 +23,7 @@ import Link from "next/link";
 import {useRouter} from "next/router";
 import {useEffect, useMemo, useState} from "react";
 import {toast} from "react-hot-toast";
+import {useContract, useSigner} from "wagmi";
 
 const useGetCollectors = (nftId) => {
 	const [isLoading, setIsLoading] = useState(true);
@@ -83,6 +85,91 @@ const useGetCollectors = (nftId) => {
 	return {collectors: collectorsData, isLoading: collectorsIsLoading};
 };
 
+export const useTreatResaleMarket = () => {
+	const {data} = useSigner();
+
+	const treatResaleMarket = useContract({
+		addressOrName: contractAddresses.treatResaleMarketplaceMinter[56],
+		contractInterface: ABI.treatMarketplace,
+		signerOrProvider: data,
+	});
+
+	const treatResaleMarketReader = useContract({
+		addressOrName: contractAddresses.treatMarketReader[56],
+		contractInterface: ABI.treatMarketReader,
+		signerOrProvider: data,
+	});
+
+	return {
+		treatResaleMarket,
+		treatResaleMarketReader,
+	};
+};
+
+export const useGetResaleListings = (nftId: number) => {
+	const [isLoading, setIsLoading] = useState(true);
+	const [resaleOrders, setResaleListings] = useState({
+		sellers: [],
+		prices: [],
+		quantitys: [],
+	});
+	const {treatResaleMarketReader} = useTreatResaleMarket();
+
+	const {data: sellersData, isLoading: sellersIsLoading} = TreatCore.useQuery(
+		["getSellers", nftId],
+		async () => {
+			const res = await axios.post(`${apiEndpoint}/people/get-by-address`, {
+				addresses: resaleOrders.sellers.map((item) => item),
+			});
+			return res.data.data;
+		},
+		{
+			enabled: !isLoading,
+		}
+	);
+
+	useEffect(() => {
+		setIsLoading(true);
+		const getResaleListingsSellers = async () => {
+			try {
+				const orders = await treatResaleMarketReader.readAllOrdersForNft(nftId);
+
+				setResaleListings({...orders});
+				setIsLoading(false);
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		getResaleListingsSellers();
+	}, [nftId]);
+
+	const resaleListings = useMemo(() => {
+		if (sellersData && resaleOrders) {
+			return resaleOrders.sellers
+				.map((seller_addr, index) => {
+					const seller = sellersData.find(
+						(item) => item.address.toLowerCase() === seller_addr.toLowerCase()
+					);
+
+					if (!seller) return null;
+
+					return {
+						price: resaleOrders.prices[index],
+						quantity: resaleOrders.quantitys[index],
+						seller,
+					};
+				})
+				.filter((item) => item);
+		}
+		return [];
+	}, [sellersData]);
+
+	return {
+		isLoading: sellersIsLoading || isLoading,
+		resaleListings,
+	};
+};
+
 const NFTPresentationComponent = (props: {
 	nft: any;
 	isOwned: boolean;
@@ -132,11 +219,13 @@ const NFTPresentationComponent = (props: {
 				isOpen={isWishlistModalOpen}
 				onClose={onCloseWishlistModal}
 			/>
-			<ShowAllCollectors
-				isOpen={isCollectorsModalOpen}
-				onClose={onCloseCollectorsModal}
-				collectors={collectors}
-			/>
+			{!isLoading && (
+				<ShowAllCollectors
+					isOpen={isCollectorsModalOpen}
+					onClose={onCloseCollectorsModal}
+					collectors={collectors}
+				/>
+			)}
 			<Container className="flex flex-col gap-12 py-8 lg:gap-16 lg:flex">
 				<Container className="flex flex-col gap-8">
 					<Container

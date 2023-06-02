@@ -1,5 +1,5 @@
 import {useHarvestFarm, useStaking} from "@packages/farm/utils";
-import { Modal } from "@packages/modals";
+import {Modal} from "@packages/modals";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Input} from "@packages/shared/components/Input";
@@ -99,7 +99,7 @@ export default function ManageStackModal({isOpen, onClose, pid: id, balance}) {
 						/>
 					</Container>
 					{(treatLoading || stakedAmountLoading || treatLpLoading) && (
-						<Container className="flex flex-col items-center justify-center w-full">
+						<Container className="flex flex-col items-center justify-center w-full py-8">
 							<Spinner />
 						</Container>
 					)}
@@ -130,7 +130,12 @@ export default function ManageStackModal({isOpen, onClose, pid: id, balance}) {
 										balance={balances[poolId]?.formatted}
 									/>
 									<Container className="flex justify-end gap-4">
-										<Button outlined>Cancel</Button>
+										<Button
+											onClick={onClose}
+											appearance={"subtle"}
+										>
+											Cancel
+										</Button>
 										<Button
 											type="submit"
 											css={{

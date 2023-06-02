@@ -63,7 +63,7 @@ export default function Navbar() {
 			className="top-0 z-20 border-b"
 			css={{borderColor: "$border"}}
 		>
-			<Nav className="left-0 flex-col hidden w-full md:flex">
+			<Nav className="left-0 flex-col hidden w-full lg:flex">
 				<Container className="relative w-full h-full px-8 divide-y xl:px-4">
 					<div className="container relative z-30 flex items-center justify-between py-2 mx-auto">
 						<Container className={"flex gap-4 items-center"}>
@@ -147,7 +147,7 @@ export default function Navbar() {
 					</div>
 				</Container>
 			</Nav>
-			<Nav className="top-0 left-0 w-full py-4 md:hidden">
+			<Nav className="top-0 left-0 w-full py-4 lg:hidden">
 				<Container className="flex flex-col h-full gap-2 px-2">
 					<Container className="flex items-center justify-between">
 						<Link href={isConnected ? "/" : "/"}>

@@ -1,7 +1,9 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import {pagePropsConnectMongoDB} from "@db/engine/pagePropsDB";
 import Error404 from "@packages/error/404";
-import NFTPresentationComponent from "@packages/post/BuyNFTPageViewNFT";
+import NFTPresentationComponent, {
+	useGetResaleListings,
+} from "@packages/post/BuyNFTPageViewNFT";
 import {useGetIsNFTOwned, useTritNFTUtils} from "@packages/post/hooks";
 import {TritPost} from "@packages/post/TritPost";
 import {Container} from "@packages/shared/components/Container";
@@ -41,6 +43,7 @@ import FullscreenImagePreviewModal from "@packages/modals/ImagePreview";
 import AvatarGroup from "@packages/avatars/AvatarGroup";
 import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
 import {FilterIcon} from "lucide-react";
+import Spinner from "@packages/shared/icons/Spinner";
 
 export default function NFT(props: {
 	notFound?: boolean;
@@ -83,8 +86,6 @@ export default function NFT(props: {
 	nft.description = data.description;
 	const remainingNfts = maxNftSupply - mintedNfts;
 
-	console.log({remainingNfts, mintedNfts, maxNftSupply});
-
 	return (
 		<>
 			<SEOHead
@@ -113,7 +114,7 @@ export default function NFT(props: {
 			/>
 			<ApplicationLayout>
 				<ApplicationFrame>
-					<Container className="relative flex flex-col gap-8 px-0 p-4 pb-12 xl:flex-row">
+					<Container className="relative flex flex-col gap-8 px-0 p-4 xl:pb-12 xl:flex-row">
 						<ImagePreviewSection
 							isOwned={isOwned}
 							remainingNfts={remainingNfts}
@@ -122,80 +123,78 @@ export default function NFT(props: {
 							nft={nft}
 							postUtils={postUtils}
 						/>
-						<Container className="flex-1 w-full">
-							<Container className="relative flex flex-col h-full py-4 rounded-xl lg:py-4 gap-12">
-								<Container className="flex gap-4">
-									{isOwned && balance && (
-										<Container
-											className="flex items-center gap-2 p-2 pr-3 border rounded-lg shadow-sm w-fit"
-											css={{
-												backgroundColor: "$surfaceOnSurface",
-												borderColor: "$border",
-											}}
+						<Container className="flex-1 w-full relative flex flex-col h-full rounded-xl gap-8">
+							<Container className="flex gap-4">
+								{isOwned && balance && (
+									<Container
+										className="flex items-center gap-2 p-2 pr-3 border rounded-lg shadow-sm w-fit"
+										css={{
+											backgroundColor: "$surfaceOnSurface",
+											borderColor: "$border",
+										}}
+									>
+										<Button
+											css={{padding: 0, color: "$text"}}
+											appearance={"unstyled"}
 										>
-											<Button
-												css={{padding: 0, color: "$text"}}
-												appearance={"unstyled"}
+											<SparklesIcon className="w-5 h-5" />
+										</Button>
+										<Container className="flex gap-2">
+											<SmallText css={{color: "$text"}}>
+												<ImportantText>
+													You own {balance} version{balance > 1 ? "s" : ""}
+												</ImportantText>
+											</SmallText>
+										</Container>
+									</Container>
+								)}
+								{address &&
+									nft.creator.profile.address.toLowerCase() ===
+										address?.toLowerCase() && (
+										<Container className="flex">
+											<Container
+												className="flex items-center gap-2 p-2 pr-4 border rounded-lg shadow-sm"
+												css={{
+													backgroundColor: "$pink2",
+													borderColor: "$pink7",
+												}}
 											>
-												<SparklesIcon className="w-5 h-5" />
-											</Button>
-											<Container className="flex gap-2">
-												<SmallText css={{color: "$text"}}>
-													<ImportantText>
-														You own {balance} version{balance > 1 ? "s" : ""}
-													</ImportantText>
-												</SmallText>
+												<Container>
+													<Text css={{color: "$pink10"}}>
+														<ImageIcon className="w-5 h-5" />
+													</Text>
+												</Container>
+												<Container>
+													<SmallText css={{color: "$pink10"}}>
+														<ImportantText>
+															This is a masterpiece from yours truly
+														</ImportantText>
+													</SmallText>
+												</Container>
 											</Container>
 										</Container>
 									)}
-									{address &&
-										nft.creator.profile.address.toLowerCase() ===
-											address?.toLowerCase() && (
-											<Container className="flex">
-												<Container
-													className="flex items-center gap-2 p-2 pr-4 border rounded-lg shadow-sm"
-													css={{
-														backgroundColor: "$pink2",
-														borderColor: "$pink7",
-													}}
-												>
-													<Container>
-														<Text css={{color: "$pink10"}}>
-															<ImageIcon className="w-5 h-5" />
-														</Text>
-													</Container>
-													<Container>
-														<SmallText css={{color: "$pink10"}}>
-															<ImportantText>
-																This is a masterpiece from yours truly
-															</ImportantText>
-														</SmallText>
-													</Container>
-												</Container>
-											</Container>
-										)}
-								</Container>
-								<Container>
-									<NFTPresentationComponent
-										nft={nft}
-										isOwned={isOwned}
-										balance={balance}
-										openFullScreen={() => setShowFullScreen(true)}
-										loadHD={() => setLoadHD(true)}
-										address={address}
-										isResale={isResale}
-										maxSupply={maxNftSupply}
-									/>
-								</Container>
-								<Divider dir={"horizontal"} />
-								<ResaleListings />
-								<Divider dir={"horizontal"} />
-								<Activity />
-								<Divider dir={"horizontal"} />
 							</Container>
+							<Container>
+								<NFTPresentationComponent
+									nft={nft}
+									isOwned={isOwned}
+									balance={balance}
+									openFullScreen={() => setShowFullScreen(true)}
+									loadHD={() => setLoadHD(true)}
+									address={address}
+									isResale={isResale}
+									maxSupply={maxNftSupply}
+								/>
+							</Container>
+							<Divider dir={"horizontal"} />
+							<ResaleListings nft={nft} />
+							<Divider dir={"horizontal"} />
+							<Activity />
+							<Divider dir={"horizontal"} />
 						</Container>
 					</Container>
-					<Container className="flex flex-col mt-12">
+					<Container className="flex flex-col xl:mt-12">
 						<Container className="flex flex-col gap-12">
 							<Container className="flex flex-col gap-4">
 								<Heading size="sm">More from the creator</Heading>
@@ -320,7 +319,7 @@ function ImagePreviewSection({
 		onClose: onLightboxClose,
 	} = useDisclosure();
 	return (
-		<Container className="w-full xl:w-1/2 flex-shrink-0 lg:h-[95vh] h-[calc(80vh-64px)] flex items-center justify-center lg:sticky top-4">
+		<Container className="w-full xl:w-1/2 flex-shrink-0 lg:h-[90vh] h-[calc(80vh-64px)] flex items-center justify-center xl:sticky top-4">
 			{isLightboxOpen && (isOwned || !nft.protected) && (
 				<FullscreenImagePreviewModal
 					isOpen={isLightboxOpen}
@@ -405,23 +404,59 @@ function ImagePreviewSection({
 	);
 }
 
-function ResaleListings() {
+function ResaleListings({nft}) {
+	const {isLoading: loadingResaleListings, resaleListings} =
+		useGetResaleListings(nft.id);
 	return (
 		<Container className="flex flex-col gap-12">
-			<Container className="flex flex-col gap-4">
-				<Heading size="xs">On the Resale Market</Heading>
-				<Container className="flex gap-4">
-					<Button appearance={"surface"}>
-						<FilterIcon className="w-4 h-4" /> Cheaper
-					</Button>
-				</Container>
-			</Container>
-			<Container className="grid grid-cols-1 gap-8 md:grid-cols-2">
-				<WishlistNFTCard />
-				<WishlistNFTCard />
-				<WishlistNFTCard />
-				<WishlistNFTCard />
-			</Container>
+			{loadingResaleListings && (
+				<>
+					<Container className="flex justify-between gap-4">
+						<Heading size="xs">On the Resale Market</Heading>
+						<Button appearance={"subtle"}>View all</Button>
+					</Container>
+					<Container className="py-4 flex justify-center">
+						<Text>
+							<Spinner />
+						</Text>
+					</Container>
+				</>
+			)}
+			{!loadingResaleListings && (
+				<>
+					{resaleListings.length > 0 && (
+						<Container className="flex flex-col">
+							{resaleListings.map((listing) => (
+								<Container
+									key={listing.seller.address}
+									className="rounded-xl p-2 flex justify-between"
+									css={{
+										"&:hover": {
+											backgroundColor: "$elementOnSurface",
+										},
+									}}
+								>
+									<Container className="flex gap-4"></Container>
+									<Button
+										appearance={"action"}
+										className="h-fit self-start"
+									>
+										Buy for ${listing.price.toNumber()}
+									</Button>
+								</Container>
+							))}
+						</Container>
+					)}
+
+					{resaleListings.length === 0 && (
+						<Container className="flex justify-center">
+							<Button appearance={"surface"}>
+								No resale listings available for this NFT
+							</Button>
+						</Container>
+					)}
+				</>
+			)}
 		</Container>
 	);
 }
