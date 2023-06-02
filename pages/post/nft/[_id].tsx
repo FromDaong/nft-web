@@ -584,7 +584,10 @@ const TransactionsPresentation = ({nft}) => {
 								</Text>
 								<Text>&bull;</Text>
 								<Text>
-									{timeFromNow(`${parseInt(tx.purchaseDate) * 1000}`)}
+									{timeFromNow(
+										// @ts-ignore
+										parseInt(tx.purchaseDate) * 1000
+									)}
 								</Text>
 							</Container>
 						</Container>
