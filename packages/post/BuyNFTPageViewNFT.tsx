@@ -12,13 +12,16 @@ import {
 	ImportantText,
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
+import {useCopyToClipboard} from "@packages/shared/hooks";
 import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import {apiEndpoint} from "@utils/index";
 import axios from "axios";
 import TreatCore from "core/TreatCore";
-import {CopyIcon} from "lucide-react";
+import {CopyIcon, StarIcon} from "lucide-react";
 import Link from "next/link";
+import {useRouter} from "next/router";
 import {useEffect, useMemo, useState} from "react";
+import {toast} from "react-hot-toast";
 
 const useGetCollectors = (nftId) => {
 	const [isLoading, setIsLoading] = useState(true);
@@ -92,8 +95,8 @@ const NFTPresentationComponent = (props: {
 }) => {
 	const {nft} = props;
 	const {collectors, isLoading} = useGetCollectors(nft.id);
-
-	console.log({collectors, isLoading});
+	const [value, copy] = useCopyToClipboard();
+	const router = useRouter();
 
 	const description = useMemo(() => {
 		if (typeof nft.description === "string") {
@@ -101,6 +104,15 @@ const NFTPresentationComponent = (props: {
 		}
 		return nft.description;
 	}, [nft]);
+
+	const copyURL = () => {
+		copy(`${process.env.NEXT_PUBLIC_HOSTNAME}${router.asPath}`);
+		toast.success("Copied to clipboard");
+	};
+
+	const like = () => {
+		toast.success("Added to favorites");
+	};
 
 	const {
 		isOpen: isWishlistModalOpen,
@@ -157,12 +169,15 @@ const NFTPresentationComponent = (props: {
 							<Container className="flex gap-4">
 								<Button
 									appearance={"surface"}
-									onClick={onOpenWishlistModal}
+									onClick={like}
 								>
-									<HeartIcon className="w-5 h-5" />
-									Save
+									<StarIcon className="w-5 h-5" />
+									Favorite
 								</Button>
-								<Button appearance={"surface"}>
+								<Button
+									onClick={copyURL}
+									appearance={"surface"}
+								>
 									<CopyIcon className="w-5 h-5" />
 									Copy link
 								</Button>
