@@ -46,6 +46,9 @@ import {ExternalLink, ExternalLinkIcon, FilterIcon} from "lucide-react";
 import Spinner from "@packages/shared/icons/Spinner";
 import {Provider, gql, useQuery} from "urql";
 import {treatOldGraphClient} from "@lib/graphClients";
+import BigNumber from "bignumber.js";
+import {ethers} from "ethers";
+import Web3 from "web3";
 
 export default function NFT(props: {
 	notFound?: boolean;
@@ -89,7 +92,7 @@ export default function NFT(props: {
 	const remainingNfts = maxNftSupply - mintedNfts;
 
 	return (
-		<>
+		<Provider value={treatOldGraphClient}>
 			<SEOHead
 				title={`${nft.name} - TreatDAO`}
 				description={nft.description}
@@ -125,7 +128,7 @@ export default function NFT(props: {
 							nft={nft}
 							postUtils={postUtils}
 						/>
-						<Container className="flex-1 w-full relative flex flex-col h-full rounded-xl gap-8">
+						<Container className="flex-1 w-full relative flex flex-col h-full rounded-xl gap-12">
 							<Container className="flex gap-4">
 								{isOwned && balance && (
 									<Container
@@ -240,7 +243,7 @@ export default function NFT(props: {
 					</Container>
 				</ApplicationFrame>
 			</ApplicationLayout>
-		</>
+		</Provider>
 	);
 }
 
@@ -462,12 +465,10 @@ function ResaleListings({nft}) {
 
 function Activity({nft}) {
 	return (
-		<Provider value={treatOldGraphClient}>
-			<Container className="flex flex-col gap-2">
-				<Heading size="xss">Activity</Heading>
-				<TransactionsPresentation nft={nft} />
-			</Container>
-		</Provider>
+		<Container className="flex flex-col gap-2">
+			<Heading size="xss">Activity</Heading>
+			<TransactionsPresentation nft={nft} />
+		</Container>
 	);
 }
 
@@ -525,14 +526,20 @@ type SaleItem = {
 };
 
 const TransactionsPresentation = ({nft}) => {
-	const [result, reexecuteQuery] = useQuery({
+	const [result] = useQuery({
 		query: salesHistory(nft),
+	});
+	const [resaleResult] = useQuery({
+		query: resaleHistory(nft),
 	});
 
 	const txHistory = useMemo(() => {
-		if (!result.data) return [];
-		return result.data.sales as SaleItem[];
-	}, [result]);
+		if (!result.data || !resaleResult.data) return [];
+		return [
+			...result.data.sales.map((item) => ({...item, market: "verified"})),
+			...resaleResult.data.sales.map((item) => ({...item, market: "resale"})),
+		] as SaleItem[];
+	}, [result, resaleResult]);
 
 	const {isLoading, data} = TreatCore.useQuery({
 		queryKey: [`resaleHistory:${nft.id}`],
@@ -577,7 +584,7 @@ const TransactionsPresentation = ({nft}) => {
 					<Button appearance={"surface"}>NFT has no sales history</Button>
 				</Container>
 			)}
-			{txHistoryWithProfile.map((tx) => (
+			{txHistoryWithProfile.slice(0, 5).map((tx) => (
 				<Container
 					key={tx.id}
 					className="p-2 flex rounded-xl justify-between"
@@ -589,7 +596,9 @@ const TransactionsPresentation = ({nft}) => {
 							profile_pic={tx.buyer.profile_pic}
 						/>
 						<Container>
-							<Heading size={"xss"}>Purchased for {tx.cost} BNB</Heading>
+							<Heading size={"xss"}>
+								Purchased for {Web3.utils.fromWei(tx.cost).toString()} BNB
+							</Heading>
 							<Container className="flex gap-2">
 								<Text>
 									{tx.buyer.username ??
