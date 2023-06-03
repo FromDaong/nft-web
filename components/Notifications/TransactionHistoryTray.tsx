@@ -8,11 +8,15 @@ import {Heading} from "@packages/shared/components/Typography/Headings";
 import {
 	ImportantText,
 	MutedText,
+	SmallText,
 	Text,
 } from "@packages/shared/components/Typography/Text";
 import {Link1Icon, Link2Icon} from "@radix-ui/react-icons";
+import {timeFromNow} from "@utils/index";
+import {ExternalLink} from "lucide-react";
 import Link from "next/link";
-import {Provider} from "urql";
+import {Provider, gql, useQuery} from "urql";
+import {useAccount} from "wagmi";
 
 export default function TransactionHistoryTray({isOpen, onClose}) {
 	return (
@@ -22,27 +26,30 @@ export default function TransactionHistoryTray({isOpen, onClose}) {
 		>
 			<Container>
 				<ModalHeaderSection
-					title={"Transaction history"}
+					title={"Recent NFT transfers"}
 					onClose={onClose}
 				/>
 				<Provider value={treatOldGraphClient}>
 					<Container
-						className="p-4 flex flex-col gap-8"
+						className="flex flex-col gap-4 p-4"
 						css={{background: "$surfaceOnSurface"}}
 					>
-						<MutedText>
-							<ImportantText>
-								Transactions done on the TreatDAO platform will be shown here
-							</ImportantText>
-						</MutedText>
-						<Link href={""}>
-							<a className="flex flex-col w-full">
-								<Button appearance={"surface"}>
-									View more transactions on Bscscan
-									<Link2Icon />
-								</Button>
-							</a>
-						</Link>
+						<TransactionsContainer />
+						<Container>
+							<MutedText>
+								<ImportantText>
+									Your NFT activity on the TreatDAO platform will be shown here
+								</ImportantText>
+							</MutedText>
+							<Link href={""}>
+								<a className="flex flex-col w-full mt-2">
+									<Button appearance={"surface"}>
+										View more activity on Bscscan
+										<Link2Icon />
+									</Button>
+								</a>
+							</Link>
+						</Container>
 					</Container>
 				</Provider>
 			</Container>
@@ -51,8 +58,136 @@ export default function TransactionHistoryTray({isOpen, onClose}) {
 }
 
 const TransactionsContainer = () => {
-	return <Container className="flex flex-col gap-1"></Container>;
+	const {address} = useAccount();
+	const sendingTx = () => gql`
+		query getTransfers($address: String!) {
+			transfers(where: {from_contains_nocase: $address}) {
+				id
+				timestamp
+				value
+				from {
+					id
+				}
+				to {
+					id
+				}
+				transaction {
+					id
+				}
+			}
+		}
+	`;
+
+	const receivingTx = () => gql`
+		query getTransfers($address: String!) {
+			transfers(where: {from_contains_nocase: $address}) {
+				id
+				timestamp
+				value
+				from {
+					id
+				}
+				to {
+					id
+				}
+				transaction {
+					id
+				}
+			}
+		}
+	`;
+
+	const [receivingResult] = useQuery({
+		query: receivingTx(),
+		variables: {address},
+	});
+	const [sendingResult] = useQuery({
+		query: sendingTx(),
+		variables: {address},
+	});
+
+	const {data, fetching, error} = receivingResult;
+	const {
+		data: sendingData,
+		fetching: sendingFetching,
+		error: sendingError,
+	} = sendingResult;
+
+	const transfers = [
+		...data?.transfers.map((t) => ({...t, type: "received"})),
+		...sendingData?.transfers.map((t) => ({...t, type: "sent"})),
+	].sort((a, b) => {
+		return b.timestamp - a.timestamp;
+	});
+
+	return (
+		<Container className="flex flex-col gap-1 overflow-y-auto">
+			{!fetching &&
+				transfers.slice(0, 5).map((transfer) => (
+					<TransactionHistoryItem
+						key={transfer.id}
+						{...transfer}
+					/>
+				))}
+		</Container>
+	);
 };
-const TransactionHistoryItem = ({}) => {
-	return <Container></Container>;
+
+const formatAddress = (address) => {
+	return `${address.slice(0, 6)}...${address.slice(-4)}`;
+};
+
+const TransactionHistoryItem = ({
+	timestamp,
+	value,
+	from,
+	to,
+	type,
+	id,
+	transaction,
+}) => {
+	return (
+		<a
+			href={`https://bscscan.com/tx/${transaction.id}`}
+			target={"_blank"}
+			rel={"noreferrer"}
+		>
+			<Container
+				className="p-2 rounded-xl transition-all duration-200"
+				css={{
+					"&:hover": {
+						background: "$elementOnSurface",
+					},
+				}}
+			>
+				<Container className="flex flex-col gap-1">
+					<Container className="flex flex-row justify-between">
+						<Container className="flex flex-row gap-4">
+							<Container className="flex flex-col gap-1">
+								<Text css={{color: "$textContrast"}}>
+									<ImportantText>
+										<ImportantText className="capitalize">{type}</ImportantText>{" "}
+										{value} NFT
+										{value > 1 && "s"} {type === "sent" ? "to" : "from"}{" "}
+										{formatAddress(to.id)}
+									</ImportantText>
+								</Text>
+								<Text className="capitalize">
+									{timeFromNow(new Date(timestamp * 1000).toLocaleString())}
+								</Text>
+							</Container>
+						</Container>
+						<Container className="flex flex-row gap-1">
+							<Button
+								css={{padding: "8px"}}
+								appearance={"unstyled"}
+							>
+								<ExternalLink className="w-5 h-5" />
+							</Button>
+						</Container>
+					</Container>
+				</Container>
+			</Container>
+		</a>
+	);
 };

@@ -12,10 +12,17 @@ import {Fragment, useEffect, useRef} from "react";
 import {useOutsideClick} from "@chakra-ui/react";
 import SearchInput from "./SearchInput";
 import {SearchResultSection} from "./SearchResultSection";
+import {FormikProvider, useFormik} from "formik";
+import TreatCore from "core/TreatCore";
+import axios from "axios";
+import {apiEndpoint} from "@utils/index";
+import CreatorCard from "@packages/feed/components/CreatorCard";
+import {useRouter} from "next/router";
 
-export default function SearchModal({children}) {
+export default function SearchModal() {
 	const {isOpen, onOpen, onClose} = useDisclosure();
 	const ref = useRef();
+	const router = useRouter();
 	useOutsideClick({
 		ref,
 		handler: onClose,
@@ -32,11 +39,26 @@ export default function SearchModal({children}) {
 		};
 		window.addEventListener("keydown", handler);
 		return () => window.removeEventListener("keydown", handler);
-	}, [onOpen]);
+	}, []);
+
+	useEffect(() => {
+		const handler = (event) => {
+			if (event.key === "Escape") {
+				event.preventDefault();
+				onClose();
+			}
+		};
+		window.addEventListener("keydown", handler);
+		return () => window.removeEventListener("keydown", handler);
+	}, [isOpen]);
+
+	useEffect(() => {
+		onClose();
+	}, [router.pathname]);
 
 	return (
 		<>
-			<Container className="hidden w-full lg:flex">
+			<Container className="hidden w-96 lg:flex">
 				<Button
 					fullWidth
 					appearance={"surface"}
@@ -70,45 +92,108 @@ export default function SearchModal({children}) {
 					<Search className="w-5 h-5" />
 				</Button>
 			</Container>
-			<Transition
-				appear
-				show={isOpen}
-				as={Fragment}
-			>
-				<Dialog
-					as="div"
-					className="fixed inset-0 z-50 overflow-y-auto"
-					onClose={onClose}
+			{isOpen && (
+				<Transition
+					appear
+					show={isOpen}
+					as={Fragment}
 				>
-					<div className="min-h-screen text-center">
-						{/* This element is to trick the browser into centering the modal contents. */}
+					<Dialog
+						as="div"
+						className="fixed inset-0 z-50 overflow-y-auto"
+						onClose={onClose}
+					>
+						<div className="min-h-screen text-center">
+							{/* This element is to trick the browser into centering the modal contents. */}
 
-						<Transition.Child
-							as={Fragment}
-							enter="ease-out duration-300"
-							enterFrom="opacity-0 scale-95"
-							enterTo="opacity-100 scale-100"
-							leave="ease-in duration-200"
-							leaveFrom="opacity-100 scale-100"
-							leaveTo="opacity-0 scale-95"
-						>
-							<Container
-								css={{
-									borderColor: "$border",
-									backgroundColor: "$surface",
-								}}
-								className="inline-block border w-full max-w-xl p-2 py-8 pt-4 mt-2 overflow-hidden text-left align-middle transition-all transform drop-shadow-2xl rounded-2xl"
-								ref={ref}
+							<Transition.Child
+								as={Fragment}
+								enter="ease-out duration-300"
+								enterFrom="opacity-0 scale-95"
+								enterTo="opacity-100 scale-100"
+								leave="ease-in duration-200"
+								leaveFrom="opacity-100 scale-100"
+								leaveTo="opacity-0 scale-95"
 							>
-								<Container className="flex flex-col gap-4">
-									{children}
+								<Container
+									css={{
+										borderColor: "$border",
+										backgroundColor: "$surface",
+									}}
+									className="inline-block border md:w-full w-[95vw] md:max-w-xl p-2 py-4 mt-2 overflow-hidden text-left align-middle transition-all transform drop-shadow-2xl rounded-2xl"
+									ref={ref}
+								>
+									<Container className="flex flex-col gap-4">
+										<SearchBar />
+									</Container>
 								</Container>
-							</Container>
-						</Transition.Child>
-					</div>
-				</Dialog>
-			</Transition>
+							</Transition.Child>
+						</div>
+					</Dialog>
+				</Transition>
+			)}
 		</>
+	);
+}
+
+function SearchBar() {
+	// create formik provider
+	// create formik search input
+	// debounce value then searcj
+
+	const formik = useFormik({
+		initialValues: {
+			search: "",
+			entity: "people",
+		},
+		onSubmit: (values) => {
+			console.log(values);
+		},
+	});
+
+	const {isLoading, data, isError} = TreatCore.useQuery(
+		[formik.values.search, formik.values.entity],
+		async () => {
+			const res = await axios.get(
+				`${apiEndpoint}/search?q=${formik.values.search}&entity=${formik.values.entity}`
+			);
+			return res.data.data;
+		},
+		{
+			enabled: formik.values.search.length > 1,
+		}
+	);
+
+	return (
+		<div className="flex h-full w-full">
+			<FormikProvider value={formik}>
+				<form
+					onSubmit={formik.handleSubmit}
+					className="flex flex-col w-full"
+				>
+					<SearchModal.SearchInput />
+					<Container className="flex flex-col gap-4 ">
+						<SearchModal.ResultSection heading={formik.values.entity}>
+							{!isLoading && !isError && (
+								<>
+									{formik.values.entity === "people" && (
+										<>
+											{data[formik.values.entity].map((item) => (
+												<CreatorCard
+													key={item._id}
+													{...item}
+													variant={"compact"}
+												/>
+											))}
+										</>
+									)}
+								</>
+							)}
+						</SearchModal.ResultSection>
+					</Container>
+				</form>
+			</FormikProvider>
+		</div>
 	);
 }
 
