@@ -5,6 +5,7 @@ import {
 } from "@utils/search";
 import {NextApiResponse} from "next";
 import {NextApiRequest} from "next";
+import { connectMongoDB } from "server/helpers/core";
 import {returnWithSuccess} from "server/helpers/core/utils";
 import {
 	MongoModelCollection,
@@ -16,6 +17,7 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
+	await connectMongoDB()
 	const {q} = req.query;
 
 	if (!q) {

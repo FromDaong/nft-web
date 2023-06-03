@@ -7,7 +7,7 @@ import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {SmallText} from "@packages/shared/components/Typography/Text";
 import {Search} from "lucide-react";
-import {Fragment, useRef} from "react";
+import {Fragment, useEffect, useRef} from "react";
 
 import {useOutsideClick} from "@chakra-ui/react";
 import SearchInput from "./SearchInput";
@@ -20,6 +20,20 @@ export default function SearchModal({children}) {
 		ref,
 		handler: onClose,
 	});
+
+	// Open with Ctrl + K by using an event listener
+	// https://stackoverflow.com/a/42234988/1048518
+	useEffect(() => {
+		const handler = (event) => {
+			if (event.ctrlKey && event.key === "k") {
+				event.preventDefault();
+				onOpen();
+			}
+		};
+		window.addEventListener("keydown", handler);
+		return () => window.removeEventListener("keydown", handler);
+	}, [onOpen]);
+
 	return (
 		<>
 			<Container className="hidden w-full lg:flex">

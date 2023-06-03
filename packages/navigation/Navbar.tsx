@@ -285,8 +285,6 @@ function SearchBar() {
 		}
 	);
 
-	console.log({isLoading, data, isError});
-
 	return (
 		<div className="flex h-full w-96">
 			<FormikProvider value={formik}>
