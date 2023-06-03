@@ -10,7 +10,7 @@ import DynamicSkeleton from "@packages/skeleton";
 import {FeaturedCreatorSkeleton} from "@packages/skeleton/config";
 import Link from "next/link";
 import LiveTag from "./LiveTag";
-import {UserPlus} from "lucide-react";
+import {UserIcon, UserPlus} from "lucide-react";
 import Avvvatars from "avvvatars-react";
 import Username from "./Username";
 import {useFollow} from "@packages/hooks/useFollow";
@@ -31,6 +31,7 @@ type SuggestedCreatorData = {
 	noBg?: boolean;
 	followers?: any[];
 	subscribers?: number;
+	variant?: "compact" | "default";
 };
 
 export const SkeletonExpandedSuggestedCreatorCard = (props) => (
@@ -38,7 +39,12 @@ export const SkeletonExpandedSuggestedCreatorCard = (props) => (
 );
 
 export default function CreatorCard(props: SuggestedCreatorData) {
-	return <DefaultCreatorCard {...props} />;
+	switch (props.variant) {
+		case "compact":
+			return <CompactCreatorCard {...props} />;
+		default:
+			return <DefaultCreatorCard {...props} />;
+	}
 }
 
 const DefaultCreatorCard = (props: SuggestedCreatorData) => {
@@ -106,6 +112,63 @@ const DefaultCreatorCard = (props: SuggestedCreatorData) => {
 								</Container>
 							</Container>
 							<Text className="mt-2">{props.bio}</Text>
+						</Container>
+					</Container>
+				</a>
+			</Link>
+		</Container>
+	);
+};
+
+const CompactCreatorCard = (props: SuggestedCreatorData) => {
+	// T-83 Some profile pics not loading. Use base treatnfts.com - media endpoint /api/v3/media/
+	const profilePicUrl = props.avatar;
+	const {profile} = useUser();
+	console.log({props});
+	const {follow, isFollowing, unfollow} = useFollow(
+		profile?._id,
+		props.username,
+		props.followers
+	);
+
+	return (
+		<Container
+			css={{
+				borderRadius: "8px",
+				height: "100%",
+				"&:hover": {
+					backgroundColor: "$elementOnSurface",
+				},
+			}}
+			className="overflow-hidden transition-colors duration-200 ease-in-out"
+		>
+			<Link href={`/${props.username}`}>
+				<a>
+					<Container className="flex gap-2 items-start px-2 py-4">
+						<Container>
+							<UserAvatar
+								profile_pic={profilePicUrl}
+								username={props.username.replaceAll(" ", "").trim()}
+								size={48}
+							/>
+						</Container>
+						<Container className="flex flex-col w-full">
+							<Container className="flex justify-between items-center gap-4 w-full">
+								<Container>
+									<Heading size={"xss"}>{props.display_name?.trim()}</Heading>
+									<Username
+										username={props.username.replaceAll(" ", "").trim()}
+										verified={true}
+									/>
+									<Text className="mt-2 flex gap-2 items-center">
+										{isFollowing && (
+											<>
+												<UserIcon className="w-4 h-4" /> Following
+											</>
+										)}
+									</Text>
+								</Container>
+							</Container>
 						</Container>
 					</Container>
 				</a>

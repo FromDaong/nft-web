@@ -35,7 +35,7 @@ const binance: Chain = {
 	},
 	rpcUrls: {
 		default:
-			"https://rpc.tenderly.co/fork/593a5eae-643f-4a5b-bfb2-3a05ae7ca0be", // "https://bsc-dataseed.binance.org",
+			"https://rpc.tenderly.co/fork/dff881ff-3b0e-4eed-b34e-a4ddeece5887", // "https://bsc-dataseed.binance.org",
 	},
 	blockExplorers: {
 		default: {name: "Bscscan", url: "https://bscscan.com"},

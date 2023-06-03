@@ -3,19 +3,26 @@
 import {Search} from "lucide-react";
 import {SmallText, Text} from "@packages/shared/components/Typography/Text";
 import {Input} from "@packages/shared/components/Input";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import {Container} from "@packages/shared/components/Container";
 import {RadioGroup} from "@headlessui/react";
 import {cn} from "@lib/utils";
+import {Button} from "@packages/shared/components/Button";
+import {useFormikContext} from "formik";
+import {useDebounce} from "@packages/shared/hooks";
 
 export default function SearchInput() {
+	const form = useFormikContext();
 	const [search, setSearch] = useState("");
-	const router = useRouter();
+	const debouncedSearchValue = useDebounce(search, 500);
+
+	useEffect(() => {
+		form.setFieldValue("search", debouncedSearchValue);
+	}, [debouncedSearchValue]);
 
 	const handleSearch = (e) => {
 		e.preventDefault();
-		router.push(`/search?q=${search}`);
 	};
 
 	return (
@@ -37,6 +44,7 @@ export default function SearchInput() {
 					placeholder="Search"
 					value={search}
 					onChange={(e) => setSearch(e.target.value)}
+					appearance={"solid"}
 				/>
 			</div>
 			<Container className="flex gap-2 mt-4">
@@ -48,52 +56,32 @@ export default function SearchInput() {
 // radio button group with 4 options, creators, collections, nfts, and people
 
 const SearchRadioGroup = () => {
-	const options = ["creators", "collections", "nfts", "people"];
-	const [value, setValue] = useState("creators");
+	const form = useFormikContext();
+	const options = ["people", "collections", "nfts"];
 
 	return (
 		<RadioGroup
-			value={value}
-			onChange={setValue}
+			value={(form.values as any).entity}
+			onChange={(value) => form.setFieldValue("entity", value)}
 		>
 			<RadioGroup.Label className="sr-only">Search</RadioGroup.Label>
 			<div className="flex items-center justify-between w-full gap-2">
 				{options.map((option) => {
-					const checked = value === option;
-
 					return (
 						<RadioGroup.Option
 							key={option}
 							value={option}
-							className={({active}) =>
-								cn(
-									"relative flex items-center justify-center outline-none ring-0 flex-1 w-full py-2 capitalize px-4 text-sm font-medium text-center text-gray-500 rounded-lg cursor-pointer focus:outline-none",
-									checked ? "bg-zinc-100 text-white" : "bg-white text-gray-900",
-									active
-										? "ring-2 ring-offset-2 ring-offset-primary-500 ring-white ring-opacity-60"
-										: "",
-									!active && !checked ? "hover:bg-zinc-50" : ""
-								)
-							}
+							className={`flex gap-2 text-sm py-2`}
 						>
-							{({active, checked}) => (
+							{({checked}) => (
 								<>
-									<Text
-										className={
-											checked && !active
-												? "bg-primary-500 border-transparent"
-												: "bg-white border-gray-300"
-										}
-										aria-hidden="true"
-									/>
-									<SmallText
-										className={cn(
-											checked ? "text-zinc-900" : "text-zinc-600",
-											"relative"
-										)}
+									<Button
+										type="button"
+										appearance={checked ? "action" : "surface"}
+										className="capitalize"
 									>
 										{option}
-									</SmallText>
+									</Button>
 								</>
 							)}
 						</RadioGroup.Option>

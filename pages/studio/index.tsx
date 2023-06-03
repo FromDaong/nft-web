@@ -4,6 +4,7 @@ import ActivityItem from "@components/CreatorDashboard/Activity/Item";
 import NFTCollection from "@components/CreatorDashboard/NFTCollection";
 import StudioNavigation from "@components/CreatorDashboard/StudioNavigation";
 import {FilmIcon} from "@heroicons/react/solid";
+import {treatOldGraphClient} from "@lib/graphClients";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
@@ -20,9 +21,14 @@ import {
 	StackIcon,
 } from "@radix-ui/react-icons";
 import Avvvatars from "avvvatars-react";
+import axios from "axios";
+import TreatCore from "core/TreatCore";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import Link from "next/link";
+import {useMemo} from "react";
+import {Provider, gql} from "urql";
+import {useAccount, useQuery} from "wagmi";
 
 export default function TreatCreatorStudio() {
 	return (
@@ -144,10 +150,9 @@ export default function TreatCreatorStudio() {
 							</Link>
 						</Container>
 						<Container className={"flex flex-col gap-4"}>
-							<SalesItem />
-							<SalesItem />
-							<SalesItem />
-							<SalesItem />
+							<Provider value={treatOldGraphClient}>
+								<SalesPreview />
+							</Provider>
 						</Container>
 					</Container>
 					<Container
@@ -241,6 +246,79 @@ export default function TreatCreatorStudio() {
 		</ApplicationLayout>
 	);
 }
+
+const salesHistory = (address) => gql`
+	query getSales($first: Int) {
+		sales(
+			first: 5
+			orderBy: "purchaseDate"
+			orderDirection: "asc"
+			where: {
+				seller: ${address}
+				sourceContract: "0xA38978E839c08046FA80B0fee55736253Ab3B8a3"
+			}
+		) {
+			id
+			cost
+			sourceContract
+			treatsPurchased
+			seller
+			buyer
+			purchaseDate
+		}
+	}
+`;
+
+const SalesPreview = () => {
+	const {address} = useAccount();
+	/*
+	const [result] = useQuery(
+		{
+			query: salesHistory(address),
+		},
+		{enabled: !!address}
+	);
+
+	const txHistory = useMemo(() => {
+		if (!result.data) return [];
+		return result.data.sales;
+	}, [result]);
+
+	
+	const {isLoading, data} = TreatCore.useQuery({
+		queryKey: [`creatorSales:${address}`],
+		queryFn: async () => {
+			const addresses = (txHistory ?? []).map((tx) => tx.seller.toLowerCase());
+			const res = await axios.post(`${apiEndpoint}/people/get-by-address`, {
+				addresses,
+			});
+			return res.data.data;
+		},
+		enabled: txHistory.length > 0,
+	});
+
+	
+	const txHistoryWithProfile = useMemo(() => {
+		if (!data) return [];
+		return txHistory.map((tx) => {
+			const buyer = data.find(
+				(profile) => profile.address.toLowerCase() === tx.buyer.toLowerCase()
+			);
+			const seller = data.find(
+				(profile) => profile.address.toLowerCase() === tx.seller.toLowerCase()
+			);
+			return {
+				...tx,
+				buyer: buyer || {address: tx.buyer},
+				seller: seller || {address: tx.seller},
+				buyerAddress: tx.buyer,
+				sellerAddress: tx.seller,
+			};
+		});
+	}, [data]);*/
+
+	return <Container></Container>;
+};
 
 function SalesItem() {
 	return (

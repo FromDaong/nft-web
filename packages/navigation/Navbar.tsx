@@ -37,6 +37,11 @@ import {StackIcon} from "@radix-ui/react-icons";
 import {Portal, Transition} from "@headlessui/react";
 import {useEffect, useRef, useState} from "react";
 import {useRouter} from "next/router";
+import {Formik, FormikProvider, useFormik} from "formik";
+import TreatCore from "core/TreatCore";
+import {apiEndpoint} from "@utils/index";
+import axios from "axios";
+import CreatorCard from "@packages/feed/components/CreatorCard";
 
 const Nav = styled("nav", {
 	zIndex: 30,
@@ -91,16 +96,7 @@ export default function Navbar() {
 							</div>
 							<BrowseDropdownMenu />
 						</Container>
-						<div className="flex h-full w-96">
-							<SearchModal>
-								<SearchModal.SearchInput />
-								<Container className="flex flex-col gap-4 ">
-									<SearchModal.ResultSection heading="Creators">
-										<></>
-									</SearchModal.ResultSection>
-								</Container>
-							</SearchModal>
-						</div>
+						<SearchBar />
 						<div className="flex gap-8">
 							<div className="flex md:hidden"></div>
 							{!loading &&
@@ -257,6 +253,71 @@ function BrowseDropdownMenu() {
 					</Portal>
 				</Transition>
 			</DropdownMenu>
+		</div>
+	);
+}
+
+function SearchBar() {
+	// create formik provider
+	// create formik search input
+	// debounce value then searcj
+
+	const formik = useFormik({
+		initialValues: {
+			search: "",
+			entity: "people",
+		},
+		onSubmit: (values) => {
+			console.log(values);
+		},
+	});
+
+	const {isLoading, data, isError} = TreatCore.useQuery(
+		[formik.values.search, formik.values.entity],
+		async () => {
+			const res = await axios.get(
+				`${apiEndpoint}/search?q=${formik.values.search}&entity=${formik.values.entity}`
+			);
+			return res.data.data;
+		},
+		{
+			enabled: formik.values.search.length > 1,
+		}
+	);
+
+	console.log({isLoading, data, isError});
+
+	return (
+		<div className="flex h-full w-96">
+			<FormikProvider value={formik}>
+				<form
+					onSubmit={formik.handleSubmit}
+					className="flex flex-col w-full"
+				>
+					<SearchModal>
+						<SearchModal.SearchInput />
+						<Container className="flex flex-col gap-4 ">
+							<SearchModal.ResultSection heading={formik.values.entity}>
+								{!isLoading && !isError && (
+									<>
+										{formik.values.entity === "people" && (
+											<>
+												{data[formik.values.entity].map((item) => (
+													<CreatorCard
+														key={item._id}
+														{...item}
+														variant={"compact"}
+													/>
+												))}
+											</>
+										)}
+									</>
+								)}
+							</SearchModal.ResultSection>
+						</Container>
+					</SearchModal>
+				</form>
+			</FormikProvider>
 		</div>
 	);
 }

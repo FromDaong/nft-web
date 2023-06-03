@@ -159,22 +159,24 @@ export default function FarmPortfolioItem({
 							Manage
 						</Button>
 					</Container>
-					<Button
-						appearance={"accent"}
-						onClick={harvest}
-						css={{
-							opacity: 1, //pendingMelons?.toNumber() > 0 ? 1 : 0.5,
-						}}
-					>
-						{harvesting ? (
-							<>
-								<Spinner className="w-5 h-5" />
-								Harvesting...
-							</>
-						) : (
-							"Harvest rewards"
-						)}
-					</Button>
+					{!!pendingMelons?.toNumber() && (
+						<Button
+							appearance={"accent"}
+							onClick={harvest}
+							css={{
+								opacity: 1, //pendingMelons?.toNumber() > 0 ? 1 : 0.5,
+							}}
+						>
+							{harvesting ? (
+								<>
+									<Spinner className="w-5 h-5" />
+									Harvesting...
+								</>
+							) : (
+								"Harvest rewards"
+							)}
+						</Button>
+					)}
 				</Container>
 			</>
 		</>

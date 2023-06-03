@@ -493,7 +493,6 @@ const salesHistory = (nft) => gql`
         }
       
       }
-    
 `;
 
 type SaleItem = {
@@ -546,7 +545,6 @@ const TransactionsPresentation = ({nft}) => {
 			};
 		});
 	}, [data]);
-	console.log(txHistory);
 
 	return (
 		<Container className="flex flex-col gap-4">

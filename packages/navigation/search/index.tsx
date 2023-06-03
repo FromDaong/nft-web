@@ -63,19 +63,12 @@ export default function SearchModal({children}) {
 			>
 				<Dialog
 					as="div"
-					className="fixed inset-0 z-40 overflow-y-auto"
+					className="fixed inset-0 z-50 overflow-y-auto"
 					onClose={onClose}
 				>
 					<div className="min-h-screen text-center">
-						<Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
-
 						{/* This element is to trick the browser into centering the modal contents. */}
-						<span
-							className="inline-block h-screen align-middle"
-							aria-hidden="true"
-						>
-							&#8203;
-						</span>
+
 						<Transition.Child
 							as={Fragment}
 							enter="ease-out duration-300"
@@ -85,14 +78,18 @@ export default function SearchModal({children}) {
 							leaveFrom="opacity-100 scale-100"
 							leaveTo="opacity-0 scale-95"
 						>
-							<div
-								className="inline-block w-full max-w-md p-6 py-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl"
+							<Container
+								css={{
+									borderColor: "$border",
+									backgroundColor: "$surface",
+								}}
+								className="inline-block border w-full max-w-xl p-2 py-8 pt-4 mt-2 overflow-hidden text-left align-middle transition-all transform drop-shadow-2xl rounded-2xl"
 								ref={ref}
 							>
 								<Container className="flex flex-col gap-4">
 									{children}
 								</Container>
-							</div>
+							</Container>
 						</Transition.Child>
 					</div>
 				</Dialog>
