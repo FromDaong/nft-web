@@ -21,8 +21,10 @@ export const CollectionsPresentation = ({creator_id, base_url}) => {
 			cover_image: item.cover_image ?? "/assets/bg.jpg",
 			creator: item.creator,
 			href: item._id,
+			nfts: item.nfts,
 		}));
 	});
+
 	return (
 		<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 			{!isLoading &&

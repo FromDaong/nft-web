@@ -5,9 +5,7 @@ import NFTPresentationComponent, {
 	useGetResaleListings,
 } from "@packages/post/BuyNFTPageViewNFT";
 import {useGetIsNFTOwned, useTritNFTUtils} from "@packages/post/hooks";
-import {TritPost} from "@packages/post/TritPost";
 import {Container} from "@packages/shared/components/Container";
-import {Divider} from "@packages/shared/components/Divider";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {
 	ImportantText,
@@ -38,16 +36,12 @@ import {
 import BuyNFTButton from "@packages/post/BuyNFTButton";
 import {useDisclosure} from "@packages/hooks";
 import {SparklesIcon} from "@heroicons/react/solid";
-import {WishlistNFTCard} from "pages/studio/wishlist";
 import FullscreenImagePreviewModal from "@packages/modals/ImagePreview";
-import AvatarGroup from "@packages/avatars/AvatarGroup";
 import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
-import {ExternalLink, ExternalLinkIcon, FilterIcon} from "lucide-react";
+import {ExternalLinkIcon} from "lucide-react";
 import Spinner from "@packages/shared/icons/Spinner";
 import {Provider, gql, useQuery} from "urql";
 import {treatOldGraphClient} from "@lib/graphClients";
-import BigNumber from "bignumber.js";
-import {ethers} from "ethers";
 import Web3 from "web3";
 
 export default function NFT(props: {

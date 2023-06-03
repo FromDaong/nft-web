@@ -11,6 +11,7 @@ import {
 	SmallText,
 	Text,
 } from "@packages/shared/components/Typography/Text";
+import Spinner from "@packages/shared/icons/Spinner";
 import {Link1Icon, Link2Icon} from "@radix-ui/react-icons";
 import {timeFromNow} from "@utils/index";
 import {ExternalLink} from "lucide-react";
@@ -113,6 +114,13 @@ const TransactionsContainer = () => {
 		error: sendingError,
 	} = sendingResult;
 
+	if (!data || !sendingData)
+		return (
+			<Container className="flex justify-center">
+				<Spinner />
+			</Container>
+		);
+
 	const transfers = [
 		...data?.transfers.map((t) => ({...t, type: "received"})),
 		...sendingData?.transfers.map((t) => ({...t, type: "sent"})),
@@ -133,7 +141,7 @@ const TransactionsContainer = () => {
 	);
 };
 
-const formatAddress = (address) => {
+export const formatAddress = (address) => {
 	return `${address.slice(0, 6)}...${address.slice(-4)}`;
 };
 

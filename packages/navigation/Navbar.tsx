@@ -19,7 +19,14 @@ import {useDisclosure} from "@packages/hooks";
 import NotificationsTray from "@components/Notifications/NotificationsTray";
 import TransactionHistoryTray from "@components/Notifications/TransactionHistoryTray";
 import RectangleStack from "@packages/shared/icons/RectangleStack";
-import {CoinsIcon, PlusIcon, Search, ShoppingBag, UserIcon} from "lucide-react";
+import {
+	CoinsIcon,
+	History,
+	PlusIcon,
+	Search,
+	ShoppingBag,
+	UserIcon,
+} from "lucide-react";
 import {
 	BoldLink,
 	SmallText,
@@ -133,7 +140,7 @@ export default function Navbar() {
 												padding: "0.5rem",
 											}}
 										>
-											<RectangleStack className={"w-5 h-5"} />
+											<History className={"w-5 h-5"} />
 										</Button>
 										<ManageUserDropdown />
 									</Container>

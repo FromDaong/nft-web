@@ -1,140 +1,137 @@
-import NFTCollection from "@components/CreatorDashboard/NFTCollection";
-import StudioNavigation from "@components/CreatorDashboard/StudioNavigation";
+import CollectionNFTPreview from "@components/NFTCard/cards/CollectionNFTPreview";
 import {
-	ArchiveIcon,
-	CashIcon,
 	ExternalLinkIcon,
-	GiftIcon,
-	HomeIcon,
-	PencilIcon,
 	PlusIcon,
-	ShareIcon,
+	UserAddIcon,
 } from "@heroicons/react/outline";
 import {TritPost} from "@packages/post/TritPost";
-import {TritPostProps} from "@packages/post/types";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
-import {ArrowRightIcon} from "@radix-ui/react-icons";
-import Avvvatars from "avvvatars-react";
+import axios from "axios";
+import TreatCore from "core/TreatCore";
+import UserAvatar from "core/auth/components/Avatar";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
-import ApplicationLayout from "core/components/layouts/ApplicationLayout";
+import {Upload} from "lucide-react";
 import Link from "next/link";
 import {useRouter} from "next/router";
-
-const NFTs: Array<TritPostProps> = [
-	{
-		_id: "38893",
-		creator: {
-			avatar: "https://picsum.photos/seed/picsum/300/300",
-			display_name: "Chris",
-			username: "tatenda",
-			address: "0x0898239832",
-			bio: "My bio is private",
-		},
-		id: "19",
-		max_supply: 10,
-		image: {
-			cdn: "https://picsum.photos/seed/picsum/720/720",
-			ipfs: "https://picsum.photos/seed/picsum/720/720",
-		},
-		post_type: "colletible",
-		isSoldOut: true,
-		collection: {
-			avatar: "https://picsum.photos/seed/picsum/720/720",
-			minted: 10,
-			name: "My collection name",
-			totalSupply: 60,
-		},
-		blurhash: "",
-		name: "Trust the process",
-		price: {
-			currency: "BNB",
-			value: 0.001,
-		},
-	},
-];
+import {useAccount} from "wagmi";
 
 export default function CollectionPage() {
+	const {address} = useAccount();
 	const router = useRouter();
 	const {collectionId} = router.query;
 
+	// Fetch collection data from the API
+	const {
+		data: collection,
+		isLoading,
+		isError,
+	} = TreatCore.useQuery(["collection", collectionId], async () => {
+		const data = await axios.get(
+			`${process.env.NEXT_PUBLIC_HOSTNAME}/api/v3/marketplace/collection/${collectionId}`
+		);
+		return data.data.data;
+	});
+
+	// Fetch NFTs in this collection
+	const {
+		data: nfts,
+		isLoading: isLoadingNFTs,
+		isError: isErrorNFTs,
+	} = TreatCore.useQuery(["collection", collectionId, "nfts"], async () => {
+		const data = await axios.get(
+			`${process.env.NEXT_PUBLIC_HOSTNAME}/api/v3/marketplace/collection/${collectionId}/nfts`
+		);
+		return data.data.data;
+	});
+
+	const isOwner = address?.toLowerCase() === collection?.creator.address;
 	return (
-		<ApplicationLayout>
-			<ApplicationFrame>
+		<>
+			{!isLoading && !isError && (
 				<Container
-					css={{height: "80vh", backgroundColor: "$textContrast"}}
-					className="flex flex-col gap-24 py-8 mt-8 rounded-xl justify-center items-center shadow-xl"
-				>
-					<Container className="flex flex-col gap-8 py-8 mt-8 rounded-xl justify-center items-center">
-						<Container className={"rounded-2xl bg-white h-24 w-24"} />
-						<Heading css={{color: "$white"}}>The collection title</Heading>
-						<Container className="w-fit items-center px-4 py-4 rounded-full bg-white flex gap-4">
-							<Avvvatars
-								size={32}
-								value={"a"}
-							/>
-							<Text>
-								Created by <ImportantText>@tatenda</ImportantText>
-							</Text>
+					css={{
+						backgroundColor: "$textContrast",
+						background: `url(${
+							collection.cover_image ?? "/assets/bg.jpg"
+						}) no-repeat center center / cover`,
+					}}
+					className="flex flex-col items-center justify-center gap-24 h-96"
+				/>
+			)}
+			<ApplicationFrame>
+				{collection && (
+					<Container className="py-4 flex flex-col gap-2 mt-4">
+						<Container className="max-w-2xl">
+							<Heading size={"md"}>{collection.name}</Heading>
 						</Container>
-						<Container className="p-8 grid grid-cols-3 gap-8 bg-white rounded-xl shadow">
-							<Container className={"flex flex-col gap-2"}>
-								<Text>
-									<ImportantText>NFTs available</ImportantText>
-								</Text>
-								<Heading size={"sm"}>23</Heading>
-							</Container>
-							<Container className={"flex flex-col gap-2"}>
-								<Text>
-									<ImportantText>NFTs sold</ImportantText>
-								</Text>
-								<Heading size={"sm"}>10</Heading>
-							</Container>
-							<Container className={"flex flex-col gap-2"}>
-								<Text>
-									<ImportantText>Total sales</ImportantText>
-								</Text>
-								<Heading size={"sm"}>4.72 BNB</Heading>
-							</Container>
+						<Container className="flex items-center gap-4 p-2">
+							<UserAvatar
+								size={40}
+								username={collection.creator.username}
+								profile_pic={collection.creator.profile.profile_pic}
+							/>
+							<Link href={`/${collection.creator.username}`}>
+								<a className="flex flex-col">
+									<Text css={{color: "$textContrast"}}>
+										<ImportantText>
+											{collection.creator.profile?.display_name}{" "}
+										</ImportantText>
+									</Text>
+									<Text>@{collection.creator.username}</Text>
+								</a>
+							</Link>
 						</Container>
 					</Container>
-				</Container>
-				<Container className="flex gap-4 pt-8 mt-8">
-					<Link href={`/collection/${collectionId}`}>
+				)}
+				<Container className="flex justify-between gap-4 pt-8 mt-8 items-end">
+					<Heading size={"xs"}>
+						{isLoadingNFTs && !nfts && (
+							<Container
+								className="h-full w-96"
+								css={{backgroundColor: "$surfaceOnSurface"}}
+							/>
+						)}
+						{!!nfts && (
+							<>NFTs ({Intl.NumberFormat().format(nfts.docs.length)})</>
+						)}
+					</Heading>
+					<Link href={`/create/${collectionId}`}>
 						<a>
 							<Button appearance={"surface"}>
-								<HomeIcon className="w-5 h-5" />
-							</Button>
-						</a>
-					</Link>
-					<Link href={`/collection/${collectionId}/resale`}>
-						<a>
-							<Button appearance={"link"}>
-								<GiftIcon className="w-5 h-5" /> Resale Market
-							</Button>
-						</a>
-					</Link>
-					<Link href={`/collection/${collectionId}/sales`}>
-						<a>
-							<Button appearance={"link"}>
-								<CashIcon className="w-5 h-5" /> Sales
+								<PlusIcon className="w-5 h-5" /> Add NFTs to collection
 							</Button>
 						</a>
 					</Link>
 				</Container>
 				<Divider dir={"horizontal"} />
-				<Container className={"grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4"}>
-					{NFTs.map((nft) => (
-						<TritPost
-							{...nft}
-							key={nft.id}
-						/>
-					))}
-				</Container>
+				{!isLoadingNFTs && !isErrorNFTs && (
+					<Container
+						className={
+							"grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 py-8 gap-8"
+						}
+					>
+						{nfts.docs.map((nft) => (
+							<CollectionNFTPreview
+								_id={nft._id}
+								creator={{
+									...nft.creator,
+									profile: {
+										_id: nft.creator.profile,
+									},
+								}}
+								name={nft.name}
+								isMine={true}
+								isProtected={nft.isProtected}
+								key={nft.id}
+							/>
+						))}
+					</Container>
+				)}
 			</ApplicationFrame>
-		</ApplicationLayout>
+		</>
 	);
 }
