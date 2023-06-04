@@ -78,7 +78,7 @@ export const Button = styled("button", {
 				color: "$text",
 			},
 			link: {
-				backgroundColor: "inherit",
+				backgroundColor: "$accentBase",
 				color: "$accentText",
 				"&:hover": {
 					backgroundColor: "$accentBg",

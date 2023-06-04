@@ -105,9 +105,7 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 				onClose={onCloseEditProfileModal}
 			/>
 			<Container className="flex items-center justify-center gap-4">
-				<SearchModal>
-					<></>
-				</SearchModal>
+				<SearchModal />
 				<Button
 					outlined
 					css={{padding: "0.5rem", borderRadius: "9999px"}}

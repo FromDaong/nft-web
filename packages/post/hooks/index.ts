@@ -454,6 +454,12 @@ export const useContracts = () => {
 		signerOrProvider: signer,
 	});
 
+	const treatMarketplaceReaderContract = useContract({
+		addressOrName: contractAddresses.treatMarketReader[56],
+		contractInterface: ABI.treatMarketReader,
+		signerOrProvider: signer,
+	});
+
 	return {
 		treatMarketplaceContract,
 		treatSubscriptionsContract,
@@ -461,6 +467,7 @@ export const useContracts = () => {
 		creatorMartContract,
 		subscriptionsMart,
 		permissionsHelperContract,
+		treatMarketplaceReaderContract,
 		signer,
 	};
 };

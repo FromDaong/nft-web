@@ -23,6 +23,7 @@ import axios from "axios";
 import TreatCore from "core/TreatCore";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
+import {ArrowRight} from "lucide-react";
 import {ExternalLink} from "lucide-react";
 import Link from "next/link";
 import {useMemo} from "react";
@@ -37,6 +38,109 @@ export default function TreatCreatorStudio() {
 
 			<ApplicationFrame>
 				<Provider value={treatOldGraphClient}>
+					<Container className="py-8 flex flex-col gap-4 mt-8">
+						<Container>
+							<Heading size={"xs"}>
+								Get started with your TreatDAO studio
+							</Heading>
+							<Text className="mt-2">
+								Your studio is where you can create and manage your NFT
+								collections.
+							</Text>
+						</Container>
+						<Container className="grid grid-cols-1 max-w-screen-md mt-4">
+							<Container className="flex justify-between p-2 items-start">
+								<Container className="flex gap-4">
+									<Avvvatars
+										style="shape"
+										value={"0x0"}
+										size={32}
+										radius={6}
+									/>
+									<Container className="flex flex-col gap-2">
+										<Heading size={"xss"}>Create a new collection</Heading>
+										<Text>
+											A collection allows you to group your NFTs together.
+										</Text>
+									</Container>
+								</Container>
+								<Container className="mt-auto">
+									<Link href={"/create"}>
+										<a>
+											<Button
+												appearance={"subtle"}
+												css={{borderRadius: "9999px"}}
+											>
+												<ArrowRight className="w-5 h-5" />
+											</Button>
+										</a>
+									</Link>
+								</Container>
+							</Container>
+							<Container className="flex justify-between p-2 items-start">
+								<Container className="flex gap-4">
+									<Avvvatars
+										style="shape"
+										value={"0x0"}
+										size={32}
+										radius={6}
+									/>
+									<Container className="flex flex-col gap-2">
+										<Heading size={"xss"}>Create a new NFT</Heading>
+										<Text>
+											An NFT is a unique digital item that you can sell on the
+											sweetshop
+										</Text>
+									</Container>
+								</Container>
+								<Container className="mt-auto">
+									<Link href={"/create"}>
+										<a>
+											<Button
+												appearance={"subtle"}
+												css={{borderRadius: "9999px"}}
+											>
+												<ArrowRight className="w-5 h-5" />
+											</Button>
+										</a>
+									</Link>
+								</Container>
+							</Container>
+							<Container className="flex justify-between p-2 items-start">
+								<Container className="flex gap-4">
+									<Avvvatars
+										style="shape"
+										value={"0x0"}
+										size={32}
+										radius={6}
+									/>
+									<Container className="flex flex-col gap-2">
+										<Heading size={"xss"}>Stake $TREAT</Heading>
+										<Text>
+											The more $TREAT you stake, the more rewards you earn.
+										</Text>
+									</Container>
+								</Container>
+								<Container className="mt-auto">
+									<Link href={"/create"}>
+										<a>
+											<Button
+												appearance={"subtle"}
+												css={{borderRadius: "9999px"}}
+											>
+												<ArrowRight className="w-5 h-5" />
+											</Button>
+										</a>
+									</Link>
+								</Container>
+							</Container>
+						</Container>
+						<Container className="py-4">
+							<Button appearance={"link"}>
+								Or browse the sweetshop <ArrowRight className="h-4 w-4" />
+							</Button>
+						</Container>
+					</Container>
 					<Container className="grid grid-cols-1 md:grid-cols-2 gap-8 py-8">
 						<Container
 							className="grid grid-cols-1 md:grid-cols-2 col-span-1 p-8 shadow-sm border rounded-xl"

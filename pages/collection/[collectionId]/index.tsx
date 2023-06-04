@@ -49,6 +49,7 @@ export default function CollectionPage() {
 	});
 
 	const isOwner = address?.toLowerCase() === collection?.creator.address;
+	console.log({nfts});
 	return (
 		<>
 			{!isLoading && !isError && (

@@ -43,8 +43,6 @@ const AddNFTDetails = ({
 		}
 	);
 
-	console.log(bnbPrice);
-
 	return (
 		<Formik
 			validationSchema={Yup.object().shape({
@@ -79,7 +77,7 @@ const AddNFTDetails = ({
 										<Container
 											className="flex flex-col gap-4 p-4 flex-1"
 											css={{
-												background: "$surfaceOnSurface",
+												background: "$elementOnSurface",
 												borderRadius: "16px",
 											}}
 										>
@@ -94,7 +92,6 @@ const AddNFTDetails = ({
 																<Container className="flex flex-col gap-2">
 																	<Input
 																		type="text"
-																		appearance={"solid"}
 																		{...field}
 																	/>
 																	{meta.touched && meta.error && (
@@ -140,7 +137,6 @@ const AddNFTDetails = ({
 																	<Input
 																		type="number"
 																		step={0.001}
-																		appearance={"solid"}
 																		min={0}
 																		defaultValue={0.02}
 																		{...field}
@@ -174,7 +170,6 @@ const AddNFTDetails = ({
 																	<Input
 																		type="number"
 																		min={1}
-																		appearance={"solid"}
 																		defaultValue={10}
 																		{...field}
 																	/>

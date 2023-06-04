@@ -16,7 +16,6 @@ const Main = styled(Container, {
 	marginBottom: "56px",
 	height: "100%",
 	overscrollBehaviorY: "contain",
-	minHeight: "100vh",
 });
 
 const Frame = styled("div", {

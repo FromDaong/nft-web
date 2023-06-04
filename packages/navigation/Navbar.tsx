@@ -101,6 +101,17 @@ export default function Navbar() {
 									</a>
 								</Link>
 							</div>
+
+							<Link href="/dex/ramp">
+								<a>
+									<Button
+										appearance={"unstyled"}
+										css={{paddingX: "8px", color: "$textContrast"}}
+									>
+										Buy Crypto
+									</Button>
+								</a>
+							</Link>
 							<BrowseDropdownMenu />
 						</Container>
 						<Container>
@@ -205,7 +216,7 @@ function BrowseDropdownMenu() {
 						appearance={"unstyled"}
 						css={{color: "$textContrast"}}
 					>
-						Browse <ChevronDownIcon className="w-4 h-4" />
+						Marketplace <ChevronDownIcon className="w-4 h-4" />
 					</Button>
 				</DropdownMenuTrigger>
 				<Transition
@@ -235,25 +246,6 @@ function BrowseDropdownMenu() {
 										<BoldLink className="flex items-center gap-4">
 											<StackIcon className="w-5 h-5" />
 											Collections
-										</BoldLink>
-									</a>
-								</Link>
-							</DropdownMenuItem>
-							<DropdownMenuItem className="p-2 rounded-lg cursor-pointer hover:bg-zinc-100">
-								<Link href="/people">
-									<a>
-										<BoldLink className="flex items-center gap-4">
-											<UserIcon className="w-5 h-5" /> Profiles
-										</BoldLink>
-									</a>
-								</Link>
-							</DropdownMenuItem>
-							<DropdownMenuItem className="p-2 rounded-lg cursor-pointer hover:bg-zinc-100">
-								<Link href="/dex/ramp">
-									<a>
-										<BoldLink>
-											<CoinsIcon className="w-5 h-5" />
-											Buy crypto
 										</BoldLink>
 									</a>
 								</Link>

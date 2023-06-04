@@ -8,6 +8,7 @@ import {
 	PlusIcon,
 } from "@heroicons/react/outline";
 import {TritPost} from "@packages/post/TritPost";
+import {useContracts} from "@packages/post/hooks";
 import {TritPostProps} from "@packages/post/types";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
@@ -18,131 +19,18 @@ import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import Link from "next/link";
 import {useRouter} from "next/router";
+import {useMemo} from "react";
+import {useAccount} from "wagmi";
 
-const NFTs: Array<TritPostProps> = [
-	{
-		_id: "38893",
-		creator: {
-			avatar: "https://picsum.photos/seed/picsum/300/300",
-			display_name: "Chris",
-			username: "tatenda",
-			address: "0x0898239832",
-			bio: "My bio is private",
-		},
-		id: "19",
-		max_supply: 10,
-		image: {
-			cdn: "https://picsum.photos/seed/picsum/720/720",
-			ipfs: "https://picsum.photos/seed/picsum/720/720",
-		},
-		post_type: "colletible",
-		isSoldOut: true,
-		collection: {
-			avatar: "https://picsum.photos/seed/picsum/720/720",
-			minted: 10,
-			name: "My collection name",
-			totalSupply: 60,
-		},
-		blurhash: "",
-		name: "Trust the process",
-		price: {
-			currency: "BNB",
-			value: 0.001,
-		},
-	},
-	{
-		_id: "38893",
-		creator: {
-			avatar: "https://picsum.photos/seed/picsum/300/300",
-			display_name: "Chris",
-			username: "tatenda",
-			address: "0x0898239832",
-			bio: "My bio is private",
-		},
-		id: "19",
-		max_supply: 10,
-		image: {
-			cdn: "https://picsum.photos/seed/picsum/720/720",
-			ipfs: "https://picsum.photos/seed/picsum/720/720",
-		},
-		post_type: "colletible",
-		isSoldOut: true,
-		collection: {
-			avatar: "https://picsum.photos/seed/picsum/720/720",
-			minted: 10,
-			name: "My collection name",
-			totalSupply: 60,
-		},
-		blurhash: "",
-		name: "Trust the process",
-		price: {
-			currency: "BNB",
-			value: 0.001,
-		},
-	},
-	{
-		_id: "38893",
-		creator: {
-			avatar: "https://picsum.photos/seed/picsum/300/300",
-			display_name: "Chris",
-			username: "tatenda",
-			address: "0x0898239832",
-			bio: "My bio is private",
-		},
-		id: "19",
-		max_supply: 10,
-		image: {
-			cdn: "https://picsum.photos/seed/picsum/720/720",
-			ipfs: "https://picsum.photos/seed/picsum/720/720",
-		},
-		post_type: "colletible",
-		isSoldOut: true,
-		collection: {
-			avatar: "https://picsum.photos/seed/picsum/720/720",
-			minted: 10,
-			name: "My collection name",
-			totalSupply: 60,
-		},
-		blurhash: "",
-		name: "Trust the process",
-		price: {
-			currency: "BNB",
-			value: 0.001,
-		},
-	},
-	{
-		_id: "38893",
-		creator: {
-			avatar: "https://picsum.photos/seed/picsum/300/300",
-			display_name: "Chris",
-			username: "tatenda",
-			address: "0x0898239832",
-			bio: "My bio is private",
-		},
-		id: "19",
-		max_supply: 10,
-		image: {
-			cdn: "https://picsum.photos/seed/picsum/720/720",
-			ipfs: "https://picsum.photos/seed/picsum/720/720",
-		},
-		post_type: "colletible",
-		isSoldOut: true,
-		collection: {
-			avatar: "https://picsum.photos/seed/picsum/720/720",
-			minted: 10,
-			name: "My collection name",
-			totalSupply: 60,
-		},
-		blurhash: "",
-		name: "Trust the process",
-		price: {
-			currency: "BNB",
-			value: 0.001,
-		},
-	},
-];
+const useMyResaleListings = () => {
+	const {address} = useAccount();
+	const {treatMarketplaceReaderContract} = useContracts();
+
+	console.log({treatMarketplaceReaderContract});
+};
 
 export default function ResalePage() {
+	const resale = useMyResaleListings();
 	return (
 		<ApplicationLayout>
 			<StudioNavigation />
