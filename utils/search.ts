@@ -89,6 +89,7 @@ export class CollectionSearchManager implements SearchManager {
 
 	hydrate() {
 		this.items.map((item) => {
+			if (!item.creator) return console.log("no creator");
 			const content = `${item._id} ${item.name} ${item.creator.username} ${item.creator.display_name}`;
 			const key = item._id;
 			this.index.add(key, content);
