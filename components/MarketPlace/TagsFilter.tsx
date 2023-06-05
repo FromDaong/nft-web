@@ -18,26 +18,38 @@ import {
 import {PlusIcon} from "lucide-react";
 
 const TagsFilter = () => {
-	const tags: React.MutableRefObject<string[]> = useRef([
-		"Anime",
-		"Artistic",
-		"Cosplay",
-		"Collectibles",
-		"Comics",
-		"Food",
-		"Fashion",
-		"Gaming",
-		"Melon",
-		"Movies",
-		"Music",
-		"Manga",
-		"NSFW",
-		"Pets",
-		"Sports",
-		"Travel",
-		"Treat of the month",
-		"TV",
-	]);
+	const tags: React.MutableRefObject<string[]> = useRef(
+		[
+			{value: "SFW", label: "SFW"},
+			{value: "NSFW", label: "NSFW"},
+			{value: "Artistic", label: "Artistic"},
+			{value: "Glamour", label: "Glamour"},
+			{value: "Cosplay", label: "Cosplay"},
+			{value: "Natural", label: "Natural"},
+			{value: "Solo", label: "Solo"},
+			{value: "Man - Woman", label: "Man - Woman"},
+			{value: "Woman - Woman", label: "Woman - Woman"},
+			{value: "Man - boy", label: "Man - boy"},
+			{value: "Group", label: "Group"},
+			{value: "Lingerie", label: "Lingerie"},
+			{value: "BDSM", label: "BDSM"},
+			{value: "Latex", label: "Latex"},
+			{value: "Pantyhose", label: "Pantyhose"},
+			{value: "Feet", label: "Feet"},
+			{value: "Pregnant", label: "Pregnant"},
+			{value: "Smoking", label: "Smoking"},
+			{value: "Femdom", label: "Femdom"},
+			{value: "Findom", label: "Findom"},
+			{value: "Flexible", label: "Flexible"},
+			{value: "Outdoor", label: "Outdoor"},
+			{value: "Oil", label: "Oil"},
+			{value: "Masturbation", label: "Masturbation"},
+			{value: "Anal", label: "Anal"},
+			{value: "Pegging", label: "Pegging"},
+			{value: "Toys", label: "Toys"},
+			{value: "Exclusive", label: "Exclusive"},
+		].map((t) => t.value)
+	);
 	const [selectedTags, setSelectedTags] = useState<string[]>([]);
 	const router = useRouter();
 	const remainingTags: string[] = useMemo(

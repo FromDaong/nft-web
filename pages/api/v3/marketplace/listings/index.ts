@@ -3,8 +3,11 @@ import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import {ethers} from "ethers";
 import {NextApiRequest, NextApiResponse} from "next";
 import {returnWithError, returnWithSuccess} from "server/helpers/core/utils";
-import {MongoModelNFT} from "server/helpers/models";
+import {MongoModelNFT, MongoModelProfile} from "server/helpers/models";
 import {request, gql} from "graphql-request";
+import {graphql_endpoints as markets} from "./queries";
+import Web3 from "web3";
+import formatAddress from "@utils/formatAddress";
 
 const RESALE_GRAPHQL_ENDPOINT =
 	"https://api.thegraph.com/subgraphs/name/treatdaodev/treatdao";
@@ -35,6 +38,11 @@ export default async function handler(
 		tags = (queryTags as string).split(",");
 	}
 
+	const graphqlSort = {
+		resale: ["cost", "currentSupply", "isActive"],
+		market: ["totalSales", "totalSupply"],
+	};
+
 	const sortMap = {
 		recent: {
 			created_at: -1,
@@ -56,6 +64,11 @@ export default async function handler(
 		market: "resale" | "melon" | "totm" | "verified";
 		tags?: string[];
 		ids?: string[];
+		resaleOrders?: {
+			cost: string;
+			seller: string;
+			nft: string;
+		}[];
 	} = {
 		page: parseInt((page as string) ?? "1"),
 		sort: sortMap[sort as string] || sortMap.recent,
@@ -67,12 +80,22 @@ export default async function handler(
 		return returnWithError("Invalid market", 400, res);
 
 	if (market === "resale") {
-		console.log(await customHttpProvider.ready);
-
-		const _id = await treatMarketplaceContract.functions.maxTokenId();
-		const openOrders = await fetchOrders(_id);
-		console.log({_id, openOrders: openOrders[0].value});
-		config.ids = ["0x495f947276749ce646f68ac8c248420045cb7b5e"];
+		const {marketItems} = await request(
+			RESALE_GRAPHQL_ENDPOINT,
+			markets.resale,
+			{
+				sort: graphqlSort.resale.includes(sort as string) ? sort : "cost",
+				// sort: "id" as "totalSales" | "totalSupply" | "id",
+				skip: (config.page - 1) * 24,
+				first: 24,
+			}
+		);
+		config.ids = marketItems.map((m) => m.nft);
+		config.resaleOrders = marketItems.map((m) => ({
+			cost: m.cost,
+			seller: m.seller,
+			nft: m.nft,
+		}));
 	}
 
 	const lookupConfig: {
@@ -113,62 +136,59 @@ export default async function handler(
 		delete lookupConfig.totm_nft;
 	}
 
-	// @ts-ignore
-	const nfts = await MongoModelNFT.paginate(lookupConfig, {
-		page: config.page,
-		limit: 24,
-		sort: config.sort,
-	});
+	if (config.market !== "resale") {
+		// @ts-ignore
+		const nfts = await MongoModelNFT.paginate(lookupConfig, {
+			page: config.page,
+			limit: 24,
+			sort: config.sort,
+		});
 
-	nfts.docs = await MongoModelNFT.populate(nfts.docs, {
-		path: "creator",
-		populate: "profile",
-	});
+		nfts.docs = await MongoModelNFT.populate(nfts.docs, {
+			path: "creator",
+			populate: "profile",
+		});
+		console.log(config.ids);
 
-	return returnWithSuccess(nfts, res);
-}
-
-const fetchOrders = async (maxId: number) => {
-	const rangeArray = [];
-
-	for (let i = 1; i <= Number(maxId); i++) {
-		if (i % 5 === 0) {
-			rangeArray.push({
-				min: i - 5,
-				max: i,
-			});
-		} else if (i === Number(maxId)) {
-			rangeArray.push({
-				min: rangeArray[rangeArray.length - 1].max,
-				max: i,
-			});
-		}
+		return returnWithSuccess(nfts, res);
 	}
 
-	const orders = await Promise.allSettled(
-		rangeArray.map((a) => {
-			// eslint-disable-next-line no-async-promise-executor
-			return new Promise(async (resolve, reject) => {
-				try {
-					const order =
-						await treatResaleReader.functions.readOrderPricesForNftRange(
-							a.min,
-							a.max
-						);
-					resolve(order);
-				} catch (error) {
-					reject(error);
-				}
-			});
+	const nfts = await MongoModelNFT.find({
+		id: {
+			$in: config.ids,
+		},
+	});
+
+	const populatedNfts = await Promise.all(
+		nfts.map(async (nft) => {
+			const order = config.resaleOrders.find((o) => parseInt(o.nft) === nft.id);
+			const seller = await MongoModelProfile.findOne({
+				address: order.seller.toLowerCase(),
+				display_name: formatAddress(order.seller.toLowerCase()),
+				username: formatAddress(order.seller.toLowerCase()),
+			}).exec();
+			const nftprice = Web3.utils.fromWei(order.cost);
+			const nftSeller = {
+				...seller?.toObject(),
+				address: order.seller.toLowerCase(),
+			};
+			return {
+				...nft.toObject(),
+				price: nftprice,
+				seller: nftSeller,
+			};
 		})
 	);
 
-	const singleArray = [].concat(...orders);
-
-	const ids = singleArray.map((o) => o.nftId);
-	const filtered = singleArray.filter(
-		({id}, index) => !ids.includes(id, index + 1)
+	return returnWithSuccess(
+		{
+			docs: populatedNfts.flat(),
+			totalDocs: 10000,
+			hasNextPage: true,
+			hasPrevPage: config.page > 1,
+			page: config.page,
+			nextPage: config.page + 1,
+		},
+		res
 	);
-
-	return filtered;
-};
+}

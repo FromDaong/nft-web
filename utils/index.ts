@@ -38,7 +38,7 @@ export const legacy_nft_to_new = (post: any): TritPostProps => ({
 		username: post.creator.username,
 		display_name: post.creator.display_name,
 		live: false,
-		avatar: post.creator.profile.profile_pic,
+		avatar: post.creator.profile?.profile_pic,
 	},
 	collection: {
 		name: post.collection_name,

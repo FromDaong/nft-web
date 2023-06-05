@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import SweetshopTabs from "@components/MarketPlace/MarketFilter";
 import TagsFilter from "@components/MarketPlace/TagsFilter";
 import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
@@ -90,13 +91,15 @@ export default function NFTS({nfts, error}) {
 						...post.creator,
 						profile: post.creator.profile,
 					},
-					seller: {
-						address: post.creator.address,
-						profile_pic: post.creator.profile.profile_pic,
-						username: post.creator.username,
-						display_name: post.creator.display_name,
-						event_id: post._id,
-					},
+					seller: post.seller.address
+						? post.seller
+						: {
+								address: post.creator.address,
+								profile_pic: post.creator.profile?.profile_pic,
+								username: post.creator.username,
+								display_name: post.creator.display_name,
+								event_id: post._id,
+						  },
 				})
 			);
 			return data;
@@ -120,6 +123,8 @@ export default function NFTS({nfts, error}) {
 	useEffect(() => {
 		refetch();
 	}, [sortQuery, tagQuery, marketQuery]);
+
+	console.log({marketQuery, isLoading, data});
 
 	return (
 		<ApplicationLayout>
