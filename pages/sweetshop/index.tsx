@@ -11,75 +11,115 @@ import axios from "axios";
 import TreatCore from "core/TreatCore";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
+import {useRouter} from "next/router";
 import {MarketplaceListingsContainer} from "packages/shared/components/ListingSection";
+import {useEffect, useRef} from "react";
 
-export default function NFTS({sort, q, nfts, error}) {
-	const posts = JSON.parse(nfts);
-	const nft_posts = posts.docs;
+const InfinitySpinner = ({fetchNext, isFetching}) => {
+	const ref = useRef(null);
 
-	// useInfinityQuery
-	const {data, isLoading, isError, isFetching, fetchNextPage, hasNextPage} =
-		TreatCore.useInfiniteQuery(
-			["marketplace", "activity"],
-			async ({pageParam = 1}) => {
-				const res = await axios.get(
-					`${apiEndpoint}/marketplace/activity?page=${pageParam}${
-						"&sort=" + sort
-					}${q ? "&q=" + q : ""}`
-				);
-				const {data} = res.data;
-				data.docs = data.docs.map((post) =>
-					legacy_nft_to_new({
-						...post,
-						price: post.price,
-						_id: post._id,
-						creator: {
-							...post.creator,
-							profile: post.creator_profile,
-						},
-						seller: {
-							address: post.creator.address,
-							profile_pic: post.creator_profile.profile_pic,
-							username: post.creator.username,
-							display_name: post.creator.display_name,
-							event_id: post._id,
-						},
-					})
-				);
-				return data;
+	useEffect(() => {
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (entry.isIntersecting) {
+					fetchNext();
+				}
 			},
 			{
-				getNextPageParam: (lastPage) => {
-					if (lastPage.hasNextPage) {
-						return lastPage.nextPage;
-					}
-					return undefined;
-				},
-				select: (data) => {
-					return {
-						pages: data.pages.map((page) => page.docs),
-						pageParams: data.pages.map((page) => page.page),
-					};
-				},
-				placeholderData: {
-					pages: [posts],
-					pageParams: [1],
-				},
+				root: null,
+				rootMargin: "0px",
+				threshold: 1.0,
 			}
 		);
 
-	const {
-		gotoPage,
-		performSearchWithNewParams,
-		prevPage,
-		nextPage,
-		searchText,
-		sortBy,
-		setSort,
-		setSearchText,
-	} = usePaginatedPage(posts, sort, q);
+		if (ref.current) {
+			observer.observe(ref.current);
+		}
 
-	console.log({data});
+		return () => {
+			if (ref.current) {
+				observer.unobserve(ref.current);
+			}
+		};
+	}, [ref, fetchNext]);
+
+	return (
+		<Container
+			ref={ref}
+			className="flex justify-center py-4"
+		>
+			<Text>
+				<Spinner />
+			</Text>
+		</Container>
+	);
+};
+
+export default function NFTS({nfts, error}) {
+	const posts = JSON.parse(nfts);
+	const router = useRouter();
+	const {sort: sortQuery, tags: tagQuery, tab: marketQuery} = router.query;
+
+	// useInfinityQuery
+	const {
+		data,
+		isLoading,
+		isError,
+		isFetching,
+		fetchNextPage,
+		hasNextPage,
+		refetch,
+	} = TreatCore.useInfiniteQuery(
+		["marketplace", "activity"],
+		async ({pageParam = 1}) => {
+			const res = await axios.get(
+				`${apiEndpoint}/marketplace/listings?page=${pageParam}${
+					"&sort=" + sortQuery
+				}${tagQuery ? "&tags=" + tagQuery : ""}${
+					marketQuery ? "&market=" + marketQuery : ""
+				}`
+			);
+			const {data} = res.data;
+
+			data.docs = data.docs.map((post) =>
+				legacy_nft_to_new({
+					...post,
+					price: post.price,
+					_id: post._id,
+					creator: {
+						...post.creator,
+						profile: post.creator.profile,
+					},
+					seller: {
+						address: post.creator.address,
+						profile_pic: post.creator.profile.profile_pic,
+						username: post.creator.username,
+						display_name: post.creator.display_name,
+						event_id: post._id,
+					},
+				})
+			);
+			return data;
+		},
+		{
+			getNextPageParam: (lastPage) =>
+				lastPage.hasNextPage ? lastPage.nextPage : null,
+			select: (data) => {
+				return {
+					pages: data.pages.map((page) => page.docs),
+					pageParams: data.pages.map((page) => page.page),
+				};
+			},
+			placeholderData: {
+				pages: [posts],
+				pageParams: [1],
+			},
+		}
+	);
+
+	useEffect(() => {
+		refetch();
+	}, [sortQuery, tagQuery, marketQuery]);
 
 	return (
 		<ApplicationLayout>
@@ -89,14 +129,17 @@ export default function NFTS({sort, q, nfts, error}) {
 				<TagsFilter />
 
 				<Container className="relative flex w-full h-full gap-8">
-					<Container className="flex-1 w-full">
+					<Container
+						css={{
+							opacity: isLoading ? 0.5 : 1,
+						}}
+						className="flex-1 w-full"
+					>
 						{!error && (
 							<MarketplaceListingResults
 								nft_posts={data?.pages?.flat() ?? []}
-								posts={posts}
-								gotoPage={gotoPage}
-								nextPage={nextPage}
-								prevPage={prevPage}
+								fetchNext={fetchNextPage}
+								hasNextPage={hasNextPage}
 							/>
 						)}
 						{error && (
@@ -131,11 +174,11 @@ export const getServerSideProps = async (ctx) => {
 				_id: post._id,
 				creator: {
 					...post.creator,
-					profile: post.creator_profile,
+					profile: post.creator.profile,
 				},
 				seller: {
 					address: post.creator.address,
-					profile_pic: post.creator_profile.profile_pic,
+					profile_pic: post.creator.profile.profile_pic,
 					username: post.creator.username,
 					display_name: post.creator.display_name,
 					event_id: post._id,
@@ -163,13 +206,7 @@ export const getServerSideProps = async (ctx) => {
 	}
 };
 
-function MarketplaceListingResults({
-	nft_posts,
-	gotoPage,
-	nextPage,
-	prevPage,
-	posts,
-}) {
+function MarketplaceListingResults({nft_posts, fetchNext, hasNextPage}) {
 	return (
 		<Container className="flex flex-col gap-8">
 			<Container className="flex flex-col gap-8 overflow-x-hidden">
@@ -193,12 +230,11 @@ function MarketplaceListingResults({
 					)}
 				</MarketplaceListingsContainer>
 			</Container>
-			{nft_posts.length > 0 && (
-				<Container className="mt-2 flex justify-center">
-					<Text>
-						<Spinner />
-					</Text>
-				</Container>
+			{hasNextPage && (
+				<InfinitySpinner
+					isFetching={false}
+					fetchNext={fetchNext}
+				/>
 			)}
 		</Container>
 	);

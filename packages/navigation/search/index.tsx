@@ -172,12 +172,12 @@ function SearchBar() {
 					className="flex flex-col w-full"
 				>
 					<SearchModal.SearchInput />
-					<Container className="flex flex-col gap-4 ">
+					<>
 						<SearchModal.ResultSection heading={formik.values.entity}>
 							{!isLoading && !isError && (
 								<>
 									{formik.values.entity === "people" && (
-										<>
+										<Container className="flex-shrink-0">
 											{data[formik.values.entity].map((item) => (
 												<CreatorCard
 													key={item._id}
@@ -185,12 +185,12 @@ function SearchBar() {
 													variant={"compact"}
 												/>
 											))}
-										</>
+										</Container>
 									)}
 								</>
 							)}
 						</SearchModal.ResultSection>
-					</Container>
+					</>
 				</form>
 			</FormikProvider>
 		</div>

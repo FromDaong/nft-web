@@ -3,5 +3,5 @@ import {styled} from "@styles/theme";
 import {ComponentBasicProps} from "core/TreatCore";
 
 export default function ApplicationLayout({children}: ComponentBasicProps) {
-	return <Container className="flex flex-col flex-1">{children}</Container>;
+	return <Container className="flex flex-col">{children}</Container>;
 }

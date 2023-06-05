@@ -6,7 +6,7 @@ import Image from "next/image";
 import {useAccount} from "wagmi";
 
 import {styled} from "@styles/theme";
-import {ChevronDownIcon, PlusCircleIcon} from "@heroicons/react/outline";
+import {ChevronDownIcon} from "@heroicons/react/outline";
 import {Container} from "@packages/shared/components/Container";
 import MobileNavbarDropdown from "./components/MobileNavbarDropdown";
 import {Button} from "@packages/shared/components/Button";
@@ -18,20 +18,8 @@ import ManageUserDropdown from "./components/NavbarUser";
 import {useDisclosure} from "@packages/hooks";
 import NotificationsTray from "@components/Notifications/NotificationsTray";
 import TransactionHistoryTray from "@components/Notifications/TransactionHistoryTray";
-import RectangleStack from "@packages/shared/icons/RectangleStack";
-import {
-	CoinsIcon,
-	History,
-	PlusIcon,
-	Search,
-	ShoppingBag,
-	UserIcon,
-} from "lucide-react";
-import {
-	BoldLink,
-	SmallText,
-	Text,
-} from "@packages/shared/components/Typography/Text";
+import {History, PlusIcon, ShoppingBag} from "lucide-react";
+import {BoldLink} from "@packages/shared/components/Typography/Text";
 import SearchModal from "./search";
 import {
 	DropdownMenu,
@@ -39,16 +27,10 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
-import {ShoppingBagIcon} from "@heroicons/react/solid";
 import {StackIcon} from "@radix-ui/react-icons";
 import {Portal, Transition} from "@headlessui/react";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import {useRouter} from "next/router";
-import {Formik, FormikProvider, useFormik} from "formik";
-import TreatCore from "core/TreatCore";
-import {apiEndpoint} from "@utils/index";
-import axios from "axios";
-import CreatorCard from "@packages/feed/components/CreatorCard";
 
 const Nav = styled("nav", {
 	zIndex: 30,

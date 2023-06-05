@@ -149,7 +149,7 @@ const CompactCreatorCard = (props: SuggestedCreatorData) => {
 							<UserAvatar
 								profile_pic={profilePicUrl}
 								username={props.username.replaceAll(" ", "").trim()}
-								size={48}
+								size={32}
 							/>
 						</Container>
 						<Container className="flex flex-col w-full">

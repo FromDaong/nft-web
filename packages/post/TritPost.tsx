@@ -32,7 +32,7 @@ export const FrostyBackgroundContainer = styled(Container, {
 // T-84 Sold out status should come from the subgraph
 export const TritPost = (props: TritPostProps) => {
 	const {ref} = useInView();
-	const {liked, likeNFT, isMine, isProtected, loadingSigner, remainingNfts} =
+	const {liked, likeNFT, isMine, isProtected, loadingSigner} =
 		useTritNFTUtils(props);
 
 	const soldOut = props.collection?.minted === props.max_supply;
@@ -50,7 +50,7 @@ export const TritPost = (props: TritPostProps) => {
 					}}
 				>
 					<Container className="relative flex w-full overflow-hidden aspect-square">
-						{!loadingSigner && remainingNfts === 0 && !props.hideSoldOut && (
+						{!loadingSigner && 0 === 0 && !props.hideSoldOut && (
 							<Text
 								css={{
 									color: "$surface",

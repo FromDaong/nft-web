@@ -4,6 +4,12 @@ import {ethers} from "ethers";
 import {NextApiRequest, NextApiResponse} from "next";
 import {returnWithError, returnWithSuccess} from "server/helpers/core/utils";
 import {MongoModelNFT} from "server/helpers/models";
+import {request, gql} from "graphql-request";
+
+const RESALE_GRAPHQL_ENDPOINT =
+	"https://api.thegraph.com/subgraphs/name/treatdaodev/treatdao";
+const BASE_MARKET_GRAPHQL_ENDPOINT =
+	"https://api.thegraph.com/subgraphs/name/0x6e6f6c61/treat";
 
 const RPC_NODE_URL = process.env.RPC_NODE_URL;
 
@@ -33,8 +39,8 @@ export default async function handler(
 		recent: {
 			created_at: -1,
 		},
-		popular: {
-			views: -1,
+		oldest: {
+			created_at: 1,
 		},
 		expensive: {
 			price: -1,
@@ -95,12 +101,14 @@ export default async function handler(
 	}
 	if (config.market === "melon") {
 		lookupConfig.melon_nft = true;
+		delete lookupConfig.totm_nft;
 	}
 	if (config.market === "totm") {
 		lookupConfig.totm_nft = true;
+		delete lookupConfig.melon_nft;
 	}
 
-	if (config.market === "resale") {
+	if (config.market === "resale" || config.market === "verified") {
 		delete lookupConfig.melon_nft;
 		delete lookupConfig.totm_nft;
 	}
@@ -108,11 +116,9 @@ export default async function handler(
 	// @ts-ignore
 	const nfts = await MongoModelNFT.paginate(lookupConfig, {
 		page: config.page,
-		limit: 20,
+		limit: 24,
 		sort: config.sort,
 	});
-
-	console.log({nfts});
 
 	nfts.docs = await MongoModelNFT.populate(nfts.docs, {
 		path: "creator",

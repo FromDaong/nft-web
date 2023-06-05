@@ -58,9 +58,9 @@ export default function SweetshopTabs() {
 					</RadioGroup.Option>
 					<RadioGroup.Option
 						as={Button}
-						appearance={selectedTab === "treat" ? "action" : "subtle"}
+						appearance={selectedTab === "totm" ? "action" : "subtle"}
 						className="flex-shrink-0"
-						value="treat"
+						value="totm"
 					>
 						Treat of The Month
 					</RadioGroup.Option>

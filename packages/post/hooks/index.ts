@@ -18,15 +18,7 @@ export const useTritNFTUtils = (nft: any) => {
 	const [loadingSigner, setLoadingSigner] = useState(false);
 	const [liked, setLikedNFT] = useState<undefined | boolean>(false);
 	const [isProtected, setIsProtected] = useState(nft.protected);
-	const listNFTModalProps = useDisclosure();
-	const cancelOrderModalProps = useDisclosure();
-	const transferNFTModalProps = useDisclosure();
-	const buyResaleNFTModalProps = useDisclosure();
 	const [likedBy, setLikedBy] = useState(nft.likedBy ?? []);
-	const maxNftSupply = useWagmiGetNFTMaxSupply(nft.id);
-	const mintedNfts = useWagmiGetNFTTotalSupply(nft.id);
-	const remainingNfts = maxNftSupply - mintedNfts;
-
 	const ref = useRef(null);
 
 	useEffect(() => {
@@ -82,17 +74,12 @@ export const useTritNFTUtils = (nft: any) => {
 	return {
 		liked,
 		likeNFT,
-		listNFTModalProps,
-		cancelOrderModalProps,
-		transferNFTModalProps,
-		buyResaleNFTModalProps,
 		isMine: isOwned,
 		balance,
 		toggleImageProtection,
 		getOpenOrdersForSeller,
 		isProtected,
 		likedBy,
-		remainingNfts,
 		loadingSigner,
 	};
 };

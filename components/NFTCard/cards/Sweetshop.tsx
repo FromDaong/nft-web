@@ -4,8 +4,9 @@ import {TritPostProps} from "@packages/post/types";
 import {NFTCard} from "..";
 import Link from "next/link";
 import {useRouter} from "next/router";
+import {memo} from "react";
 
-export default function SweetshopNFT(props: TritPostProps) {
+function SweetshopNFT(props: TritPostProps) {
 	const {liked, likeNFT, isMine, isProtected} = useTritNFTUtils(props);
 
 	const router = useRouter();
@@ -28,7 +29,7 @@ export default function SweetshopNFT(props: TritPostProps) {
 						/>
 
 						<Container
-							className="absolute flex flex-col justify-between w-full p-2 top-2 left-2 h-fit"
+							className="absolute flex flex-col justify-between w-full top-0 left-0 p-2 h-fit"
 							css={{zIndex: 10}}
 						>
 							<Container className="flex items-center justify-between">
@@ -62,3 +63,5 @@ export default function SweetshopNFT(props: TritPostProps) {
 		</Link>
 	);
 }
+
+export default memo(SweetshopNFT);
