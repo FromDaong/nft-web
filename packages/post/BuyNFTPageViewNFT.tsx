@@ -164,6 +164,10 @@ export const useGetResaleListings = (nftId: number) => {
 		return [];
 	}, [sellersData]);
 
+	console.log({
+		resaleOrders,
+	});
+
 	return {
 		isLoading: sellersIsLoading || isLoading,
 		resaleListings,
@@ -227,9 +231,9 @@ const NFTPresentationComponent = (props: {
 				/>
 			)}
 			<Container className="flex flex-col gap-12 py-8 lg:gap-16 lg:flex">
-				<Container className="flex flex-col gap-4">
+				<Container className="flex flex-col gap-8">
 					<Container
-						className={"flex md:flex-col flex-col-reverse gap-6 md:gap-1"}
+						className={"flex md:flex-col flex-col-reverse gap-6 md:gap-1 pb-4"}
 					>
 						<Heading
 							size={"sm"}
@@ -342,16 +346,7 @@ const NFTPresentationComponent = (props: {
 									key={tag}
 								>
 									<a>
-										<Container
-											className="px-3 py-1 rounded-full"
-											css={{
-												backgroundColor: "$surfaceOnSurface",
-											}}
-										>
-											<Text>
-												<ImportantText>{tag}</ImportantText>
-											</Text>
-										</Container>
+										<Tag>{tag}</Tag>
 									</a>
 								</Link>
 							))}

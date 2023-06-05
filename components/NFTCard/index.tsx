@@ -19,14 +19,7 @@ import {NFTCardDropdownMenu} from "./dropdowns";
 // T-84 Sold out status should come from the subgraph
 export const NFTCard = (props: {children: ReactNode; _id: string}) => {
 	return (
-		<Container
-			className={`flex flex-col gap-2 pb-4 w-full overflow-hidden rounded-xl shadow-sm border`}
-			css={{
-				borderColor: "$subtleBorder",
-				borderRadius: "12px",
-				backgroundColor: "$surfaceOnSurface",
-			}}
-		>
+		<Container className={`flex flex-col gap-2 pb-4 w-full`}>
 			{props.children}
 		</Container>
 	);

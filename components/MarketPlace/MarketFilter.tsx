@@ -26,10 +26,10 @@ export default function SweetshopTabs() {
 			}}
 			className="sticky top-0 z-50 border-b overflow-x-auto shadow"
 		>
-			<Container className="container mx-auto">
+			<Container className="container mx-auto ">
 				<RadioGroup
 					onChange={(selected) => setSelectedTab(selected)}
-					className="flex items-center w-full max-w-full gap-2 py-2 overflow-x-auto flex-nowrap"
+					className="flex items-center w-full max-w-full gap-2 py-2 overflow-x-auto flex-nowrap px-2"
 					defaultValue="verified"
 				>
 					<RadioGroup.Option

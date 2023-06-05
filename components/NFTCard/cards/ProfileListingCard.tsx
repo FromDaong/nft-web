@@ -27,16 +27,7 @@ export default function CreatorProfileNFT(props: TritPostProps) {
 					hideSeller={props.hideSeller}
 					count={props.count}
 					Price={NFTCard.Price}
-				>
-					<NFTCard.Actions>
-						<Button
-							size={"sm"}
-							appearance={"link"}
-						>
-							<DotsHorizontalIcon className="w-5 h-5" />
-						</Button>
-					</NFTCard.Actions>
-				</NFTCard.Detail>
+				/>
 				{soldOut && <NFTCard.SoldOut />}
 			</Container>
 		</NFTCard>

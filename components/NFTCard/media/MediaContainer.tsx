@@ -8,27 +8,25 @@ export const MediaContainer = (props: {
 	_id: string;
 }) => {
 	return (
-		<Link href={`/post/nft/${props._id}`}>
-			<a className="relative flex flex-col w-full h-full bg-zinc-900">
-				<img
-					alt={props.caption}
-					src={`/api/v3/image/nft/${props._id}/${
-						props.isProtected ? "blur" : "thumbnail"
-					}`}
-					className="absolute top-0 left-0 object-cover w-full h-full"
-					style={{
-						zIndex: 2,
-					}}
-				/>
-				<Container
-					className="relative flex items-center justify-center w-full h-full"
-					style={{
-						zIndex: 1,
-					}}
-				>
-					<Spinner color={"$white"} />
-				</Container>
-			</a>
-		</Link>
+		<div className="relative flex flex-col w-full h-full bg-zinc-900 rounded-lg">
+			<img
+				alt={props.caption}
+				src={`/api/v3/image/nft/${props._id}/${
+					props.isProtected ? "blur" : "thumbnail"
+				}`}
+				className="absolute top-0 left-0 object-cover w-full h-full rounded-lg"
+				style={{
+					zIndex: 2,
+				}}
+			/>
+			<Container
+				className="relative flex items-center justify-center w-full h-full"
+				style={{
+					zIndex: 1,
+				}}
+			>
+				<Spinner color={"$white"} />
+			</Container>
+		</div>
 	);
 };

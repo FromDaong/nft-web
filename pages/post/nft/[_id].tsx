@@ -38,7 +38,7 @@ import {useDisclosure} from "@packages/hooks";
 import {SparklesIcon} from "@heroicons/react/solid";
 import FullscreenImagePreviewModal from "@packages/modals/ImagePreview";
 import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
-import {ExternalLinkIcon} from "lucide-react";
+import {ExternalLinkIcon, InfoIcon} from "lucide-react";
 import Spinner from "@packages/shared/icons/Spinner";
 import {Provider, gql, useQuery} from "urql";
 import {treatOldGraphClient} from "@lib/graphClients";
@@ -241,66 +241,6 @@ export default function NFT(props: {
 	);
 }
 
-export const getServerSideProps = async (context) => {
-	await pagePropsConnectMongoDB();
-	const {_id} = context.params;
-	const guard = Guard.getInstance();
-
-	const nft = await MongoModelNFT.findById(_id).populate("creator").exec();
-
-	if (!guard.exists(nft)) {
-		return {
-			notFound: true,
-		};
-	}
-
-	const creator = await MongoModelNFT.populate(nft.creator, {
-		path: "profile",
-		model: MongoModelProfile,
-	});
-
-	await MongoModelNFT.findByIdAndUpdate(_id, {
-		$push: {
-			views: "temporary",
-		},
-	});
-
-	nft.creator = creator;
-	let description = nft.description;
-	try {
-		description = JSON.parse(nft.description ?? "{}");
-	} catch (e) {
-		// Create tiptap object with nft.description as one paragraph
-		description = {
-			type: "doc",
-			content: [
-				{
-					type: "paragraph",
-					content: [
-						{
-							type: "text",
-							text: nft.description,
-						},
-					],
-				},
-			],
-		};
-	}
-
-	const returnObj = {
-		id: nft.id,
-		nft,
-		description,
-	};
-
-	return {
-		props: {
-			data: JSON.stringify(returnObj),
-			isResale: false,
-		},
-	};
-};
-
 function ImagePreviewSection({
 	remainingNfts,
 	mintedNfts,
@@ -385,13 +325,22 @@ function ImagePreviewSection({
 							/>
 						)}
 						{mintedNfts === maxNftSupply && (
-							<Button
-								appearance={"disabled"}
-								disabled
-								css={{color: "$red10"}}
-							>
-								Sold out
-							</Button>
+							<Container className="flex gap-4 items-center">
+								<Button
+									appearance={"disabled"}
+									disabled
+									css={{color: "$red10", backgroundColor: "$red1"}}
+								>
+									Collect now
+								</Button>
+								<Text
+									css={{color: "$red11"}}
+									className="flex gap-2"
+								>
+									Sold out
+									<InfoIcon className="w-5 h-5" />
+								</Text>
+							</Container>
 						)}
 					</Container>
 				</Container>
@@ -439,7 +388,9 @@ function ResaleListings({nft}) {
 										appearance={"action"}
 										className="h-fit self-start"
 									>
-										Buy for ${listing.price.toNumber()}
+										Buy for{" "}
+										{Web3.utils.fromWei(listing.price.toString()).toString()}{" "}
+										BNB
 									</Button>
 								</Container>
 							))}
@@ -591,4 +542,64 @@ const TransactionsPresentation = ({nft}) => {
 			))}
 		</Container>
 	);
+};
+
+export const getServerSideProps = async (context) => {
+	await pagePropsConnectMongoDB();
+	const {_id} = context.params;
+	const guard = Guard.getInstance();
+
+	const nft = await MongoModelNFT.findById(_id).populate("creator").exec();
+
+	if (!guard.exists(nft)) {
+		return {
+			notFound: true,
+		};
+	}
+
+	const creator = await MongoModelNFT.populate(nft.creator, {
+		path: "profile",
+		model: MongoModelProfile,
+	});
+
+	await MongoModelNFT.findByIdAndUpdate(_id, {
+		$push: {
+			views: "temporary",
+		},
+	});
+
+	nft.creator = creator;
+	let description = nft.description;
+	try {
+		description = JSON.parse(nft.description ?? "{}");
+	} catch (e) {
+		// Create tiptap object with nft.description as one paragraph
+		description = {
+			type: "doc",
+			content: [
+				{
+					type: "paragraph",
+					content: [
+						{
+							type: "text",
+							text: nft.description,
+						},
+					],
+				},
+			],
+		};
+	}
+
+	const returnObj = {
+		id: nft.id,
+		nft,
+		description,
+	};
+
+	return {
+		props: {
+			data: JSON.stringify(returnObj),
+			isResale: false,
+		},
+	};
 };

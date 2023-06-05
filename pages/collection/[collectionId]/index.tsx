@@ -48,7 +48,7 @@ export default function CollectionPage() {
 		return data.data.data;
 	});
 
-	const isOwner = address?.toLowerCase() === collection?.creator.address;
+	const isOwner = address?.toLowerCase() === collection?.creator?.address;
 	console.log({nfts});
 	return (
 		<>
@@ -72,17 +72,17 @@ export default function CollectionPage() {
 						<Container className="flex items-center gap-4 p-2">
 							<UserAvatar
 								size={40}
-								username={collection.creator.username}
-								profile_pic={collection.creator.profile.profile_pic}
+								username={collection.creator?.username}
+								profile_pic={collection.creator?.profile.profile_pic}
 							/>
-							<Link href={`/${collection.creator.username}`}>
+							<Link href={`/${collection.creator?.username}`}>
 								<a className="flex flex-col">
 									<Text css={{color: "$textContrast"}}>
 										<ImportantText>
-											{collection.creator.profile?.display_name}{" "}
+											{collection.creator?.profile?.display_name}{" "}
 										</ImportantText>
 									</Text>
-									<Text>@{collection.creator.username}</Text>
+									<Text>@{collection.creator?.username}</Text>
 								</a>
 							</Link>
 						</Container>
@@ -121,7 +121,7 @@ export default function CollectionPage() {
 								creator={{
 									...nft.creator,
 									profile: {
-										_id: nft.creator.profile,
+										_id: nft.creator?.profile,
 									},
 								}}
 								name={nft.name}

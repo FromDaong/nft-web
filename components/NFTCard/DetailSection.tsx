@@ -21,10 +21,12 @@ export const DetailSection = (props) => {
 					</Container>
 				)}
 				{props.Price && (
-					<props.Price
-						price={props.price.value}
-						currency={props.price.currency}
-					/>
+					<Container className="mt-2">
+						<props.Price
+							price={props.price.value}
+							currency={props.price.currency}
+						/>
+					</Container>
 				)}
 			</Container>
 		</Container>

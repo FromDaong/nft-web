@@ -7,6 +7,7 @@ export default function PortfolioPublicListingCard(props: TritPostProps) {
 	const {liked, likeNFT, isMine, isProtected} = useTritNFTUtils(props);
 
 	const soldOut = props.collection?.minted === props.max_supply;
+	console.log({isProtected});
 	return (
 		<NFTCard _id={props._id}>
 			<Container className="relative w-full overflow-hidden aspect-square">
@@ -28,7 +29,7 @@ export default function PortfolioPublicListingCard(props: TritPostProps) {
 					</Container>
 				</Container>
 			</Container>
-			<Container className="flex flex-col w-full gap-2 px-4">
+			<Container className="flex flex-col w-full gap-2 mt-2">
 				<NFTCard.Detail
 					{...props}
 					isMine={isMine}

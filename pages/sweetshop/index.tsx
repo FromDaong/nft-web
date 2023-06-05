@@ -3,11 +3,12 @@ import TagsFilter from "@components/MarketPlace/TagsFilter";
 import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
 import {SEOHead} from "@packages/seo/page";
 import {Container} from "@packages/shared/components/Container";
-import Pagination from "@packages/shared/components/Pagination";
 import {usePaginatedPage} from "@packages/shared/components/Pagination/lib";
-import {Heading} from "@packages/shared/components/Typography/Headings";
+import {Heading, Text} from "@packages/shared/components/Typography/Headings";
+import Spinner from "@packages/shared/icons/Spinner";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
+import TreatCore from "core/TreatCore";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import {MarketplaceListingsContainer} from "packages/shared/components/ListingSection";
@@ -15,6 +16,57 @@ import {MarketplaceListingsContainer} from "packages/shared/components/ListingSe
 export default function NFTS({sort, q, nfts, error}) {
 	const posts = JSON.parse(nfts);
 	const nft_posts = posts.docs;
+
+	// useInfinityQuery
+	const {data, isLoading, isError, isFetching, fetchNextPage, hasNextPage} =
+		TreatCore.useInfiniteQuery(
+			["marketplace", "activity"],
+			async ({pageParam = 1}) => {
+				const res = await axios.get(
+					`${apiEndpoint}/marketplace/activity?page=${pageParam}${
+						"&sort=" + sort
+					}${q ? "&q=" + q : ""}`
+				);
+				const {data} = res.data;
+				data.docs = data.docs.map((post) =>
+					legacy_nft_to_new({
+						...post,
+						price: post.price,
+						_id: post._id,
+						creator: {
+							...post.creator,
+							profile: post.creator_profile,
+						},
+						seller: {
+							address: post.creator.address,
+							profile_pic: post.creator_profile.profile_pic,
+							username: post.creator.username,
+							display_name: post.creator.display_name,
+							event_id: post._id,
+						},
+					})
+				);
+				return data;
+			},
+			{
+				getNextPageParam: (lastPage) => {
+					if (lastPage.hasNextPage) {
+						return lastPage.nextPage;
+					}
+					return undefined;
+				},
+				select: (data) => {
+					return {
+						pages: data.pages.map((page) => page.docs),
+						pageParams: data.pages.map((page) => page.page),
+					};
+				},
+				placeholderData: {
+					pages: [posts],
+					pageParams: [1],
+				},
+			}
+		);
 
 	const {
 		gotoPage,
@@ -27,6 +79,8 @@ export default function NFTS({sort, q, nfts, error}) {
 		setSearchText,
 	} = usePaginatedPage(posts, sort, q);
 
+	console.log({data});
+
 	return (
 		<ApplicationLayout>
 			<SweetshopTabs />
@@ -38,7 +92,7 @@ export default function NFTS({sort, q, nfts, error}) {
 					<Container className="flex-1 w-full">
 						{!error && (
 							<MarketplaceListingResults
-								nft_posts={nft_posts}
+								nft_posts={data?.pages?.flat() ?? []}
 								posts={posts}
 								gotoPage={gotoPage}
 								nextPage={nextPage}
@@ -139,6 +193,13 @@ function MarketplaceListingResults({
 					)}
 				</MarketplaceListingsContainer>
 			</Container>
+			{nft_posts.length > 0 && (
+				<Container className="mt-2 flex justify-center">
+					<Text>
+						<Spinner />
+					</Text>
+				</Container>
+			)}
 		</Container>
 	);
 }
