@@ -12,7 +12,6 @@ import {useTheme} from "./hooks";
 const Div = styled("div", {
 	height: "100%",
 	width: "100%",
-	backgroundColor: "$surface",
 	color: "$text",
 });
 
@@ -63,8 +62,11 @@ export default function ThemeProvider({children}: {children: ReactNode}) {
 	useEffect(() => {
 		if (typeof window !== "undefined") {
 			try {
-				const htm = document.getElementsByTagName("html")[0];
+				const htm = document.getElementsByTagName("body")[0];
 				htm.className = currentTheme;
+				// set class to theme-name
+				document.body.classList.add(`theme-${currentTheme}`);
+
 				localStorage.setItem("theme", currentTheme);
 			} catch (err) {
 				console.error("[x] Error reading theme from local");
@@ -76,7 +78,7 @@ export default function ThemeProvider({children}: {children: ReactNode}) {
 		<ApplicationTheme.Provider
 			value={{theme, themes: ["dark", "light", "pink"], updateTheme}}
 		>
-			<Div>{children}</Div>
+			<Div className="theme-light:bg-gray1">{children}</Div>
 		</ApplicationTheme.Provider>
 	);
 }

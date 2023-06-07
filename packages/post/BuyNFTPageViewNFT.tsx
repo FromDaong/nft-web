@@ -369,7 +369,9 @@ export function Tag({children}) {
 			}}
 		>
 			<SmallText>
-				<ImportantText>{children ?? name}</ImportantText>
+				<ImportantText className="pink:text-gray-700 dark:text-gray-200">
+					{children ?? name}
+				</ImportantText>
 			</SmallText>
 		</Container>
 	);

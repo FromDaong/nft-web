@@ -209,6 +209,7 @@
 		"swr": "^0.3.11",
 		"tailwind-merge": "^1.12.0",
 		"tailwindcss-radix": "^2.6.1",
+		"tw-colors": "^1.2.6",
 		"uploadcare-widget-tab-effects": "^1.6.0",
 		"urql": "^4.0.3",
 		"use-next-blurhash": "^1.0.5",

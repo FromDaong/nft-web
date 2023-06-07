@@ -7,29 +7,45 @@ export default function PortfolioPublicListingCard(props: TritPostProps) {
 	const {liked, likeNFT, isMine, isProtected} = useTritNFTUtils(props);
 
 	const soldOut = props.collection?.minted === props.max_supply;
-	console.log({isProtected});
+	const editions = new Array(+props.count).fill(0).map((_, i) => i + 1);
 	return (
 		<NFTCard _id={props._id}>
-			<Container className="relative w-full overflow-hidden aspect-square">
-				<NFTCard.Media
-					isProtected={isProtected && !isMine}
-					caption={props.text}
-					_id={props._id}
-				/>
+			<Container className="relative shadow">
 				<Container
-					className="flex flex-col justify-between w-full h-full p-2"
-					css={{zIndex: 10}}
+					className="relative"
+					css={{zIndex: 1}}
 				>
-					<Container className="flex items-center justify-between">
-						<Container>{isProtected && <NFTCard.Protected />}</Container>
-						<NFTCard.Creator
-							avatar={props.creator.avatar}
-							username={props.creator.username}
-						/>
-					</Container>
+					<NFTCard.RenderMedia
+						isProtected={isProtected}
+						isMine={isMine}
+						text={props.text}
+						_id={props._id}
+					/>
 				</Container>
+				{editions.slice(0, 3).map((_, i) => (
+					<Container
+						key={i}
+						className="absolute rounded-xl top-0 right-0 border shadow"
+						css={{
+							width: `${100 - (i + 1) * 10}%`,
+							height: "100%",
+							top: `${(i + 1) * 1.25}%`,
+							borderColor: "$border",
+							left: "50%",
+							transform: "translateX(-50%)",
+							zIndex: -i,
+							backgroundColor: "$surface",
+						}}
+					/>
+				))}
 			</Container>
-			<Container className="flex flex-col w-full gap-2 mt-2">
+
+			<Container
+				className={`flex flex-col w-full gap-2 mt-4`}
+				css={{
+					marginTop: "1rem !important",
+				}}
+			>
 				<NFTCard.Detail
 					{...props}
 					isMine={isMine}
@@ -43,7 +59,6 @@ export default function PortfolioPublicListingCard(props: TritPostProps) {
 					count={props.count}
 					soldOut={soldOut}
 				/>
-				<NFTCard.Owned balance={props.count} />
 			</Container>
 		</NFTCard>
 	);
