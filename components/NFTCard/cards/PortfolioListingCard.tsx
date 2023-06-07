@@ -11,12 +11,13 @@ export default function PortfolioPublicListingCard(props: TritPostProps) {
 
 	const soldOut = props.collection?.minted === props.max_supply;
 	const editions = new Array(+props.count).fill(0).map((_, i) => i + 1);
+	console.log(editions);
 	return (
 		<NFTCard _id={props._id}>
 			<Container className="relative">
 				<Container
 					className="relative shadow cursor-pointer rounded-xl overflow-clip group"
-					css={{zIndex: 1}}
+					css={{zIndex: 4}}
 				>
 					<NFTCard.RenderMedia
 						isProtected={isProtected}
@@ -25,7 +26,7 @@ export default function PortfolioPublicListingCard(props: TritPostProps) {
 						_id={props._id}
 					/>
 					<Container
-						className="absolute top-0 left-0 flex-col items-center justify-end hidden w-full h-full gap-4 p-4 pb-8 transition-opacity duration-300 group-hover:flex"
+						className="absolute top-0 left-0 flex-col items-center justify-end hidden w-full h-full gap-4 p-4 pb-8 text-center transition-opacity duration-300 group-hover:flex"
 						css={{
 							zIndex: 10,
 							background:
@@ -55,11 +56,11 @@ export default function PortfolioPublicListingCard(props: TritPostProps) {
 						css={{
 							width: `${100 - (i + 1) * 10}%`,
 							height: "100%",
-							top: `${(i + 1) * 1.25}%`,
+							top: `${(i + 1) * 1.5}%`,
 							borderColor: "$border",
 							left: "50%",
 							transform: "translateX(-50%)",
-							zIndex: -i,
+							zIndex: 3 - i,
 							backgroundColor: "$surface",
 						}}
 					/>

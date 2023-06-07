@@ -13,6 +13,7 @@ const Div = styled("div", {
 	height: "100%",
 	width: "100%",
 	color: "$text",
+	background: "$surface",
 });
 
 export const ApplicationTheme = createContext<{
