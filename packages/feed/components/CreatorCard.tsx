@@ -71,7 +71,7 @@ const DefaultCreatorCard = (props: SuggestedCreatorData) => {
 		>
 			<Link href={`/${props.username}`}>
 				<a>
-					<Container className="flex gap-2 items-start px-2 py-4">
+					<Container className="flex items-start gap-2 px-2 py-4">
 						<Container>
 							<UserAvatar
 								profile_pic={profilePicUrl}
@@ -80,7 +80,7 @@ const DefaultCreatorCard = (props: SuggestedCreatorData) => {
 							/>
 						</Container>
 						<Container className="flex flex-col w-full">
-							<Container className="flex justify-between items-center gap-4 w-full">
+							<Container className="flex items-center justify-between w-full gap-4">
 								<Container>
 									<Heading size={"xss"}>{props.display_name?.trim()}</Heading>
 									<Username
@@ -144,7 +144,7 @@ const CompactCreatorCard = (props: SuggestedCreatorData) => {
 		>
 			<Link href={`/${props.username}`}>
 				<a>
-					<Container className="flex gap-2 items-start px-2 py-4">
+					<Container className="flex items-start gap-2 p-2">
 						<Container>
 							<UserAvatar
 								profile_pic={profilePicUrl}
@@ -153,14 +153,14 @@ const CompactCreatorCard = (props: SuggestedCreatorData) => {
 							/>
 						</Container>
 						<Container className="flex flex-col w-full">
-							<Container className="flex justify-between items-center gap-4 w-full">
+							<Container className="flex items-center justify-between w-full gap-4">
 								<Container>
 									<Heading size={"xss"}>{props.display_name?.trim()}</Heading>
 									<Username
 										username={props.username.replaceAll(" ", "").trim()}
 										verified={true}
 									/>
-									<Text className="mt-2 flex gap-2 items-center">
+									<Text className="flex items-center gap-2 mt-2">
 										{isFollowing && (
 											<>
 												<UserIcon className="w-4 h-4" /> Following

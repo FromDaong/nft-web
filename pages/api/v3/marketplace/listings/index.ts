@@ -79,25 +79,6 @@ export default async function handler(
 	if (!["melon", "totm", "resale", "verified"].includes(config.market))
 		return returnWithError("Invalid market", 400, res);
 
-	if (market === "resale") {
-		const {marketItems} = await request(
-			RESALE_GRAPHQL_ENDPOINT,
-			markets.resale,
-			{
-				sort: graphqlSort.resale.includes(sort as string) ? sort : "cost",
-				// sort: "id" as "totalSales" | "totalSupply" | "id",
-				skip: (config.page - 1) * 24,
-				first: 24,
-			}
-		);
-		config.ids = marketItems.map((m) => m.nft);
-		config.resaleOrders = marketItems.map((m) => ({
-			cost: m.cost,
-			seller: m.seller,
-			nft: m.nft,
-		}));
-	}
-
 	const lookupConfig: {
 		id?: any;
 		tags?: any;
@@ -153,6 +134,19 @@ export default async function handler(
 		return returnWithSuccess(nfts, res);
 	}
 
+	const {marketItems} = await request(RESALE_GRAPHQL_ENDPOINT, markets.resale, {
+		sort: graphqlSort.resale.includes(sort as string) ? sort : "cost",
+		// sort: "id" as "totalSales" | "totalSupply" | "id",
+		skip: (config.page - 1) * 24,
+		first: 24,
+	});
+	config.ids = marketItems.map((m) => m.nft);
+	config.resaleOrders = marketItems.map((m) => ({
+		cost: m.cost,
+		seller: m.seller,
+		nft: m.nft,
+	}));
+
 	const nfts = await MongoModelNFT.find({
 		id: {
 			$in: config.ids,
@@ -164,8 +158,8 @@ export default async function handler(
 			const order = config.resaleOrders.find((o) => parseInt(o.nft) === nft.id);
 			const seller = await MongoModelProfile.findOne({
 				address: order.seller.toLowerCase(),
-				display_name: formatAddress(order.seller.toLowerCase()),
-				username: formatAddress(order.seller.toLowerCase()),
+				// display_name: formatAddress(order.seller.toLowerCase()),
+				// username: formatAddress(order.seller.toLowerCase()),
 			}).exec();
 			const nftprice = Web3.utils.fromWei(order.cost);
 			const nftSeller = {

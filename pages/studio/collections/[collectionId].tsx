@@ -1,21 +1,20 @@
 import StudioNavigation from "@components/CreatorDashboard/StudioNavigation";
 import CollectionNFTPreview from "@components/NFTCard/cards/CollectionNFTPreview";
+import {FrostyBackgroundContainer} from "@components/NFTCard/misc/FrostyBackground";
 import {
 	ExternalLinkIcon,
 	PlusIcon,
 	UserAddIcon,
 } from "@heroicons/react/outline";
-import {TritPost} from "@packages/post/TritPost";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
-import {Heading, Text} from "@packages/shared/components/Typography/Headings";
-import {ImportantText} from "@packages/shared/components/Typography/Text";
+import {Heading} from "@packages/shared/components/Typography/Headings";
 import axios from "axios";
 import TreatCore from "core/TreatCore";
-import UserAvatar from "core/auth/components/Avatar";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
+import {ShareIcon} from "lucide-react";
 import {Upload} from "lucide-react";
 import Link from "next/link";
 import {useRouter} from "next/router";
@@ -92,65 +91,56 @@ export const CollectionRenderer = () => {
 							collection.cover_image ?? "/assets/bg.jpg"
 						}) no-repeat center center / cover`,
 					}}
-					className="flex flex-col items-center justify-center gap-24 mt-8 rounded-xl"
+					className="flex flex-col items-center justify-center gap-24 mt-8 rounded-xl h-96"
 				>
 					<Container
-						className="flex flex-col items-center justify-center gap-8 py-16 rounded-xl w-full h-full"
+						className="flex flex-col items-center justify-end w-full h-full gap-8 py-8 rounded-xl"
 						css={{backgroundColor: "$overlay"}}
 					>
-						<Container
-							className={
-								"rounded-2xl h-24 w-24 flex items-center justify-center"
-							}
-							css={{
-								background: `url(${collection.cover_image}) no-repeat center center / cover`,
-							}}
-						>
-							{isOwner && (
-								<Button
-									css={{
-										padding: "12px",
-										borderRadius: "9999px",
-										backgroundColor: "$surfaceOnSurface",
-										color: "$textContrast",
-									}}
-								>
-									<Upload className="w-4 h-4" />
-								</Button>
-							)}
-						</Container>
 						<Container className="max-w-2xl text-center">
 							<Heading
 								css={{color: "$white"}}
-								size={"sm"}
+								size={"md"}
 							>
 								{collection.name}
 							</Heading>
 						</Container>
 						<Container
-							className="flex items-center gap-4 p-2 rounded-full w-fit shadow pr-8"
-							css={{backgroundColor: "$surface"}}
+							className={
+								"w-full flex gap-8 justify-end max-w-screen-xl container mx-auto p-4"
+							}
 						>
-							<UserAvatar
-								size={32}
-								username={collection.creator.username}
-								profile_pic={collection.creator.avatar}
-							/>
-							<Link href={`/${collection.creator.username}`}>
-								<a>
-									<Text>
-										Created by{" "}
-										<ImportantText>
-											@{collection.creator.username}
-										</ImportantText>
-									</Text>
-								</a>
-							</Link>
+							<FrostyBackgroundContainer
+								css={{
+									padding: "1rem",
+									borderRadius: "9999px",
+								}}
+							>
+								<Button
+									css={{color: "$white"}}
+									appearance={"unstyled"}
+								>
+									<Upload className="w-5 h-5" />
+								</Button>
+							</FrostyBackgroundContainer>
+							<FrostyBackgroundContainer
+								css={{
+									padding: "1rem",
+									borderRadius: "9999px",
+								}}
+							>
+								<Button
+									css={{color: "$white"}}
+									appearance={"unstyled"}
+								>
+									<ShareIcon className="w-5 h-5" />
+								</Button>
+							</FrostyBackgroundContainer>
 						</Container>
 					</Container>
 				</Container>
 			)}
-			<Container className="flex justify-between gap-4 pt-8 mt-8 items-end">
+			<Container className="flex items-end justify-between gap-4 pt-8 mt-8">
 				<Heading size={"xs"}>
 					{isLoadingNFTs && !nfts && (
 						<Container

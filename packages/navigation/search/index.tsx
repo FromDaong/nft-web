@@ -120,7 +120,7 @@ export default function SearchModal() {
 										borderColor: "$border",
 										backgroundColor: "$surface",
 									}}
-									className="inline-block border md:w-full w-[95vw] md:max-w-xl p-2 py-4 mt-2 overflow-hidden text-left align-middle transition-all transform drop-shadow-2xl rounded-2xl"
+									className="inline-block border md:w-full w-[95vw] md:max-w-xl mt-2 overflow-hidden text-left align-middle transition-all transform drop-shadow-2xl rounded-2xl"
 									ref={ref}
 								>
 									<Container className="flex flex-col gap-4">
@@ -164,8 +164,10 @@ function SearchBar() {
 		}
 	);
 
+	console.log(data);
+
 	return (
-		<div className="flex h-full w-full">
+		<div className="flex w-full h-full">
 			<FormikProvider value={formik}>
 				<form
 					onSubmit={formik.handleSubmit}
@@ -181,7 +183,7 @@ function SearchBar() {
 											{data[formik.values.entity].map((item) => (
 												<CreatorCard
 													key={item._id}
-													{...item}
+													{...{...item, avatar: item.profile_pic}}
 													variant={"compact"}
 												/>
 											))}

@@ -7,6 +7,7 @@ import {Button} from "@packages/shared/components/Button";
 import {EnterFullScreenIcon} from "@radix-ui/react-icons";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
 import {ArrowRight, ShoppingBag} from "lucide-react";
+import {FrostyBackgroundContainer} from "../misc/FrostyBackground";
 
 export default function PortfolioPublicListingCard(props: TritPostProps) {
 	const {liked, likeNFT, isMine, isProtected} = useTritNFTUtils(props);
@@ -23,21 +24,25 @@ export default function PortfolioPublicListingCard(props: TritPostProps) {
 						zIndex: 5,
 					}}
 				>
-					<Text
+					<FrostyBackgroundContainer
 						css={{
-							backgroundColor: "$surface",
-							borderRadius: 999,
-							border: "1px solid $subtleBorder",
 							height: "2.2rem",
 							width: "2.2rem",
 							display: "flex",
 							alignItems: "center",
 							justifyContent: "center",
+							borderRadius: 999,
 						}}
-						className="shadow"
+						className="shadow-xl"
 					>
-						<ImportantText>{props.count}</ImportantText>
-					</Text>
+						<Text
+							css={{
+								color: "$white",
+							}}
+						>
+							<ImportantText>{props.count}</ImportantText>
+						</Text>
+					</FrostyBackgroundContainer>
 				</Container>
 				<Container
 					className="relative shadow cursor-pointer rounded-xl overflow-clip group"

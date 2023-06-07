@@ -21,15 +21,15 @@ function SweetshopNFT(props: TritPostProps) {
 		>
 			<a>
 				<NFTCard _id={props._id}>
-					<Container className="relative w-full overflow-hidden aspect-square">
+					<Container className="relative w-full overflow-hidden aspect-[11/16]">
 						<NFTCard.Media
-							isProtected={isProtected && !isMine}
+							isProtected={isProtected}
 							caption={props.text}
 							_id={props._id}
 						/>
 
 						<Container
-							className="absolute flex flex-col justify-between w-full top-0 left-0 p-2 h-fit"
+							className="absolute top-0 left-0 flex flex-col justify-between w-full p-2 h-fit"
 							css={{zIndex: 10}}
 						>
 							<Container className="flex items-center justify-between">

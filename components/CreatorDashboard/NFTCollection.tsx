@@ -12,14 +12,23 @@ function NFTCollection({item}) {
 		>
 			<a>
 				<Container
-					className="rounded-xl relative col-span-1 overflow-hidden w-full aspect-video"
-					key={item.name}
+					className="p-4 transition-all duration-200 ease-in-out rounded-xl"
 					css={{
-						background: `url("${item.cover_image ?? "/assets/bg.jpg"}")`,
-						backgroundSize: "cover",
+						"&:hover": {
+							backgroundColor: "$surfaceOnSurface",
+						},
 					}}
-				></Container>
-				<Container className="flex gap-2 py-4 items-start">
+				>
+					<Container
+						className="relative w-full col-span-1 overflow-hidden rounded-xl aspect-[16/9]"
+						key={item.name}
+						css={{
+							background: `url("${item.cover_image ?? "/assets/bg.jpg"}")`,
+							backgroundSize: "cover",
+						}}
+					></Container>
+				</Container>
+				<Container className="flex items-start gap-2 py-4">
 					<AvatarGroup
 						users={[
 							{
@@ -32,7 +41,7 @@ function NFTCollection({item}) {
 					/>
 					<Container className={"flex flex-col"}>
 						<Heading size={"xss"}>{item.name}</Heading>
-						<Container className="w-full flex items-center gap-1">
+						<Container className="flex items-center w-full gap-1">
 							<Verified className="w-4 h-4" />
 							<Text>{item.creator.username}</Text>
 						</Container>
