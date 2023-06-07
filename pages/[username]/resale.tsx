@@ -84,13 +84,12 @@ export default function UserProfile(props: {
 		}
 	}, [resaleOrders]);
 
-	console.log({resaleMarketListings, nftsForOrders});
 	return (
 		<ProfileLayout userProfile={data}>
 			<Container className="flex flex-col items-center">
 				{isLoading && <Spinner />}
 				{resaleMarketListings.length > 0 && (
-					<Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full gap-8">
+					<Container className="grid w-full grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 						{resaleMarketListings.map((listing) => (
 							<SweetshopNFT
 								key={listing.id}
