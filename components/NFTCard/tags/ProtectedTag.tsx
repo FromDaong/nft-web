@@ -8,15 +8,11 @@ export default function ProtectedTag() {
 	return (
 		<FrostyBackgroundContainer className="px-3 py-1 rounded-full">
 			<Container className="flex items-center justify-center gap-2">
-				<Text css={{color: "#ffffff"}}>
-					<EyeOffIcon
-						width={20}
-						height={20}
-					/>
-				</Text>
-				<Text css={{color: "#ffffff"}}>
-					<ImportantText>Protected</ImportantText>
-				</Text>
+				<EyeOffIcon
+					width={20}
+					height={20}
+				/>
+				<ImportantText>Protected</ImportantText>
 			</Container>
 		</FrostyBackgroundContainer>
 	);

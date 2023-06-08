@@ -29,7 +29,7 @@ export default function UserProfile(props: {
 
 	const {
 		isLoading,
-		data: resaleMarketListings = [],
+		data: resaleMarketListings,
 		isError,
 	} = TreatCore.useInfiniteQuery(
 		["resale-market-listings", profile?.address],
@@ -37,26 +37,49 @@ export default function UserProfile(props: {
 			const {data} = await axios.get(
 				`${apiEndpoint}/marketplace/listings/resale/seller/${nft_data.address}?page=${pageParam}}`
 			);
-			console.log({data});
-			return data.data;
+			const {data: nftData} = data;
+
+			nftData.docs = nftData.docs.map((post) => legacy_nft_to_new({...post}));
+
+			return nftData;
 		},
 		{
 			enabled: !!profile?.address,
+			getNextPageParam: (lastPage) =>
+				lastPage.hasNextPage ? lastPage.nextPage : null,
+			select: (data) => {
+				return {
+					pages: data.pages.map((page) => page.docs),
+					pageParams: data.pages.map((page) => page.page),
+				};
+			},
 			placeholderData: {
 				pages: [],
-				pageParams: [],
+				pageParams: [1],
 			},
 		}
 	);
 
-	console.log(nft_data);
+	const resaleNFTs = useMemo(() => {
+		const docs = resaleMarketListings.pages.flat();
+		return docs;
+	}, [resaleMarketListings]);
+
+	console.log({resaleNFTs});
 
 	return (
 		<ProfileLayout userProfile={nft_data}>
 			<Container className="flex flex-col items-center">
 				{isLoading && <Spinner />}
 				{!isLoading && (
-					<Container className="grid w-full grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"></Container>
+					<Container className="grid w-full grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+						{resaleNFTs.map((nft) => (
+							<SweetshopNFT
+								key={nft.id}
+								{...nft}
+							/>
+						))}
+					</Container>
 				)}
 			</Container>
 		</ProfileLayout>

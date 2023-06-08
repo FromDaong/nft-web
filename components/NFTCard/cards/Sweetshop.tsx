@@ -5,6 +5,9 @@ import {NFTCard} from "..";
 import Link from "next/link";
 import {useRouter} from "next/router";
 import {memo} from "react";
+import {Button} from "@packages/shared/components/Button";
+import {FrostyBackgroundContainer} from "../misc/FrostyBackground";
+import {EyeIcon} from "lucide-react";
 
 function SweetshopNFT(props: TritPostProps) {
 	const {liked, likeNFT, isMine, isProtected} = useTritNFTUtils(props);
@@ -29,15 +32,19 @@ function SweetshopNFT(props: TritPostProps) {
 						/>
 
 						<Container
-							className="absolute top-0 left-0 flex flex-col justify-between w-full p-2 h-fit"
-							css={{zIndex: 10}}
+							className="absolute top-0 left-0 flex flex-col justify-between w-full p-2 h-full rounded-lg"
+							css={{
+								zIndex: 10,
+							}}
 						>
-							<Container className="flex items-center justify-between">
-								<Container>{isProtected && <NFTCard.Protected />}</Container>
+							<Container className="flex flex-col flex-1 p-2 items-start justify-between">
 								<NFTCard.Creator
 									avatar={props.creator.avatar}
 									username={props.creator.username}
 								/>
+								{!isMine && (
+									<Container>{isProtected && <NFTCard.Protected />}</Container>
+								)}
 							</Container>
 						</Container>
 					</Container>

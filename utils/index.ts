@@ -18,43 +18,46 @@ export const decToBn = (dec: number, decimals = 18) => {
 	return new BigNumber(dec).multipliedBy(new BigNumber(10).pow(decimals));
 };
 
-export const legacy_nft_to_new = (post: any): TritPostProps => ({
-	_id: post._id,
-	name: post.name,
-	image: {
-		cdn: post.image.ipfs,
-		ipfs: post.image.ipfs,
-	},
-	price: {
-		value: post.price,
-		currency: "BNB",
-	},
-	id: post.id,
-	blurhash:
-		post.blurhash ||
-		"-qIFGCoMs:WBayay_NRjayj[ayj[IUWBayayj[fQIUt7j[ayayayj@WBRjoffkj[xuWBWCayj[ayWAt7fQj[ayayM{WBofj[j[fQ",
-	post_type: "colletible",
-	creator: {
-		username: post.creator.username,
-		display_name: post.creator.display_name,
-		live: false,
-		avatar: post.creator.profile?.profile_pic,
-	},
-	collection: {
-		name: post.collection_name,
-		totalSupply: Number(post.max_supply),
-		minted: post.mints?.length,
-		avatar: post.collection_avatar,
-	},
-	likedBy: post.likedBy,
-	protected: post.protected,
-	totm: post.totm_nft,
-	subscription_nft: post.subscription_nft,
-	melon_nft: post.melon_nft,
-	max_supply: Number(post.max_supply),
-	seller: post.seller,
-	count: post.count,
-});
+export const legacy_nft_to_new = (post: any): TritPostProps => {
+	console.log({post});
+	return {
+		_id: post._id,
+		name: post.name,
+		image: {
+			cdn: post.image?.ipfs,
+			ipfs: post.image?.ipfs,
+		},
+		price: {
+			value: post.price,
+			currency: "BNB",
+		},
+		id: post.id,
+		blurhash:
+			post.blurhash ||
+			"-qIFGCoMs:WBayay_NRjayj[ayj[IUWBayayj[fQIUt7j[ayayayj@WBRjoffkj[xuWBWCayj[ayWAt7fQj[ayayM{WBofj[j[fQ",
+		post_type: "colletible",
+		creator: {
+			username: post.creator.username,
+			display_name: post.creator.display_name,
+			live: false,
+			avatar: post.creator.profile?.profile_pic,
+		},
+		collection: {
+			name: post.collection_name,
+			totalSupply: Number(post.max_supply),
+			minted: post.mints?.length,
+			avatar: post.collection_avatar,
+		},
+		likedBy: post.likedBy,
+		protected: post.protected,
+		totm: post.totm_nft,
+		subscription_nft: post.subscription_nft,
+		melon_nft: post.melon_nft,
+		max_supply: Number(post.max_supply),
+		seller: post.seller,
+		count: post.count,
+	};
+};
 
 export const apiEndpoint = `${process.env.NEXT_PUBLIC_HOSTNAME}/api/v3`;
 

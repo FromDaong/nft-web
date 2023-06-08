@@ -13,13 +13,7 @@ function CreatorTag({avatar, username}) {
 						profile_pic={avatar}
 						size={20}
 					/>
-					<Text
-						css={{
-							color: "$white",
-						}}
-					>
-						<ImportantText>@{username}</ImportantText>
-					</Text>
+					<ImportantText>@{username}</ImportantText>
 				</FrostyBackgroundContainer>
 			</a>
 		</Link>

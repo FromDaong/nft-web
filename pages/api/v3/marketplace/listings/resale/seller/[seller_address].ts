@@ -8,22 +8,22 @@ const RESALE_GRAPHQL_ENDPOINT =
 	"https://api.thegraph.com/subgraphs/name/treatdaodev/treatdao";
 
 const query = gql`
-    query listings(address: String!, skip: Int!, first: Int!, sort: String!) {
-        marketItems(
-				orderBy: $sort
-				orderDirection: desc
-				skip: $skip
-				first: 12
-                where: { seller: $address }
-			) {
-				nft
-				currentSupply
-				cost
-				isActive
-				transactionHash
-				seller
-			}
-    }
+	query listings($address: String!, $skip: Int!, $first: Int!, $sort: String!) {
+		marketItems(
+			orderBy: $sort
+			orderDirection: desc
+			skip: $skip
+			first: 12
+			where: {seller: $address}
+		) {
+			nft
+			currentSupply
+			cost
+			isActive
+			transactionHash
+			seller
+		}
+	}
 `;
 
 export default async function handler(
@@ -34,7 +34,8 @@ export default async function handler(
 	const {marketItems} = await request(RESALE_GRAPHQL_ENDPOINT, query, {
 		sort: (sort as string) ?? "cost",
 		// sort: "id" as "totalSales" | "totalSupply" | "id",
-		skip: (parseInt(page as string) - 1) * 24,
+		skip:
+			parseInt(page as string) > 0 ? (parseInt(page as string) - 1) * 24 : 0,
 		first: 24,
 		address: (seller_address as string).toLowerCase(),
 	});
@@ -43,6 +44,11 @@ export default async function handler(
 	const nfts = await MongoModelNFT.find({
 		id: {
 			$in: ids,
+		},
+	}).populate({
+		path: "creator",
+		populate: {
+			path: "profile",
 		},
 	});
 
