@@ -19,6 +19,7 @@ import {Container} from "@packages/shared/components/Container";
 import Footer from "@packages/shared/components/Footer";
 import {Analytics} from "@vercel/analytics/react";
 import {Toaster} from "react-hot-toast";
+import TreatBalancesProvider from "core/auth/components/TreatBalancesProvider";
 
 const progress = new ProgressBar({
 	size: 3,
@@ -41,19 +42,21 @@ function MyApp({
 			<ThemeProvider>
 				<ApplicationProvider>
 					<WagmiWrapper pageProps={pageProps}>
-						<Toaster />
-						<Head>
-							<title>Treat DAO</title>
-						</Head>
+						<TreatBalancesProvider>
+							<Toaster />
+							<Head>
+								<title>Treat DAO</title>
+							</Head>
 
-						<AcceptAgeModal />
-						<Navbar />
-						<main>
-							<Component {...pageProps} />
-						</main>
-						<Container className="pb-12">
-							<Footer />
-						</Container>
+							<AcceptAgeModal />
+							<Navbar />
+							<main>
+								<Component {...pageProps} />
+							</main>
+							<Container className="pb-12">
+								<Footer />
+							</Container>
+						</TreatBalancesProvider>
 					</WagmiWrapper>
 				</ApplicationProvider>
 			</ThemeProvider>

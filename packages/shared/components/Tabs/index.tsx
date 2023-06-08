@@ -23,6 +23,22 @@ export const TabsContainer = ({children}: ComponentBasicProps) => {
 	);
 };
 
+export const ActionTab = ({children, isActive}) => {
+	return (
+		<Container
+			css={{
+				marginY: "12px",
+				backgroundColor: isActive ? "$elementOnSurface" : "$surface",
+				borderRadius: "8px",
+				padding: "8px 12px",
+			}}
+			className={`relative rounded-full`}
+		>
+			{children}
+		</Container>
+	);
+};
+
 export const Tab = ({
 	label,
 	href,

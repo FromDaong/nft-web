@@ -1,6 +1,7 @@
 // Create Context provider for the modal and the context provider for the modal
 
 import {Modal, ModalHeaderSection} from "@packages/modals";
+import {Container} from "@packages/shared/components/Container";
 
 type NFTPageModalProps = {
 	title: string;
@@ -24,7 +25,9 @@ export const NFTPageModal = ({
 				onClose={onClose}
 				title={title}
 			/>
-			{children}
+			<Container className="max-h-[32rem] overflow-y-auto">
+				{children}
+			</Container>
 		</Modal>
 	);
 };

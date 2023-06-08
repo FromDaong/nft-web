@@ -41,22 +41,73 @@ import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
 import {ExternalLinkIcon, InfoIcon} from "lucide-react";
 import Spinner from "@packages/shared/icons/Spinner";
 import {Provider, gql, useQuery} from "urql";
-import {treatOldGraphClient} from "@lib/graphClients";
+import {treatGraphClient} from "@lib/graphClients";
 import Web3 from "web3";
+import {useRouter} from "next/router";
+import ResaleListings from "@components/NFTPage/ResaleListings";
+import {ActionTab, Tab, TabsContainer} from "@packages/shared/components/Tabs";
+import NFTPageTabs from "@components/NFTPage/Tabs";
+import CreatorProfileNFT from "@components/NFTCard/cards/ProfileListingCard";
+
+const useOrder = (creator_address: string) => {
+	const router = useRouter();
+	const {id, seller} = router.query;
+	const isResale = (seller as string)?.toLowerCase() !== creator_address;
+
+	return {
+		isResale,
+	};
+};
+
+const tokenQuery = gql`
+	query token($id: BigInt!) {
+		tokens(where: {identifier: $id}) {
+			identifier
+			totalSales
+			totalSupply
+			totalSaleValue
+			creator {
+				id
+				totalSales
+			}
+			transfers(first: 10) {
+				timestamp
+				value
+				from {
+					id
+				}
+				to {
+					id
+				}
+				operator {
+					id
+				}
+			}
+		}
+	}
+`;
 
 export default function NFT(props: {
 	notFound?: boolean;
 	data: any;
 	isResale: boolean;
 }) {
-	const {isResale} = props;
 	const data = JSON.parse(props.data);
 	const {nft} = data;
+	const {isResale} = useOrder(nft.creator.address);
 	const {address} = useAccount();
 	const {isOwned, balance} = useGetIsNFTOwned(nft);
 	const maxNftSupply = useWagmiGetNFTMaxSupply(nft.id);
 	const mintedNfts = useWagmiGetNFTTotalSupply(nft.id);
 	const postUtils = useTritNFTUtils(nft);
+
+	const [{data: {tokens: [token] = []} = {}, fetching, error}] = useQuery({
+		query: tokenQuery,
+		variables: {
+			id: `${nft.id}`,
+		},
+		pause: !nft.id,
+	});
 
 	const [showFullScreen, setShowFullScreen] = useState(false);
 	const [loadHD, setLoadHD] = useState(false);
@@ -86,7 +137,7 @@ export default function NFT(props: {
 	const remainingNfts = maxNftSupply - mintedNfts;
 
 	return (
-		<Provider value={treatOldGraphClient}>
+		<Provider value={treatGraphClient}>
 			<SEOHead
 				title={`${nft.name} - TreatDAO`}
 				description={nft.description}
@@ -186,8 +237,7 @@ export default function NFT(props: {
 									maxSupply={maxNftSupply}
 								/>
 							</Container>
-							<ResaleListings nft={nft} />
-							<Activity nft={nft} />
+							<NFTPageTabs nft={nft} />
 						</Container>
 					</Container>
 					<Container className="flex flex-col mt-32">
@@ -220,7 +270,7 @@ export default function NFT(props: {
 											.map((post) => legacy_nft_to_new(post))
 											.slice(0, 3)
 											.map((item) => (
-												<SweetshopNFT
+												<CreatorProfileNFT
 													key={item._id}
 													inGrid
 													{...item}
@@ -326,18 +376,11 @@ function ImagePreviewSection({
 						)}
 						{mintedNfts === maxNftSupply && (
 							<Container className="flex gap-4 items-center">
-								<Button
-									appearance={"disabled"}
-									disabled
-									css={{color: "$red10", backgroundColor: "$red1"}}
-								>
-									Collect now
-								</Button>
 								<Text
-									css={{color: "$red11"}}
+									css={{color: "$red9"}}
 									className="flex gap-2"
 								>
-									Sold out
+									<ImportantText>Sold out</ImportantText>
 									<InfoIcon className="w-5 h-5" />
 								</Text>
 							</Container>
@@ -348,201 +391,6 @@ function ImagePreviewSection({
 		</Container>
 	);
 }
-
-function ResaleListings({nft}) {
-	const {isLoading: loadingResaleListings, resaleListings} =
-		useGetResaleListings(nft.id);
-	return (
-		<Container className="flex flex-col gap-2">
-			<Container className="flex justify-between gap-4">
-				<Heading size="xss">Other listings</Heading>
-				{resaleListings.length !== 0 && (
-					<Button appearance={"subtle"}>View all</Button>
-				)}
-			</Container>
-			{loadingResaleListings && (
-				<>
-					<Container className="py-4 flex justify-center">
-						<Text>
-							<Spinner />
-						</Text>
-					</Container>
-				</>
-			)}
-			{!loadingResaleListings && (
-				<>
-					{resaleListings.length > 0 && (
-						<Container className="flex flex-col mt-4">
-							{resaleListings.map((listing) => (
-								<Container
-									key={listing.seller.address}
-									className="rounded-xl p-2 flex justify-between"
-									css={{
-										"&:hover": {
-											backgroundColor: "$elementOnSurface",
-										},
-									}}
-								>
-									<Container className="flex gap-4"></Container>
-									<Button
-										appearance={"action"}
-										className="h-fit self-start"
-									>
-										Buy for{" "}
-										{Web3.utils.fromWei(listing.price.toString()).toString()}{" "}
-										BNB
-									</Button>
-								</Container>
-							))}
-						</Container>
-					)}
-
-					{resaleListings.length === 0 && (
-						<Container className="flex">
-							<Text>No resale listings available for this NFT</Text>
-						</Container>
-					)}
-				</>
-			)}
-		</Container>
-	);
-}
-
-function Activity({nft}) {
-	return (
-		<Container className="flex flex-col gap-2">
-			<Heading size="xss">Activity</Heading>
-			<TransactionsPresentation nft={nft} />
-		</Container>
-	);
-}
-
-const salesHistory = (nft) => gql`
-      query getSales($first: Int) {
-        sales(
-          first: 200,
-          orderBy: "cost",
-          orderDirection: "asc",
-          where: {
-            treatsPurchased_contains: [${nft.id}],
-            sourceContract: "0xA38978E839c08046FA80B0fee55736253Ab3B8a3"
-          }
-        ) {
-          id
-          cost
-          sourceContract
-          treatsPurchased
-          seller
-          buyer
-          purchaseDate
-        }
-      
-      }
-`;
-
-type SaleItem = {
-	id: string;
-	cost: string;
-	sourceContract: string;
-	treatsPurchased: string[];
-	seller: string;
-	buyer: string;
-	purchaseDate: string;
-};
-
-const TransactionsPresentation = ({nft}) => {
-	const [result] = useQuery({
-		query: salesHistory(nft),
-	});
-
-	const txHistory = useMemo(() => {
-		if (!result.data) return [];
-		return [...result.data.sales] as SaleItem[];
-	}, [result]);
-
-	const {isLoading, data} = TreatCore.useQuery({
-		queryKey: [`resaleHistory:${nft.id}`],
-		queryFn: async () => {
-			const addresses = txHistory.map((tx) => tx.seller.toLowerCase());
-			const res = await axios.post(`${apiEndpoint}/people/get-by-address`, {
-				addresses,
-			});
-			return res.data.data;
-		},
-		enabled: txHistory.length > 0,
-	});
-
-	const txHistoryWithProfile = useMemo(() => {
-		if (!data) return [];
-		return txHistory.map((tx) => {
-			const buyer = data.find(
-				(profile) => profile.address.toLowerCase() === tx.buyer.toLowerCase()
-			);
-			const seller = data.find(
-				(profile) => profile.address.toLowerCase() === tx.seller.toLowerCase()
-			);
-			return {
-				...tx,
-				buyer: buyer || {address: tx.buyer},
-				seller: seller || {address: tx.seller},
-				buyerAddress: tx.buyer,
-				sellerAddress: tx.seller,
-			};
-		});
-	}, [data]);
-
-	return (
-		<Container className="flex flex-col gap-4">
-			{isLoading && (
-				<Container className="py-4 justify-center">
-					<Spinner />
-				</Container>
-			)}
-			{!isLoading && txHistoryWithProfile.length === 0 && (
-				<Container className="py-4 justify-center">
-					<Button appearance={"surface"}>NFT has no sales history</Button>
-				</Container>
-			)}
-			{txHistoryWithProfile.slice(0, 5).map((tx) => (
-				<Container
-					key={tx.id}
-					className="p-2 flex rounded-xl justify-between"
-				>
-					<Container className="flex gap-4">
-						<UserAvatar
-							size={32}
-							username={tx.buyer.username}
-							profile_pic={tx.buyer.profile_pic}
-						/>
-						<Container>
-							<Heading size={"xss"}>
-								Purchased for {Web3.utils.fromWei(tx.cost).toString()} BNB
-							</Heading>
-							<Container className="flex gap-2">
-								<Text>
-									{tx.buyer.username ??
-										tx.buyer.address.slice(0, 5) +
-											"..." +
-											tx.buyer.address.slice(tx.buyer.address.length - 4)}
-								</Text>
-								<Text>&bull;</Text>
-								<Text>
-									{timeFromNow(
-										// @ts-ignore
-										parseInt(tx.purchaseDate) * 1000
-									)}
-								</Text>
-							</Container>
-						</Container>
-					</Container>
-					<Button appearance={"link"}>
-						View on Bscscan <ExternalLinkIcon className="w-5 h-5" />
-					</Button>
-				</Container>
-			))}
-		</Container>
-	);
-};
 
 export const getServerSideProps = async (context) => {
 	await pagePropsConnectMongoDB();

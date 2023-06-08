@@ -16,6 +16,8 @@ import useGetIsSubscribed from "@packages/chain/hooks/useGetIsSubscribed";
 import {Text} from "@packages/shared/components/Typography/Text";
 import {SparklesIcon} from "@heroicons/react/solid";
 import CoinsIcon from "@packages/shared/icons/CoinsIcon";
+import Link from "next/link";
+import {ArrowRight} from "lucide-react";
 
 /**
  *
@@ -274,17 +276,22 @@ const PurchaseButtonWrapper = (nft: BuyButtonProps) => {
 const BuyNFTButton = ({nftData, postUtils}) => {
 	const {address} = useAccount();
 	const isSubscribed = useGetIsSubscribed(address);
-	if (nftData.melon_nft || nftData.totm_nft) {
+	if (nftData.melon_nft) {
 		return (
 			<Container className="flex flex-col gap-2">
-				<Button
-					fullWidth
-					appearance={"disabled"}
-					disabled
-				>
-					Collect
-				</Button>
-				<Text>Buying Melon NFT is not supported</Text>
+				<Link href={"/studio/farm"}>
+					<a>
+						<Button
+							fullWidth
+							css={{
+								backgroundColor: "$mint11",
+								color: "$mint2",
+							}}
+						>
+							View more on Melon <ArrowRight className="w-5 h-5" />
+						</Button>
+					</a>
+				</Link>
 			</Container>
 		);
 	}
@@ -300,6 +307,23 @@ const BuyNFTButton = ({nftData, postUtils}) => {
 					Collect
 				</Button>
 				<Text>Buying subscription sets is not supported</Text>
+			</Container>
+		);
+	}
+
+	if (nftData.totm_nft) {
+		return (
+			<Container className="flex flex-col gap-2">
+				<Button
+					fullWidth
+					css={{
+						backgroundColor: "$purple11",
+						color: "$purple2",
+					}}
+				>
+					<SparklesIcon className="w-5 h-5" />
+					Collect for {nftData.price} BNB
+				</Button>
 			</Container>
 		);
 	}

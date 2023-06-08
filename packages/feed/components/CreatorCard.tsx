@@ -1,17 +1,10 @@
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
-import {
-	ImportantText,
-	MutedText,
-	SmallText,
-	Text,
-} from "@packages/shared/components/Typography/Text";
+import {Text} from "@packages/shared/components/Typography/Text";
 import DynamicSkeleton from "@packages/skeleton";
 import {FeaturedCreatorSkeleton} from "@packages/skeleton/config";
 import Link from "next/link";
-import LiveTag from "./LiveTag";
-import {UserIcon, UserPlus} from "lucide-react";
-import Avvvatars from "avvvatars-react";
+import {UserIcon} from "lucide-react";
 import Username from "./Username";
 import {useFollow} from "@packages/hooks/useFollow";
 import {useUser} from "core/auth/useUser";
@@ -111,7 +104,7 @@ const DefaultCreatorCard = (props: SuggestedCreatorData) => {
 									{!profile && <Button appearance={"surface"}></Button>}
 								</Container>
 							</Container>
-							<Text className="mt-2">{props.bio}</Text>
+							<Text className="mt-2 line-clamp-2">{props.bio}</Text>
 						</Container>
 					</Container>
 				</a>

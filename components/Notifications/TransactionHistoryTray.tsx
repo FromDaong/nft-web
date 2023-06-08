@@ -1,5 +1,5 @@
 import {XIcon} from "@heroicons/react/outline";
-import {treatOldGraphClient} from "@lib/graphClients";
+import {treatGraphClient} from "@lib/graphClients";
 import {Modal, ModalHeaderSection} from "@packages/modals";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
@@ -30,7 +30,7 @@ export default function TransactionHistoryTray({isOpen, onClose}) {
 					title={"Recent NFT transfers"}
 					onClose={onClose}
 				/>
-				<Provider value={treatOldGraphClient}>
+				<Provider value={treatGraphClient}>
 					<Container
 						className="flex flex-col gap-4 p-4"
 						css={{background: "$surfaceOnSurface"}}

@@ -162,10 +162,6 @@ export const useGetResaleListings = (nftId: number) => {
 		return [];
 	}, [sellersData]);
 
-	console.log({
-		resaleOrders,
-	});
-
 	return {
 		isLoading: sellersIsLoading || isLoading,
 		resaleListings,
@@ -300,7 +296,7 @@ const NFTPresentationComponent = (props: {
 												users={collectors.slice(0, 5).map((c) => ({
 													name: c.username,
 													imageUrl: c.profile_pic,
-													href: c.username,
+													href: `/${c.username}`,
 												}))}
 											/>
 											{collectors.length > 5 && (

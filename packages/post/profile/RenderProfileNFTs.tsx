@@ -72,10 +72,6 @@ const RenderProfileNFTs = ({
 								<Component
 									key={post.id}
 									{...post}
-									noPrice={hidePrice}
-									isMine={username === profile.username}
-									hideSeller={hideSeller}
-									hideSoldOut={hideSoldOut}
 								/>
 							))}
 						</Container>

@@ -2,7 +2,7 @@
 
 import ActivityItem from "@components/CreatorDashboard/Activity/Item";
 import StudioNavigation from "@components/CreatorDashboard/StudioNavigation";
-import {treatOldGraphClient} from "@lib/graphClients";
+import {treatGraphClient} from "@lib/graphClients";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
@@ -37,7 +37,7 @@ export default function TreatCreatorStudio() {
 			<StudioNavigation />
 
 			<ApplicationFrame>
-				<Provider value={treatOldGraphClient}>
+				<Provider value={treatGraphClient}>
 					<Container className="py-8 flex flex-col gap-4 mt-8">
 						<Container>
 							<Heading size={"xs"}>

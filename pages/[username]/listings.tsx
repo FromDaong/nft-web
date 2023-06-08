@@ -60,7 +60,21 @@ export default function UserProfile(props: {
 			return pages
 				.map((page) => page.docs)
 				.flat()
-				.map((post) => legacy_nft_to_new(post));
+				.map((post) =>
+					legacy_nft_to_new({
+						...post,
+						seller: {
+							address: post.creator.address,
+							profile_pic: post.creator.profile.profile_pic,
+							username: post.creator.username,
+							display_name: post.creator.display_name,
+						},
+						creator: {
+							...post.creator,
+							profile: post.creator.profile,
+						},
+					})
+				);
 		} else {
 			return [];
 		}
