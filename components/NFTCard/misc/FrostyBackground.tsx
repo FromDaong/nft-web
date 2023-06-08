@@ -3,11 +3,11 @@ import {styled} from "@styles/theme";
 
 export const FrostyBackgroundContainer = styled(Container, {
 	backgroundColor: "#00000033",
-	color: "$sand1",
+	color: "$white",
 	backdropFilter: "blur(10px)",
 	"&:hover": {
-		backgroundColor: "$white",
-		color: "$textContrast !important",
+		backgroundColor: "$sand12",
+		color: "$sand1 !important",
 	},
 	transition: "all 0.2s ease-in-out",
 

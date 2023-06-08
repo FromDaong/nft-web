@@ -1,6 +1,11 @@
+import {NFTCard} from "@components/NFTCard";
+import {FrostyBackgroundContainer} from "@components/NFTCard/misc/FrostyBackground";
 import AvatarGroup from "@packages/avatars/AvatarGroup";
+import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
+import {StackIcon} from "@radix-ui/react-icons";
+import {ArrowRight} from "lucide-react";
 import {Verified} from "lucide-react";
 import Link from "next/link";
 
@@ -12,42 +17,42 @@ function NFTCollection({item}) {
 		>
 			<a>
 				<Container
-					className="p-4 transition-all duration-200 ease-in-out rounded-xl"
+					className="relative w-full col-span-1 overflow-hidden rounded-xl aspect-[16/9] flex flex-col justify-end gap-8 p-4"
+					key={item.name}
 					css={{
-						"&:hover": {
-							backgroundColor: "$surfaceOnSurface",
-						},
+						background: `linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%), url("${
+							item.cover_image ?? "/assets/bg.jpg"
+						}")`,
+						backgroundSize: "cover",
 					}}
 				>
-					<Container
-						className="relative w-full col-span-1 overflow-hidden rounded-xl aspect-[16/9]"
-						key={item.name}
-						css={{
-							background: `url("${item.cover_image ?? "/assets/bg.jpg"}")`,
-							backgroundSize: "cover",
-						}}
-					></Container>
-				</Container>
-				<Container className="flex items-start gap-2 py-4">
-					<AvatarGroup
-						users={[
-							{
-								href: `/${item.creator.username}`,
-								imageUrl: item.creator.avatar,
-								name: item.creator.username,
-								size: 32,
-							},
-						]}
-					/>
-					<Container className={"flex flex-col"}>
-						<Heading size={"xss"}>{item.name}</Heading>
-						<Container className="flex items-center w-full gap-1">
-							<Verified className="w-4 h-4" />
-							<Text>{item.creator.username}</Text>
-						</Container>
-						<Text>
+					<Container className="flex flex-col items-start gap-2">
+						<Heading
+							size={"sm"}
+							css={{color: "$white"}}
+						>
+							{item.name}
+						</Heading>
+						<NFTCard.Creator
+							avatar={item.creator.avatar}
+							username={item.creator.username}
+						/>
+					</Container>
+					<Container className="flex justify-between items-center">
+						<FrostyBackgroundContainer
+							as={Button}
+							appearance={"invert"}
+							css={{
+								color: "$textContrast",
+							}}
+							className="shadow-xl"
+						>
+							View collection <ArrowRight className="w-4 h-4" />
+						</FrostyBackgroundContainer>
+						<FrostyBackgroundContainer className="rounded-full p-2 px-4 flex gap-2 font-semibold items-center">
+							<StackIcon className="w-5 h-5" />
 							{item.nfts?.length} nft{item.nfts?.length > 1 ? "s" : ""}
-						</Text>
+						</FrostyBackgroundContainer>
 					</Container>
 				</Container>
 			</a>

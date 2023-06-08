@@ -442,7 +442,7 @@ function AccountSummary() {
 							<td>
 								<Text>
 									<ImportantText>
-										{Intl.NumberFormat().format(data.tokens.length)}
+										{Intl.NumberFormat().format(data.tokens?.length)}
 									</ImportantText>
 								</Text>
 							</td>

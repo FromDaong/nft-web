@@ -12,7 +12,7 @@ export const CollectionsPresentation = ({creator_id, base_url}) => {
 		isLoading,
 		isError,
 		error,
-	} = TreatCore.useQuery([`collection:${creator_id}`], async () => {
+	} = TreatCore.useQuery([`collections:${creator_id}`], async () => {
 		const {data} = await axios.get(
 			`${process.env.NEXT_PUBLIC_HOSTNAME}/api/v3/marketplace/collection/seller/${creator_id}`
 		);
@@ -26,7 +26,7 @@ export const CollectionsPresentation = ({creator_id, base_url}) => {
 	});
 
 	return (
-		<Container className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+		<Container className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 			{!isLoading &&
 				!isError &&
 				collections.map((item) => (
