@@ -39,10 +39,10 @@ function MyApp({
 }>) {
 	return (
 		<>
-			<ThemeProvider>
-				<ApplicationProvider>
-					<WagmiWrapper pageProps={pageProps}>
-						<TreatBalancesProvider>
+			<ApplicationProvider>
+				<WagmiWrapper pageProps={pageProps}>
+					<TreatBalancesProvider>
+						<ThemeProvider>
 							<Toaster />
 							<Head>
 								<title>Treat DAO</title>
@@ -50,16 +50,11 @@ function MyApp({
 
 							<AcceptAgeModal />
 							<Navbar />
-							<main>
-								<Component {...pageProps} />
-							</main>
-							<Container className="pb-12">
-								<Footer />
-							</Container>
-						</TreatBalancesProvider>
-					</WagmiWrapper>
-				</ApplicationProvider>
-			</ThemeProvider>
+							<Component {...pageProps} />
+						</ThemeProvider>
+					</TreatBalancesProvider>
+				</WagmiWrapper>
+			</ApplicationProvider>
 			<Analytics />
 		</>
 	);

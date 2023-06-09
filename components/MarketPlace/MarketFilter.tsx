@@ -24,7 +24,7 @@ export default function SweetshopTabs() {
 				backgroundColor: "$surface",
 				borderColor: "$border",
 			}}
-			className="sticky top-0 z-50 border-b overflow-x-auto shadow"
+			className="sticky top-0 z-50 border-b overflow-x-auto"
 		>
 			<Container className="container mx-auto ">
 				<RadioGroup

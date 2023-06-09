@@ -17,6 +17,7 @@ import axios from "axios";
 import TreatCore from "core/TreatCore";
 import UserAvatar from "core/auth/components/Avatar";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
+import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import Link from "next/link";
 import {useRouter} from "next/router";
 import {useState} from "react";
@@ -86,7 +87,7 @@ export default function CollectionPage() {
 	const isOwner = address?.toLowerCase() === collection?.creator?.address;
 	console.log({nfts});
 	return (
-		<>
+		<ApplicationLayout>
 			{!isLoading && !isError && (
 				<Container
 					css={{
@@ -203,6 +204,6 @@ export default function CollectionPage() {
 					</Container>
 				)}
 			</ApplicationFrame>
-		</>
+		</ApplicationLayout>
 	);
 }

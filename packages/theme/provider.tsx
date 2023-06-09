@@ -10,7 +10,7 @@ import {
 import {useTheme} from "./hooks";
 
 const Div = styled("div", {
-	height: "100%",
+	height: "100vh",
 	width: "100%",
 	color: "$text",
 	background: "$surface",

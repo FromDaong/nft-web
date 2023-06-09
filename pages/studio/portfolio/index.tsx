@@ -17,6 +17,7 @@ import {useUser} from "core/auth/useUser";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import {useEffect} from "react";
+import {useAccount} from "wagmi";
 
 export default function PortfolioPage() {
 	//const balances = treatNFTMinterContract.functions.balanceOfBatch([""], [""]);
@@ -52,12 +53,6 @@ export default function PortfolioPage() {
 }
 
 const PortfolioNFTsPresenter = ({username}) => {
-	const {data, isLoading, isError} = TreatCore.useQuery(
-		["getOwnedNFTs", username],
-		() => {
-			return axios.get(`${apiEndpoint}/profile/${username}/collected`);
-		}
-	);
-	console.log({data});
+	const {address} = useAccount();
 	return <Container className="grid grid-cols-4 gap-8 mt-8"></Container>;
 };

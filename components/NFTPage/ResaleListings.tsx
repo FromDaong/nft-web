@@ -85,7 +85,7 @@ const useResaleListingsForNFT = (nftId) => {
 export default function ResaleListings({nft}) {
 	const {resaleListings, isLoading} = useResaleListingsForNFT(nft.id);
 	const router = useRouter();
-	const seller = toString(router.query.seller).toLowerCase();
+	const seller = (router.query.seller as string).toLowerCase();
 
 	const selectedListing = resaleListings.find(
 		(listing) => seller === listing.seller.address.toLowerCase()

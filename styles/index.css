@@ -64,6 +64,7 @@ html {
 body {
 	--removed-body-scroll-bar-size: 0 !important;
 	overflow-y: auto;
+	height: 100dvh;
 }
 
 .scheme-dark {

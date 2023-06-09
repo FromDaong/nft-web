@@ -38,6 +38,7 @@ import {useBalance} from "wagmi";
 import {ExternalLinkIcon} from "@radix-ui/react-icons";
 import Spinner from "@packages/shared/icons/Spinner";
 import {ShoppingBagIcon} from "lucide-react";
+import ApplicationLayout from "./ApplicationLayout";
 
 type ProfileLayoutProps = ComponentBasicProps & {
 	userProfile?: {
@@ -303,7 +304,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 	}, [treatBalance]);
 
 	return (
-		<>
+		<ApplicationLayout>
 			<SEOHead
 				title={ownerOfUserProfile?.username + " - TreatDAO"}
 				description={ownerOfUserProfile?.bio}
@@ -500,6 +501,6 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 			<ApplicationFrame>
 				<Container>{props.children}</Container>
 			</ApplicationFrame>
-		</>
+		</ApplicationLayout>
 	);
 }

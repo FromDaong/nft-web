@@ -224,7 +224,7 @@ const NFTPresentationComponent = (props: {
 					collectors={collectors}
 				/>
 			)}
-			<Container className="flex flex-col gap-12 py-8 lg:gap-16 lg:flex">
+			<Container className="flex flex-col gap-12 lg:gap-16 lg:flex">
 				<Container className="flex flex-col gap-8">
 					<Container
 						className={"flex md:flex-col flex-col-reverse gap-6 md:gap-1 pb-4"}
