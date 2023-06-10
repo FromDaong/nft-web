@@ -35,7 +35,7 @@ export default function Create() {
 		<ApplicationLayout>
 			<SEOHead title="Create a new post" />
 			<ApplicationFrame>
-				<Container className="flex flex-col max-w-screen-lg w-full gap-8 py-12 mx-auto">
+				<Container className="flex flex-col max-w-screen-xl w-full gap-8 py-12 mx-auto">
 					<Container>
 						<Heading size={"sm"}>Let's create something new</Heading>
 						<Text>

@@ -93,4 +93,8 @@ const RenderProfileNFTs = ({
 	);
 };
 
+const NFTsInfinityLoader = () => {
+	return <></>;
+};
+
 export default RenderProfileNFTs;

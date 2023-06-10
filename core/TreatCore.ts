@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-query";
 import {apiEndpoint} from "@utils/index";
 import axios from "axios";
-import {ReactNode, useEffect, useRef} from "react";
+import {ReactNode, Ref, useEffect, useRef} from "react";
 
 export type Context = {currentUserEmail: string};
 
@@ -67,6 +67,7 @@ export default class TreatCore {
 
 export type ComponentBasicProps = {
 	children?: ReactNode;
+	thisRef?: Ref<any>;
 };
 
 export type AnalyticsEvent = {

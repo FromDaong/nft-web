@@ -4,9 +4,9 @@ import TagsFilter from "@components/MarketPlace/TagsFilter";
 import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
 import {SEOHead} from "@packages/seo/page";
 import {Container} from "@packages/shared/components/Container";
-import {usePaginatedPage} from "@packages/shared/components/Pagination/lib";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import Spinner from "@packages/shared/icons/Spinner";
+import {styled} from "@styles/theme";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import TreatCore from "core/TreatCore";
@@ -14,7 +14,8 @@ import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import {useRouter} from "next/router";
 import {MarketplaceListingsContainer} from "packages/shared/components/ListingSection";
-import {useEffect, useRef} from "react";
+import {memo, useEffect, useMemo, useRef} from "react";
+import {VirtuosoGrid} from "react-virtuoso";
 
 const InfinitySpinner = ({fetchNext, isFetching}) => {
 	const ref = useRef(null);
@@ -57,6 +58,7 @@ const InfinitySpinner = ({fetchNext, isFetching}) => {
 };
 
 export default function NFTS({nfts, error}) {
+	const scrollerRef = useRef(null);
 	const posts = JSON.parse(nfts);
 	const router = useRouter();
 	const {sort: sortQuery, tags: tagQuery, tab: marketQuery} = router.query;
@@ -124,38 +126,110 @@ export default function NFTS({nfts, error}) {
 		refetch();
 	}, [sortQuery, tagQuery, marketQuery]);
 
-	console.log({marketQuery, isLoading, data});
-
 	return (
-		<ApplicationLayout>
-			<SweetshopTabs />
+		<ApplicationLayout thisRef={scrollerRef}>
+			<SEOHead title="Explore NFTs" />
 			<ApplicationFrame>
-				<SEOHead title="Explore NFTs" />
+				<SweetshopTabs />
 				<TagsFilter />
-
-				<Container className="relative flex w-full h-full gap-8">
-					<Container
-						css={{
-							opacity: isLoading ? 0.5 : 1,
-						}}
-						className="flex-1 w-full"
-					>
-						{!error && (
-							<MarketplaceListingResults
-								nft_posts={data?.pages?.flat() ?? []}
-								fetchNext={fetchNextPage}
-								hasNextPage={hasNextPage}
-							/>
-						)}
-						{error && (
-							<Container className="flex flex-col gap-12 py-12">
-								<Heading>An error occurred</Heading>
-							</Container>
-						)}
+				{!error && (
+					<MarketplaceListingResults
+						scrollerRef={scrollerRef}
+						nft_posts={data?.pages?.flat() ?? []}
+						fetchNext={fetchNextPage}
+						hasNextPage={hasNextPage}
+					/>
+				)}
+				{error && (
+					<Container className="flex flex-col gap-12 py-12">
+						<Heading>An error occurred</Heading>
 					</Container>
-				</Container>
+				)}
 			</ApplicationFrame>
 		</ApplicationLayout>
+	);
+}
+
+const NFTListContainer = styled("div", {
+	flexWrap: "wrap",
+	display: "grid",
+	gap: "2rem",
+	gridTemplateColumns: "repeat(1, minmax(0, 1fr))",
+	maxWidth: "100%",
+	marginX: "auto",
+	"@media (min-width: 768px)": {
+		gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+	},
+	"@media (min-width: 1024px)": {
+		gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+	},
+	"@media (min-width: 1280px)": {
+		gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+		maxWidth: 1280,
+	},
+	"@media (min-width: 1536px)": {
+		gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+	},
+});
+
+const ItemWrapper = styled("div", {
+	flex: 1,
+	textAlign: "center",
+	padding: "1rem",
+	whiteSpace: "nowrap",
+});
+
+const NFTItemContainer = styled("div", {
+	gridColumn: "span 1 / span 1",
+	display: "flex",
+	flexDirection: "column",
+	"@md": {
+		width: 0.5,
+	},
+	"@sm": {
+		width: "100%",
+	},
+});
+
+function MarketplaceListingResults({
+	nft_posts,
+	fetchNext,
+	hasNextPage,
+	scrollerRef,
+}) {
+	const getNextPage = () => {
+		if (hasNextPage) fetchNext();
+	};
+	return (
+		<>
+			<VirtuosoGrid
+				className="w-full px-2 py-8"
+				useWindowScroll
+				totalCount={nft_posts.length}
+				overscan={24}
+				endReached={getNextPage}
+				customScrollParent={scrollerRef.current}
+				components={{
+					// Header: Header,
+					Item: NFTItemContainer,
+					List: NFTListContainer,
+					ScrollSeekPlaceholder: ({height, width, index}) => (
+						<NFTItemContainer>
+							<ItemWrapper>{"--"}</ItemWrapper>
+						</NFTItemContainer>
+					),
+				}}
+				itemContent={(index) => {
+					const nft = nft_posts[index];
+					return (
+						<SweetshopNFT
+							inGrid
+							{...nft}
+						/>
+					);
+				}}
+			/>
+		</>
 	);
 }
 
@@ -210,37 +284,3 @@ export const getServerSideProps = async (ctx) => {
 		};
 	}
 };
-
-function MarketplaceListingResults({nft_posts, fetchNext, hasNextPage}) {
-	return (
-		<Container className="flex flex-col gap-8">
-			<Container className="flex flex-col gap-8 overflow-x-hidden">
-				<MarketplaceListingsContainer>
-					{nft_posts.length > 0 ? (
-						nft_posts.map((nft) => (
-							<div
-								key={nft._id}
-								className="col-span-1"
-							>
-								<SweetshopNFT
-									inGrid
-									{...nft}
-								/>
-							</div>
-						))
-					) : (
-						<Container className="flex flex-col items-center col-span-1 py-24 md:col-span-2 xl:col-span-5">
-							<Heading size="sm">No results found</Heading>
-						</Container>
-					)}
-				</MarketplaceListingsContainer>
-			</Container>
-			{hasNextPage && (
-				<InfinitySpinner
-					isFetching={false}
-					fetchNext={fetchNext}
-				/>
-			)}
-		</Container>
-	);
-}

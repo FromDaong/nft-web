@@ -29,7 +29,7 @@ function StudioNavigation() {
 			className={"w-full flex gap-2 sticky top-0 z-30 border-b"}
 			css={{backgroundColor: "$surface", borderColor: "$border"}}
 		>
-			<Container className="flex gap-2 py-2 container mx-auto overflow-x-auto">
+			<Container className="flex gap-2 py-2 mx-auto overflow-x-auto">
 				<Link href={"/studio"}>
 					<a>
 						<Button

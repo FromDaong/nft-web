@@ -8,7 +8,7 @@ export const DetailSection = (props) => {
 				<Container className="flex items-baseline justify-between w-full gap-2">
 					<Heading
 						size={"xss"}
-						className="w-3/4 text-ellipsis"
+						className="w-3/4 text-ellipsis line-clamp-1"
 						css={{padding: 0}}
 					>
 						{props.name}

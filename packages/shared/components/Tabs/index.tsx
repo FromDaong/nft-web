@@ -15,7 +15,7 @@ export const TabsContainer = ({children}: ComponentBasicProps) => {
 			variant={"unstyled"}
 			className="flex w-full px-2 overflow-x-auto"
 		>
-			<Container className="container flex w-full mx-auto gap-x-2 flex-start max-w-screen-lg">
+			<Container className="container flex w-full mx-auto gap-x-2 flex-start max-w-screen-xl">
 				{children}
 			</Container>
 		</Container>

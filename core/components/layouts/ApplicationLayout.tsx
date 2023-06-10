@@ -50,20 +50,27 @@ const navElements = [
 	},
 ];
 
-export default function ApplicationLayout({children}: ComponentBasicProps) {
+export default function ApplicationLayout({
+	children,
+	thisRef,
+}: ComponentBasicProps) {
 	const {isOpen, onOpen, onClose} = useDisclosure();
 
 	return (
 		<Container
 			css={{background: "$surface"}}
 			className="flex h-full items-start overflow-y-auto"
+			ref={thisRef}
 		>
 			<Sidebar
 				navElements={navElements}
 				isOpen={isOpen}
 				onClose={onClose}
 			/>
-			<Container className="flex-1 relative">
+			<Container
+				id="main"
+				className="flex-1 relative min-h-full flex flex-col"
+			>
 				{!isOpen && (
 					<Button
 						appearance={"subtle"}

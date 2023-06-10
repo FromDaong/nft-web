@@ -4,7 +4,7 @@ import {Text} from "@packages/shared/components/Typography/Text";
 import DynamicSkeleton from "@packages/skeleton";
 import {FeaturedCreatorSkeleton} from "@packages/skeleton/config";
 import Link from "next/link";
-import {UserIcon} from "lucide-react";
+import {UserIcon, Verified} from "lucide-react";
 import Username from "./Username";
 import {useFollow} from "@packages/hooks/useFollow";
 import {useUser} from "core/auth/useUser";
@@ -25,6 +25,7 @@ type SuggestedCreatorData = {
 	followers?: any[];
 	subscribers?: number;
 	variant?: "compact" | "default";
+	isCreator?: boolean;
 };
 
 export const SkeletonExpandedSuggestedCreatorCard = (props) => (
@@ -147,11 +148,17 @@ const CompactCreatorCard = (props: SuggestedCreatorData) => {
 						<Container className="flex flex-col w-full">
 							<Container className="flex items-center justify-between w-full gap-4">
 								<Container>
-									<Heading size={"xss"}>{props.display_name?.trim()}</Heading>
-									<Username
-										username={props.username.replaceAll(" ", "").trim()}
-										verified={true}
-									/>
+									<Heading size={"xss"}>
+										{props.display_name?.trim()
+											? props.display_name?.trim()
+											: props.username.replaceAll(" ", "").trim()}
+										{props.isCreator && (
+											<Text css={{color: "$primary5"}}>
+												<Verified className="w-5 h-5" />
+											</Text>
+										)}
+									</Heading>
+									<Text>{props.username.replaceAll(" ", "").trim()}</Text>
 									<Text className="flex items-center gap-2 mt-2">
 										{isFollowing && (
 											<>

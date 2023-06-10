@@ -37,7 +37,7 @@ import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import {useBalance} from "wagmi";
 import {ExternalLinkIcon} from "@radix-ui/react-icons";
 import Spinner from "@packages/shared/icons/Spinner";
-import {ShoppingBagIcon} from "lucide-react";
+import {ShoppingBagIcon, Verified} from "lucide-react";
 import ApplicationLayout from "./ApplicationLayout";
 
 type ProfileLayoutProps = ComponentBasicProps & {
@@ -336,77 +336,73 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 			/>
 
 			<Container className="py-8 pb-0 mx-auto ">
-				<FluidContainer className="container flex justify-between px-4 max-w-screen-lg mx-auto">
+				<FluidContainer className="container flex justify-between px-4 max-w-screen-xl mx-auto">
 					<ContextualContainer className="grid justify-between w-full col-span-1 xl:grid-cols-3 gap-y-4">
 						<Container className="col-span-1 xl:col-span-2">
-							<Container className="flex gap-8">
-								<Container>
-									<NewAvatar
-										username="Tatenda Chris"
-										imageSrc={ownerOfUserProfile.profile_pic}
-										size={64}
-									/>
-								</Container>
-
+							<Container className="flex gap-4 items-center">
+								<NewAvatar
+									username="Tatenda Chris"
+									imageSrc={ownerOfUserProfile.profile_pic}
+									size={48}
+								/>
 								<Container className="flex flex-col gap-1">
 									<Container>
 										<Heading
-											size="sm"
+											size="xs"
 											className="flex items-center gap-1"
 										>
-											{ownerOfUserProfile.display_name ??
-												"Loading profile details"}
+											{ownerOfUserProfile.display_name ?? "TreatDAO Explorer"}{" "}
+											{ownerOfUserProfile.creator && (
+												<Text css={{color: "$primary5"}}>
+													<Verified className="w-5 h-5" />
+												</Text>
+											)}
 										</Heading>
 										<MutedText>@{ownerOfUserProfile.username}</MutedText>
 									</Container>
-									<Container className="flex flex-row flex-wrap gap-2 mt-2 rounded-full">
-										{userBadges.map((badge) => (
-											<Container
-												key={badge.name}
-												css={{
-													backgroundColor: `$${badge.color}2`,
-													borderColor: "$subtleBorder",
-												}}
-												className="px-4 py-1 border rounded-full shadow-sm"
-											>
-												<Text
-													css={{color: `$${badge.color}10`, fontWeight: 500}}
-												>
-													<SmallText>
-														<ImportantText>{badge.name}</ImportantText>
-													</SmallText>
-												</Text>
-											</Container>
-										))}
+								</Container>
+							</Container>
+							<Text className="hidden max-w-2xl mt-2 md:flex">
+								{ownerOfUserProfile.bio ?? "Loading profile details"}
+							</Text>
+							<Container className="flex flex-row flex-wrap gap-2 mt-2 rounded-full">
+								{userBadges.map((badge) => (
+									<Container
+										key={badge.name}
+										css={{
+											backgroundColor: `$${badge.color}2`,
+											borderColor: "$subtleBorder",
+										}}
+										className="px-4 py-1 border rounded-full shadow-sm"
+									>
+										<Text css={{color: `$${badge.color}10`, fontWeight: 500}}>
+											<SmallText>
+												<ImportantText>{badge.name}</ImportantText>
+											</SmallText>
+										</Text>
 									</Container>
-									<Text className="hidden max-w-2xl mt-2 md:flex">
-										{ownerOfUserProfile.bio ?? "Loading profile details"}
+								))}
+							</Container>
+							<Container className="hidden w-full mt-2 mb-4 md:flex">
+								<Container className="flex gap-2">
+									<Text
+										appearance={"hiContrast"}
+										weight={"bold"}
+									>
+										{ownerOfUserProfile.following.length} Following
 									</Text>
-									<Container className="hidden w-full mt-2 mb-4 md:flex">
-										<Container className="flex gap-2">
-											<Text
-												appearance={"hiContrast"}
-												weight={"bold"}
-											>
-												{ownerOfUserProfile.following.length} Following
-											</Text>
-										</Container>
-										<Bull />
-										<Container className="flex gap-2">
-											<Text
-												appearance={"hiContrast"}
-												weight={"bold"}
-											>
-												{followers.length} Followers
-											</Text>
-										</Container>
-									</Container>
+								</Container>
+								<Bull />
+								<Container className="flex gap-2">
+									<Text
+										appearance={"hiContrast"}
+										weight={"bold"}
+									>
+										{followers.length} Followers
+									</Text>
 								</Container>
 							</Container>
 							<Container className="flex flex-col gap-4 md:hidden">
-								<Text className="flex max-w-2xl mt-2">
-									{ownerOfUserProfile.bio ?? <Spinner />}
-								</Text>
 								<Container className="flex w-full mt-2 mb-4">
 									<>
 										<Text
@@ -499,7 +495,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 				</TabsContainer>
 			</FluidContainer>
 			<ApplicationFrame>
-				<Container>{props.children}</Container>
+				<Container className="px-2">{props.children}</Container>
 			</ApplicationFrame>
 		</ApplicationLayout>
 	);

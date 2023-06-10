@@ -31,6 +31,8 @@ export default function UserProfile(props: {
 		isLoading,
 		data: resaleMarketListings,
 		isError,
+		hasNextPage,
+		fetchNextPage,
 	} = TreatCore.useInfiniteQuery(
 		["resale-market-listings", profile?.address],
 		async ({pageParam = 0}) => {
@@ -65,25 +67,36 @@ export default function UserProfile(props: {
 		return docs;
 	}, [resaleMarketListings]);
 
-	console.log({resaleNFTs});
-
 	return (
 		<ProfileLayout userProfile={nft_data}>
 			<Container className="flex flex-col items-center">
-				{isLoading && <Spinner />}
-				{!isLoading && (
-					<Container className="grid w-full grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-						{resaleNFTs.map((nft) => (
-							<SweetshopNFT
-								key={nft.id}
-								{...nft}
-							/>
-						))}
-					</Container>
-				)}
+				<InfinityLoadingNFTs
+					data={resaleNFTs}
+					isFetching={isLoading}
+					hasNext={hasNextPage}
+					fetchNext={fetchNextPage}
+				/>
 			</Container>
 		</ProfileLayout>
 	);
 }
+
+const InfinityLoadingNFTs = ({data, fetchNext, hasNext, isFetching}) => {
+	return (
+		<>
+			{isFetching && <Spinner />}
+			{!isFetching && (
+				<Container className="grid w-full grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+					{data.map((nft) => (
+						<SweetshopNFT
+							key={nft.id}
+							{...nft}
+						/>
+					))}
+				</Container>
+			)}
+		</>
+	);
+};
 
 export const getServerSideProps = beforePageLoadGetUserProfile;

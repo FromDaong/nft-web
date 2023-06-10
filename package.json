@@ -199,6 +199,7 @@
 		"react-query": "^3.39.2",
 		"react-virtualized": "^9.22.5",
 		"react-virtualized-auto-sizer": "^1.0.20",
+		"react-virtuoso": "^4.3.10",
 		"react-window": "^1.8.9",
 		"react-wrap-balancer": "^0.2.4",
 		"redis": "^4.5.1",

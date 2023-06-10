@@ -89,21 +89,23 @@ const TagsFilter = () => {
 	}, [selectedTags]);
 
 	return (
-		<Container className="flex flex-col w-full gap-4 py-4">
-			<Container className="flex flex-wrap gap-4">
-				{selectedTags.map((tag) => (
-					<Button
-						key={tag}
-						appearance={"link"}
-						className="border shadow-sm"
-						css={{paddingX: "8px", borderColor: "$subtleBorder"}}
-						onClick={() => removeTag(tag)}
-					>
-						{tag}
-						<XIcon className="w-4 h-4" />
-					</Button>
-				))}
-			</Container>
+		<Container className="flex flex-col w-full gap-4 p-2">
+			{selectedTags.length > 0 && (
+				<Container className="flex flex-wrap gap-4">
+					{selectedTags.map((tag) => (
+						<Button
+							key={tag}
+							appearance={"link"}
+							className="border shadow-sm"
+							css={{paddingX: "8px", borderColor: "$subtleBorder"}}
+							onClick={() => removeTag(tag)}
+						>
+							{tag}
+							<XIcon className="w-4 h-4" />
+						</Button>
+					))}
+				</Container>
+			)}
 			<Container className="flex justify-between w-full">
 				<DropdownMenu>
 					<DropdownMenuTrigger>
