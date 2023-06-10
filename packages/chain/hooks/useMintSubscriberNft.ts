@@ -1,29 +1,18 @@
-import {getSubscriberMartContract, mintSubNft} from "@packages/chain/utils";
-
 import {useCallback} from "react";
 import {useAccount} from "wagmi";
-import useTreat from "./useTreat";
+import {useContracts} from "@packages/post/hooks";
 
-const useMintSubscriberNft = (
-	id: number,
-	treatCost: number,
-	useSubscriberMart = false
-) => {
+const useMintSubscriberNft = (id: number, treatCost: number) => {
 	const {address: account} = useAccount();
-	const treat = useTreat();
-	const subscriberMartContract = useSubscriberMart
-		? getSubscriberMartContract(treat)
-		: getSubscriberMartContract(treat);
+	const {subscriptionsMart} = useContracts();
 
 	const handleMintSubscriberNft = useCallback(async () => {
-		const txHash = await mintSubNft(
-			subscriberMartContract,
-			account,
-			id,
-			treatCost
-		);
+		const txHash = await subscriptionsMart.redeem(id, {
+			from: account,
+			value: treatCost,
+		});
 		return txHash;
-	}, [account, id, treatCost, subscriberMartContract]);
+	}, [account, id, treatCost, subscriptionsMart]);
 
 	return {onMintSubscriberNft: handleMintSubscriberNft};
 };

@@ -5,7 +5,7 @@ import {ImportantText} from "@packages/shared/components/Typography/Text";
 export const DetailSection = (props) => {
 	return (
 		<Container className="w-full gap-2 flex flex-col">
-			<Container className="flex flex-col w-full gap-1">
+			<Container className="flex flex-col w-full">
 				<Container className="flex items-baseline justify-between w-full gap-2">
 					<Text
 						className="w-3/4 text-ellipsis line-clamp-2 leading-tight"

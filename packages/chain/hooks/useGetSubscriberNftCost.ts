@@ -1,29 +1,22 @@
-import {
-	getSubscriberMartContract,
-	getSubscriberNftCost,
-} from "@packages/chain/utils";
 import {useCallback, useEffect, useState} from "react";
 
 import BigNumber from "bignumber.js";
-import useTreat from "./useTreat";
 
-const useGetSubscriberNftCost = (id: number, useSubscriberMart = false) => {
+const useGetSubscriberNftCost = (subscriptionsMartContract, id: number) => {
 	const [theNftCost, setTheNftCost] = useState(new BigNumber(0));
-	const treat = useTreat();
-	const subscriberMartContract = useSubscriberMart
-		? getSubscriberMartContract(treat)
-		: getSubscriberMartContract(treat);
 
 	const fetchNftCost = useCallback(async () => {
-		const theNftCost = await getSubscriberNftCost(subscriberMartContract, id);
+		const theNftCost = new BigNumber(
+			await subscriptionsMartContract.nftCosts(id)
+		);
 		setTheNftCost(new BigNumber(theNftCost));
-	}, [id, treat]);
+	}, [subscriptionsMartContract]);
 
 	useEffect(() => {
-		if (treat) {
+		if (subscriptionsMartContract) {
 			fetchNftCost();
 		}
-	}, [id]);
+	}, [subscriptionsMartContract]);
 
 	return theNftCost;
 };

@@ -8,25 +8,10 @@ import {request, gql} from "graphql-request";
 import {graphql_endpoints as markets} from "./queries";
 import Web3 from "web3";
 import formatAddress from "@utils/formatAddress";
+import {SUBGRAPH_GRAPHQL_URL} from "@lib/graphClients";
 
 const RESALE_GRAPHQL_ENDPOINT =
 	"https://api.thegraph.com/subgraphs/name/treatdaodev/treatdao";
-const BASE_MARKET_GRAPHQL_ENDPOINT =
-	"https://api.thegraph.com/subgraphs/name/0x6e6f6c61/treat";
-
-const RPC_NODE_URL = process.env.RPC_NODE_URL;
-
-const customHttpProvider = new ethers.providers.JsonRpcProvider(RPC_NODE_URL);
-export const treatResaleReader = new ethers.Contract(
-	contractAddresses.treatMarketReader[56],
-	ABI.treatMarketReader,
-	customHttpProvider
-);
-export const treatMarketplaceContract = new ethers.Contract(
-	contractAddresses.treatResaleMarketplaceMinter[56],
-	ABI.treatMarketplace,
-	customHttpProvider
-);
 
 export default async function handler(
 	req: NextApiRequest,
@@ -118,18 +103,65 @@ export default async function handler(
 	}
 
 	if (config.market !== "resale") {
-		// @ts-ignore
-		const nfts = await MongoModelNFT.paginate(lookupConfig, {
-			page: config.page,
-			limit: 24,
-			sort: config.sort,
-		});
+		let nfts;
+		const {tokens} = await request(SUBGRAPH_GRAPHQL_URL, markets.sold_out);
+
+		const soldOutIDs = tokens.map((token) => +token.identifier);
+		console.log({soldOutIDs});
+		if (market === "verified") {
+			// @ts-ignore
+			nfts = await MongoModelNFT.paginate(
+				{
+					$or: [
+						{
+							totm_nft: false,
+						},
+						{
+							totm_nft: {
+								$exists: false,
+							},
+						},
+						{
+							melon_nft: false,
+						},
+						{
+							melon_nft: {
+								$exists: false,
+							},
+						},
+					],
+					$and: [
+						{
+							id: {
+								$gte: +process.env.NEXT_PUBLIC_V2_NFT_START,
+							},
+						},
+						{
+							id: {
+								$nin: soldOutIDs,
+							},
+						},
+					],
+				},
+				{
+					page: config.page,
+					limit: 24,
+					sort: config.sort,
+				}
+			);
+		} else {
+			// @ts-ignore
+			nfts = await MongoModelNFT.paginate(lookupConfig, {
+				page: config.page,
+				limit: 24,
+				sort: config.sort,
+			});
+		}
 
 		nfts.docs = await MongoModelNFT.populate(nfts.docs, {
 			path: "creator",
 			populate: "profile",
 		});
-		console.log(config.ids);
 
 		return returnWithSuccess(nfts, res);
 	}

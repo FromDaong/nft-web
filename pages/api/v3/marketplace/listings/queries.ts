@@ -32,4 +32,11 @@ export const graphql_endpoints = {
 			}
 		}
 	`,
+	sold_out: gql`
+		{
+			tokens(first: 1000, where: {totalSupply: "0"}) {
+				identifier
+			}
+		}
+	`,
 };

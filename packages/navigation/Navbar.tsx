@@ -168,6 +168,11 @@ export default function Navbar() {
 	);
 }
 
+const DropdownMenuContainer = styled(DropdownMenuContent, {
+	backgroundColor: "$surfaceOnSurface",
+	borderColor: "$subtleBorder",
+});
+
 function BrowseDropdownMenu() {
 	const [isOpen, setIsOpen] = useState(false);
 	const router = useRouter();
@@ -211,11 +216,11 @@ function BrowseDropdownMenu() {
 					leaveTo="transform opacity-0 scale-95"
 				>
 					<Portal>
-						<DropdownMenuContent className="w-48 p-2 transition-opacity duration-200 bg-white border shadow-2xl rounded-xl z-50">
+						<DropdownMenuContainer className="w-48 p-2 transition-opacity duration-200 border shadow-2xl rounded-xl z-50">
 							<DropdownMenuItem className="p-2 rounded-lg cursor-pointer hover:bg-zinc-100">
 								<Link href="/sweetshop">
 									<a>
-										<BoldLink className="flex items-center gap-4">
+										<BoldLink className="flex items-center gap-4 w-full">
 											<ShoppingBag className="w-5 h-5" />
 											Sweetshop
 										</BoldLink>
@@ -225,14 +230,14 @@ function BrowseDropdownMenu() {
 							<DropdownMenuItem className="p-2 rounded-lg cursor-pointer hover:bg-zinc-100">
 								<Link href="/collection">
 									<a>
-										<BoldLink className="flex items-center gap-4">
+										<BoldLink className="flex items-center gap-4 w-full">
 											<StackIcon className="w-5 h-5" />
 											Collections
 										</BoldLink>
 									</a>
 								</Link>
 							</DropdownMenuItem>
-						</DropdownMenuContent>
+						</DropdownMenuContainer>
 					</Portal>
 				</Transition>
 			</DropdownMenu>

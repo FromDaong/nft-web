@@ -1,7 +1,6 @@
-import {Tag, useGetResaleListings} from "@packages/post/BuyNFTPageViewNFT";
-import {Button} from "@packages/shared/components/Button";
+import {Tag} from "@packages/post/BuyNFTPageViewNFT";
 import {Container} from "@packages/shared/components/Container";
-import {Heading, Text} from "@packages/shared/components/Typography/Headings";
+import {Text} from "@packages/shared/components/Typography/Headings";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
 import Spinner from "@packages/shared/icons/Spinner";
 import {apiEndpoint} from "@utils/index";
@@ -9,7 +8,6 @@ import axios from "axios";
 import TreatCore from "core/TreatCore";
 import UserAvatar from "core/auth/components/Avatar";
 import {AnimatePresence} from "framer-motion";
-import {SearchIcon, ShoppingBag} from "lucide-react";
 import {useRouter} from "next/router";
 import {useMemo} from "react";
 import {gql, useQuery} from "urql";
@@ -74,8 +72,6 @@ const useResaleListingsForNFT = (nftId) => {
 		return [];
 	}, [sellersData]);
 
-	console.log({resaleListings, error});
-
 	return {
 		isLoading: fetching,
 		resaleListings,
@@ -85,7 +81,7 @@ const useResaleListingsForNFT = (nftId) => {
 export default function ResaleListings({nft}) {
 	const {resaleListings, isLoading} = useResaleListingsForNFT(nft.id);
 	const router = useRouter();
-	const seller = (router.query.seller as string).toLowerCase();
+	const seller = `${router.query.seller as string}`.toLowerCase();
 
 	const selectedListing = resaleListings.find(
 		(listing) => seller === listing.seller.address.toLowerCase()
@@ -136,6 +132,7 @@ export default function ResaleListings({nft}) {
 }
 
 function ResaleListing({listing, seller}) {
+	if (!listing) return null;
 	return (
 		<ResaleItemWithBuy nft={1}>
 			{(buy) => (
@@ -151,8 +148,7 @@ function ResaleListing({listing, seller}) {
 							border: "2px solid $purple10",
 						},
 						border:
-							(seller as string)?.toLowerCase() ===
-							listing.seller.address.toLowerCase()
+							seller === listing.seller.address.toLowerCase()
 								? "2px solid $purple10"
 								: "2px solid $surfaceOnSurface",
 						backgroundColor: "$surfaceOnSurface",

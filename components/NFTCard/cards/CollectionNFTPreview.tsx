@@ -1,35 +1,38 @@
 import React from "react";
 import {NFTCard} from "..";
 import {Container} from "@packages/shared/components/Container";
+import Link from "next/link";
+import {TritPostProps} from "@packages/post/types";
 
-type CollectionNFTPreviewProps = {
-	_id: string;
-	creator: {
-		username: string;
-		avatar: string;
-	};
-	name: string;
-	isProtected: boolean;
-	isMine: boolean;
-};
-
-export default function CollectionNFTPreview(props: CollectionNFTPreviewProps) {
+export default function CollectionNFTPreview(
+	props: TritPostProps & {
+		isProtected: boolean;
+	}
+) {
+	console.log({props});
 	return (
-		<NFTCard _id={props._id}>
-			<NFTCard.RenderMedia
-				isProtected={props.isProtected}
-				isMine={props.isMine}
-				text={props.name}
-				_id={props._id}
-			/>
-			<Container className="flex flex-col w-full gap-2 px-4">
-				<NFTCard.Detail
-					{...props}
-					isMine={props.isMine}
-					creator={props.creator.username}
-					toggleImageProtection={() => null}
-				/>
-			</Container>
-		</NFTCard>
+		<Link
+			href={`/post/nft/${props._id}?seller=${props.seller}&id=${props.id}&market=verified`}
+		>
+			<a>
+				<NFTCard _id={props._id}>
+					<NFTCard.RenderMedia
+						isProtected={props.isProtected}
+						isMine={props.isMine}
+						text={props.name}
+						_id={props._id}
+					/>
+					<Container className="flex flex-col w-full gap-2">
+						<NFTCard.Detail
+							{...props}
+							isMine={props.isMine}
+							creator={props.creator.username}
+							toggleImageProtection={() => null}
+							Price={NFTCard.Price}
+						/>
+					</Container>
+				</NFTCard>
+			</a>
+		</Link>
 	);
 }

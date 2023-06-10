@@ -5,6 +5,8 @@ import {NFTCard} from "..";
 import Link from "next/link";
 import {useRouter} from "next/router";
 import {memo} from "react";
+import {Button} from "@packages/shared/components/Button";
+import {ExclamationCircleIcon} from "@heroicons/react/outline";
 
 function SweetshopNFT(props: TritPostProps) {
 	const {liked, likeNFT, isMine, isProtected} = useTritNFTUtils(props);
@@ -45,7 +47,7 @@ function SweetshopNFT(props: TritPostProps) {
 							</Container>
 						</Container>
 					</Container>
-					<Container className="flex flex-col w-full gap-2 mt-2">
+					<Container className="flex flex-col w-full gap-2 pt-2">
 						<NFTCard.Detail
 							{...props}
 							isMine={isMine}

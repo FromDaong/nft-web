@@ -353,8 +353,6 @@ const NFTPresentationComponent = (props: {
 	);
 };
 
-export default NFTPresentationComponent;
-
 export function Tag({children}) {
 	return (
 		<Container
@@ -373,87 +371,4 @@ export function Tag({children}) {
 	);
 }
 
-function Stat({title, value}) {
-	return (
-		<Container
-			className="flex flex-col items-baseline overflow-hidden border rounded-lg shadow-sm"
-			css={{
-				borderColor: "$border",
-			}}
-		>
-			<SmallText
-				className="tracking-tighter"
-				css={{
-					backgroundColor: "$surface",
-					padding: "0.5rem",
-				}}
-			>
-				<ImportantText>{title}</ImportantText>
-			</SmallText>
-			<Heading
-				className="w-full tracking-tighter text-center"
-				css={{
-					backgroundColor: "$surfaceOnSurface",
-					padding: "0.5rem",
-				}}
-				size="xs"
-			>
-				{value}
-			</Heading>
-		</Container>
-	);
-}
-
-function Collector({nft}) {
-	return (
-		<Container className="flex flex-col col-span-2 gap-2">
-			<Heading
-				appearance={"mute"}
-				size={"xss"}
-			>
-				Collection
-			</Heading>
-			<Container
-				css={{backgroundColor: "$surfaceOnSurface"}}
-				className="flex flex-wrap justify-between gap-4 shadow rounded-xl w-fit"
-			>
-				<Container className="flex items-center gap-4 p-2 pr-4">
-					<img
-						src={nft.creator.profile.profile_pic}
-						alt={"Collection name"}
-						className="object-cover w-20 rounded-xl aspect-square"
-					/>
-					<Container className="flex flex-col gap-2">
-						<Heading size={"xss"}>The Killer Collection</Heading>
-						<Container className={"flex gap-2"}>
-							<AvatarGroup
-								users={[
-									{
-										name: "Tatenda",
-										imageUrl: nft.creator.profile.profile_pic,
-										href: nft.creator.username,
-									},
-									{
-										name: "Tatenda",
-										imageUrl: nft.creator.profile.profile_pic,
-										href: nft.creator.username,
-									},
-									{
-										name: "Tatenda",
-										imageUrl: nft.creator.profile.profile_pic,
-										href: nft.creator.username,
-									},
-									{
-										name: "Tatenda",
-										imageUrl: nft.creator.profile.profile_pic,
-										href: nft.creator.username,
-									},
-								]}
-							/>
-						</Container>
-					</Container>
-				</Container>
-			</Container>
-		</Container>
-	);
-}
+export default NFTPresentationComponent;

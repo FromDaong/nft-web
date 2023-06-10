@@ -173,7 +173,7 @@ export default function NFT(props: {
 							nft={nft}
 							postUtils={postUtils}
 						/>
-						<Container className="flex-1 w-full relative flex flex-col h-full rounded-xl gap-12">
+						<Container className="flex-1 w-full relative flex flex-col h-full rounded-xl gap-12 container mx-auto pb-32">
 							<Container className="flex gap-4">
 								{isOwned && balance && (
 									<Container
@@ -240,51 +240,6 @@ export default function NFT(props: {
 							<NFTPageTabs nft={nft} />
 						</Container>
 					</Container>
-					<Container className="flex flex-col mt-32">
-						<Container className="flex flex-col gap-12">
-							<Container className="flex flex-col gap-4">
-								<Heading size="sm">More from the creator</Heading>
-							</Container>
-							<Container className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-								<Link href={`/${nft.creator.username}`}>
-									<a>
-										<Container className="flex flex-col gap-8">
-											<UserAvatar
-												username={nft.creator.username}
-												profile_pic={
-													nft.creator.profile_pic ??
-													nft.creator.profile?.profile_pic
-												}
-												size={80}
-											/>
-
-											<Container className="flex flex-col gap-2">
-												<Heading size="sm">{nft.name} </Heading>
-												<Text>@{nft.creator.username}</Text>
-											</Container>
-										</Container>
-									</a>
-								</Link>
-								{!moreNFTSError && !moreNFTSLoading
-									? moreNFTs
-											.map((post) => legacy_nft_to_new(post))
-											.slice(0, 3)
-											.map((item) => (
-												<CreatorProfileNFT
-													key={item._id}
-													inGrid
-													{...item}
-												/>
-											))
-									: [0, 1, 2].map((i) => (
-											<DynamicSkeleton
-												key={"skeleton2:" + i}
-												config={TritPostSkeleton}
-											/>
-									  ))}
-							</Container>
-						</Container>
-					</Container>
 				</ApplicationFrame>
 			</ApplicationLayout>
 		</Provider>
@@ -304,6 +259,7 @@ function ImagePreviewSection({
 		onOpen: onLightboxOpen,
 		onClose: onLightboxClose,
 	} = useDisclosure();
+	console.log({nft});
 	return (
 		<Container className="w-full xl:w-1/2 flex-shrink-0 lg:h-[90vh] h-[calc(80vh-64px)] flex items-center justify-center xl:sticky top-4">
 			{isLightboxOpen && (isOwned || !nft.protected) && (
@@ -327,54 +283,62 @@ function ImagePreviewSection({
 					/>
 				</Container>
 
-				<Container className="flex flex-col gap-2 mt-8">
-					<Container className="flex justify-between">
-						<Text>
-							<ImportantText>
-								{remainingNfts !== 0 &&
-									`Minting ${mintedNfts + +1} of ${maxNftSupply}`}
-							</ImportantText>
-						</Text>
-						<Text>
-							<ImportantText>
-								{remainingNfts !== 0 &&
-									Math.ceil((mintedNfts / maxNftSupply) * 100) + "%"}
-								{remainingNfts === 0 && "100%"}
-							</ImportantText>
-						</Text>
-					</Container>
+				{!nft.melon_nft && (
+					<Container className="flex flex-col gap-2 mt-8">
+						<Container className="flex justify-between">
+							<Text>
+								<ImportantText>
+									{remainingNfts !== 0 &&
+										`Minting ${mintedNfts + +1} of ${maxNftSupply}`}
+								</ImportantText>
+							</Text>
+							<Text>
+								<ImportantText>
+									{remainingNfts !== 0 &&
+										Math.ceil((mintedNfts / maxNftSupply) * 100) + "%"}
+									{remainingNfts === 0 && "100%"}
+								</ImportantText>
+							</Text>
+						</Container>
 
-					<Container
-						className="relative flex rounded-full"
-						css={{
-							backgroundColor: "$overlay",
-						}}
-					>
 						<Container
-							className={`relative rounded-full p-1`}
-							role={"progress"}
+							className="relative flex rounded-full"
 							css={{
-								width: `${
-									remainingNfts > 0
-										? Math.ceil((mintedNfts / maxNftSupply) * 100)
-										: 100
-								}%`,
-								backgroundColor: "$textContrast",
+								backgroundColor: "$overlay",
 							}}
-						/>
+						>
+							<Container
+								className={`relative rounded-full p-1`}
+								role={"progress"}
+								css={{
+									width: `${
+										remainingNfts > 0
+											? Math.ceil((mintedNfts / maxNftSupply) * 100)
+											: 100
+									}%`,
+									backgroundColor: "$textContrast",
+								}}
+							/>
+						</Container>
 					</Container>
-				</Container>
+				)}
 
 				<Container className="flex flex-col justify-between gap-4 md:flex-row">
 					<Container>
 						{mintedNfts !== maxNftSupply && (
-							// &&!(nft.creator.address.toLowerCase() === address?.toLowerCase())
 							<BuyNFTButton
 								postUtils={postUtils}
 								nftData={nft}
 							/>
 						)}
-						{mintedNfts === maxNftSupply && (
+
+						{mintedNfts === maxNftSupply && nft.melon_nft && (
+							<BuyNFTButton
+								postUtils={postUtils}
+								nftData={nft}
+							/>
+						)}
+						{mintedNfts === maxNftSupply && !nft.melon_nft && (
 							<Container className="flex gap-4 items-center">
 								<Text
 									css={{color: "$red9"}}

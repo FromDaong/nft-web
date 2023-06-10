@@ -1,26 +1,20 @@
-import {getTreatMartContract, getTreatNftCost} from "@packages/chain/utils";
 import {useCallback, useEffect, useState} from "react";
 
 import BigNumber from "bignumber.js";
-import useTreat from "./useTreat";
 
-const useGetTreatNFTCost = (id: number, useTreatMart = false) => {
+const useGetTreatNFTCost = (treatMartContract, id: number) => {
 	const [theNftCost, setTheNftCost] = useState(new BigNumber(0));
-	const treat = useTreat();
-	const treatMartContract = useTreatMart
-		? getTreatMartContract(treat)
-		: getTreatMartContract(treat);
 
 	const fetchNftCost = useCallback(async () => {
-		const theNftCost = await getTreatNftCost(treatMartContract, id);
+		const theNftCost = new BigNumber(await treatMartContract.nftCosts(id));
 		setTheNftCost(new BigNumber(theNftCost));
-	}, [id, treat]);
+	}, [treatMartContract]);
 
 	useEffect(() => {
-		if (treat) {
+		if (treatMartContract) {
 			fetchNftCost();
 		}
-	}, [id]);
+	}, [treatMartContract]);
 
 	return theNftCost;
 };

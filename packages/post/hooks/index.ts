@@ -405,6 +405,12 @@ export const useGetIsNFTOwned = (nft) => {
 export const useContracts = () => {
 	const {data: signer} = useSigner();
 
+	const totmMartContract = useContract({
+		addressOrName: contractAddresses.totmMart[56],
+		contractInterface: ABI.totmMart,
+		signerOrProvider: signer,
+	});
+
 	const treatMarketplaceContract = useContract({
 		addressOrName: contractAddresses.treatResaleMarketplaceMinter[56],
 		contractInterface: ABI.treatMarketplace,
@@ -455,6 +461,7 @@ export const useContracts = () => {
 		subscriptionsMart,
 		permissionsHelperContract,
 		treatMarketplaceReaderContract,
+		totmMartContract,
 		signer,
 	};
 };

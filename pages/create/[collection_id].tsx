@@ -1,16 +1,13 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import {SEOHead} from "@packages/seo/page";
 import {Container} from "@packages/shared/components/Container";
-import {Heading} from "@packages/shared/components/Typography/Headings";
-import {ImportantText, Text} from "@packages/shared/components/Typography/Text";
+import {Text} from "@packages/shared/components/Typography/Text";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import {useCallback, useEffect, useState} from "react";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import {pagePropsConnectMongoDB} from "@db/engine/pagePropsDB";
 import {MongoModelCollection} from "server/helpers/models";
 import AddNFTDetails from "@packages/post/CreatePost/NFTDetails";
-import UploadMedia from "@packages/form/actions/UploadFiles";
-import {File} from "filepond";
 import {useAccount, useWaitForTransaction} from "wagmi";
 import {useContracts} from "@packages/post/hooks";
 import {useStorageService} from "@packages/shared/hooks";
