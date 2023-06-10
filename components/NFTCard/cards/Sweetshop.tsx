@@ -5,9 +5,6 @@ import {NFTCard} from "..";
 import Link from "next/link";
 import {useRouter} from "next/router";
 import {memo} from "react";
-import {Button} from "@packages/shared/components/Button";
-import {FrostyBackgroundContainer} from "../misc/FrostyBackground";
-import {EyeIcon} from "lucide-react";
 
 function SweetshopNFT(props: TritPostProps) {
 	const {liked, likeNFT, isMine, isProtected} = useTritNFTUtils(props);

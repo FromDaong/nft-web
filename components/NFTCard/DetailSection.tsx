@@ -1,18 +1,18 @@
-import {Heading} from "@packages/shared/components/Typography/Headings";
+import {Text} from "@packages/shared/components/Typography/Headings";
 import {Container} from "@packages/shared/components/Container";
+import {ImportantText} from "@packages/shared/components/Typography/Text";
 
 export const DetailSection = (props) => {
 	return (
 		<Container className="w-full gap-2 flex flex-col">
 			<Container className="flex flex-col w-full gap-1">
 				<Container className="flex items-baseline justify-between w-full gap-2">
-					<Heading
-						size={"xss"}
-						className="w-3/4 text-ellipsis line-clamp-1"
-						css={{padding: 0}}
+					<Text
+						className="w-3/4 text-ellipsis line-clamp-2 leading-tight"
+						css={{padding: 0, color: "$textContrast"}}
 					>
-						{props.name}
-					</Heading>
+						<ImportantText>{props.name}</ImportantText>
+					</Text>
 					{props.children}
 				</Container>
 				{props.ListedBy && (

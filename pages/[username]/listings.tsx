@@ -1,15 +1,13 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import MarketplaceListingResults from "@components/MarketPlace/Listings/VirtualGridList";
 import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
-import Error404 from "@packages/error/404";
-import Error500 from "@packages/error/500";
-import RenderProfileNFTs from "@packages/post/profile/RenderProfileNFTs";
-import {TritPost} from "@packages/post/TritPost";
+import Spinner from "@packages/shared/icons/Spinner";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
+import {useUser} from "core/auth/useUser";
+import ProfileLayout from "core/components/layouts/ProfileLayout";
 import TreatCore from "core/TreatCore";
-import {useSession} from "next-auth/react";
-import {useEffect, useMemo} from "react";
-import {useInView} from "react-intersection-observer";
+import {useMemo, useRef} from "react";
 import {beforePageLoadGetUserProfile} from "server/page/userProfile";
 
 export default function UserProfile(props: {
@@ -17,89 +15,82 @@ export default function UserProfile(props: {
 	notFound: boolean;
 	data: any;
 }) {
-	const {data: session} = useSession();
-	const data = JSON.parse(props.data);
-	const {username} = data;
-	const {profile} = (session as any) ?? {profile: {}};
-	const {ref, inView} = useInView();
+	const scrollerRef = useRef(null);
 
-	const getListedNFTs = async (page) => {
-		const res = await axios.get(
-			`${apiEndpoint}/profile/${username}/listed?page=${page}`
-		);
-		return res.data.data;
-	};
+	const {profile} = useUser();
+	const user_profile_data = JSON.parse(props.data);
 
 	const {
-		data: creatorNFTsData,
-		isFetchingNextPage,
+		isLoading,
+		data: listings,
+		isError,
 		fetchNextPage,
 		hasNextPage,
-		refetch,
-		isFetching,
-		error,
-	} = TreatCore.useInfiniteQuery({
-		queryKey: [`profileListedNFTs:${username}`],
-		queryFn: ({pageParam = 1}) => getListedNFTs(pageParam),
-		getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
-		getPreviousPageParam: (firstPage) => firstPage.prevPage ?? undefined,
-	});
+	} = TreatCore.useInfiniteQuery(
+		["market-listings", user_profile_data.address],
+		async ({pageParam = 1}) => {
+			const {data} = await axios.get(
+				`${apiEndpoint}/profile/${user_profile_data.username}/listed?page=${pageParam}`
+			);
+			const {data: nftData} = data;
 
-	if (props.notFound) {
-		return <Error404 />;
-	}
+			nftData.docs = nftData.docs.map((post) =>
+				legacy_nft_to_new({
+					...post,
+					seller: {
+						address: post.creator.address,
+						profile_pic: post.creator.profile.profile_pic,
+						username: post.creator.username,
+						display_name: post.creator.display_name,
+					},
+					creator: {
+						...post.creator,
+						profile: post.creator.profile,
+					},
+				})
+			);
 
-	if (props.error) {
-		return <Error500 />;
-	}
-
-	const pages = creatorNFTsData ? creatorNFTsData.pages : [];
-
-	const posts = useMemo(() => {
-		if (pages.length > 0) {
-			return pages
-				.map((page) => page.docs)
-				.flat()
-				.map((post) =>
-					legacy_nft_to_new({
-						...post,
-						seller: {
-							address: post.creator.address,
-							profile_pic: post.creator.profile.profile_pic,
-							username: post.creator.username,
-							display_name: post.creator.display_name,
-						},
-						creator: {
-							...post.creator,
-							profile: post.creator.profile,
-						},
-					})
-				);
-		} else {
-			return [];
+			return nftData;
+		},
+		{
+			enabled: !!profile?.address,
+			getNextPageParam: (lastPage) =>
+				lastPage.hasNextPage ? lastPage.nextPage : null,
+			select: (data) => {
+				return {
+					pages: data.pages.map((page) => page.docs),
+					pageParams: data.pages.map((page) => page.page),
+				};
+			},
+			placeholderData: {
+				pages: [],
+				pageParams: [1],
+			},
 		}
-	}, [pages]);
+	);
 
-	useEffect(() => {
-		if (inView) {
-			fetchNextPage();
-		}
-	}, [inView]);
+	const resaleNFTs = useMemo(() => {
+		const docs = listings.pages.flat();
+		return docs;
+	}, [listings]);
 
 	return (
-		<RenderProfileNFTs
-			data={data}
-			isFetching={isFetching}
-			error={error}
-			posts={posts}
-			profile={profile}
-			username={username}
-			ref={ref}
-			fetchNextPage={fetchNextPage}
-			isFetchingNextPage={isFetchingNextPage}
-			hasNextPage={hasNextPage}
-			Component={SweetshopNFT}
-		/>
+		<ProfileLayout
+			scrollerRef={scrollerRef}
+			userProfile={user_profile_data}
+		>
+			{isLoading && <Spinner />}
+			{!isLoading && !isError && (
+				<MarketplaceListingResults
+					scrollerRef={scrollerRef}
+					data={resaleNFTs ?? []}
+					fetchNext={fetchNextPage}
+					hasNextPage={hasNextPage}
+					Component={SweetshopNFT}
+					isFetching={isLoading}
+				/>
+			)}
+		</ProfileLayout>
 	);
 }
 
