@@ -33,7 +33,6 @@ export default function ResalePage() {
 	const resale = useMyResaleListings();
 	return (
 		<ApplicationLayout>
-			<StudioNavigation />
 			<ApplicationFrame>
 				<Container className="flex flex-col gap-2 mt-8">
 					<Heading size={"sm"}>Resale listings</Heading>

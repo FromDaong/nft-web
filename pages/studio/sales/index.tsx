@@ -6,7 +6,6 @@ import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 export default function AnalyticsPage() {
 	return (
 		<ApplicationLayout>
-			<StudioNavigation />
 			<ApplicationFrame>
 				<Container></Container>
 			</ApplicationFrame>

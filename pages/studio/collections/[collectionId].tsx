@@ -25,9 +25,7 @@ export default function CollectionPage() {
 		<ApplicationLayout>
 			<ApplicationFrame>
 				<Container className="flex flex-col gap-4 px-4 py-4 md:pt-0 lg:px-0">
-					<Container className="flex items-baseline justify-between">
-						<StudioNavigation />
-					</Container>
+					<Container className="flex items-baseline justify-between"></Container>
 				</Container>
 				<CollectionRenderer />
 			</ApplicationFrame>

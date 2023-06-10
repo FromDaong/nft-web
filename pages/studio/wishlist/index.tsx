@@ -15,7 +15,6 @@ import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 export default function WishlistPage() {
 	return (
 		<ApplicationLayout>
-			<StudioNavigation />
 			<ApplicationFrame>
 				<Container
 					css={{borderColor: "$border"}}

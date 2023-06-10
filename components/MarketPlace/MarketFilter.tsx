@@ -24,9 +24,9 @@ export default function SweetshopTabs() {
 				backgroundColor: "$surface",
 				borderColor: "$border",
 			}}
-			className="sticky top-0 z-50 border-b overflow-x-auto"
+			className="sticky top-0 z-50 overflow-x-auto mx-auto"
 		>
-			<Container className="container mx-auto ">
+			<Container className="container mx-auto max-w-screen-lg">
 				<RadioGroup
 					onChange={(selected) => setSelectedTab(selected)}
 					className="flex items-center w-full max-w-full gap-2 py-2 overflow-x-auto flex-nowrap px-2"

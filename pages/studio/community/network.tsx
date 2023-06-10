@@ -16,9 +16,7 @@ export default function CommunityPage() {
 					className="flex flex-col gap-4 px-4 py-4 border-b md:pt-0 lg:px-0"
 					css={{borderColor: "$border"}}
 				>
-					<Container className="flex items-baseline justify-between">
-						<StudioNavigation />
-					</Container>
+					<Container className="flex items-baseline justify-between"></Container>
 				</Container>
 				<Container className="flex justify-between pt-8 ">
 					<Heading size={"md"}>Community</Heading>

@@ -42,7 +42,6 @@ export default function Farm() {
 
 	return (
 		<ApplicationLayout>
-			<StudioNavigation />
 			<ApplicationFrame>
 				<Container className="h-auto">
 					<Container className="flex flex-col flex-wrap w-full gap-12 pt-12 mx-auto">

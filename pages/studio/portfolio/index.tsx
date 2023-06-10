@@ -25,7 +25,6 @@ export default function PortfolioPage() {
 
 	return (
 		<ApplicationLayout>
-			<StudioNavigation />
 			<ApplicationFrame>
 				<Container
 					css={{borderColor: "$border"}}

@@ -1,10 +1,20 @@
+import {Transition} from "@headlessui/react";
 import {HomeIcon} from "@heroicons/react/outline";
+import {useDisclosure} from "@packages/hooks";
+import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {ImportantText, Text} from "@packages/shared/components/Typography/Text";
 import {StackIcon} from "@radix-ui/react-icons";
 import {styled} from "@styles/theme";
 import {ComponentBasicProps} from "core/TreatCore";
-import {CompassIcon, GiftIcon, ImageIcon, UserIcon} from "lucide-react";
+import {
+	CompassIcon,
+	GiftIcon,
+	ImageIcon,
+	SidebarClose,
+	SidebarOpen,
+	UserIcon,
+} from "lucide-react";
 import Link from "next/link";
 
 const navElements = [
@@ -41,12 +51,60 @@ const navElements = [
 ];
 
 export default function ApplicationLayout({children}: ComponentBasicProps) {
+	const {isOpen, onOpen, onClose} = useDisclosure();
+
 	return (
 		<Container
 			css={{background: "$surface"}}
-			className="flex h-full items-start"
+			className="flex h-full items-start overflow-y-auto"
 		>
-			<Container className="w-96 p-8 sticky top-0">
+			<Sidebar
+				navElements={navElements}
+				isOpen={isOpen}
+				onClose={onClose}
+			/>
+			<Container className="flex-1 relative">
+				{!isOpen && (
+					<Button
+						appearance={"subtle"}
+						onClick={onOpen}
+						className="absolute top-1 left-1 z-20 "
+						css={{
+							padding: "4px",
+						}}
+					>
+						<SidebarOpen className="w-5 h-5" />
+					</Button>
+				)}
+				{children}
+			</Container>
+		</Container>
+	);
+}
+
+function Sidebar({navElements, isOpen, onClose}) {
+	return (
+		<Transition
+			show={isOpen}
+			enterFrom="opacity-0 w-0"
+			enterTo="w-64 opacity-100 h-full"
+			leaveTo="w-0 opacity-0"
+			className={"h-full fixed lg:sticky top-0 z-20 "}
+		>
+			<Container
+				css={{
+					backgroundColor: "$elementOnSurface",
+				}}
+				className="w-80 md:w-64 p-4 h-full  shadow-2xl lg:shadow-none"
+			>
+				<Container className="flex w-full justify-end">
+					<Button
+						onClick={onClose}
+						appearance={"subtle"}
+					>
+						<SidebarClose className="w-5 h-5" />
+					</Button>
+				</Container>
 				<Container className="flex flex-col gap-2">
 					{navElements.map((item) => (
 						<Link
@@ -57,12 +115,12 @@ export default function ApplicationLayout({children}: ComponentBasicProps) {
 								<Container
 									css={{
 										"&:hover": {
-											background: "$accentBg",
+											background: "$surfaceOnSurface",
 										},
 									}}
 									className="flex items-center gap-4 p-2 px-4 rounded-xl transition-all duration-200"
 								>
-									<Text css={{color: "$accentText"}}>{item.icon}</Text>
+									<Text>{item.icon}</Text>
 									<Container>
 										<Text>
 											<ImportantText>{item.name}</ImportantText>
@@ -74,7 +132,6 @@ export default function ApplicationLayout({children}: ComponentBasicProps) {
 					))}
 				</Container>
 			</Container>
-			<Container className="flex-1">{children}</Container>
-		</Container>
+		</Transition>
 	);
 }

@@ -336,7 +336,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 			/>
 
 			<Container className="py-8 pb-0 mx-auto ">
-				<FluidContainer className="container flex justify-between px-4 mx-auto">
+				<FluidContainer className="container flex justify-between px-4 max-w-screen-lg mx-auto">
 					<ContextualContainer className="grid justify-between w-full col-span-1 xl:grid-cols-3 gap-y-4">
 						<Container className="col-span-1 xl:col-span-2">
 							<Container className="flex gap-8">

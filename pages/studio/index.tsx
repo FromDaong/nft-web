@@ -34,8 +34,6 @@ import Web3 from "web3";
 export default function TreatCreatorStudio() {
 	return (
 		<ApplicationLayout>
-			<StudioNavigation />
-
 			<ApplicationFrame>
 				<Provider value={treatGraphClient}>
 					<Container className="py-8 flex flex-col gap-4 mt-8">

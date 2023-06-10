@@ -79,7 +79,7 @@ export default function ThemeProvider({children}: {children: ReactNode}) {
 		<ApplicationTheme.Provider
 			value={{theme, themes: ["dark", "light", "pink"], updateTheme}}
 		>
-			<Div className="theme-light:bg-gray1">{children}</Div>
+			<Div className="theme-light:bg-gray1 overflow-hidden">{children}</Div>
 		</ApplicationTheme.Provider>
 	);
 }

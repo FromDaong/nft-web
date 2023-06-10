@@ -38,9 +38,7 @@ export default function FarmLayout({children}: {children?: ReactNode}) {
 	return (
 		<>
 			<Container className="py-4 md:pt-0 px-4 lg:px-0 flex flex-col gap-4">
-				<Container className="flex justify-between items-baseline">
-					<StudioNavigation />
-				</Container>
+				<Container className="flex justify-between items-baseline"></Container>
 			</Container>
 			{treatMelonLoading && !treatMelonError && (
 				<Container className="flex flex-col items-center justify-center w-full min-h-screen">

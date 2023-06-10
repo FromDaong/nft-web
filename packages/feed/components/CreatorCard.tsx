@@ -128,12 +128,11 @@ const CompactCreatorCard = (props: SuggestedCreatorData) => {
 		<Container
 			css={{
 				borderRadius: "8px",
-				height: "100%",
 				"&:hover": {
 					backgroundColor: "$elementOnSurface",
 				},
 			}}
-			className="overflow-hidden transition-colors duration-200 ease-in-out"
+			className="overflow-hidden transition-colors duration-200 ease-in-out h-fit"
 		>
 			<Link href={`/${props.username}`}>
 				<a>

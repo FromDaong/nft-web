@@ -11,12 +11,11 @@ export const TabsContainer = ({children}: ComponentBasicProps) => {
 		<Container
 			css={{
 				borderBottom: "1px solid $subtleBorder",
-				borderTop: "1px solid $subtleBorder",
 			}}
 			variant={"unstyled"}
 			className="flex w-full px-2 overflow-x-auto"
 		>
-			<Container className="container flex w-full mx-auto gap-x-2 flex-start">
+			<Container className="container flex w-full mx-auto gap-x-2 flex-start max-w-screen-lg">
 				{children}
 			</Container>
 		</Container>
@@ -55,10 +54,10 @@ export const Tab = ({
 	return (
 		<Container
 			css={{
-				marginY: "12px",
+				marginY: "4px",
 				backgroundColor: isActive ? "$elementOnSurface" : "$surface",
 				borderRadius: "8px",
-				padding: "8px 12px",
+				padding: "4px 8px",
 			}}
 			className={`relative rounded-full`}
 		>

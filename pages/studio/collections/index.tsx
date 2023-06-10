@@ -14,7 +14,6 @@ export default function CollectionsPage() {
 
 	return (
 		<ApplicationLayout>
-			<StudioNavigation />
 			<ApplicationFrame>
 				<Container className="flex flex-col gap-8 py-8">
 					<Container className="flex flex-col gap-4 md:flex-row justify-between">
