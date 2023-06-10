@@ -5,7 +5,7 @@ import {VirtuosoGrid} from "react-virtuoso";
 const NFTListContainer = styled("div", {
 	flexWrap: "wrap",
 	display: "grid",
-	gap: "2rem",
+	gap: "1rem",
 	gridTemplateColumns: "repeat(1, minmax(0, 1fr))",
 	maxWidth: "100%",
 	marginX: "auto",
@@ -61,9 +61,9 @@ export default function MarketplaceListingResults({
 		if (hasNextPage) fetchNext();
 	};
 	return (
-		<>
+		<div className="py-8 pb-24 h-auto">
 			<VirtuosoGrid
-				className="w-full py-8"
+				className="w-full "
 				useWindowScroll
 				totalCount={data.length}
 				overscan={24}
@@ -89,6 +89,6 @@ export default function MarketplaceListingResults({
 					);
 				}}
 			/>
-		</>
+		</div>
 	);
 }

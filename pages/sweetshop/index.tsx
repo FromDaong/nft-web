@@ -1,22 +1,17 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import MarketplaceListingResults from "@components/MarketPlace/Listings/VirtualGridList";
 import SweetshopTabs from "@components/MarketPlace/MarketFilter";
-import TagsFilter from "@components/MarketPlace/TagsFilter";
 import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
 import {SEOHead} from "@packages/seo/page";
 import {Container} from "@packages/shared/components/Container";
-import {Heading, Text} from "@packages/shared/components/Typography/Headings";
-import Spinner from "@packages/shared/icons/Spinner";
-import {styled} from "@styles/theme";
+import {Heading} from "@packages/shared/components/Typography/Headings";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import TreatCore from "core/TreatCore";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import {useRouter} from "next/router";
-import {MarketplaceListingsContainer} from "packages/shared/components/ListingSection";
-import {memo, useEffect, useMemo, useRef} from "react";
-import {VirtuosoGrid} from "react-virtuoso";
+import {useEffect, useRef} from "react";
 
 export default function NFTS({nfts, error}) {
 	const scrollerRef = useRef(null);

@@ -9,91 +9,67 @@ import {
 } from "server/helpers/models";
 import axios from "axios";
 import {generateNewNFTFromOwnedButLostNFT} from "@lib/moralis";
+import request, {gql} from "graphql-request";
+import {SUBGRAPH_GRAPHQL_URL} from "@lib/graphClients";
+
+const query = gql`
+	query listings($address: String!) {
+		{
+			balances(
+				where: {account_contains_nocase: $address}
+			) {
+				id
+				value
+				token {
+				identifier
+				}
+			}
+			}
+	}
+`;
 
 export default async function handler(req, res) {
-	const {username} = req.query;
+	const {address} = req.query;
 	let {p} = req.query;
 
 	if (!p) {
 		p = 1;
 	}
 
-	if (!username) {
+	if (!address) {
 		return returnWithError("No username provided", 400, res);
 	}
 
-	await connectMoralis();
 	await connectMongoDB();
 
-	const profile = await MongoModelProfile.findOne({username});
-
-	if (!profile) {
-		return returnWithError("No profile found", 400, res);
-	}
-
-	let moralis_cursor;
-	let response;
-
-	for (let i = 0; i < Number(p); i++) {
-		const resp = await axios.get(
-			`https://deep-index.moralis.io/api/v2/${
-				profile.address
-			}/nft?chain=bsc&disable_total=false&limit=100&format=decimal${
-				moralis_cursor ? "&cursor=" + moralis_cursor : ""
-			}&token_address=${[contractAddresses.treatNFTMinter[56]]}`,
-			{
-				headers: {
-					"X-API-Key": process.env.MORALIS_WEB3_API_KEY,
-				},
-			}
-		);
-
-		moralis_cursor = resp.data.cursor;
-		response = resp.data;
-	}
-
-	const data = response;
-
-	const nftsFromMoralis = data.result.map((nft) => nft);
-
-	// nfts = []
-	// loop through ownedNftsIds and find in Mongo and push to arr
-	// if not found, create new NFT and push to arr
-	let nfts = await Promise.all(
-		nftsFromMoralis.map(async (nftFromMoralis) => {
-			const nft = await MongoModelNFT.findOne({id: nftFromMoralis.token_id});
-
-			if (nft) {
-				return nft;
-			}
-
-			const newNFT = await generateNewNFTFromOwnedButLostNFT(nftFromMoralis);
-			if (!newNFT) return null;
-
-			return newNFT;
-		})
-	);
-
-	nfts = nfts.filter((nft) => nft);
-	nfts = await MongoModelCreator.populate(nfts, {
-		path: "creator",
-		select: "username address bio profile",
-		populate: {
-			path: "profile",
-			select: "username profile_pic",
-		},
+	const {balances} = await request(SUBGRAPH_GRAPHQL_URL, query, {
+		address: (address as string).toLowerCase(),
 	});
+
+	let nfts = balances.map((nft) => ({
+		id: nft.token.identifier,
+		amount: nft.value,
+	}));
+	nfts = nfts.filter((nft) => nft.amount !== 0);
+
+	nfts = await MongoModelCreator.populate(
+		nfts.map((nft) => nft.id),
+		{
+			path: "creator",
+			select: "username address bio profile",
+			populate: {
+				path: "profile",
+				select: "username profile_pic",
+			},
+		}
+	);
 
 	return returnWithSuccess(
 		{
 			docs: nfts,
-			cursor: data.cursor,
-			hasNextPage: data.page * 100 < data.total,
-			nextPage: data.page * 100 < data.total ? data.page + 1 : null,
+			hasNextPage: true,
+			nextPage: +p + 1,
 			page: Number(p),
-			total: data.total,
-			totalPages: Math.ceil(Number(data.total) / 100),
-			base: nftsFromMoralis,
 		},
 		res
 	);

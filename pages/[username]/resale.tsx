@@ -1,43 +1,35 @@
+import MarketplaceListingResults from "@components/MarketPlace/Listings/VirtualGridList";
 import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
-import {Container} from "@packages/shared/components/Container";
 import Spinner from "@packages/shared/icons/Spinner";
-import {treatMarketplaceReaderContract} from "@packages/treat/lib/contract-defs";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
-import BigNumber from "bignumber.js";
 import TreatCore from "core/TreatCore";
 import {useUser} from "core/auth/useUser";
 import ProfileLayout from "core/components/layouts/ProfileLayout";
-import {useSession} from "next-auth/react";
-import {useEffect, useMemo, useState} from "react";
+import {useMemo, useRef} from "react";
 import {beforePageLoadGetUserProfile} from "server/page/userProfile";
-
-type ResaleOrder = {
-	creators: string[];
-	nftIds: BigNumber[];
-	prices: BigNumber[];
-	amounts: BigNumber[];
-};
 
 export default function UserProfile(props: {
 	error: boolean;
 	notFound: boolean;
 	data: any;
 }) {
+	const scrollerRef = useRef(null);
+
 	const {profile} = useUser();
-	const nft_data = JSON.parse(props.data);
+	const user_profile_data = JSON.parse(props.data);
 
 	const {
 		isLoading,
 		data: resaleMarketListings,
 		isError,
-		hasNextPage,
 		fetchNextPage,
+		hasNextPage,
 	} = TreatCore.useInfiniteQuery(
-		["resale-market-listings", profile?.address],
+		["resale-market-listings", user_profile_data.address],
 		async ({pageParam = 0}) => {
 			const {data} = await axios.get(
-				`${apiEndpoint}/marketplace/listings/resale/seller/${nft_data.address}?page=${pageParam}}`
+				`${apiEndpoint}/marketplace/listings/resale/seller/${user_profile_data.address}?page=${pageParam}`
 			);
 			const {data: nftData} = data;
 
@@ -68,35 +60,22 @@ export default function UserProfile(props: {
 	}, [resaleMarketListings]);
 
 	return (
-		<ProfileLayout userProfile={nft_data}>
-			<Container className="flex flex-col items-center">
-				<InfinityLoadingNFTs
-					data={resaleNFTs}
-					isFetching={isLoading}
-					hasNext={hasNextPage}
+		<ProfileLayout
+			scrollerRef={scrollerRef}
+			userProfile={user_profile_data}
+		>
+			{isLoading && <Spinner />}
+			{!isLoading && !isError && (
+				<MarketplaceListingResults
+					scrollerRef={scrollerRef}
+					data={resaleNFTs ?? []}
 					fetchNext={fetchNextPage}
+					hasNextPage={hasNextPage}
+					Component={SweetshopNFT}
 				/>
-			</Container>
+			)}
 		</ProfileLayout>
 	);
 }
-
-const InfinityLoadingNFTs = ({data, fetchNext, hasNext, isFetching}) => {
-	return (
-		<>
-			{isFetching && <Spinner />}
-			{!isFetching && (
-				<Container className="grid w-full grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-					{data.map((nft) => (
-						<SweetshopNFT
-							key={nft.id}
-							{...nft}
-						/>
-					))}
-				</Container>
-			)}
-		</>
-	);
-};
 
 export const getServerSideProps = beforePageLoadGetUserProfile;
