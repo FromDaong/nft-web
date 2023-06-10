@@ -96,6 +96,7 @@ export default function NFTS({nfts, error}) {
 						fetchNext={fetchNextPage}
 						hasNextPage={hasNextPage}
 						Component={SweetshopNFT}
+						isFetching={isFetching}
 					/>
 				)}
 				{error && (

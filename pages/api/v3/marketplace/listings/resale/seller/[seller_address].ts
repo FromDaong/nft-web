@@ -13,7 +13,7 @@ const query = gql`
 			orderBy: $sort
 			orderDirection: desc
 			skip: $skip
-			first: 12
+			first: $first
 			where: {seller: $address}
 		) {
 			nft
@@ -35,7 +35,7 @@ export default async function handler(
 		sort: (sort as string) ?? "cost",
 		// sort: "id" as "totalSales" | "totalSupply" | "id",
 		skip:
-			parseInt(page as string) > 0 ? (parseInt(page as string) - 1) * 24 : 0,
+			parseInt(page as string) > 1 ? (parseInt(page as string) - 1) * 24 : 0,
 		first: 24,
 		address: (seller_address as string).toLowerCase(),
 	});

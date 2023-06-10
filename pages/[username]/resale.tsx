@@ -72,6 +72,7 @@ export default function UserProfile(props: {
 					fetchNext={fetchNextPage}
 					hasNextPage={hasNextPage}
 					Component={SweetshopNFT}
+					isFetching={isLoading}
 				/>
 			)}
 		</ProfileLayout>

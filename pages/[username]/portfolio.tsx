@@ -1,21 +1,13 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import MarketplaceListingResults from "@components/MarketPlace/Listings/VirtualGridList";
 import PortfolioPublicListingCard from "@components/NFTCard/cards/PortfolioListingCard";
-import Error404 from "@packages/error/404";
-import Error500 from "@packages/error/500";
-import RenderProfileNFTs from "@packages/post/profile/RenderProfileNFTs";
-import {TritPortfolioPost} from "@packages/post/TritPortfolioPost";
-import {usePaginatedPage} from "@packages/shared/components/Pagination/lib";
 import Spinner from "@packages/shared/icons/Spinner";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import {useUser} from "core/auth/useUser";
 import ProfileLayout from "core/components/layouts/ProfileLayout";
 import TreatCore from "core/TreatCore";
-import {useSession} from "next-auth/react";
 import {useMemo, useRef} from "react";
-import {pagePropsConnectMongoDB} from "server/helpers/core/pagePropsDB";
-import {MongoModelCreator, MongoModelProfile} from "server/helpers/models";
 import {beforePageLoadGetUserProfile} from "server/page/userProfile";
 
 export default function UserProfile(props: {
@@ -31,6 +23,7 @@ export default function UserProfile(props: {
 
 	const {profile} = useUser();
 	const user_profile_data = JSON.parse(props.data);
+	console.log({user_profile_data});
 
 	const {
 		isLoading,
@@ -40,9 +33,9 @@ export default function UserProfile(props: {
 		hasNextPage,
 	} = TreatCore.useInfiniteQuery(
 		["owned-by", user_profile_data.address],
-		async ({pageParam = 0}) => {
+		async ({pageParam = 1}) => {
 			const {data} = await axios.get(
-				`${apiEndpoint}/profile/${user_profile_data.username}/collected?p=?page=${pageParam}`
+				`${apiEndpoint}/profile/${user_profile_data.username}/collected?p=${pageParam}&address=${user_profile_data.address}`
 			);
 			const {data: nftData} = data;
 
@@ -68,7 +61,7 @@ export default function UserProfile(props: {
 	);
 
 	const portfolioNFTs = useMemo(() => {
-		const docs = portfolioCollectedNFTs.pages.flat();
+		const docs = portfolioCollectedNFTs?.pages.flat();
 		return docs;
 	}, [portfolioCollectedNFTs]);
 
@@ -86,6 +79,7 @@ export default function UserProfile(props: {
 						fetchNext={fetchNextPage}
 						hasNextPage={hasNextPage}
 						Component={PortfolioPublicListingCard}
+						isFetching={isLoading}
 					/>
 				)}
 			</ProfileLayout>

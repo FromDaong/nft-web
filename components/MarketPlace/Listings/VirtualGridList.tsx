@@ -50,12 +50,14 @@ export default function MarketplaceListingResults({
 	hasNextPage,
 	scrollerRef,
 	Component,
+	isFetching,
 }: {
 	data: any[];
 	fetchNext: () => void;
 	hasNextPage: boolean;
 	scrollerRef: MutableRefObject<HTMLElement>;
 	Component: (props: any) => JSX.Element;
+	isFetching: boolean;
 }) {
 	const getNextPage = () => {
 		if (hasNextPage) fetchNext();
@@ -63,7 +65,7 @@ export default function MarketplaceListingResults({
 	return (
 		<div className="py-8 pb-24 h-auto">
 			<VirtuosoGrid
-				className="w-full "
+				className={`w-full ${isFetching ? "opacity-75" : ""}`}
 				useWindowScroll
 				totalCount={data.length}
 				overscan={24}
