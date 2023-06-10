@@ -1,5 +1,4 @@
 import {Button} from "@packages/shared/components/Button";
-import {XIcon} from "lucide-react";
 import {useRouter} from "next/router";
 import {useEffect, useMemo, useRef, useState} from "react";
 import {
@@ -9,7 +8,6 @@ import {
 	DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import {Container} from "@packages/shared/components/Container";
-import SortBy from "./SortByDropdownFilter";
 import {
 	ImportantText,
 	MutedText,
@@ -17,7 +15,7 @@ import {
 } from "@packages/shared/components/Typography/Text";
 import {PlusIcon} from "lucide-react";
 
-const TagsFilter = () => {
+export const useSweetshopTags = () => {
 	const tags: React.MutableRefObject<string[]> = useRef(
 		[
 			{value: "SFW", label: "SFW"},
@@ -88,29 +86,25 @@ const TagsFilter = () => {
 		});
 	}, [selectedTags]);
 
+	return {
+		tags,
+		selectedTags,
+		addTag,
+		removeTag,
+		remainingTags,
+	};
+};
+
+const TagsFilter = () => {
+	const {remainingTags, addTag} = useSweetshopTags();
 	return (
-		<Container className="flex flex-col w-full gap-4 p-2">
-			{selectedTags.length > 0 && (
-				<Container className="flex flex-wrap gap-4">
-					{selectedTags.map((tag) => (
-						<Button
-							key={tag}
-							appearance={"link"}
-							className="border shadow-sm"
-							css={{paddingX: "8px", borderColor: "$subtleBorder"}}
-							onClick={() => removeTag(tag)}
-						>
-							{tag}
-							<XIcon className="w-4 h-4" />
-						</Button>
-					))}
-				</Container>
-			)}
+		<Container className="flex flex-col gap-4 p-2">
 			<Container className="flex justify-between w-full">
 				<DropdownMenu>
 					<DropdownMenuTrigger>
 						<Button
-							css={{padding: "8px"}}
+							css={{padding: "4px"}}
+							outlined
 							className="flex gap-4 rounded-lg"
 							appearance={"surface"}
 						>
@@ -137,7 +131,6 @@ const TagsFilter = () => {
 						)}
 					</DropdownMenuContent>
 				</DropdownMenu>
-				<SortBy />
 			</Container>
 		</Container>
 	);
