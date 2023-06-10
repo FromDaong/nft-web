@@ -168,9 +168,15 @@ export default function Navbar() {
 	);
 }
 
-const DropdownMenuContainer = styled(DropdownMenuContent, {
+export const DropdownMenuContainer = styled(DropdownMenuContent, {
 	backgroundColor: "$surfaceOnSurface",
 	borderColor: "$subtleBorder",
+});
+
+export const DropdownMenuLink = styled(DropdownMenuItem, {
+	"&:hover": {
+		backgroundColor: "$elementOnSurface",
+	},
 });
 
 function BrowseDropdownMenu() {
@@ -217,7 +223,7 @@ function BrowseDropdownMenu() {
 				>
 					<Portal>
 						<DropdownMenuContainer className="w-48 p-2 transition-opacity duration-200 border shadow-2xl rounded-xl z-50">
-							<DropdownMenuItem className="p-2 rounded-lg cursor-pointer hover:bg-zinc-100">
+							<DropdownMenuLink className="p-2 rounded-lg cursor-pointer ">
 								<Link href="/sweetshop">
 									<a>
 										<BoldLink className="flex items-center gap-4 w-full">
@@ -226,8 +232,8 @@ function BrowseDropdownMenu() {
 										</BoldLink>
 									</a>
 								</Link>
-							</DropdownMenuItem>
-							<DropdownMenuItem className="p-2 rounded-lg cursor-pointer hover:bg-zinc-100">
+							</DropdownMenuLink>
+							<DropdownMenuLink className="p-2 rounded-lg cursor-pointer 0">
 								<Link href="/collection">
 									<a>
 										<BoldLink className="flex items-center gap-4 w-full">
@@ -236,7 +242,7 @@ function BrowseDropdownMenu() {
 										</BoldLink>
 									</a>
 								</Link>
-							</DropdownMenuItem>
+							</DropdownMenuLink>
 						</DropdownMenuContainer>
 					</Portal>
 				</Transition>

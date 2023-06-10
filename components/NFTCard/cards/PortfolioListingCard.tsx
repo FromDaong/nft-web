@@ -8,13 +8,13 @@ import {EnterFullScreenIcon} from "@radix-ui/react-icons";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
 import {ArrowRight, ShoppingBag} from "lucide-react";
 import {FrostyBackgroundContainer} from "../misc/FrostyBackground";
+import {useRef} from "react";
 
 export default function PortfolioPublicListingCard(props: TritPostProps) {
-	const {liked, likeNFT, isMine, isProtected} = useTritNFTUtils(props);
+	const {isMine, isProtected} = useTritNFTUtils(props);
 
-	const soldOut = props.collection?.minted === props.max_supply;
 	const editions = new Array(+props.count).fill(0).map((_, i) => i + 1);
-	console.log(props);
+
 	return (
 		<NFTCard _id={props._id}>
 			<Container className="relative">
@@ -76,14 +76,16 @@ export default function PortfolioPublicListingCard(props: TritPostProps) {
 						</Container>
 						<Text css={{color: "$sand2"}}>{props.text}</Text>
 						{isMine && (
-							<Button
-								className="w-fit"
-								appearance={"surface"}
-								css={{borderRadius: 999}}
-							>
-								<EnterFullScreenIcon className="w-4 h-4" />
-								View in fullscreen
-							</Button>
+							<>
+								<Button
+									className="w-fit"
+									appearance={"surface"}
+									css={{borderRadius: 999}}
+								>
+									<EnterFullScreenIcon className="w-4 h-4" />
+									View in fullscreen
+								</Button>
+							</>
 						)}
 						{!isMine && (
 							<Button

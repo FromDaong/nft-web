@@ -192,7 +192,7 @@ export default function NFT(props: {
 										<Container className="flex gap-2">
 											<SmallText css={{color: "$text"}}>
 												<ImportantText>
-													You own {balance} version{balance > 1 ? "s" : ""}
+													You own {balance} NFT{balance > 1 ? "s" : ""}
 												</ImportantText>
 											</SmallText>
 										</Container>

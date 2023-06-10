@@ -14,6 +14,10 @@ import {
 	Text,
 } from "@packages/shared/components/Typography/Text";
 import {PlusIcon} from "lucide-react";
+import {
+	DropdownMenuContainer,
+	DropdownMenuLink,
+} from "@packages/navigation/Navbar";
 
 export const useSweetshopTags = () => {
 	const tags: React.MutableRefObject<string[]> = useRef(
@@ -112,24 +116,24 @@ const TagsFilter = () => {
 							Add tags
 						</Button>
 					</DropdownMenuTrigger>
-					<DropdownMenuContent className="z-50 w-64 p-2 overflow-x-hidden overflow-y-auto bg-white shadow-2xl rounded-xl max-h-96">
+					<DropdownMenuContainer className="z-50 w-64 p-2 overflow-x-hidden overflow-y-auto shadow-2xl rounded-xl max-h-96">
 						{remainingTags.map((item) => (
-							<DropdownMenuItem
+							<DropdownMenuLink
 								key={item}
 								onClick={() => addTag(item)}
-								className="p-2 rounded-lg cursor-pointer hover:bg-zinc-100"
+								className="p-2 rounded-lg cursor-pointer "
 							>
 								<Text>
 									<ImportantText>{item}</ImportantText>
 								</Text>
-							</DropdownMenuItem>
+							</DropdownMenuLink>
 						))}
 						{remainingTags.length === 0 && (
 							<DropdownMenuItem className="flex flex-col items-center justify-center w-full h-full p-2">
 								<MutedText>No more tags to add</MutedText>
 							</DropdownMenuItem>
 						)}
-					</DropdownMenuContent>
+					</DropdownMenuContainer>
 				</DropdownMenu>
 			</Container>
 		</Container>

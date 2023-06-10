@@ -16,6 +16,7 @@ import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import {apiEndpoint} from "@utils/index";
 import axios from "axios";
 import TreatCore from "core/TreatCore";
+import UserAvatar from "core/auth/components/Avatar";
 import {CopyIcon, StarIcon} from "lucide-react";
 import Link from "next/link";
 import {useRouter} from "next/router";
@@ -227,7 +228,7 @@ const NFTPresentationComponent = (props: {
 			<Container className="flex flex-col gap-12 lg:gap-16 lg:flex">
 				<Container className="flex flex-col gap-8">
 					<Container
-						className={"flex md:flex-col flex-col-reverse gap-6 md:gap-1 pb-4"}
+						className={"flex md:flex-col flex-col gap-6 md:gap-2 pb-4"}
 					>
 						<Heading
 							size={"sm"}
@@ -235,21 +236,23 @@ const NFTPresentationComponent = (props: {
 						>
 							{nft.name}
 						</Heading>
-						<Container className="flex flex-col md:flex-row gap-2 justify-between md:items-center">
+						<Container className="flex flex-col md:flex-row gap-4 justify-between md:items-center py-2">
 							<Link href={`/${nft.creator.username}`}>
-								<a>
-									<Container className="flex gap-2">
-										<Text>Created by</Text>
-										<Text
-											css={{color: "$textContrast"}}
-											className="underline"
-										>
+								<a className="flex items-center gap-2">
+									<UserAvatar
+										size={40}
+										username={nft.creator.username}
+										profile_pic={nft.creator.profile.profile_pic}
+									/>
+									<Container className="flex flex-col">
+										<Text css={{color: "$textContrast"}}>
 											<ImportantText>
 												{nft.creator.profile.display_name?.trim() === ""
-													? `@${nft.creator.username}`
+													? `${nft.creator.username}`
 													: nft.creator.profile.display_name}
 											</ImportantText>
 										</Text>
+										<Text>@{nft.creator.username}</Text>
 									</Container>
 								</a>
 							</Link>

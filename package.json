@@ -92,6 +92,7 @@
 		"@xstate/react": "^3.0.1",
 		"ably": "^1.2.30",
 		"add": "^2.0.6",
+		"ahooks": "^3.7.7",
 		"apollo-server-micro": "^3.11.1",
 		"atropos": "^1.0.2",
 		"avvvatars-react": "^0.4.2",

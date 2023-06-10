@@ -69,7 +69,7 @@ export default function ApplicationLayout({
 			/>
 			<Container
 				id="main"
-				className="flex-1 relative min-h-full flex flex-col"
+				className="flex-1 relative min-h-full flex flex-col px-2"
 			>
 				{!isOpen && (
 					<Button

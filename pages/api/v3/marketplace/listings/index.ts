@@ -133,7 +133,7 @@ export default async function handler(
 					$and: [
 						{
 							id: {
-								$gte: +process.env.NEXT_PUBLIC_V2_NFT_START,
+								$gte: +process.env.NEXT_PUBLIC_V2_NFT_START ?? 92,
 							},
 						},
 						{
