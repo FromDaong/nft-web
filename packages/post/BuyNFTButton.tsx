@@ -11,7 +11,7 @@ import {SparklesIcon} from "@heroicons/react/solid";
 import CoinsIcon from "@packages/shared/icons/CoinsIcon";
 import Link from "next/link";
 import {ArrowRight} from "lucide-react";
-import {toast} from "react-hot-toast";
+import {toast} from "sonner";
 import {ExclamationCircleIcon, GiftIcon} from "@heroicons/react/outline";
 import useMintNft from "@packages/chain/hooks/useMintNft";
 import useMintCreatorNft from "@packages/chain/hooks/useMintCreatorNft";

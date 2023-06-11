@@ -16,10 +16,10 @@ import type {Session} from "next-auth";
 import {ApplicationProvider} from "core/provider";
 import AcceptAgeModal from "@packages/modals/AcceptAgeModal";
 import {Analytics} from "@vercel/analytics/react";
-import {Toaster} from "react-hot-toast";
 import TreatBalancesProvider from "core/auth/components/TreatBalancesProvider";
 import {Provider} from "urql";
 import {treatGraphClient} from "@lib/graphClients";
+import {Toaster} from "sonner";
 
 const progress = new ProgressBar({
 	size: 3,

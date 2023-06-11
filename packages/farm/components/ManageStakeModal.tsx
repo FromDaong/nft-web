@@ -16,7 +16,7 @@ import {useFormik} from "formik";
 import {ChevronDown} from "lucide-react";
 import {XIcon} from "lucide-react";
 import {useState} from "react";
-import {toast} from "react-hot-toast";
+import {toast} from "sonner";
 import {useAccount, useBalance} from "wagmi";
 import * as yup from "yup";
 

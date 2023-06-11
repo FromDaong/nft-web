@@ -1,6 +1,7 @@
 import {
 	QueryClient,
 	useInfiniteQuery,
+	useMutation,
 	useQueries,
 	useQuery,
 } from "@tanstack/react-query";
@@ -30,6 +31,7 @@ export default class TreatCore {
 	static useQuery = useQuery;
 	static useInfiniteQuery = useInfiniteQuery;
 	static useQueries = useQueries;
+	static useMutation = useMutation;
 
 	/**
 	 * @description Trigger analytics event & logger then sync.

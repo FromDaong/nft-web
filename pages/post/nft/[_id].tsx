@@ -155,7 +155,7 @@ function NFTPreview({nft, postUtils}) {
 									<Text>
 										<ImportantText>
 											{currentSupply !== 0 &&
-												`Minting ${currentSupply} of ${maxSupply}`}
+												`Minting ${mintedNfts + 1} of ${maxSupply}`}
 										</ImportantText>
 									</Text>
 									<Text>

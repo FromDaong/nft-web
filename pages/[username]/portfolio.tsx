@@ -1,6 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import MarketplaceListingResults from "@components/MarketPlace/Listings/VirtualGridList";
 import PortfolioPublicListingCard from "@components/NFTCard/cards/PortfolioListingCard";
+import {Container} from "@packages/shared/components/Container";
 import Spinner from "@packages/shared/icons/Spinner";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
@@ -23,7 +24,6 @@ export default function UserProfile(props: {
 
 	const {profile} = useUser();
 	const user_profile_data = JSON.parse(props.data);
-	console.log({user_profile_data});
 
 	const {
 		isLoading,
@@ -71,7 +71,11 @@ export default function UserProfile(props: {
 				scrollerRef={scrollerRef}
 				userProfile={user_profile_data}
 			>
-				{isLoading && <Spinner />}
+				{isLoading && (
+					<Container>
+						<Spinner />
+					</Container>
+				)}
 				{!isLoading && !isError && (
 					<MarketplaceListingResults
 						scrollerRef={scrollerRef}

@@ -9,11 +9,8 @@ import {ReactNode} from "react";
 export const TabsContainer = ({children}: ComponentBasicProps) => {
 	return (
 		<Container
-			css={{
-				borderBottom: "1px solid $subtleBorder",
-			}}
 			variant={"unstyled"}
-			className="flex w-full px-2 overflow-x-auto"
+			className=""
 		>
 			<Container className="container flex w-full mx-auto gap-x-2 flex-start max-w-screen-xl">
 				{children}

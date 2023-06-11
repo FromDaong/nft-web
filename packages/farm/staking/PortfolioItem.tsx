@@ -8,7 +8,7 @@ import {useHarvestFarm, useStaking} from "../utils";
 import ManageStackModal from "../components/ManageStakeModal";
 import {Settings} from "lucide-react";
 import Spinner from "@packages/shared/icons/Spinner";
-import {toast} from "react-hot-toast";
+import {toast} from "sonner";
 import {useEffect, useState} from "react";
 import {useWaitForTransaction} from "wagmi";
 

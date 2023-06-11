@@ -3,7 +3,7 @@ import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import BigNumber from "bignumber.js";
 import {ethers} from "ethers";
 import {useCallback, useEffect, useState} from "react";
-import {toast} from "react-hot-toast";
+import {toast} from "sonner";
 import {useAccount, useContract, useSigner, useWaitForTransaction} from "wagmi";
 import Web3 from "web3";
 

@@ -18,6 +18,7 @@ import ModelAnalytics from "./events/Analytics";
 import NFTEvent from "./posts/activity";
 import TimelineEvent from "./posts/TimelineEvent";
 import Chat from "./chat";
+import ModelWishlist from "./users/Wishlist";
 
 export const MongoModelCreator = ModelCreator;
 export const MongoModelProfile = ModelProfile;
@@ -40,3 +41,4 @@ export const MongoModelAnalytics = ModelAnalytics;
 export const MongoModelEvent = NFTEvent;
 export const MongoModelTimelineEvent = TimelineEvent;
 export const MongoModelChat = Chat;
+export const MongoModelWishlist = ModelWishlist;

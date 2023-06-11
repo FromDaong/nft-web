@@ -1,5 +1,6 @@
 import AddToWishlist from "@components/MarketPlace/Details/Modals/AddToWishlist";
 import ShowAllCollectors from "@components/MarketPlace/Details/Modals/Collectors";
+import ShareModal from "@components/NFTPage/modals/ShareNFTModal";
 import {TiptapPreview} from "@components/ui/tiptap";
 import AvatarGroup from "@packages/avatars/AvatarGroup";
 import {useDisclosure} from "@packages/hooks";
@@ -10,18 +11,17 @@ import {
 	ImportantText,
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
-import {useCopyToClipboard} from "@packages/shared/hooks";
 import {ABI} from "@packages/treat/lib/abi";
 import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
+import {StarFilledIcon} from "@radix-ui/react-icons";
 import {apiEndpoint} from "@utils/index";
 import axios from "axios";
 import TreatCore from "core/TreatCore";
 import UserAvatar from "core/auth/components/Avatar";
-import {CopyIcon, StarIcon} from "lucide-react";
+import {useWishlist} from "core/auth/components/TreatBalancesProvider";
+import {Share2Icon, StarIcon} from "lucide-react";
 import Link from "next/link";
-import {useRouter} from "next/router";
 import {useEffect, useMemo, useState} from "react";
-import {toast} from "react-hot-toast";
 import {useContract, useSigner} from "wagmi";
 
 const useGetCollectors = (nftId) => {
@@ -172,8 +172,13 @@ export const useGetResaleListings = (nftId: number) => {
 const NFTPresentationComponent = (props: {nft: any; address: string}) => {
 	const {nft} = props;
 	const {collectors, isLoading} = useGetCollectors(nft.id);
-	const [value, copy] = useCopyToClipboard();
-	const router = useRouter();
+	const {
+		isLoading: wishListLoading,
+		addToWishlist,
+		removeFromWishlist,
+		isWishlisted,
+		wishlist,
+	} = useWishlist(nft._id);
 
 	const description = useMemo(() => {
 		if (typeof nft.description === "string") {
@@ -182,15 +187,6 @@ const NFTPresentationComponent = (props: {nft: any; address: string}) => {
 		return nft.description;
 	}, [nft]);
 
-	const copyURL = () => {
-		copy(`${process.env.NEXT_PUBLIC_HOSTNAME}${router.asPath}`);
-		toast.success("Copied to clipboard");
-	};
-
-	const like = () => {
-		toast.success("Added to favorites");
-	};
-
 	const {
 		isOpen: isWishlistModalOpen,
 		onOpen: onOpenWishlistModal,
@@ -198,10 +194,21 @@ const NFTPresentationComponent = (props: {nft: any; address: string}) => {
 	} = useDisclosure();
 
 	const {
+		isOpen: isShareModalOpen,
+		onOpen: onOpenShareModal,
+		onClose: onCloseShareModal,
+	} = useDisclosure();
+
+	const {
 		isOpen: isCollectorsModalOpen,
 		onOpen: onOpenCollectorsModal,
 		onClose: onCloseCollectorsModal,
 	} = useDisclosure();
+
+	const addOrRemoveFromWishlist = () => {
+		if (isWishlisted) return removeFromWishlist();
+		if (!isWishlisted) return addToWishlist();
+	};
 
 	return (
 		<>
@@ -216,6 +223,10 @@ const NFTPresentationComponent = (props: {nft: any; address: string}) => {
 					collectors={collectors}
 				/>
 			)}
+			<ShareModal
+				isOpen={isShareModalOpen}
+				onClose={onCloseShareModal}
+			/>
 			<Container className="flex flex-col gap-12 lg:gap-16 lg:flex">
 				<Container className="flex flex-col gap-8">
 					<Container
@@ -248,19 +259,31 @@ const NFTPresentationComponent = (props: {nft: any; address: string}) => {
 								</a>
 							</Link>
 							<Container className="flex gap-4">
+								{(!wishListLoading || !wishlist) && (
+									<Button
+										appearance={isWishlisted ? "accent" : "surface"}
+										onClick={addOrRemoveFromWishlist}
+									>
+										{!isWishlisted && (
+											<>
+												<StarIcon className="w-5 h-5" />
+												Add to wishlist
+											</>
+										)}
+										{isWishlisted && (
+											<>
+												<StarFilledIcon className="w-5 h-5" />
+												Wishlisted
+											</>
+										)}
+									</Button>
+								)}
 								<Button
-									appearance={"surface"}
-									onClick={like}
-								>
-									<StarIcon className="w-5 h-5" />
-									Favorite
-								</Button>
-								<Button
-									onClick={copyURL}
+									onClick={onOpenShareModal}
 									appearance={"surface"}
 								>
-									<CopyIcon className="w-5 h-5" />
-									Copy link
+									<Share2Icon className="w-5 h-5" />
+									Share
 								</Button>
 							</Container>
 						</Container>

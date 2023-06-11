@@ -39,6 +39,7 @@ import {ExternalLinkIcon} from "@radix-ui/react-icons";
 import Spinner from "@packages/shared/icons/Spinner";
 import {ShoppingBagIcon, Verified} from "lucide-react";
 import ApplicationLayout from "./ApplicationLayout";
+import {Divider} from "@packages/shared/components/Divider";
 
 type ProfileLayoutProps = ComponentBasicProps & {
 	userProfile?: {
@@ -326,7 +327,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 			/>
 
 			<Container
-				className="w-full h-[320px]"
+				className="w-full h-[320px] rounded-b-xl"
 				css={{
 					backgroundImage: `url("${ownerOfUserProfile.banner_pic}")`,
 					backgroundPosition: "center",
@@ -336,148 +337,150 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 				}}
 			/>
 
-			<ApplicationFrame>
-				<ContextualContainer className="grid w-full col-span-1 xl:grid-cols-3 gap-y-8 px-2">
-					<Container className="col-span-1 xl:col-span-2 flex flex-col gap-4">
-						<Container className="flex gap-4 items-center">
-							<NewAvatar
-								username="Tatenda Chris"
-								imageSrc={ownerOfUserProfile.profile_pic}
-								size={48}
-							/>
-							<Container className="flex flex-col gap-1">
-								<Container>
-									<Heading
-										size="xs"
-										className="flex items-center gap-1"
-									>
-										{ownerOfUserProfile.display_name ?? "TreatDAO Explorer"}{" "}
-										{ownerOfUserProfile.creator && (
-											<Text css={{color: "$primary5"}}>
-												<Verified className="w-5 h-5" />
-											</Text>
-										)}
-									</Heading>
-									<MutedText>@{ownerOfUserProfile.username}</MutedText>
-								</Container>
-							</Container>
-						</Container>
-						<Text className="hidden max-w-2xl mt-2 md:flex">
-							{ownerOfUserProfile.bio ?? "Loading profile details"}
-						</Text>
-						<Container className="flex flex-row flex-wrap gap-2 mt-2 rounded-full">
-							{userBadges.map((badge) => (
-								<Container
-									key={badge.name}
-									css={{
-										backgroundColor: `$${badge.color}2`,
-										borderColor: `$${badge.color}5`,
-									}}
-									className="px-4 py-1 border rounded-full shadow-sm"
-								>
-									<Text css={{color: `$${badge.color}10`, fontWeight: 500}}>
-										<SmallText>
-											<ImportantText>{badge.name}</ImportantText>
-										</SmallText>
-									</Text>
-								</Container>
-							))}
-						</Container>
-						<Container className="hidden w-full mt-2 mb-4 md:flex">
-							<Container className="flex gap-2">
-								<Text
-									appearance={"hiContrast"}
-									weight={"bold"}
-								>
-									{ownerOfUserProfile.following.length} Following
-								</Text>
-							</Container>
-							<Bull />
-							<Container className="flex gap-2">
-								<Text
-									appearance={"hiContrast"}
-									weight={"bold"}
-								>
-									{followers.length} Followers
-								</Text>
-							</Container>
-						</Container>
-						<Container className="flex flex-col gap-4 md:hidden">
-							<Container className="flex w-full mt-2 mb-4">
-								<>
-									<Text
-										appearance={"hiContrast"}
-										weight={"bold"}
-									>
-										{ownerOfUserProfile.following.length}
-									</Text>
-									{""}
-									<JustifiedSpan>Following</JustifiedSpan>
-								</>
-								<Bull />
-								<>
-									<Text
-										appearance={"hiContrast"}
-										weight={"bold"}
-									>
-										{followers.length}
-									</Text>
-									<JustifiedSpan>Followers</JustifiedSpan>
-								</>
-							</Container>
-						</Container>
-					</Container>
-
-					<Container className="flex h-fit xl:justify-end">
-						<Container className="relative flex h-auto">
-							<Container className="flex flex-wrap gap-4 h-fit">
-								{!isLoading &&
-									loggedInUser &&
-									loggedInUser.address !== ownerOfUserProfile.address && (
-										<Button
-											onClick={followOrUnfollow}
-											className="focus:scale-110"
-											appearance={isFollowing ? "subtle" : "primary"}
+			<Container className="mb-4">
+				<ApplicationFrame>
+					<ContextualContainer className="grid w-full col-span-1 xl:grid-cols-3 gap-y-4 px-2">
+						<Container className="col-span-1 xl:col-span-2 flex flex-col gap-4">
+							<Container className="flex gap-4 items-center">
+								<NewAvatar
+									username="Tatenda Chris"
+									imageSrc={ownerOfUserProfile.profile_pic}
+									size={48}
+								/>
+								<Container className="flex flex-col gap-1">
+									<Container>
+										<Heading
+											size="xs"
+											className="flex items-center gap-1"
 										>
-											{isFollowing ? (
-												"Unfollow"
-											) : (
-												<>
-													<ImportantText>Follow</ImportantText>
-													<FollowUser />
-												</>
+											{ownerOfUserProfile.display_name ?? "TreatDAO Explorer"}{" "}
+											{ownerOfUserProfile.creator && (
+												<Text css={{color: "$primary5"}}>
+													<Verified className="w-5 h-5" />
+												</Text>
 											)}
-										</Button>
-									)}
-								<Link
-									href={`https://bscscan.com/address/${ownerOfUserProfile.address}`}
-								>
-									<a
-										target={"_blank"}
-										rel={"noopener"}
+										</Heading>
+										<MutedText>@{ownerOfUserProfile.username}</MutedText>
+									</Container>
+								</Container>
+							</Container>
+							<Text className="hidden max-w-2xl mt-2 md:flex">
+								{ownerOfUserProfile.bio ?? "Loading profile details"}
+							</Text>
+							<Container className="flex flex-row flex-wrap gap-2 mt-2 rounded-full">
+								{userBadges.map((badge) => (
+									<Container
+										key={badge.name}
+										css={{
+											backgroundColor: `$${badge.color}2`,
+											borderColor: `$${badge.color}5`,
+										}}
+										className="px-4 py-1 border rounded-full shadow-sm"
 									>
-										<Button
-											appearance={"accent"}
-											className="transition-transform duration-100 hover:scale-105"
+										<Text css={{color: `$${badge.color}10`, fontWeight: 500}}>
+											<SmallText>
+												<ImportantText>{badge.name}</ImportantText>
+											</SmallText>
+										</Text>
+									</Container>
+								))}
+							</Container>
+							<Container className="hidden w-full mt-2 mb-4 md:flex">
+								<Container className="flex gap-2">
+									<Text
+										appearance={"hiContrast"}
+										weight={"bold"}
+									>
+										{ownerOfUserProfile.following.length} Following
+									</Text>
+								</Container>
+								<Bull />
+								<Container className="flex gap-2">
+									<Text
+										appearance={"hiContrast"}
+										weight={"bold"}
+									>
+										{followers.length} Followers
+									</Text>
+								</Container>
+							</Container>
+							<Container className="flex flex-col gap-4 md:hidden">
+								<Container className="flex w-full mt-2 mb-4">
+									<>
+										<Text
+											appearance={"hiContrast"}
+											weight={"bold"}
 										>
-											<ExternalLinkIcon
-												width={16}
-												height={16}
-											/>
-											<ImportantText>View on Bscscan</ImportantText>
-										</Button>
-									</a>
-								</Link>
+											{ownerOfUserProfile.following.length}
+										</Text>
+										{""}
+										<JustifiedSpan>Following</JustifiedSpan>
+									</>
+									<Bull />
+									<>
+										<Text
+											appearance={"hiContrast"}
+											weight={"bold"}
+										>
+											{followers.length}
+										</Text>
+										<JustifiedSpan>Followers</JustifiedSpan>
+									</>
+								</Container>
 							</Container>
 						</Container>
-					</Container>
-				</ContextualContainer>
-			</ApplicationFrame>
-			<FluidContainer
-				justified
-				className="flex sticky top-0 z-50"
+
+						<Container className="flex h-fit xl:justify-end">
+							<Container className="relative flex h-auto">
+								<Container className="flex flex-wrap gap-4 h-fit">
+									{!isLoading &&
+										loggedInUser &&
+										loggedInUser.address !== ownerOfUserProfile.address && (
+											<Button
+												onClick={followOrUnfollow}
+												className="focus:scale-110"
+												appearance={isFollowing ? "subtle" : "primary"}
+											>
+												{isFollowing ? (
+													"Unfollow"
+												) : (
+													<>
+														<ImportantText>Follow</ImportantText>
+														<FollowUser />
+													</>
+												)}
+											</Button>
+										)}
+									<Link
+										href={`https://bscscan.com/address/${ownerOfUserProfile.address}`}
+									>
+										<a
+											target={"_blank"}
+											rel={"noopener"}
+										>
+											<Button
+												appearance={"accent"}
+												className="transition-transform duration-100 hover:scale-105"
+											>
+												<ExternalLinkIcon
+													width={16}
+													height={16}
+												/>
+												<ImportantText>View on Bscscan</ImportantText>
+											</Button>
+										</a>
+									</Link>
+								</Container>
+							</Container>
+						</Container>
+					</ContextualContainer>
+				</ApplicationFrame>
+			</Container>
+			<Container
+				className="mx-auto container max-w-[95vw] lg:max-w-screen-xl w-full"
 				css={{
 					backgroundColor: "$surface",
+					overflowX: "auto",
 				}}
 			>
 				<TabsContainer>
@@ -492,7 +495,8 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 						)
 					)}
 				</TabsContainer>
-			</FluidContainer>
+			</Container>
+			<Divider />
 			<ApplicationFrame>
 				<Container className="px-2 pb-24 pt-4">{props.children}</Container>
 			</ApplicationFrame>

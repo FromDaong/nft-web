@@ -17,7 +17,7 @@ import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import Link from "next/link";
 import {useRouter} from "next/router";
 import {useMemo, useRef, useState} from "react";
-import {toast} from "react-hot-toast";
+import {toast} from "sonner";
 import {useAccount} from "wagmi";
 
 const useUpdateCoverPhoto = (type, id) => {
