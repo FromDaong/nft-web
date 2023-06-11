@@ -47,7 +47,7 @@ export default function WishlistTray() {
 							<Heading size={"xss"}>Wishlist</Heading>
 						</DropdownMenu.DropdownMenuGroup>
 						{!isLoading && wishlist?.length !== 0 && (
-							<DropdownMenu.DropdownMenuGroup className="flex flex-col gap-2 p-1 my-2">
+							<DropdownMenu.DropdownMenuGroup className="flex flex-col gap-4 p-1 my-2">
 								{wishlist.map((nft) => (
 									<WishlistNFTPreview
 										key={nft._id}

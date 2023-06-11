@@ -123,7 +123,7 @@ export default function SearchModal() {
 									className="inline-block border md:w-full w-[95vw] md:max-w-xl mt-2 overflow-hidden text-left align-middle transition-all transform drop-shadow-2xl rounded-2xl"
 									ref={ref}
 								>
-									<Container className="flex flex-col gap-4">
+									<Container className="flex flex-col gap-4 pt-2">
 										<SearchBar />
 									</Container>
 								</Container>

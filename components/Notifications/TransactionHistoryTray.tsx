@@ -1,18 +1,14 @@
-import {XIcon} from "@heroicons/react/outline";
 import {treatGraphClient} from "@lib/graphClients";
 import {Modal, ModalHeaderSection} from "@packages/modals";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
-import {Divider} from "@packages/shared/components/Divider";
-import {Heading} from "@packages/shared/components/Typography/Headings";
 import {
 	ImportantText,
 	MutedText,
-	SmallText,
 	Text,
 } from "@packages/shared/components/Typography/Text";
 import Spinner from "@packages/shared/icons/Spinner";
-import {Link1Icon, Link2Icon} from "@radix-ui/react-icons";
+import {Link2Icon} from "@radix-ui/react-icons";
 import {timeFromNow} from "@utils/index";
 import {ExternalLink} from "lucide-react";
 import Link from "next/link";
@@ -190,7 +186,9 @@ const TransactionHistoryItem = ({
 								css={{padding: "8px"}}
 								appearance={"unstyled"}
 							>
-								<ExternalLink className="w-5 h-5" />
+								<Text>
+									<ExternalLink className="w-5 h-5" />
+								</Text>
 							</Button>
 						</Container>
 					</Container>

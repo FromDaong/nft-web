@@ -1,13 +1,11 @@
 // search input using lucide, tailwind
 
 import {Search} from "lucide-react";
-import {SmallText, Text} from "@packages/shared/components/Typography/Text";
+import {Text} from "@packages/shared/components/Typography/Text";
 import {Input} from "@packages/shared/components/Input";
 import {useEffect, useState} from "react";
-import {useRouter} from "next/router";
 import {Container} from "@packages/shared/components/Container";
 import {RadioGroup} from "@headlessui/react";
-import {cn} from "@lib/utils";
 import {Button} from "@packages/shared/components/Button";
 import {useFormikContext} from "formik";
 import {useDebounce} from "@packages/shared/hooks";

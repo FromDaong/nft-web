@@ -309,7 +309,7 @@ const NFTPresentationComponent = (props: {nft: any; address: string}) => {
 											{collectors.length > 5 && (
 												<Container className="flex gap-2">
 													<Button
-														appearance={"link"}
+														appearance={"subtle"}
 														size={"sm"}
 														onClick={onOpenCollectorsModal}
 													>

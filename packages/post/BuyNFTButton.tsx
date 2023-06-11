@@ -24,16 +24,9 @@ import {useContracts} from "./hooks";
 import useGetCreatorNftCost from "@packages/chain/hooks/useGetCreatorNftCost";
 import useGetSubscriberNftCost from "@packages/chain/hooks/useGetSubscriberNftCost";
 
-const ConnectWalletButton = () => {
+export const ConnectWalletButton = () => {
 	const {openConnectModal} = useConnectModal();
-	return (
-		<Button
-			fullWidth
-			onClick={openConnectModal}
-		>
-			Connect wallet
-		</Button>
-	);
+	return <Button onClick={openConnectModal}>Connect wallet</Button>;
 };
 
 const LoadingButton = () => {

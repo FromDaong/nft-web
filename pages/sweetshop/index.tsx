@@ -2,9 +2,12 @@
 import MarketplaceListingResults from "@components/MarketPlace/Listings/VirtualGridList";
 import SweetshopTabs from "@components/MarketPlace/MarketFilter";
 import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
+import {ConnectWalletButton} from "@packages/post/BuyNFTButton";
 import {SEOHead} from "@packages/seo/page";
+import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
-import {Heading} from "@packages/shared/components/Typography/Headings";
+import {Divider} from "@packages/shared/components/Divider";
+import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import TreatCore from "core/TreatCore";
@@ -12,8 +15,10 @@ import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import {useRouter} from "next/router";
 import {useEffect, useRef} from "react";
+import {useAccount} from "wagmi";
 
 export default function NFTS({nfts, error}) {
+	const {address} = useAccount();
 	const scrollerRef = useRef(null);
 	const posts = JSON.parse(nfts);
 	const router = useRouter();
@@ -85,26 +90,50 @@ export default function NFTS({nfts, error}) {
 	return (
 		<ApplicationLayout thisRef={scrollerRef}>
 			<SEOHead title="Explore NFTs" />
-			<ApplicationFrame>
-				<Container className="py-4 md:py-8">
-					<SweetshopTabs />
-				</Container>
-				{!error && (
-					<MarketplaceListingResults
-						scrollerRef={scrollerRef}
-						data={data?.pages?.flat() ?? []}
-						fetchNext={fetchNextPage}
-						hasNextPage={hasNextPage}
-						Component={SweetshopNFT}
-						isFetching={isFetching}
-					/>
-				)}
-				{error && (
-					<Container className="flex flex-col gap-12 py-12">
-						<Heading>An error occurred</Heading>
+			<Container>
+				<ApplicationFrame>
+					<Heading
+						size={"md"}
+						css={{marginTop: "2rem"}}
+					>
+						Sweetshop
+					</Heading>
+					<Text>
+						The brand new sweetshop features all TreatDAO marketplaces in one
+						place!
+					</Text>
+					{!address && (
+						<Container className="flex mt-4">
+							<ConnectWalletButton />
+						</Container>
+					)}
+				</ApplicationFrame>
+				<ApplicationFrame>
+					<Container className="py-2 mt-8">
+						<SweetshopTabs />
 					</Container>
-				)}
-			</ApplicationFrame>
+				</ApplicationFrame>
+				<Divider />
+			</Container>
+			<Container className="flex-1">
+				<ApplicationFrame>
+					{!error && (
+						<MarketplaceListingResults
+							scrollerRef={scrollerRef}
+							data={data?.pages?.flat() ?? []}
+							fetchNext={fetchNextPage}
+							hasNextPage={hasNextPage}
+							Component={SweetshopNFT}
+							isFetching={isFetching}
+						/>
+					)}
+					{error && (
+						<Container className="flex flex-col gap-12 py-12">
+							<Heading>An error occurred</Heading>
+						</Container>
+					)}
+				</ApplicationFrame>
+			</Container>
 		</ApplicationLayout>
 	);
 }

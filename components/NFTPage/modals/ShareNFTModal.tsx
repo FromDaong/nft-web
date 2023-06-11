@@ -82,7 +82,7 @@ export default function ShareModal({
 								className="flex flex-col items-center justify-center gap-2 p-4 rounded-xl"
 							>
 								<Container className="flex items-center justify-center">
-									{option.icon}
+									<Text>{option.icon}</Text>
 								</Container>
 								<Container>
 									<Text>
@@ -127,7 +127,7 @@ export default function ShareModal({
 					}
 					<Input
 						value={url}
-						onChange={() => {}}
+						onChange={() => url}
 						disabled
 						appearance={"solid"}
 					/>

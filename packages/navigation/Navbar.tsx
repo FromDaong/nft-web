@@ -16,7 +16,7 @@ import {ConnectButton} from "@rainbow-me/rainbowkit";
 import {useApplicationTheme} from "@packages/theme/provider";
 import ManageUserDropdown from "./components/NavbarUser";
 import {useDisclosure} from "@packages/hooks";
-import WishlistTray from "@components/Notifications/NotificationsTray";
+import WishlistTray from "@components/Notifications/WishlistTray";
 import TransactionHistoryTray from "@components/Notifications/TransactionHistoryTray";
 import {History, PlusIcon, ShoppingBag} from "lucide-react";
 import {BoldLink} from "@packages/shared/components/Typography/Text";
@@ -31,6 +31,7 @@ import {StackIcon} from "@radix-ui/react-icons";
 import {Portal, Transition} from "@headlessui/react";
 import {useEffect, useState} from "react";
 import {useRouter} from "next/router";
+import {ConnectWalletButton} from "@packages/post/BuyNFTButton";
 
 const Nav = styled("nav", {
 	zIndex: 30,
@@ -139,7 +140,7 @@ export default function Navbar() {
 										<ManageUserDropdown />
 									</Container>
 								) : (
-									<ConnectButton />
+									<ConnectWalletButton />
 								))}
 							{loading && <Spinner />}
 						</div>

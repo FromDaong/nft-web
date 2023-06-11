@@ -1,6 +1,10 @@
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
-import {Text} from "@packages/shared/components/Typography/Text";
+import {
+	ImportantText,
+	SmallText,
+	Text,
+} from "@packages/shared/components/Typography/Text";
 import DynamicSkeleton from "@packages/skeleton";
 import {FeaturedCreatorSkeleton} from "@packages/skeleton/config";
 import Link from "next/link";
@@ -137,7 +141,7 @@ const CompactCreatorCard = (props: SuggestedCreatorData) => {
 		>
 			<Link href={`/${props.username}`}>
 				<a>
-					<Container className="flex items-start gap-2 p-2">
+					<Container className="flex items-start gap-2 p-4">
 						<Container>
 							<UserAvatar
 								profile_pic={profilePicUrl}
@@ -147,25 +151,29 @@ const CompactCreatorCard = (props: SuggestedCreatorData) => {
 						</Container>
 						<Container className="flex flex-col w-full">
 							<Container className="flex items-center justify-between w-full gap-4">
-								<Container>
-									<Heading size={"xss"}>
-										{props.display_name?.trim()
-											? props.display_name?.trim()
-											: props.username.replaceAll(" ", "").trim()}
-										{props.isCreator && (
-											<Text css={{color: "$primary5"}}>
-												<Verified className="w-5 h-5" />
-											</Text>
-										)}
-									</Heading>
-									<Text>{props.username.replaceAll(" ", "").trim()}</Text>
-									<Text className="flex items-center gap-2 mt-2">
-										{isFollowing && (
-											<>
-												<UserIcon className="w-4 h-4" /> Following
-											</>
-										)}
+								<Container className="flex flex-col">
+									<Text css={{color: "$textContrast"}}>
+										<ImportantText>
+											{props.display_name?.trim()
+												? props.display_name?.trim()
+												: props.username.replaceAll(" ", "").trim()}
+											{props.isCreator && (
+												<Text css={{color: "$primary5"}}>
+													<Verified className="w-5 h-5" />
+												</Text>
+											)}
+										</ImportantText>
 									</Text>
+									<Text>{props.username.replaceAll(" ", "").trim()}</Text>
+									{isFollowing && (
+										<Text>
+											<SmallText className="flex items-center gap-2 mt-1">
+												<>
+													<UserIcon className="w-4 h-4" /> Following
+												</>
+											</SmallText>
+										</Text>
+									)}
 								</Container>
 							</Container>
 						</Container>
