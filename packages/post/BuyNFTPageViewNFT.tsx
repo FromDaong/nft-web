@@ -169,12 +169,7 @@ export const useGetResaleListings = (nftId: number) => {
 	};
 };
 
-const NFTPresentationComponent = (props: {
-	nft: any;
-	loadHD: () => void;
-	openFullScreen: () => void;
-	address: string;
-}) => {
+const NFTPresentationComponent = (props: {nft: any; address: string}) => {
 	const {nft} = props;
 	const {collectors, isLoading} = useGetCollectors(nft.id);
 	const [value, copy] = useCopyToClipboard();

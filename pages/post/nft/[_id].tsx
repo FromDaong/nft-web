@@ -1,7 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import {pagePropsConnectMongoDB} from "@db/engine/pagePropsDB";
 import Error404 from "@packages/error/404";
-import NFTPresentationComponent from "@packages/post/BuyNFTPageViewNFT";
+import NFTPresentationComponent, {Tag} from "@packages/post/BuyNFTPageViewNFT";
 import {useGetIsNFTOwned, useTritNFTUtils} from "@packages/post/hooks";
 import {Container} from "@packages/shared/components/Container";
 import {Text} from "@packages/shared/components/Typography/Headings";
@@ -9,11 +9,10 @@ import {
 	ImportantText,
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
-import {useFullScreen} from "@packages/shared/hooks";
 import {ImageIcon} from "@radix-ui/react-icons";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
-import {useContext, useState} from "react";
+import {useContext} from "react";
 import {MongoModelNFT, MongoModelProfile} from "server/helpers/models";
 import {useAccount} from "wagmi";
 import {ArticleJsonLd} from "next-seo";
@@ -24,7 +23,7 @@ import BuyNFTButton from "@packages/post/BuyNFTButton";
 import {useDisclosure} from "@packages/hooks";
 import {SparklesIcon} from "@heroicons/react/solid";
 import FullscreenImagePreviewModal from "@packages/modals/ImagePreview";
-import {Coins, InfoIcon} from "lucide-react";
+import {Coins, InfoIcon, SendIcon, ShoppingBag} from "lucide-react";
 import NFTPageTabs from "@components/NFTPage/Tabs";
 import {
 	SelectedOrderContext,
@@ -47,10 +46,6 @@ export default function NFT(props: {
 	const {address} = useAccount();
 	const {isOwned, balance} = useGetIsNFTOwned(nft);
 	const postUtils = useTritNFTUtils(nft);
-
-	const [showFullScreen, setShowFullScreen] = useState(false);
-	const [loadHD, setLoadHD] = useState(false);
-	useFullScreen("nft_image", showFullScreen);
 
 	if (props.notFound) {
 		return <Error404 />;
@@ -93,65 +88,19 @@ export default function NFT(props: {
 							postUtils={postUtils}
 						/>
 						<Container className="flex-1 w-full relative flex flex-col h-full rounded-xl gap-12 container mx-auto pb-32">
-							<Container className="flex gap-4">
-								{isOwned && balance && (
-									<Container
-										className="flex items-center gap-2 p-2 pr-3 border rounded-lg shadow-sm w-fit"
-										css={{
-											backgroundColor: "$surfaceOnSurface",
-											borderColor: "$border",
-										}}
-									>
-										<Button
-											css={{padding: 0, color: "$text"}}
-											appearance={"unstyled"}
-										>
-											<SparklesIcon className="w-5 h-5" />
-										</Button>
-										<Container className="flex gap-2">
-											<SmallText css={{color: "$text"}}>
-												<ImportantText>
-													You own {balance} NFT{balance > 1 ? "s" : ""}
-												</ImportantText>
-											</SmallText>
-										</Container>
-									</Container>
-								)}
-								{address &&
-									nft.creator.profile.address.toLowerCase() ===
-										address?.toLowerCase() && (
-										<Container className="flex">
-											<Container
-												className="flex items-center gap-2 p-2 pr-4 border rounded-lg shadow-sm"
-												css={{
-													backgroundColor: "$pink2",
-													borderColor: "$pink7",
-												}}
-											>
-												<Container>
-													<Text css={{color: "$pink10"}}>
-														<ImageIcon className="w-5 h-5" />
-													</Text>
-												</Container>
-												<Container>
-													<SmallText css={{color: "$pink10"}}>
-														<ImportantText>
-															This is a masterpiece from yours truly
-														</ImportantText>
-													</SmallText>
-												</Container>
-											</Container>
-										</Container>
-									)}
-							</Container>
 							<Container>
 								<NFTPresentationComponent
 									nft={nft}
-									openFullScreen={() => setShowFullScreen(true)}
-									loadHD={() => setLoadHD(true)}
 									address={address}
 								/>
 							</Container>
+							{isOwned && (
+								<OwnersSection
+									balance={balance}
+									nft={nft}
+								/>
+							)}
+
 							<NFTPageTabs nft={nft} />
 						</Container>
 					</Container>
@@ -176,7 +125,7 @@ function NFTPreview({nft, postUtils}) {
 	const mintedNfts = maxSupply - currentSupply;
 
 	return (
-		<Container className="w-full xl:w-1/2 flex-shrink-0 lg:h-[90vh] h-[calc(80vh-64px)] flex items-center justify-center xl:sticky top-4">
+		<Container className="w-full xl:w-1/2 flex-shrink-0 lg:h-[90vh] h-[calc(80vh-64px)] flex justify-center xl:sticky top-2">
 			{isLightboxOpen && (isOwned || !nft.protected) && (
 				<FullscreenImagePreviewModal
 					isOpen={isLightboxOpen}
@@ -186,7 +135,7 @@ function NFTPreview({nft, postUtils}) {
 				/>
 			)}
 			<Container className="container flex flex-col justify-center flex-1 h-full gap-4 py-4 lg:py-0">
-				<Container className="relative flex items-center justify-center w-full h-full overflow-hidden rounded-xl drop-shadow-xl">
+				<Container className="relative flex justify-center w-full h-full overflow-hidden rounded-xl drop-shadow-xl">
 					<img
 						onClick={onLightboxOpen}
 						src={`/api/v3/image/nft/${nft._id}/${
@@ -296,20 +245,34 @@ function NFTPreview({nft, postUtils}) {
 	);
 }
 
-const OwnersSection = ({nft}) => {
+const OwnersSection = ({nft, balance}) => {
 	return (
 		<Container
-			css={{backgroundColor: "$elementOnSurface"}}
-			className="p-4 rounded-xl flex flex-col"
+			css={{backgroundColor: "$elementOnSurface", borderColor: "$subtleBorder"}}
+			className="p-4 rounded-xl flex flex-col w-full gap-8"
 		>
-			<Container className="w-full flex justify-center text-center">
+			<Container className="w-full flex gap-2 items-center">
 				<Text>
-					<ImportantText>You own this NFT</ImportantText>
+					<ImportantText>Owner's section</ImportantText>
 				</Text>
+				<Tag>{balance} owned</Tag>
 			</Container>
-			<Container className="flex gap-8 justify-between">
-				<Button>Transfer</Button>
-				<Button>List for sale</Button>
+			<Container className="flex flex-col gap-4 justify-between">
+				<Button
+					css={{padding: "1rem"}}
+					appearance={"surface"}
+					outlined
+				>
+					<SendIcon className="w-5 h-5" />
+					Send to address
+				</Button>
+				<Button
+					css={{padding: "1rem"}}
+					appearance={"action"}
+				>
+					<ShoppingBag className="w-5 h-5" />
+					List for sale
+				</Button>
 			</Container>
 		</Container>
 	);
