@@ -36,7 +36,7 @@ const NFTPageTabs = ({nft}) => (
 				className="data-[state=active]:text-violet11"
 				value={"resale"}
 			>
-				<ImportantText>Resale market options</ImportantText>
+				<ImportantText>Buying options</ImportantText>
 			</TabsTrigger>
 			<TabsTrigger value={"activity"}>
 				<ImportantText>Activity</ImportantText>

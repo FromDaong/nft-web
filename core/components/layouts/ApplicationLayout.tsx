@@ -71,18 +71,6 @@ export default function ApplicationLayout({
 				id="main"
 				className="flex-1 relative min-h-full flex flex-col px-2"
 			>
-				{!isOpen && (
-					<Button
-						appearance={"subtle"}
-						onClick={onOpen}
-						className="absolute top-1 left-1 z-20 "
-						css={{
-							padding: "4px",
-						}}
-					>
-						<SidebarOpen className="w-5 h-5" />
-					</Button>
-				)}
 				{children}
 			</Container>
 		</Container>

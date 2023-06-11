@@ -84,6 +84,10 @@ export const Button = styled("button", {
 					backgroundColor: "$accentBg",
 				},
 			},
+			resale: {
+				backgroundColor: "$amber11",
+				color: "$surface",
+			},
 		},
 		outlined: {
 			true: {

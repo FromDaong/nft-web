@@ -16,7 +16,7 @@ import {ConnectButton} from "@rainbow-me/rainbowkit";
 import {useApplicationTheme} from "@packages/theme/provider";
 import ManageUserDropdown from "./components/NavbarUser";
 import {useDisclosure} from "@packages/hooks";
-import NotificationsTray from "@components/Notifications/NotificationsTray";
+import WishlistTray from "@components/Notifications/NotificationsTray";
 import TransactionHistoryTray from "@components/Notifications/TransactionHistoryTray";
 import {History, PlusIcon, ShoppingBag} from "lucide-react";
 import {BoldLink} from "@packages/shared/components/Typography/Text";
@@ -55,7 +55,7 @@ export default function Navbar() {
 	return (
 		<Container
 			className="top-0 z-20 border-b"
-			css={{borderColor: "$border"}}
+			css={{borderColor: "$subtleBorder"}}
 		>
 			<Nav className="left-0 flex-col hidden w-full lg:flex">
 				<Container className="relative w-full h-full px-8 divide-y">
@@ -71,6 +71,10 @@ export default function Navbar() {
 									/>
 								</a>
 							</Link>
+							<Container>
+								<SearchModal />
+							</Container>
+							<BrowseDropdownMenu />
 							<div className="items-center hidden gap-2 md:flex">
 								<Link href="/magazine">
 									<a>
@@ -94,11 +98,8 @@ export default function Navbar() {
 									</Button>
 								</a>
 							</Link>
-							<BrowseDropdownMenu />
 						</Container>
-						<Container>
-							<SearchModal />
-						</Container>
+
 						<div className="flex gap-8">
 							<div className="flex md:hidden"></div>
 							{!loading &&
@@ -121,7 +122,7 @@ export default function Navbar() {
 												</a>
 											</Link>
 										)}
-										<NotificationsTray />
+										<WishlistTray />
 										<TransactionHistoryTray
 											isOpen={isTransactionsTrayOpen}
 											onClose={onCloseTransactionsTray}
@@ -209,7 +210,7 @@ function BrowseDropdownMenu() {
 						appearance={"unstyled"}
 						css={{color: "$textContrast"}}
 					>
-						Marketplace <ChevronDownIcon className="w-4 h-4" />
+						Explore <ChevronDownIcon className="w-4 h-4" />
 					</Button>
 				</DropdownMenuTrigger>
 				<Transition
@@ -239,6 +240,16 @@ function BrowseDropdownMenu() {
 										<BoldLink className="flex items-center gap-4 w-full">
 											<StackIcon className="w-5 h-5" />
 											Collections
+										</BoldLink>
+									</a>
+								</Link>
+							</DropdownMenuLink>
+							<DropdownMenuLink className="p-2 rounded-lg cursor-pointer 0">
+								<Link href="/collection">
+									<a>
+										<BoldLink className="flex items-center gap-4 w-full">
+											<StackIcon className="w-5 h-5" />
+											Farms
 										</BoldLink>
 									</a>
 								</Link>

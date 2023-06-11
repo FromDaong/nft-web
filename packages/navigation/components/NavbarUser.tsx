@@ -1,17 +1,12 @@
 import {useDisclosure} from "@packages/hooks";
 import NewAvatar from "@packages/shared/components/AvatarNew";
 import {Container} from "@packages/shared/components/Container";
-import {
-	BoldLink,
-	SmallText,
-	Text,
-} from "@packages/shared/components/Typography/Text";
+import {BoldLink, SmallText} from "@packages/shared/components/Typography/Text";
 import ThemeSwitcherModal from "@packages/theme/ThemeSwitcherModal";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import {useAccountModal} from "@rainbow-me/rainbowkit";
 import Avvvatars from "avvvatars-react";
 import {useUser} from "core/auth/useUser";
-import {useSession} from "next-auth/react";
 import Link from "next/link";
 import {useAccount} from "wagmi";
 import {
@@ -24,7 +19,6 @@ import formatAddress from "@utils/formatAddress";
 import {Divider} from "@packages/shared/components/Divider";
 import EditProfile from "@components/settings/EditProfile";
 import RectangleStack from "@packages/shared/icons/RectangleStack";
-import {UserIcon} from "@heroicons/react/outline";
 
 const ManageUserDropdown = () => {
 	const {isConnected, address} = useAccount();

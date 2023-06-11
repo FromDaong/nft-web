@@ -34,6 +34,7 @@ import {SEOHead} from "@packages/seo/page";
 import {useMemo, useRef, useState} from "react";
 import {IFeatureProps, request} from "@lib/datocms";
 import Balancer from "react-wrap-balancer";
+import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 
 const getTrendingNFTs = async () => {
 	const res = await axios.get(`${apiEndpoint}/marketplace/trending`);
@@ -109,7 +110,7 @@ export default function Index(props: {
 	);
 
 	return (
-		<>
+		<ApplicationLayout>
 			<SEOHead
 				title={"TreatDAO"}
 				description="TreatDAO is a Web3 project dedicated to creating opportunities and an amazing platform for adult content creators and collectors."
@@ -422,7 +423,7 @@ export default function Index(props: {
 					</Container>
 				</Container>
 			</Container>
-		</>
+		</ApplicationLayout>
 	);
 }
 

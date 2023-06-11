@@ -171,13 +171,9 @@ export const useGetResaleListings = (nftId: number) => {
 
 const NFTPresentationComponent = (props: {
 	nft: any;
-	isOwned: boolean;
-	balance: number;
 	loadHD: () => void;
 	openFullScreen: () => void;
 	address: string;
-	isResale: boolean;
-	maxSupply: number;
 }) => {
 	const {nft} = props;
 	const {collectors, isLoading} = useGetCollectors(nft.id);

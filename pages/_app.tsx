@@ -15,11 +15,11 @@ import {AppProps} from "next/app";
 import type {Session} from "next-auth";
 import {ApplicationProvider} from "core/provider";
 import AcceptAgeModal from "@packages/modals/AcceptAgeModal";
-import {Container} from "@packages/shared/components/Container";
-import Footer from "@packages/shared/components/Footer";
 import {Analytics} from "@vercel/analytics/react";
 import {Toaster} from "react-hot-toast";
 import TreatBalancesProvider from "core/auth/components/TreatBalancesProvider";
+import {Provider} from "urql";
+import {treatGraphClient} from "@lib/graphClients";
 
 const progress = new ProgressBar({
 	size: 3,
@@ -38,7 +38,7 @@ function MyApp({
 	session: Session;
 }>) {
 	return (
-		<>
+		<Provider value={treatGraphClient}>
 			<ApplicationProvider>
 				<WagmiWrapper pageProps={pageProps}>
 					<TreatBalancesProvider>
@@ -56,7 +56,7 @@ function MyApp({
 				</WagmiWrapper>
 			</ApplicationProvider>
 			<Analytics />
-		</>
+		</Provider>
 	);
 }
 

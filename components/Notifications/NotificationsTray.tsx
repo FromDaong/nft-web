@@ -12,9 +12,9 @@ import {
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import {BellRingIcon} from "lucide-react";
+import {BellRingIcon, ShoppingBag} from "lucide-react";
 
-export default function NotificationsTray() {
+export default function WishlistTray() {
 	return (
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger>
@@ -25,7 +25,7 @@ export default function NotificationsTray() {
 						}}
 						appearance={"surface"}
 					>
-						<BellRingIcon className={"w-5 h-5"} />
+						<ShoppingBag className={"w-5 h-5"} />
 					</Button>
 				</Container>
 			</DropdownMenu.Trigger>
@@ -33,7 +33,7 @@ export default function NotificationsTray() {
 				<DropdownContent>
 					<DropdownContainer className="shadow-2xl">
 						<DropdownMenu.DropdownMenuGroup className="flex flex-col gap-2 px-4 pt-2 my-2">
-							<Heading size={"xss"}>Notifications</Heading>
+							<Heading size={"xss"}>Wishlist</Heading>
 						</DropdownMenu.DropdownMenuGroup>
 						<DropdownMenu.DropdownMenuGroup className="flex flex-col gap-2 px-2 my-2">
 							<a href={`/`}>

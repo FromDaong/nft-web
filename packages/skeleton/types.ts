@@ -5,6 +5,7 @@ export type SkeletonColumn = {
 	radius?: number;
 	type?: "circle" | "square" | "gutter";
 	rows?: Array<SkeletonRow>;
+	bg?: boolean;
 };
 
 export type SkeletonRow = {
