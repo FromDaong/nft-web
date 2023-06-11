@@ -3,6 +3,7 @@ import ShowAllCollectors from "@components/MarketPlace/Details/Modals/Collectors
 import ShareModal from "@components/NFTPage/modals/ShareNFTModal";
 import {TiptapPreview} from "@components/ui/tiptap";
 import AvatarGroup from "@packages/avatars/AvatarGroup";
+import {useWishlist} from "@packages/chain/hooks/useWishlist";
 import {useDisclosure} from "@packages/hooks";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
@@ -18,7 +19,6 @@ import {apiEndpoint} from "@utils/index";
 import axios from "axios";
 import TreatCore from "core/TreatCore";
 import UserAvatar from "core/auth/components/Avatar";
-import {useWishlist} from "core/auth/components/TreatBalancesProvider";
 import {Share2Icon, StarIcon} from "lucide-react";
 import Link from "next/link";
 import {useEffect, useMemo, useState} from "react";
@@ -188,12 +188,6 @@ const NFTPresentationComponent = (props: {nft: any; address: string}) => {
 	}, [nft]);
 
 	const {
-		isOpen: isWishlistModalOpen,
-		onOpen: onOpenWishlistModal,
-		onClose: onCloseWishlistModal,
-	} = useDisclosure();
-
-	const {
 		isOpen: isShareModalOpen,
 		onOpen: onOpenShareModal,
 		onClose: onCloseShareModal,
@@ -212,10 +206,6 @@ const NFTPresentationComponent = (props: {nft: any; address: string}) => {
 
 	return (
 		<>
-			<AddToWishlist
-				isOpen={isWishlistModalOpen}
-				onClose={onCloseWishlistModal}
-			/>
 			{!isLoading && (
 				<ShowAllCollectors
 					isOpen={isCollectorsModalOpen}

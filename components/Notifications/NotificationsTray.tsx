@@ -1,3 +1,5 @@
+import {NFTCard} from "@components/NFTCard";
+import {useMyWishlist, useWishlist} from "@packages/chain/hooks/useWishlist";
 import {
 	DropdownContainer,
 	DropdownContent,
@@ -10,11 +12,20 @@ import {
 	BoldLink,
 	ImportantText,
 	SmallText,
+	Text,
 } from "@packages/shared/components/Typography/Text";
+import Spinner from "@packages/shared/icons/Spinner";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import {BellRingIcon, ShoppingBag} from "lucide-react";
+import {ShoppingBag, TrashIcon} from "lucide-react";
+import Link from "next/link";
+import {useAccount} from "wagmi";
 
 export default function WishlistTray() {
+	const {address} = useAccount();
+	const {isLoading, wishlist} = useMyWishlist(address);
+
+	console.log({wishlist});
+
 	return (
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger>
@@ -31,34 +42,91 @@ export default function WishlistTray() {
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Portal>
 				<DropdownContent>
-					<DropdownContainer className="shadow-2xl">
-						<DropdownMenu.DropdownMenuGroup className="flex flex-col gap-2 px-4 pt-2 my-2">
+					<DropdownContainer className="shadow-2xl min-w-72 w-72 p-2 flex flex-col">
+						<DropdownMenu.DropdownMenuGroup className="flex flex-col gap-2 pt-2 p-2">
 							<Heading size={"xss"}>Wishlist</Heading>
 						</DropdownMenu.DropdownMenuGroup>
-						<DropdownMenu.DropdownMenuGroup className="flex flex-col gap-2 px-2 my-2">
-							<a href={`/`}>
-								<NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer w-[320px]">
-									<BoldLink className="flex gap-4">
-										<Container className="relative w-8 h-full p-4 mt-1 border rounded"></Container>
-										<Container className="flex flex-col">
-											<p>
-												<SmallText>
-													<ImportantText>Mistress of the East</ImportantText>
-												</SmallText>{" "}
-												<SmallText>sold for</SmallText>{" "}
-												<SmallText>
-													<ImportantText>0.001 BNB</ImportantText>
-												</SmallText>
-											</p>
-											<SmallText>3 hours ago</SmallText>
-										</Container>
-									</BoldLink>
-								</NavDropdownItem>
-							</a>
-						</DropdownMenu.DropdownMenuGroup>
+						{!isLoading && wishlist?.length !== 0 && (
+							<DropdownMenu.DropdownMenuGroup className="flex flex-col gap-2 p-1 my-2">
+								{wishlist.map((nft) => (
+									<WishlistNFTPreview
+										key={nft._id}
+										nft={nft}
+									/>
+								))}
+							</DropdownMenu.DropdownMenuGroup>
+						)}
+						{isLoading && (
+							<Button appearance={"surface"}>
+								<Spinner />
+								Loading...
+							</Button>
+						)}
+						{wishlist?.length === 0 && (
+							<Container className="p-2">
+								<Button appearance={"action"}>Visit the sweetshop</Button>
+							</Container>
+						)}
 					</DropdownContainer>
 				</DropdownContent>
 			</DropdownMenu.Portal>
 		</DropdownMenu.Root>
 	);
 }
+
+const WishlistNFTPreview = ({nft}) => {
+	const {removeFromWishlist} = useWishlist(nft._id);
+	const onRemoveFromWishlist = (e) => {
+		console.log({e});
+		e.stopPropagation();
+		removeFromWishlist();
+	};
+	return (
+		<NavDropdownItem className="flex gap-4 flex-col relative p-2 rounded-xl hover:cursor-pointer w-96 group">
+			<Link
+				href={`/post/nft/${nft._id}`}
+				key={nft._id}
+			>
+				<a>
+					<Container className="flex justify-between relative z-0 gap-4">
+						<Container
+							css={{
+								backgroundColor: "$elementOnSurface",
+								background: `url("/api/v3/image/nft/${nft._id}/thumbnail")`,
+								backgroundSize: "cover",
+							}}
+							className="w-16 aspect-square rounded-xl"
+						/>
+						<Container className="flex flex-col flex-1">
+							<Text
+								className="line-clamp-1"
+								css={{color: "$textContrast"}}
+							>
+								<ImportantText>{nft.name}</ImportantText>
+							</Text>
+							<Text>{nft.creator.username}</Text>
+						</Container>
+						<Container className="flex-shrink-0">
+							<Text>
+								<ImportantText>{nft.price} BNB</ImportantText>
+							</Text>
+						</Container>
+					</Container>
+				</a>
+			</Link>
+
+			<Container className="flex gap-4">
+				<Button
+					onClick={onRemoveFromWishlist}
+					appearance={"action"}
+					css={{
+						padding: "4px 8px",
+					}}
+				>
+					<TrashIcon className="w-4 h-4" />
+					Remove from wishlist
+				</Button>
+			</Container>
+		</NavDropdownItem>
+	);
+};

@@ -23,7 +23,7 @@ export const NavDropdownItem = styled(Item, {
 	borderRadius: "15px",
 	fontWeight: "600",
 
-	padding: "8px 12px",
+	padding: "16px",
 	"&:hover": {
 		backgroundColor: "$elementOnSurface",
 		cursor: "pointer",
