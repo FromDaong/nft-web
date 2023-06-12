@@ -9,10 +9,21 @@ import {ImportantText} from "@packages/shared/components/Typography/Text";
 import {ArrowRight, ShoppingBag} from "lucide-react";
 import {FrostyBackgroundContainer} from "../misc/FrostyBackground";
 import {useRef} from "react";
+import FullscreenImagePreviewModal from "@packages/modals/ImagePreview";
+import {useDisclosure} from "@packages/hooks";
+import Link from "next/link";
 
-export default function PortfolioPublicListingCard(props: TritPostProps) {
-	const {isMine, isProtected} = useTritNFTUtils(props);
+export default function PortfolioPublicListingCard(
+	props: TritPostProps & {overrideOwnership?: boolean}
+) {
+	const {
+		isOpen: isLightboxOpen,
+		onOpen: onLightboxOpen,
+		onClose: onLightboxClose,
+	} = useDisclosure();
+	const {isMine: chainIsMine, isProtected} = useTritNFTUtils(props);
 
+	const isMine = props.overrideOwnership ?? chainIsMine;
 	const editions = new Array(+props.count).fill(0).map((_, i) => i + 1);
 
 	return (
@@ -77,6 +88,14 @@ export default function PortfolioPublicListingCard(props: TritPostProps) {
 						<Text css={{color: "$sand2"}}>{props.text}</Text>
 						{isMine && (
 							<>
+								{isLightboxOpen && (
+									<FullscreenImagePreviewModal
+										isOpen={isLightboxOpen}
+										onClose={onLightboxClose}
+										url={`/api/v3/image/nft/${props._id}/hd`}
+										title={props.name}
+									/>
+								)}
 								<Button
 									className="w-fit"
 									appearance={"surface"}
@@ -88,15 +107,19 @@ export default function PortfolioPublicListingCard(props: TritPostProps) {
 							</>
 						)}
 						{!isMine && (
-							<Button
-								className="w-fit"
-								appearance={"surface"}
-								css={{borderRadius: 999}}
-							>
-								<ShoppingBag className="w-4 h-4" />
-								Buy on sweetshop
-								<ArrowRight className="w-4 h-4" />
-							</Button>
+							<Link href={`/post/nft/${props._id}`}>
+								<a>
+									<Button
+										className="w-fit"
+										appearance={"surface"}
+										css={{borderRadius: 999}}
+									>
+										<ShoppingBag className="w-4 h-4" />
+										Buy on sweetshop
+										<ArrowRight className="w-4 h-4" />
+									</Button>
+								</a>
+							</Link>
 						)}
 					</Container>
 				</Container>

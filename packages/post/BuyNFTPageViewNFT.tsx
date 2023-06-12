@@ -228,11 +228,11 @@ const NFTPresentationComponent = (props: {nft: any; address: string}) => {
 						>
 							{nft.name}
 						</Heading>
-						<Container className="flex flex-col md:flex-row gap-4 justify-between md:items-center py-2">
+						<Container className="flex gap-4 justify-between flex-wrap items-center py-2">
 							<Link href={`/${nft.creator.username}`}>
 								<a className="flex items-center gap-2">
 									<UserAvatar
-										size={40}
+										size={24}
 										username={nft.creator.username}
 										profile_pic={nft.creator.profile.profile_pic}
 									/>
@@ -244,20 +244,20 @@ const NFTPresentationComponent = (props: {nft: any; address: string}) => {
 													: nft.creator.profile.display_name}
 											</ImportantText>
 										</Text>
-										<Text>@{nft.creator.username}</Text>
 									</Container>
 								</a>
 							</Link>
-							<Container className="flex gap-4">
+							<Container className="flex gap-4 flex-shrink-0">
 								{(!wishListLoading || !wishlist) && (
 									<Button
+										css={{padding: "4px 8px"}}
 										appearance={isWishlisted ? "accent" : "surface"}
 										onClick={addOrRemoveFromWishlist}
 									>
 										{!isWishlisted && (
 											<>
 												<StarIcon className="w-5 h-5" />
-												Add to wishlist
+												Wishlist
 											</>
 										)}
 										{isWishlisted && (
@@ -271,6 +271,7 @@ const NFTPresentationComponent = (props: {nft: any; address: string}) => {
 								<Button
 									onClick={onOpenShareModal}
 									appearance={"surface"}
+									css={{padding: "4px 8px"}}
 								>
 									<Share2Icon className="w-5 h-5" />
 									Share
@@ -299,7 +300,7 @@ const NFTPresentationComponent = (props: {nft: any; address: string}) => {
 									{!isLoading && (
 										<>
 											<AvatarGroup
-												size={32}
+												size={24}
 												users={collectors.slice(0, 5).map((c) => ({
 													name: c.username,
 													imageUrl: c.profile_pic,

@@ -5,14 +5,28 @@ import {NFTCard} from "..";
 import Link from "next/link";
 import {useRouter} from "next/router";
 import {memo} from "react";
+import {Button} from "@packages/shared/components/Button";
+import {ExclamationCircleIcon} from "@heroicons/react/outline";
+import {useUser} from "core/auth/useUser";
+import {MinusCircle} from "lucide-react";
+import {useDisclosure} from "@packages/hooks";
+import RemoveListingModal from "@packages/modals/RemoveListingModal";
 
-function SweetshopNFT(props: TritPostProps) {
+function ResaleSweetshopNFT(props: TritPostProps) {
 	const {liked, likeNFT, isMine, isProtected} = useTritNFTUtils(props);
+	const {profile} = useUser();
 
 	const router = useRouter();
 	const market = router.query.tab;
 	const soldOut = props.collection?.minted === props.max_supply;
 
+	const {isOpen, onOpen, onClose} = useDisclosure();
+
+	const onClickRemove = (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+		onOpen();
+	};
 	return (
 		<Link
 			href={`/post/nft/${props._id}?seller=${props.seller.address}&id=${
@@ -20,6 +34,13 @@ function SweetshopNFT(props: TritPostProps) {
 			}${market ? `&market=${market}` : ""}`}
 		>
 			<a>
+				{isOpen && (
+					<RemoveListingModal
+						isOpen={isOpen}
+						onClose={onClose}
+						nft={props}
+					/>
+				)}
 				<NFTCard _id={props._id}>
 					<Container className="relative w-full overflow-hidden aspect-[11/16]">
 						<NFTCard.Media
@@ -61,6 +82,15 @@ function SweetshopNFT(props: TritPostProps) {
 							Price={NFTCard.Price}
 							ListedBy={NFTCard.ListedBy}
 						/>
+						{profile?.address === props.seller.address && (
+							<Button
+								onClick={onClickRemove}
+								appearance={"danger"}
+							>
+								<MinusCircle className="w-4 h-4" />
+								Remove listing
+							</Button>
+						)}
 					</Container>
 				</NFTCard>
 			</a>
@@ -68,4 +98,4 @@ function SweetshopNFT(props: TritPostProps) {
 	);
 }
 
-export default memo(SweetshopNFT);
+export default memo(ResaleSweetshopNFT);

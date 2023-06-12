@@ -38,9 +38,6 @@ const NFTPageTabs = ({nft}) => (
 			>
 				<ImportantText>Buying options</ImportantText>
 			</TabsTrigger>
-			<TabsTrigger value={"activity"}>
-				<ImportantText>Activity</ImportantText>
-			</TabsTrigger>
 		</TabsList>
 		<Tabs.Content value={"resale"}>
 			<ResaleListings nft={nft} />

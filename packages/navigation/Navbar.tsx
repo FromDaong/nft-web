@@ -12,7 +12,6 @@ import MobileNavbarDropdown from "./components/MobileNavbarDropdown";
 import {Button} from "@packages/shared/components/Button";
 import {useSession} from "next-auth/react";
 import Spinner from "@packages/shared/icons/Spinner";
-import {ConnectButton} from "@rainbow-me/rainbowkit";
 import {useApplicationTheme} from "@packages/theme/provider";
 import ManageUserDropdown from "./components/NavbarUser";
 import {useDisclosure} from "@packages/hooks";
@@ -32,6 +31,7 @@ import {Portal, Transition} from "@headlessui/react";
 import {useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import {ConnectWalletButton} from "@packages/post/BuyNFTButton";
+import NavbarMenu from "./components/NavbarMenu";
 
 const Nav = styled("nav", {
 	zIndex: 30,
@@ -75,7 +75,8 @@ export default function Navbar() {
 							<Container>
 								<SearchModal />
 							</Container>
-							<BrowseDropdownMenu />
+							<NavbarMenu />
+
 							<div className="items-center hidden gap-2 md:flex">
 								<Link href="/magazine">
 									<a>

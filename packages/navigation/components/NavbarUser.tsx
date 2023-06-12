@@ -75,39 +75,33 @@ const ManageUserDropdown = () => {
 				</DropdownMenu.Trigger>
 				<DropdownMenu.Portal>
 					<DropdownContent>
-						<DropdownContainer className="drop-shadow-2xl">
+						<DropdownContainer className="drop-shadow-xl">
 							<DropdownMenu.DropdownMenuGroup className="flex flex-col px-2 mt-2">
-								<NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
-									<BoldLink className="flex items-center gap-4">
-										<Container>
-											<Heading size={"xss"}>{profile?.display_name}</Heading>
-											<SmallText>{formatAddress(address)}</SmallText>
-										</Container>
-									</BoldLink>
-								</NavDropdownItem>
 								{!isLoading && creator && (
-									<Link href={"/studio"}>
+									<Link href={"/dashboard/studio"}>
 										<a>
 											<NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
 												<BoldLink className="flex items-center gap-4">
-													<RectangleStack
-														width={20}
-														height={20}
-													/>
-													Dashboard
+													Creator studio
 												</BoldLink>
 											</NavDropdownItem>
 										</a>
 									</Link>
 								)}
+								<Link href={"/dashboard"}>
+									<a>
+										<NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
+											<BoldLink className="flex items-center gap-4">
+												Dashboard
+											</BoldLink>
+										</NavDropdownItem>
+									</a>
+								</Link>
+
 								<Link href={`/${profile.username}`}>
 									<a>
 										<NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
 											<BoldLink className="flex items-center gap-4">
-												<UserCircle
-													width={20}
-													height={20}
-												/>
 												My Profile
 											</BoldLink>
 										</NavDropdownItem>
@@ -136,10 +130,6 @@ const ManageUserDropdown = () => {
 									className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
 								>
 									<BoldLink className="flex items-center gap-4">
-										<CogIcon
-											width={20}
-											height={20}
-										/>
 										Manage account
 									</BoldLink>
 								</NavDropdownItem>
@@ -148,10 +138,6 @@ const ManageUserDropdown = () => {
 									className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
 								>
 									<BoldLink className="flex items-center gap-4">
-										<ThemeIcon
-											width={20}
-											height={20}
-										/>
 										Change theme
 									</BoldLink>
 								</NavDropdownItem>
@@ -160,10 +146,6 @@ const ManageUserDropdown = () => {
 									className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
 								>
 									<BoldLink className="flex items-center gap-4">
-										<WalletConnectionIcon
-											width={20}
-											height={20}
-										/>
 										Manage wallet connection
 									</BoldLink>
 								</NavDropdownItem>

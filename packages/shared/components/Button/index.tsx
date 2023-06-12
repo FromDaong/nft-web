@@ -61,9 +61,8 @@ export const Button = styled("button", {
 				padding: 0,
 			},
 			danger: {
-				backgroundColor: "$red4",
-				color: "$red12",
-				boxShadow: "$shadow",
+				backgroundColor: "$red11",
+				color: "$surface",
 			},
 			disabled: {
 				opacity: 0.7,
@@ -73,7 +72,6 @@ export const Button = styled("button", {
 				color: "$white",
 			},
 			loading: {
-				backgroundColor: "$surfaceOnSurface",
 				opacity: 0.6,
 				color: "$text",
 			},
@@ -85,7 +83,7 @@ export const Button = styled("button", {
 				},
 			},
 			resale: {
-				backgroundColor: "$amber11",
+				backgroundColor: "$orange11",
 				color: "$surface",
 			},
 		},

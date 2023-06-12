@@ -86,6 +86,8 @@ const useOrder = (id: number, creator_address: string) => {
 		pause: !id || !seller || !isResale,
 	});
 
+	console.log({seller});
+
 	const {marketItems = [], fetching, error} = data ?? {};
 
 	useEffect(() => {

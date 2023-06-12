@@ -3,9 +3,10 @@ import {TritPostProps} from "@packages/post/types";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Input} from "@packages/shared/components/Input";
-import {Text} from "@packages/shared/components/Typography/Headings";
+import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {
 	ImportantText,
+	MutedText,
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
 import Spinner from "@packages/shared/icons/Spinner";
@@ -14,6 +15,7 @@ import {useRouter} from "next/router";
 import {useState} from "react";
 import {useSigner} from "wagmi";
 import GenericChainModal from "./GenericChainModal";
+import {Modal} from ".";
 
 export default function TransferNFTModal(props: {
 	onClose: any;
@@ -53,19 +55,11 @@ export default function TransferNFTModal(props: {
 		<>
 			<GenericChainModal
 				isOpen={transferNFTPending}
-				noTitle
-				subtitle={
-					<Container className="flex flex-col items-center gap-4">
-						<Spinner />
-						<Text>
-							<ImportantText>
-								Please wait, we are transferring your NFT.
-							</ImportantText>
-						</Text>
-					</Container>
-				}
+				title={"Sending NFT to another wallet"}
+				subtitle={"Please wait, we are transferring your NFT."}
 				hideClose
 				noButton
+				loading
 				onClose={() => {
 					props.onClose();
 				}}
@@ -102,38 +96,45 @@ export default function TransferNFTModal(props: {
 				}}
 			/>
 
-			<GenericChainModal
+			<Modal
 				isOpen={
 					props.isOpen &&
 					!transferNFTPending &&
 					!transferNFTSuccess &&
 					!transferNFTError
 				}
-				title={"Transfer NFT"}
-				subtitle={
-					"Send your NFT to another BSC wallet. Please ensure wallet address is on the Binance Smart Chain"
-				}
 				onClose={() => {
 					props.onClose();
 				}}
-				hideClose
-				noButton
 			>
-				<Container className="flex flex-col gap-8">
+				<Container className="flex flex-col gap-8 p-8">
+					<Container>
+						<Heading size={"xs"}>Send NFT to wallet</Heading>
+						<MutedText>
+							Send your NFT to another BSC wallet. Please make sure wallet
+							address is on the Binance Smart Chain
+						</MutedText>
+					</Container>
 					<Container className="flex flex-col gap-4">
 						<Container className="flex flex-col gap-2">
-							<Text>Receiving address</Text>
+							<Text>
+								<ImportantText>Wallet address</ImportantText>
+							</Text>
 							<Input
 								name="wallet"
+								appearance={"solid"}
 								type="text"
 								onChange={(e) => setSendTo(e.target.value)}
 								value={sendTo}
 							/>
 						</Container>
 						<Container className="flex flex-col gap-2">
-							<Text>NFTs to transfer</Text>
+							<Text>
+								<ImportantText>Amount</ImportantText>
+							</Text>
 							<Input
 								name="nfts"
+								appearance={"solid"}
 								max={props.balance}
 								min={0}
 								step={1}
@@ -141,11 +142,9 @@ export default function TransferNFTModal(props: {
 								onChange={(e) => setAmount(Number(e.target.value))}
 								value={amount}
 							/>
-							<Text>
-								<SmallText>
-									You have {props.balance} NFT editions in your wallet
-								</SmallText>
-							</Text>
+							<MutedText>
+								You have {props.balance} NFTs in your wallet
+							</MutedText>
 						</Container>
 					</Container>
 					<Container className="flex justify-end gap-4">
@@ -164,7 +163,7 @@ export default function TransferNFTModal(props: {
 						</Button>
 					</Container>
 				</Container>
-			</GenericChainModal>
+			</Modal>
 		</>
 	);
 }

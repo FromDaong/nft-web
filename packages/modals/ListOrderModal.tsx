@@ -122,16 +122,10 @@ export default function ListOrderModal(props: {
 
 			<GenericChainModal
 				isOpen={isApprovalLoading || isApprovedLoading}
-				noTitle
+				title={"Approving Treat Marketplace"}
+				loading
 				subtitle={
-					<Container className="flex flex-col items-center gap-4">
-						<Spinner />
-						<Text>
-							<ImportantText>
-								Checking if you have approved the Treat Marketplace Contract.
-							</ImportantText>
-						</Text>
-					</Container>
+					"Checking if you have approved the Treat Marketplace Contract."
 				}
 				hideClose
 				noButton
@@ -143,17 +137,9 @@ export default function ListOrderModal(props: {
 
 			<GenericChainModal
 				isOpen={listOrderPending}
-				noTitle
-				subtitle={
-					<Container className="flex flex-col items-center gap-4">
-						<Spinner />
-						<Text>
-							<ImportantText>
-								Please wait, we are listing your NFT on the marketplace.
-							</ImportantText>
-						</Text>
-					</Container>
-				}
+				loading
+				title={"Listing your NFT"}
+				subtitle={"Please wait, we are listing your NFT on the marketplace."}
 				hideClose
 				noButton
 				onClose={() => {
@@ -223,6 +209,7 @@ export default function ListOrderModal(props: {
 											placeholder="0.001"
 											min={0.001}
 											step={0.001}
+											appearance={"solid"}
 										/>
 										<MutedText>
 											<SmallText>
@@ -248,6 +235,7 @@ export default function ListOrderModal(props: {
 													setListQuantity(Number(e.target.value))
 												}
 												placeholder="1"
+												appearance={"solid"}
 											/>
 											<MutedText>
 												NFTs are sold out individually, at the list price.
@@ -257,7 +245,7 @@ export default function ListOrderModal(props: {
 									)}
 									<div className="flex justify-end gap-4">
 										<Button
-											className="font-bold text-white bg-primary"
+											className="font-bold "
 											onClick={props.onClose}
 											appearance={"surface"}
 										>

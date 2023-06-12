@@ -1,9 +1,10 @@
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
-import {Text} from "@packages/shared/components/Typography/Headings";
+import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import Spinner from "@packages/shared/icons/Spinner";
 import {ReactNode} from "react";
 import {Modal, ModalHeaderSection} from ".";
+import {MutedText} from "@packages/shared/components/Typography/Text";
 
 export default function GenericChainModal(props: {
 	title?: string;
@@ -17,26 +18,23 @@ export default function GenericChainModal(props: {
 	subtitle?: string | ReactNode;
 	loading?: boolean;
 	noTitle?: boolean;
+	buttonAppearance?: string;
 }) {
 	return (
 		<Modal
 			isOpen={props.isOpen}
 			onClose={props.onClose}
 		>
-			<ModalHeaderSection
-				onClose={props.onClose}
-				title={!props.noTitle && (props.title || "Action Complete ✅ 💝")}
-			/>
+			<Container className="flex flex-col gap-8 p-4 lg:p-8 w-full">
+				<Container>
+					<Heading size={"xs"}>{props.title}</Heading>
+					<MutedText>{props.subtitle}</MutedText>
+				</Container>
 
-			<Container className="flex flex-col gap-8 p-4 lg:p-8 w-full md:w-[520px]">
+				{props.children}
 				{props.loading && (
-					<Container className="flex justify-center">
+					<Container className="flex justify-center my-8">
 						<Spinner />
-					</Container>
-				)}
-				{props.subtitle && (
-					<Container className={"flex max-w-full text-center"}>
-						<Text>{props.subtitle}</Text>
 					</Container>
 				)}
 
@@ -53,7 +51,12 @@ export default function GenericChainModal(props: {
 
 						{props.buttonLabel &&
 							(!props.loading ? (
-								<Button onClick={props.action}>{props.buttonLabel}</Button>
+								<Button
+									appearance={(props.buttonAppearance as any) ?? "default"}
+									onClick={props.action}
+								>
+									{props.buttonLabel}
+								</Button>
 							) : (
 								<Button
 									disabled

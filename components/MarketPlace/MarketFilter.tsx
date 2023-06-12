@@ -28,7 +28,7 @@ export default function SweetshopTabs() {
 				backgroundColor: "$surface",
 				borderColor: "$border",
 			}}
-			className="overflow-x-auto container mx-auto w-full flex flex-col"
+			className="overflow-x-auto w-full flex flex-col"
 		>
 			<Container className="flex justify-between items-center w-full flex-col lg:flex-row">
 				<Container

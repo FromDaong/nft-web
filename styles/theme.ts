@@ -4,7 +4,7 @@ import {
 	mint,
 	pink,
 	sky,
-	amber,
+	orange,
 	crimson,
 	sand,
 	sandDark,
@@ -15,7 +15,7 @@ import {
 	pinkDark,
 	blue,
 	blueDark,
-	amberDark,
+	orangeDark,
 } from "@radix-ui/colors";
 
 import {createStitches} from "@stitches/react";
@@ -86,7 +86,7 @@ const baseColors = {
 	...mint, // Success
 	...crimson,
 	...blue,
-	...amber, // Warning
+	...orange, // Warning
 	...red,
 	white: "#fff",
 	pink1: "#F3F1F2",
@@ -106,7 +106,7 @@ const baseColorsDark = {
 	...purpleDark,
 	...crimsonDark,
 	...blueDark,
-	...amberDark,
+	...orangeDark,
 	...mintDark,
 	...redDark,
 	white: "#fff",

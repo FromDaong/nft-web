@@ -249,7 +249,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 				setBadges([
 					...userBadges,
 					{
-						color: "amber",
+						color: "orange",
 						name: "Gold Treator",
 					},
 				]);

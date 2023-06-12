@@ -5,14 +5,12 @@ import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {ImportantText, Text} from "@packages/shared/components/Typography/Text";
 import {StackIcon} from "@radix-ui/react-icons";
-import {styled} from "@styles/theme";
 import {ComponentBasicProps} from "core/TreatCore";
 import {
 	CompassIcon,
 	GiftIcon,
 	ImageIcon,
 	SidebarClose,
-	SidebarOpen,
 	UserIcon,
 } from "lucide-react";
 import Link from "next/link";
@@ -69,7 +67,7 @@ export default function ApplicationLayout({
 			/>
 			<Container
 				id="main"
-				className="flex-1 relative min-h-full flex flex-col px-2"
+				className="flex-1 relative min-h-full flex flex-col px-2 pb-32"
 			>
 				{children}
 			</Container>

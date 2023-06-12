@@ -42,12 +42,12 @@ export default function WishlistTray() {
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Portal>
 				<DropdownContent>
-					<DropdownContainer className="shadow-2xl min-w-72 w-72 p-2 flex flex-col">
+					<DropdownContainer className="shadow-2xl min-w-72 w-72 p-2 flex flex-col overflow-y-auto max-h-[32rem]">
 						<DropdownMenu.DropdownMenuGroup className="flex flex-col gap-2 pt-2 p-2">
 							<Heading size={"xss"}>Wishlist</Heading>
 						</DropdownMenu.DropdownMenuGroup>
 						{!isLoading && wishlist?.length !== 0 && (
-							<DropdownMenu.DropdownMenuGroup className="flex flex-col gap-4 p-1 my-2">
+							<DropdownMenu.DropdownMenuGroup className="flex flex-col gap-4 p-1 my-2 ">
 								{wishlist.map((nft) => (
 									<WishlistNFTPreview
 										key={nft._id}

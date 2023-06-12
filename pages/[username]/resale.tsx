@@ -1,5 +1,5 @@
 import MarketplaceListingResults from "@components/MarketPlace/Listings/VirtualGridList";
-import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
+import ResaleSweetshopCard from "@components/NFTCard/cards/ResaleSweetshopCard";
 import Spinner from "@packages/shared/icons/Spinner";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
@@ -71,7 +71,7 @@ export default function UserProfile(props: {
 					data={resaleNFTs ?? []}
 					fetchNext={fetchNextPage}
 					hasNextPage={hasNextPage}
-					Component={SweetshopNFT}
+					Component={ResaleSweetshopCard}
 					isFetching={isLoading}
 				/>
 			)}

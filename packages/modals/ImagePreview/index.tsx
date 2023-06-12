@@ -15,7 +15,8 @@ type ImagePreviewProps = {
 };
 
 export const DialogContent = styled(Dialog.Panel, {
-	backgroundColor: "$surface",
+	backgroundColor: "$overlay",
+	backdropFilter: "blur(10px)",
 	borderRadius: "0",
 	boxShadow:
 		"hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px",
@@ -46,6 +47,7 @@ export default function FullscreenImagePreviewModal(props: ImagePreviewProps) {
 							<Button
 								css={{padding: "8px"}}
 								onClick={props.onClose}
+								appearance={"surface"}
 							>
 								<XIcon className="w-5 h-5" />
 							</Button>
