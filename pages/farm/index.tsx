@@ -15,6 +15,9 @@ import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import FarmNFT from "@components/NFTCard/cards/FarmNFT";
 import {Button} from "@packages/shared/components/Button";
 import {Sparkles} from "lucide-react";
+import useBuyMelonNft from "@packages/chain/hooks/useBuyMelonNft";
+import {useDisclosure} from "@packages/hooks";
+import GenericChainModal from "@packages/modals/GenericChainModal";
 
 // T-78 Use intersection observer to change navbar color.
 
@@ -40,8 +43,32 @@ export default function Farm() {
 		contractInterface: ABI.masterMelonFarmer,
 	});
 
+	const {onBuyMelonNft} = useBuyMelonNft();
+	const {isOpen, onOpen, onClose} = useDisclosure();
+
+	const onMintMelonNFT = async () => {
+		onOpen();
+		try {
+			const tx = await onBuyMelonNft();
+			console.log(tx);
+		} catch (err) {
+			console.log({err});
+		}
+	};
+
 	return (
 		<ApplicationLayout>
+			{isOpen && (
+				<GenericChainModal
+					isOpen={isOpen}
+					onClose={onClose}
+					title="Waiting for Transaction Confirmation ⌛"
+					subtitle="Please confirm this transaction in your wallet and wait here for up to a few minutes for the transaction to confirm..."
+					loading
+					hideClose
+					noButton
+				/>
+			)}
 			<ApplicationFrame>
 				<Container className="h-auto">
 					<Container className="flex flex-col flex-wrap w-full gap-12 pt-12 mx-auto">
@@ -57,8 +84,9 @@ export default function Farm() {
 						<Container className="w-full flex flex-col md:flex-row gap-4 md:gap-2 justify-between items-baseline">
 							<Heading size={"xss"}>Available Melon NFTs</Heading>
 							<Button
+								onClick={onMintMelonNFT}
 								outlined
-								appearance={"surface"}
+								appearance={"success"}
 								className="shadow-sm"
 							>
 								<Sparkles className="w-4 h-4" />

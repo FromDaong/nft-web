@@ -1,6 +1,6 @@
 import {Container} from "@packages/shared/components/Container";
 import {useRouter} from "next/router";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {RadioGroup} from "@headlessui/react";
 import {Button} from "@packages/shared/components/Button";
 import SortBy from "./SortByDropdownFilter";
@@ -8,19 +8,20 @@ import TagsFilter, {useSweetshopTags} from "./TagsFilter";
 import {XIcon} from "lucide-react";
 
 export default function SweetshopTabs() {
-	const [selectedTab, setSelectedTab] = useState("verified");
 	const router = useRouter();
+	const defaultTab = `${router.query.tab ?? "verified"}`;
 	const {selectedTags, removeTag} = useSweetshopTags();
+	const [selectedTab, setSelectedTab] = useState(defaultTab);
 
-	useEffect(() => {
-		// update query to include selectedTab
+	const onChangeTab = (tab: string) => {
 		router.push({
 			query: {
 				...router.query,
-				tab: selectedTab,
+				tab,
 			},
 		});
-	}, [selectedTab]);
+		setSelectedTab(tab);
+	};
 
 	return (
 		<Container
@@ -43,9 +44,9 @@ export default function SweetshopTabs() {
 				</Container>
 				<Container>
 					<RadioGroup
-						onChange={(selected) => setSelectedTab(selected)}
+						onChange={(selected) => onChangeTab(selected)}
 						className="flex items-center w-full max-w-full gap-2 py-2 overflow-x-auto flex-nowrap px-2 scroll-smooth whitespace-wrap"
-						defaultValue="verified"
+						defaultValue={defaultTab}
 					>
 						<RadioGroup.Option
 							appearance={selectedTab === "verified" ? "action" : "subtle"}

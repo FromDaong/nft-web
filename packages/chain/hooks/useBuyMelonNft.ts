@@ -1,18 +1,15 @@
-import {buyMelonNft, getMelonMartContract} from "@packages/chain/utils";
-
 import {useCallback} from "react";
 import {useAccount} from "wagmi";
-import useTreat from "./useTreat";
+import {useFarmContracts} from "@packages/farm/utils";
 
 const useBuyMelonNft = () => {
 	const {address: account} = useAccount();
-	const treat = useTreat();
-	const melonMartContract = getMelonMartContract(treat);
+	const {melonMart} = useFarmContracts();
 
 	const handleBuyMelonNft = useCallback(async () => {
-		const txHash = await buyMelonNft(melonMartContract, account);
+		const txHash = await await melonMart.redeem(0, {from: account});
 		return txHash;
-	}, [account, melonMartContract]);
+	}, [account, melonMart]);
 
 	return {onBuyMelonNft: handleBuyMelonNft};
 };

@@ -144,15 +144,6 @@ export default function SortBy() {
 							<SelectItem value="oldest">Oldest</SelectItem>
 							<SelectItem value="cheapest">Cheapest</SelectItem>
 							<SelectItem value="expensive">Expensive</SelectItem>
-							{sortMap[router.query["tab"]] &&
-								sortMap[router.query["tab"]].map((item) => (
-									<SelectItem
-										key={item.value}
-										value={item.value}
-									>
-										{item.label}
-									</SelectItem>
-								))}
 						</Select.Group>
 					</Select.Viewport>
 					<Select.ScrollDownButton className="flex items-center justify-center h-[25px] bg-white text-violet11 cursor-default">

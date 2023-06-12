@@ -1,3 +1,4 @@
+import NFTListLoadingSkeleton from "@components/MarketPlace/Listings/LoadingSkeleton";
 import MarketplaceListingResults from "@components/MarketPlace/Listings/VirtualGridList";
 import ResaleSweetshopCard from "@components/NFTCard/cards/ResaleSweetshopCard";
 import Spinner from "@packages/shared/icons/Spinner";
@@ -64,7 +65,7 @@ export default function UserProfile(props: {
 			scrollerRef={scrollerRef}
 			userProfile={user_profile_data}
 		>
-			{isLoading && <Spinner />}
+			{isLoading && <NFTListLoadingSkeleton />}
 			{!isLoading && !isError && (
 				<MarketplaceListingResults
 					scrollerRef={scrollerRef}

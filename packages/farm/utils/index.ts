@@ -20,6 +20,13 @@ export const useFarmContracts = () => {
 		contractInterface: ABI.masterMelonFarmer,
 		signerOrProvider: data,
 	});
+
+	const melonMartContract = useContract({
+		addressOrName: contractAddresses.melonMart[56],
+		contractInterface: ABI.melonMart,
+		signerOrProvider: data,
+	});
+
 	const treatContract = useContract({
 		addressOrName: contractAddresses.treatToken[56],
 		contractInterface: ABI.treat,
@@ -30,6 +37,7 @@ export const useFarmContracts = () => {
 		treatLp: treatLpContract,
 		masterMelon: masterMelonContract,
 		treatToken: treatContract,
+		melonMart: melonMartContract,
 	};
 };
 

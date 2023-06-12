@@ -1,3 +1,4 @@
+import Spinner from "@packages/shared/icons/Spinner";
 import {styled} from "@styles/theme";
 import {MutableRefObject} from "react";
 import {VirtuosoGrid} from "react-virtuoso";
@@ -63,7 +64,7 @@ export default function MarketplaceListingResults({
 		if (hasNextPage) fetchNext();
 	};
 	return (
-		<div className="py-8 pb-24 h-auto">
+		<div className="py-8 pb-24 h-auto relative">
 			<VirtuosoGrid
 				className={`w-full ${isFetching ? "opacity-75" : ""}`}
 				useWindowScroll
@@ -91,6 +92,11 @@ export default function MarketplaceListingResults({
 					);
 				}}
 			/>
+			{hasNextPage && (
+				<div className="flex absolute bottom-2 right-2 justify-center pt-8">
+					<Spinner />
+				</div>
+			)}
 		</div>
 	);
 }

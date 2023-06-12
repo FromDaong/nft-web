@@ -73,7 +73,7 @@ const BuyButton = ({nftData, postUtils}) => {
 							}}
 						>
 							<GiftIcon className="w-5 h-5" />
-							Check out on Farm <ArrowRight className="w-5 h-5" />
+							Go to Farmer's 🍈 market <ArrowRight className="w-5 h-5" />
 						</Button>
 					</a>
 				</Link>

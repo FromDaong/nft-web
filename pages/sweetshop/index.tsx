@@ -1,4 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import NFTListLoadingSkeleton from "@components/MarketPlace/Listings/LoadingSkeleton";
 import MarketplaceListingResults from "@components/MarketPlace/Listings/VirtualGridList";
 import SweetshopTabs from "@components/MarketPlace/MarketFilter";
 import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
@@ -8,6 +9,9 @@ import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
+import Spinner from "@packages/shared/icons/Spinner";
+import DynamicSkeleton from "@packages/skeleton";
+import {TritPostSkeleton} from "@packages/skeleton/config";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import TreatCore from "core/TreatCore";
@@ -77,7 +81,7 @@ export default function NFTS({nfts, error}) {
 				};
 			},
 			placeholderData: {
-				pages: [posts],
+				pages: [],
 				pageParams: [1],
 			},
 		}
@@ -86,6 +90,8 @@ export default function NFTS({nfts, error}) {
 	useEffect(() => {
 		refetch();
 	}, [sortQuery, tagQuery, marketQuery]);
+
+	console.log({isLoading});
 
 	return (
 		<ApplicationLayout thisRef={scrollerRef}>
@@ -117,6 +123,9 @@ export default function NFTS({nfts, error}) {
 			</Container>
 			<Container className="flex-1">
 				<ApplicationFrame>
+					{(isLoading || data?.pages?.flat().length === 0) && (
+						<NFTListLoadingSkeleton />
+					)}
 					{!error && (
 						<MarketplaceListingResults
 							scrollerRef={scrollerRef}

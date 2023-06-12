@@ -1,4 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import NFTListLoadingSkeleton from "@components/MarketPlace/Listings/LoadingSkeleton";
 import MarketplaceListingResults from "@components/MarketPlace/Listings/VirtualGridList";
 import PortfolioPublicListingCard from "@components/NFTCard/cards/PortfolioListingCard";
 import {Container} from "@packages/shared/components/Container";
@@ -71,11 +72,7 @@ export default function UserProfile(props: {
 				scrollerRef={scrollerRef}
 				userProfile={user_profile_data}
 			>
-				{isLoading && (
-					<Container>
-						<Spinner />
-					</Container>
-				)}
+				{isLoading && <NFTListLoadingSkeleton />}
 				{!isLoading && !isError && (
 					<MarketplaceListingResults
 						scrollerRef={scrollerRef}
