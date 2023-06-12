@@ -14,7 +14,6 @@ import {useAccount} from "wagmi";
 import {ArticleJsonLd} from "next-seo";
 import {SEOHead} from "@packages/seo/page";
 import Guard from "@lib/guard";
-import BuyNFTButton from "@packages/post/BuyNFTButton";
 import {useDisclosure} from "@packages/hooks";
 import FullscreenImagePreviewModal from "@packages/modals/ImagePreview";
 import {InfoIcon} from "lucide-react";
@@ -206,19 +205,13 @@ function NFTPreview({nft, postUtils}) {
 							<>
 								{!isResale && (
 									<Container>
-										{mintedNfts !== maxSupply && (
-											<BuyNFTButton
-												postUtils={postUtils}
-												nftData={nft}
-											/>
-										)}
-
-										{mintedNfts === maxSupply && nft.melon_nft && (
+										{(mintedNfts !== maxSupply || nft.melon_nft) && (
 											<BuyButton
 												postUtils={postUtils}
 												nftData={nft}
 											/>
 										)}
+
 										{mintedNfts === maxSupply && !nft.melon_nft && (
 											<Container className="flex gap-4 items-center">
 												<Text

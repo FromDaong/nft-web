@@ -1,9 +1,9 @@
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
-import {Heading, Text} from "@packages/shared/components/Typography/Headings";
+import {Heading} from "@packages/shared/components/Typography/Headings";
 import Spinner from "@packages/shared/icons/Spinner";
 import {ReactNode} from "react";
-import {Modal, ModalHeaderSection} from ".";
+import {Modal} from ".";
 import {MutedText} from "@packages/shared/components/Typography/Text";
 
 export default function GenericChainModal(props: {

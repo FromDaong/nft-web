@@ -47,7 +47,8 @@ export const Button = styled("button", {
 				},
 			},
 			success: {
-				color: "$mint11",
+				color: "$mint1",
+				backgroundColor: "$mint11",
 			},
 			outline: {
 				backgroundColor: "$surface",

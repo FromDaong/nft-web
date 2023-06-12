@@ -268,7 +268,7 @@ export const lightTheme = createTheme("light", {
 
 		surface: "#ffffff",
 		elementSurface: "$sand4",
-		surfaceOnSurface: "$sand1",
+		surfaceOnSurface: "$sand2",
 		elementOnSurface: "$sand3",
 		hoveredElementSurface: "$sand5",
 		selectedElementSurface: "$sand6",
