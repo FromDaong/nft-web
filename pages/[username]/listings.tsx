@@ -2,6 +2,7 @@
 import NFTListLoadingSkeleton from "@components/MarketPlace/Listings/LoadingSkeleton";
 import MarketplaceListingResults from "@components/MarketPlace/Listings/VirtualGridList";
 import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
+import ErrorOccurred from "@components/ui/error";
 import Spinner from "@packages/shared/icons/Spinner";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
@@ -27,6 +28,7 @@ export default function UserProfile(props: {
 		isError,
 		fetchNextPage,
 		hasNextPage,
+		error,
 	} = TreatCore.useInfiniteQuery(
 		["market-listings", user_profile_data.address],
 		async ({pageParam = 1}) => {
@@ -89,6 +91,14 @@ export default function UserProfile(props: {
 					hasNextPage={hasNextPage}
 					Component={SweetshopNFT}
 					isFetching={isLoading}
+				/>
+			)}
+			{isError && (
+				<ErrorOccurred
+					err={error}
+					description={
+						"We experienced an error while loading NFTs. Please reload the page."
+					}
 				/>
 			)}
 		</ProfileLayout>

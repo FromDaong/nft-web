@@ -2,10 +2,15 @@ import {gql} from "graphql-request";
 
 export const graphql_endpoints = {
 	resale: gql`
-		query resale($sort: String!, $skip: Int!, $first: Int!) {
+		query resale(
+			$sort: String!
+			$skip: Int!
+			$first: Int!
+			$direction: String!
+		) {
 			marketItems(
 				orderBy: $sort
-				orderDirection: desc
+				orderDirection: $direction
 				skip: $skip
 				first: $first
 			) {

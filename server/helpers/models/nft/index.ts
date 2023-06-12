@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, {Query} from "mongoose";
 import createMongoDBModel from "../../utils";
 import paginate from "mongoose-paginate-v2";
 import aggregatePaginate from "mongoose-aggregate-paginate-v2";
@@ -119,6 +119,11 @@ const NFTSchema = new mongoose.Schema(
 
 NFTSchema.plugin(paginate);
 NFTSchema.plugin(aggregatePaginate);
+
+NFTSchema.pre<Query<any, any>>("find", function () {
+	// Add the condition that id > 30 to the query
+	this.where({id: {$gt: process.env.NEXT_PUBLIC_V2_NFT_START}});
+});
 
 const NFTModel = createMongoDBModel("V2NFT", NFTSchema);
 

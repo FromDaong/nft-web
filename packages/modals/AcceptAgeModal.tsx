@@ -31,7 +31,7 @@ export default function AcceptAgeModal() {
 			isOpen={isOpen}
 			onClose={cancelModal}
 		>
-			<Container className="flex flex-col w-full gap-8">
+			<Container className="flex flex-col w-full gap-8 p-8">
 				<Container className="flex flex-col gap-2 text-center">
 					<Heading size="xs"> Confirm your age.</Heading>
 					<Text>You must be 18+ to use TreatDAO.</Text>
@@ -39,7 +39,6 @@ export default function AcceptAgeModal() {
 				<Container className="grid w-full grid-cols-1 md:grid-cols-2 gap-4">
 					<Container>
 						<Button
-							appearance={"surface"}
 							onClick={acceptAge}
 							fullWidth
 						>
@@ -48,6 +47,7 @@ export default function AcceptAgeModal() {
 					</Container>
 					<Button
 						fullWidth
+						appearance={"surface"}
 						onClick={cancelModal}
 					>
 						Take me away

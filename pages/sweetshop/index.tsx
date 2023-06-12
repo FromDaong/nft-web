@@ -3,15 +3,12 @@ import NFTListLoadingSkeleton from "@components/MarketPlace/Listings/LoadingSkel
 import MarketplaceListingResults from "@components/MarketPlace/Listings/VirtualGridList";
 import SweetshopTabs from "@components/MarketPlace/MarketFilter";
 import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
+import ErrorOccurred from "@components/ui/error";
 import {ConnectWalletButton} from "@packages/post/BuyNFTButton";
 import {SEOHead} from "@packages/seo/page";
-import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
-import Spinner from "@packages/shared/icons/Spinner";
-import DynamicSkeleton from "@packages/skeleton";
-import {TritPostSkeleton} from "@packages/skeleton/config";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import TreatCore from "core/TreatCore";
@@ -21,7 +18,7 @@ import {useRouter} from "next/router";
 import {useEffect, useRef} from "react";
 import {useAccount} from "wagmi";
 
-export default function NFTS({nfts, error}) {
+export default function NFTS({nfts}) {
 	const {address} = useAccount();
 	const scrollerRef = useRef(null);
 	const posts = JSON.parse(nfts);
@@ -37,6 +34,7 @@ export default function NFTS({nfts, error}) {
 		fetchNextPage,
 		hasNextPage,
 		refetch,
+		error,
 	} = TreatCore.useInfiniteQuery(
 		["marketplace", "activity"],
 		async ({pageParam = 1}) => {
@@ -91,8 +89,6 @@ export default function NFTS({nfts, error}) {
 		refetch();
 	}, [sortQuery, tagQuery, marketQuery]);
 
-	console.log({isLoading});
-
 	return (
 		<ApplicationLayout thisRef={scrollerRef}>
 			<SEOHead title="Explore NFTs" />
@@ -126,7 +122,7 @@ export default function NFTS({nfts, error}) {
 					{(isLoading || data?.pages?.flat().length === 0) && (
 						<NFTListLoadingSkeleton />
 					)}
-					{!error && (
+					{!isError && (
 						<MarketplaceListingResults
 							scrollerRef={scrollerRef}
 							data={data?.pages?.flat() ?? []}
@@ -136,10 +132,13 @@ export default function NFTS({nfts, error}) {
 							isFetching={isFetching}
 						/>
 					)}
-					{error && (
-						<Container className="flex flex-col gap-12 py-12">
-							<Heading>An error occurred</Heading>
-						</Container>
+					{isError && (
+						<ErrorOccurred
+							err={error}
+							description={
+								"We experienced an error while loading the marketplace. Please try again later or reload the page."
+							}
+						/>
 					)}
 				</ApplicationFrame>
 			</Container>

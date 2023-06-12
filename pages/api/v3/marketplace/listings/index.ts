@@ -1,14 +1,11 @@
-import {ABI} from "@packages/treat/lib/abi";
-import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
-import {ethers} from "ethers";
 import {NextApiRequest, NextApiResponse} from "next";
 import {returnWithError, returnWithSuccess} from "server/helpers/core/utils";
 import {MongoModelNFT, MongoModelProfile} from "server/helpers/models";
-import {request, gql} from "graphql-request";
+import {request} from "graphql-request";
 import {graphql_endpoints as markets} from "./queries";
 import Web3 from "web3";
-import formatAddress from "@utils/formatAddress";
 import {SUBGRAPH_GRAPHQL_URL} from "@lib/graphClients";
+import formatAddress from "@utils/formatAddress";
 
 const RESALE_GRAPHQL_ENDPOINT =
 	"https://api.thegraph.com/subgraphs/name/treatdaodev/treatdao";
@@ -22,11 +19,6 @@ export default async function handler(
 	if ((queryTags as string)?.split(",").every((t: string) => t.length > 0)) {
 		tags = (queryTags as string).split(",");
 	}
-
-	const graphqlSort = {
-		resale: ["cost", "currentSupply", "isActive"],
-		market: ["totalSales", "totalSupply"],
-	};
 
 	const sortMap = {
 		recent: {
@@ -105,9 +97,23 @@ export default async function handler(
 	if (config.market !== "resale") {
 		let nfts;
 		const {tokens} = await request(SUBGRAPH_GRAPHQL_URL, markets.sold_out);
-
 		const soldOutIDs = tokens.map((token) => +token.identifier);
-		console.log({soldOutIDs});
+
+		const andMap: any[] = [
+			{
+				id: {
+					$gte: +process.env.NEXT_PUBLIC_V2_NFT_START ?? 92,
+				},
+			},
+			{
+				id: {
+					$nin: soldOutIDs,
+				},
+			},
+		];
+
+		if (tags?.length > 0) andMap.push({tags: {$in: tags}});
+
 		if (market === "verified") {
 			// @ts-ignore
 			nfts = await MongoModelNFT.paginate(
@@ -130,18 +136,7 @@ export default async function handler(
 							},
 						},
 					],
-					$and: [
-						{
-							id: {
-								$gte: +process.env.NEXT_PUBLIC_V2_NFT_START ?? 92,
-							},
-						},
-						{
-							id: {
-								$nin: soldOutIDs,
-							},
-						},
-					],
+					$and: andMap,
 				},
 				{
 					page: config.page,
@@ -166,11 +161,20 @@ export default async function handler(
 		return returnWithSuccess(nfts, res);
 	}
 
+	let sortKey = "timestamp";
+	if (sort === "expensive") sortKey = "cost";
+	if (sort === "cheapest") sortKey = "cost";
+	if (sort === "newest") sortKey = "timestamp";
+	if (sort === "oldest") sortKey = "timestamp";
+
+	console.log({sortKey});
+
 	const {marketItems} = await request(RESALE_GRAPHQL_ENDPOINT, markets.resale, {
-		sort: graphqlSort.resale.includes(sort as string) ? sort : "cost",
+		sort: sortKey,
 		// sort: "id" as "totalSales" | "totalSupply" | "id",
 		skip: (config.page - 1) * 24,
 		first: 24,
+		direction: sort === "cheapest" || sort === "oldest" ? "asc" : "desc",
 	});
 	config.ids = marketItems.map((m) => m.nft);
 	config.resaleOrders = marketItems.map((m) => ({
@@ -179,10 +183,20 @@ export default async function handler(
 		nft: m.nft,
 	}));
 
-	const nfts = await MongoModelNFT.find({
-		id: {
-			$in: config.ids,
+	const lookupMap: any[] = [
+		{
+			id: {
+				$in: config.ids,
+			},
 		},
+	];
+	if (tags?.length > 0) lookupMap.push({tags: {$in: tags}});
+
+	const nfts = await MongoModelNFT.find({
+		$and: lookupMap,
+	}).populate({
+		path: "creator",
+		populate: "profile",
 	});
 
 	const populatedNfts = await Promise.all(
@@ -190,13 +204,13 @@ export default async function handler(
 			const order = config.resaleOrders.find((o) => parseInt(o.nft) === nft.id);
 			const seller = await MongoModelProfile.findOne({
 				address: order.seller.toLowerCase(),
-				// display_name: formatAddress(order.seller.toLowerCase()),
-				// username: formatAddress(order.seller.toLowerCase()),
 			}).exec();
 			const nftprice = Web3.utils.fromWei(order.cost);
 			const nftSeller = {
-				...seller?.toObject(),
 				address: order.seller.toLowerCase(),
+				display_name: formatAddress(order.seller.toLowerCase()),
+				username: formatAddress(order.seller.toLowerCase()),
+				...seller?.toObject(),
 			};
 			return {
 				...nft.toObject(),
@@ -210,7 +224,7 @@ export default async function handler(
 		{
 			docs: populatedNfts.flat(),
 			totalDocs: 10000,
-			hasNextPage: true,
+			hasNextPage: marketItems.length === 24,
 			hasPrevPage: config.page > 1,
 			page: config.page,
 			nextPage: config.page + 1,

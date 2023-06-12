@@ -60,6 +60,25 @@ const ResaleListingBuyButton = (order: {
 			});
 	};
 
+	const formatNotification = (text: string): string => {
+		// Shorten ETH addresses
+		let shortened = text.replace(/0x[0-9a-fA-F]{40}/g, function (match) {
+			return match.substring(0, 6) + "..." + match.substring(match.length - 4);
+		});
+
+		// Convert wei figures to BNB
+		const weiRegex = /(?<=have|want|supplied gas)\s+(\d+)/g;
+		let match;
+		while ((match = weiRegex.exec(shortened)) !== null) {
+			const wei = match[1];
+			const bnb = parseFloat(wei) / 1000000000000000000;
+			const bnbFormatted = parseFloat(bnb.toPrecision(2)).toString();
+			shortened = shortened.replace(wei, bnbFormatted + " BNB");
+		}
+
+		return shortened;
+	};
+
 	useEffect(() => {
 		if (data && isSuccess) {
 			setPurchaseNFTPending(false);
@@ -71,8 +90,12 @@ const ResaleListingBuyButton = (order: {
 	}, [isError, data, isSuccess]);
 
 	useEffect(() => {
-		if (purchaseNFTError)
-			toast.error(`An error occurred: ${purchaseNFTError}.`);
+		if (purchaseNFTError) {
+			toast.error(
+				`An error occurred: ${formatNotification(purchaseNFTError)}.`
+			);
+			setPurchaseNFTError(false);
+		}
 	}, [purchaseNFTError]);
 
 	const isProcessing = purchaseNFTPending || isLoading;

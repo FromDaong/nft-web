@@ -141,7 +141,6 @@ export default function SortBy() {
 					<Select.Viewport>
 						<Select.Group>
 							<SelectItem value="newest">Newest</SelectItem>
-							<SelectItem value="oldest">Oldest</SelectItem>
 							<SelectItem value="cheapest">Cheapest</SelectItem>
 							<SelectItem value="expensive">Expensive</SelectItem>
 						</Select.Group>

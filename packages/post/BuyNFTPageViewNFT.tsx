@@ -344,7 +344,7 @@ const NFTPresentationComponent = (props: {nft: any; address: string}) => {
 						<Container className="flex flex-wrap gap-4 py-2">
 							{nft.tags?.map((tag) => (
 								<Link
-									href={`/sweetshop/tag/${tag}`}
+									href={`/sweetshop?tags=${tag}`}
 									key={tag}
 								>
 									<a>

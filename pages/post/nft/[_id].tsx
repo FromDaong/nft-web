@@ -90,7 +90,7 @@ export default function NFT(props: {
 									address={address}
 								/>
 							</Container>
-							{true && (
+							{isOwned && (
 								<OwnersSection
 									balance={balance}
 									nft={nft}
@@ -225,7 +225,7 @@ function NFTPreview({nft, postUtils}) {
 										)}
 									</Container>
 								)}
-								{isResale && (
+								{isResale && !isLoading && (
 									<ResaleListingBuyButton
 										currentSupply={currentSupply}
 										seller={seller}

@@ -1,6 +1,5 @@
 import {Container} from "@packages/shared/components/Container";
 import Spinner from "@packages/shared/icons/Spinner";
-import Link from "next/link";
 
 export const MediaContainer = (props: {
 	caption: string;
@@ -13,7 +12,7 @@ export const MediaContainer = (props: {
 				alt={props.caption}
 				src={`/api/v3/image/nft/${props._id}/${
 					props.isProtected ? "blur" : "thumbnail"
-				}`}
+				}?cacheId=${props._id}`}
 				className="absolute top-0 left-0 object-cover w-full h-full rounded-lg"
 				style={{
 					zIndex: 2,
