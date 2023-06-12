@@ -399,8 +399,8 @@ export const ogPinkTheme = createTheme("pink", {
 		errorText: "$red11",
 		errorTextContrast: "$red12",
 
-		surface: "#FDE4EC",
-		surfaceOnSurface: "$white",
+		surface: "#ffd4da",
+		surfaceOnSurface: "#fde4ec",
 		elementSurface: "$primary4",
 		elementOnSurface: "$primary2",
 		hoveredElementSurface: "$primary3",
@@ -410,8 +410,8 @@ export const ogPinkTheme = createTheme("pink", {
 		text: "$sand11",
 		textContrast: "$sand12",
 		mutedText: "$sand9",
-		border: "#D0C8CB",
-		subtleBorder: "#E8E3E5",
+		border: "#eb518a",
+		subtleBorder: "rgba(212,102,143,.25)",
 
 		cardBg: "$primary1",
 		cardText: "$textContrast",

@@ -300,7 +300,7 @@ const NFTPresentationComponent = (props: {nft: any; address: string}) => {
 									{!isLoading && (
 										<>
 											<AvatarGroup
-												size={24}
+												size={32}
 												users={collectors.slice(0, 5).map((c) => ({
 													name: c.username,
 													imageUrl: c.profile_pic,

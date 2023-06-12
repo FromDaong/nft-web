@@ -6,9 +6,7 @@ import {useCopyToClipboard} from "@packages/shared/hooks";
 import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import axios from "axios";
 import TreatCore from "core/TreatCore";
-import {CopyIcon, Sparkles, Wallet} from "lucide-react";
-import {ArrowRight} from "lucide-react";
-import Link from "next/link";
+import {Wallet} from "lucide-react";
 
 export default function AssetsOverview({
 	treatApproved,
@@ -49,7 +47,7 @@ export default function AssetsOverview({
 					<SmartContract
 						approved={lpApproved}
 						approve={approveLp}
-						name={"Treat Pancake LP Farm"}
+						name={"Treat/BNB"}
 						address={contractAddresses.treatPancakeLP[56]}
 					/>
 				</Container>
@@ -70,30 +68,6 @@ export default function AssetsOverview({
 					/>
 				</Container>
 			</Container>
-			<Container className="flex gap-4">
-				<Button
-					css={{
-						color: "$accentText",
-						borderColor: "$border",
-						backgroundColor: "$surfaceOnSurface",
-					}}
-					className="border shadow"
-				>
-					<Sparkles className="w-4 h-4" />
-					Mint Melon NFT
-				</Button>
-				<Link href={"/ramp/buy"}>
-					<a>
-						<Button
-							outlined
-							appearance={"surface"}
-							className="border shadow"
-						>
-							Buy $TREAT <ArrowRight className="w-4 h-4" />
-						</Button>
-					</a>
-				</Link>
-			</Container>
 		</Container>
 	);
 }
@@ -105,13 +79,6 @@ function SmartContract({approve, approved, address, name}) {
 		<Container className="flex justify-between items-center mt-2">
 			<Text className="flex items-center">
 				<ImportantText>{name}</ImportantText>
-				<Button
-					appearance={"link"}
-					size={"sm"}
-					onClick={() => copyAddress(address)}
-				>
-					<CopyIcon className="w-4 h-4" />
-				</Button>
 			</Text>
 			<Button
 				size={"sm"}
@@ -142,13 +109,6 @@ function Asset({
 		<Container className="flex justify-between items-start">
 			<Text className="flex items-center">
 				<ImportantText>{name}</ImportantText>
-				<Button
-					appearance={"link"}
-					size={"sm"}
-					onClick={() => copyAddress(address)}
-				>
-					<CopyIcon className="w-4 h-4" />
-				</Button>
 			</Text>
 			<Container className="flex flex-col text-right">
 				{balance ? (

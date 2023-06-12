@@ -150,9 +150,7 @@ export default function FarmPortfolioItem({
 				<Container className="flex justify-between">
 					<Container className="flex gap-4">
 						<Button
-							size={"sm"}
-							appearance={"surface"}
-							outlined
+							appearance={"action"}
 							onClick={onOpen}
 						>
 							<Settings className="w-5 h-5" />

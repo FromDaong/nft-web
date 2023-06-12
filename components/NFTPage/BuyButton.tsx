@@ -23,7 +23,7 @@ import useGetSubscriberNftCost from "@packages/chain/hooks/useGetSubscriberNftCo
 import {BuyButtonProps} from "@packages/post/hooks/helpers";
 import {useContracts} from "@packages/post/hooks";
 
-const BuyButton = ({nftData, postUtils}) => {
+const BuyButton = ({nftData, postUtils, callback}) => {
 	const {address, status} = useAccount();
 	const isSubscribed = useGetIsSubscribed(address);
 
@@ -86,12 +86,13 @@ const BuyButton = ({nftData, postUtils}) => {
 				{...nftData}
 				postUtils={postUtils}
 				creator={nftData.creator}
+				callback={callback}
 			/>
 		</Container>
 	);
 };
 
-const PurchaseButtonWrapper = (nft: BuyButtonProps) => {
+const PurchaseButtonWrapper = (nft: BuyButtonProps, callback) => {
 	const {address} = useAccount();
 	const [txHash, setTxHash] = useState("");
 	const [loading, setLoading] = useState(false);
@@ -150,15 +151,8 @@ const PurchaseButtonWrapper = (nft: BuyButtonProps) => {
 		setLoading(true);
 		onMintNft()
 			.then((res) => setTxHash(res.hash))
-			.catch(async (err) => {
+			.catch(async () => {
 				setLoading(false);
-				const error =
-					err.code === -32603
-						? "Insufficient funds"
-						: err.code === "UNPREDICTABLE_GAS_LIMIT"
-						? "Unpredictable gas limit. Check your balance"
-						: "Blockchain error";
-				toast.error(`An error occurred: ${error}.`);
 			});
 	};
 
@@ -166,27 +160,19 @@ const PurchaseButtonWrapper = (nft: BuyButtonProps) => {
 		setLoading(true);
 		onMintFreeNft()
 			.then((res) => setTxHash(res.hash))
-			.catch(async (err) => {
+			.catch(async () => {
 				setLoading(false);
-				const error =
-					err.code === -32603
-						? "Insufficient funds"
-						: err.code === "UNPREDICTABLE_GAS_LIMIT"
-						? "Unpredictable gas limit. Check your balance"
-						: "Blockchain error";
-				toast.error(`An error occurred: ${error}.`);
 			});
 	};
 
 	useEffect(() => {
 		if (data || isError) {
 			if (data) {
-				console.log({data});
+				callback();
 			}
 
 			if (isError) {
-				console.log({error});
-				//trigger error
+				toast.error(`An error occurred: ${error}.`);
 			}
 
 			setLoading(false);

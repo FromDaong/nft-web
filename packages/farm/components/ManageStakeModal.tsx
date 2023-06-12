@@ -58,9 +58,11 @@ export default function ManageStackModal({isOpen, onClose, pid: id, balance}) {
 				.finally(() => setSubmitting(false));
 		},
 		validationSchema: yup.object({
-			amount: yup.number().required("Amount is required"),
-			//.lessThan(balance + +1, "Cannot exceed balance")
-			//.moreThan(0, "Should be more than 0"),
+			amount: yup
+				.number()
+				.required("Amount is required")
+				.lessThan(balance + +1, "Cannot exceed balance")
+				.moreThan(0, "Should be more than 0"),
 		}),
 		validateOnMount: true,
 		validateOnBlur: true,
@@ -69,8 +71,6 @@ export default function ManageStackModal({isOpen, onClose, pid: id, balance}) {
 	if (!isOpen) {
 		return null;
 	}
-
-	console.log({form});
 
 	return (
 		<Modal
@@ -128,11 +128,12 @@ export default function ManageStackModal({isOpen, onClose, pid: id, balance}) {
 										currency={`${["TREAT", "TREAT/BNB"][poolId]}`}
 										name={"amount"}
 										balance={balances[poolId]?.formatted}
+										error={form.errors.amount}
 									/>
 									<Container className="flex justify-end gap-4">
 										<Button
 											onClick={onClose}
-											appearance={"subtle"}
+											appearance={"surface"}
 										>
 											Cancel
 										</Button>
@@ -175,8 +176,16 @@ const SwapInput = ({value, onChange, currency, ...restProps}) => {
 					onChange={onChange}
 					{...restProps}
 					placeholder={"0.0"}
+					appearance={"solid"}
 				/>
 			</Container>
+			{restProps.error && (
+				<Container className="flex justify-end">
+					<Text css={{color: "$red11"}}>
+						<SmallText>{restProps.error}</SmallText>
+					</Text>
+				</Container>
+			)}
 			{restProps.balance || restProps.balance === 0 ? (
 				<Container className="flex justify-between items-center">
 					<Text>

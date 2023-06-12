@@ -26,7 +26,7 @@ export default function GenericChainModal(props: {
 			onClose={props.onClose}
 		>
 			<Container className="flex flex-col gap-8 p-4 lg:p-8 w-full">
-				<Container>
+				<Container className="flex flex-col gap-1">
 					<Heading size={"xs"}>{props.title}</Heading>
 					<MutedText>{props.subtitle}</MutedText>
 				</Container>

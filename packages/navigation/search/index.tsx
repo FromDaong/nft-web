@@ -5,7 +5,11 @@ import {Dialog, Transition} from "@headlessui/react";
 import {useDisclosure} from "@packages/hooks";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
-import {SmallText} from "@packages/shared/components/Typography/Text";
+import {
+	ImportantText,
+	SmallText,
+	Text,
+} from "@packages/shared/components/Typography/Text";
 import {Search} from "lucide-react";
 import {Fragment, useEffect, useRef} from "react";
 
@@ -18,6 +22,8 @@ import axios from "axios";
 import {apiEndpoint} from "@utils/index";
 import CreatorCard from "@packages/feed/components/CreatorCard";
 import {useRouter} from "next/router";
+import Spinner from "@packages/shared/icons/Spinner";
+import Link from "next/link";
 
 export default function SearchModal() {
 	const {isOpen, onOpen, onClose} = useDisclosure();
@@ -61,7 +67,7 @@ export default function SearchModal() {
 			<Container className="hidden w-96 lg:flex">
 				<Button
 					fullWidth
-					appearance={"surface"}
+					appearance={"subtle"}
 					css={{
 						display: "flex",
 						alignItems: "center",
@@ -164,8 +170,6 @@ function SearchBar() {
 		}
 	);
 
-	console.log(data);
-
 	return (
 		<div className="flex w-full h-full">
 			<FormikProvider value={formik}>
@@ -174,30 +178,99 @@ function SearchBar() {
 					className="flex flex-col w-full"
 				>
 					<SearchModal.SearchInput />
-					<>
-						<SearchModal.ResultSection heading={formik.values.entity}>
-							{!isLoading && !isError && (
-								<>
-									{formik.values.entity === "people" && (
-										<Container className="flex-shrink-0">
-											{data[formik.values.entity].map((item) => (
-												<CreatorCard
-													key={item._id}
-													{...{...item, avatar: item.profile_pic}}
-													variant={"compact"}
-												/>
-											))}
-										</Container>
-									)}
-								</>
-							)}
-						</SearchModal.ResultSection>
-					</>
+					{!isLoading && !isError && (
+						<>
+							<SearchModal.ResultSection heading={formik.values.entity}>
+								{!isLoading && !isError && (
+									<>
+										{formik.values.entity === "people" && (
+											<Container className="flex-shrink-0">
+												{data[formik.values.entity].map((item) => (
+													<CreatorCard
+														key={item._id}
+														{...{...item, avatar: item.profile_pic}}
+														variant={"compact"}
+													/>
+												))}
+											</Container>
+										)}
+										{formik.values.entity === "nfts" && (
+											<Container className="flex-shrink-0">
+												{data[formik.values.entity].map((item) => (
+													<NFTResult
+														key={item._id}
+														nft={item}
+													/>
+												))}
+											</Container>
+										)}
+									</>
+								)}
+							</SearchModal.ResultSection>
+						</>
+					)}
+					{(data ?? {})[formik.values.entity]?.length === 0 && (
+						<Text className="p-4 pt-0">
+							<ImportantText>
+								No results found for {formik.values.search}
+							</ImportantText>
+						</Text>
+					)}
+					{isLoading && (
+						<Container className="py-4 flex justify-center">
+							<Spinner />
+						</Container>
+					)}
 				</form>
 			</FormikProvider>
 		</div>
 	);
 }
+
+const NFTResult = ({nft}) => {
+	return (
+		<Link
+			href={`/post/nft/${nft._id}`}
+			key={nft._id}
+		>
+			<a>
+				<Container
+					css={{
+						"&:hover": {
+							backgroundColor: "$surfaceOnSurface",
+						},
+					}}
+					className="flex justify-between relative z-0 gap-4 p-2 rounded-xl"
+				>
+					<Container
+						css={{
+							backgroundColor: "$elementOnSurface",
+							background: `url("/api/v3/image/nft/${nft._id}/${
+								nft.protected ? "blur" : "thumbnail"
+							}")`,
+							backgroundSize: "cover",
+						}}
+						className="w-16 aspect-square rounded-xl"
+					/>
+					<Container className="flex flex-col flex-1">
+						<Text
+							className="line-clamp-1"
+							css={{color: "$textContrast"}}
+						>
+							<ImportantText>{nft.name}</ImportantText>
+						</Text>
+						<Text>{nft.creator.username}</Text>
+					</Container>
+					<Container className="flex-shrink-0">
+						<Text>
+							<ImportantText>{nft.price} BNB</ImportantText>
+						</Text>
+					</Container>
+				</Container>
+			</a>
+		</Link>
+	);
+};
 
 SearchModal.SearchInput = SearchInput;
 SearchModal.ResultSection = SearchResultSection;

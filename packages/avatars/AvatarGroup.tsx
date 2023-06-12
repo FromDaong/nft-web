@@ -20,8 +20,11 @@ const AvatarGroup = (props: {
 				>
 					<a className={index !== 0 ? `-ml-4` : ""}>
 						<Container
-							css={{borderColor: "$surface"}}
-							className={"rounded-full border-4"}
+							css={{
+								borderColor: "$surface",
+								backgroundColor: "elementOnSurface",
+							}}
+							className={"rounded-full border-2"}
 						>
 							<UserAvatar
 								username={profile.name}

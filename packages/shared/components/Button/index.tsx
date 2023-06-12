@@ -40,10 +40,10 @@ export const Button = styled("button", {
 				color: "$surface",
 			},
 			surface: {
-				backgroundColor: "$elementOnSurface",
+				backgroundColor: "$surface",
 				color: "$textContrast",
 				"&:hover": {
-					backgroundColor: "$surfaceOnSurface",
+					backgroundColor: "$surface",
 				},
 			},
 			success: {

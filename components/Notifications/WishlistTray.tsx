@@ -92,7 +92,9 @@ const WishlistNFTPreview = ({nft}) => {
 						<Container
 							css={{
 								backgroundColor: "$elementOnSurface",
-								background: `url("/api/v3/image/nft/${nft._id}/thumbnail")`,
+								background: `url("/api/v3/image/nft/${nft._id}/${
+									nft.protected ? "blur" : "thumbnail"
+								}")`,
 								backgroundSize: "cover",
 							}}
 							className="w-16 aspect-square rounded-xl"

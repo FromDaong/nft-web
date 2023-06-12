@@ -7,6 +7,7 @@ const useBuyMelonNft = () => {
 	const {melonMart} = useFarmContracts();
 
 	const handleBuyMelonNft = useCallback(async () => {
+		console.log("Called");
 		const txHash = await await melonMart.redeem(0, {from: account});
 		return txHash;
 	}, [account, melonMart]);

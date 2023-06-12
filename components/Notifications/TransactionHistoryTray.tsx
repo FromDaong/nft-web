@@ -35,17 +35,10 @@ export default function TransactionHistoryTray({isOpen, onClose}) {
 						<Container>
 							<MutedText>
 								<ImportantText>
-									Your NFT activity on the TreatDAO platform will be shown here
+									Your recent activity on the TreatDAO platform will be shown
+									here
 								</ImportantText>
 							</MutedText>
-							<Link href={""}>
-								<a className="flex flex-col w-full mt-2">
-									<Button appearance={"surface"}>
-										View more activity on Bscscan
-										<Link2Icon />
-									</Button>
-								</a>
-							</Link>
 						</Container>
 					</Container>
 				</Provider>

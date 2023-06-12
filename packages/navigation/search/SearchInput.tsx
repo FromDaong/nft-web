@@ -25,7 +25,7 @@ export default function SearchInput() {
 
 	return (
 		<form
-			className="flex flex-col p-4"
+			className="flex flex-col px-4 pt-4 pb-2"
 			onSubmit={handleSearch}
 		>
 			<div className="relative flex items-center w-full h-8">
@@ -55,7 +55,7 @@ export default function SearchInput() {
 
 const SearchRadioGroup = () => {
 	const form = useFormikContext();
-	const options = ["people", "collections", "nfts"];
+	const options = ["people", "nfts"];
 
 	return (
 		<RadioGroup
