@@ -109,36 +109,31 @@ export default function Market() {
 			<ApplicationFrame>
 				<Container className="h-auto">
 					<Container className="py-8 flex flex-col gap-2 mt-4 items-start">
-						<Heading size={"sm"}>Farmer's dashboard</Heading>
+						<Heading size={"sm"}>Farmers' 🍈 Market</Heading>
 						<Text css={{fontSize: "1.2rem"}}>
-							Stake $Treat to earn $Melon. Exchange $Melon at the Farmers'
-							Market to get exclusive NFTs.
+							Redeem a random NFT from the pool of exclusive NFTs listed below
+							for 10 $Melon. nge $Melon at the Farmers' Market to get exclusive
+							NFTs.
 						</Text>
-						<Link href={"/farm/market"}>
-							<a>
-								<Button>
-									Go to farmer's market <ArrowRight className="w-5 h-5" />
-								</Button>
-							</a>
-						</Link>
-					</Container>
-
-					<Container className="grid flex-1 grid-cols-1 gap-8 mt-12 lg:mt-24">
-						<Container>
-							<Container className="w-full flex flex-col md:flex-row gap-4 md:gap-2 justify-between items-end">
-								<Heading size={"sm"}>Farmer's market</Heading>
-								<Button
-									onClick={onMintMelonNFT}
-									appearance={"success"}
-								>
-									<Sparkles className="w-4 h-4" />
-									Mint exclusive NFT
-								</Button>
-							</Container>
-							<Divider />
+						<Container className="w-full mt-4 flex flex-col md:flex-row gap-4 md:gap-2 justify-between items-end">
+							<Link href={"/farm/market"}>
+								<a className="mt-4">
+									<Button>
+										Go to Farming Dashboard <ArrowRight className="w-5 h-5" />
+									</Button>
+								</a>
+							</Link>
+							<Button
+								onClick={onMintMelonNFT}
+								appearance={"success"}
+							>
+								<Sparkles className="w-4 h-4" />
+								Mint exclusive NFT
+							</Button>
 						</Container>
-						<FarmersMarket />
+						<Divider />
 					</Container>
+					<FarmersMarket />
 				</Container>
 			</ApplicationFrame>
 		</ApplicationLayout>

@@ -209,6 +209,7 @@ function NFTPreview({nft, postUtils}) {
 											<BuyButton
 												postUtils={postUtils}
 												nftData={nft}
+												callback={onOpen}
 											/>
 										)}
 
