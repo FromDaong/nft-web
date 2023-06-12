@@ -23,7 +23,7 @@ export default function PortfolioPublicListingCard(
 	} = useDisclosure();
 	const {isMine: chainIsMine, isProtected} = useTritNFTUtils(props);
 
-	const isMine = props.overrideOwnership ?? chainIsMine;
+	const isMine = props.overrideOwnership ?? (chainIsMine || props.count > 0);
 	const editions = new Array(+props.count).fill(0).map((_, i) => i + 1);
 
 	return (
@@ -100,6 +100,7 @@ export default function PortfolioPublicListingCard(
 									className="w-fit"
 									appearance={"surface"}
 									css={{borderRadius: 999}}
+									onClick={onLightboxOpen}
 								>
 									<EnterFullScreenIcon className="w-4 h-4" />
 									View in fullscreen

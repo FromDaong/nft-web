@@ -1,7 +1,6 @@
 import {ComponentBasicProps} from "core/TreatCore";
 import Link from "next/link";
 import {useRouter} from "next/router";
-import {Button} from "../Button";
 import {Container} from "../Container";
 import {Text} from "../Typography/Text";
 import {ReactNode} from "react";

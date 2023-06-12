@@ -1,12 +1,12 @@
-/* eslint-disable react/display-name */
-import React from "react";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import classNames from "classnames";
 import {CaretDownIcon} from "@radix-ui/react-icons";
-import {Portal} from "@headlessui/react";
 import {ImportantText, Text} from "@packages/shared/components/Typography/Text";
 import {Heading} from "@packages/shared/components/Typography/Headings";
 import {styled} from "@styles/theme";
+import * as DarkLogo from "../../../public/brand/logo_white.svg";
+import Image from "next/future/image";
+import {Container} from "@packages/shared/components/Container";
 
 const NavMenuContainer = styled(NavigationMenu.Content, {
 	backgroundColor: "$surfaceOnSurface",
@@ -32,18 +32,14 @@ const NavbarMenu = () => {
 										className="focus:shadow-orange-500 from-pink-500 to-pink-700 flex h-full w-full select-none flex-col justify-end rounded-[6px] bg-gradient-to-b p-[25px] no-underline outline-none focus:shadow-[0_0_0_2px]"
 										href="/"
 									>
-										<svg
-											aria-hidden
-											width="38"
-											height="38"
-											viewBox="0 0 25 25"
-											fill="white"
-											className="mb-2"
-										>
-											<path d="M12 25C7.58173 25 4 21.4183 4 17C4 12.5817 7.58173 9 12 9V25Z"></path>
-											<path d="M12 0H4V8H12V0Z"></path>
-											<path d="M17 8C19.2091 8 21 6.20914 21 4C21 1.79086 19.2091 0 17 0C14.7909 0 13 1.79086 13 4C13 6.20914 14.7909 8 17 8Z"></path>
-										</svg>
+										<Container className={"relative mb-4"}>
+											<Image
+												src={DarkLogo}
+												alt="Logo"
+												height={32}
+												width={32}
+											/>
+										</Container>
 										<Heading
 											size={"xss"}
 											css={{color: "$white"}}
@@ -67,12 +63,14 @@ const NavbarMenu = () => {
 								The brand new sweetshop features all TreatDAO marketplaces in
 								one place!
 							</ListItem>
-							<ListItem
-								href="/collection"
-								title="Collections"
-							>
-								Shop NFTs curated by verified Treat creators.
-							</ListItem>
+							{false && (
+								<ListItem
+									href="/collection"
+									title="Collections"
+								>
+									Shop NFTs curated by verified Treat creators.
+								</ListItem>
+							)}
 							<ListItem
 								href="/farm"
 								title="Farm"

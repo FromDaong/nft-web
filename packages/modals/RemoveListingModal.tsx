@@ -10,6 +10,7 @@ import {useRouter} from "next/router";
 import {useState} from "react";
 import {useAccount} from "wagmi";
 import GenericChainModal from "./GenericChainModal";
+import {toast} from "sonner";
 
 export default function RemoveListingModal(props: {
 	onClose: any;
@@ -19,7 +20,7 @@ export default function RemoveListingModal(props: {
 	const router = useRouter();
 	const {address} = useAccount();
 	const [removeOrderPending, setListOrderPending] = useState(false);
-	const [removeOrderSuccess, setListOrderSuccess] = useState(false);
+	const [removeOrderSuccess, setRemoveOrderSuccess] = useState(false);
 	const [removeOrderError, setListOrderError] = useState(false);
 
 	const {removeOrder} = useRemoveOrder();
@@ -35,13 +36,17 @@ export default function RemoveListingModal(props: {
 				});
 			})
 			.then(() => {
-				setListOrderPending(false);
-				setListOrderSuccess(true);
+				toast.success("Your NFT has been removed from the Resale Marketplace.");
+				setRemoveOrderSuccess(true);
 			})
 			.catch((err) => {
-				setListOrderPending(false);
 				setListOrderError(err);
-				console.log({err});
+				toast.error(
+					"An error occurred while removing your NFT from the Resale Marketplace."
+				);
+			})
+			.finally(() => {
+				setListOrderPending(false);
 			});
 	};
 

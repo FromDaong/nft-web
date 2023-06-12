@@ -151,11 +151,6 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 			icon: <UserGroupIcon className="w-5 h-5" />,
 		},
 		{
-			label: "Collections",
-			href: "/collections",
-			icon: <CollectionIcon className="w-5 h-5" />,
-		},
-		{
 			label: "Owned",
 			href: "/portfolio",
 			icon: <BriefcaseIcon className="w-5 h-5" />,
@@ -176,12 +171,6 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 	];
 
 	const [followers, setFollowers] = useState(profile.followers);
-
-	const copyProfileUrlToClipboard = () => {
-		const baseDomain = window.location.origin;
-		copy(`${baseDomain}/${ownerOfUserProfile.username}`);
-		copyFx();
-	};
 
 	const followOrUnfollow = () => {
 		if (followers.includes(loggedInUser._id)) {

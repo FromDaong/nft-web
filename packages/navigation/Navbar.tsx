@@ -6,7 +6,6 @@ import Image from "next/image";
 import {useAccount} from "wagmi";
 
 import {styled} from "@styles/theme";
-import {ChevronDownIcon} from "@heroicons/react/outline";
 import {Container} from "@packages/shared/components/Container";
 import MobileNavbarDropdown from "./components/MobileNavbarDropdown";
 import {Button} from "@packages/shared/components/Button";
@@ -17,19 +16,12 @@ import ManageUserDropdown from "./components/NavbarUser";
 import {useDisclosure} from "@packages/hooks";
 import WishlistTray from "@components/Notifications/WishlistTray";
 import TransactionHistoryTray from "@components/Notifications/TransactionHistoryTray";
-import {History, PlusIcon, ShoppingBag} from "lucide-react";
-import {BoldLink} from "@packages/shared/components/Typography/Text";
+import {History, PlusIcon} from "lucide-react";
 import SearchModal from "./search";
 import {
-	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
-	DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
-import {StackIcon} from "@radix-ui/react-icons";
-import {Portal, Transition} from "@headlessui/react";
-import {useEffect, useState} from "react";
-import {useRouter} from "next/router";
 import {ConnectWalletButton} from "@packages/post/BuyNFTButton";
 import NavbarMenu from "./components/NavbarMenu";
 
@@ -181,85 +173,3 @@ export const DropdownMenuLink = styled(DropdownMenuItem, {
 		backgroundColor: "$elementOnSurface",
 	},
 });
-
-function BrowseDropdownMenu() {
-	const [isOpen, setIsOpen] = useState(false);
-	const router = useRouter();
-
-	useEffect(() => {
-		if (isOpen) {
-			const onClose = () => {
-				setIsOpen(false);
-			};
-			onClose();
-		}
-	}, [router]);
-
-	useEffect(() => {
-		if (isOpen) {
-			document.body.style.overflow = "hidden";
-		}
-		return () => {
-			document.body.style.overflow = "unset";
-		};
-	}, [isOpen]);
-
-	return (
-		<div className="items-center hidden gap-4 md:flex">
-			<DropdownMenu onOpenChange={setIsOpen}>
-				<DropdownMenuTrigger>
-					<Button
-						appearance={"unstyled"}
-						css={{color: "$textContrast"}}
-					>
-						Explore <ChevronDownIcon className="w-4 h-4" />
-					</Button>
-				</DropdownMenuTrigger>
-				<Transition
-					show={isOpen}
-					enter="transition ease-out duration-100"
-					enterFrom="transform opacity-0 scale-95"
-					enterTo="transform opacity-100 scale-100"
-					leave="transition ease-in duration-75"
-					leaveFrom="transform opacity-100 scale-100"
-					leaveTo="transform opacity-0 scale-95"
-				>
-					<Portal>
-						<DropdownMenuContainer className="w-48 p-2 transition-opacity duration-200 border shadow-2xl rounded-xl z-50">
-							<DropdownMenuLink className="p-2 rounded-lg cursor-pointer ">
-								<Link href="/sweetshop">
-									<a>
-										<BoldLink className="flex items-center gap-4 w-full">
-											<ShoppingBag className="w-5 h-5" />
-											Sweetshop
-										</BoldLink>
-									</a>
-								</Link>
-							</DropdownMenuLink>
-							<DropdownMenuLink className="p-2 rounded-lg cursor-pointer 0">
-								<Link href="/collection">
-									<a>
-										<BoldLink className="flex items-center gap-4 w-full">
-											<StackIcon className="w-5 h-5" />
-											Collections
-										</BoldLink>
-									</a>
-								</Link>
-							</DropdownMenuLink>
-							<DropdownMenuLink className="p-2 rounded-lg cursor-pointer 0">
-								<Link href="/collection">
-									<a>
-										<BoldLink className="flex items-center gap-4 w-full">
-											<StackIcon className="w-5 h-5" />
-											Farms
-										</BoldLink>
-									</a>
-								</Link>
-							</DropdownMenuLink>
-						</DropdownMenuContainer>
-					</Portal>
-				</Transition>
-			</DropdownMenu>
-		</div>
-	);
-}
