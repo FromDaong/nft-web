@@ -25,11 +25,13 @@ import NewAvatar from "@packages/shared/components/AvatarNew";
 import {useRouter} from "next/router";
 import {useEffect} from "react";
 import {
+	ImageIcon,
 	PlusIcon,
 	Settings,
 	SunMoonIcon,
 	ThermometerIcon,
 	UserIcon,
+	Verified,
 	WalletIcon,
 } from "lucide-react";
 import {DashboardIcon} from "@radix-ui/react-icons";
@@ -37,6 +39,7 @@ import SearchModal from "../search";
 import {Transition} from "@headlessui/react";
 import {DialogOverlay} from "@packages/modals";
 import EditProfile from "@components/settings/EditProfile";
+import {ConnectWalletButton} from "@components/NFTPage/BuyButton";
 
 const ExploreDropdownLinks = [
 	{
@@ -44,8 +47,8 @@ const ExploreDropdownLinks = [
 		link: "/sweetshop",
 	},
 	{
-		label: "Creators",
-		link: "/creators",
+		label: "Farm",
+		link: "/farm",
 	},
 	{
 		label: "Magazine",
@@ -64,11 +67,10 @@ const ExploreDropdownLinks = [
 
 const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 	const {openAccountModal} = useAccountModal();
-	const {openConnectModal} = useConnectModal();
 	const {profile, creator, isLoading} = useUser();
 	const router = useRouter();
 
-	const {isOpen, onClose, onOpen} = useDisclosure();
+	const {isOpen, onClose} = useDisclosure();
 	const {
 		isOpen: isThemesOpen,
 		onClose: onCloseThemes,
@@ -87,8 +89,11 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 		onClose: onCloseEditProfileModal,
 	} = useDisclosure();
 
-	const {isOpen: upgradeToCreatorIsOpen, onClose: onCloseUpgradeToCreator} =
-		useDisclosure();
+	const {
+		isOpen: upgradeToCreatorIsOpen,
+		onClose: onCloseUpgradeToCreator,
+		onOpen,
+	} = useDisclosure();
 
 	useEffect(() => {
 		onMenuClose();
@@ -162,7 +167,7 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 											<XIcon className="w-5 h-5" />
 										</Button>
 									</Container>
-									<Container className="flex flex-col h-full gap-24 py-8">
+									<Container className="flex flex-col h-full gap-16 py-8">
 										<Container className="flex flex-col gap-2">
 											{ExploreDropdownLinks.map((link) => (
 												<Link
@@ -172,9 +177,9 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 													<a className="flex items-center justify-between">
 														<Container
 															onClick={onClose}
-															className="flex items-center gap-8 py-4"
+															className="flex items-center gap-8 py-2"
 														>
-															<Text>
+															<Text css={{color: "$textContrast"}}>
 																<ImportantText> {link.label}</ImportantText>
 															</Text>
 														</Container>
@@ -183,13 +188,7 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 												</Link>
 											))}
 										</Container>
-										<Button
-											css={{padding: "16px"}}
-											fullWidth
-											onClick={openConnectModal}
-										>
-											Login with wallet
-										</Button>
+										<ConnectWalletButton />
 									</Container>
 								</Container>
 							)}
@@ -226,18 +225,34 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 											<Heading size="xs">{profile?.display_name}</Heading>
 											<Text>@{profile?.username}</Text>
 										</Container>
-										{creator && !creator?.pending && (
-											<Link href={"/create"}>
-												<a className="flex flex-col w-full">
-													<Button
-														fullWidth
-														outlined
-														appearance={"surface"}
-													>
-														<PlusIcon className="w-5 h-5" /> Create collection
-													</Button>
-												</a>
-											</Link>
+										{creator ? (
+											!creator?.pending && (
+												<>
+													<Link href={"/create"}>
+														<a className="flex flex-col w-full">
+															<Button
+																fullWidth
+																appearance={"default"}
+															>
+																<PlusIcon className="w-5 h-5" /> Create NFT
+															</Button>
+														</a>
+													</Link>
+												</>
+											)
+										) : (
+											<>
+												<Link href={"/upgrade"}>
+													<a className="flex flex-col w-full">
+														<Button
+															fullWidth
+															appearance={"default"}
+														>
+															<Verified className="w-5 h-5" /> Become a creator
+														</Button>
+													</a>
+												</Link>
+											</>
 										)}
 									</Container>
 									<Container className="py-1">
@@ -249,9 +264,9 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 												>
 													<div className="flex items-center gap-4">
 														<Text className="p-2 rounded-full">
-															<DashboardIcon className="w-5 h-5" />
+															<ImageIcon className="w-5 h-5" />
 														</Text>
-														<BoldLink>Dashboard</BoldLink>
+														<BoldLink>Manage NFTs</BoldLink>
 													</div>
 												</Container>
 											</a>
@@ -326,7 +341,7 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 												<a>
 													<Container
 														onClick={onClose}
-														className="flex items-center justify-between py-3 rounded-xl hover:cursor-pointer"
+														className="flex items-center justify-between py-2 rounded-xl hover:cursor-pointer"
 													>
 														<div className="flex items-center justify-between w-full gap-4">
 															<BoldLink>{link.label}</BoldLink>

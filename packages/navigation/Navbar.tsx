@@ -111,7 +111,7 @@ export default function Navbar() {
 														}}
 													>
 														<PlusIcon className="w-5 h-5" />
-														Create collection
+														Create NFT
 													</Button>
 												</a>
 											</Link>

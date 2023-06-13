@@ -11,10 +11,15 @@ import {FrostyBackgroundContainer} from "../misc/FrostyBackground";
 import FullscreenImagePreviewModal from "@packages/modals/ImagePreview";
 import {useDisclosure} from "@packages/hooks";
 import Link from "next/link";
+import {useRouter} from "next/router";
+import {useUser} from "core/auth/useUser";
+import {useMemo} from "react";
 
 export default function PortfolioPublicListingCard(
 	props: TritPostProps & {overrideOwnership?: boolean}
 ) {
+	const router = useRouter();
+	const {profile} = useUser();
 	const {
 		isOpen: isLightboxOpen,
 		onOpen: onLightboxOpen,
@@ -22,8 +27,12 @@ export default function PortfolioPublicListingCard(
 	} = useDisclosure();
 	const {isMine: chainIsMine, isProtected} = useTritNFTUtils(props);
 
-	const isMine = props.overrideOwnership ?? (chainIsMine || props.count > 0);
+	const isOwned = props.overrideOwnership ?? (chainIsMine || props.count > 0);
 	const editions = new Array(+props.count).fill(0).map((_, i) => i + 1);
+	const canManage = useMemo(
+		() => isOwned && profile?.username === router.query.username,
+		[isOwned, profile?.username, router.query.username]
+	);
 
 	return (
 		<NFTCard _id={props._id}>
@@ -59,8 +68,8 @@ export default function PortfolioPublicListingCard(
 					css={{zIndex: 4}}
 				>
 					<NFTCard.RenderMedia
-						isProtected={isProtected && !isMine}
-						isMine={isMine}
+						isProtected={isProtected && !isOwned}
+						isMine={isOwned}
 						text={props.text}
 						_id={props._id}
 					/>
@@ -85,7 +94,7 @@ export default function PortfolioPublicListingCard(
 							</Heading>
 						</Container>
 						<Text css={{color: "$sand2"}}>{props.text}</Text>
-						{isMine && (
+						{canManage && (
 							<>
 								{isLightboxOpen && (
 									<FullscreenImagePreviewModal
@@ -109,7 +118,7 @@ export default function PortfolioPublicListingCard(
 								</Button>
 							</>
 						)}
-						{!isMine && (
+						{!canManage && (
 							<Link href={`/post/nft/${props._id}`}>
 								<a>
 									<Button

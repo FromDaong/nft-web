@@ -21,7 +21,7 @@ export default async function handler(
 	}
 
 	const sortMap = {
-		recent: {
+		newest: {
 			created_at: -1,
 		},
 		oldest: {
@@ -48,7 +48,7 @@ export default async function handler(
 		}[];
 	} = {
 		page: parseInt((page as string) ?? "1"),
-		sort: sortMap[sort as string] || sortMap.recent,
+		sort: sortMap[sort as string] || sortMap.newest,
 		market: (market as any) || "verified",
 		tags: tags || [],
 	};

@@ -1,7 +1,5 @@
-import {Heading} from "@packages/shared/components/Typography/Headings";
 import {
 	ImportantText,
-	MutedText,
 	SmallText,
 	Text,
 } from "@packages/shared/components/Typography/Text";
@@ -10,14 +8,11 @@ import {Container} from "@packages/shared/components/Container";
 import {Input} from "@packages/shared/components/Input";
 import {useDisclosure} from "@packages/hooks";
 import CropPhotoModal from "../../../modals/CropPhotoModal/CropPhotoModal";
-import {useState, useEffect, useLayoutEffect, useRef} from "react";
+import {useState, useEffect, useLayoutEffect} from "react";
 import {useFormik} from "formik";
 import {useSession} from "next-auth/react";
 import DynamicSkeleton from "@packages/skeleton";
-import {
-	LinksFormSkeleton,
-	ProfileFormSkeleton,
-} from "@packages/skeleton/config";
+import {ProfileFormSkeleton} from "@packages/skeleton/config";
 import {PencilAltIcon} from "@heroicons/react/outline";
 import {cdnUploadFileAndReturnURL} from "@utils/uploadcare";
 import axios from "axios";
@@ -26,17 +21,17 @@ import Spinner from "@packages/shared/icons/Spinner";
 
 import * as Yup from "yup";
 import Toast from "@packages/shared/components/Toast";
-import {XIcon} from "@heroicons/react/solid";
-import {Divider} from "@packages/shared/components/Divider";
 import {ModalHeaderSection} from "@packages/modals";
+import {useUser} from "core/auth/useUser";
+import {useRouter} from "next/router";
 
 export default function PersonalInformationForm({
 	onClose: onCloseEditProfileModal,
 }) {
 	const {isOpen, onClose, onOpen} = useDisclosure();
 	const [newImage, setNewImage] = useState(null);
-	const {data: session} = useSession();
-	const profile = (session as unknown as any)?.profile;
+	const {profile: myProfile} = useUser();
+	const profile = myProfile ?? {};
 
 	useEffect(() => {
 		if (newImage) {
@@ -88,6 +83,7 @@ const PersonalPresentationInformationForm = (props: {
 		bio: string;
 	};
 }) => {
+	const router = useRouter();
 	const {profile} = props;
 	const [bannerUrl, setBannerURL] = useState("");
 	const [profilePicUrl, setProfilePicURL] = useState("");
@@ -127,9 +123,10 @@ const PersonalPresentationInformationForm = (props: {
 				.post(`${apiEndpoint}/profile/methods/patch`, values)
 				.then(() => setUpdateProfile(values))
 				.then(() => formikHelpers.setSubmitting(false))
-				.then(() =>
-					setToastMessage({title: "Success", content: "Profile updated"})
-				)
+				.then(() => {
+					setToastMessage({title: "Success", content: "Profile updated"});
+					router.reload();
+				})
 				.catch((err) => {
 					setUpdateProfileError(err.message);
 					formikHelpers.setSubmitting(false);

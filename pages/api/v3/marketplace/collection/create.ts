@@ -1,4 +1,4 @@
-// create collection endpoint
+// Create NFT endpoint
 
 import {returnWithError, returnWithSuccess} from "@db/engine/utils";
 import {NextApiRequest, NextApiResponse} from "next";
