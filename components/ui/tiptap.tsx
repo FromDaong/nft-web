@@ -7,10 +7,11 @@ import {BoldIcon, ItalicIcon} from "lucide-react";
 const Tiptap = (props: {
 	onError: (error: string) => void;
 	onChange: (value: any) => void;
+	initialValue?: object;
 }) => {
 	const editor = useEditor({
 		extensions: [StarterKit],
-		content: "",
+		content: props.initialValue ?? {},
 		onUpdate(blurProps) {
 			if (blurProps.editor.getText().trim().length === 0)
 				props.onError("Description cannot be empty");
@@ -21,11 +22,15 @@ const Tiptap = (props: {
 	if (!editor) return null;
 
 	return (
-		<Container className="flex flex-col gap-2">
+		<Container
+			css={{backgroundColor: "$surfaceOnSurface"}}
+			className="flex flex-col gap-2 rounded-xl p-2 w-full"
+		>
 			<Container className="flex flex-row gap-2 rounded-lg">
 				<Button
-					appearance={editor.isActive("bold") ? "primary" : "surface"}
+					appearance={editor.isActive("bold") ? "action" : "subtle"}
 					css={{padding: "4px"}}
+					type={"button"}
 					onClick={() => {
 						editor.chain().focus().toggleBold().run();
 					}}
@@ -33,8 +38,9 @@ const Tiptap = (props: {
 					<BoldIcon className="w-5 h-5" />
 				</Button>
 				<Button
-					appearance={editor.isActive("italic") ? "primary" : "surface"}
+					appearance={editor.isActive("italic") ? "action" : "subtle"}
 					css={{padding: "4px"}}
+					type={"button"}
 					onClick={() => {
 						editor.chain().focus().toggleItalic().run();
 					}}

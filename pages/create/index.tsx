@@ -6,7 +6,6 @@ import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import {useCallback, useEffect, useState} from "react";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import {pagePropsConnectMongoDB} from "@db/engine/pagePropsDB";
-import {MongoModelCollection} from "server/helpers/models";
 import AddNFTDetails from "@packages/post/CreatePost/NFTDetails";
 import {useAccount, useWaitForTransaction} from "wagmi";
 import {useContracts} from "@packages/post/hooks";

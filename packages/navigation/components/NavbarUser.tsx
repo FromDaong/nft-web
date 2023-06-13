@@ -1,7 +1,7 @@
 import {useDisclosure} from "@packages/hooks";
 import NewAvatar from "@packages/shared/components/AvatarNew";
 import {Container} from "@packages/shared/components/Container";
-import {BoldLink, SmallText} from "@packages/shared/components/Typography/Text";
+import {BoldLink} from "@packages/shared/components/Typography/Text";
 import ThemeSwitcherModal from "@packages/theme/ThemeSwitcherModal";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import {useAccountModal} from "@rainbow-me/rainbowkit";
@@ -14,11 +14,8 @@ import {
 	DropdownContent,
 	NavDropdownItem,
 } from "./DropdownContainer";
-import {Heading} from "@packages/shared/components/Typography/Headings";
-import formatAddress from "@utils/formatAddress";
 import {Divider} from "@packages/shared/components/Divider";
 import EditProfile from "@components/settings/EditProfile";
-import RectangleStack from "@packages/shared/icons/RectangleStack";
 
 const ManageUserDropdown = () => {
 	const {isConnected, address} = useAccount();
@@ -78,25 +75,16 @@ const ManageUserDropdown = () => {
 						<DropdownContainer className="drop-shadow-xl">
 							<DropdownMenu.DropdownMenuGroup className="flex flex-col px-2 mt-2">
 								{!isLoading && creator && (
-									<Link href={"/dashboard/studio"}>
+									<Link href={"/studio"}>
 										<a>
 											<NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
 												<BoldLink className="flex items-center gap-4">
-													Creator studio
+													Creator Studio
 												</BoldLink>
 											</NavDropdownItem>
 										</a>
 									</Link>
 								)}
-								<Link href={"/dashboard"}>
-									<a>
-										<NavDropdownItem className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer">
-											<BoldLink className="flex items-center gap-4">
-												Dashboard
-											</BoldLink>
-										</NavDropdownItem>
-									</a>
-								</Link>
 
 								<Link href={`/${profile.username}`}>
 									<a>

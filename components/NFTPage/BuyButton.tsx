@@ -63,7 +63,7 @@ const BuyButton = ({nftData, postUtils, callback}) => {
 	if (nftData.melon_nft)
 		return (
 			<Container className="flex flex-col gap-2">
-				<Link href={"/studio/farm"}>
+				<Link href={"/farm/market"}>
 					<a>
 						<Button
 							fullWidth

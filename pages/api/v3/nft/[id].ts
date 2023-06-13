@@ -1,13 +1,12 @@
 // return nft by [id]
 
 import {connectMongoDB} from "server/helpers/core";
-import {returnWithSuccess} from "server/helpers/core/utils";
 import {MongoModelNFT} from "server/helpers/models";
 
 export default async function handler(req, res) {
 	await connectMongoDB();
 
-	const {id} = req.query;
+	let {id} = req.query;
 
 	if (!id) {
 		return res.status(400).json({
@@ -16,7 +15,9 @@ export default async function handler(req, res) {
 		});
 	}
 
-	const nft = await MongoModelNFT.findOne({id})
+	id = parseInt(id);
+
+	const nft = await MongoModelNFT.findOne({id: parseInt(id)})
 		.populate({
 			path: "creator",
 			select: "username profile address",
@@ -27,5 +28,5 @@ export default async function handler(req, res) {
 		})
 		.exec();
 
-	return returnWithSuccess(nft, res);
+	return res.status(200).json(nft);
 }

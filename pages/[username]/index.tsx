@@ -3,7 +3,6 @@ import NFTListLoadingSkeleton from "@components/MarketPlace/Listings/LoadingSkel
 import MarketplaceListingResults from "@components/MarketPlace/Listings/VirtualGridList";
 import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
 import ErrorOccurred from "@components/ui/error";
-import Spinner from "@packages/shared/icons/Spinner";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
 import {useUser} from "core/auth/useUser";
@@ -12,7 +11,7 @@ import TreatCore from "core/TreatCore";
 import {useMemo, useRef} from "react";
 import {beforePageLoadGetUserProfile} from "server/page/userProfile";
 
-export default function UserProfile(props: {
+export default function MyUserProfile(props: {
 	error: boolean;
 	notFound: boolean;
 	data: any;
