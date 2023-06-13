@@ -6,17 +6,21 @@ import GenericChainModal from "@packages/modals/GenericChainModal";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
-import { Input } from "@packages/shared/components/Input";
+import {Input} from "@packages/shared/components/Input";
 import {Heading} from "@packages/shared/components/Typography/Headings";
-import { ImportantText, SmallText, Text } from "@packages/shared/components/Typography/Text";
+import {
+	ImportantText,
+	SmallText,
+	Text,
+} from "@packages/shared/components/Typography/Text";
 import {ArrowRightIcon, StackIcon} from "@radix-ui/react-icons";
-import { apiEndpoint, timeFromNow } from "@utils/index";
+import {apiEndpoint, timeFromNow} from "@utils/index";
 import axios from "axios";
 import TreatCore from "core/TreatCore";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import {useFormik} from "formik";
-import { Edit, ExternalLink, EyeOff } from "lucide-react";
+import {Edit, ExternalLink, EyeOff} from "lucide-react";
 import Link from "next/link";
 import {useMemo} from "react";
 import {Provider, gql, useQuery} from "urql";
@@ -106,7 +110,7 @@ export default function TreatCreatorStudio() {
 								<Text>Update your NFTs, view sales, and more.</Text>
 							</Container>
 							<Container className={"flex flex-col gap-4 p-4"}>
-								<SalesPreview
+								<MyNFTs
 									totalSales={
 										(accountSummary?.tokens ?? []).map(
 											(t) => t.totalSaleValue
@@ -116,6 +120,7 @@ export default function TreatCreatorStudio() {
 										(accountSummary?.tokens ?? []).map((t) => t.identifier) ??
 										[]
 									}
+									isLoadingAccountSummary={isLoadingAccountSummary}
 								/>
 							</Container>
 						</Container>
@@ -131,12 +136,14 @@ async function fetchNFT(id: number): Promise<any> {
 	return response.data;
 }
 
-const SalesPreview = ({
+const MyNFTs = ({
 	nftIds,
 	totalSales,
+	isLoadingAccountSummary,
 }: {
 	nftIds: string[];
 	totalSales: string[];
+	isLoadingAccountSummary: boolean;
 }) => {
 	const nftQueries = TreatCore.useQueries({
 		queries: nftIds.map((id) => ({
@@ -149,6 +156,11 @@ const SalesPreview = ({
 
 	return (
 		<Container className="flex flex-col gap-1">
+			{isLoadingAccountSummary && (
+				<Container className="w-full py-12 flex justify-center">
+					<Spinner />
+				</Container>
+			)}
 			{nfts.map((nft) => {
 				const index = nftIds.indexOf(`${nft.id}`);
 				const totalSale = totalSales[index];

@@ -130,7 +130,7 @@ export default function Index(props: {
 												"px-4 flex items-center font-semibold truncate ... max-w-screen-sm"
 											}
 										>
-											Read the latest TreatDAO Magazine
+											View all TreatDAO magazines
 											<ArrowRightIcon className={"w-4 h-4 ml-4"} />
 										</Text>
 									</Container>
