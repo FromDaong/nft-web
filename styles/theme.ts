@@ -407,7 +407,7 @@ export const ogPinkTheme = createTheme("pink", {
 		selectedElementSurface: "$primary4",
 		solidSurface: "$primary3",
 		selectedSolidSurface: "$primary4",
-		text: "$sand11",
+		text: pink.pink12,
 		textContrast: "$sand12",
 		mutedText: "$sand9",
 		border: "#eb518a",
