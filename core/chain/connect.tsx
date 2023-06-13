@@ -34,8 +34,7 @@ const binance: Chain = {
 		symbol: "BNB",
 	},
 	rpcUrls: {
-		default:
-			"https://rpc.tenderly.co/fork/e7612ada-919a-4880-a828-0f3b354a59d9", // "https://bsc-dataseed.binance.org",
+		default: "https://bsc-dataseed.binance.org",
 	},
 	blockExplorers: {
 		default: {name: "Bscscan", url: "https://bscscan.com"},

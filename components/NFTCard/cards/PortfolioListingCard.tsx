@@ -8,7 +8,6 @@ import {EnterFullScreenIcon} from "@radix-ui/react-icons";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
 import {ArrowRight, ShoppingBag} from "lucide-react";
 import {FrostyBackgroundContainer} from "../misc/FrostyBackground";
-import {useRef} from "react";
 import FullscreenImagePreviewModal from "@packages/modals/ImagePreview";
 import {useDisclosure} from "@packages/hooks";
 import Link from "next/link";
@@ -94,6 +93,9 @@ export default function PortfolioPublicListingCard(
 										onClose={onLightboxClose}
 										url={`/api/v3/image/nft/${props._id}/hd`}
 										title={props.name}
+										nft={props}
+										balance={props.count}
+										isMine={true}
 									/>
 								)}
 								<Button
@@ -103,7 +105,7 @@ export default function PortfolioPublicListingCard(
 									onClick={onLightboxOpen}
 								>
 									<EnterFullScreenIcon className="w-4 h-4" />
-									View in fullscreen
+									Manage
 								</Button>
 							</>
 						)}

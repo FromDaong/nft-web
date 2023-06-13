@@ -58,6 +58,10 @@ export const Button = styled("button", {
 			subtle: {
 				backgroundColor: "$surfaceOnSurface",
 			},
+			white: {
+				background: "$white",
+				color: "#121212"
+			},
 			unstyled: {
 				padding: 0,
 			},

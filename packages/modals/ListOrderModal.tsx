@@ -25,6 +25,7 @@ import {useState} from "react";
 import {useAccount, useWaitForTransaction} from "wagmi";
 import Web3 from "web3";
 import GenericChainModal from "./GenericChainModal";
+import {toast} from "sonner";
 
 export default function ListOrderModal(props: {
 	onClose: any;
@@ -70,7 +71,7 @@ export default function ListOrderModal(props: {
 			})
 			.then(() => onClose())
 			.catch((err) => {
-				console.log({err});
+				toast.error(`${err}`);
 			});
 	};
 
@@ -96,7 +97,7 @@ export default function ListOrderModal(props: {
 			.catch((err) => {
 				setListOrderPending(false);
 				setListOrderError(err);
-				console.log({err});
+				toast.error(`${err}`);
 			});
 	};
 
@@ -211,11 +212,6 @@ export default function ListOrderModal(props: {
 											step={0.001}
 											appearance={"solid"}
 										/>
-										<MutedText>
-											<SmallText>
-												This is the price for someone to buy your NFT
-											</SmallText>
-										</MutedText>
 									</Container>
 									<Container className="my-4">
 										<Text>

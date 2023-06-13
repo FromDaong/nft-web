@@ -2,16 +2,23 @@ import {Dialog} from "@headlessui/react";
 import {DialogOverlay} from "..";
 import {styled} from "@styles/theme";
 import {Container} from "@packages/shared/components/Container";
-import {Heading} from "@packages/shared/components/Typography/Headings";
 import {Button} from "@packages/shared/components/Button";
 import {XIcon} from "@heroicons/react/outline";
-import {CopyIcon} from "@radix-ui/react-icons";
+import {useDisclosure} from "@packages/hooks";
+import TransferNFTModal from "../TransferNFTModal";
+import ListOrderModal from "../ListOrderModal";
+import ApplicationFrame from "core/components/layouts/ApplicationFrame";
+import {SendIcon, ShoppingBag} from "lucide-react";
+import {FrostyBackgroundContainer} from "@components/NFTCard/misc/FrostyBackground";
 
 type ImagePreviewProps = {
 	url: string;
 	onClose: () => void;
 	isOpen: boolean;
 	title: string;
+	isMine?: boolean;
+	balance?: number;
+	nft?: any;
 };
 
 export const DialogContent = styled(Dialog.Panel, {
@@ -32,17 +39,43 @@ export const DialogContent = styled(Dialog.Panel, {
 });
 
 export default function FullscreenImagePreviewModal(props: ImagePreviewProps) {
+	const {
+		isOpen: isSendNFTModalOpen,
+		onOpen: onSendNFTModalOpen,
+		onClose: onSendNFTModalClose,
+	} = useDisclosure();
+	const {
+		isOpen: isListForSaleModalOpen,
+		onOpen: onListForSaleModalOpen,
+		onClose: onListForSaleModalClose,
+	} = useDisclosure();
+
 	return (
 		<Dialog
 			open={props.isOpen}
 			onClose={props.onClose}
 		>
 			<DialogOverlay />
+			{isSendNFTModalOpen && (
+				<TransferNFTModal
+					isOpen={isSendNFTModalOpen}
+					onClose={onSendNFTModalClose}
+					nft={props.nft}
+					balance={props.balance}
+				/>
+			)}
+			{isListForSaleModalOpen && (
+				<ListOrderModal
+					isOpen={isListForSaleModalOpen}
+					onClose={onListForSaleModalClose}
+					nft={props.nft}
+				/>
+			)}
 
 			{
 				//@ts-ignore
 				<DialogContent>
-					<Container className="relative flex flex-col w-full h-full gap-8 p-8">
+					<Container className="relative w-full h-full gap-8 p-8">
 						<Container className="absolute top-0 right-0">
 							<Button
 								css={{padding: "8px"}}
@@ -52,7 +85,7 @@ export default function FullscreenImagePreviewModal(props: ImagePreviewProps) {
 								<XIcon className="w-5 h-5" />
 							</Button>
 						</Container>
-						<Container className="flex items-center justify-center flex-1">
+						<Container className="flex items-center justify-center flex-1 max-h-[90vh] py-8">
 							<img
 								src={props.url}
 								sizes="100vw"
@@ -60,6 +93,38 @@ export default function FullscreenImagePreviewModal(props: ImagePreviewProps) {
 								className="h-auto max-h-[90vh] shadow-xl aspect-auto"
 							/>
 						</Container>
+						{!isListForSaleModalOpen && !isSendNFTModalOpen && props.isMine && (
+							<Container
+								css={{
+									left: "50%",
+									transform: "translateX(-50%)",
+								}}
+								className="flex-shrink-0 py-8 absolute bottom-4"
+							>
+								<ApplicationFrame>
+									<Container className="py-8 w-full justify-center gap-4 flex flex-wrap">
+										<Button
+											outlined
+											appearance={"white"}
+											className="shadow-xl"
+											onClick={onSendNFTModalOpen}
+										>
+											<SendIcon className="w-4 h-4" />
+											Send to address
+										</Button>
+										<Button
+											outlined
+											appearance={"white"}
+											className="shadow-xl"
+											onClick={onListForSaleModalOpen}
+										>
+											<ShoppingBag className="w-4 h-5" />
+											List for resale
+										</Button>
+									</Container>
+								</ApplicationFrame>
+							</Container>
+						)}
 					</Container>
 				</DialogContent>
 			}
