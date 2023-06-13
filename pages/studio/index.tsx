@@ -6,23 +6,17 @@ import GenericChainModal from "@packages/modals/GenericChainModal";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
-import {Input, Textarea} from "@packages/shared/components/Input";
+import { Input } from "@packages/shared/components/Input";
 import {Heading} from "@packages/shared/components/Typography/Headings";
-import {
-	ImportantText,
-	MutedText,
-	SmallText,
-	Text,
-} from "@packages/shared/components/Typography/Text";
+import { ImportantText, SmallText, Text } from "@packages/shared/components/Typography/Text";
 import {ArrowRightIcon, StackIcon} from "@radix-ui/react-icons";
-import {apiEndpoint, formatAddress, timeFromNow} from "@utils/index";
-import Avvvatars from "avvvatars-react";
+import { apiEndpoint, timeFromNow } from "@utils/index";
 import axios from "axios";
 import TreatCore from "core/TreatCore";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import {useFormik} from "formik";
-import {Edit, ExternalLink, EyeOff, Pause, WholeWord} from "lucide-react";
+import { Edit, ExternalLink, EyeOff } from "lucide-react";
 import Link from "next/link";
 import {useMemo} from "react";
 import {Provider, gql, useQuery} from "urql";

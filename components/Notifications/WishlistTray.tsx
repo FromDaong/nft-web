@@ -1,4 +1,3 @@
-import {NFTCard} from "@components/NFTCard";
 import {useMyWishlist, useWishlist} from "@packages/chain/hooks/useWishlist";
 import {
 	DropdownContainer,
@@ -8,12 +7,7 @@ import {
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Heading} from "@packages/shared/components/Typography/Headings";
-import {
-	BoldLink,
-	ImportantText,
-	SmallText,
-	Text,
-} from "@packages/shared/components/Typography/Text";
+import {ImportantText, Text} from "@packages/shared/components/Typography/Text";
 import Spinner from "@packages/shared/icons/Spinner";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import {ShoppingBag, TrashIcon} from "lucide-react";
@@ -34,7 +28,7 @@ export default function WishlistTray() {
 						css={{
 							padding: "0.5rem",
 						}}
-						appearance={"surface"}
+						appearance={"subtle"}
 					>
 						<ShoppingBag className={"w-5 h-5"} />
 					</Button>

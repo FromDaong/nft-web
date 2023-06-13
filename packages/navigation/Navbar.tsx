@@ -122,7 +122,7 @@ export default function Navbar() {
 											onClose={onCloseTransactionsTray}
 										/>
 										<Button
-											appearance={"surface"}
+											appearance={"subtle"}
 											onClick={onOpenTransactionsTray}
 											css={{
 												padding: "0.5rem",

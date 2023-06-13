@@ -50,7 +50,7 @@ const Tiptap = (props: {
 			</Container>
 			<Container
 				className="rounded-xl p-4"
-				css={{backgroundColor: "$surface"}}
+				css={{backgroundColor: "$surface", color: "$text !important"}}
 			>
 				<EditorContent
 					editor={editor}

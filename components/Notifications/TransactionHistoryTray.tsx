@@ -8,10 +8,8 @@ import {
 	Text,
 } from "@packages/shared/components/Typography/Text";
 import Spinner from "@packages/shared/icons/Spinner";
-import {Link2Icon} from "@radix-ui/react-icons";
 import {timeFromNow} from "@utils/index";
 import {ExternalLink} from "lucide-react";
-import Link from "next/link";
 import {Provider, gql, useQuery} from "urql";
 import {useAccount} from "wagmi";
 
