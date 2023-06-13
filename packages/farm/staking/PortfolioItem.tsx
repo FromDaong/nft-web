@@ -11,6 +11,7 @@ import Spinner from "@packages/shared/icons/Spinner";
 import {toast} from "sonner";
 import {useEffect, useState} from "react";
 import {useWaitForTransaction} from "wagmi";
+import Web3 from "web3";
 
 export default function FarmPortfolioItem({
 	name,
@@ -95,9 +96,7 @@ export default function FarmPortfolioItem({
 								<Text>
 									<ImportantText>
 										{" "}
-										{Intl.NumberFormat("en-us", {
-											currency: "usd",
-										}).format(stakedAmount.toNumber())}
+										{Web3.utils.fromWei(stakedAmount.toString())}
 									</ImportantText>
 								</Text>
 							)}
@@ -132,9 +131,7 @@ export default function FarmPortfolioItem({
 									{" "}
 									<ImportantText>
 										{" "}
-										{Intl.NumberFormat("en-us", {
-											currency: "usd",
-										}).format(pendingMelons?.toNumber())}
+										{Web3.utils.fromWei(pendingMelons?.toString() ?? "0")}
 									</ImportantText>
 								</Text>
 							)}
@@ -157,7 +154,7 @@ export default function FarmPortfolioItem({
 							Manage
 						</Button>
 					</Container>
-					{!!pendingMelons?.toNumber() && (
+					{!!parseInt(Web3.utils.fromWei(pendingMelons?.toString() ?? "0")) && (
 						<Button
 							appearance={"accent"}
 							onClick={harvest}

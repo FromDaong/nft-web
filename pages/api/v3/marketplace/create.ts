@@ -13,10 +13,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 	await connectMongoDB();
 	const {session} = req;
 	const {method} = req;
-	const {collection, nfts, hash} = req.body;
+	const {nfts, hash} = req.body;
 
 	if (method !== "POST") return returnWithError("Method not allowed", 405, res);
-	if (!collection) return returnWithError("Collection is required", 401, res);
+	// if (!collection) return returnWithError("Collection is required", 401, res);
 	if (!nfts) return returnWithError("NFTs are required", 401, res);
 
 	const creator = await MongoModelCreator.findOne({
@@ -25,7 +25,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
 	if (!creator) return returnWithError("Creator profile is required", 401, res);
 
-	const collection_id = collection._id;
+	// const collection_id = collection._id;
 
 	try {
 		const created_nfts = await Promise.all(
@@ -45,7 +45,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 					protected: nft.protected,
 					type: nft.type,
 					creator: creator._id,
-					collection: collection_id,
+					// collection: collection_id,
 					subscription_nft: nft.subscription_nft,
 					seller: creator.address,
 				});
@@ -56,9 +56,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 			})
 		);
 
+		/*
 		await MongoModelCollection.findByIdAndUpdate(collection_id, {
 			$push: {nfts: {$each: created_nfts.map((nft) => nft._id)}},
 		});
+		*/
 
 		return returnWithSuccess(
 			{
@@ -67,7 +69,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 			res
 		);
 	} catch (err) {
-		console.log({err});
+		// console.log({err});
 		return returnWithError(err.toString(), 500, res);
 	}
 }

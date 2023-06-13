@@ -1,16 +1,10 @@
-import {
-	BriefcaseIcon,
-	CollectionIcon,
-	HomeIcon,
-	UserGroupIcon,
-} from "@heroicons/react/outline";
+import {BriefcaseIcon, HomeIcon, UserGroupIcon} from "@heroicons/react/outline";
 import {SEOHead} from "@packages/seo/page";
 import NewAvatar from "@packages/shared/components/AvatarNew";
 import {Button} from "@packages/shared/components/Button";
 import {
 	Container,
 	ContextualContainer,
-	FluidContainer,
 } from "@packages/shared/components/Container";
 import {Tab, TabsContainer} from "@packages/shared/components/Tabs";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
@@ -21,14 +15,14 @@ import {
 	MutedText,
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
-import {useCopyToClipboard} from "@packages/shared/hooks";
+import {useCopyToClipboard, useStorageService} from "@packages/shared/hooks";
 import FollowUser from "@packages/shared/icons/FollowUser";
 import {useUser} from "core/auth/useUser";
 import TreatCore, {ComponentBasicProps} from "core/TreatCore";
 import ApplicationFrame from "./ApplicationFrame";
 import useSound from "use-sound";
 import Link from "next/link";
-import {MutableRefObject, useEffect, useState} from "react";
+import {MutableRefObject, useEffect, useMemo, useState} from "react";
 import axios from "axios";
 import {apiEndpoint} from "@utils/index";
 import {SocialProfileJsonLd} from "next-seo";
@@ -36,10 +30,12 @@ import {useRouter} from "next/router";
 import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import {useBalance} from "wagmi";
 import {ExternalLinkIcon} from "@radix-ui/react-icons";
-import Spinner from "@packages/shared/icons/Spinner";
-import {ShoppingBagIcon, Verified} from "lucide-react";
+import {CameraIcon, ShoppingBagIcon, Verified} from "lucide-react";
 import ApplicationLayout from "./ApplicationLayout";
 import {Divider} from "@packages/shared/components/Divider";
+import {toast} from "sonner";
+import {FrostyBackgroundContainer} from "@components/NFTCard/misc/FrostyBackground";
+import Spinner from "@packages/shared/icons/Spinner";
 
 type ProfileLayoutProps = ComponentBasicProps & {
 	userProfile?: {
@@ -315,16 +311,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 				sameAs={[]}
 			/>
 
-			<Container
-				className="w-full h-[320px] rounded-b-xl"
-				css={{
-					backgroundImage: `url("${ownerOfUserProfile.banner_pic}")`,
-					backgroundPosition: "center",
-					backgroundRepeat: "no-repeat",
-					backgroundSize: "cover",
-					backgroundColor: "$surfaceOnSurface",
-				}}
-			/>
+			<CoverPhoto banner={ownerOfUserProfile?.banner_pic} />
 
 			<Container className="mb-4">
 				<ApplicationFrame>
@@ -490,5 +477,107 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 				<Container className="px-2 pb-24 pt-4">{props.children}</Container>
 			</ApplicationFrame>
 		</ApplicationLayout>
+	);
+}
+
+const useUpdateCoverPhoto = (banner_pic) => {
+	const [bannerPic, setBannerPic] = useState(banner_pic);
+	const [isLoading, setIsLoading] = useState(false);
+	const router = useRouter();
+	const {uploadToIPFS} = useStorageService();
+
+	const updateCoverPhoto = async (file: File) => {
+		setIsLoading(true);
+		//const formData = new FormData();
+		//formData.append("cover_photo", file);
+
+		// upload to ipfs
+
+		try {
+			const ipfs = await uploadToIPFS(file);
+			const res = await axios.post(`${apiEndpoint}/profile/methods/patch`, {
+				banner_pic: ipfs,
+			});
+			if (res.status === 200) {
+				setBannerPic(ipfs);
+				setIsLoading(false);
+				return;
+			}
+			throw "Failed to update";
+		} catch (e) {
+			console.error(e);
+			toast.error("Failed to update cover photo");
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
+	return {
+		isLoading,
+		updateCoverPhoto,
+		bannerPic,
+	};
+};
+
+function CoverPhoto({banner}) {
+	const router = useRouter();
+	const {profile} = useUser();
+
+	const {
+		isLoading: isLoadingCover,
+		updateCoverPhoto,
+		bannerPic,
+	} = useUpdateCoverPhoto(banner);
+
+	const isMine = useMemo(
+		() => profile?.username === router.query.username,
+		[router.query, profile]
+	);
+	return (
+		<Container
+			className="w-full h-[320px] rounded-b-xl relative"
+			css={{
+				backgroundImage: `url("${bannerPic}")`,
+				backgroundPosition: "center",
+				backgroundRepeat: "no-repeat",
+				backgroundSize: "cover",
+				backgroundColor: "$surfaceOnSurface",
+			}}
+		>
+			{isMine && (
+				<form
+					className="bottom-4 right-4 absolute"
+					onSubmit={null}
+				>
+					<label
+						className="cursor-pointer"
+						htmlFor="cover_photo"
+					>
+						<FrostyBackgroundContainer
+							css={{borderRadius: 999, padding: "1rem"}}
+							className="items-center gap-2 flex justify-center transition-all duration-200"
+						>
+							{!isLoadingCover ? (
+								<>
+									<CameraIcon className="w-5 h-5" />
+									Change cover
+								</>
+							) : (
+								<Text>
+									<Spinner />
+								</Text>
+							)}
+						</FrostyBackgroundContainer>
+					</label>
+					<input
+						name={"cover_photo"}
+						type="file"
+						id="cover_photo"
+						hidden
+						onChange={(e) => updateCoverPhoto(e.target.files[0])}
+					/>
+				</form>
+			)}
+		</Container>
 	);
 }

@@ -1,196 +1,481 @@
-import Tiptap from "@components/ui/tiptap";
-import {Tag} from "@packages/post/BuyNFTPageViewNFT";
+/* eslint-disable no-mixed-spaces-and-tabs */
 import {SEOHead} from "@packages/seo/page";
-import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
-import {Input} from "@packages/shared/components/Input";
-import {Heading, Text} from "@packages/shared/components/Typography/Headings";
-import {
-	ImportantText,
-	SmallText,
-} from "@packages/shared/components/Typography/Text";
-import {apiEndpoint} from "@utils/index";
-import axios from "axios";
-import UserAvatar from "core/auth/components/Avatar";
-import {useUser} from "core/auth/useUser";
-import ApplicationFrame from "core/components/layouts/ApplicationFrame";
+import {Text} from "@packages/shared/components/Typography/Text";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
-import {set} from "date-fns";
-import {Field, Form, Formik} from "formik";
-import {ImageIcon, PlusIcon} from "lucide-react";
+import {useCallback, useEffect, useState} from "react";
+import ApplicationFrame from "core/components/layouts/ApplicationFrame";
+import {pagePropsConnectMongoDB} from "@db/engine/pagePropsDB";
+import {MongoModelCollection} from "server/helpers/models";
+import AddNFTDetails from "@packages/post/CreatePost/NFTDetails";
+import {useAccount, useWaitForTransaction} from "wagmi";
+import {useContracts} from "@packages/post/hooks";
+import {useStorageService} from "@packages/shared/hooks";
+import {BigNumber} from "ethers";
+import Web3 from "web3";
+import {useDisclosure} from "@packages/hooks";
+import GenericChainModal from "@packages/modals/GenericChainModal";
 import {useRouter} from "next/router";
-import {useState} from "react";
-import * as Yup from "yup";
+import axios from "axios";
+import {apiEndpoint} from "@utils/index";
+import {useAccountModal, useAddRecentTransaction} from "@rainbow-me/rainbowkit";
+import logsnag from "@utils/logsnag";
+import {useUser} from "core/auth/useUser";
 
-export default function Create() {
+export default function PostType(props: {collection: string}) {
+	// const data = JSON.parse(props.collection);
+	const isSubscription = false;
+	const {profile} = useUser();
+	const [finalImage, setFinalImage] = useState(null);
+	const {step, prev} = useStep(["upload", "detail"]);
+	const [title, setTitle] = useState("");
+	const [mintTxHash, setMintTxHash] = useState("");
+	const [nftValues, setNftValues] = useState([]);
+	const {isOpen, onOpen, onClose} = useDisclosure();
+	const {creatorMartContract, subscriptionsMart} = useContracts();
+	const {address} = useAccount();
+	const {uploadFile, uploadToIPFS} = useStorageService();
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [error, setError] = useState<any>("");
+	const [submittedFormState, setSubmittedFormState] = useState({
+		values: null,
+		actions: null,
+	});
 	const router = useRouter();
-	const {profile, isLoading} = useUser();
-	const [error, setError] = useState("");
-	const initialValues = {
-		name: "",
-		description: "",
+	const transactionManager = useAddRecentTransaction();
+	const {openAccountModal} = useAccountModal();
+	const {
+		isSuccess: isMintTxConfirmed,
+		data: mintTxData,
+		isError: isMintTxError,
+	} = useWaitForTransaction({
+		hash: mintTxHash,
+	});
+
+	const [modalStep, setModalStep] = useState<{
+		status: string;
+		title: string;
+		subtitle: string;
+		actionLabel?: string;
+		action?: () => void;
+	}>({
+		status: "loading",
+		title: "🖼️ Uploading your media",
+		subtitle:
+			"Please wait while we upload your media and start the minting process",
+		actionLabel: "",
+	});
+
+	const addNFTsToCollection = useCallback(() => {
+		setIsSubmitting(true);
+		setError("");
+		setModalStep(processStages.sendingToServer);
+		if (
+			// mintTxData &&
+			// !isMintTxError &&
+			nftValues.length > 0
+		) {
+			axios
+				.post(`${apiEndpoint}/marketplace/create`, {
+					// collection: data,
+					nfts: nftValues,
+					hash: mintTxHash,
+				})
+				.then(async () => {
+					await logsnag.publish({
+						channel: "nft",
+						event: "NFT Collection Created",
+						description: `NFT Created by ${address} in collection ${title}`,
+						icon: "🎉",
+						tags: {
+							address,
+							// collection: data._id,
+						},
+						notify: true,
+					});
+					setIsSubmitting(false);
+					setModalStep(processStages.txConfirmed);
+				})
+				.catch((err) => {
+					console.error(err);
+					setError(err);
+					setIsSubmitting(false);
+					setModalStep(processStages.serverError);
+				});
+		}
+	}, [mintTxData, nftValues]);
+
+	const createNFTs = async (values, actions, image) => {
+		setFinalImage(image);
+		setError("");
+		setSubmittedFormState({values, actions});
+		actions.setSubmitting(true);
+		onOpen();
+		setIsSubmitting(true);
+		setModalStep(processStages.uploading);
+
+		try {
+			const with_uploaded_images = await Promise.all(
+				[values].map(async (n) => {
+					const cdn = await uploadFile(image);
+					const ipfs = await uploadToIPFS(image);
+
+					return {
+						...n,
+						cdn,
+						ipfs,
+						subscription_nft: isSubscription,
+						description: n.description,
+					};
+				})
+			);
+
+			// Now create the NFT depending on collection configuration
+
+			let mintTx;
+			setModalStep(processStages.requestingConfirmation);
+
+			if (isSubscription) {
+				mintTx = await createSubscriberNFTs(with_uploaded_images);
+			} else {
+				mintTx = await createBasicNFTs(with_uploaded_images);
+			}
+
+			// Now we wait for the transaction to be confirmed
+			setMintTxHash(mintTx.hash);
+			setModalStep(processStages.waitingForTx);
+			transactionManager({
+				hash: mintTx.hash,
+				description: `Minting NFTs`,
+			});
+
+			mintTx.wait().then((res) => {
+				const event = res.events.find((e) => e.event === "NFTCreatedAndAdded");
+				const args = {...event.args};
+				const {nftIds, isGiveAways} = args;
+
+				const collection_data = with_uploaded_images.map((nft, index) => {
+					return {
+						...nft,
+						id: (nftIds[index] as BigNumber).toNumber(),
+						isGiveAway: isGiveAways[index],
+					};
+				});
+
+				setNftValues(collection_data);
+			});
+		} catch (error) {
+			// We have two errors that might occur.
+			// 1. Chain Related - Not perfomer, gas, denied Tx
+			// 2. Upload related, network or some issues with IPFS & Uploadcare
+			console.error({error});
+			setError(error);
+			actions.setSubmitting(false);
+			setModalStep(processStages.confirmationDenied);
+			setIsSubmitting(false);
+		}
 	};
+
+	const createBasicNFTs = async (nfts) => {
+		const amounts_and_supply = {
+			amounts: nfts.map((n) => Web3.utils.toWei(n.price.toString())),
+			maxSupplys: nfts.map((n) => n.maxSupply.toString()),
+		};
+
+		const tx = await creatorMartContract.createAndAddNFTs(
+			amounts_and_supply.maxSupplys,
+			amounts_and_supply.amounts,
+			amounts_and_supply.amounts.map(() => false),
+			"0x",
+			{
+				from: address,
+				value: 0,
+			}
+		);
+
+		return tx;
+	};
+
+	const createSubscriberNFTs = async (nfts) => {
+		const amounts_and_supply = {
+			amounts: nfts.map((nft) => Web3.utils.toWei(nft.price.toString())),
+			maxSupplys: nfts.map((nft) => nft.maxSupply.toString()),
+		};
+
+		const tx = await subscriptionsMart.createAndAddNFTs(
+			amounts_and_supply.maxSupplys,
+			amounts_and_supply.amounts,
+			amounts_and_supply.amounts.map(() => false),
+			"0x",
+			{from: address, value: 0}
+		);
+
+		return tx;
+	};
+
+	const processStages = {
+		uploading: {
+			status: "loading",
+			title: "🖼️ Uploading your media",
+			subtitle:
+				"Please wait while we upload your media and start the minting process",
+		},
+		requestingConfirmation: {
+			status: "loading",
+			title: "🔒 Requesting permission",
+			subtitle:
+				"We are requesting permission to proceed with the transaction. Please confirm in your wallet to continue.",
+		},
+		confirmationDenied: {
+			status: "error",
+			title: "⚠️ Error",
+			subtitle: "An error occurred, please try again.",
+			actionLabel: "Try again",
+			action: () =>
+				createNFTs(
+					submittedFormState.values,
+					submittedFormState.actions,
+					finalImage
+				),
+		},
+		uploadFailed: {
+			status: "error",
+			title: "⚠️ Media upload failed",
+			subtitle:
+				"An error happened while we were uploading your media. Please check your network connection and try again.",
+			actionLabel: "Try again",
+			action: () =>
+				createNFTs(
+					submittedFormState.values,
+					submittedFormState.actions,
+					finalImage
+				),
+		},
+		waitingForTx: {
+			status: "loading",
+			title: "💸 Transaction is being confirmed",
+			subtitle:
+				"Please wait while we confirm your transaction. Please do not close or reload this page before the transaction has been confirmed on the blockchain.",
+		},
+		sendingToServer: {
+			status: "loading",
+			title: "💸 Listing on marketplace",
+			subtitle:
+				"Please wait while we list your NFT on the marketplace. Please do not close or reload this page.",
+		},
+		txConfirmed: {
+			status: "success",
+			title: "💸 Your NFT has been created and listed!",
+			subtitle:
+				"Your transaction has been confirmed on the blockchain. You can now visit the collection and other people can buy your NFTs.",
+			actionLabel: "Go to listings",
+			action: () => router.push(`/${profile?.username}/listings`),
+		},
+		serverError: {
+			status: "error",
+			title: "⚠️ A server error occurred",
+			subtitle:
+				"We encountered an error while trying to list your NFT on the marketplace. Please try again.",
+			actionLabel: "Try again",
+			action: () => addNFTsToCollection(),
+		},
+		chainError: {
+			status: "error",
+			title: "⚠️ An error occurred on the blockchain",
+			subtitle:
+				"An error occured while confirming your transaction on the blockchain. Please check your recent transactions for more.",
+			actionLabel: "Try again",
+			action: () => openAccountModal(),
+		},
+	};
+
+	useEffect(() => {
+		if (
+			nftValues.length > 0
+			// && isMintTxConfirmed
+			// && !isMintTxError
+		) {
+			addNFTsToCollection();
+		} else if (isMintTxError) {
+			setModalStep(processStages.chainError);
+		}
+	}, [nftValues, isMintTxConfirmed, isMintTxError]);
 
 	return (
 		<ApplicationLayout>
-			<SEOHead title="Create a new post" />
+			<GenericChainModal
+				isOpen={isOpen}
+				onClose={
+					isSubmitting || modalStep.status === "loading" ? () => null : onClose
+				}
+				hideClose={true}
+				title={modalStep.title}
+				subtitle={modalStep.subtitle}
+				loading={isSubmitting || modalStep.status === "loading"}
+				buttonLabel={modalStep.actionLabel}
+				noButton={!modalStep.actionLabel}
+				action={modalStep.action}
+			>
+				{error && <Text appearance={"danger"}>{String(error)}</Text>}
+			</GenericChainModal>
+			<SEOHead title={`Create ${title} Collection - Treat`} />
 			<ApplicationFrame>
-				<Container className="flex flex-col max-w-screen-xl w-full gap-8 py-12 mx-auto">
+				<Container className="flex flex-col gap-12 py-12">
 					<Container>
-						<Heading size={"sm"}>Let's create something new</Heading>
-						<Text>
-							Create a collection where you can add your own NFTs and invite
-							your friends to collaborate.
-						</Text>
-					</Container>
-					<Container
-						className="flex flex-col w-full gap-8 p-4 rounded lg:p-8"
-						css={{
-							background: "$surfaceOnSurface",
-							borderRadius: "16px",
-						}}
-					>
-						<Container
-							css={{
-								backgroundImage: `url("https://images.pexels.com/photos/14019500/pexels-photo-14019500.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load")`,
-							}}
-							className="w-full h-96 rounded-xl bg-cover bg-center flex items-end p-4"
-						>
-							<Button
-								appearance={"action"}
-								css={{borderRadius: "8px"}}
-							>
-								<ImageIcon className="w-5 h-5" />
-								Change cover
-							</Button>
-						</Container>
-						<Formik
-							initialValues={initialValues}
-							onSubmit={(values, actions) => {
-								axios
-									.post(`${apiEndpoint}/marketplace/collection/create`, {
-										...values,
-										description: JSON.stringify(values.description),
-									})
-									.then((res) => {
-										const {data} = res.data;
-										if (data) {
-											router.push(`/create/${data.id}`);
-										}
-									})
-									.catch((err) => {
-										actions.setSubmitting(false);
-										setError(err.response.data.message);
-									});
-							}}
-							validationSchema={Yup.object({
-								name: Yup.string()
-									.required("Required")
-									.min(3, "Too short")
-									.max(50, "Too long"),
-								description: Yup.object(),
-							})}
-						>
-							{(props) => (
-								<Form className="flex flex-col gap-8">
-									<Container className="flex flex-col gap-4">
-										<Text>
-											<ImportantText>Collection name</ImportantText>
-										</Text>
-										<Field name="name">
-											{({field, meta}) => (
-												<Container className="flex flex-col gap-2 max-w-xl">
-													<Input
-														type="text"
-														{...field}
-														appearance={"solid"}
-													/>
-													{meta.touched && meta.error && (
-														<Text css={{color: "$red10"}}>
-															<SmallText>{meta.error}</SmallText>
-														</Text>
-													)}
-												</Container>
-											)}
-										</Field>
-									</Container>
-
-									<Container className="flex flex-col gap-4">
-										<Text>
-											<ImportantText>Description</ImportantText>
-										</Text>
-										<Field name="description">
-											{({field, meta}) => (
-												<Container className="flex flex-col gap-2 max-w-xl">
-													<Tiptap
-														onChange={(val) =>
-															props.setFieldValue("description", val)
-														}
-														onError={(e) =>
-															props.setFieldError("description", e)
-														}
-													/>
-
-													{meta.touched && meta.error && (
-														<Text css={{color: "$red10"}}>
-															<SmallText>{meta.error}</SmallText>
-														</Text>
-													)}
-												</Container>
-											)}
-										</Field>
-									</Container>
-
-									<Container className="flex flex-col gap-4 w-fit">
-										<Text>
-											<ImportantText>Collaborators</ImportantText>
-										</Text>
-										{!isLoading && (
-											<Container className="flex flex-row gap-2">
-												<Container className="flex gap-4 max-w-xl">
-													<Container className="flex gap-4">
-														<UserAvatar
-															profile_pic={profile.profile_pic}
-															username={profile.username}
-															size={32}
-														/>
-														<Container className="flex flex-col">
-															<Heading size={"xss"}>{profile.username}</Heading>
-															<Text>Creator</Text>
-														</Container>
-													</Container>
-												</Container>
-											</Container>
-										)}
-										<Container className="flex flex-row gap-2 items-center">
-											<Button
-												disabled
-												appearance={"disabled"}
-												className="cursor-not-allowed"
-											>
-												<PlusIcon className="w-5 h-5" />
-												Invite collaborators
-											</Button>
-											<Tag>Coming soon</Tag>
-										</Container>
-									</Container>
-
-									<Container className="flex flex-col gap-2 w-fit">
-										<Button
-											disabled={props.isSubmitting}
-											appearance={props.isSubmitting ? "disabled" : "default"}
-											type="submit"
-										>
-											{props.isSubmitting ? "Submitting..." : "Continue"}
-										</Button>
-										{error && <Text css={{color: "$red11"}}>{error}</Text>}
-									</Container>
-								</Form>
-							)}
-						</Formik>
+						<AddNFTDetails onSubmit={createNFTs} />
 					</Container>
 				</Container>
 			</ApplicationFrame>
 		</ApplicationLayout>
 	);
 }
+
+const useStep = (steps: Array<string>) => {
+	const [step, setStage] = useState(steps[0]);
+
+	const next = () =>
+		steps.indexOf(step) !== steps.length - 1 && [
+			setStage(steps[steps.indexOf(step) + 1]),
+		];
+
+	const prev = () =>
+		steps.indexOf(step) !== 0 && [setStage(steps[steps.indexOf(step) - 1])];
+
+	return {
+		step,
+		next,
+		prev,
+	};
+};
+
+export const getServerSideProps = async (ctx) => {
+	await pagePropsConnectMongoDB();
+
+	// const {collection_id} = ctx.query;
+
+	//const collection = await MongoModelCollection.findById(collection_id);
+
+	return {
+		props: {
+			collection: "Legacy", // JSON.stringify(collection),
+		},
+	};
+};
+
+/*
+  const [maxSupplyArray, setMaxSupplyArray] = useState(null);
+  const [amountsArray, setAmountsArray] = useState(null);
+
+  useEffect(() => {
+    const maxSupplies = formik.values.nfts.map((n) => n.max_supply);
+    const amounts = formik.values.nfts.map(
+      (n) =>
+        n.list_price && ethers.utils.formatUnits(n.list_price.toString(), "wei")
+    );
+
+    setMaxSupplyArray(maxSupplies);
+    setAmountsArray(amounts);
+  }, [formik.values.nfts]);
+
+  const useCreateAndAddNFTs = (maxSupplyArray, amountsArray, ad = "0x") => {};
+  const {
+    onCreateAndAddNFTs,
+    data: createNFTResult,
+    txHash,
+  } = useCreateAndAddNFTs(maxSupplyArray, amountsArray, "0x");
+
+  useEffect(() => {
+    if (!showPendingModal || !txHash || sentWithoutIds) return;
+
+    (async () => {
+      // Create NFTs without NFT IDs
+      const submitValues = formik.values.nfts.map((nftData, i) => ({
+        ...nftData,
+        tx_hash: txHash,
+        blurhash: nftData.blurhash ? nftData.blurhash : null,
+      }));
+
+      const res = await fetch(`/api/model/create-nfts-without-ids`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nfts: submitValues,
+          address: user.user.address,
+        }),
+      });
+      const resJSON = await res.json();
+
+      if (resJSON.error && resJSON.error.errors) {
+        const ogErrors = Object.assign({}, resJSON.error.errors);
+        Object.keys(ogErrors).map((e) => {
+          ogErrors[e] = resJSON.error.errors[e].message;
+        });
+        formik.setErrors(ogErrors);
+        formik.setSubmitting(false);
+      }
+
+      if (resJSON.success) {
+        setSentWithoutIds(true);
+        setShowPendingModal(false);
+        setShowCompleteModal(true);
+      }
+    })();
+  }, [txHash]);
+
+  useEffect(() => {
+    if (!createNFTResult || sentWithIds) return;
+
+    (async () => {
+      // Create NFTs without NFT IDs
+      const submitValues = formik.values.nfts.map((nftData: any, i) => ({
+        ...nftData,
+        id: createNFTResult.nftIds[i],
+        blurhash: nftData.blurhash ? nftData.blurhash : null,
+      }));
+
+      setShowPendingModal(true);
+      setShowCompleteModal(false);
+
+      const res = await fetch(`/api/model/create-nfts`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nfts: submitValues,
+          address: user.user.address,
+        }),
+      });
+
+      const resJSON = await res.json();
+
+      if (resJSON.error && resJSON.error.errors) {
+        console.error(resJSON.error);
+        const ogErrors = Object.assign({}, resJSON.error.errors);
+        Object.keys(ogErrors).map((e) => {
+          ogErrors[e] = resJSON.error.errors[e].message;
+        });
+        formik.setErrors(ogErrors);
+        formik.setSubmitting(false);
+      }
+      if (resJSON.success) {
+        setSentWithIds(true);
+        setShowPendingModal(false);
+        setShowCompleteModal(true);
+      }
+    })();
+  }, [createNFTResult]);
+
+  const SubmitToServer = async () => {
+    try {
+      setShowPendingModal(true);
+      const createNFTResult = await onCreateAndAddNFTs();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  */

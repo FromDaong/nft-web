@@ -37,8 +37,6 @@ export default function NFT(props: {
 	const {nft} = data;
 	nft.description = data.description;
 
-	console.log({nft});
-
 	const {address} = useAccount();
 	const {isOwned, balance} = useGetIsNFTOwned(nft);
 	const postUtils = useTritNFTUtils(nft);
@@ -150,7 +148,7 @@ function NFTPreview({nft, postUtils}) {
 						/>
 					</Container>
 
-					{!nft.melon_nft && mintedNfts !== maxSupply && !isNaN(mintedNfts) && (
+					{!nft.melon_nft && currentSupply !== 0 && !isNaN(mintedNfts) && (
 						<Container className="flex flex-col gap-2 mt-8">
 							<Container className="flex justify-between gap-8">
 								{!isLoading && (
@@ -253,12 +251,13 @@ const BlockSkeleton = () => (
 					columns: [
 						{
 							length: 1,
-							start: 1,
+							start: 2,
 							radius: 8,
+							bg: true,
 						},
 					],
 					type: "row",
-					repeat: 1,
+					repeat: 3,
 					height: 2,
 				},
 			]}

@@ -107,7 +107,6 @@ const TagsFilter = () => {
 				<DropdownMenu>
 					<DropdownMenuTrigger>
 						<Button
-							css={{padding: "4px"}}
 							outlined
 							className="flex gap-4 rounded-lg"
 							appearance={"surface"}

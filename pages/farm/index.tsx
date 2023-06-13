@@ -15,6 +15,10 @@ import FarmNFT from "@components/NFTCard/cards/FarmNFT";
 import {Button} from "@packages/shared/components/Button";
 import {ArrowRight} from "lucide-react";
 import Link from "next/link";
+import {ConnectWalletButton} from "@components/NFTPage/BuyButton";
+import {Divider} from "@packages/shared/components/Divider";
+import {EmptyStateImage} from "@components/ui/empty";
+import Disconnected from "@components/ui/disconnected";
 
 // T-78 Use intersection observer to change navbar color.
 
@@ -57,15 +61,20 @@ export default function Farm() {
 								</Button>
 							</a>
 						</Link>
+						<Divider />
 					</Container>
+
 					<Container className="flex flex-col flex-wrap w-full gap-12 pt-12 mx-auto">
-						<Staking
-							treatMelonBalance={treatMelonBalance}
-							treatLpBalance={treatLpBalance}
-							address={address}
-							treatBalance={treatBalance}
-							masterMelonContract={masterMelonContract}
-						/>
+						{address && (
+							<Staking
+								treatMelonBalance={treatMelonBalance}
+								treatLpBalance={treatLpBalance}
+								address={address}
+								treatBalance={treatBalance}
+								masterMelonContract={masterMelonContract}
+							/>
+						)}
+						{!address && <Disconnected />}
 					</Container>
 				</Container>
 			</ApplicationFrame>

@@ -7,6 +7,7 @@ import {useAccount, useWaitForTransaction} from "wagmi";
 import {useContracts} from "@packages/post/hooks";
 import {ethers} from "ethers";
 import {toast} from "sonner";
+import {ConnectWalletButton} from "@packages/post/BuyNFTButton";
 
 export const usePurchaseResaleOrder = () => {
 	const {address} = useAccount();
@@ -33,13 +34,19 @@ const ResaleListingBuyButton = (order: {
 	currentSupply: number;
 	callback: () => void;
 }) => {
+	const {address} = useAccount();
 	const {isLoading} = useContext(SelectedOrderContext);
 	const [amount] = useState(1);
 	const [purchaseNFTPending, setPurchaseNFTPending] = useState(false);
 	const [purchaseNFTError, setPurchaseNFTError] = useState<any>(false);
 	const [tx, setTx] = useState("");
 
-	const {isError, data, isSuccess} = useWaitForTransaction({
+	const {
+		isError,
+		data,
+		isSuccess,
+		isLoading: isWaitingForTx,
+	} = useWaitForTransaction({
 		hash: tx,
 	});
 
@@ -61,6 +68,7 @@ const ResaleListingBuyButton = (order: {
 	};
 
 	const formatNotification = (text: string): string => {
+		if (typeof text !== "string") return "Uknown error";
 		// Shorten ETH addresses
 		let shortened = text.replace(/0x[0-9a-fA-F]{40}/g, function (match) {
 			return match.substring(0, 6) + "..." + match.substring(match.length - 4);
@@ -98,7 +106,8 @@ const ResaleListingBuyButton = (order: {
 		}
 	}, [purchaseNFTError]);
 
-	const isProcessing = purchaseNFTPending || isLoading;
+	const isProcessing = purchaseNFTPending || isLoading || isWaitingForTx;
+	if (!address) return <ConnectWalletButton />;
 
 	return (
 		<>
@@ -116,7 +125,7 @@ const ResaleListingBuyButton = (order: {
 				{isProcessing && (
 					<>
 						<Spinner />
-						Loading...
+						Confirming transaction...
 					</>
 				)}
 			</Button>

@@ -216,7 +216,7 @@ export const useStaking = (pid: number) => {
 
 	useEffect(() => {
 		fetchStakedAmount();
-	}, [pid]);
+	}, [pid, address, masterMelon]);
 
 	return {
 		handleStake,

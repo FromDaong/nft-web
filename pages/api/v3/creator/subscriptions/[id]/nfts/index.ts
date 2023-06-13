@@ -8,7 +8,7 @@ import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 
 import TreatNFTMinterABI from "packages/treat/lib/abi/treatnftminter.json";
 
-const web3 = new Web3(process.env.RPC_NODE_URL);
+const web3 = new Web3(process.env.NEXT_PUBLIC_RPC_NODE_URL);
 
 const treatNFTMinter = new web3.eth.Contract(
 	TreatNFTMinterABI as any,

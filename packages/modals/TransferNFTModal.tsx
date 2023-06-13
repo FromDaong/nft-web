@@ -16,6 +16,7 @@ import {useState} from "react";
 import {useSigner} from "wagmi";
 import GenericChainModal from "./GenericChainModal";
 import {Modal} from ".";
+import {toast} from "sonner";
 
 export default function TransferNFTModal(props: {
 	onClose: any;
@@ -47,7 +48,7 @@ export default function TransferNFTModal(props: {
 			.catch((err) => {
 				setTransferNFTPending(false);
 				setTransferNFTError(err);
-				console.log({err});
+				toast.error(err.message);
 			});
 	};
 
@@ -67,16 +68,11 @@ export default function TransferNFTModal(props: {
 
 			<GenericChainModal
 				isOpen={!transferNFTPending && transferNFTSuccess}
-				subtitle={"Your NFT has been transferred."}
-				hideClose
+				title="NFT transferred"
+				subtitle={"Successfully transferred your NFT to another wallet."}
 				buttonLabel="Close"
-				noButton
-				action={() => {
-					gotoProfile();
-				}}
-				onClose={() => {
-					gotoProfile();
-				}}
+				onClose={router.reload}
+				action={router.reload}
 			/>
 
 			<GenericChainModal

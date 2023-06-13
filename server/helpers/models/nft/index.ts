@@ -94,6 +94,7 @@ const NFTSchema = new mongoose.Schema(
 		nftCollection: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "NFTCollection",
+			required: false,
 		},
 		views: [
 			{

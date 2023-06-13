@@ -26,9 +26,12 @@ import {useEffect, useState} from "react";
 import {Divider} from "@packages/shared/components/Divider";
 import {toast} from "sonner";
 import Link from "next/link";
+import Disconnected from "@components/ui/disconnected";
 
 // T-78 Use inters
 export default function Market() {
+	const {status} = useAccount();
+	const isConnected = status === "connected";
 	const [txHash, setTxHash] = useState<string>("");
 	const {data, isError: isErrorTreatNFTCost} = useWaitForTransaction({
 		hash: txHash,
@@ -112,28 +115,34 @@ export default function Market() {
 						<Heading size={"sm"}>Farmers' 🍈 Market</Heading>
 						<Text css={{fontSize: "1.2rem"}}>
 							Redeem a random NFT from the pool of exclusive NFTs listed below
-							for 10 $Melon. nge $Melon at the Farmers' Market to get exclusive
-							NFTs.
+							for 10 $Melon.
 						</Text>
 						<Container className="w-full mt-4 flex flex-col md:flex-row gap-4 md:gap-2 justify-between items-end">
-							<Link href={"/farm/market"}>
+							<Link href={"/farm/"}>
 								<a className="mt-4">
 									<Button>
 										Go to Farming Dashboard <ArrowRight className="w-5 h-5" />
 									</Button>
 								</a>
 							</Link>
-							<Button
-								onClick={onMintMelonNFT}
-								appearance={"success"}
-							>
-								<Sparkles className="w-4 h-4" />
-								Mint exclusive NFT
-							</Button>
+							{isConnected && (
+								<Button
+									onClick={onMintMelonNFT}
+									appearance={"success"}
+								>
+									<Sparkles className="w-4 h-4" />
+									Mint exclusive NFT
+								</Button>
+							)}
 						</Container>
 						<Divider />
 					</Container>
-					<FarmersMarket />
+					{isConnected && <FarmersMarket />}
+					{!isConnected && (
+						<Container className="py-12 flex justify-center">
+							<Disconnected />
+						</Container>
+					)}
 				</Container>
 			</ApplicationFrame>
 		</ApplicationLayout>

@@ -2,39 +2,24 @@
 import {Container} from "packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
-import {TritPost} from "@packages/post/TritPost";
 import CreatorCard from "@packages/feed/components/CreatorCard";
 import Link from "next/link";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
-import {
-	ArrowRightIcon,
-	FilmIcon,
-	MoonIcon,
-	PresentationChartLineIcon,
-} from "@heroicons/react/outline";
+import {ArrowRightIcon, FilmIcon, MoonIcon} from "@heroicons/react/outline";
 import TreatCore from "core/TreatCore";
 import axios from "axios";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import DynamicSkeleton from "@packages/skeleton";
-import {
-	FeaturedCreatorSkeleton,
-	TritPostSkeleton,
-} from "@packages/skeleton/config";
+import {FeaturedCreatorSkeleton} from "@packages/skeleton/config";
 import {useApplicationTheme} from "@packages/theme/provider";
 import {Button} from "@packages/shared/components/Button";
-import {
-	CameraIcon,
-	CaretLeftIcon,
-	CaretRightIcon,
-	MixIcon,
-	MixerVerticalIcon,
-} from "@radix-ui/react-icons";
+import {CameraIcon, MixIcon, MixerVerticalIcon} from "@radix-ui/react-icons";
 import Image from "next/future/image";
 import {SEOHead} from "@packages/seo/page";
-import {useMemo, useRef, useState} from "react";
 import {IFeatureProps, request} from "@lib/datocms";
 import Balancer from "react-wrap-balancer";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
+import Footer from "@packages/shared/components/Footer";
 
 const getTrendingNFTs = async () => {
 	const res = await axios.get(`${apiEndpoint}/marketplace/trending`);
@@ -120,7 +105,6 @@ export default function Index(props: {
 			/>
 			<Container
 				css={{
-					background: "$surfaceOnSurface",
 					backgroundSize: "cover",
 					backgroundPosition: "top",
 				}}
@@ -174,12 +158,16 @@ export default function Index(props: {
 									</Button>
 								</a>
 							</Link>
-							<Button
-								appearance={"subtle"}
-								outlined
-							>
-								Buy $TREAT
-							</Button>
+							<Link href={"/dex/ramp"}>
+								<a>
+									<Button
+										appearance={"subtle"}
+										outlined
+									>
+										Buy $TREAT
+									</Button>
+								</a>
+							</Link>
 						</Container>
 					</Container>
 				</Container>
@@ -291,18 +279,6 @@ export default function Index(props: {
 									content.
 								</Text>
 							</Container>
-
-							<Link href={"/creators"}>
-								<a>
-									<Button appearance={"link"}>
-										<ImportantText>View more creators</ImportantText>
-										<ArrowRightIcon
-											width={16}
-											height={16}
-										/>
-									</Button>
-								</a>
-							</Link>
 						</Container>
 						<Container className="grid grid-cols-1 w-full lg:w-2/3 xl:w-1/2">
 							{!trendingCreatorError && !trendingCreatorsLoading
@@ -423,6 +399,7 @@ export default function Index(props: {
 					</Container>
 				</Container>
 			</Container>
+			<Footer />
 		</ApplicationLayout>
 	);
 }
@@ -558,7 +535,6 @@ function FeaturesCard({
 					</div>
 					<Text className="relative">{description}</Text>
 				</Container>
-				<Container>{action}</Container>
 			</Container>
 			<Container className="relative flex flex-1 h-full overflow-visible min-h-48">
 				<Container

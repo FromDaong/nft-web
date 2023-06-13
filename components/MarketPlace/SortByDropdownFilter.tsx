@@ -113,6 +113,7 @@ export default function SortBy() {
 			>
 				<Button
 					appearance={"surface"}
+					outlined
 					className="transition-transform duration-300 ease-linear"
 				>
 					<Text>

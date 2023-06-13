@@ -15,14 +15,22 @@ import * as DropdownMenu from "@radix-ui/react-select";
 import {useFormik} from "formik";
 import {ChevronDown} from "lucide-react";
 import {XIcon} from "lucide-react";
-import {useState} from "react";
+import {useRouter} from "next/router";
+import {useEffect, useState} from "react";
 import {toast} from "sonner";
-import {useAccount, useBalance} from "wagmi";
+import {useAccount, useBalance, useWaitForTransaction} from "wagmi";
+import Web3 from "web3";
 import * as yup from "yup";
 
 export default function ManageStackModal({isOpen, onClose, pid: id, balance}) {
+	const router = useRouter();
 	const [mode, setMode] = useState("stake");
 	const [poolId, setPid] = useState(parseInt(id));
+	const [txHash, setTxHash] = useState("");
+	const [loading, setLoading] = useState(false);
+	const {data, isLoading, isError, error} = useWaitForTransaction({
+		hash: txHash,
+	});
 
 	const {address} = useAccount();
 	const {data: treatLpBalance, isLoading: treatLpLoading} = useBalance({
@@ -49,10 +57,12 @@ export default function ManageStackModal({isOpen, onClose, pid: id, balance}) {
 			amount: "",
 		},
 		onSubmit: (values, {setSubmitting}) => {
+			setLoading(true);
 			const action = `${mode[0].toUpperCase()}${mode.slice(1)}`;
 			methods[mode](values.amount.toString())
+				.then((tx) => setTxHash(tx.hash))
 				.catch((err) => {
-					console.log({err});
+					setLoading(false);
 					toast.error(`${action} failed with reason: ${err.reason}`);
 				})
 				.finally(() => setSubmitting(false));
@@ -67,6 +77,23 @@ export default function ManageStackModal({isOpen, onClose, pid: id, balance}) {
 		validateOnMount: true,
 		validateOnBlur: true,
 	});
+
+	useEffect(() => {
+		if (data) {
+			toast.success(
+				`${mode} successful! Please wait while we update your balance.`
+			);
+			// setLoading(false);
+			setTimeout(() => {
+				router.reload();
+			}, 5000);
+		}
+
+		if (isError) {
+			toast.error(`An error occurred: ${error}`);
+			setLoading(false);
+		}
+	}, [data, isError, isLoading]);
 
 	if (!isOpen) {
 		return null;
@@ -109,7 +136,7 @@ export default function ManageStackModal({isOpen, onClose, pid: id, balance}) {
 								<HarvestMelonRewards
 									id={poolId}
 									balance={balances[poolId]?.formatted}
-									stakeBalance={stakedAmount.toNumber()}
+									stakeBalance={Web3.utils.fromWei(stakedAmount.toString())}
 								/>
 							</Container>
 							<Container className={"grid grid-cols-1 gap-2"}>
@@ -142,12 +169,12 @@ export default function ManageStackModal({isOpen, onClose, pid: id, balance}) {
 											css={{
 												backgroundColor:
 													mode === "unstake" ? "$red11" : "$accentText",
-												opacity: form.isSubmitting || !form.isValid ? 0.5 : 1,
+												opacity: loading || !form.isValid ? 0.5 : 1,
 											}}
 											className="capitalize"
-											disabled={form.isSubmitting || !form.isValid}
+											disabled={loading || !form.isValid}
 										>
-											{form.isSubmitting ? (
+											{loading ? (
 												<>
 													<Spinner />
 													Please wait...

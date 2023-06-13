@@ -86,8 +86,6 @@ const useOrder = (id: number, creator_address: string) => {
 		pause: !id || !seller || !isResale,
 	});
 
-	console.log({seller});
-
 	const {marketItems = [], fetching, error} = data ?? {};
 
 	useEffect(() => {
@@ -104,19 +102,15 @@ const useOrder = (id: number, creator_address: string) => {
 };
 
 const useToken = (id: number) => {
-	const [
-		{
-			data: {tokens: [token] = []} = {},
-			fetching: fetchingToken,
-			error: fetchingError,
-		},
-	] = useQuery({
+	const [{data, fetching: fetchingToken, error: fetchingError}] = useQuery({
 		query: tokenQuery,
 		variables: {
 			id: `${id}`,
 		},
 		pause: !id,
 	});
+
+	const {tokens: [token] = []} = data ?? {};
 
 	return {
 		token,
