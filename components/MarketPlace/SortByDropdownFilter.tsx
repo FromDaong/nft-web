@@ -55,6 +55,10 @@ export const SelectItem = forwardRef(
 );
 SelectItem.displayName = "SelectItem";
 
+const SelectValue = styled(Select.Value, {
+	color: "$textContrast",
+});
+
 export default function SortBy() {
 	const [sortBy, setSortBy] = useState("newest"); // router.query["sort"]
 	const router = useRouter();
@@ -120,9 +124,9 @@ export default function SortBy() {
 						<ArrowUpDown className="w-5 h-5" />
 					</Text>
 
-					<Select.Value
+					<SelectValue
 						placeholder={
-							<Text>
+							<Text css={{color: "$textContrast"}}>
 								<ImportantText>Newest</ImportantText>
 							</Text>
 						}

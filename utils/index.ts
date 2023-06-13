@@ -19,7 +19,6 @@ export const decToBn = (dec: number, decimals = 18) => {
 };
 
 export const legacy_nft_to_new = (post: any): TritPostProps => {
-	console.log({post});
 	return {
 		_id: post._id,
 		name: post.name,

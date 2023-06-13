@@ -76,7 +76,7 @@ export default async function handler(
 		{
 			docs: populatedNfts.flat(),
 			totalDocs: 10000,
-			hasNextPage: true,
+			hasNextPage: marketItems.length === 24,
 			hasPrevPage: +page > 1,
 			page: +page,
 			nextPage: +page + 1,

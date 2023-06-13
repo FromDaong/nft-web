@@ -132,13 +132,8 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 
 	const creator_tabs = [
 		{
-			label: "Home",
-			href: "",
-			icon: <HomeIcon className="w-5 h-5" />,
-		},
-		{
-			label: "Marketplace",
-			href: "/listings",
+			label: "NFTs",
+			href: "/",
 			icon: <ShoppingBagIcon className="w-5 h-5" />,
 		},
 		{

@@ -87,7 +87,7 @@ const NavbarMenu = () => {
 			</NavigationMenu.List>
 
 			<div className="absolute top-full left-0 flex w-fit shadow-2xl justify-center">
-				<NavigationMenu.Viewport className="data-[state=open]:animate-scaleIn data-[state=closed]:animate-scaleOut relative mt-[10px] h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden rounded-[6px] transition-[width,_height] duration-300 sm:w-[var(--radix-navigation-menu-viewport-width)]" />
+				<NavigationMenu.Viewport className="data-[state=open]:animate-scaleIn data-[state=closed]:animate-scaleOut relative mt-[10px] h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden rounded-xl transition-[width,_height] duration-300 sm:w-[var(--radix-navigation-menu-viewport-width)]" />
 			</div>
 		</NavigationMenu.Root>
 	);

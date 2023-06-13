@@ -22,10 +22,10 @@ export default async function handler(
 
 	const sortMap = {
 		newest: {
-			created_at: -1,
+			createdAt: -1,
 		},
 		oldest: {
-			created_at: 1,
+			createdAt: 1,
 		},
 		expensive: {
 			price: -1,
@@ -49,7 +49,7 @@ export default async function handler(
 	} = {
 		page: parseInt((page as string) ?? "1"),
 		sort: sortMap[sort as string] || sortMap.newest,
-		market: (market as any) || "verified",
+		market: (market as any) ?? "verified",
 		tags: tags || [],
 	};
 
@@ -114,7 +114,9 @@ export default async function handler(
 
 		if (tags?.length > 0) andMap.push({tags: {$in: tags}});
 
-		if (market === "verified") {
+		if (config.market === "verified") {
+			console.log({sort: config.sort, market: config.market});
+
 			// @ts-ignore
 			nfts = await MongoModelNFT.paginate(
 				{
@@ -158,6 +160,10 @@ export default async function handler(
 			populate: "profile",
 		});
 
+		nfts.docs.map((nft) => {
+			console.log(nft.createdAt);
+		});
+
 		return returnWithSuccess(nfts, res);
 	}
 
@@ -166,8 +172,6 @@ export default async function handler(
 	if (sort === "cheapest") sortKey = "cost";
 	if (sort === "newest") sortKey = "timestamp";
 	if (sort === "oldest") sortKey = "timestamp";
-
-	console.log({sortKey});
 
 	const {marketItems} = await request(RESALE_GRAPHQL_ENDPOINT, markets.resale, {
 		sort: sortKey,
