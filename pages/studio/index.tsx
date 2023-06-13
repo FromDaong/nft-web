@@ -229,7 +229,6 @@ const NFTCard = ({nft, totalSale}) => {
 						<Button
 							className="shadow"
 							appearance={"white"}
-							onClick={onOpen}
 						>
 							<ExternalLink className="w-4 h-4" />
 							View
