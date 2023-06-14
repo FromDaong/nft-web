@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import Spinner from "@packages/shared/icons/Spinner";

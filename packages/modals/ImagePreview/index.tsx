@@ -69,6 +69,7 @@ export default function FullscreenImagePreviewModal(props: ImagePreviewProps) {
 					isOpen={isListForSaleModalOpen}
 					onClose={onListForSaleModalClose}
 					nft={props.nft}
+					balance={parseInt(`${props.balance}`)}
 				/>
 			)}
 
@@ -99,10 +100,10 @@ export default function FullscreenImagePreviewModal(props: ImagePreviewProps) {
 									left: "50%",
 									transform: "translateX(-50%)",
 								}}
-								className="flex-shrink-0 py-8 absolute bottom-4"
+								className="absolute flex-shrink-0 py-8 bottom-4"
 							>
 								<ApplicationFrame>
-									<Container className="py-8 w-full justify-center gap-4 flex flex-wrap">
+									<Container className="flex flex-wrap justify-center w-full gap-4 py-8">
 										<Button
 											outlined
 											appearance={"white"}

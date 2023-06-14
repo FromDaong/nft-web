@@ -6,6 +6,7 @@ import {graphql_endpoints as markets} from "./queries";
 import Web3 from "web3";
 import {SUBGRAPH_GRAPHQL_URL} from "@lib/graphClients";
 import formatAddress from "@utils/formatAddress";
+import {connectMongoDB} from "server/helpers/core";
 
 const RESALE_GRAPHQL_ENDPOINT =
 	"https://api.thegraph.com/subgraphs/name/treatdaodev/treatdao";
@@ -52,6 +53,8 @@ export default async function handler(
 		market: (market as any) ?? "verified",
 		tags: tags || [],
 	};
+
+	await connectMongoDB();
 
 	if (!["melon", "totm", "resale", "verified"].includes(config.market))
 		return returnWithError("Invalid market", 400, res);

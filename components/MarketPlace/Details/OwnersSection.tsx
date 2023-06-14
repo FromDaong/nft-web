@@ -34,6 +34,7 @@ const OwnersSection = ({nft, balance}) => {
 					isOpen={isListForSaleModalOpen}
 					onClose={onListForSaleModalClose}
 					nft={nft}
+					balance={balance}
 				/>
 			)}
 			<Container
@@ -41,15 +42,15 @@ const OwnersSection = ({nft, balance}) => {
 					backgroundColor: "$elementOnSurface",
 					borderColor: "$subtleBorder",
 				}}
-				className="p-4 rounded-xl flex flex-col w-full gap-8"
+				className="flex flex-col w-full gap-8 p-4 rounded-xl"
 			>
-				<Container className="w-full flex gap-2 items-center">
+				<Container className="flex items-center w-full gap-2">
 					<Text>
 						<ImportantText>Owner's section</ImportantText>
 					</Text>
 					<Tag>{balance} owned</Tag>
 				</Container>
-				<Container className="flex flex-col gap-4 justify-between">
+				<Container className="flex flex-col justify-between gap-4">
 					<Button
 						css={{padding: "1rem"}}
 						appearance={"surface"}

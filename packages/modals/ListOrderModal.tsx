@@ -31,7 +31,9 @@ export default function ListOrderModal(props: {
 	onClose: any;
 	isOpen: any;
 	nft: TritPostProps;
+	balance: number;
 }) {
+	console.log({balance: props.balance});
 	const router = useRouter();
 	const {address} = useAccount();
 	const {isOpen, onOpen, onClose} = useDisclosure();
@@ -213,16 +215,18 @@ export default function ListOrderModal(props: {
 											appearance={"solid"}
 										/>
 									</Container>
-									<Container className="my-4">
-										<Text>
+									<Container className="my-2">
+										<SmallText>
 											<ImportantText>
 												Floor price: {ethers.utils.formatEther(lowestOpenOrder)}
 											</ImportantText>
-										</Text>
+										</SmallText>
 									</Container>
-									{parseInt(balance) > 1 && (
-										<Container>
-											<Text>Quantity</Text>
+									{props.balance > 1 && (
+										<Container className="my-4">
+											<Text>
+												<ImportantText>Quantity</ImportantText>
+											</Text>
 											<Input
 												type="number"
 												value={listQuantity}
@@ -233,10 +237,9 @@ export default function ListOrderModal(props: {
 												placeholder="1"
 												appearance={"solid"}
 											/>
-											<MutedText>
+											<SmallText className="mt-2">
 												NFTs are sold out individually, at the list price.
-												Choose the amount you wish to list.
-											</MutedText>
+											</SmallText>
 										</Container>
 									)}
 									<div className="flex justify-end gap-4">
