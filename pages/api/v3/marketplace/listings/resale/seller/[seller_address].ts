@@ -1,5 +1,6 @@
 import request, {gql} from "graphql-request";
 import {NextApiRequest, NextApiResponse} from "next";
+import {connectMongoDB} from "server/helpers/core";
 import {returnWithSuccess} from "server/helpers/core/utils";
 import {MongoModelNFT, MongoModelProfile} from "server/helpers/models";
 import Web3 from "web3";
@@ -40,6 +41,7 @@ export default async function handler(
 		address: (seller_address as string).toLowerCase(),
 	});
 
+	await connectMongoDB();
 	const ids = marketItems.map((item) => item.nft);
 	const nfts = await MongoModelNFT.find({
 		id: {
