@@ -51,7 +51,7 @@ const ManageNFTModal = ({nft}) => {
 					name: values.name,
 					description: JSON.stringify(values.description),
 					price: values.price,
-					protected: values.protected,
+					isProtected: values.protected,
 				},
 				{
 					headers: {

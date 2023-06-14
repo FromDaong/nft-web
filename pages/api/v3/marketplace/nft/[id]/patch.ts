@@ -26,7 +26,6 @@ export default async function handler(
 	try {
 		// Edit fields of nft and set data to them and save
 		// Do not update price
-
 		const nft = await MongoModelNFT.findByIdAndUpdate(
 			id,
 			{...data},
