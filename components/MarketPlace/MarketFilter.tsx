@@ -29,12 +29,12 @@ export default function SweetshopTabs() {
 				backgroundColor: "$surface",
 				borderColor: "$border",
 			}}
-			className="overflow-x-auto w-full flex flex-col"
+			className="flex flex-col w-full overflow-x-auto"
 		>
-			<Container className="flex justify-between items-center w-full flex-col lg:flex-row">
+			<Container className="flex flex-col items-center justify-between w-full lg:flex-row">
 				<Container
 					css={{borderColor: "$subtleBorder"}}
-					className="mb-2 flex justify-between border-b w-full lg:hidden"
+					className="flex justify-between w-full mb-2 border-b lg:hidden"
 				>
 					<TagsFilter />
 					<SortBy />
@@ -45,7 +45,7 @@ export default function SweetshopTabs() {
 				<Container>
 					<RadioGroup
 						onChange={(selected) => onChangeTab(selected)}
-						className="flex items-center w-full max-w-full gap-2 py-2 overflow-x-auto flex-nowrap px-2 scroll-smooth whitespace-wrap"
+						className="flex items-center w-full max-w-full gap-2 px-2 py-2 overflow-x-auto flex-nowrap scroll-smooth whitespace-wrap"
 						defaultValue={defaultTab}
 					>
 						<RadioGroup.Option
@@ -71,14 +71,6 @@ export default function SweetshopTabs() {
 							value="melon"
 						>
 							Melon
-						</RadioGroup.Option>
-						<RadioGroup.Option
-							as={Button}
-							appearance={selectedTab === "totm" ? "action" : "subtle"}
-							className="flex-shrink-0"
-							value="totm"
-						>
-							Treat of The Month
 						</RadioGroup.Option>
 					</RadioGroup>
 				</Container>

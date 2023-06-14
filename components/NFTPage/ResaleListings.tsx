@@ -7,7 +7,7 @@ import {
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
 import Spinner from "@packages/shared/icons/Spinner";
-import {apiEndpoint} from "@utils/index";
+import {apiEndpoint, formatAddress} from "@utils/index";
 import axios from "axios";
 import TreatCore from "core/TreatCore";
 import UserAvatar from "core/auth/components/Avatar";
@@ -59,12 +59,17 @@ const useResaleListingsForNFT = (nftId) => {
 		if (sellersData && !!marketItems.length) {
 			return marketItems
 				.map((item) => {
-					const seller = sellersData.find(
+					let seller = sellersData.find(
 						(seller) =>
 							seller.address.toLowerCase() === item.seller.toLowerCase()
 					);
 
-					if (!seller) return null;
+					if (!seller)
+						seller = {
+							address: item.seller,
+							username: formatAddress(item.seller),
+							profile_pic: "",
+						};
 
 					return {
 						price: item.cost,
@@ -157,7 +162,7 @@ export default function ResaleListings({nft}) {
 		<Container className="flex flex-col gap-2 py-4">
 			{isLoading && (
 				<>
-					<Container className="py-4 flex justify-center">
+					<Container className="flex justify-center py-4">
 						<Text>
 							<Spinner />
 						</Text>
@@ -212,7 +217,7 @@ function ResaleListing({listing, seller, onClick}) {
 		<Container
 			key={listing.seller.address}
 			onClick={select}
-			className="rounded-xl p-2 cursor-pointer shadow transition-all duration-75 flex justify-between items-center"
+			className="flex items-center justify-between p-2 transition-all duration-75 shadow cursor-pointer rounded-xl"
 			css={{
 				"&:hover": {
 					backgroundColor: "$elementOnSurface",
@@ -225,7 +230,7 @@ function ResaleListing({listing, seller, onClick}) {
 				backgroundColor: "$surfaceOnSurface",
 			}}
 		>
-			<Container className="flex gap-4 items-center">
+			<Container className="flex items-center gap-4">
 				<UserAvatar
 					profile_pic={listing.seller.profile_pic}
 					username={listing.seller.username}
@@ -273,7 +278,7 @@ function BaseOrder({baseOrder, nft, onClick, active}) {
 							"&:hover": activeState,
 					  }
 			}
-			className="rounded-xl p-2 flex flex-col gap-4 border-2 transition-all duration-200 hover:shadow-xl cursor-pointer"
+			className="flex flex-col gap-4 p-2 transition-all duration-200 border-2 cursor-pointer rounded-xl hover:shadow-xl"
 		>
 			<Container className="flex items-start">
 				<Tag>PRIMARY LISTING</Tag>

@@ -13,6 +13,7 @@ export const graphql_endpoints = {
 				orderDirection: $direction
 				skip: $skip
 				first: $first
+				where: {currentSupply_not: "0"}
 			) {
 				nft
 				currentSupply

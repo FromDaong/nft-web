@@ -115,8 +115,6 @@ export default async function handler(
 		if (tags?.length > 0) andMap.push({tags: {$in: tags}});
 
 		if (config.market === "verified") {
-			console.log({sort: config.sort, market: config.market});
-
 			// @ts-ignore
 			nfts = await MongoModelNFT.paginate(
 				{
