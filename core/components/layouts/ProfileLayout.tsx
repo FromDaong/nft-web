@@ -132,7 +132,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 
 	const creator_tabs = [
 		{
-			label: "NFTs",
+			label: "Available on sweetshop",
 			href: "/",
 			icon: <ShoppingBagIcon className="w-5 h-5" />,
 		},
@@ -142,7 +142,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 			icon: <UserGroupIcon className="w-5 h-5" />,
 		},
 		{
-			label: "Owned",
+			label: "Collected",
 			href: "/portfolio",
 			icon: <BriefcaseIcon className="w-5 h-5" />,
 		},
@@ -150,7 +150,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 
 	const profile_tabs = [
 		{
-			label: "Owned",
+			label: "Collected",
 			href: "/portfolio",
 			icon: <BriefcaseIcon className="w-5 h-5" />,
 		},

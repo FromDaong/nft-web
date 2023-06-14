@@ -115,7 +115,7 @@ const ManageNFTModal = ({nft}) => {
 				<form onSubmit={formik.handleSubmit}>
 					<Container className="flex flex-col items-center gap-4 w-full">
 						<Container className={"flex gap-8 w-full justify-center"}>
-							<Container className="w-64 rounded-xl shadow-xl aspect-square overflow-hidden">
+							<Container className="w-96 rounded-xl shadow-xl aspect-square overflow-hidden">
 								<Container
 									className={`w-full h-full ${
 										formik.values.protected ? "blur-xl" : ""
@@ -210,7 +210,7 @@ const ManageNFTModal = ({nft}) => {
 						<Container className="flex justify-end gap-4 w-full mt-4">
 							<Button
 								appearance={"subtle"}
-								onClick={formik.resetForm}
+								onClick={() => formik.resetForm({values: formik.initialValues})}
 								type={"button"}
 							>
 								Discard changes
