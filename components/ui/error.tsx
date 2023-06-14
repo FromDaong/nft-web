@@ -20,10 +20,6 @@ export default function ErrorOccurred({description, err}) {
 					>
 						Reload
 					</Button>
-					<Button appearance={"surface"}>
-						<ExclamationCircleIcon className="w-5 h-5" />
-						Report incident
-					</Button>
 				</Container>
 			</Container>
 		</Container>
