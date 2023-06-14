@@ -2,7 +2,7 @@ import {useCallback} from "react";
 import {useAccount} from "wagmi";
 import {useContracts} from "@packages/post/hooks";
 
-const useGetFreeTreat = (id: number, treatCost: number) => {
+const useGetFreeTreat = (id: number) => {
 	const {address: account} = useAccount();
 	const {totmMartContract} = useContracts();
 
@@ -12,7 +12,7 @@ const useGetFreeTreat = (id: number, treatCost: number) => {
 			value: 0,
 		});
 		return txHash;
-	}, [account, id, treatCost, totmMartContract]);
+	}, [account, id, totmMartContract]);
 
 	return {onGetFreeTreat: handleMintNft};
 };

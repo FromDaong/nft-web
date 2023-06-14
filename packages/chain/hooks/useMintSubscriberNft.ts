@@ -1,8 +1,9 @@
 import {useCallback} from "react";
 import {useAccount} from "wagmi";
 import {useContracts} from "@packages/post/hooks";
+import {BigNumber} from "ethers";
 
-const useMintSubscriberNft = (id: number, treatCost: number) => {
+const useMintSubscriberNft = (id: number, treatCost: BigNumber) => {
 	const {address: account} = useAccount();
 	const {subscriptionsMart} = useContracts();
 

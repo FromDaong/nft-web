@@ -17,11 +17,10 @@ import useMintSubscriberNft from "@packages/chain/hooks/useMintSubscriberNft";
 import useGetFreeTreat from "@packages/chain/hooks/useGetFreeTreat";
 import useGetFreeCreatorTreat from "@packages/chain/hooks/useGetFreeCreatorTreat";
 import useGetFreeSubscriberTreat from "@packages/chain/hooks/useGetFreeSubscriberTreat";
-import useGetTreatNFTCost from "@packages/chain/hooks/useGetTreatNftCost";
-import useGetCreatorNftCost from "@packages/chain/hooks/useGetCreatorNftCost";
-import useGetSubscriberNftCost from "@packages/chain/hooks/useGetSubscriberNftCost";
 import {BuyButtonProps} from "@packages/post/hooks/helpers";
-import {useContracts} from "@packages/post/hooks";
+import {BigNumber} from "ethers";
+import Web3 from "web3";
+import {formatBlockchainResponse} from "./ResaleBuyButton";
 
 const BuyButton = ({nftData, postUtils, callback}) => {
 	const {address, status} = useAccount();
@@ -80,6 +79,17 @@ const BuyButton = ({nftData, postUtils, callback}) => {
 			</Container>
 		);
 
+	if (!nftData.currentTOTM && nftData.totm_nft) {
+		return (
+			<Container>
+				<Button appearance={"danger"}>
+					<ExclamationCircleIcon className="w-5 h-5" />
+					Minting is no longer available
+				</Button>
+			</Container>
+		);
+	}
+
 	return (
 		<Container className="flex flex-col w-full">
 			<PurchaseButtonWrapper
@@ -93,6 +103,7 @@ const BuyButton = ({nftData, postUtils, callback}) => {
 };
 
 const PurchaseButtonWrapper = (nft: BuyButtonProps, callback) => {
+	console.log(nft);
 	const {address} = useAccount();
 	const [txHash, setTxHash] = useState("");
 	const [loading, setLoading] = useState(false);
@@ -101,49 +112,52 @@ const PurchaseButtonWrapper = (nft: BuyButtonProps, callback) => {
 		hash: txHash,
 	});
 
-	const {creatorMartContract, totmMartContract, subscriptionsMart} =
-		useContracts();
-	const totwNftCost = useGetTreatNFTCost(totmMartContract, nft.id);
-	const creatorNftCost = useGetCreatorNftCost(creatorMartContract, nft.id);
-	const subscriberNftCost = useGetSubscriberNftCost(subscriptionsMart, nft.id);
-
-	let nftCost = nft.totm_nft ? totwNftCost : creatorNftCost;
-	nftCost = nft.subscription_nft ? subscriberNftCost : nftCost;
-	nftCost = nft.totm_nft ? totwNftCost : nftCost;
-	const cost = nftCost.toNumber();
+	const cost = BigNumber.from(Web3.utils.toWei(nft.price.toString(), "ether"));
 	const isMinting = isLoading || loading;
 
-	const {onMintNft: onMintTotwNft} = useMintNft(nft.id, cost);
-	const {onMintCreatorNft} = useMintCreatorNft(nft.id, cost);
+	const {onMintNft: onMintTotwNft} = useMintNft(nft.id, nft.price.value);
+	const {onMintCreatorNft} = useMintCreatorNft(
+		nft.id,
+		BigNumber.from(Web3.utils.toWei(nft.price.toString(), "ether"))
+	);
 	const {onMintSubscriberNft} = useMintSubscriberNft(nft.id, cost);
 
-	const {onGetFreeTreat} = useGetFreeTreat(nft.id, cost);
-	const {onGetFreeCreatorTreat} = useGetFreeCreatorTreat(nft.id, cost);
-	const {onGetFreeSubscriberTreat} = useGetFreeSubscriberTreat(nft.id, cost);
+	const {onGetFreeTreat} = useGetFreeTreat(nft.id);
+	const {onGetFreeCreatorTreat} = useGetFreeCreatorTreat(nft.id);
+	const {onGetFreeSubscriberTreat} = useGetFreeSubscriberTreat(nft.id);
 
 	const onMintNft = useCallback(async () => {
 		try {
 			if (nft.subscription_nft) return onMintSubscriberNft();
-			if (nft.totm_nft) {
+			if (nft.currentTOTM) {
 				return await onMintTotwNft();
 			} else {
 				return await onMintCreatorNft();
 			}
 		} catch (err) {
-			toast.error(`An error occurred: ${err.reason}.`);
+			toast.error(
+				formatBlockchainResponse(`${err.reason ?? err.data?.message}.`)
+			);
 		}
 	}, [nft]);
 
 	const onMintFreeNft = useCallback(async () => {
+		console.log("minting free nft");
 		try {
 			if (nft.subscription_nft) return onGetFreeSubscriberTreat();
-			if (nft.totm_nft) {
+			if (nft.currentTOTM) {
 				return await onGetFreeTreat();
 			} else {
 				return await onGetFreeCreatorTreat();
 			}
 		} catch (err) {
-			toast.error(`An error occurred: ${err.reason}.`);
+			if (err.reason === "execution reverted: treat not found") {
+				toast.error("Smart contract error: Token not found.");
+			} else {
+				toast.error(
+					formatBlockchainResponse(`${err.reason ?? err.data?.message}.`)
+				);
+			}
 		}
 	}, [nft]);
 
@@ -183,7 +197,7 @@ const PurchaseButtonWrapper = (nft: BuyButtonProps, callback) => {
 
 	if (isMinting) return <LoadingButton />;
 
-	if (cost === 0) <RedeemFreeNFT mint={mintFreeNFT} />;
+	if (nft.price === 0) return <RedeemFreeNFT mint={mintFreeNFT} />;
 
 	return (
 		<PayAndRedeemButton

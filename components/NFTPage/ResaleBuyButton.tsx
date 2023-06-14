@@ -27,6 +27,26 @@ export const usePurchaseResaleOrder = () => {
 	return {purchaseResaleOrder};
 };
 
+export const formatBlockchainResponse = (text: string): string => {
+	if (typeof text !== "string") return "Uknown error";
+	// Shorten ETH addresses
+	let shortened = text.replace(/0x[0-9a-fA-F]{40}/g, function (match) {
+		return match.substring(0, 6) + "..." + match.substring(match.length - 4);
+	});
+
+	// Convert wei figures to BNB
+	const weiRegex = /(?<=have|want|supplied gas)\s+(\d+)/g;
+	let match;
+	while ((match = weiRegex.exec(shortened)) !== null) {
+		const wei = match[1];
+		const bnb = parseFloat(wei) / 1000000000000000000;
+		const bnbFormatted = parseFloat(bnb.toPrecision(2)).toString();
+		shortened = shortened.replace(wei, bnbFormatted + " BNB");
+	}
+
+	return shortened;
+};
+
 const ResaleListingBuyButton = (order: {
 	price: number;
 	seller: string;
@@ -67,26 +87,6 @@ const ResaleListingBuyButton = (order: {
 			});
 	};
 
-	const formatNotification = (text: string): string => {
-		if (typeof text !== "string") return "Uknown error";
-		// Shorten ETH addresses
-		let shortened = text.replace(/0x[0-9a-fA-F]{40}/g, function (match) {
-			return match.substring(0, 6) + "..." + match.substring(match.length - 4);
-		});
-
-		// Convert wei figures to BNB
-		const weiRegex = /(?<=have|want|supplied gas)\s+(\d+)/g;
-		let match;
-		while ((match = weiRegex.exec(shortened)) !== null) {
-			const wei = match[1];
-			const bnb = parseFloat(wei) / 1000000000000000000;
-			const bnbFormatted = parseFloat(bnb.toPrecision(2)).toString();
-			shortened = shortened.replace(wei, bnbFormatted + " BNB");
-		}
-
-		return shortened;
-	};
-
 	useEffect(() => {
 		if (data && isSuccess) {
 			setPurchaseNFTPending(false);
@@ -100,7 +100,7 @@ const ResaleListingBuyButton = (order: {
 	useEffect(() => {
 		if (purchaseNFTError) {
 			toast.error(
-				`An error occurred: ${formatNotification(purchaseNFTError)}.`
+				`An error occurred: ${formatBlockchainResponse(purchaseNFTError)}.`
 			);
 			setPurchaseNFTError(false);
 		}

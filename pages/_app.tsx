@@ -43,7 +43,7 @@ function MyApp({
 				<WagmiWrapper pageProps={pageProps}>
 					<TreatBalancesProvider>
 						<ThemeProvider>
-							<Toaster />
+							<Toaster richColors />
 							<Head>
 								<title>Treat DAO</title>
 							</Head>
