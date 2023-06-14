@@ -65,10 +65,12 @@ export const Modal = ({
 				//@ts-ignore
 				<DialogContent
 					className={
-						"md:top-[50%] md:left-[50%] md:translate-x-[-50%] md:translate-y-[-50%] bottom-0 left-0 w-full md:w-[520px] rounded-t-xl md:rounded-xl h-fit"
+						"md:top-[50%] md:left-[50%] md:translate-x-[-50%] md:translate-y-[-50%] bottom-0 left-0 w-full md:w-[520px] rounded-t-xl md:rounded-xl h-fit max-h-[80vh]"
 					}
 				>
-					<Container className={"md:w-[520px] w-full"}>{children}</Container>
+					<Container className={"md:w-[520px] w-full overflow-y-auto"}>
+						{children}
+					</Container>
 				</DialogContent>
 			}
 		</Dialog>

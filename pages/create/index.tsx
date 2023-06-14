@@ -268,7 +268,7 @@ export default function PostType(props: {collection: string}) {
 			subtitle:
 				"Your transaction has been confirmed on the blockchain. You can now visit the collection and other people can buy your NFTs.",
 			actionLabel: "Go to listings",
-			action: () => router.push(`/${profile?.username}/listings`),
+			action: () => router.push(`/${profile?.username}`),
 		},
 		serverError: {
 			status: "error",

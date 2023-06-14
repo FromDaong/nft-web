@@ -219,14 +219,17 @@ const NFTCard = ({nft, totalSale}) => {
 				<Text>At {nft.price} BNB per NFT</Text>
 			</Container>
 			<Container className="flex gap-4 items-center">
-				<Button
-					className="shadow"
-					appearance={"white"}
-					onClick={onOpen}
-				>
-					<Edit className="w-4 h-4" />
-					Edit
-				</Button>
+				<Link href={`/studio/nfts/${nft._id}`}>
+					<a>
+						<Button
+							className="shadow"
+							appearance={"white"}
+						>
+							<Edit className="w-4 h-4" />
+							Edit
+						</Button>
+					</a>
+				</Link>
 				<Link href={`/post/nft/${nft._id}?seller=${nft.creator.address}`}>
 					<a
 						target="_blank"
