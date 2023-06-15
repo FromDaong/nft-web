@@ -211,6 +211,7 @@ const ManageMyNFTButtons = ({nft, getOpenOrdersForSeller}) => {
 					isOpen={isListOrderModalOpen}
 					onClose={onCloseListOrderModal}
 					nft={nft}
+					balance={balance}
 				/>
 			)}
 
