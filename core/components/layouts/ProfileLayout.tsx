@@ -132,7 +132,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 
 	const creator_tabs = [
 		{
-			label: "Available on sweetshop",
+			label: "Available NFTs",
 			href: "/",
 			icon: <ShoppingBagIcon className="w-5 h-5" />,
 		},
@@ -310,9 +310,9 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 
 			<Container className="mb-4">
 				<ApplicationFrame>
-					<ContextualContainer className="grid w-full col-span-1 xl:grid-cols-3 gap-y-4 px-2">
-						<Container className="col-span-1 xl:col-span-2 flex flex-col gap-4">
-							<Container className="flex gap-4 items-center">
+					<ContextualContainer className="grid w-full col-span-1 px-2 xl:grid-cols-3 gap-y-4">
+						<Container className="flex flex-col col-span-1 gap-4 xl:col-span-2">
+							<Container className="flex items-center gap-4">
 								<NewAvatar
 									username="Tatenda Chris"
 									imageSrc={ownerOfUserProfile.profile_pic}
@@ -469,7 +469,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 			</Container>
 			<Divider />
 			<ApplicationFrame>
-				<Container className="px-2 pb-24 pt-4">{props.children}</Container>
+				<Container className="px-2 pt-4 pb-24">{props.children}</Container>
 			</ApplicationFrame>
 		</ApplicationLayout>
 	);
@@ -541,7 +541,7 @@ function CoverPhoto({banner}) {
 		>
 			{isMine && (
 				<form
-					className="bottom-4 right-4 absolute"
+					className="absolute bottom-4 right-4"
 					onSubmit={null}
 				>
 					<label
@@ -550,7 +550,7 @@ function CoverPhoto({banner}) {
 					>
 						<FrostyBackgroundContainer
 							css={{borderRadius: 999, padding: "1rem"}}
-							className="items-center gap-2 flex justify-center transition-all duration-200"
+							className="flex items-center justify-center gap-2 transition-all duration-200"
 						>
 							{!isLoadingCover ? (
 								<>

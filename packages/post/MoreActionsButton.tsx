@@ -44,6 +44,7 @@ export default function MoreActionsButton({
 					isOpen={isListOrderModalOpen}
 					onClose={onCloseListOrderModal}
 					nft={nft}
+					balance={parseInt(`${numberOfNFTsOwned}`)}
 				/>
 			)}
 
