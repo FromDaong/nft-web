@@ -4,9 +4,11 @@ import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {useUser} from "core/auth/useUser";
 import Link from "next/link";
+import {useRouter} from "next/router";
 
 export default function PurchasedNFTPreview({isOpen, onClose, nft}) {
 	const {profile} = useUser();
+	const router = useRouter();
 
 	return (
 		<GenericChainModal
@@ -27,7 +29,7 @@ export default function PurchasedNFTPreview({isOpen, onClose, nft}) {
 				</Container>
 				<Container className="flex justify-between">
 					<Button
-						onClick={onClose}
+						onClick={router.reload}
 						appearance={"surface"}
 					>
 						Close

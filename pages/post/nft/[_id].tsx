@@ -76,12 +76,12 @@ export default function NFT(props: {
 			/>
 			<ApplicationLayout>
 				<ApplicationFrame>
-					<Container className="relative flex flex-col gap-8 px-0 p-4 xl:pb-12 xl:flex-row">
+					<Container className="relative flex flex-col gap-8 p-4 px-0 xl:pb-12 xl:flex-row">
 						<NFTPreview
 							nft={nft}
 							postUtils={postUtils}
 						/>
-						<Container className="flex-1 w-full relative flex flex-col h-full rounded-xl gap-12 container mx-auto pb-32">
+						<Container className="container relative flex flex-col flex-1 w-full h-full gap-12 pb-32 mx-auto rounded-xl">
 							<Container>
 								<NFTPresentationComponent
 									nft={nft}
@@ -212,7 +212,7 @@ function NFTPreview({nft, postUtils}) {
 										)}
 
 										{mintedNfts === maxSupply && !nft.melon_nft && (
-											<Container className="flex gap-4 items-center">
+											<Container className="flex items-center gap-4">
 												<Text
 													css={{color: "$red9"}}
 													className="flex gap-2"
@@ -244,7 +244,7 @@ function NFTPreview({nft, postUtils}) {
 }
 
 const BlockSkeleton = () => (
-	<Container className="max-w-32 w-full">
+	<Container className="w-full max-w-32">
 		<DynamicSkeleton
 			config={[
 				{
