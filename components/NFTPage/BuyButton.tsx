@@ -103,7 +103,6 @@ const BuyButton = ({nftData, postUtils, callback}) => {
 };
 
 const PurchaseButtonWrapper = (nft: BuyButtonProps, callback) => {
-	console.log(nft);
 	const {address} = useAccount();
 	const [txHash, setTxHash] = useState("");
 	const [loading, setLoading] = useState(false);
@@ -142,7 +141,6 @@ const PurchaseButtonWrapper = (nft: BuyButtonProps, callback) => {
 	}, [nft]);
 
 	const onMintFreeNft = useCallback(async () => {
-		console.log("minting free nft");
 		try {
 			if (nft.subscription_nft) return onGetFreeSubscriberTreat();
 			if (nft.currentTOTM) {

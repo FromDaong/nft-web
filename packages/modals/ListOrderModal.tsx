@@ -13,7 +13,6 @@ import {Input} from "@packages/shared/components/Input";
 import {Text} from "@packages/shared/components/Typography/Headings";
 import {
 	ImportantText,
-	MutedText,
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
 import Spinner from "@packages/shared/icons/Spinner";
@@ -35,7 +34,6 @@ export default function ListOrderModal(props: {
 }) {
 	console.log({balance: props.balance});
 	const router = useRouter();
-	const {address} = useAccount();
 	const {isOpen, onOpen, onClose} = useDisclosure();
 	const [listOrderPending, setListOrderPending] = useState(false);
 	const [listOrderSuccess, setListOrderSuccess] = useState(false);
@@ -47,7 +45,6 @@ export default function ListOrderModal(props: {
 
 	const {listOrder} = useListOrder();
 	const openOrders = useGetResaleOrders(props.nft.id) ?? [];
-	const balance = useGetRemainingOrderBalance(props.nft.id);
 
 	const [approveTx, setApproveTx] = useState<any>(null);
 	const {isLoading: isApprovalLoading} = useWaitForTransaction({
@@ -85,13 +82,6 @@ export default function ListOrderModal(props: {
 			Web3.utils.toWei(listPrice.toString()),
 			listQuantity
 		)
-			.then(() => {
-				return axios.post(`${apiEndpoint}/marketplace/methods/add-new-event`, {
-					id: props.nft.id,
-					price: listPrice.toString(),
-					seller: address,
-				});
-			})
 			.then(() => {
 				setListOrderPending(false);
 				setListOrderSuccess(true);

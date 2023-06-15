@@ -32,7 +32,7 @@ export default function PurchasedNFTPreview({isOpen, onClose, nft}) {
 					>
 						Close
 					</Button>
-					<Link href={`/${profile?.username}`}>
+					<Link href={`/${profile?.username}/portfolio`}>
 						<a>
 							<Button appearance={"action"}>View in my portfolio</Button>
 						</a>
