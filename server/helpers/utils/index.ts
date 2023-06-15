@@ -24,14 +24,3 @@ export default function createMongoDBModel<T, TModel = Model<T>>(
 	}
 	return createdModel;
 }
-
-export const findAndPaginate = async (
-	model: any,
-	startId: string,
-	limit = 10
-) => {
-	return model
-		.find({_id: {$lt: startId}})
-		.sort({_id: -1})
-		.limit(limit);
-};

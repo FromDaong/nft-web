@@ -31,6 +31,8 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
+	await connectMongoDB();
+
 	const {seller_address, page, sort} = req.query;
 	const {marketItems} = await request(RESALE_GRAPHQL_ENDPOINT, query, {
 		sort: (sort as string) ?? "cost",
@@ -41,7 +43,6 @@ export default async function handler(
 		address: (seller_address as string).toLowerCase(),
 	});
 
-	await connectMongoDB();
 	const ids = marketItems.map((item) => item.nft);
 	const nfts = await MongoModelNFT.find({
 		id: {
