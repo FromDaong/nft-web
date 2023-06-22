@@ -183,10 +183,6 @@ const PurchaseButtonWrapper = (nft: BuyButtonProps, callback) => {
 				callback();
 			}
 
-			if (isError) {
-				toast.error(`An error occurred: ${error}.`);
-			}
-
 			setLoading(false);
 		}
 	}, [data, isError]);
