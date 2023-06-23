@@ -1,27 +1,20 @@
-import {
-	addReferrerToMinter,
-	getTreatNFTMinterContract,
-} from "@packages/chain/utils";
-
 import {useCallback} from "react";
 import {useAccount} from "wagmi";
-import useTreat from "./useTreat";
+import {useContracts} from "@packages/post/hooks";
 
 const useAddReferrerToMinter = (modelAddress: string, refAddress: string) => {
 	const {address: account} = useAccount();
-	const treat = useTreat();
-	const treatNftMinterContract = getTreatNFTMinterContract(treat);
+	const {treatMinterContract} = useContracts();
 
 	const handleAddReferrerToMinter = useCallback(async () => {
-		const txHash = await addReferrerToMinter(
-			treatNftMinterContract,
-			account,
+		const txHash = await treatMinterContract.addTreatReferrer(
 			modelAddress,
-			refAddress
+			refAddress,
+			{from: account, value: 0}
 		);
 
 		return txHash;
-	}, [account, modelAddress, refAddress, treatNftMinterContract]);
+	}, [account, modelAddress, refAddress, treatMinterContract]);
 
 	return {onAddReferrerToMinter: handleAddReferrerToMinter};
 };

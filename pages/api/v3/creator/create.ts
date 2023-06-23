@@ -1,12 +1,12 @@
-import TreatNFTMinterABI from "packages/treat/lib/abi/treatnftminter.json";
 import {connectMongoDB} from "server/database/engine";
 import {returnWithError, returnWithSuccess} from "server/database/engine/utils";
 import {NextApiRequest, NextApiResponse} from "next";
 import {MongoModelCreator, MongoModelProfile} from "server/helpers/models";
 import {protectedAPIRoute} from "server/utils";
-import {ethers} from "ethers";
 import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
-/*
+import {ethers} from "ethers";
+import {ABI} from "@packages/treat/lib/abi";
+
 const TreatMinterContract = () => {
 	const provider = new ethers.providers.JsonRpcProvider(
 		process.env.NEXT_PUBLIC_RPC_NODE_URL,
@@ -18,12 +18,13 @@ const TreatMinterContract = () => {
 	);
 	const contract = new ethers.Contract(
 		contractAddresses.treatNFTMinter[56],
-		TreatNFTMinterABI,
+		ABI.treatMinter,
 		signer
 	);
 
 	return {contract, signer};
 };
+
 const approveWalletOnChain = async (creatorAddress: string) => {
 	const {contract, signer} = TreatMinterContract();
 	return contract.addPerformer(creatorAddress, {
@@ -31,7 +32,6 @@ const approveWalletOnChain = async (creatorAddress: string) => {
 		value: 0,
 	});
 };
-*/
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
 	await connectMongoDB();
@@ -85,7 +85,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 		);
 
 		// On-chain approval
-		// await approveWalletOnChain(session.address);
+		await approveWalletOnChain(session.address);
 
 		// Create new creator profile
 		const creatorProfile = new MongoModelCreator({
