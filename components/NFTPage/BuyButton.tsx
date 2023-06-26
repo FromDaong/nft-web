@@ -102,7 +102,7 @@ const BuyButton = ({nftData, postUtils, callback}) => {
 	);
 };
 
-const PurchaseButtonWrapper = (nft: BuyButtonProps, callback) => {
+const PurchaseButtonWrapper = (nft: BuyButtonProps) => {
 	const {address} = useAccount();
 	const [txHash, setTxHash] = useState("");
 	const [loading, setLoading] = useState(false);
@@ -180,7 +180,7 @@ const PurchaseButtonWrapper = (nft: BuyButtonProps, callback) => {
 	useEffect(() => {
 		if (data || isError) {
 			if (data) {
-				callback();
+				nft.callback();
 			}
 
 			setLoading(false);

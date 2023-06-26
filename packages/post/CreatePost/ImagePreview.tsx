@@ -68,7 +68,7 @@ export default function ImagePreviewWithEditor(props: {
 	}, [image]);
 
 	return (
-		<Container className="w-full h-full flex flex-col gap-4">
+		<Container className="flex flex-col w-full h-full gap-4">
 			<Container
 				css={{
 					backgroundImage: `url("${image}")`,
@@ -106,10 +106,10 @@ export default function ImagePreviewWithEditor(props: {
 					</Container>
 				)}
 			</Container>
-			<Container className="flex gap-4">
+			<Container className="flex max-w-full gap-4">
 				<Button
 					size={"sm"}
-					appearance={"surface"}
+					appearance={"action"}
 					onClick={openEditor}
 					type="button"
 				>
@@ -117,11 +117,11 @@ export default function ImagePreviewWithEditor(props: {
 				</Button>
 				<Button
 					size={"sm"}
-					appearance={"surface"}
+					appearance={"danger"}
 					onClick={() => props.reset()}
 					type="button"
 				>
-					<TrashIcon className="w-5 h-5" /> Discard changes
+					<TrashIcon className="w-5 h-5" /> Discard
 				</Button>
 			</Container>
 		</Container>

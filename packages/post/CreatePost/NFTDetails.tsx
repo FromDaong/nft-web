@@ -8,7 +8,7 @@ import {
 	Text,
 } from "@packages/shared/components/Typography/Text";
 import {Field, FieldArray, Form, Formik} from "formik";
-import {useState} from "react";
+import {useMemo, useState} from "react";
 import useSWR from "swr";
 import * as Yup from "yup";
 import ImagePreviewWithEditor from "./ImagePreview";
@@ -19,6 +19,9 @@ import Tiptap from "@components/ui/tiptap";
 import UploadMedia from "@packages/form/actions/UploadFiles";
 import TreatCore from "core/TreatCore";
 import axios from "axios";
+import {useUser} from "core/auth/useUser";
+import {Heading} from "@packages/shared/components/Typography/Headings";
+import UserAvatar from "core/auth/components/Avatar";
 
 export type MediaData = {
 	file: FilepondFile;
@@ -73,9 +76,9 @@ const AddNFTDetails = ({
 						<FieldArray name="nfts">
 							{({form}) => {
 								return (
-									<Container className="flex gap-8 flex-col-reverse xl:flex-row">
+									<Container className="flex flex-col-reverse gap-8 xl:flex-row">
 										<Container
-											className="flex flex-col gap-4 p-4 flex-1"
+											className="flex flex-col flex-1 gap-4 p-4"
 											css={{
 												background: "$elementOnSurface",
 												borderRadius: "16px",
@@ -208,7 +211,13 @@ const AddNFTDetails = ({
 												</Container>
 											</Container>
 										</Container>
-										<Container className="col-span-1 w-full xl:w-96 self-start flex flex-col gap-4">
+										<Container
+											css={{
+												background: "$surfaceOnSurface",
+												borderRadius: "16px",
+											}}
+											className="flex flex-col self-start w-full col-span-1 gap-4 p-2 shadow xl:w-96"
+										>
 											{mediaData && (
 												<ImagePreview
 													temp_file={mediaData}
@@ -253,8 +262,28 @@ function ImagePreview({
 	reset: () => void;
 	save: (image: File) => void;
 }) {
+	const {profile} = useUser();
+	const sellerProfile = useMemo(() => profile ?? {}, [profile]);
+
 	return (
 		<Container className="w-full">
+			<Container className="flex items-center gap-2 p-2">
+				<UserAvatar
+					profile_pic={sellerProfile.profile_pic}
+					size={32}
+					username={sellerProfile.username}
+				/>
+				<Container className={"flex flex-col"}>
+					<Text
+						css={{
+							color: "$textContrast",
+						}}
+					>
+						<ImportantText>{sellerProfile.display_name}</ImportantText>
+					</Text>
+					<SmallText>@{sellerProfile.username}</SmallText>
+				</Container>
+			</Container>
 			<ImagePreviewWithEditor
 				image={temp_file}
 				save={save}

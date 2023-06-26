@@ -23,10 +23,7 @@ const UploadMedia = ({setFile}) => {
 	}, [files]);
 
 	return (
-		<Container
-			className="flex flex-col w-full gap-8 p-8 shadow-sm"
-			css={{background: "$surfaceOnSurface", borderRadius: "16px"}}
-		>
+		<Container className="flex flex-col w-full gap-8 p-2">
 			<Container className="flex flex-col gap-4">
 				<Container className="flex flex-col gap-2">
 					<Heading size="xss">Add NFT media</Heading>

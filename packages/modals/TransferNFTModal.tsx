@@ -7,13 +7,11 @@ import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {
 	ImportantText,
 	MutedText,
-	SmallText,
 } from "@packages/shared/components/Typography/Text";
-import Spinner from "@packages/shared/icons/Spinner";
 import {useUser} from "core/auth/useUser";
 import {useRouter} from "next/router";
 import {useState} from "react";
-import {useSigner} from "wagmi";
+import {useSigner, useWaitForTransaction} from "wagmi";
 import GenericChainModal from "./GenericChainModal";
 import {Modal} from ".";
 import {toast} from "sonner";
@@ -26,21 +24,25 @@ export default function TransferNFTModal(props: {
 }) {
 	const router = useRouter();
 	const {data: signer} = useSigner();
-	const {profile} = useUser();
 	const [transferNFTPending, setTransferNFTPending] = useState(false);
 	const [transferNFTSuccess, setTransferNFTSuccess] = useState(false);
 	const [transferNFTError, setTransferNFTError] = useState(false);
+	const [txHash, setTxHash] = useState("");
+	const {isSuccess: isTransferNFTSuccess, isError: isTransferNFTError} =
+		useWaitForTransaction({
+			hash: txHash,
+		});
 
 	const [sendTo, setSendTo] = useState("");
 	const [amount, setAmount] = useState(1);
 
 	const {transferNFT} = useTransferNFTs(signer);
-	const gotoProfile = () => router.push(`/${profile.username}`);
 
 	const transferNFTAction = async () => {
 		setTransferNFTPending(true);
 
 		transferNFT(sendTo, Number(props.nft.id), amount)
+			.then((tx) => setTxHash(tx.hash))
 			.then(() => {
 				setTransferNFTPending(false);
 				setTransferNFTSuccess(true);
@@ -55,7 +57,9 @@ export default function TransferNFTModal(props: {
 	return (
 		<>
 			<GenericChainModal
-				isOpen={transferNFTPending}
+				isOpen={
+					transferNFTPending || (!isTransferNFTSuccess && !isTransferNFTError)
+				}
 				title={"Sending NFT to another wallet"}
 				subtitle={"Please wait, we are transferring your NFT."}
 				hideClose
@@ -67,16 +71,17 @@ export default function TransferNFTModal(props: {
 			/>
 
 			<GenericChainModal
-				isOpen={!transferNFTPending && transferNFTSuccess}
+				isOpen={!transferNFTPending && isTransferNFTSuccess}
 				title="NFT transferred"
 				subtitle={"Successfully transferred your NFT to another wallet."}
 				buttonLabel="Close"
 				onClose={router.reload}
 				action={router.reload}
+				hideClose
 			/>
 
 			<GenericChainModal
-				isOpen={!!transferNFTError}
+				isOpen={!!transferNFTError || isTransferNFTError}
 				title={"An error occurred"}
 				subtitle={
 					"An error occurred while transferring your NFT. Please try again."

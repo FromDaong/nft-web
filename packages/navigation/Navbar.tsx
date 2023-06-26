@@ -52,7 +52,7 @@ export default function Navbar() {
 		>
 			<Nav className="left-0 flex-col hidden w-full lg:flex">
 				<Container className="relative w-full h-full px-8 divide-y">
-					<div className="w-full relative z-30 flex items-center justify-between py-2 ">
+					<div className="relative z-30 flex items-center justify-between w-full py-2 ">
 						<Container className={"flex gap-4 items-center"}>
 							<Link href={isConnected ? "/" : "/"}>
 								<a className="relative w-8 h-8 text-3xl font-medium">
@@ -117,19 +117,7 @@ export default function Navbar() {
 											</Link>
 										)}
 										<WishlistTray />
-										<TransactionHistoryTray
-											isOpen={isTransactionsTrayOpen}
-											onClose={onCloseTransactionsTray}
-										/>
-										<Button
-											appearance={"subtle"}
-											onClick={onOpenTransactionsTray}
-											css={{
-												padding: "0.5rem",
-											}}
-										>
-											<History className={"w-5 h-5"} />
-										</Button>
+
 										<ManageUserDropdown />
 									</Container>
 								) : (

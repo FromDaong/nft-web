@@ -19,7 +19,7 @@ export default function MyUserProfile(props: {
 	const scrollerRef = useRef(null);
 
 	const {profile} = useUser();
-	const user_profile_data = JSON.parse(props.data);
+	const user_profile_data = JSON.parse(props.data ?? {});
 
 	const {
 		isLoading,

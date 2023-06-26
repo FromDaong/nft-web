@@ -90,7 +90,7 @@ const ResaleListingBuyButton = (order: {
 	useEffect(() => {
 		if (data && isSuccess) {
 			setPurchaseNFTPending(false);
-			order.callback;
+			order.callback();
 		} else if (isError) {
 			setPurchaseNFTPending(false);
 			setPurchaseNFTError("Transaction failed");
@@ -107,6 +107,9 @@ const ResaleListingBuyButton = (order: {
 	}, [purchaseNFTError]);
 
 	const isProcessing = purchaseNFTPending || isLoading || isWaitingForTx;
+
+	console.log({isError, data, isSuccess, isWaitingForTx, tx});
+
 	if (!address) return <ConnectWalletButton />;
 
 	return (
