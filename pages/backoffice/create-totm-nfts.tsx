@@ -10,7 +10,6 @@ import async from "async";
 import axios from "axios";
 import {useDropzone} from "react-dropzone";
 import {useEffect} from "react";
-import {useMoralis} from "react-moralis";
 import {useRouter} from "next/router";
 import useSWR from "swr";
 import {useState} from "react";
@@ -18,6 +17,7 @@ import useCreateBulkTotwNFTs from "@packages/chain/hooks/useCreateBulkTotwNFTs";
 import {BlankModal} from "@components/lankModal";
 import CreatingNFTItem from "@components/CreatingNFTItem";
 import Spinner from "@packages/shared/icons/Spinner";
+import { useAccount } from "wagmi";
 
 const CreateNFT = () => {
 	const [ipfsFiles, setIpfsFiles] = useState([]);
@@ -306,9 +306,9 @@ const CreateNFT = () => {
 };
 
 const CreateNFTWrapper = (props) => {
-	const {isAuthenticated} = useMoralis();
+	const {isConnected} = useAccount();
 
-	if (!isAuthenticated) {
+	if (!isConnected) {
 		return <Spinner />;
 	} else {
 		return <CreateNFT {...props} />;
