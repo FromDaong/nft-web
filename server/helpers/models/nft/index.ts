@@ -117,6 +117,11 @@ const NFTSchema = new mongoose.Schema(
 			required: false,
 			default: false,
 		},
+		isDisabled: {
+			type: Boolean,
+			required: false,
+			default: false,
+		},
 	},
 	{
 		timestamps: {createdAt: true, updatedAt: false},

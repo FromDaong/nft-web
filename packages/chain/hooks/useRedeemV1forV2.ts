@@ -1,21 +1,15 @@
-import {getTreatTradeInContract, redeemV1forV2} from "@packages/chain/utils";
-
 import {useCallback} from "react";
 import {useAccount} from "wagmi";
-import useTreat from "./useTreat";
+import {useContracts} from "@packages/post/hooks";
 
 const useRedeemV1forV2 = (ids: Array<string>, amounts: Array<string>) => {
 	const {address: account} = useAccount();
-	const treat = useTreat();
-	const treatTradeInContract = getTreatTradeInContract(treat);
+	const {treatTradeInContract} = useContracts();
 
 	const handleRedeemV1forV2 = useCallback(async () => {
-		const txHash = await redeemV1forV2(
-			treatTradeInContract,
-			account,
-			ids,
-			amounts
-		);
+		const txHash = await treatTradeInContract.tradeInMultiple(ids, amounts, {
+			from: account,
+		});
 
 		return txHash;
 	}, [account, ids, amounts, treatTradeInContract]);

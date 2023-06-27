@@ -459,6 +459,18 @@ export const useContracts = () => {
 		signerOrProvider: signer,
 	});
 
+	const treatTradeInContract = useContract({
+		addressOrName: contractAddresses.treatTradeIn[56],
+		contractInterface: ABI.treatTradeIn,
+		signerOrProvider: signer,
+	});
+
+	const treatV1NFTContract = useContract({
+		addressOrName: contractAddresses.treatNFTMinterV1[56],
+		contractInterface: ABI.TreatNFTMinterV1Abi,
+		signerOrProvider: signer,
+	});
+
 	return {
 		treatMarketplaceContract,
 		treatSubscriptionsContract,
@@ -469,6 +481,8 @@ export const useContracts = () => {
 		treatMarketplaceReaderContract,
 		totmMartContract,
 		minterPermissionHelperContract,
+		treatTradeInContract,
+		treatV1NFTContract,
 		signer,
 	};
 };

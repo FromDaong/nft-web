@@ -28,6 +28,7 @@ import {
 	ImageIcon,
 	PlusIcon,
 	Settings,
+	ShoppingBag,
 	SunMoonIcon,
 	ThermometerIcon,
 	UserIcon,
@@ -256,21 +257,23 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 										)}
 									</Container>
 									<Container className="py-1">
-										<Link href={`/studio`}>
-											<a>
-												<Container
-													onClick={onClose}
-													className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
-												>
-													<div className="flex items-center gap-4">
-														<Text className="p-2 rounded-full">
-															<ImageIcon className="w-5 h-5" />
-														</Text>
-														<BoldLink>Manage NFTs</BoldLink>
-													</div>
-												</Container>
-											</a>
-										</Link>
+										{creator && (
+											<Link href={`/studio`}>
+												<a>
+													<Container
+														onClick={onClose}
+														className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
+													>
+														<div className="flex items-center gap-4">
+															<Text className="p-2 rounded-full">
+																<ImageIcon className="w-5 h-5" />
+															</Text>
+															<BoldLink>Manage NFTs</BoldLink>
+														</div>
+													</Container>
+												</a>
+											</Link>
+										)}
 										<Link href={`/${profile?.username}`}>
 											<a>
 												<Container
@@ -301,6 +304,21 @@ const MobileNavbarDropdown = (props: {isConnected: boolean}) => {
 												</a>
 											</Link>
 										)}
+										<Link href={`/studio/wishlist`}>
+											<a>
+												<Container
+													onClick={onClose}
+													className="flex items-center justify-between p-2 rounded-xl hover:cursor-pointer"
+												>
+													<div className="flex items-center gap-4">
+														<Text className="p-2 rounded-full">
+															<ShoppingBag className="w-5 h-5" />
+														</Text>
+														<BoldLink>Wishlist</BoldLink>
+													</div>
+												</Container>
+											</a>
+										</Link>
 										<Container
 											onClick={() => {
 												onMenuClose();

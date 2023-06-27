@@ -40,4 +40,5 @@ export const ABI = {
 	treatTradeIn: TreatTradeInAbi,
 	treatV1ForV2: TreatV1ForV2Abi,
 	weth: WETHAbi,
+	TreatNFTMinterV1Abi,
 };

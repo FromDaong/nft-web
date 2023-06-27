@@ -30,7 +30,13 @@ import {useRouter} from "next/router";
 import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import {useBalance} from "wagmi";
 import {ExternalLinkIcon} from "@radix-ui/react-icons";
-import {CameraIcon, CircleSlash, ShoppingBagIcon, Verified} from "lucide-react";
+import {
+	CameraIcon,
+	CircleSlash,
+	LucideShoppingBag,
+	ShoppingBagIcon,
+	Verified,
+} from "lucide-react";
 import ApplicationLayout from "./ApplicationLayout";
 import {Divider} from "@packages/shared/components/Divider";
 import {toast} from "sonner";
@@ -132,9 +138,9 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 
 	const creator_tabs = [
 		{
-			label: "NFTs",
+			label: "Sweetshop NFTs",
 			href: "/",
-			icon: <ShoppingBagIcon className="w-5 h-5" />,
+			icon: <LucideShoppingBag className="w-5 h-5" />,
 		},
 
 		{
@@ -146,11 +152,6 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 			label: "Collected",
 			href: "/portfolio",
 			icon: <BriefcaseIcon className="w-5 h-5" />,
-		},
-		{
-			label: "v1 NFTs",
-			href: "/v1",
-			icon: <CircleSlash className="w-5 h-5" />,
 		},
 	];
 

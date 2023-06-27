@@ -21,7 +21,7 @@ function SweetshopNFT(props: TritPostProps) {
 		>
 			<a>
 				<NFTCard _id={props._id}>
-					<Container className="relative w-full overflow-hidden aspect-[11/16]">
+					<Container className="relative w-full overflow-hidden aspect-[11/16] group">
 						<NFTCard.Media
 							isProtected={isProtected}
 							caption={props.text}
@@ -29,12 +29,12 @@ function SweetshopNFT(props: TritPostProps) {
 						/>
 
 						<Container
-							className="absolute top-0 left-0 flex flex-col justify-between w-full p-2 h-full rounded-lg"
+							className="absolute top-0 left-0 flex flex-col justify-between w-full h-full p-2 rounded-lg"
 							css={{
 								zIndex: 10,
 							}}
 						>
-							<Container className="flex flex-col flex-1 p-2 items-start justify-between">
+							<Container className="flex flex-col items-start justify-between flex-1 p-2">
 								<NFTCard.Creator
 									avatar={props.creator.avatar}
 									username={props.creator.username}

@@ -13,24 +13,36 @@ import {
 	SmallText,
 	Text,
 } from "@packages/shared/components/Typography/Text";
-import {ArrowRightIcon, StackIcon} from "@radix-ui/react-icons";
+import {StackIcon} from "@radix-ui/react-icons";
 import {apiEndpoint, timeFromNow} from "@utils/index";
 import axios from "axios";
 import TreatCore from "core/TreatCore";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import {useFormik} from "formik";
-import {Edit, ExternalLink, EyeOff} from "lucide-react";
+import {
+	AlertCircleIcon,
+	BellIcon,
+	Edit,
+	ExternalLink,
+	EyeOff,
+	PlusIcon,
+} from "lucide-react";
 import Link from "next/link";
-import {useMemo} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {Provider, gql, useQuery} from "urql";
-import {useAccount} from "wagmi";
+import {useAccount, useWaitForTransaction} from "wagmi";
 import Web3 from "web3";
 import {RadioGroup} from "@headlessui/react";
 import {Globe} from "lucide-react";
 import * as yup from "yup";
 import {toast} from "sonner";
 import Spinner from "@packages/shared/icons/Spinner";
+import {LightningBoltIcon} from "@heroicons/react/outline";
+import {Verified} from "lucide-react";
+import useRedeemV1forV2 from "@packages/chain/hooks/useRedeemV1forV2";
+import useGetNftV1Balance from "@packages/chain/hooks/useGetNftV1Balance";
+import {useRouter} from "next/router";
 
 export default function TreatCreatorStudio() {
 	const {isLoading: isLoadingAccountSummary, data: accountSummary} =
@@ -40,89 +52,43 @@ export default function TreatCreatorStudio() {
 		<ApplicationLayout>
 			<ApplicationFrame>
 				<Provider value={treatGraphClient}>
-					<Container className="py-8 flex flex-col gap-4 mt-8">
+					<Container className="flex gap-4 py-12 mt-8">
 						<Container>
-							<Heading size={"sm"}>Treat Creator Studio</Heading>
-							<Text
-								className="mt-2"
-								css={{fontSize: "1.2rem"}}
-							>
-								Your studio is where you can create and manage your NFTs.
+							<Heading size={"md"}>Creator Studio</Heading>
+							<Text css={{fontSize: "large"}}>
+								Manage your NFTs and view analytics.
 							</Text>
 						</Container>
 					</Container>
-					<Container className="grid grid-cols-1 lg:grid-cols-2 gap-8 py-8">
-						<Container
-							className="grid grid-cols-1 md:grid-cols-2 col-span-1 p-8 shadow-sm border rounded-xl"
-							css={{
-								background: "$surfaceOnSurface",
-								borderColor: "$border",
-								backgroundRepeat: "no-repeat",
-								backgroundSize: "contain",
-								backgroundPosition: "bottom right",
-							}}
-						>
-							<Container className="flex flex-col col-span-1 gap-8">
-								<Container className="flex items-center gap-2">
-									<Heading size={"xss"}>
-										<StackIcon className="w-8 h-8" />
-									</Heading>
-									<Heading size={"xss"}>Create</Heading>
-								</Container>
-								<Heading
-									size={"md"}
-									className={"lg:max-w-[320px]"}
+					<Container className="flex flex-col justify-between w-full gap-8 lg:flex-row-reverse">
+						<Container className="w-full lg:w-96">
+							<Container className="flex flex-col gap-8">
+								<ConvertV1ToV2NFTCard tokens={accountSummary?.tokens ?? []} />
+								<CreateNFTCard />
+								<Container
+									className="flex flex-col col-span-1 gap-8 p-8 rounded-xl"
+									css={{
+										background: "$surfaceOnSurface",
+										borderColor: "$border",
+									}}
 								>
-									Sell your NFTs on the sweetshop.
-								</Heading>
+									<Heading size={"xs"}>Analytics</Heading>
 
-								<Container className="mt-auto">
-									<Link href={"/create"}>
-										<a>
-											<Button css={{borderRadius: "9999px"}}>
-												Create a new NFT <ArrowRightIcon />
-											</Button>
-										</a>
-									</Link>
+									<AccountSummary
+										data={accountSummary}
+										isLoading={isLoadingAccountSummary}
+									/>
 								</Container>
 							</Container>
-							<Container></Container>
 						</Container>
-						<Container
-							className="flex flex-col col-span-1 gap-8 p-8 rounded-xl border"
-							css={{background: "$surfaceOnSurface", borderColor: "$border"}}
-						>
-							<Heading size={"xs"}>Analytics</Heading>
+						<Container className="flex flex-col flex-1 gap-8">
+							<SubscriptionNFTsAlert />
 
-							<AccountSummary
-								data={accountSummary}
+							<SweetshopNFTs
 								isLoading={isLoadingAccountSummary}
+								tokens={accountSummary?.tokens ?? []}
+								title={"Sweetshop NFTs"}
 							/>
-						</Container>
-						<Container
-							className="flex flex-col col-span-1 lg:col-span-2 rounded-xl border"
-							css={{background: "$surfaceOnSurface", borderColor: "$border"}}
-						>
-							<Container
-								className={"flex flex-col gap-1 justify-between p-8 pb-4"}
-							>
-								<Heading size={"xs"}>Manage NFTs</Heading>
-								<Text>Update your NFTs, view sales, and more.</Text>
-							</Container>
-							<Container className={"flex flex-col gap-4 p-4"}>
-								<MyNFTs
-									totalSales={
-										(accountSummary?.tokens ?? []).map(
-											(t) => t.totalSaleValue
-										) ?? []
-									}
-									nftIds={
-										(accountSummary?.tokens ?? []).map((t) => t.identifier) ??
-										[]
-									}
-									isLoadingAccountSummary={isLoadingAccountSummary}
-								/>
-							</Container>
 						</Container>
 					</Container>
 				</Provider>
@@ -131,12 +97,40 @@ export default function TreatCreatorStudio() {
 	);
 }
 
+const SweetshopNFTs = ({tokens, isLoading, title}) => {
+	return (
+		<Container
+			className="flex flex-col py-2 overflow-hidden shadow rounded-xl"
+			css={{background: "$surfaceOnSurface", borderColor: "$border"}}
+		>
+			<Container className={"flex gap-1 justify-between items-center p-2"}>
+				<Heading size={"xs"}>{title}</Heading>
+			</Container>
+			<Divider />
+			<Container className={"flex flex-col"}>
+				<NFTList
+					totalSales={tokens.map((t) => t.totalSaleValue) ?? []}
+					nftIds={
+						tokens
+							.filter(
+								(t) =>
+									t.registry.id === "0x36f8f51f65fe200311f709b797baf4e193dd0b0d"
+							)
+							.map((t) => t.identifier) ?? []
+					}
+					isLoadingAccountSummary={isLoading}
+				/>
+			</Container>
+		</Container>
+	);
+};
+
 async function fetchNFT(id: number): Promise<any> {
 	const response = await axios.get<any>(`${apiEndpoint}/nft/${id}`);
 	return response.data;
 }
 
-const MyNFTs = ({
+const NFTList = ({
 	nftIds,
 	totalSales,
 	isLoadingAccountSummary,
@@ -155,9 +149,9 @@ const MyNFTs = ({
 	const nfts = nftQueries.map((query) => query.data).filter(Boolean);
 
 	return (
-		<Container className="flex flex-col gap-1">
+		<Container className="flex flex-col">
 			{isLoadingAccountSummary && (
-				<Container className="w-full py-12 flex justify-center">
+				<Container className="flex justify-center w-full py-12">
 					<Spinner />
 				</Container>
 			)}
@@ -187,7 +181,7 @@ const NFTCard = ({nft, totalSale}) => {
 					backgroundColor: "$elementOnSurface",
 				},
 			}}
-			className="flex flex-col md:flex-row flex-wrap gap-4 justify-between p-4 rounded-xl"
+			className="flex flex-col flex-wrap justify-between gap-4 p-2 md:flex-row"
 		>
 			{isOpen && (
 				<ManageNFTModal
@@ -198,7 +192,7 @@ const NFTCard = ({nft, totalSale}) => {
 			)}
 			<Container className="flex gap-4">
 				<Container
-					className="w-16 h-16 rounded-xl"
+					className="w-12 rounded h-14"
 					css={{
 						backgroundColor: "$elementOnSurface",
 						background: `url("/api/v3/image/nft/${nft._id}/thumbnail")`,
@@ -218,7 +212,7 @@ const NFTCard = ({nft, totalSale}) => {
 				</Text>
 				<Text>At {nft.price} BNB per NFT</Text>
 			</Container>
-			<Container className="flex gap-4 items-center">
+			<Container className="flex items-center gap-4">
 				<Link href={`/studio/nfts/${nft._id}`}>
 					<a>
 						<Button
@@ -332,9 +326,9 @@ const ManageNFTModal = ({isOpen, onClose, nft}) => {
 			noTitle
 		>
 			<form onSubmit={formik.handleSubmit}>
-				<Container className="flex flex-col items-center gap-4 w-full">
+				<Container className="flex flex-col items-center w-full gap-4">
 					<Container className={"flex gap-8 w-full justify-center"}>
-						<Container className="w-64 rounded-xl shadow-xl aspect-square overflow-hidden">
+						<Container className="w-64 overflow-hidden shadow-xl rounded-xl aspect-square">
 							<Container
 								className={`w-full h-full ${
 									formik.values.protected ? "blur-xl" : ""
@@ -357,7 +351,7 @@ const ManageNFTModal = ({isOpen, onClose, nft}) => {
 									onChange={(selected) =>
 										formik.setFieldValue("protected", selected)
 									}
-									className="flex items-center w-full max-w-full gap-2 py-2 overflow-x-auto flex-nowrap px-2 scroll-smooth whitespace-wrap"
+									className="flex items-center w-full max-w-full gap-2 px-2 py-2 overflow-x-auto flex-nowrap scroll-smooth whitespace-wrap"
 									defaultValue={formik.values.protected}
 								>
 									<RadioGroup.Option
@@ -390,7 +384,7 @@ const ManageNFTModal = ({isOpen, onClose, nft}) => {
 							<Heading size={"xss"}>{nft.price} BNB</Heading>
 						</Container>
 					</Container>
-					<Container className="flex flex-col gap-8 w-full">
+					<Container className="flex flex-col w-full gap-8">
 						<Container className="flex flex-col gap-1">
 							<label htmlFor={"name"}>
 								<Text>
@@ -424,7 +418,7 @@ const ManageNFTModal = ({isOpen, onClose, nft}) => {
 							/>
 						</Container>
 					</Container>
-					<Container className="flex justify-end gap-4 w-full mt-4">
+					<Container className="flex justify-end w-full gap-4 mt-4">
 						<Button
 							appearance={"subtle"}
 							type={"button"}
@@ -471,6 +465,9 @@ const useAccountSummary = () => {
 					identifier
 					totalSales
 					totalSaleValue
+					registry {
+						id
+					}
 				}
 			}
 		}
@@ -578,5 +575,197 @@ function AccountSummary({data, isLoading}) {
 				</table>
 			</Container>
 		</>
+	);
+}
+
+function CreateNFTCard() {
+	return (
+		<Container
+			className="grid grid-cols-1 col-span-1 p-8 rounded-xl"
+			css={{
+				backgroundColor: "$surfaceOnSurface",
+				backgroundRepeat: "no-repeat",
+				backgroundSize: "cover",
+				backgroundPosition: "bottom right",
+				backgroundImage: "url('/assets/svg/create-background.svg')",
+			}}
+		>
+			<Container className="flex flex-col col-span-1 gap-8">
+				<Container className="flex flex-col gap-4">
+					<Container className="flex items-center gap-2">
+						<Text>
+							<StackIcon className="w-5 h-5" />
+						</Text>
+						<Text>
+							<ImportantText>Create</ImportantText>
+						</Text>
+					</Container>
+					<Container>
+						<Heading size={"xs"}>Mint a new NFT</Heading>
+						<Text>You can create NFTs and sell them on the sweetshop.</Text>
+					</Container>
+				</Container>
+
+				<Container className="mt-auto">
+					<Link href={"/create"}>
+						<a>
+							<Button
+								appearance={"action"}
+								css={{
+									borderRadius: "9999px",
+								}}
+							>
+								<PlusIcon className="w-5 h-5" />
+								Create a new NFT
+							</Button>
+						</a>
+					</Link>
+				</Container>
+			</Container>
+		</Container>
+	);
+}
+
+function ConvertV1ToV2NFTCard({tokens}) {
+	const router = useRouter();
+	const {
+		isOpen: showPendingModal,
+		onOpen: openPendingModal,
+		onClose: closePendingModal,
+	} = useDisclosure();
+
+	const {
+		isOpen: showCompleteModal,
+		onOpen: openCompleteModal,
+		onClose: closeCompleteModal,
+	} = useDisclosure();
+
+	const [txHash, setTxHash] = useState("");
+	const {isLoading, isSuccess, isError} = useWaitForTransaction({hash: txHash});
+
+	const v1NFTs = tokens.filter(
+		(t) => t.registry.id === "0xde39d0b9a93dcd541c24e80c8361f362aab0f213"
+	);
+	const ids = v1NFTs.map((n) => n.identifier);
+	const amounts = v1NFTs.map((n) => n.totalSupply);
+
+	const {onRedeemV1forV2} = useRedeemV1forV2(ids, amounts);
+
+	const tradeInClick = () => {
+		openPendingModal();
+		onRedeemV1forV2().then((s) => {
+			// closePendingModal();
+			setTxHash(s);
+		});
+	};
+
+	useEffect(() => {
+		if (isSuccess) {
+			closePendingModal();
+			openCompleteModal();
+		}
+	}, [isLoading, isSuccess, isError]);
+
+	if (!ids.length) return null;
+
+	return (
+		<>
+			<GenericChainModal
+				isOpen={showPendingModal}
+				onClose={() => null}
+				title="Trade in your Treat NFTs"
+				subtitle="Please confirm the transaction in your wallet and wait..."
+				hideClose
+				noButton
+				loading
+			/>
+			<GenericChainModal
+				isOpen={showCompleteModal}
+				onClose={router.reload}
+				title="Successfull trade in"
+				subtitle="You have successfully traded in your Treat NFTs for v2 NFTs."
+				noButton
+			/>
+			<Container
+				className="grid grid-cols-1 col-span-1 p-8 rounded-xl"
+				css={{
+					backgroundColor: "$surfaceOnSurface",
+					backgroundRepeat: "no-repeat",
+					backgroundSize: "cover",
+					backgroundPosition: "bottom right",
+					backgroundImage: "url('/assets/svg/create-background.svg')",
+				}}
+			>
+				<Container className="flex flex-col col-span-1 gap-8">
+					<Container className="flex flex-col gap-4">
+						<Container className="flex items-center gap-2">
+							<Text>
+								<LightningBoltIcon className="w-5 h-5" />
+							</Text>
+							<Text>
+								<ImportantText>Convert</ImportantText>
+							</Text>
+						</Container>
+						<Container>
+							<Heading size={"xs"}>Trade in legacy NFTs</Heading>
+							<Text>
+								In order to continue using Treat DAO, and all of our great new
+								features including a brand new resale marketplace, you must
+								trade in your v1 Treat NFTs for v2 NFTs.
+							</Text>
+						</Container>
+					</Container>
+
+					<Container className="mt-auto">
+						<Button
+							appearance={"action"}
+							css={{
+								borderRadius: "9999px",
+							}}
+							onClick={tradeInClick}
+						>
+							<LightningBoltIcon className="w-5 h-5" />
+							Trade in my Treat NFTs
+						</Button>
+					</Container>
+				</Container>
+			</Container>
+		</>
+	);
+}
+
+function SubscriptionNFTsAlert() {
+	return (
+		<Container
+			className="grid grid-cols-1 col-span-1 p-8 rounded-xl"
+			css={{
+				backgroundColor: "$surfaceOnSurface",
+				backgroundRepeat: "no-repeat",
+				backgroundSize: "cover",
+				backgroundPosition: "bottom right",
+				backgroundImage: "url('/assets/svg/create-background.svg')",
+			}}
+		>
+			<Container className="flex flex-col col-span-1 gap-8">
+				<Container className="flex flex-col gap-4">
+					<Container className="flex items-center gap-2">
+						<Text>
+							<Verified className="w-5 h-5" />
+						</Text>
+						<Text>
+							<ImportantText>Subscriptions</ImportantText>
+						</Text>
+					</Container>
+					<Container className="flex flex-col gap-2">
+						<Heading size={"xs"}>We are making subscriptions better</Heading>
+						<Text>
+							We are currently working on a new and improved subscriptions
+							system that will allow Treat DAO to be more powerful and exciting
+							than ever! Stay tuned for updates.
+						</Text>
+					</Container>
+				</Container>
+			</Container>
+		</Container>
 	);
 }

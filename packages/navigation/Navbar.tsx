@@ -14,9 +14,7 @@ import Spinner from "@packages/shared/icons/Spinner";
 import {useApplicationTheme} from "@packages/theme/provider";
 import ManageUserDropdown from "./components/NavbarUser";
 import {useDisclosure} from "@packages/hooks";
-import WishlistTray from "@components/Notifications/WishlistTray";
-import TransactionHistoryTray from "@components/Notifications/TransactionHistoryTray";
-import {History, PlusIcon} from "lucide-react";
+import {PlusIcon, ShoppingBag} from "lucide-react";
 import SearchModal from "./search";
 import {
 	DropdownMenuContent,
@@ -116,7 +114,16 @@ export default function Navbar() {
 												</a>
 											</Link>
 										)}
-										<WishlistTray />
+										<Link href={"/studio/wishlist"}>
+											<a>
+												<Button
+													outlined
+													appearance={"surface"}
+												>
+													<ShoppingBag className="w-5 h-5" />
+												</Button>
+											</a>
+										</Link>
 
 										<ManageUserDropdown />
 									</Container>
