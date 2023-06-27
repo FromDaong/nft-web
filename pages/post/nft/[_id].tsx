@@ -123,7 +123,6 @@ function NFTPreview({nft, postUtils}) {
 		<>
 			<PurchasedNFTPreview
 				isOpen={isOpen}
-				onClose={onClose}
 				nft={nft}
 			/>
 			<Container className="w-full xl:w-1/2 flex-shrink-0 lg:h-[90vh] h-[calc(80vh-64px)] flex justify-center xl:sticky top-2">
