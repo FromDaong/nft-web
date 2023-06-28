@@ -1,239 +1,228 @@
+import BackofficeNavigation from "@components/BackofficeNavigation";
+import AdminDashboardWrapper from "@components/BackofficeNavigation/BackofficeWrapper";
 import Hero from "@components/Hero";
-import {GiftIcon} from "@heroicons/react/outline";
+import {LogoutIcon} from "@heroicons/react/outline";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
-import UserAvatar from "core/auth/components/Avatar";
+import {StackIcon} from "@radix-ui/react-icons";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
-import {PlusIcon} from "lucide-react";
+import {ArrowRight, CircleSlashIcon, Hourglass, PlusIcon} from "lucide-react";
 
 import Link from "next/link";
-import Spinner from "react-bootstrap/Spinner";
-import useSWR from "swr";
-import {useAccount} from "wagmi";
-
-const AdminDashboardWrapper = () => {
-	const {isConnected} = useAccount();
-
-	const {data} = useSWR(`/api/admin/is-authed`);
-
-	if (!isConnected || !data) {
-		return (
-			<div
-				style={{
-					position: "fixed",
-					width: "100%",
-					height: "100%",
-					display: "flex",
-					top: 0,
-					left: 0,
-					justifyContent: "center",
-					flexDirection: "column",
-					alignItems: "center",
-				}}
-			>
-				<Heading
-					size={"xss"}
-					style={{
-						borderRadius: 5,
-						padding: 10,
-					}}
-				>
-					Please make sure your wallet on the Binance Smart Chain is connected.
-				</Heading>
-				<Spinner
-					animation="border"
-					role="status"
-					style={{marginTop: 5}}
-				>
-					<span className="sr-only">Loading...</span>
-				</Spinner>
-			</div>
-		);
-	} else {
-		if (data.failed)
-			return (
-				<Hero
-					title={"You are not authenticated."}
-					subtitle={"You are not permitted to use this dashboard"}
-					additionalContent={
-						<Link href="/admin-dashboard/login">
-							<Button className="bg-primary text-white font-bold">
-								<b>{"Login to Panel"}</b>
-							</Button>
-						</Link>
-					}
-				/>
-			);
-		return <AdminDashboard />;
-	}
-};
 
 const AdminDashboard = () => {
-	const {data} = useSWR(`/api/admin/get-pending`);
-
 	return (
 		<ApplicationLayout>
 			<ApplicationFrame>
-				<div className="py-8 flex flex-col gap-8">
-					<Hero
-						title={"Admin Dashboard"}
-						subtitle={`Approve and reject creator application requests here. Click an application for more info`}
-						additionalContent={
-							<Container className="flex gap-4 flex-wrap">
-								<Link href="/backoffice/create-totm-nfts">
-									<a>
-										<Button>
-											<PlusIcon className="h-5 w-5" />
-											Create TOTM NFTs
-										</Button>
-									</a>
-								</Link>
-								<Link href="/backoffice/create-melon-nfts">
-									<a>
-										<Button appearance={"success"}>
-											<GiftIcon className="h-5 w-5" />
-											Create $Melon NFTs{" "}
-										</Button>
-									</a>
-								</Link>
-								<Link href="/api/admin/logout">
-									<a>
-										<Button appearance={"danger"}>Logout</Button>
-									</a>
-								</Link>
+				<AdminDashboardWrapper>
+					<div className="py-8 flex flex-col gap-8">
+						<Hero
+							title={"Admin Dashboard"}
+							subtitle={`
+							Manage creators and create new NFT collections as admin.
+						`}
+							additionalContent={
+								<Container className="flex gap-4 flex-wrap">
+									<Link href="/api/admin/logout">
+										<a>
+											<Button appearance={"danger"}>
+												<LogoutIcon className="h-5 w-5" />
+												Logout
+											</Button>
+										</a>
+									</Link>
+								</Container>
+							}
+						/>
+
+						<BackofficeNavigation />
+
+						<Container className="flex flex-col gap-8">
+							<CreateTOTMNFTsCard />
+							<CreateMelonNFTsCard />
+							<Container className="flex flex-col gap-4 mt-4">
+								<Heading
+									size={"xs"}
+									className="mb-3"
+								>
+									Quick navigation
+								</Heading>
 							</Container>
-						}
-					/>
-
-					<div className="mt-2 white-tp-container">
-						<Heading
-							size={"xs"}
-							className="mb-3"
-						>
-							Pending ⌛
-						</Heading>
-						<Container className="flex flex-col gap-1">
-							{data &&
-								data.pendingModels.map((m) => (
-									<Link
-										key={m.username}
-										href={`/backoffice/${m.username}`}
-									>
-										<a>
-											<Container
-												css={{
-													"&:hover": {
-														backgroundColor: "$surfaceOnSurface",
-													},
-												}}
-												className="flex p-4 rounded-xl items-center justify-between"
-											>
-												<Container className="align-center justify-content-center">
-													<UserAvatar
-														profile_pic={m.profile?.profile_pic}
-														username={m.username}
-														size={20}
-													/>
-												</Container>
-												<Text>
-													<ImportantText>{m.username}</ImportantText>
-												</Text>
-												<Text>{m.address}</Text>
-											</Container>
-										</a>
-									</Link>
-								))}
+							<Container className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+								<BrowsePendingCreators />
+								<BrowseRejectedCreators />
+							</Container>
 						</Container>
 					</div>
-
-					<div className="mt-4 white-tp-container">
-						<Heading
-							size={"xs"}
-							className="mb-3"
-						>
-							Approved ✅
-						</Heading>
-						<Container className="flex flex-col gap-1">
-							{data &&
-								data.acceptedModels.map((m) => (
-									<Link
-										key={m.username}
-										href={`/backoffice/${m.username}`}
-									>
-										<a>
-											<Container
-												css={{
-													"&:hover": {
-														backgroundColor: "$surfaceOnSurface",
-													},
-												}}
-												className="flex p-4 rounded-xl items-center justify-between"
-											>
-												<Container className="align-center justify-content-center">
-													<UserAvatar
-														profile_pic={m.profile?.profile_pic}
-														username={m.username}
-														size={20}
-													/>
-												</Container>
-												<Text>
-													<ImportantText>{m.username}</ImportantText>
-												</Text>
-												<Text>{m.address}</Text>
-											</Container>
-										</a>
-									</Link>
-								))}
-						</Container>
-					</div>
-					<div className="mt-4 white-tp-container">
-						<Heading
-							size={"xs"}
-							className="mb-3"
-						>
-							Rejected ❌
-						</Heading>
-
-						<Container className="flex flex-col gap-1">
-							{data &&
-								data.rejectedModels.map((m) => (
-									<Link
-										key={m.username}
-										href={`/backoffice/${m.username}`}
-									>
-										<a>
-											<Container
-												css={{
-													"&:hover": {
-														backgroundColor: "$surfaceOnSurface",
-													},
-												}}
-												className="flex p-4 rounded-xl items-center justify-between"
-											>
-												<Container className="align-center justify-content-center">
-													<UserAvatar
-														profile_pic={m.profile?.profile_pic}
-														username={m.username}
-														size={20}
-													/>
-												</Container>
-												<Text>
-													<ImportantText>{m.username}</ImportantText>
-												</Text>
-												<Text>{m.address}</Text>
-											</Container>
-										</a>
-									</Link>
-								))}
-						</Container>
-					</div>
-				</div>
+				</AdminDashboardWrapper>
 			</ApplicationFrame>
 		</ApplicationLayout>
 	);
 };
 
-export default AdminDashboardWrapper;
+function CreateTOTMNFTsCard() {
+	return (
+		<Container
+			className="grid grid-cols-1 col-span-1 p-8 rounded-xl"
+			css={{
+				backgroundColor: "$accentBg",
+				backgroundRepeat: "no-repeat",
+				backgroundSize: "cover",
+				backgroundPosition: "bottom right",
+				backgroundImage: "url('/assets/svg/create-background.svg')",
+			}}
+		>
+			<Container className="flex flex-col col-span-1 gap-8">
+				<Container className="flex flex-col gap-4">
+					<Container className="flex items-center gap-2">
+						<Text>
+							<StackIcon className="w-5 h-5" />
+						</Text>
+						<Text>
+							<ImportantText>Create</ImportantText>
+						</Text>
+					</Container>
+					<Container>
+						<Heading size={"xs"}>Launch new Treat of the Month NFTs</Heading>
+						<Text>Create a new Treat of The Month NFT Collection</Text>
+					</Container>
+				</Container>
+
+				<Container className="mt-auto">
+					<Link href={"/backoffice/create-totm-nfts"}>
+						<a>
+							<Button
+								appearance={"accent"}
+								css={{
+									borderRadius: "9999px",
+								}}
+							>
+								<PlusIcon className="w-5 h-5" />
+								Launch TOTM collection
+							</Button>
+						</a>
+					</Link>
+				</Container>
+			</Container>
+		</Container>
+	);
+}
+
+function CreateMelonNFTsCard() {
+	return (
+		<Container
+			className="grid grid-cols-1 col-span-1 p-8 rounded-xl"
+			css={{
+				backgroundColor: "$mint2",
+				backgroundRepeat: "no-repeat",
+				backgroundSize: "cover",
+				backgroundPosition: "bottom right",
+				backgroundImage: "url('/assets/svg/create-background.svg')",
+			}}
+		>
+			<Container className="flex flex-col col-span-1 gap-8">
+				<Container className="flex flex-col gap-4">
+					<Container className="flex items-center gap-2">
+						<Text>
+							<StackIcon className="w-5 h-5" />
+						</Text>
+						<Text>
+							<ImportantText>Create</ImportantText>
+						</Text>
+					</Container>
+					<Container>
+						<Heading size={"xs"}>Mint new Melon NFTs</Heading>
+						<Text>Add new melon NFTs to the Farmers Market.</Text>
+					</Container>
+				</Container>
+
+				<Container className="mt-auto">
+					<Link href={"/backoffice/create-melon-nfts"}>
+						<a>
+							<Button
+								appearance={"success"}
+								css={{
+									borderRadius: "9999px",
+								}}
+							>
+								<PlusIcon className="w-5 h-5" />
+								Add Melon NFTs
+							</Button>
+						</a>
+					</Link>
+				</Container>
+			</Container>
+		</Container>
+	);
+}
+
+function BrowseRejectedCreators() {
+	return (
+		<Container
+			css={{
+				backgroundColor: "$red2",
+			}}
+			className="p-4 pt-48 rounded-xl gap-8 flex flex-col justify-end"
+		>
+			<Container className="flex flex-col gap-4">
+				<Text>
+					<CircleSlashIcon className="w-6 h-6" />
+				</Text>
+				<Heading size={"xs"}>Rejected creators</Heading>
+				<Text>Creators that have been rejected from the platform.</Text>
+			</Container>
+			<Container className="flex gap-4">
+				<Link href={"/backoffice/rejected"}>
+					<a>
+						<Button
+							appearance={"surface"}
+							outlined
+						>
+							Browse
+							<ArrowRight className="w-5 h-5" />
+						</Button>
+					</a>
+				</Link>
+			</Container>
+		</Container>
+	);
+}
+
+function BrowsePendingCreators() {
+	return (
+		<Container
+			css={{
+				backgroundColor: "$surfaceOnSurface",
+			}}
+			className="p-4 pt-48 rounded-xl gap-8 flex flex-col justify-end"
+		>
+			<Container className="flex flex-col gap-4">
+				<Text>
+					<Hourglass className="w-6 h-6" />
+				</Text>
+				<Heading size={"xs"}>Pending creators</Heading>
+				<Text>
+					Creators that have applied to the platform but have not been approved
+					yet.
+				</Text>
+			</Container>
+			<Container className="flex gap-4">
+				<Link href={"/backoffice/pending"}>
+					<a>
+						<Button
+							appearance={"surface"}
+							outlined
+						>
+							Browse
+							<ArrowRight className="w-5 h-5" />
+						</Button>
+					</a>
+				</Link>
+			</Container>
+		</Container>
+	);
+}
+export default AdminDashboard;

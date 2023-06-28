@@ -33,7 +33,7 @@ export default withSession(async (req, res) => {
 			if (!modelRes)
 				return res.status(400).json({success: false, error: "model not found"});
 
-			if (modelRes.identity_access_key) {
+			/*if (modelRes.identity_access_key) {
 				client
 					.getIdentityById(modelRes.identity_access_key)
 					.then((identity) => {
@@ -47,7 +47,8 @@ export default withSession(async (req, res) => {
 			} else {
 				const returnData = {...modelRes.toObject(), identity: null};
 				res.status(200).json(returnData);
-			}
+			}*/
+			res.status(200).json(modelRes);
 			break;
 		default:
 			res.status(400).json({success: false});

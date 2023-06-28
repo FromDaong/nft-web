@@ -124,7 +124,7 @@ const NFTList = ({
 	const nfts = nftQueries.map((query) => query.data).filter(Boolean);
 
 	return (
-		<Container className="grid grid-cols-4 gap-8">
+		<Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  gap-8">
 			{isLoadingAccountSummary && (
 				<Container className="flex justify-center w-full py-12">
 					<Spinner />

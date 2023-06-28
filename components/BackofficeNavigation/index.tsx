@@ -1,13 +1,14 @@
-import {HomeIcon} from "@heroicons/react/outline";
+import React from "react";
+import {ExclamationCircleIcon, HomeIcon} from "@heroicons/react/outline";
 import {cn} from "@lib/utils";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {useUser} from "core/auth/useUser";
-import {ShoppingBag} from "lucide-react";
+import {CircleSlash, ShoppingBag, Verified} from "lucide-react";
 import Link from "next/link";
 import {useRouter} from "next/router";
 
-function StudioNavigation() {
+const BackofficeNavigation = () => {
 	const router = useRouter();
 	const {pathname} = router;
 	const {creator, isLoading} = useUser();
@@ -20,7 +21,7 @@ function StudioNavigation() {
 			css={{backgroundColor: "$surface", borderColor: "$border"}}
 		>
 			<Container className="flex gap-2 overflow-x-auto">
-				<TabNavigationLink link={"/studio"}>
+				<TabNavigationLink link={"/backoffice"}>
 					{(isActive) => (
 						<Button
 							css={{
@@ -38,7 +39,7 @@ function StudioNavigation() {
 					)}
 				</TabNavigationLink>
 
-				<TabNavigationLink link={"/studio/nfts"}>
+				<TabNavigationLink link={"/backoffice/pending"}>
 					{(isActive) => (
 						<Button
 							css={{
@@ -50,15 +51,33 @@ function StudioNavigation() {
 							appearance={"unstyled"}
 							className={cn(isActive && "border-b-2")}
 						>
-							<ShoppingBag className={"w-5 h-5"} />
-							Sweetshop NFTs
+							<ExclamationCircleIcon className={"w-5 h-5"} />
+							Pending creators
+						</Button>
+					)}
+				</TabNavigationLink>
+
+				<TabNavigationLink link={"/backoffice/rejected"}>
+					{(isActive) => (
+						<Button
+							css={{
+								padding: "8px 12px",
+								borderColor: "$purple10",
+								color: isActive ? "$purple11" : "$text",
+								borderRadius: 0,
+							}}
+							appearance={"unstyled"}
+							className={cn(isActive && "border-b-2")}
+						>
+							<CircleSlash className={"w-5 h-5"} />
+							Rejected creators
 						</Button>
 					)}
 				</TabNavigationLink>
 			</Container>
 		</Container>
 	);
-}
+};
 
 export function TabNavigationLink({children, link}) {
 	const router = useRouter();
@@ -72,4 +91,4 @@ export function TabNavigationLink({children, link}) {
 	);
 }
 
-export default StudioNavigation;
+export default BackofficeNavigation;
