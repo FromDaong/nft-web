@@ -20,10 +20,10 @@ import {apiEndpoint} from "@utils/index";
 import Spinner from "@packages/shared/icons/Spinner";
 
 import * as Yup from "yup";
-import Toast from "@packages/shared/components/Toast";
 import {ModalHeaderSection} from "@packages/modals";
 import {useUser} from "core/auth/useUser";
 import {useRouter} from "next/router";
+import {toast} from "sonner";
 
 export default function PersonalInformationForm({
 	onClose: onCloseEditProfileModal,
@@ -124,39 +124,16 @@ const PersonalPresentationInformationForm = (props: {
 				.then(() => setUpdateProfile(values))
 				.then(() => formikHelpers.setSubmitting(false))
 				.then(() => {
-					setToastMessage({title: "Success", content: "Profile updated"});
+					toast.success("Profile updated");
 					router.reload();
 				})
 				.catch((err) => {
 					setUpdateProfileError(err.message);
 					formikHelpers.setSubmitting(false);
-					setToastMessage({title: "Error", content: err.message});
+					toast.error(err.message);
 				});
 		},
 	});
-
-	console.log({personalInformationForm});
-
-	const onSelectBannerPic = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const file = e.target.files[0];
-		setUpdatingBanner(true);
-		setUpdateBannerError("");
-		cdnUploadFileAndReturnURL(file)
-			.then((url) => {
-				axios
-					.post(`${apiEndpoint}/profile/methods/patch`, {banner_pic: url})
-					.then(() => setBannerURL(url));
-			})
-			.then(() => setUpdatingBanner(false))
-			.then(() =>
-				setToastMessage({title: "Success", content: "Banner updated"})
-			)
-			.catch((err) => {
-				setUpdateBannerError(err.message);
-				setUpdatingBanner(false);
-				setToastMessage({title: "Error", content: err.message});
-			});
-	};
 
 	const onSelectProfilePic = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files[0];
@@ -169,21 +146,14 @@ const PersonalPresentationInformationForm = (props: {
 					.then(() => setProfilePicURL(url));
 			})
 			.then(() => setUpdatingProfilePic(false))
-			.then(() =>
-				setToastMessage({title: "Success", content: "Profile picture updated"})
-			)
+			.then(() => toast.success("Profile picture updated"))
 			.catch((err) => {
 				setUpdateProfilePicError(err.message);
 				setUpdatingProfilePic(false);
 				setToastMessage({title: "Error", content: err.message});
+				toast.error(err.message);
 			});
 	};
-
-	useEffect(() => {
-		if (toastMessage.title) {
-			onOpen();
-		}
-	}, [toastMessage]);
 
 	useLayoutEffect(() => {
 		setProfilePicURL(profile.profile_pic);
@@ -196,17 +166,8 @@ const PersonalPresentationInformationForm = (props: {
 		});
 	}, [profile]);
 
-	console.log({profile});
-
 	return (
 		<>
-			<Toast
-				isOpen={isOpen}
-				onClose={onClose}
-				title={toastMessage.title}
-				content={toastMessage.content}
-			/>
-
 			<Container className="flex flex-col gap-2">
 				<Container className="flex items-center gap-12">
 					<Container

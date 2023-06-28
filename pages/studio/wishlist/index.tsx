@@ -60,7 +60,7 @@ export default function WishlistPage() {
 					)}
 				</ApplicationFrame>
 			)}
-			{wishlist.length === 0 && (
+			{wishlist.length === 0 && !isLoading && (
 				<ApplicationFrame>
 					<Container className="flex items-center justify-center w-full h-full py-24 min-h-[480px]">
 						<Container className="flex flex-col items-center justify-center gap-4">

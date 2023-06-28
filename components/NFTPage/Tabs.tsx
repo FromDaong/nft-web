@@ -3,6 +3,8 @@ import ResaleListings from "./ResaleListings";
 import Activity from "./Activity";
 import {styled} from "@stitches/react";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
+import {FingerPrintIcon} from "@heroicons/react/outline";
+import {Store} from "lucide-react";
 
 export const TabsList = styled(Tabs.List, {
 	backgroundColor: "$surface",
@@ -33,10 +35,18 @@ const NFTPageTabs = ({nft}) => (
 	<Tabs.Root defaultValue="resale">
 		<TabsList className="gap-4 flex sticky top-0 w-full py-2 border-b">
 			<TabsTrigger
-				className="data-[state=active]:text-violet11"
+				className="data-[state=active]:text-violet11 flex gap-2 items-center"
 				value={"resale"}
 			>
+				<Store className="w-5 h-5" />
 				<ImportantText>Buying options</ImportantText>
+			</TabsTrigger>
+			<TabsTrigger
+				className="data-[state=active]:text-violet11 flex gap-2 items-center"
+				value={"activity"}
+			>
+				<FingerPrintIcon className="w-5 h-5" />
+				<ImportantText>Provenance</ImportantText>
 			</TabsTrigger>
 		</TabsList>
 		<Tabs.Content value={"resale"}>

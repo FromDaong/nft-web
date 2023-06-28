@@ -170,21 +170,21 @@ export default function ResaleListings({nft}) {
 				</>
 			)}
 
+			{loadingBaseOrder ? (
+				<OrderSkeleton />
+			) : (
+				<BaseOrder
+					baseOrder={baseOrder}
+					nft={nft}
+					onClick={toggleListing}
+					active={seller === nft.creator.address}
+				/>
+			)}
 			{!isLoading && (
 				<>
 					{resaleListings.length > 0 && (
 						<AnimatePresence>
 							<Container className="flex flex-col gap-3">
-								{loadingBaseOrder ? (
-									<OrderSkeleton />
-								) : (
-									<BaseOrder
-										baseOrder={baseOrder}
-										nft={nft}
-										onClick={toggleListing}
-										active={seller === nft.creator.address}
-									/>
-								)}
 								{resaleListings.map((listing) => (
 									<ResaleListing
 										listing={listing}
@@ -195,12 +195,6 @@ export default function ResaleListings({nft}) {
 								))}
 							</Container>
 						</AnimatePresence>
-					)}
-
-					{resaleListings.length === 0 && (
-						<Container className="flex">
-							<Text>No resale listings available for this NFT</Text>
-						</Container>
 					)}
 				</>
 			)}

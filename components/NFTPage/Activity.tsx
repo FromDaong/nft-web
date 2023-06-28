@@ -133,9 +133,18 @@ const TransactionsPresentation = ({nft}) => {
 							</Container>
 						</Container>
 					</Container>
-					<Button appearance={"link"}>
-						View on Bscscan <ExternalLinkIcon className="w-5 h-5" />
-					</Button>
+					<a
+						href={`https://bscscan.com/tx/${tx.id}`}
+						target="_blank"
+						rel="noreferrer"
+					>
+						<Button
+							appearance={"link"}
+							size={"sm"}
+						>
+							View on Bscscan <ExternalLinkIcon className="w-5 h-5" />
+						</Button>
+					</a>
 				</Container>
 			))}
 		</Container>
