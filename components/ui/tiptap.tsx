@@ -34,8 +34,9 @@ const Tiptap = (props: {
 					onClick={() => {
 						editor.chain().focus().toggleBold().run();
 					}}
+					outlined
 				>
-					<BoldIcon className="w-5 h-5" />
+					<BoldIcon className="w-4 h-4" />
 				</Button>
 				<Button
 					appearance={editor.isActive("italic") ? "action" : "subtle"}
@@ -44,8 +45,9 @@ const Tiptap = (props: {
 					onClick={() => {
 						editor.chain().focus().toggleItalic().run();
 					}}
+					outlined
 				>
-					<ItalicIcon className="w-5 h-5" />
+					<ItalicIcon className="w-4 h-4" />
 				</Button>
 			</Container>
 			<Container

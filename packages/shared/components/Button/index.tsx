@@ -111,12 +111,7 @@ export const Button = styled("button", {
 				width: "100%",
 			},
 		},
-		activeLink: {
-			true: {
-				backgroundColor: "$accentSolid",
-				color: "$accentBase",
-			},
-		},
+
 		size: {
 			sm: {
 				fontSize: "14px",

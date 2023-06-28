@@ -8,12 +8,15 @@ import {
 	PhotographIcon,
 	UserGroupIcon,
 } from "@heroicons/react/outline";
+import {cn} from "@lib/utils";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {BoldLink} from "@packages/shared/components/Typography/Text";
 import RectangleStack from "@packages/shared/icons/RectangleStack";
 import {StackIcon} from "@radix-ui/react-icons";
+import {cva} from "class-variance-authority";
 import {useUser} from "core/auth/useUser";
+import {ShoppingBag} from "lucide-react";
 import Link from "next/link";
 import {useRouter} from "next/router";
 
@@ -29,89 +32,42 @@ function StudioNavigation() {
 			className={"w-full flex gap-2 sticky top-0 z-30 border-b"}
 			css={{backgroundColor: "$surface", borderColor: "$border"}}
 		>
-			<Container className="flex gap-2 py-2 mx-auto overflow-x-auto">
-				<Link href={"/studio"}>
-					<a>
+			<Container className="flex gap-2 overflow-x-auto">
+				<TabNavigationLink link={"/studio"}>
+					{(isActive) => (
 						<Button
-							appearance={"link"}
-							activeLink={pathname === "/studio"}
+							css={{
+								padding: "8px 12px",
+								borderColor: "$purple10",
+								color: isActive ? "$purple11" : "$text",
+								borderRadius: 0,
+							}}
+							appearance={"unstyled"}
+							className={cn(isActive && "border-b-2")}
 						>
 							<HomeIcon className={"w-5 h-5"} />
-							Dashboard
+							Home
 						</Button>
-					</a>
-				</Link>
-				{creator && (
-					<Link href={"/studio/collections"}>
-						<a>
-							<Button
-								appearance={"link"}
-								activeLink={pathname.includes("/studio/collections")}
-							>
-								<StackIcon className={"w-5 h-5"} />
-								Collections
-							</Button>
-						</a>
-					</Link>
-				)}
+					)}
+				</TabNavigationLink>
 
-				<Link href={"/studio/portfolio"}>
-					<a>
+				<TabNavigationLink link={"/studio/nfts"}>
+					{(isActive) => (
 						<Button
-							appearance={"link"}
-							activeLink={pathname.includes("/studio/portfolio")}
+							css={{
+								padding: "8px 12px",
+								borderColor: "$purple10",
+								color: isActive ? "$purple11" : "$text",
+								borderRadius: 0,
+							}}
+							appearance={"unstyled"}
+							className={cn(isActive && "border-b-2")}
 						>
-							<RectangleStack className={"w-5 h-5"} />
-							Portfolio
+							<ShoppingBag className={"w-5 h-5"} />
+							Sweetshop NFTs
 						</Button>
-					</a>
-				</Link>
-				<Link href={"/studio/resale"}>
-					<a>
-						<Button
-							appearance={"link"}
-							activeLink={pathname.includes("/studio/resale")}
-						>
-							<UserGroupIcon className={"w-5 h-5"} />
-							Resale
-						</Button>
-					</a>
-				</Link>
-				<Link href={"/studio/wishlist"}>
-					<a>
-						<Button
-							appearance={"link"}
-							activeLink={pathname.includes("/studio/wishlist")}
-						>
-							<HeartIcon className={"w-5 h-5"} />
-							Wishlist
-						</Button>
-					</a>
-				</Link>
-				{false && (
-					<Link href={"/studio/sales"}>
-						<a>
-							<Button
-								appearance={"link"}
-								activeLink={pathname.includes("/studio/sales")}
-							>
-								<CashIcon className={"w-5 h-5"} />
-								Sales
-							</Button>
-						</a>
-					</Link>
-				)}
-				<Link href={"/farm"}>
-					<a>
-						<Button
-							appearance={"link"}
-							activeLink={pathname.includes("/farm")}
-						>
-							<GiftIcon className={"w-5 h-5"} />
-							Farm
-						</Button>
-					</a>
-				</Link>
+					)}
+				</TabNavigationLink>
 			</Container>
 		</Container>
 	);
@@ -124,15 +80,7 @@ export function TabNavigationLink({children, link}) {
 
 	return (
 		<Link href={link}>
-			<BoldLink
-				css={{
-					color: isActive ? "$accentText" : "$text",
-					borderColor: "$accentText",
-				}}
-				className={`${isActive && "border-b-2"} py-2`}
-			>
-				{children}
-			</BoldLink>
+			<a>{children(isActive)}</a>
 		</Link>
 	);
 }

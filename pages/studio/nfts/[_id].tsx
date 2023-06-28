@@ -4,7 +4,11 @@ import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Input} from "@packages/shared/components/Input";
 import {Heading} from "@packages/shared/components/Typography/Headings";
-import {ImportantText, Text} from "@packages/shared/components/Typography/Text";
+import {
+	ImportantText,
+	MutedText,
+	Text,
+} from "@packages/shared/components/Typography/Text";
 import {apiEndpoint} from "@utils/index";
 import axios from "axios";
 import TreatCore from "core/TreatCore";
@@ -22,6 +26,7 @@ import Spinner from "@packages/shared/icons/Spinner";
 import {MongoModelNFT} from "server/helpers/models";
 import {connectMongoDB} from "server/helpers/core";
 import {useRouter} from "next/router";
+import UserAvatar from "core/auth/components/Avatar";
 
 const ManageNFTModal = ({nft}) => {
 	const router = useRouter();
@@ -101,18 +106,45 @@ const ManageNFTModal = ({nft}) => {
 	return (
 		<ApplicationLayout>
 			<ApplicationFrame>
-				<Container className={"flex gap-2 my-8 items-center"}>
+				<Container className={"flex my-8 items-center"}>
+					<Link href={`/studio/`}>
+						<a className="hidden lg:flex">
+							<Button
+								appearance={"subtle"}
+								size={"sm"}
+							>
+								<ChevronLeft className="w-5 h-5" />
+								Studio
+							</Button>
+						</a>
+					</Link>
+					<Container className="hidden lg:flex">
+						<Button
+							size={"sm"}
+							appearance={"unstyled"}
+						>
+							/
+						</Button>
+					</Container>
+					<Link href={`/studio/nfts/`}>
+						<a>
+							<Button
+								appearance={"subtle"}
+								size={"sm"}
+								className="line-clamp-1"
+							>
+								<Text
+									className="line-clamp-1"
+									css={{fontWeight: "600"}}
+								>
+									Sweetshop NFTs
+								</Text>
+							</Button>
+						</a>
+					</Link>
 					<Button
-						appearance={"subtle"}
 						size={"sm"}
-						onClick={router.back}
-					>
-						<ChevronLeft className="w-5 h-5" />
-						Studio
-					</Button>
-					<Button
-						size={"sm"}
-						appearance={"surface"}
+						appearance={"unstyled"}
 					>
 						/
 					</Button>
@@ -121,24 +153,40 @@ const ManageNFTModal = ({nft}) => {
 						appearance={"unstyled"}
 					>
 						<ImportantText css={{color: "$textContrast"}}>
-							Manage NFT
+							{nft.name}
 						</ImportantText>
 					</Button>
 				</Container>
 				<form
-					className="flex justify-between gap-12"
+					className="flex flex-col-reverse lg:flex-row justify-between gap-12 mt-8"
 					onSubmit={formik.handleSubmit}
 				>
-					<Container className="flex flex-col items-center w-full gap-4">
+					<Container className="flex flex-col items-center w-full gap-8">
 						<Container className="w-full">
 							<Container className="flex flex-col gap-1 mb-2">
-								<Heading size={"md"}>{formik.values.name}</Heading>
+								<Heading size={"sm"}>{formik.values.name}</Heading>
 							</Container>
-							<Container className="flex flex-col">
-								<Heading size={"xss"}>{nft.price} BNB</Heading>
+
+							<Container className="flex gap-4 items-center">
+								<Container className="flex gap-2 items-center">
+									<UserAvatar
+										profile_pic={nft.creator.profile.profile_pic}
+										size={24}
+										username={nft.creator.username}
+									/>
+									<Text>
+										<ImportantText>
+											{nft.creator.profile.display_name}
+										</ImportantText>
+									</Text>
+								</Container>
+								<Text>&bull;</Text>
+								<Text>
+									<ImportantText>{nft.price} BNB</ImportantText>
+								</Text>
 							</Container>
 						</Container>
-						<Container className="flex flex-col w-full gap-8">
+						<Container className="flex flex-col w-full gap-8 mt-8">
 							<Container className="flex flex-col gap-1">
 								<label htmlFor={"name"}>
 									<Text>
@@ -172,40 +220,49 @@ const ManageNFTModal = ({nft}) => {
 								/>
 							</Container>
 						</Container>
-						<Container className="flex mb-4">
-							<Container
-								className="p-1 rounded-xl"
-								css={{backgroundColor: "$elementOnSurface"}}
-							>
-								<RadioGroup
-									onChange={(selected) =>
-										formik.setFieldValue("protected", selected)
-									}
-									className="flex items-center gap-2 px-2 py-2 overflow-x-auto flex-nowrap scroll-smooth whitespace-wrap"
-									defaultValue={formik.values.protected}
-								>
-									<RadioGroup.Option
-										appearance={formik.values.protected ? "action" : "subtle"}
-										className="flex-shrink-0"
-										value={true}
-										as={Button}
-										type={"button"}
-									>
-										<EyeOff className="w-4 h-4" />
-										Blur image
-									</RadioGroup.Option>
-									<RadioGroup.Option
-										as={Button}
-										appearance={!formik.values.protected ? "action" : "subtle"}
-										className="flex-shrink-0"
-										value={false}
-										type={"button"}
-									>
-										<Globe className="w-4 h-4" />
-										Show image
-									</RadioGroup.Option>
-								</RadioGroup>
+						<Container className="flex flex-col mb-4 justify-start w-full">
+							<Container className="flex flex-col gap-1">
+								<Text>
+									<ImportantText>Privacy</ImportantText>
+								</Text>
 							</Container>
+
+							<RadioGroup
+								onChange={(selected) =>
+									formik.setFieldValue("protected", selected)
+								}
+								className="flex items-center gap-2 py-2 overflow-x-auto flex-nowrap scroll-smooth whitespace-wrap"
+								defaultValue={formik.values.protected}
+							>
+								<RadioGroup.Option
+									appearance={formik.values.protected ? "action" : "subtle"}
+									className="flex-shrink-0"
+									value={true}
+									as={Button}
+									type={"button"}
+									outlined
+									size={"sm"}
+								>
+									<EyeOff className="w-4 h-4" />
+									Blur image
+								</RadioGroup.Option>
+								<RadioGroup.Option
+									as={Button}
+									appearance={!formik.values.protected ? "action" : "subtle"}
+									className="flex-shrink-0"
+									value={false}
+									type={"button"}
+									outlined
+									size={"sm"}
+								>
+									<Globe className="w-4 h-4" />
+									Show image
+								</RadioGroup.Option>
+							</RadioGroup>
+							<MutedText>
+								Blurring your image will make sure that only the owner of the
+								NFT can see the image.
+							</MutedText>
 						</Container>
 						<Container className="flex justify-end w-full gap-4 mt-4">
 							<Button
@@ -235,7 +292,11 @@ const ManageNFTModal = ({nft}) => {
 							</Button>
 						</Container>
 					</Container>
-					<Container className={"flex flex-col gap-8 justify-center w-96"}>
+					<Container
+						className={
+							"flex flex-col gap-8 justify-center items-center lg:w-96"
+						}
+					>
 						<Container className="overflow-hidden shadow-xl w-96 rounded-xl aspect-[12/16] mx-auto">
 							<Container
 								className={`w-full h-full ${
