@@ -31,6 +31,7 @@ export const TabsTrigger = styled(Tabs.Trigger, {
 	backgroundColor: "$surface",
 	transition: "all 0.2s ease-in-out",
 });
+
 const NFTPageTabs = ({nft}) => (
 	<Tabs.Root defaultValue="resale">
 		<TabsList className="gap-4 flex sticky top-0 w-full py-2 border-b">

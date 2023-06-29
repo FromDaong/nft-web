@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import {Container} from "@chakra-ui/react";
 import {Button} from "@packages/shared/components/Button";
 import {Heading} from "@packages/shared/components/Typography/Headings";
@@ -100,55 +101,65 @@ const TransactionsPresentation = ({nft}) => {
 					<Button appearance={"surface"}>NFT has no sales history</Button>
 				</Container>
 			)}
-			{!isLoading &&
-				txHistoryWithProfile.map((tx) => (
-					<Container
-						key={tx.id}
-						className="p-2 flex flex-col md:flex-row gap-2 rounded-xl justify-between"
-					>
-						<Container className="flex gap-4">
-							<UserAvatar
-								size={32}
-								username={tx.buyer.username}
-								profile_pic={tx.buyer.profile_pic}
-							/>
-							<Container>
-								<Text>
-									<ImportantText>
-										Purchased for {Web3.utils.fromWei(tx.cost).toString()} BNB
-									</ImportantText>
-								</Text>
-								<Container className="flex gap-2">
-									<Text>
-										{tx.buyer.username ??
-											tx.buyer.address.slice(0, 5) +
-												"..." +
-												tx.buyer.address.slice(tx.buyer.address.length - 4)}
-									</Text>
-									<Text>&bull;</Text>
-									<Text>
-										{timeFromNow(
-											// @ts-ignore
-											parseInt(tx.purchaseDate) * 1000
-										)}
-									</Text>
-								</Container>
-							</Container>
-						</Container>
-						<a
-							href={`https://bscscan.com/tx/${tx.id}`}
-							target="_blank"
-							rel="noreferrer"
-						>
-							<Button
-								appearance={"link"}
-								size={"sm"}
-							>
-								View on Bscscan <ExternalLinkIcon className="w-5 h-5" />
-							</Button>
-						</a>
+			{!isLoading
+				? txHistoryWithProfile.map((tx) => (
+						<Transaction
+							key={tx.id}
+							tx={tx}
+						/>
+				  ))
+				: null}
+		</Container>
+	);
+};
+
+const Transaction = ({tx}) => {
+	return (
+		<Container
+			key={tx.id}
+			className="p-2 flex flex-col md:flex-row gap-2 rounded-xl justify-between"
+		>
+			<Container className="flex gap-4">
+				<UserAvatar
+					size={32}
+					username={tx.buyer.username}
+					profile_pic={tx.buyer.profile_pic}
+				/>
+				<Container>
+					<Text>
+						<ImportantText>
+							Purchased for {Web3.utils.fromWei(tx.cost).toString()} BNB
+						</ImportantText>
+					</Text>
+					<Container className="flex gap-2">
+						<Text>
+							{tx.buyer.username ??
+								tx.buyer.address.slice(0, 5) +
+									"..." +
+									tx.buyer.address.slice(tx.buyer.address.length - 4)}
+						</Text>
+						<Text>&bull;</Text>
+						<Text>
+							{timeFromNow(
+								// @ts-ignore
+								parseInt(tx.purchaseDate) * 1000
+							)}
+						</Text>
 					</Container>
-				))}
+				</Container>
+			</Container>
+			<a
+				href={`https://bscscan.com/tx/${tx.id}`}
+				target="_blank"
+				rel="noreferrer"
+			>
+				<Button
+					appearance={"link"}
+					size={"sm"}
+				>
+					View on Bscscan <ExternalLinkIcon className="w-5 h-5" />
+				</Button>
+			</a>
 		</Container>
 	);
 };

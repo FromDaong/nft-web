@@ -299,7 +299,10 @@ function BaseOrder({baseOrder, nft, onClick, active}) {
 						<p className="flex gap-2">
 							<SmallText>
 								<ImportantText>
-									{baseOrder.currentSupply} available
+									{false &&
+										(baseOrder.currentSupply !== 0
+											? nft.max_supply - baseOrder.currentSupply
+											: 0)}{" "}
 								</ImportantText>
 							</SmallText>
 						</p>

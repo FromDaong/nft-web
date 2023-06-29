@@ -117,14 +117,11 @@ function NFTPreview({nft, postUtils}) {
 	const {maxSupply, currentSupply, isResale, nftId, price, seller} =
 		selectedOrder ?? {};
 
-	const mintedNfts = currentSupply === "0" ? 0 : maxSupply - +currentSupply;
-
+	const mintedNfts = maxSupply - currentSupply;
 	console.log({
-		mintedNfts,
 		maxSupply,
 		currentSupply,
 	});
-
 	return (
 		<>
 			<PurchasedNFTPreview
@@ -161,13 +158,13 @@ function NFTPreview({nft, postUtils}) {
 										<Text>
 											<ImportantText>
 												{currentSupply !== 0 &&
-													`Minting ${mintedNfts} of ${maxSupply}`}
+													`Minting ${currentSupply} of ${maxSupply}`}
 											</ImportantText>
 										</Text>
 										<Text>
 											<ImportantText>
 												{currentSupply !== 0 &&
-													Math.ceil((mintedNfts / maxSupply) * 100) + "%"}
+													Math.ceil((currentSupply / maxSupply) * 100) + "%"}
 												{currentSupply === 0 && "100%"}
 											</ImportantText>
 										</Text>
@@ -193,7 +190,7 @@ function NFTPreview({nft, postUtils}) {
 									css={{
 										width: `${
 											currentSupply > 0
-												? Math.ceil((mintedNfts / maxSupply) * 100)
+												? Math.ceil((currentSupply / maxSupply) * 100)
 												: 100
 										}%`,
 										backgroundColor: "$textContrast",
