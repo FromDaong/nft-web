@@ -429,6 +429,12 @@ export const useContracts = () => {
 		signerOrProvider: signer,
 	});
 
+	const totwMinterHelperContract = useContract({
+		addressOrName: contractAddresses.totwMinterHelper[56],
+		contractInterface: ABI.totmHelper,
+		signerOrProvider: signer,
+	});
+
 	const treatMinterContract = useContract({
 		addressOrName: contractAddresses.treatNFTMinter[56],
 		contractInterface: ABI.treatMinter,
@@ -482,6 +488,7 @@ export const useContracts = () => {
 		totmMartContract,
 		minterPermissionHelperContract,
 		treatTradeInContract,
+		totwMinterHelperContract,
 		treatV1NFTContract,
 		signer,
 	};

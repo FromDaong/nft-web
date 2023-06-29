@@ -27,10 +27,14 @@ import {Verified} from "lucide-react";
 import useRedeemV1forV2 from "@packages/chain/hooks/useRedeemV1forV2";
 import {useRouter} from "next/router";
 import StudioNavigation from "@components/CreatorDashboard/StudioNavigation";
+import {toast} from "sonner";
+import UserAvatar from "core/auth/components/Avatar";
+import {useUser} from "core/auth/useUser";
 
 export default function TreatCreatorStudio() {
 	const {isLoading: isLoadingAccountSummary, data: accountSummary} =
 		useAccountSummary();
+	const {profile} = useUser();
 
 	return (
 		<ApplicationLayout>
@@ -60,11 +64,19 @@ export default function TreatCreatorStudio() {
 										borderColor: "$border",
 									}}
 								>
-									<Heading size={"xs"}>Analytics</Heading>
+									<Container className="flex flex-col items-center gap-4">
+										<UserAvatar
+											profile_pic={profile?.profile_pic}
+											size={64}
+											username={profile?.username}
+										/>
+										<Heading size={"xss"}>{profile?.display_name}</Heading>
+									</Container>
 
 									<AccountSummary
 										data={accountSummary}
 										isLoading={isLoadingAccountSummary}
+										profile={profile ?? {}}
 									/>
 								</Container>
 							</Container>
@@ -120,7 +132,7 @@ const useAccountSummary = () => {
 	};
 };
 
-function AccountSummary({data, isLoading}) {
+function AccountSummary({data, isLoading, profile}) {
 	// Get current BNB price
 	const {isLoading: bnbPriceLoading, data: bnbPrice} = TreatCore.useQuery({
 		queryKey: ["bnbPrice"],
@@ -156,43 +168,33 @@ function AccountSummary({data, isLoading}) {
 					</ImportantText>
 				</SmallText>
 			</Container>
-			<Divider dir={"horizontal"} />
 			<Container className="flex flex-col gap-2">
-				<Heading size={"xss"}>Summary</Heading>
+				<Divider dir={"horizontal"} />
 				<table className="table-fixed">
 					<tbody>
 						<tr>
 							<td>
-								<Text>Revenue</Text>
+								<Text>Followers</Text>
 							</td>
-							<td>
+							<td className="text-right">
 								<Text>
 									<ImportantText>
-										$
-										{Intl.NumberFormat().format(
-											parseFloat(Web3.utils.fromWei(data.totalSales))
-										)}
+										{Intl.NumberFormat().format(profile?.followers?.length)}
 									</ImportantText>
 								</Text>
 							</td>
 						</tr>
-						<tr>
-							<td>
-								<Text>Created</Text>
-							</td>
-							<td>
-								<Text>
-									<ImportantText>
-										{Intl.NumberFormat().format(data.tokens?.length)}
-									</ImportantText>
-								</Text>
-							</td>
-						</tr>
+					</tbody>
+				</table>
+				<Divider />
+
+				<table className="table-fixed">
+					<tbody>
 						<tr>
 							<td>
 								<Text>Collected</Text>
 							</td>
-							<td>
+							<td className="text-right">
 								<Text>
 									<ImportantText>
 										{Intl.NumberFormat().format(data.balances?.length)}
@@ -202,6 +204,7 @@ function AccountSummary({data, isLoading}) {
 						</tr>
 					</tbody>
 				</table>
+				<Divider />
 			</Container>
 		</>
 	);
@@ -270,7 +273,9 @@ function ConvertV1ToV2NFTCard({tokens}) {
 	} = useDisclosure();
 
 	const [txHash, setTxHash] = useState("");
-	const {isLoading, isSuccess, isError} = useWaitForTransaction({hash: txHash});
+	const {isLoading, isSuccess, isError, error} = useWaitForTransaction({
+		hash: txHash,
+	});
 
 	const v1NFTs = tokens.filter(
 		(t) => t.registry.id === "0xde39d0b9a93dcd541c24e80c8361f362aab0f213"
@@ -284,7 +289,7 @@ function ConvertV1ToV2NFTCard({tokens}) {
 		openPendingModal();
 		onRedeemV1forV2().then((s) => {
 			// closePendingModal();
-			setTxHash(s);
+			setTxHash(s.hash);
 		});
 	};
 
@@ -293,7 +298,13 @@ function ConvertV1ToV2NFTCard({tokens}) {
 			closePendingModal();
 			openCompleteModal();
 		}
-	}, [isLoading, isSuccess, isError]);
+
+		if (isError) {
+			toast.error(error.message);
+			closeCompleteModal();
+			closePendingModal();
+		}
+	}, [isLoading, isSuccess, isError, error]);
 
 	if (!ids.length) return null;
 

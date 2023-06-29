@@ -1,9 +1,8 @@
 import * as Yup from "yup";
 
-import {Button, Form} from "react-bootstrap";
+import {Form} from "react-bootstrap";
 import {FieldArray, FormikProvider, useFormik} from "formik";
 
-import {FormControl} from "react-bootstrap";
 import Hero from "@components/Hero";
 import Web3 from "web3";
 import async from "async";
@@ -17,7 +16,18 @@ import useCreateBulkTotwNFTs from "@packages/chain/hooks/useCreateBulkTotwNFTs";
 import {BlankModal} from "@components/lankModal";
 import CreatingNFTItem from "@components/CreatingNFTItem";
 import Spinner from "@packages/shared/icons/Spinner";
-import { useAccount } from "wagmi";
+import {useAccount} from "wagmi";
+import AdminDashboardWrapper from "@components/BackofficeNavigation/BackofficeWrapper";
+import ApplicationFrame from "core/components/layouts/ApplicationFrame";
+import ApplicationLayout from "core/components/layouts/ApplicationLayout";
+import BackofficeNavigation from "@components/BackofficeNavigation";
+import {Container} from "@packages/shared/components/Container";
+import Link from "next/link";
+import {ArrowLeft} from "lucide-react";
+import {Button} from "@packages/shared/components/Button";
+import {Input} from "@packages/shared/components/Input";
+import {ImportantText, Text} from "@packages/shared/components/Typography/Text";
+import {toast} from "sonner";
 
 const CreateNFT = () => {
 	const [ipfsFiles, setIpfsFiles] = useState([]);
@@ -155,7 +165,7 @@ const CreateNFT = () => {
 				blurhash: nftData.blurhash ? nftData.blurhash : null,
 			}));
 
-			const res = await fetch(`/api/model/create-totm-nfts`, {
+			const res = await fetch(`/api/admin/create-totm-nfts`, {
 				method: "POST",
 				headers: {
 					Accept: "application/json",
@@ -185,123 +195,156 @@ const CreateNFT = () => {
 				setShowCompleteModal(true);
 			}
 		} catch (error) {
+			formik.setSubmitting(false);
 			console.error(error);
+			toast.error("Error creating NFTs");
+			setShowPendingModal(false);
 		}
 	};
 
+	console.log({
+		files,
+	});
+
 	return (
-		<FormikProvider value={formik}>
-			<BlankModal
-				show={!!showPendingModal}
-				handleClose={() => setShowPendingModal(false)}
-				title={"Confirming Transaction ⌛ - Don't close this browser window"}
-				subtitle={
-					"Please confirm this transaction in your wallet and wait here for up to a few minutes for the transaction to confirm. Do not close this browser window!"
-				}
-				noButton={true}
-			/>
-			<BlankModal
-				show={!!showCompleteModal}
-				handleClose={() => setShowCompleteModal(false)}
-				buttonAction={() => router.push("/dashboard")}
-				title="NFTs Created Successfully! 🎉"
-				subtitle="Your NFTs have been created and are now available in your dashboard."
-			/>
+		<ApplicationLayout>
+			<ApplicationFrame>
+				<AdminDashboardWrapper>
+					<FormikProvider value={formik}>
+						<BlankModal
+							show={!!showPendingModal}
+							handleClose={() => setShowPendingModal(false)}
+							title={
+								"Confirming Transaction ⌛ - Don't close this browser window"
+							}
+							subtitle={
+								"Please confirm this transaction in your wallet and wait here for up to a few minutes for the transaction to confirm. Do not close this browser window!"
+							}
+							noButton={true}
+						/>
+						<BlankModal
+							show={!!showCompleteModal}
+							handleClose={() => setShowCompleteModal(false)}
+							buttonAction={() => router.push("/dashboard")}
+							title="NFTs Created Successfully! 🎉"
+							subtitle="Your NFTs have been created and are now available in your dashboard."
+						/>
 
-			<div className="container">
-				<Hero
-					title="Create TOTM NFTs"
-					subtitle="Complete this form carefully. Make sure you don't leave this page after submitting the creation transaction."
-				/>
+						<Container className="flex flex-col gap-8 py-8">
+							<Link href="/backoffice">
+								<a>
+									<Button
+										appearance={"surface"}
+										size={"sm"}
+										outlined
+									>
+										<ArrowLeft className="h-5 w-5" />
+										Dashboard
+									</Button>
+								</a>
+							</Link>
+							<Hero
+								title="Create TOTM NFTs"
+								subtitle="Complete this form carefully. Make sure you don't leave this page after submitting the creation transaction."
+							/>
 
-				{(!formik.values.nfts || formik.values.nfts.length === 0) && (
-					<div className="p-4 white-tp-container col-md-12">
-						{!totwModelData && (
-							<div className="model-name">
-								<div className="pb-4">
-									<label>Step 1: Model Username</label>
-									<FormControl
-										placeholder="E.g. alenaxbt"
-										value={modelUsername}
-										// onChange={handleChange}
-										onChange={(e) => {
-											setModelUsername(e.target.value);
-										}}
-									/>
-								</div>
+							{(!formik.values.nfts || formik.values.nfts.length === 0) && (
+								<Container>
+									{!totwModelData && (
+										<Container className="flex flex-col gap-4 items-start">
+											<Container className="flex flex-col gap-2">
+												<label>
+													<Text>
+														<ImportantText>
+															<b>Step 1:</b> Enter the model&#39;s username
+														</ImportantText>
+													</Text>
+												</label>
+												<Input
+													placeholder="E.g. alenaxbt"
+													value={modelUsername}
+													// onChange={handleChange}
+													onChange={(e) => {
+														setModelUsername(e.target.value);
+													}}
+												/>
+											</Container>
 
-								<Button
-									type="submit"
-									variant="primary py-2 w-100"
-									onClick={() => setModelData()}
-								>
-									<b>CONTINUE</b>
-								</Button>
-							</div>
-						)}
-						{totwModelData && (
-							<div
-								className="flex col-md-12 dropzone justify-content-center"
-								{...getRootProps()}
-								style={{minHeight: 200}}
-							>
-								<input {...getInputProps()} />
-								<p
-									className="mb-0 text-center"
-									style={{fontSize: "1.1em"}}
-								>
-									Step 2: Drag &#39;n&#39; drop your all your high resolution
-									images here, <br />
-									or click to here to select them
-								</p>
-							</div>
-						)}
-					</div>
-				)}
+											<Button
+												type="submit"
+												onClick={() => setModelData()}
+												appearance={"action"}
+											>
+												Continue
+											</Button>
+										</Container>
+									)}
+									{totwModelData && (
+										<Container
+											className="flex justify-center rounded-xl items-center"
+											{...getRootProps()}
+											css={{
+												minHeight: 200,
+												backgroundColor: "$surfaceOnSurface",
+											}}
+										>
+											<input {...getInputProps()} />
+											<Text
+												className="text-center"
+												css={{fontSize: "1.1em"}}
+											>
+												<ImportantText>
+													Step 2: Drag &#39;n&#39; drop your all your high
+													resolution images here, <br />
+													or click to here to select them
+												</ImportantText>
+											</Text>
+										</Container>
+									)}
+								</Container>
+							)}
 
-				<Form onSubmit={formik.handleSubmit}>
-					<FieldArray
-						name="nfts"
-						render={(arrayHelpers) =>
-							formik.values.nfts &&
-							formik.values.nfts.length > 0 &&
-							formik.values.nfts.map((nft, i) => (
-								<CreatingNFTItem
-									bnbPrice={bnbPrice.price}
-									formik={formik}
-									modelData={totwModelData}
-									index={i}
-									key={nft.image}
-									imageUrl={nft.image}
-									handleChange={formik.handleChange}
-									blurRequired={false}
-									disablePrice={true}
+							<Form onSubmit={formik.handleSubmit}>
+								<FieldArray
+									name="nfts"
+									render={(arrayHelpers) =>
+										formik.values.nfts &&
+										formik.values.nfts.length > 0 &&
+										formik.values.nfts.map((nft, i) => (
+											<CreatingNFTItem
+												bnbPrice={bnbPrice.price}
+												formik={formik}
+												modelData={totwModelData}
+												index={i}
+												key={nft.image}
+												imageUrl={nft.image}
+												handleChange={formik.handleChange}
+												blurRequired={false}
+												disablePrice={false}
+											/>
+										))
+									}
 								/>
-							))
-						}
-					/>
-					<div className="pt-4 buttons row">
-						<div className="mt-2 text-center col-md-6">
-							<Button
-								variant="w-100 py-2"
-								onClick={() => router.back()}
-							>
-								<b>BACK TO DASHBOARD</b>
-							</Button>
-						</div>
-						<div className="mt-2 text-center col-md-6">
-							<Button
-								type="submit"
-								variant="primary py-2 w-100"
-								disabled={ipfsFiles.length === 0}
-							>
-								<b>CREATE NFTs</b>
-							</Button>
-						</div>
-					</div>
-				</Form>
-			</div>
-		</FormikProvider>
+								<div className="pt-4 buttons row">
+									<div className="mt-2 text-center col-md-6">
+										<Button
+											type="submit"
+											disabled={ipfsFiles.length === 0}
+											appearance={
+												ipfsFiles.length === 0 ? "disabled" : "action"
+											}
+											outlined
+										>
+											Create NFTs
+										</Button>
+									</div>
+								</div>
+							</Form>
+						</Container>
+					</FormikProvider>
+				</AdminDashboardWrapper>
+			</ApplicationFrame>
+		</ApplicationLayout>
 	);
 };
 

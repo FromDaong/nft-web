@@ -26,6 +26,7 @@ import {
 	EyeIcon,
 	EyeOff,
 	HeartIcon,
+	PlusIcon,
 } from "lucide-react";
 import Link from "next/link";
 import {useMemo} from "react";
@@ -63,9 +64,30 @@ export default function TreatCreatorStudio() {
 					</Container>
 					<Container className="flex flex-col justify-between w-full gap-8 lg:flex-row-reverse">
 						<Container className="flex flex-col flex-1 gap-8">
-							<Container className={"flex gap-1 justify-between items-center"}>
-								<Heading size={"xss"}>Created NFTs</Heading>
-							</Container>
+							{!isLoadingAccountSummary &&
+								accountSummary?.tokens?.length === 0 && (
+									<Container className="flex justify-center py-32">
+										<Container className="flex flex-col gap-8 text-center">
+											<Container>
+												<Heading size={"sm"}>
+													You don't have any NFTs yet
+												</Heading>
+												<Text>
+													You can create your first NFT by clicking the button
+													below
+												</Text>
+											</Container>
+											<Link href={"/create"}>
+												<a>
+													<Button appearance={"action"}>
+														<PlusIcon className="w-4 h-4" />
+														Create NFT
+													</Button>
+												</a>
+											</Link>
+										</Container>
+									</Container>
+								)}
 							<SweetshopNFTs
 								isLoading={isLoadingAccountSummary}
 								tokens={accountSummary?.tokens ?? []}
@@ -172,9 +194,6 @@ const NFTCard = ({nft, totalSale}) => {
 						<SmallText>
 							<ImportantText>{nft.price} BNB</ImportantText>
 						</SmallText>
-
-						<Text>&bull;</Text>
-						<SmallText>{timeFromNow(nft.createdAt)}</SmallText>
 					</Container>
 				</Container>
 				<Container className="flex gap-2">

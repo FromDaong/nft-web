@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import Link from "next/link";
 import Spinner from "react-bootstrap/Spinner";
 import {Button} from "@packages/shared/components/Button";
+import {Container} from "@packages/shared/components/Container";
 
 const CreatingNFTItemPreview = ({
 	data,
@@ -43,28 +44,13 @@ const CreatingNFTItemPreview = ({
 
 	return (
 		<>
-			<div className="nft-card m-0">
-				<div className="totw-tag-wrapper">
-					{isOwner ? (
-						<div className="totw-tag">MY NFT</div>
-					) : (
-						data.totw && <div className="totw-tag">TOTW</div>
-					)}
-					{quantity > 1 && (
-						<div className="quantity-wrapper totw-tag">
-							{quantity}x Available
-						</div>
-					)}
-				</div>
-				<Link href={`/creator/${modelData.username}`}>
-					<a>
-						<div
-							className="profile-pic"
-							style={{backgroundImage: `url(${modelData.profile_pic})`}}
-						/>
-					</a>
-				</Link>
-				<div className="img-container text-center text-lg-left d-flex justify-content-center align-items-center">
+			<div className="w-full">
+				<Container
+					css={{
+						background: `url(${imageUrl})`,
+					}}
+					className="w-full shadow max-w-96 aspect-square rounded-xl img-container text-center text-lg-left d-flex justify-content-center align-items-center"
+				>
 					<div
 						style={{
 							position: "absolute",
@@ -83,38 +69,8 @@ const CreatingNFTItemPreview = ({
 							<span className="sr-only">Loading...</span>
 						</Spinner>
 					</div>
-					<div
-						style={{
-							background: `url(${imageUrl})`,
-							backgroundColor: "#333",
-							zIndex: 100,
-						}}
-						className="dynamic-image"
-					/>
-				</div>
-				<div className="text-container container">
-					<div className="title-section">
-						<div className="title">{name}</div>
-						<div className="name">
-							{modelData.username && <b>Creator: </b>}
-							{modelData.username}
-						</div>
-						{owner && (
-							<div className="name">
-								<b>Owner: </b>
-								{owner.slice(0, 6) + "..." + owner.slice(-6)}
-							</div>
-						)}
-					</div>
-					{price && (
-						<div className="stats">
-							<div className="stat">
-								<div className="number">{price}</div>
-								<div className="label">BNB</div>
-							</div>
-						</div>
-					)}
-				</div>
+				</Container>
+
 				{buttonLabel && buttonFunction && (
 					<div className="row">
 						<div className="col-lg-12 mt-3">

@@ -11,10 +11,13 @@ import {Button} from "@packages/shared/components/Button";
 import {Input} from "@packages/shared/components/Input";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import {Container} from "@packages/shared/components/Container";
+import {toast} from "sonner";
+import Spinner from "@packages/shared/icons/Spinner";
 
 const CreateNFT = () => {
 	const router = useRouter();
 	const [success, setSuccess] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const formik = useFormik({
 		initialValues: {
@@ -28,6 +31,7 @@ const CreateNFT = () => {
 			master_password: Yup.string().required("Please add the master password"),
 		}),
 		onSubmit: (values) => {
+			setLoading(true);
 			SubmitToServer();
 		},
 	});
@@ -52,15 +56,19 @@ const CreateNFT = () => {
 				});
 				formik.setErrors(ogErrors);
 				formik.setSubmitting(false);
+				setLoading(false);
 			} else if (resJSON.error && !resJSON.error.errors) {
-				alert(resJSON.error);
+				toast.error(resJSON.error);
+				setLoading(false);
 			}
 
 			if (resJSON.success) {
 				setSuccess(true);
+				router.push("/backoffice");
 			}
 		} catch (error) {
 			console.error(error);
+			setLoading(false);
 		}
 	};
 
@@ -115,7 +123,7 @@ const CreateNFT = () => {
 										appearance={"action"}
 										type="submit"
 									>
-										Sign in
+										{loading ? <Spinner /> : "Sign in"}
 									</Button>
 									<Form.Control.Feedback
 										type="invalid"

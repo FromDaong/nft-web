@@ -1,4 +1,10 @@
+import {styled} from "@styles/theme";
 import ToggleButton from "react-bootstrap/ToggleButton";
+
+const TagButton = styled(ToggleButton, {
+	borderColor: "$subtleBorder",
+	color: "$text",
+});
 
 const TagsSelector = ({selectedTags, setSelectedTags}) => {
 	const tags = [
@@ -48,10 +54,10 @@ const TagsSelector = ({selectedTags, setSelectedTags}) => {
 	};
 
 	return (
-		<div className="tags-container">
+		<div className="flex flex-wrap gap-2 ">
 			{tags.map((tag) => (
-				<ToggleButton
-					className="border-2 border-primary mb-2 mr-2"
+				<TagButton
+					className="border-2 rounded-xl p-1 flex gap-2 items-center"
 					type="checkbox"
 					checked={selectedTags.indexOf(tag) > -1}
 					value="1"
@@ -59,7 +65,7 @@ const TagsSelector = ({selectedTags, setSelectedTags}) => {
 					onChange={(e) => setChecked(e.currentTarget.checked, tag)}
 				>
 					{tag}
-				</ToggleButton>
+				</TagButton>
 			))}
 		</div>
 	);

@@ -28,6 +28,7 @@ export const DialogContent = styled(Dialog.Panel, {
 	zIndex: 1200,
 	minWidth: "360px",
 	overflow: "hidden",
+	overflowY: "auto",
 });
 
 export const DialogTitle = styled(Dialog.Title, {

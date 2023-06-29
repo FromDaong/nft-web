@@ -13,7 +13,13 @@ import AdminDashboardWrapper from "@components/BackofficeNavigation/BackofficeWr
 import TreatCore from "core/TreatCore";
 import axios from "axios";
 import {useRouter} from "next/router";
-import {AlertTriangle, AtSign, CircleSlash, Verified} from "lucide-react";
+import {
+	AlertTriangle,
+	ArrowLeft,
+	AtSign,
+	CircleSlash,
+	Verified,
+} from "lucide-react";
 import {Container} from "@packages/shared/components/Container";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
@@ -119,19 +125,26 @@ const AdminDashboard = () => {
 							subtitle="The transaction has been confirmed!"
 						/>
 
-						<div className="flex flex-col gap-12">
-							<Hero
-								title={`Reviewing: ${username}'s application`}
-								subtitle={`Be super careful when approving and rejecting creators`}
-								additionalContent={
-									<Link href="/backoffice">
-										<Button>
-											<b>{"Back to admin panel"}</b>
+						<div className="flex flex-col gap-12 pt-8">
+							<Container>
+								<Link href="/backoffice">
+									<a>
+										<Button
+											appearance={"surface"}
+											size={"sm"}
+											outlined
+										>
+											<ArrowLeft className="h-5 w-5" />
+											Dashboard
 										</Button>
-									</Link>
-								}
-								titleClass={""}
-							/>
+									</a>
+								</Link>
+								<Hero
+									title={`Reviewing: ${username}'s application`}
+									subtitle={`Be super careful when approving and rejecting creators`}
+									titleClass={""}
+								/>
+							</Container>
 
 							<Container className="flex gap-8">
 								<img

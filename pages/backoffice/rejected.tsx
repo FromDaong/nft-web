@@ -1,17 +1,24 @@
 import BackofficeNavigation from "@components/BackofficeNavigation";
 import Hero from "@components/Hero";
-import {LogoutIcon} from "@heroicons/react/outline";
+import {CloudDownloadIcon, LogoutIcon} from "@heroicons/react/outline";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
-import {ImportantText} from "@packages/shared/components/Typography/Text";
+import {
+	ImportantText,
+	SmallText,
+} from "@packages/shared/components/Typography/Text";
+import Spinner from "@packages/shared/icons/Spinner";
 import {useQuery} from "@tanstack/react-query";
+import formatAddress from "@utils/formatAddress";
+import axios from "axios";
+import TreatCore from "core/TreatCore";
 import UserAvatar from "core/auth/components/Avatar";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
+import {ArrowLeft} from "lucide-react";
 
 import Link from "next/link";
-import Spinner from "react-bootstrap/Spinner";
 import useSWR from "swr";
 import {useAccount} from "wagmi";
 
@@ -76,13 +83,7 @@ const RejectedAdminDashboard = () => {
 				>
 					Please make sure your wallet on the Binance Smart Chain is connected.
 				</Heading>
-				<Spinner
-					animation="border"
-					role="status"
-					style={{marginTop: 5}}
-				>
-					<span className="sr-only">Loading...</span>
-				</Spinner>
+				<Spinner />
 			</div>
 		);
 	} else {
@@ -105,7 +106,13 @@ const RejectedAdminDashboard = () => {
 };
 
 const AdminDashboard = () => {
-	const {data} = useSWR(`/api/admin/get-pending`);
+	const {data, isLoading, isError, refetch} = TreatCore.useQuery(
+		[`/api/admin/get-rejected`],
+		async () => {
+			const res = await axios.get(`/api/admin/get-pending`);
+			return res.data;
+		}
+	);
 
 	return (
 		<ApplicationLayout>
@@ -116,62 +123,104 @@ const AdminDashboard = () => {
 						subtitle={`
 							Manage creators and create new NFT collections as admin.
 						`}
-						additionalContent={
-							<Container className="flex gap-4 flex-wrap">
-								<Link href="/api/admin/logout">
-									<a>
-										<Button appearance={"danger"}>
-											<LogoutIcon className="h-5 w-5" />
-											Logout
-										</Button>
-									</a>
-								</Link>
-							</Container>
-						}
 					/>
 
 					<BackofficeNavigation />
 
 					<Container className="flex flex-col gap-4">
-						<Container className="flex flex-col gap-4">
-							<Heading
-								size={"xss"}
-								className="mb-3"
-							>
-								Rejected creators
-							</Heading>
-						</Container>
 						<Container className="flex flex-col gap-1">
-							{data &&
-								data?.rejectedModels.map((m) => (
-									<Link
-										key={m.username}
-										href={`/backoffice/profile/${m.username}`}
-									>
-										<a>
-											<Container
-												css={{
-													"&:hover": {
-														backgroundColor: "$surfaceOnSurface",
-													},
-												}}
-												className="flex p-4 rounded-xl items-center justify-between"
-											>
-												<Container className="align-center justify-content-center">
-													<UserAvatar
-														profile_pic={m.profile?.profile_pic}
-														username={m.username}
-														size={20}
-													/>
+							{!isLoading && !isError && data?.rejectedModels.length === 0 && (
+								<Container className="flex justify-center py-32">
+									<Container className="flex items-center flex-col gap-8 text-center">
+										<Container>
+											<Heading size={"sm"}>No rejected creators</Heading>
+											<Text>There are no rejected creators at the moment.</Text>
+										</Container>
+										<Link href={"/backoffice"}>
+											<a>
+												<Button appearance={"action"}>
+													<ArrowLeft className="w-4 h-4" />
+													Back to dashboard
+												</Button>
+											</a>
+										</Link>
+									</Container>
+								</Container>
+							)}
+							{isError && (
+								<Container className="flex justify-center py-32">
+									<Container className="flex items-center flex-col gap-8 text-center">
+										<Container>
+											<Heading size={"sm"}>An error occurred</Heading>
+											<Text>
+												An error occurred while fetching rejected creators.
+											</Text>
+										</Container>
+										<Button
+											onClick={() => refetch()}
+											appearance={"action"}
+										>
+											<CloudDownloadIcon className="w-4 h-4" />
+											Try again
+										</Button>
+									</Container>
+								</Container>
+							)}
+							{isLoading && (
+								<Container className="flex justify-center py-32">
+									<Container className="flex items-center flex-col gap-8 text-center">
+										<Container>
+											<Heading size={"sm"}>Please wait</Heading>
+											<Text>Please wait while we fetch rejected creators.</Text>
+										</Container>
+										<Spinner />
+									</Container>
+								</Container>
+							)}
+							<Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-8">
+								{data &&
+									data?.rejectedModels.map((m) => (
+										<Link
+											key={m.username}
+											href={`/backoffice/profile/${m.username}`}
+										>
+											<a>
+												<Container
+													css={{
+														"&:hover": {
+															backgroundColor: "$surfaceOnSurface",
+														},
+														borderColor: "$subtleBorder",
+													}}
+													className="flex items-start gap-4 border shadow-sm p-4 rounded-xl col-span-1"
+												>
+													<Container>
+														<UserAvatar
+															profile_pic={m.profile?.profile_pic}
+															username={m.username}
+															size={64}
+														/>
+													</Container>
+													<Container className="flex flex-col gap-4">
+														<Heading size={"xss"}>
+															{m.profile.display_name}
+														</Heading>
+														<Container className="flex flex-col gap-2">
+															<Container className="flex gap-2">
+																<Text>@{m.username}</Text>
+																<Text>&bull;</Text>
+																<Text>{formatAddress(m.address)}</Text>
+															</Container>
+															<Text className="line-clamp-2">
+																{m.profile.bio}
+															</Text>
+														</Container>
+													</Container>
 												</Container>
-												<Text>
-													<ImportantText>{m.username}</ImportantText>
-												</Text>
-												<Text>{m.address}</Text>
-											</Container>
-										</a>
-									</Link>
-								))}
+											</a>
+										</Link>
+									))}
+							</Container>
 						</Container>
 					</Container>
 				</div>

@@ -1,9 +1,12 @@
 import {useState, useEffect} from "react";
-import {FormControl, Form} from "react-bootstrap";
+import {Form} from "react-bootstrap";
 import CreatingNFTItemPreview from "./preview";
 import {encode} from "blurhash";
 import TagsSelector from "../TagsSelector";
 import CountUp from "react-countup";
+import {ImportantText, Text} from "@packages/shared/components/Typography/Text";
+import {Container} from "@packages/shared/components/Container";
+import {Input} from "@packages/shared/components/Input";
 
 const easing = [0.175, 0.85, 0.42, 0.96];
 
@@ -69,8 +72,13 @@ const CreatingNFTItem = ({
 	}, [imageUrl]);
 
 	return (
-		<div className="white-tp-container py-4 px-4 mt-2 row">
-			<div className="col-md-4">
+		<Container
+			css={{
+				borderColor: "$border",
+			}}
+			className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 border rounded-xl p-2 shadow-sm"
+		>
+			<div className="col-span-1">
 				<CreatingNFTItemPreview
 					imageUrl={imageUrl}
 					name={formik.values.nfts[index].name}
@@ -82,12 +90,15 @@ const CreatingNFTItem = ({
 					quantity={1}
 				/>
 			</div>
-			<div className="col-md-1" />
-			<div className="col-md-7 d-flex justify-content-center flex-column">
-				<div className="row pt-5 pt-md-0">
-					<div className="pb-4 col-md-6">
-						<label>NFT Name</label>
-						<FormControl
+			<div className="col-span-1 lg:col-span-2">
+				<div className="">
+					<div className="flex flex-col gap-2 py-b col-md-6">
+						<label>
+							<Text>
+								<ImportantText>NFT Name</ImportantText>
+							</Text>
+						</label>
+						<Input
 							placeholder="E.g. Morning Wood"
 							name={`nfts[${index}].name`}
 							value={formik.values.nfts[index].name}
@@ -98,9 +109,13 @@ const CreatingNFTItem = ({
 						/>
 					</div>
 					{!disablePrice && (
-						<div className="pb-4 col-md-6">
-							<label>NFT List Price (in BNB)</label>
-							<FormControl
+						<div className="flex flex-col gap-2 py-4 col-md-6">
+							<label>
+								<Text>
+									<ImportantText>Price</ImportantText>
+								</Text>
+							</label>
+							<Input
 								type="number"
 								placeholder="E.g. 120"
 								step="any"
@@ -126,9 +141,13 @@ const CreatingNFTItem = ({
 						</div>
 					)}
 				</div>
-				<div className="pb-4">
-					<label>NFT Description</label>
-					<FormControl
+				<div className="flex flex-col gap-2 py-4">
+					<label>
+						<Text>
+							<ImportantText>Description</ImportantText>
+						</Text>
+					</label>
+					<Input
 						placeholder="E.g. Let's make you rise."
 						as="textarea"
 						name={`nfts[${index}].description`}
@@ -136,31 +155,33 @@ const CreatingNFTItem = ({
 						onChange={formik.handleChange}
 					/>
 				</div>
-				<div className="pb-4">
+				<div className="flex flex-col gap-2 py-4">
 					<label className="w-100">
-						{blurRequired
-							? "Generated Blurhash for Resale Marketplace:"
-							: 'Blur this NFT publicly so users must "Pay to Reveal" the content?'}
+						<Text>
+							<ImportantText>
+								{blurRequired
+									? "Generated Blurhash for Resale Marketplace:"
+									: 'Blur this NFT publicly so users must "Pay to Reveal" the content?'}
+							</ImportantText>
+						</Text>
 					</label>
 					<div className="row">
 						{!blurRequired && (
-							<div className="col-md-2 text-center pt-2">
-								<Form.Check
-									className="d-inline mt-2"
-									type="switch"
-									id={`nfts[${index}].blurhash`}
-									name={`nfts[${index}].blurhash`}
-									checked={!!formik.values.nfts[index].blurhash}
-									onChange={changeBlurhash}
-								/>
-							</div>
+							<Form.Check
+								className="d-inline mt-2"
+								type="switch"
+								id={`nfts[${index}].blurhash`}
+								name={`nfts[${index}].blurhash`}
+								checked={!!formik.values.nfts[index].blurhash}
+								onChange={changeBlurhash}
+							/>
 						)}
 						<div className="col-md-10">
 							{!formik.values.nfts[index].blurhash && !blurRequired ? (
 								<></>
 							) : (
 								<>
-									<FormControl
+									<Input
 										placeholder="E.g. eKO2?U%2Tw=wR6]~RBVZRip0};RPxuwH%3tLOtxZ%gixI.ENa0NZIV"
 										name={`nfts[${index}].blurhash`}
 										value={
@@ -175,9 +196,13 @@ const CreatingNFTItem = ({
 						</div>
 					</div>{" "}
 				</div>
-				<div className="pb-4">
-					<label>Maximum Supply</label>
-					<FormControl
+				<div className="flex flex-col gap-2 py-4">
+					<label>
+						<Text>
+							<ImportantText>Max Supply</ImportantText>
+						</Text>
+					</label>
+					<Input
 						type="number"
 						placeholder="E.g. 1500"
 						name={`nfts[${index}].max_supply`}
@@ -185,8 +210,12 @@ const CreatingNFTItem = ({
 						onChange={formik.handleChange}
 					/>
 				</div>
-				<div className="pb-4">
-					<label>Tags</label>
+				<div className="flex flex-col gap-2 py-4">
+					<label>
+						<Text>
+							<ImportantText>Tags</ImportantText>
+						</Text>
+					</label>
 					<TagsSelector
 						selectedTags={selectedTags}
 						setSelectedTags={setSelectedTags}
@@ -194,7 +223,7 @@ const CreatingNFTItem = ({
 				</div>
 				<Form.Control.Feedback
 					type="invalid"
-					className="d-block"
+					className="flex flex-col gap-1"
 				>
 					{Object.keys(
 						(formik.errors &&
@@ -202,12 +231,19 @@ const CreatingNFTItem = ({
 							formik.errors.nfts[index]) ||
 							[]
 					).map((e) => (
-						<div key={e}>{formik.errors.nfts[index][e]}</div>
+						<Text
+							css={{
+								color: "$red11",
+							}}
+							key={e}
+						>
+							{formik.errors.nfts[index][e]}
+						</Text>
 					))}
 					{formik.errors.code}
 				</Form.Control.Feedback>
 			</div>
-		</div>
+		</Container>
 	);
 };
 

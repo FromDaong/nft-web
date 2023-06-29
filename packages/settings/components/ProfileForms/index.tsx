@@ -58,9 +58,9 @@ export default function PersonalInformationForm({
 				/>
 				<Container
 					css={{backgroundColor: "$surfaceOnSurface"}}
-					className="flex flex-col col-span-1 gap-10 p-4"
+					className="flex flex-col col-span-1 gap-10 p-4 "
 				>
-					<Container className="flex flex-col gap-6 rounded-2xl">
+					<Container className="flex flex-col gap-6 rounded-2xl ">
 						{profile ? (
 							<PersonalPresentationInformationForm profile={profile} />
 						) : (
@@ -168,7 +168,7 @@ const PersonalPresentationInformationForm = (props: {
 
 	return (
 		<>
-			<Container className="flex flex-col gap-2">
+			<Container className="flex flex-col gap-2 overflow-y-auto">
 				<Container className="flex items-center gap-12">
 					<Container
 						css={{

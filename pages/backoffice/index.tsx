@@ -24,18 +24,6 @@ const AdminDashboard = () => {
 							subtitle={`
 							Manage creators and create new NFT collections as admin.
 						`}
-							additionalContent={
-								<Container className="flex gap-4 flex-wrap">
-									<Link href="/api/admin/logout">
-										<a>
-											<Button appearance={"danger"}>
-												<LogoutIcon className="h-5 w-5" />
-												Logout
-											</Button>
-										</a>
-									</Link>
-								</Container>
-							}
 						/>
 
 						<BackofficeNavigation />

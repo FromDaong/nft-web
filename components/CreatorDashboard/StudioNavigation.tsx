@@ -16,7 +16,7 @@ function StudioNavigation() {
 
 	return (
 		<Container
-			className={"w-full flex gap-2 sticky top-0 z-30 border-b"}
+			className={"w-full flex gap-2 sticky top-0 z-10 border-b"}
 			css={{backgroundColor: "$surface", borderColor: "$border"}}
 		>
 			<Container className="flex gap-2 overflow-x-auto">

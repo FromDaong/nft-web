@@ -31,7 +31,7 @@ export const ABI = {
 	pancakeLP: PancakeLPAbi,
 	subscriberNFTMart: SubscriberMartAbi,
 	tipping: TippingContractAbi,
-	totmMinter: TotwMinterHelperAbi,
+	totmHelper: TotwMinterHelperAbi,
 	treat: Treat2Abi,
 	treatMarketReader: TreatMarketReaderAbi,
 	treatMarketplace: TreatMarketplaceAbi,
