@@ -205,7 +205,7 @@ function NFTPreview({nft, postUtils}) {
 							<>
 								{!isResale && (
 									<Container>
-										{(mintedNfts !== maxSupply || nft.melon_nft) && (
+										{(currentSupply !== maxSupply || nft.melon_nft) && (
 											<BuyButton
 												postUtils={postUtils}
 												nftData={nft}
@@ -213,7 +213,7 @@ function NFTPreview({nft, postUtils}) {
 											/>
 										)}
 
-										{mintedNfts === maxSupply && !nft.melon_nft && (
+										{currentSupply === maxSupply && !nft.melon_nft && (
 											<Container className="flex items-center gap-4">
 												<Text
 													css={{color: "$red9"}}
