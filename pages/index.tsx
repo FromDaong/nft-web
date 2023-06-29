@@ -113,7 +113,7 @@ export default function Index(props: {
 				<Container className="container relative flex flex-col gap-12 px-8 mx-auto">
 					<Container className="flex flex-col items-center max-w-screen-sm gap-12 py-12 mx-auto text-center lg:gap-16">
 						<Container className={"flex justify-center"}>
-							<Link href={"/magazines"}>
+							<Link href={"/magazine"}>
 								<a>
 									<Container
 										css={{
