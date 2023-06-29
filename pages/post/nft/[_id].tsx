@@ -117,7 +117,13 @@ function NFTPreview({nft, postUtils}) {
 	const {maxSupply, currentSupply, isResale, nftId, price, seller} =
 		selectedOrder ?? {};
 
-	const mintedNfts = maxSupply - currentSupply;
+	const mintedNfts = currentSupply === "0" ? 0 : maxSupply - +currentSupply;
+
+	console.log({
+		mintedNfts,
+		maxSupply,
+		currentSupply,
+	});
 
 	return (
 		<>

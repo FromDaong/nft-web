@@ -21,7 +21,6 @@ const salesHistory = (nft) => gql`
           orderDirection: asc,
           where: {
             treatsPurchased_contains: [${nft.id}],
-            sourceContract: "0xA38978E839c08046FA80B0fee55736253Ab3B8a3"
           }
         ) {
           id
@@ -50,6 +49,8 @@ const TransactionsPresentation = ({nft}) => {
 	const [result] = useQuery({
 		query: salesHistory(nft),
 	});
+
+	console.log({result});
 
 	const txHistory = useMemo(() => {
 		if (!result.data) return [];
@@ -99,54 +100,55 @@ const TransactionsPresentation = ({nft}) => {
 					<Button appearance={"surface"}>NFT has no sales history</Button>
 				</Container>
 			)}
-			{txHistoryWithProfile.map((tx) => (
-				<Container
-					key={tx.id}
-					className="p-2 flex flex-col md:flex-row gap-2 rounded-xl justify-between"
-				>
-					<Container className="flex gap-4">
-						<UserAvatar
-							size={32}
-							username={tx.buyer.username}
-							profile_pic={tx.buyer.profile_pic}
-						/>
-						<Container>
-							<Text>
-								<ImportantText>
-									Purchased for {Web3.utils.fromWei(tx.cost).toString()} BNB
-								</ImportantText>
-							</Text>
-							<Container className="flex gap-2">
+			{!isLoading &&
+				txHistoryWithProfile.map((tx) => (
+					<Container
+						key={tx.id}
+						className="p-2 flex flex-col md:flex-row gap-2 rounded-xl justify-between"
+					>
+						<Container className="flex gap-4">
+							<UserAvatar
+								size={32}
+								username={tx.buyer.username}
+								profile_pic={tx.buyer.profile_pic}
+							/>
+							<Container>
 								<Text>
-									{tx.buyer.username ??
-										tx.buyer.address.slice(0, 5) +
-											"..." +
-											tx.buyer.address.slice(tx.buyer.address.length - 4)}
+									<ImportantText>
+										Purchased for {Web3.utils.fromWei(tx.cost).toString()} BNB
+									</ImportantText>
 								</Text>
-								<Text>&bull;</Text>
-								<Text>
-									{timeFromNow(
-										// @ts-ignore
-										parseInt(tx.purchaseDate) * 1000
-									)}
-								</Text>
+								<Container className="flex gap-2">
+									<Text>
+										{tx.buyer.username ??
+											tx.buyer.address.slice(0, 5) +
+												"..." +
+												tx.buyer.address.slice(tx.buyer.address.length - 4)}
+									</Text>
+									<Text>&bull;</Text>
+									<Text>
+										{timeFromNow(
+											// @ts-ignore
+											parseInt(tx.purchaseDate) * 1000
+										)}
+									</Text>
+								</Container>
 							</Container>
 						</Container>
-					</Container>
-					<a
-						href={`https://bscscan.com/tx/${tx.id}`}
-						target="_blank"
-						rel="noreferrer"
-					>
-						<Button
-							appearance={"link"}
-							size={"sm"}
+						<a
+							href={`https://bscscan.com/tx/${tx.id}`}
+							target="_blank"
+							rel="noreferrer"
 						>
-							View on Bscscan <ExternalLinkIcon className="w-5 h-5" />
-						</Button>
-					</a>
-				</Container>
-			))}
+							<Button
+								appearance={"link"}
+								size={"sm"}
+							>
+								View on Bscscan <ExternalLinkIcon className="w-5 h-5" />
+							</Button>
+						</a>
+					</Container>
+				))}
 		</Container>
 	);
 };
