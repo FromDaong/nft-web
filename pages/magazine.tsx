@@ -4,6 +4,7 @@ import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Heading} from "@packages/shared/components/Typography/Headings";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
+import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import Image from "next/image";
 
 const Gallery = ({magazines}: {magazines: Array<IMagazineProps>}) => {
@@ -34,37 +35,40 @@ const Gallery = ({magazines}: {magazines: Array<IMagazineProps>}) => {
 
 const Totm = (props: {allMagazines: Array<IMagazineProps>}) => {
 	return (
-		<ApplicationFrame>
-			<SEOHead
-				title={"Treat Magazine"}
-				description={
-					"A curated publication by Treat DAO featuring one creator each month"
-				}
-			/>
-			<Container className="max-w-4xl p-4 mx-auto lg:p-0">
-				<Container className="flex items-center text-center flex-col max-w-xl gap-4 py-16 md:py-24 xl:py-32 mx-auto ">
-					<Heading className="text-5xl font-medium text-slate-900">
-						Treat Magazines
-					</Heading>
-					<p>
-						A curated publication by Treat DAO featuring one creator each month
-					</p>
-					<a
-						href="https://opensea.io/collection/treatofthemonth"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<Button className="bg-primary text-white">
-							<b>{"Visit the Ethereum Collection"}</b>
-						</Button>
-					</a>
+		<ApplicationLayout>
+			<ApplicationFrame>
+				<SEOHead
+					title={"Treat Magazine"}
+					description={
+						"A curated publication by Treat DAO featuring one creator each month"
+					}
+				/>
+				<Container className="max-w-4xl p-4 mx-auto lg:p-0">
+					<Container className="flex items-center text-center flex-col max-w-xl gap-4 py-16 md:py-24 xl:py-32 mx-auto ">
+						<Heading className="text-5xl font-medium text-slate-900">
+							Treat Magazines
+						</Heading>
+						<p>
+							A curated publication by Treat DAO featuring one creator each
+							month
+						</p>
+						<a
+							href="https://opensea.io/collection/treatofthemonth"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<Button className="bg-primary text-white">
+								<b>{"Visit the Ethereum Collection"}</b>
+							</Button>
+						</a>
+					</Container>
 				</Container>
-			</Container>
 
-			<Container className="p-4 xl:p-0">
-				<Gallery magazines={props.allMagazines} />
-			</Container>
-		</ApplicationFrame>
+				<Container className="p-4 xl:p-0">
+					<Gallery magazines={props.allMagazines} />
+				</Container>
+			</ApplicationFrame>
+		</ApplicationLayout>
 	);
 };
 
