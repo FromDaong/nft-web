@@ -284,9 +284,9 @@ function ConvertV1ToV2NFTCard({tokens}) {
 		hash: txHash,
 	});
 
-	const v1NFTs = tokens; /*.filter(
+	const v1NFTs = tokens.filter(
 		(t) => t.registry.id === "0xde39d0b9a93dcd541c24e80c8361f362aab0f213"
-	);*/
+	);
 	const ids = v1NFTs.map((n) => n.identifier);
 	const amounts = v1NFTs.map((n) => n.totalSupply);
 
