@@ -21,6 +21,8 @@ import {BuyButtonProps} from "@packages/post/hooks/helpers";
 import {BigNumber} from "ethers";
 import Web3 from "web3";
 import {formatBlockchainResponse} from "./ResaleBuyButton";
+import axios from "axios";
+import {apiEndpoint} from "@utils/index";
 
 const BuyButton = ({nftData, postUtils, callback}) => {
 	const {address, status} = useAccount();
@@ -180,7 +182,14 @@ const PurchaseButtonWrapper = (nft: BuyButtonProps) => {
 	useEffect(() => {
 		if (data || isError) {
 			if (data) {
-				nft.callback();
+				axios
+					.post(`${apiEndpoint}/marketplace/methods/purchase-nft`, {
+						tx_hash: txHash,
+						seller: nft.creator.address,
+						price: nft.price,
+						nftId: nft.id,
+					})
+					.then(nft.callback);
 			}
 
 			setLoading(false);
