@@ -27,6 +27,8 @@ import OwnersSection from "@components/MarketPlace/Details/OwnersSection";
 import PurchasedNFTPreview from "@components/MarketPlace/Details/Modals/PurchasedNFTPreview";
 import ResaleListingBuyButton from "@components/NFTPage/ResaleBuyButton";
 import BuyButton from "@components/NFTPage/BuyButton";
+import axios from "axios";
+import TreatCore from "core/TreatCore";
 
 export default function NFT(props: {
 	notFound?: boolean;
@@ -111,6 +113,16 @@ function NFTPreview({nft, postUtils}) {
 		onClose: onLightboxClose,
 	} = useDisclosure();
 	const {isOpen, onOpen, onClose} = useDisclosure();
+
+	const {isLoading: bnbPriceLoading, data: bnbPrice} = TreatCore.useQuery({
+		queryKey: ["bnbPrice"],
+		queryFn: async () => {
+			const res = await axios.get(
+				"https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd"
+			);
+			return res.data.binancecoin.usd;
+		},
+	});
 
 	const {isOwned} = useGetIsNFTOwned(nft);
 	const {selectedOrder, isLoading, isError} = useContext(SelectedOrderContext);

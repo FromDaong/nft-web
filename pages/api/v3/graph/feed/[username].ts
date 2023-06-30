@@ -6,7 +6,9 @@ export default async function handler(
 	res: NextApiResponse
 ) {
 	try {
-		const user = await MongoModelProfile.findById(req.query._id);
+		const user = await MongoModelProfile.findOne({
+			username: req.query.username,
+		});
 
 		if (!user) {
 			return res.status(404).json({message: "User not found"});
@@ -21,7 +23,7 @@ export default async function handler(
 		// Calculate the score for each post
 		posts = posts.map((post) => {
 			const hoursSinceLastActivity =
-				(new Date().getTime() - post.lastActivity.getTime()) / 1000 / 60 / 60;
+				(new Date().getTime() - post.createdAt.getTime()) / 1000 / 60 / 60;
 			post.score = post.likes * 2 + post.views - hoursSinceLastActivity;
 			return post;
 		});
@@ -29,7 +31,7 @@ export default async function handler(
 		// Sort the posts by score
 		posts.sort((a, b) => b.score - a.score);
 
-		res.json(posts);
+		res.json(posts.slice(0, 24));
 	} catch (error) {
 		res.status(500).json({message: error.message});
 	}

@@ -30,6 +30,7 @@ import StudioNavigation from "@components/CreatorDashboard/StudioNavigation";
 import {toast} from "sonner";
 import UserAvatar from "core/auth/components/Avatar";
 import {useUser} from "core/auth/useUser";
+import formatAddress from "@utils/formatAddress";
 
 export default function TreatCreatorStudio() {
 	const {isLoading: isLoadingAccountSummary, data: accountSummary} =
@@ -71,6 +72,7 @@ export default function TreatCreatorStudio() {
 											username={profile?.username}
 										/>
 										<Heading size={"xss"}>{profile?.display_name}</Heading>
+										<Text>{formatAddress(profile?.address ?? "")}</Text>
 									</Container>
 
 									<AccountSummary
@@ -145,6 +147,9 @@ function AccountSummary({data, isLoading, profile}) {
 	});
 
 	if (isLoading) return <div>Loading...</div>;
+
+	const totalSaleValue = data.tokens.reduce((a, b) => a + +b.totalSaleValue, 0);
+
 	return (
 		<>
 			<Container className="flex flex-col gap-2">
@@ -155,14 +160,14 @@ function AccountSummary({data, isLoading, profile}) {
 					$
 					{!bnbPriceLoading
 						? Intl.NumberFormat().format(
-								parseFloat(Web3.utils.fromWei(data.totalSales)) * bnbPrice
+								parseFloat(Web3.utils.fromWei(`${totalSaleValue}`)) * bnbPrice
 						  )
 						: 0}
 				</Heading>
 				<SmallText>
 					<ImportantText>
 						{Intl.NumberFormat().format(
-							parseFloat(Web3.utils.fromWei(data.totalSales))
+							parseFloat(Web3.utils.fromWei(`${totalSaleValue}`))
 						)}{" "}
 						BNB
 					</ImportantText>
