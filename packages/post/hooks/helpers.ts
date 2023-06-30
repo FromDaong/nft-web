@@ -22,6 +22,7 @@ export type BuyButtonProps = {
 	creator: any;
 	[key: string]: any;
 	postUtils: any;
+	callback: () => void;
 };
 
 export const get_nft_type = (nft) => {

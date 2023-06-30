@@ -1,136 +1,358 @@
-import {
-	useWagmiGetCreatorNftCost,
-	useWagmiGetSubscriberNftCost,
-	useWagmiGetTreatOfTheMonthNftCost,
-} from "@packages/chain/hooks";
+import AddToWishlist from "@components/MarketPlace/Details/Modals/AddToWishlist";
+import ShowAllCollectors from "@components/MarketPlace/Details/Modals/Collectors";
+import ShareModal from "@components/NFTPage/modals/ShareNFTModal";
+import {TiptapPreview} from "@components/ui/tiptap";
+import AvatarGroup from "@packages/avatars/AvatarGroup";
+import {useWishlist} from "@packages/chain/hooks/useWishlist";
+import {useDisclosure} from "@packages/hooks";
+import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {
 	ImportantText,
-	MutedText,
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
+import {ABI} from "@packages/treat/lib/abi";
+import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
+import {StarFilledIcon} from "@radix-ui/react-icons";
+import {apiEndpoint} from "@utils/index";
+import axios from "axios";
+import TreatCore from "core/TreatCore";
 import UserAvatar from "core/auth/components/Avatar";
+import {Share2Icon, StarIcon} from "lucide-react";
 import Link from "next/link";
+import {useEffect, useMemo, useState} from "react";
+import {useContract, useSigner} from "wagmi";
 
-const NFTPresentationComponent = (props: {
-	nft: any;
-	isOwned: boolean;
-	balance: number;
-	loadHD: () => void;
-	openFullScreen: () => void;
-	address: string;
-	isResale: boolean;
-}) => {
+const useGetCollectors = (nftId) => {
+	const [isLoading, setIsLoading] = useState(true);
+	const [collectors, setCollectors] = useState([]);
+
+	const {
+		data: collectorsData,
+		isLoading: collectorsIsLoading,
+		refetch,
+	} = TreatCore.useQuery(
+		["getCollectors", nftId],
+		async () => {
+			const res = await axios.post(`${apiEndpoint}/people/get-by-address`, {
+				addresses: collectors.map((item) => item.owner_of),
+			});
+			return res.data.data;
+		},
+		{
+			enabled: !isLoading,
+		}
+	);
+
+	// fetch the collectors from moralis api
+	useEffect(() => {
+		const getCollectors = async () => {
+			try {
+				const res = await fetch(
+					`https://deep-index.moralis.io/api/v2/nft/${contractAddresses.treatNFTMinter[56]}/${nftId}/owners?chain=bsc&format=decimal&disable_total=false`,
+					{
+						headers: {
+							"X-API-Key": process.env.NEXT_PUBLIC_MORALIS_API_KEY,
+						},
+					}
+				);
+				const data: {
+					total: number;
+					result: {
+						token_id: string;
+						owner_of: string;
+						amount: string;
+					}[];
+				} = await res.json();
+				setCollectors(
+					data.result.map((item) => ({
+						token_id: item.token_id,
+						owner_of: item.owner_of,
+						amount: item.amount,
+					}))
+				);
+				refetch();
+				setIsLoading(false);
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		getCollectors();
+	}, [nftId]);
+
+	return {collectors: collectorsData, isLoading: collectorsIsLoading};
+};
+
+export const useTreatResaleMarket = () => {
+	const {data} = useSigner();
+
+	const treatResaleMarket = useContract({
+		addressOrName: contractAddresses.treatResaleMarketplaceMinter[56],
+		contractInterface: ABI.treatMarketplace,
+		signerOrProvider: data,
+	});
+
+	const treatResaleMarketReader = useContract({
+		addressOrName: contractAddresses.treatMarketReader[56],
+		contractInterface: ABI.treatMarketReader,
+		signerOrProvider: data,
+	});
+
+	return {
+		treatResaleMarket,
+		treatResaleMarketReader,
+	};
+};
+
+export const useGetResaleListings = (nftId: number) => {
+	const [isLoading, setIsLoading] = useState(true);
+	const [resaleOrders, setResaleListings] = useState({
+		sellers: [],
+		prices: [],
+		quantitys: [],
+	});
+	const {treatResaleMarketReader} = useTreatResaleMarket();
+
+	const {data: sellersData, isLoading: sellersIsLoading} = TreatCore.useQuery(
+		["getSellers", nftId],
+		async () => {
+			const res = await axios.post(`${apiEndpoint}/people/get-by-address`, {
+				addresses: resaleOrders.sellers.map((item) => item),
+			});
+			return res.data.data;
+		},
+		{
+			enabled: !isLoading,
+		}
+	);
+
+	useEffect(() => {
+		setIsLoading(true);
+		const getResaleListingsSellers = async () => {
+			try {
+				const orders = await treatResaleMarketReader.readAllOrdersForNft(nftId);
+
+				setResaleListings({...orders});
+				setIsLoading(false);
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		getResaleListingsSellers();
+	}, [nftId]);
+
+	const resaleListings = useMemo(() => {
+		if (sellersData && resaleOrders) {
+			return resaleOrders.sellers
+				.map((seller_addr, index) => {
+					const seller = sellersData.find(
+						(item) => item.address.toLowerCase() === seller_addr.toLowerCase()
+					);
+
+					if (!seller) return null;
+
+					return {
+						price: resaleOrders.prices[index],
+						quantity: resaleOrders.quantitys[index],
+						seller,
+					};
+				})
+				.filter((item) => item);
+		}
+		return [];
+	}, [sellersData]);
+
+	return {
+		isLoading: sellersIsLoading || isLoading,
+		resaleListings,
+	};
+};
+
+const NFTPresentationComponent = (props: {nft: any; address: string}) => {
 	const {nft} = props;
-	const {cost: creatorCost} = useWagmiGetCreatorNftCost(nft.id);
-	const {cost: treatCost} = useWagmiGetTreatOfTheMonthNftCost(nft.id);
-	const {cost: subscriptionCost} = useWagmiGetSubscriberNftCost(nft.id);
+	const {collectors, isLoading} = useGetCollectors(nft.id);
+	const {
+		isLoading: wishListLoading,
+		addToWishlist,
+		removeFromWishlist,
+		isWishlisted,
+		wishlist,
+	} = useWishlist(nft._id);
 
-	let nftCost: any = nft.subscription_nft ? subscriptionCost : creatorCost;
-	nftCost = nft.totm_nft ? treatCost : nftCost;
+	const description = useMemo(() => {
+		if (typeof nft.description === "string") {
+			return JSON.parse(nft.description);
+		}
+		return nft.description;
+	}, [nft]);
 
-	const displayedCost = nftCost;
+	const {
+		isOpen: isShareModalOpen,
+		onOpen: onOpenShareModal,
+		onClose: onCloseShareModal,
+	} = useDisclosure();
+
+	const {
+		isOpen: isCollectorsModalOpen,
+		onOpen: onOpenCollectorsModal,
+		onClose: onCloseCollectorsModal,
+	} = useDisclosure();
+
+	const addOrRemoveFromWishlist = () => {
+		if (isWishlisted) return removeFromWishlist();
+		if (!isWishlisted) return addToWishlist();
+	};
 
 	return (
 		<>
-			<Container className="grid grid-cols-1 gap-12 lg:grid-cols-3">
-				<Container className="grid flex-col grid-cols-2 gap-12 py-8 lg:col-span-2 lg:flex">
-					<Container className="flex flex-col gap-4">
+			{!isLoading && (
+				<ShowAllCollectors
+					isOpen={isCollectorsModalOpen}
+					onClose={onCloseCollectorsModal}
+					collectors={collectors}
+				/>
+			)}
+			<ShareModal
+				isOpen={isShareModalOpen}
+				onClose={onCloseShareModal}
+			/>
+			<Container className="flex flex-col gap-12 lg:gap-16 lg:flex">
+				<Container className="flex flex-col gap-8">
+					<Container
+						className={"flex md:flex-col flex-col gap-6 md:gap-2 pb-4"}
+					>
 						<Heading
-							size="md"
+							size={"sm"}
 							className="tracking-tighter"
 						>
 							{nft.name}
 						</Heading>
-						<Link href={`/${nft.creator.username}`}>
-							<a>
-								<Container className="flex gap-4 items-center">
+						<Container className="flex gap-4 justify-between flex-wrap items-center py-2">
+							<Link href={`/${nft.creator.username}`}>
+								<a className="flex items-center gap-2">
 									<UserAvatar
+										size={24}
 										username={nft.creator.username}
 										profile_pic={nft.creator.profile.profile_pic}
-										size={48}
 									/>
-									<Container className="flex flex-col gap-2 justify-between">
-										<SmallText>
-											<MutedText>
-												<ImportantText>Creator</ImportantText>
-											</MutedText>
-										</SmallText>
-										<Text>
+									<Container className="flex flex-col">
+										<Text css={{color: "$textContrast"}}>
 											<ImportantText>
 												{nft.creator.profile.display_name?.trim() === ""
-													? `@${nft.creator.username}`
+													? `${nft.creator.username}`
 													: nft.creator.profile.display_name}
 											</ImportantText>
 										</Text>
 									</Container>
-								</Container>
-							</a>
-						</Link>
+								</a>
+							</Link>
+							<Container className="flex gap-4 flex-shrink-0">
+								{(!wishListLoading || !wishlist) && (
+									<Button
+										css={{padding: "4px 8px"}}
+										appearance={isWishlisted ? "accent" : "surface"}
+										onClick={addOrRemoveFromWishlist}
+									>
+										{!isWishlisted && (
+											<>
+												<StarIcon className="w-5 h-5" />
+												Wishlist
+											</>
+										)}
+										{isWishlisted && (
+											<>
+												<StarFilledIcon className="w-5 h-5" />
+												Wishlisted
+											</>
+										)}
+									</Button>
+								)}
+								<Button
+									onClick={onOpenShareModal}
+									appearance={"surface"}
+									css={{padding: "4px 8px"}}
+								>
+									<Share2Icon className="w-5 h-5" />
+									Share
+								</Button>
+							</Container>
+						</Container>
 					</Container>
-					{nft.description?.trim() && (
-						<Container className="flex flex-col col-span-2 gap-4 md:col-span-1">
-							<Heading
-								className="tracking-tighter"
-								size="xs"
-							>
-								Description
-							</Heading>
-							<Text>{nft.description}</Text>
+					<Container className="flex flex-col col-span-2 gap-4 md:col-span-1">
+						{!!nft.description && (
+							<Container className="flex flex-col gap-2">
+								<Heading
+									className="tracking-tighter"
+									size="xss"
+								>
+									Description
+								</Heading>
+								<TiptapPreview value={description} />
+							</Container>
+						)}
+					</Container>
+					{(isLoading || collectors?.length !== 0) && (
+						<Container className="flex flex-wrap gap-4">
+							<Container className="flex flex-col gap-2">
+								<Heading size={"xss"}>Owners</Heading>
+								<Container className="flex items-center w-fit">
+									{!isLoading && (
+										<>
+											<AvatarGroup
+												size={32}
+												users={collectors.slice(0, 5).map((c) => ({
+													name: c.username,
+													imageUrl: c.profile_pic,
+													href: `/${c.username}`,
+												}))}
+											/>
+											{collectors.length > 5 && (
+												<Container className="flex gap-2">
+													<Button
+														appearance={"subtle"}
+														size={"sm"}
+														onClick={onOpenCollectorsModal}
+													>
+														{collectors.length > 5
+															? `+${collectors.length - 5} more`
+															: "View all"}
+													</Button>
+												</Container>
+											)}
+										</>
+									)}
+									{isLoading && (
+										<Container
+											className="flex py-3 w-32 rounded-xl"
+											css={{
+												backgroundColor: "$elementOnSurface",
+											}}
+										/>
+									)}
+								</Container>
+							</Container>
 						</Container>
 					)}
-
 					<Container className="flex flex-col col-span-2 gap-2 md:col-span-1">
 						<Heading
 							className="tracking-tighter"
-							size="xs"
+							size="xss"
 						>
 							Tags
 						</Heading>
 						<Container className="flex flex-wrap gap-4 py-2">
 							{nft.tags?.map((tag) => (
 								<Link
-									href={`/sweetshop/tag/${tag}`}
+									href={`/sweetshop?tags=${tag}`}
 									key={tag}
 								>
 									<a>
-										<Container
-											className="px-3 py-1 rounded-full"
-											css={{
-												backgroundColor: "$elementOnSurface",
-											}}
-										>
-											<Text>
-												<ImportantText>{tag}</ImportantText>
-											</Text>
-										</Container>
+										<Tag>{tag}</Tag>
 									</a>
 								</Link>
 							))}
-							<Container
-								className="px-3 py-1 rounded-full"
-								css={{
-									backgroundColor: "$elementOnSurface",
-								}}
-							>
-								<Text>
-									<ImportantText>NFT</ImportantText>
-								</Text>
-							</Container>
-						</Container>
-					</Container>
-					<Container className="flex flex-col items-center gap-4">
-						<Container className="flex flex-col gap-4 items-baseline justify-between w-full">
-							<Text className="tracking-tighter">
-								<ImportantText>List price</ImportantText>
-							</Text>
-							<Heading
-								className="tracking-tighter"
-								size="sm"
-							>
-								{displayedCost} BNB
-							</Heading>
+							<Tag>NFT</Tag>
 						</Container>
 					</Container>
 				</Container>
@@ -138,5 +360,23 @@ const NFTPresentationComponent = (props: {
 		</>
 	);
 };
+
+export function Tag({children}) {
+	return (
+		<Container
+			className="px-3 py-1 border rounded-full shadow-sm"
+			css={{
+				backgroundColor: "$surfaceOnSurface",
+				borderColor: "$border",
+			}}
+		>
+			<SmallText>
+				<ImportantText className="pink:text-gray-700 dark:text-gray-200">
+					{children ?? name}
+				</ImportantText>
+			</SmallText>
+		</Container>
+	);
+}
 
 export default NFTPresentationComponent;

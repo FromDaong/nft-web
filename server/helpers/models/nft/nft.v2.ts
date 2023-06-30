@@ -20,7 +20,7 @@ const V2NftSchema = new mongoose.Schema(
 		},
 		price: {
 			type: Number,
-			required: true,
+			required: false,
 			default: 0.0,
 		},
 		listDate: {

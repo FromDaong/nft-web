@@ -43,12 +43,12 @@ const CreatorSchema = new mongoose.Schema(
 		subscription: {
 			cost: {
 				type: Number,
-				required: true,
+				required: false,
 				default: 0,
 			},
 			description: {
 				type: String,
-				required: true,
+				required: false,
 				default: "",
 			},
 		},
@@ -68,7 +68,7 @@ const CreatorSchema = new mongoose.Schema(
 		},
 		user: {
 			type: mongoose.Schema.Types.ObjectId,
-			required: true,
+			required: false,
 			ref: "User",
 		},
 		identity_access_key: {

@@ -1,4 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import SearchForm from "@components/MarketPlace/Listings/SearchForm";
 import {SearchIcon} from "@heroicons/react/outline";
 import NFTSort from "@packages/Dropdowns/NFTDropdownSort";
 import {TritResalePost} from "@packages/post/TritResalePost";
@@ -39,52 +40,13 @@ export default function NFTS({sort, q, nfts, error}) {
 		<ApplicationLayout>
 			<ApplicationFrame>
 				<SEOHead title="Explore NFTs" />
+				<SearchForm
+					performSearchWithNewParams={performSearchWithNewParams}
+					searchText={searchText}
+					setSearchText={setSearchText}
+				/>
 				{!error && (
 					<Container className="flex flex-col gap-12 py-12">
-						<Container className="flex items-center justify-center gap-4">
-							<SweetshopTabs />
-						</Container>
-						<form
-							onSubmit={performSearchWithNewParams}
-							className="flex flex-col w-full gap-4 px-4"
-						>
-							<Container
-								className="flex items-center w-full gap-1 px-2 py-1 rounded-lg"
-								css={{
-									backgroundColor: "$elementOnSurface",
-									border: "1px solid $border",
-								}}
-							>
-								<Input
-									css={{
-										padding: "8px 12px",
-										borderRadius: "8px",
-										backgroundColor: "transparent",
-									}}
-									placeholder={"Start typing to search for NFTs"}
-									onChange={(e) => setSearchText(e.target.value)}
-									value={searchText}
-									className="flex-1"
-								/>
-
-								<Button
-									type={"submit"}
-									appearance={"subtle"}
-								>
-									<SearchIcon
-										width={20}
-										height={20}
-									/>
-								</Button>
-							</Container>
-						</form>
-						<Container className="flex gap-4 px-4 flex-noshrink">
-							<NFTSort
-								sort={sortBy}
-								prefix={"/resale"}
-							/>
-						</Container>
-
 						<Container className="flex flex-col gap-8 px-4 overflow-x-hidden">
 							<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 place-content-center xl:grid-cols-4">
 								{nft_posts.length > 0 &&
@@ -117,6 +79,11 @@ export default function NFTS({sort, q, nfts, error}) {
 								prevPage={posts.page - +1}
 							/>
 						</Container>
+					</Container>
+				)}
+				{error && (
+					<Container className="flex flex-col gap-12 py-12">
+						<Heading>An error occurred</Heading>
 					</Container>
 				)}
 			</ApplicationFrame>

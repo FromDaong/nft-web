@@ -1,23 +1,15 @@
-import {
-	addPerformerToMinter,
-	getMinterPermissionHelperContract,
-} from "@packages/chain/utils";
-
 import {useCallback} from "react";
 import {useAccount} from "wagmi";
-import useTreat from "./useTreat";
+import {useContracts} from "@packages/post/hooks";
 
 const useAddPerformerToMinter = (modelAddress: string) => {
 	const {address: account} = useAccount();
-	const treat = useTreat();
-	const minterPermissionHelperContract =
-		getMinterPermissionHelperContract(treat);
+	const {minterPermissionHelperContract} = useContracts();
 
 	const handleAddPerformerToMinter = useCallback(async () => {
-		const txHash = await addPerformerToMinter(
-			minterPermissionHelperContract,
-			account,
-			modelAddress
+		const txHash = await await minterPermissionHelperContract.addPerformer(
+			modelAddress,
+			{from: account, value: 0}
 		);
 		return txHash;
 	}, [account, modelAddress, minterPermissionHelperContract]);

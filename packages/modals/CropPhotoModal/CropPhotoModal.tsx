@@ -1,21 +1,9 @@
-import {XIcon} from "@heroicons/react/outline";
 import {Container} from "@packages/shared/components/Container";
-import {Heading, Text} from "@packages/shared/components/Typography/Headings";
-import {
-	ImportantText,
-	MutedText,
-} from "@packages/shared/components/Typography/Text";
+import {Heading} from "@packages/shared/components/Typography/Headings";
 import {styled} from "@styles/theme";
-import {useUpdateTheme} from "@packages/theme";
-import DarkTheme from "../../../../public/assets/svg/DarkTheme.svg";
-import LightTheme from "../../../../public/assets/svg/LightTheme.svg";
-import PinkTheme from "../../../../public/assets/svg/PinkTheme.svg";
-import Image from "next/image";
-import {ApplicationTheme} from "@packages/theme";
-import {useContext, useState} from "react";
+import {useState} from "react";
 import Cropper from "react-easy-crop";
 import {useCallback} from "react";
-import {SliderIcon} from "@radix-ui/react-icons";
 import * as Slider from "@radix-ui/react-slider";
 import {Modal} from "..";
 import {Button} from "@packages/shared/components/Button";

@@ -18,13 +18,7 @@ const recursiveRender = (row) => {
 					css={{
 						height: "calc(100% -8px)px",
 						gridColumn: `${col.start} / span ${col.length}`,
-						backgroundColor:
-							col.type === "circle" ||
-							col.type === "square" ||
-							col.type === "gutter" ||
-							col.rows
-								? "transparent"
-								: "$elementOnSurface",
+						backgroundColor: !col.bg ? "transparent" : "$elementOnSurface",
 						borderRadius: `${col.radius}px`,
 						gap: "6px",
 					}}

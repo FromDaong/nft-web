@@ -1,16 +1,33 @@
 import {ComponentBasicProps} from "core/TreatCore";
 import Link from "next/link";
 import {useRouter} from "next/router";
-import {Button} from "../Button";
 import {Container} from "../Container";
-import {ImportantText, Text} from "../Typography/Text";
+import {Text} from "../Typography/Text";
+import {ReactNode} from "react";
 
 export const TabsContainer = ({children}: ComponentBasicProps) => {
 	return (
 		<Container
-			css={{borderBottom: "1px solid $border"}}
 			variant={"unstyled"}
-			className="flex w-full gap-x-4 flex-start"
+			className=""
+		>
+			<Container className="container flex w-full mx-auto gap-x-2 flex-start max-w-screen-xl">
+				{children}
+			</Container>
+		</Container>
+	);
+};
+
+export const ActionTab = ({children, isActive}) => {
+	return (
+		<Container
+			css={{
+				marginY: "12px",
+				backgroundColor: isActive ? "$elementOnSurface" : "$surface",
+				borderRadius: "8px",
+				padding: "8px 12px",
+			}}
+			className={`relative rounded-full`}
 		>
 			{children}
 		</Container>
@@ -20,11 +37,11 @@ export const TabsContainer = ({children}: ComponentBasicProps) => {
 export const Tab = ({
 	label,
 	href,
-	count,
+	icon,
 }: {
 	label: string;
 	href: string;
-	count?: number;
+	icon?: ReactNode;
 }) => {
 	const {asPath} = useRouter();
 	const withoutParams = asPath.split("?")[0];
@@ -33,10 +50,10 @@ export const Tab = ({
 	return (
 		<Container
 			css={{
-				marginBottom: "12px",
+				marginY: "4px",
 				backgroundColor: isActive ? "$elementOnSurface" : "$surface",
-				borderRadius: "9999px",
-				padding: "8px 12px",
+				borderRadius: "8px",
+				padding: "4px 8px",
 			}}
 			className={`relative rounded-full`}
 		>
@@ -47,17 +64,11 @@ export const Tab = ({
 							color: isActive ? "$textContrast" : "$text",
 							fontWeight: isActive ? 700 : 500,
 						}}
+						className="flex items-center gap-2"
 					>
+						{icon}
 						{label}
 					</Text>
-					{(count || count === 0) && (
-						<Button
-							appearance={"subtle"}
-							css={{padding: "2px 8px", fontSize: "12px"}}
-						>
-							{count}
-						</Button>
-					)}
 				</a>
 			</Link>
 		</Container>

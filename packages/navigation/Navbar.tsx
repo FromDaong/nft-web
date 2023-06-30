@@ -6,21 +6,25 @@ import Image from "next/image";
 import {useAccount} from "wagmi";
 
 import {styled} from "@styles/theme";
-import {BoldLink} from "@packages/shared/components/Typography/Text";
-import {PlusCircleIcon} from "@heroicons/react/outline";
 import {Container} from "@packages/shared/components/Container";
 import MobileNavbarDropdown from "./components/MobileNavbarDropdown";
 import {Button} from "@packages/shared/components/Button";
 import {useSession} from "next-auth/react";
 import Spinner from "@packages/shared/icons/Spinner";
-import {ConnectButton} from "@rainbow-me/rainbowkit";
 import {useApplicationTheme} from "@packages/theme/provider";
-import NavbarProfileAvatar from "./components/NavbarProfileAvatar";
+import ManageUserDropdown from "./components/NavbarUser";
+import {useDisclosure} from "@packages/hooks";
+import {PlusIcon, ShoppingBag} from "lucide-react";
+import SearchModal from "./search";
+import {
+	DropdownMenuContent,
+	DropdownMenuItem,
+} from "@radix-ui/react-dropdown-menu";
+import {ConnectWalletButton} from "@packages/post/BuyNFTButton";
+import NavbarMenu from "./components/NavbarMenu";
 
 const Nav = styled("nav", {
-	backgroundColor: "$surfaceOnSurface",
 	zIndex: 30,
-	borderBottom: "1px solid",
 	borderColor: "$border",
 });
 
@@ -33,13 +37,21 @@ export default function Navbar() {
 
 	const {creator} = (data as any) || {};
 
+	const {
+		isOpen: isTransactionsTrayOpen,
+		onOpen: onOpenTransactionsTray,
+		onClose: onCloseTransactionsTray,
+	} = useDisclosure();
+
 	return (
-		<Container>
-			<Nav className="hidden md:block fixed top-0 left-0 w-full  h-[60px] shadow">
-				<Container className="relative w-full h-full px-8 xl:px-4">
-					<div className="absolute top-0 left-0 z-20 w-full h-full" />
-					<div className="container relative z-30 flex items-center justify-between py-3 mx-auto">
-						<div className="flex items-center gap-8">
+		<Container
+			className="top-0 z-20 border-b"
+			css={{borderColor: "$subtleBorder"}}
+		>
+			<Nav className="left-0 flex-col hidden w-full lg:flex">
+				<Container className="relative w-full h-full px-8 divide-y">
+					<div className="relative z-30 flex items-center justify-between w-full py-2 ">
+						<Container className={"flex gap-4 items-center"}>
 							<Link href={isConnected ? "/" : "/"}>
 								<a className="relative w-8 h-8 text-3xl font-medium">
 									<Image
@@ -50,49 +62,37 @@ export default function Navbar() {
 									/>
 								</a>
 							</Link>
-							<div className="items-center hidden gap-4 md:flex">
-								<Link href="/sweetshop">
-									<a>
-										<BoldLink>Sweetshop</BoldLink>
-									</a>
-								</Link>
-							</div>
-							<div className="items-center hidden gap-4 md:flex">
-								<Link href="/creators">
-									<a>
-										<BoldLink>Creators</BoldLink>
-									</a>
-								</Link>
-							</div>
-							<div className="items-center hidden gap-4 md:flex">
+							<Container>
+								<SearchModal />
+							</Container>
+							<NavbarMenu />
+
+							<div className="items-center hidden gap-2 md:flex">
 								<Link href="/magazine">
 									<a>
-										<BoldLink>Magazine</BoldLink>
-									</a>
-								</Link>
-							</div>
-							{false && (
-								<div className="items-center hidden gap-4 md:flex">
-									<Link href="https://treatdao.com/farms">
-										<a
-											target="_blank"
-											rel="norefferer"
+										<Button
+											appearance={"unstyled"}
+											css={{paddingX: "8px", color: "$textContrast"}}
 										>
-											<BoldLink>Farm</BoldLink>
-										</a>
-									</Link>
-								</div>
-							)}
-							<div className="items-center hidden gap-4 md:flex">
-								<Link href="/dex/ramp">
-									<a>
-										<BoldLink>Buy Crypto</BoldLink>
+											Magazine
+										</Button>
 									</a>
 								</Link>
 							</div>
-						</div>
 
-						<div className="flex gap-4">
+							<Link href="/dex/ramp">
+								<a>
+									<Button
+										appearance={"unstyled"}
+										css={{paddingX: "8px", color: "$textContrast"}}
+									>
+										Buy Crypto
+									</Button>
+								</a>
+							</Link>
+						</Container>
+
+						<div className="flex gap-8">
 							<div className="flex md:hidden"></div>
 							{!loading &&
 								// eslint-disable-next-line no-constant-condition
@@ -102,36 +102,41 @@ export default function Navbar() {
 											<Link href={"/create"}>
 												<a>
 													<Button
+														appearance={"action"}
 														css={{
-															borderRadius: "9999px",
-															alignItems: "center",
-															justifyContent: "center",
+															padding: "0.4rem 1rem",
+															height: "100%",
 														}}
-														appearance={"surface"}
 													>
-														Create
-														<Container className="flex items-center justify-center h-full">
-															<PlusCircleIcon
-																height={20}
-																width={20}
-															/>
-														</Container>
+														<PlusIcon className="w-5 h-5" />
+														Create NFT
 													</Button>
 												</a>
 											</Link>
 										)}
-										<NavbarProfileAvatar />
+										<Link href={"/studio/wishlist"}>
+											<a>
+												<Button
+													outlined
+													appearance={"surface"}
+												>
+													<ShoppingBag className="w-5 h-5" />
+												</Button>
+											</a>
+										</Link>
+
+										<ManageUserDropdown />
 									</Container>
 								) : (
-									<ConnectButton />
+									<ConnectWalletButton />
 								))}
 							{loading && <Spinner />}
 						</div>
 					</div>
 				</Container>
 			</Nav>
-			<Nav className="fixed top-0 left-0 w-full py-4 shadow md:hidden">
-				<Container className="flex flex-col h-full gap-2 px-8">
+			<Nav className="top-0 left-0 w-full py-4 lg:hidden">
+				<Container className="flex flex-col h-full gap-2 px-2">
 					<Container className="flex items-center justify-between">
 						<Link href={isConnected ? "/" : "/"}>
 							<a className="relative w-8 h-8 text-3xl font-medium">
@@ -152,3 +157,14 @@ export default function Navbar() {
 		</Container>
 	);
 }
+
+export const DropdownMenuContainer = styled(DropdownMenuContent, {
+	backgroundColor: "$surfaceOnSurface",
+	borderColor: "$subtleBorder",
+});
+
+export const DropdownMenuLink = styled(DropdownMenuItem, {
+	"&:hover": {
+		backgroundColor: "$elementOnSurface",
+	},
+});

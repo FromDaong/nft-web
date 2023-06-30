@@ -5,7 +5,7 @@ import {
 } from "@packages/treat/lib/contract-defs";
 import {formatOpenOrders} from "@utils/chain-methods";
 import {PaginationManager} from "@utils/pagination";
-import {SearchManager} from "@utils/search";
+import {NFTSearchManager} from "@utils/search";
 import {NextApiResponse} from "next";
 import {NextApiRequest} from "next";
 import {connectMongoDB} from "server/helpers/core";
@@ -115,7 +115,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		})
 		.filter((order) => !!order);
 
-	const searchManager = new SearchManager(populatedNFTOrders);
+	const searchManager = new NFTSearchManager(populatedNFTOrders);
 	searchManager.hydrate();
 	const searchResults = await searchManager.search(q as string);
 	const paginationManager = new PaginationManager(

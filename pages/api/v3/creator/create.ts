@@ -1,11 +1,11 @@
-import TreatNFTMinterABI from "packages/treat/lib/abi/treatnftminter.json";
 import {connectMongoDB} from "server/database/engine";
 import {returnWithError, returnWithSuccess} from "server/database/engine/utils";
 import {NextApiRequest, NextApiResponse} from "next";
 import {MongoModelCreator, MongoModelProfile} from "server/helpers/models";
 import {protectedAPIRoute} from "server/utils";
-import {ethers} from "ethers";
 import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
+import {ethers} from "ethers";
+import {ABI} from "@packages/treat/lib/abi";
 
 const TreatMinterContract = () => {
 	const provider = new ethers.providers.JsonRpcProvider(
@@ -18,7 +18,7 @@ const TreatMinterContract = () => {
 	);
 	const contract = new ethers.Contract(
 		contractAddresses.treatNFTMinter[56],
-		TreatNFTMinterABI,
+		ABI.treatMinter,
 		signer
 	);
 

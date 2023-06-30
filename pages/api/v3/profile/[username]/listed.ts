@@ -22,6 +22,9 @@ export default async function handler(
 	const options = {
 		page: get_page,
 		limit: 24,
+		sort: {
+			createdAt: -1,
+		}
 	};
 
 	if (!username) {

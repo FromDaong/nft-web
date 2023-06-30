@@ -308,38 +308,27 @@ export const LinksFormSkeleton: Array<SkeletonRow> = [
 export const TritPostSkeleton: Array<SkeletonRow> = [
 	{
 		type: "row",
-		height: 4,
-		repeat: 4,
-		columns: [
-			{
-				start: 1,
-				length: 1,
-				radius: 8,
-				type: "square",
-			},
-		],
-	},
-	{
-		type: "row",
-		height: 10,
+		height: 16,
 		repeat: 4,
 		columns: [
 			{
 				start: 1,
 				length: 4,
 				radius: 8,
+				bg: true,
 			},
 		],
 	},
 	{
 		type: "row",
-		height: 1,
+		height: 2,
 		repeat: 4,
 		columns: [
 			{
 				start: 1,
 				length: 4,
 				radius: 8,
+				bg: true,
 			},
 		],
 	},
@@ -352,18 +341,20 @@ export const TritPostSkeleton: Array<SkeletonRow> = [
 				start: 1,
 				length: 4,
 				radius: 8,
+				bg: true,
 			},
 		],
 	},
 	{
 		type: "row",
-		height: 3,
+		height: 2,
 		repeat: 4,
 		columns: [
 			{
 				start: 1,
 				length: 4,
 				radius: 8,
+				bg: true,
 			},
 		],
 	},

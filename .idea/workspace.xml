@@ -5,31 +5,73 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="13ddaae3-483e-427b-8a07-e5e133fac976" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/layouts/farm.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/utils.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/collection/[collectionId]/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/collection/[collectionId]/resale.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/collection/[collectionId]/sales.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/studio/analytics/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/studio/collections/[collectionId].tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/studio/collections/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/studio/community/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/studio/community/network.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/studio/community/subscribers.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/studio/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/studio/nfts/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/studio/portfolio/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/studio/wishlist/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/chain/constants.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/chain/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/core/chain/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/chain/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/core/chain/utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.storybook/main.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.storybook/preview.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.trunk/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.trunk/config/.markdownlint.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.trunk/config/svgo.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.trunk/trunk.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/__tests__/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/__tests__/.idea/__tests__.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/__tests__/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/__tests__/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/__tests__/api-creators.test.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/__tests__/api-messages.test.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/__tests__/api-nft.test.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/__tests__/buy-nft.test.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/__tests__/owned-nft.test.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/components/layouts/ApplicationFrame.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/core/components/layouts/ApplicationFrame.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/components/layouts/ProfileLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/core/components/layouts/ProfileLayout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/chain/hooks/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/chain/hooks/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/chain/hooks/useERC20.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/chain/hooks/useERC20.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/modals/PurchaseOrderModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/modals/PurchaseOrderModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/post/hooks/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/post/hooks/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/modals/GenericChainModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/modals/GenericChainModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/modals/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/modals/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/navigation/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/navigation/Navbar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/navigation/components/DropdownContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/navigation/components/DropdownContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/navigation/components/MobileNavbarDropdown.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/navigation/components/MobileNavbarDropdown.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/navigation/components/NavbarProfileAvatar.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/post/CreatePost/ImagePreview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/post/CreatePost/ImagePreview.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/post/TritPost.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/post/TritPost.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/post/UtilityComponents/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/post/UtilityComponents/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/settings/components/ProfileForms/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/settings/components/ProfileForms/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/shared/components/Button/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/shared/components/Button/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/shared/components/Input/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/shared/components/Input/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/shared/components/Typography/Headings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/shared/components/Typography/Headings.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/shared/components/Typography/Text.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/shared/components/Typography/Text.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theme/ThemeSwitcherModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/theme/ThemeSwitcherModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theme/hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/theme/hooks.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/packages/theme/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/theme/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packages/theme/provider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/packages/theme/provider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/treat/Treat.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/treat/Treat.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/treat/lib/abi/treatsubscriptions.json" beforeDir="false" afterPath="$PROJECT_DIR$/packages/treat/lib/abi/treatsubscriptions.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/treat/lib/constants.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/packages/treat/lib/contract-defs.ts" beforeDir="false" afterPath="$PROJECT_DIR$/packages/treat/lib/contract-defs.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/v3/creator/create.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/v3/creator/create.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/v3/creator/subscriptions/[id]/nfts/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/v3/creator/subscriptions/[id]/nfts/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/v3/marketplace/methods/count/owned.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/v3/marketplace/methods/count/owned.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/v3/marketplace/totm/create.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/v3/marketplace/totm/create.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/v3/profile/[username]/collected.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/v3/profile/[username]/collected.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/v3/stream/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/v3/stream/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/create/[collection_id].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/create/[collection_id].tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/account/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/account/upgrade.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/account/upgrade.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/auth/[...nextauth].ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/auth/[...nextauth].ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/v3/marketplace/collection/create.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/v3/marketplace/collection/create.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/v3/marketplace/create.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/v3/marketplace/create.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/collection/[_id].tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/create/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/create/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/farm/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/farm/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/sweetshop/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/sweetshop/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/sweetshop/resale.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/sweetshop/resale.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/styles/theme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/styles/theme.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,27 +111,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/pagak/contractor/frontend",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "yarn",
-    "prettierjs.PrettierConfiguration.Package": "/Users/lucamarchal/code/treat-next/node_modules/prettier",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "ts.external.directory.path": "C:\\Users\\pagak\\work\\nft-web\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/pagak/contractor/frontend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/lucamarchal/code/treat-next/node_modules/prettier&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\pagak\\work\\nft-web\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -146,6 +188,9 @@
       <workItem from="1683391482147" duration="601000" />
       <workItem from="1683482829338" duration="20000" />
       <workItem from="1683493070814" duration="9488000" />
+      <workItem from="1683843991747" duration="594000" />
+      <workItem from="1683906577995" duration="594000" />
+      <workItem from="1684668505521" duration="3357000" />
     </task>
     <servers />
   </component>

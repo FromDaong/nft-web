@@ -61,6 +61,12 @@ html {
 	overflow-x: hidden;
 }
 
+body {
+	--removed-body-scroll-bar-size: 0 !important;
+	overflow-y: auto;
+	height: 100dvh;
+}
+
 .scheme-dark {
 	color-scheme: dark;
 }

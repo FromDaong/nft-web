@@ -1,11 +1,8 @@
 import {connectMongoDB} from "server/database/engine";
 import {NextApiResponse} from "next";
 import {NextApiRequest} from "next";
-import LegacyNFTModel from "server/database/legacy/nft/NFT";
-import {
-	enforcePrivacyForNFTs,
-	returnWithSuccess,
-} from "server/database/engine/utils";
+import {returnWithSuccess} from "server/database/engine/utils";
+import {MongoModelNFT} from "server/helpers/models";
 
 export default async function handler(
 	req: NextApiRequest,
@@ -13,7 +10,10 @@ export default async function handler(
 ) {
 	await connectMongoDB();
 
-	const nfts = await LegacyNFTModel.findOne({melon_nft: true});
+	const nfts = await MongoModelNFT.find({melon_nft: true}).populate({
+		path: "creator",
+		populate: "profile",
+	});
 
-	return returnWithSuccess(enforcePrivacyForNFTs(nfts), res);
+	return returnWithSuccess(nfts, res);
 }

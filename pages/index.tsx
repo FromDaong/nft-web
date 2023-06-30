@@ -2,36 +2,24 @@
 import {Container} from "packages/shared/components/Container";
 import {Divider} from "@packages/shared/components/Divider";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
-import {TritPost} from "@packages/post/TritPost";
-import SuggestedCreatorCard from "@packages/feed/components/SuggestedCreatorCard";
+import CreatorCard from "@packages/feed/components/CreatorCard";
 import Link from "next/link";
 import {ImportantText} from "@packages/shared/components/Typography/Text";
-import {
-	ArrowRightIcon,
-	FilmIcon,
-	MoonIcon,
-	PresentationChartLineIcon,
-} from "@heroicons/react/outline";
+import {ArrowRightIcon, FilmIcon, MoonIcon} from "@heroicons/react/outline";
 import TreatCore from "core/TreatCore";
 import axios from "axios";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import DynamicSkeleton from "@packages/skeleton";
-import {
-	FeaturedCreatorSkeleton,
-	TritPostSkeleton,
-} from "@packages/skeleton/config";
+import {FeaturedCreatorSkeleton} from "@packages/skeleton/config";
 import {useApplicationTheme} from "@packages/theme/provider";
 import {Button} from "@packages/shared/components/Button";
-import {
-	CaretLeftIcon,
-	CaretRightIcon,
-	MixerVerticalIcon,
-} from "@radix-ui/react-icons";
+import {CameraIcon, MixIcon, MixerVerticalIcon} from "@radix-ui/react-icons";
 import Image from "next/future/image";
 import {SEOHead} from "@packages/seo/page";
-import {useMemo, useRef, useState} from "react";
 import {IFeatureProps, request} from "@lib/datocms";
 import Balancer from "react-wrap-balancer";
+import ApplicationLayout from "core/components/layouts/ApplicationLayout";
+import Footer from "@packages/shared/components/Footer";
 
 const getTrendingNFTs = async () => {
 	const res = await axios.get(`${apiEndpoint}/marketplace/trending`);
@@ -107,10 +95,16 @@ export default function Index(props: {
 	);
 
 	return (
-		<>
+		<ApplicationLayout>
+			<SEOHead
+				title={"TreatDAO"}
+				description="TreatDAO is a Web3 project dedicated to creating opportunities and an amazing platform for adult content creators and collectors."
+				data={{
+					official: true,
+				}}
+			/>
 			<Container
 				css={{
-					background: "$surfaceOnSurface",
 					backgroundSize: "cover",
 					backgroundPosition: "top",
 				}}
@@ -119,7 +113,7 @@ export default function Index(props: {
 				<Container className="container relative flex flex-col gap-12 px-8 mx-auto">
 					<Container className="flex flex-col items-center max-w-screen-sm gap-12 py-12 mx-auto text-center lg:gap-16">
 						<Container className={"flex justify-center"}>
-							<Link href={"/magazines"}>
+							<Link href={"/magazine"}>
 								<a>
 									<Container
 										css={{
@@ -136,7 +130,7 @@ export default function Index(props: {
 												"px-4 flex items-center font-semibold truncate ... max-w-screen-sm"
 											}
 										>
-											Read the latest TreatDAO Magazine
+											View all TreatDAO magazines
 											<ArrowRightIcon className={"w-4 h-4 ml-4"} />
 										</Text>
 									</Container>
@@ -156,16 +150,24 @@ export default function Index(props: {
 								</Text>
 							</Balancer>
 						</Container>
-						<Container className={"flex gap-4 justify-center "}>
-							<Button appearance={"primary"}>
-								Visit the sweetshop <ArrowRightIcon className={"w-5 h-5"} />{" "}
-							</Button>
-							<Button
-								appearance={"subtle"}
-								outlined
-							>
-								Buy $TREAT
-							</Button>
+						<Container className={"flex flex-wrap gap-4 justify-center "}>
+							<Link href="/sweetshop">
+								<a>
+									<Button appearance={"default"}>
+										Visit the sweetshop <ArrowRightIcon className={"w-5 h-5"} />{" "}
+									</Button>
+								</a>
+							</Link>
+							<Link href={"/dex/ramp"}>
+								<a>
+									<Button
+										appearance={"subtle"}
+										outlined
+									>
+										Buy $TREAT
+									</Button>
+								</a>
+							</Link>
 						</Container>
 					</Container>
 				</Container>
@@ -176,83 +178,13 @@ export default function Index(props: {
 				</Container>
 			</Container>
 			<Container className="flex flex-col gap-12 py-12 mt-12 md:gap-16 lg:gap-24">
-				<SEOHead
-					title={"TreatDAO"}
-					description="TreatDAO is a Web3 project dedicated to creating opportunities and an amazing platform for adult content creators and collectors."
-					data={{
-						official: true,
-					}}
-				/>
-				<Container>
-					<Container className="container flex flex-col w-full gap-8 px-8 mx-auto">
-						<Container className="flex flex-col items-baseline gap-4">
-							<Container className="flex flex-col gap-2">
-								<Heading>Discover sweetshop NFT's</Heading>
-								<Text>
-									Buy and sell NFTs by TreatDAO content creators and resellers.
-								</Text>
-							</Container>
-							<Link href={"/sweetshop"}>
-								<a>
-									<Button
-										outlined
-										appearance={"subtle"}
-									>
-										<ImportantText>View all on sweetshop</ImportantText>
-										<ArrowRightIcon
-											width={16}
-											height={16}
-										/>
-									</Button>
-								</a>
-							</Link>
-						</Container>
-						{!trendingNFTError && (
-							<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4 lg:gap-4">
-								{!trendingNFTError && !trendingNFTsLoading
-									? trendingNFTs.map((item, i) => (
-											<Container
-												key={item}
-												className={
-													"flex col-span-1 " +
-													(i > 3 ? "lg:hidden xl:flex" : "")
-												}
-											>
-												<TritPost
-													inGrid
-													{...item}
-												/>
-											</Container>
-									  ))
-									: [0, 1, 2, 3].map((i) => (
-											<Container
-												key={i}
-												className="col-span-1 border"
-												css={{
-													borderColor: "$subtleBorder",
-													padding: "8px",
-													borderRadius: "16px",
-												}}
-											>
-												<DynamicSkeleton config={TritPostSkeleton} />
-											</Container>
-									  ))}
-							</Container>
-						)}
-						{trendingNFTError && (
-							<Container className={"flex justify-center"}>
-								<p>An error occurred while fetching NFTs</p>
-							</Container>
-						)}
-					</Container>
-				</Container>
 				<Divider dir={"horizontal"} />
 				<Container>
 					<Container className="container flex flex-col w-full gap-8 px-8 mx-auto">
 						<Container className="flex flex-col items-baseline gap-4">
 							<Container className="flex flex-col gap-2">
 								<Heading>Lots of new features</Heading>
-								<Text>
+								<Text css={{fontSize: "1.3rem"}}>
 									The new TreatDAO NFTs platform brings a lot of new features to
 									enhance your browsing experience.
 								</Text>
@@ -275,7 +207,15 @@ export default function Index(props: {
 										/>
 									}
 									cols={1}
-									action={<Button appearance={"primary"}>Try it out</Button>}
+									action={
+										<Button appearance={"primary"}>
+											<MoonIcon
+												width={16}
+												height={16}
+											/>{" "}
+											Try it out
+										</Button>
+									}
 								/>
 
 								<FeaturesCard
@@ -291,7 +231,13 @@ export default function Index(props: {
 										/>
 									}
 									action={
-										<Button appearance={"primary"}>Bridge your nfts</Button>
+										<Button appearance={"primary"}>
+											<MixIcon
+												width={16}
+												height={16}
+											/>
+											Bridge your nfts
+										</Button>
 									}
 								/>
 							</Container>
@@ -311,7 +257,11 @@ export default function Index(props: {
 								cols={1}
 								action={
 									<Button appearance={"primary"}>
-										Create an NFT <ArrowRightIcon className="w-4 h-4" />
+										<CameraIcon
+											width={16}
+											height={16}
+										/>
+										Create an NFT
 									</Button>
 								}
 							/>
@@ -324,31 +274,16 @@ export default function Index(props: {
 						<Container className="flex flex-col gap-4">
 							<Container className="flex flex-col gap-2">
 								<Heading>Discover Treat creators</Heading>
-								<Text>
+								<Text css={{fontSize: "1.3rem"}}>
 									Meet our content creators, giving you your daily dose of spicy
 									content.
 								</Text>
 							</Container>
-
-							<Link href={"/creators"}>
-								<a>
-									<Button
-										outlined
-										appearance={"subtle"}
-									>
-										<ImportantText>View more creators</ImportantText>
-										<ArrowRightIcon
-											width={16}
-											height={16}
-										/>
-									</Button>
-								</a>
-							</Link>
 						</Container>
-						<Container className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-4">
+						<Container className="grid grid-cols-1 w-full lg:w-2/3 xl:w-1/2">
 							{!trendingCreatorError && !trendingCreatorsLoading
 								? trendingCreators?.slice(0, 8).map((creator) => (
-										<SuggestedCreatorCard
+										<CreatorCard
 											key={creator._id}
 											username={creator.username}
 											display_name={creator.profile?.display_name}
@@ -357,8 +292,8 @@ export default function Index(props: {
 											isExpanded
 											border
 											live={creator.livestream_active}
-											followers={creator.profile?.followers?.length}
-											subscribers={creator.profile?.following?.length}
+											followers={creator.profile?.followers}
+											subscribers={creator.profile?.following}
 										/>
 								  ))
 								: [0, 1, 2, 4].map((i) => (
@@ -464,7 +399,8 @@ export default function Index(props: {
 					</Container>
 				</Container>
 			</Container>
-		</>
+			<Footer />
+		</ApplicationLayout>
 	);
 }
 
@@ -599,7 +535,6 @@ function FeaturesCard({
 					</div>
 					<Text className="relative">{description}</Text>
 				</Container>
-				<Container>{action}</Container>
 			</Container>
 			<Container className="relative flex flex-1 h-full overflow-visible min-h-48">
 				<Container

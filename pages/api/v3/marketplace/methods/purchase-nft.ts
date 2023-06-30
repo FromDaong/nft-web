@@ -6,7 +6,6 @@ import {
 	MongoModelCreator,
 	MongoModelNFT,
 	MongoModelProfile,
-	MongoModelTimelineEvent,
 } from "server/helpers/models";
 import {protectedAPIRoute} from "server/utils";
 
@@ -24,6 +23,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 	});
 
 	if (!profile) return returnWithError("Not authorized", 403, res);
+	if (!profile.email) return returnWithSuccess("Email not set", res);
 
 	const payload = {
 		txHash: body.tx_hash,
@@ -31,30 +31,17 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 		nftId: body.nftId,
 		price: body.price,
 		timestamp: body.timestamp ?? new Date().getTime(),
-		nft_type: body.nft_type,
-		remaining: body.remaining,
+		// nft_type: body.nft_type,
+		// remaining: body.remaining,
 	};
 
 	const nft = await MongoModelNFT.findOne({
 		id: payload.nftId,
 	}).populate("creator");
 
-	const event = new MongoModelTimelineEvent({
-		profile: profile._id,
-		action: {
-			verb: ["purchased NFT ", `$1`, `for ${payload.price} from`, `$2`],
-			subjects: [
-				nft.name,
-				payload.seller ? payload.seller.toLowerCase() : nft.creator.address,
-			],
-		},
-	});
-	await Promise.all([event.save()]);
-
 	const creator = await MongoModelCreator.findById(nft.creator).populate(
 		"profile"
 	);
-	console.log({creator, nft});
 	const msg = {
 		to: creator.profile.email,
 		from: {
@@ -65,7 +52,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 		dynamicTemplateData: {
 			nft_name: nft.name,
 			nft_price: nft.price,
-			nft_url: `https://treatnfts.com/post/nft/${nft._id}`,
+			nft_url: `https://treatdao.com/post/nft/${nft._id}`,
 		},
 	};
 
@@ -76,7 +63,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 		console.error({e});
 	}
 
-	return returnWithSuccess(event, res);
+	return returnWithSuccess({email_sent: true}, res);
 }
 
 export default protectedAPIRoute(handler);

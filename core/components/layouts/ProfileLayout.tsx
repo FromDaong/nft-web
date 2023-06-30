@@ -1,11 +1,10 @@
-import {ChatIcon, LinkIcon} from "@heroicons/react/outline";
+import {BriefcaseIcon, HomeIcon, UserGroupIcon} from "@heroicons/react/outline";
 import {SEOHead} from "@packages/seo/page";
 import NewAvatar from "@packages/shared/components/AvatarNew";
 import {Button} from "@packages/shared/components/Button";
 import {
 	Container,
 	ContextualContainer,
-	FluidContainer,
 } from "@packages/shared/components/Container";
 import {Tab, TabsContainer} from "@packages/shared/components/Tabs";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
@@ -16,23 +15,34 @@ import {
 	MutedText,
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
-import {useCopyToClipboard} from "@packages/shared/hooks";
+import {useCopyToClipboard, useStorageService} from "@packages/shared/hooks";
 import FollowUser from "@packages/shared/icons/FollowUser";
 import {useUser} from "core/auth/useUser";
 import TreatCore, {ComponentBasicProps} from "core/TreatCore";
 import ApplicationFrame from "./ApplicationFrame";
 import useSound from "use-sound";
 import Link from "next/link";
-import {useEffect, useState} from "react";
+import {MutableRefObject, useEffect, useMemo, useState} from "react";
 import axios from "axios";
 import {apiEndpoint} from "@utils/index";
 import {SocialProfileJsonLd} from "next-seo";
 import {useRouter} from "next/router";
-import useTokenBalance, {
-	useTokenBalanceForAddress,
-} from "@packages/chain/hooks/useTokenBalance";
 import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import {useBalance} from "wagmi";
+import {ExternalLinkIcon} from "@radix-ui/react-icons";
+import {
+	CameraIcon,
+	CircleSlash,
+	LucideShoppingBag,
+	ShoppingBagIcon,
+	Verified,
+} from "lucide-react";
+import ApplicationLayout from "./ApplicationLayout";
+import {Divider} from "@packages/shared/components/Divider";
+import {toast} from "sonner";
+import {FrostyBackgroundContainer} from "@components/NFTCard/misc/FrostyBackground";
+import Spinner from "@packages/shared/icons/Spinner";
+import CreatorCard from "@packages/feed/components/CreatorCard";
 
 type ProfileLayoutProps = ComponentBasicProps & {
 	userProfile?: {
@@ -49,6 +59,7 @@ type ProfileLayoutProps = ComponentBasicProps & {
 		badges: Array<{color: string; name: string}>;
 		creator?: any;
 	};
+	scrollerRef?: MutableRefObject<any>;
 };
 
 export default function ProfileLayout(props: ProfileLayoutProps) {
@@ -61,25 +72,28 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 
 	const [openingMessages, setOpeningMessages] = useState(false);
 
-	const [ownerOfUserProfile] = useState({
-		username: profile.username,
-		display_name: profile ? profile.display_name : "",
-		bio: profile ? profile.bio : "",
-		followers: profile.followers,
-		following: profile.following,
-		earnings: profile.earnings ?? 0,
-		address: profile ? profile.address : "",
-		profile_pic: profile.profile_pic,
-		banner_pic: profile.banner_pic,
-		creator: profile.creator,
-		badges: [
-			...profile.badges,
-			(props.userProfile.creator || props.userProfile.creator?.approved) &&
-			!props.userProfile.creator?.pending
-				? {color: "pink", name: "Verified Creator 🎀"}
-				: {color: "purple", name: "Collector"},
-		],
-	});
+	const ownerOfUserProfile = useMemo(
+		() => ({
+			username: profile.username,
+			display_name: profile ? profile.display_name : "",
+			bio: profile ? profile.bio : "",
+			followers: profile.followers,
+			following: profile.following,
+			earnings: profile.earnings ?? 0,
+			address: profile ? profile.address : "",
+			profile_pic: profile.profile_pic,
+			banner_pic: profile.banner_pic,
+			creator: profile.creator,
+			badges: [
+				...profile.badges,
+				(props.userProfile.creator || props.userProfile.creator?.approved) &&
+				!props.userProfile.creator?.pending
+					? {color: "pink", name: "Verified Creator 🎀"}
+					: {color: "purple", name: "Collector"},
+			],
+		}),
+		[router]
+	);
 
 	const [userBadges, setBadges] = useState(ownerOfUserProfile.badges);
 	const {data: treatBalance, isLoading: isBalanceLoading} = useBalance({
@@ -128,32 +142,37 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 
 	const creator_tabs = [
 		{
-			label: "Sweetshop",
-			href: "",
-			count: createNFTsCount.data,
+			label: "Sweetshop NFTs",
+			href: ``,
+			icon: <LucideShoppingBag className="w-5 h-5" />,
+		},
+
+		{
+			label: "Resale",
+			href: "/resale",
+			icon: <UserGroupIcon className="w-5 h-5" />,
 		},
 		{
-			label: "Owned",
+			label: "Collected",
 			href: "/portfolio",
-			count: ownedNFTsCount.data,
+			icon: <BriefcaseIcon className="w-5 h-5" />,
 		},
 	];
 
 	const profile_tabs = [
 		{
-			label: "Owned",
+			label: "Collected",
 			href: "/portfolio",
-			count: ownedNFTsCount.data,
+			icon: <BriefcaseIcon className="w-5 h-5" />,
+		},
+		{
+			label: "Resale",
+			href: "/resale",
+			icon: <UserGroupIcon className="w-5 h-5" />,
 		},
 	];
 
 	const [followers, setFollowers] = useState(profile.followers);
-
-	const copyProfileUrlToClipboard = () => {
-		const baseDomain = window.location.origin;
-		copy(`${baseDomain}/${ownerOfUserProfile.username}`);
-		copyFx();
-	};
 
 	const followOrUnfollow = () => {
 		if (followers.includes(loggedInUser._id)) {
@@ -176,20 +195,6 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 					setFollowers(followers.filter((id) => id !== loggedInUser._id));
 				});
 		}
-	};
-
-	const createChatIfNotExist = () => {
-		setOpeningMessages(true);
-		console.log({loggedInUser});
-		axios
-			.get(`${apiEndpoint}/chat/username/${ownerOfUserProfile.username}`)
-			.then((res) => {
-				router.push(`/messages/${res.data.data.id}`);
-			})
-			.catch((err) => {
-				console.log({err});
-				setOpeningMessages(false);
-			});
 	};
 
 	const isFollowing = followers.includes(loggedInUser?._id);
@@ -221,7 +226,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 				setBadges([
 					...userBadges,
 					{
-						color: "amber",
+						color: "orange",
 						name: "Gold Treator",
 					},
 				]);
@@ -233,7 +238,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 				setBadges([
 					...userBadges,
 					{
-						color: "mauve",
+						color: "sand",
 						name: "Silver Treator",
 					},
 				]);
@@ -241,7 +246,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 				return;
 			}
 		}
-	}, [ownedNFTsCount.data]);
+	}, [ownedNFTsCount.data, ownerOfUserProfile]);
 
 	useEffect(() => {
 		if (treatBalance) {
@@ -255,7 +260,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 				setBadges([
 					...userBadges,
 					{
-						color: "teal",
+						color: "mint",
 						name: "Melon",
 					},
 				]);
@@ -275,15 +280,10 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 				return;
 			}
 		}
-	}, [treatBalance]);
-
-	console.log({
-		treatBalance: parseInt(treatBalance?.formatted) > 36700,
-		isBalanceLoading,
-	});
+	}, [treatBalance, ownerOfUserProfile]);
 
 	return (
-		<>
+		<ApplicationLayout thisRef={props.scrollerRef}>
 			<SEOHead
 				title={ownerOfUserProfile?.username + " - TreatDAO"}
 				description={ownerOfUserProfile?.bio}
@@ -303,92 +303,76 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 				sameAs={[]}
 			/>
 
-			<Container
-				className="w-full h-[320px]"
-				css={{
-					backgroundImage: `url("${ownerOfUserProfile.banner_pic}")`,
-					backgroundPosition: "center",
-					backgroundRepeat: "no-repeat",
-					backgroundSize: "cover",
-					backgroundColor: "$surfaceOnSurface",
-				}}
-			/>
+			<CoverPhoto banner={ownerOfUserProfile?.banner_pic} />
 
-			<Container className="container px-4 py-8 mx-auto ">
-				<FluidContainer className="flex justify-between px-4">
-					<ContextualContainer className="grid justify-between w-full col-span-1 xl:grid-cols-3 gap-y-4">
-						<Container className="col-span-1 xl:col-span-2">
-							<Container className="flex gap-8">
-								<Container>
-									<NewAvatar
-										username="Tatenda Chris"
-										imageSrc={ownerOfUserProfile.profile_pic}
-										size={64}
-									/>
-								</Container>
-
+			<Container className="mb-4">
+				<ApplicationFrame>
+					<ContextualContainer className="grid w-full col-span-1 px-2 xl:grid-cols-3 gap-y-4">
+						<Container className="flex flex-col col-span-1 gap-4 xl:col-span-2">
+							<Container className="flex items-center gap-4">
+								<NewAvatar
+									username="Tatenda Chris"
+									imageSrc={ownerOfUserProfile.profile_pic}
+									size={48}
+								/>
 								<Container className="flex flex-col gap-1">
 									<Container>
 										<Heading
-											size="sm"
+											size="xs"
 											className="flex items-center gap-1"
 										>
-											{ownerOfUserProfile.display_name ??
-												"Loading profile details"}
+											{ownerOfUserProfile.display_name ?? "TreatDAO Explorer"}{" "}
+											{ownerOfUserProfile.creator && (
+												<Text css={{color: "$primary5"}}>
+													<Verified className="w-5 h-5" />
+												</Text>
+											)}
 										</Heading>
 										<MutedText>@{ownerOfUserProfile.username}</MutedText>
 									</Container>
-									<Container className="flex flex-row flex-wrap gap-4 mt-2 rounded-full">
-										{userBadges.map((badge) => (
-											<Container
-												key={badge.name}
-												css={{
-													backgroundColor: `$${badge.color}2`,
-													borderColor: "$subtleBorder",
-												}}
-												className="px-4 py-1 border rounded-full shadow-sm"
-											>
-												<Text
-													css={{color: `$${badge.color}10`, fontWeight: 500}}
-												>
-													<SmallText>
-														<ImportantText>{badge.name}</ImportantText>
-													</SmallText>
-												</Text>
-											</Container>
-										))}
+								</Container>
+							</Container>
+							<Text className="hidden max-w-2xl mt-2 md:flex">
+								{ownerOfUserProfile.bio ?? "Loading profile details"}
+							</Text>
+							<Container className="flex flex-row flex-wrap gap-2 mt-2 rounded-full">
+								{userBadges.map((badge) => (
+									<Container
+										key={badge.name}
+										css={{
+											backgroundColor: `$${badge.color}2`,
+											borderColor: `$${badge.color}5`,
+										}}
+										className="px-4 py-1 border rounded-full shadow-sm"
+									>
+										<Text css={{color: `$${badge.color}10`, fontWeight: 500}}>
+											<SmallText>
+												<ImportantText>{badge.name}</ImportantText>
+											</SmallText>
+										</Text>
 									</Container>
-									<Text className="hidden max-w-2xl mt-2 md:flex">
-										{ownerOfUserProfile.bio ?? "Loading profile details"}
+								))}
+							</Container>
+							<Container className="hidden w-full mt-2 mb-4 md:flex">
+								<Container className="flex gap-2">
+									<Text
+										appearance={"hiContrast"}
+										weight={"bold"}
+									>
+										{ownerOfUserProfile.following.length} Following
 									</Text>
-									<Container className="hidden w-full mt-2 mb-4 md:flex">
-										<>
-											<Text
-												appearance={"hiContrast"}
-												weight={"bold"}
-											>
-												{ownerOfUserProfile.following.length}
-											</Text>
-											{""}
-											<JustifiedSpan>Following</JustifiedSpan>
-										</>
-										<Bull />
-										<>
-											<Text
-												appearance={"hiContrast"}
-												weight={"bold"}
-											>
-												{followers.length}
-											</Text>
-											<JustifiedSpan>Followers</JustifiedSpan>
-										</>
-									</Container>
+								</Container>
+								<Bull />
+								<Container className="flex gap-2">
+									<Text
+										appearance={"hiContrast"}
+										weight={"bold"}
+									>
+										{followers.length} Followers
+									</Text>
 								</Container>
 							</Container>
 							<Container className="flex flex-col gap-4 md:hidden">
-								<Text className="flex max-w-2xl mt-2">
-									{ownerOfUserProfile.bio ?? "Loading profile details"}
-								</Text>
 								<Container className="flex w-full mt-2 mb-4">
 									<>
 										<Text
@@ -446,7 +430,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 												appearance={"accent"}
 												className="transition-transform duration-100 hover:scale-105"
 											>
-												<LinkIcon
+												<ExternalLinkIcon
 													width={16}
 													height={16}
 												/>
@@ -458,29 +442,195 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 							</Container>
 						</Container>
 					</ContextualContainer>
-				</FluidContainer>
-
-				<FluidContainer
-					justified
-					className="flex py-8 overflow-x-auto"
-				>
-					<TabsContainer>
-						{(ownerOfUserProfile?.creator ? creator_tabs : profile_tabs).map(
-							(tab) => (
-								<Tab
-									key={tab.href}
-									href={`/${ownerOfUserProfile.username}${tab.href}`}
-									label={tab.label}
-									count={tab.count}
-								/>
-							)
-						)}
-					</TabsContainer>
-				</FluidContainer>
+				</ApplicationFrame>
 			</Container>
+			<Container
+				className="mx-auto container max-w-[95vw] lg:max-w-screen-xl w-full"
+				css={{
+					backgroundColor: "$surface",
+					overflowX: "auto",
+				}}
+			>
+				<TabsContainer>
+					{(ownerOfUserProfile?.creator ? creator_tabs : profile_tabs).map(
+						(tab) => (
+							<Tab
+								key={tab.href}
+								href={`/${ownerOfUserProfile.username}${tab.href}`}
+								label={tab.label}
+								icon={tab.icon}
+							/>
+						)
+					)}
+				</TabsContainer>
+			</Container>
+			<Divider />
 			<ApplicationFrame>
-				<Container className="px-4">{props.children}</Container>
+				<Container className="px-2 pt-4 pb-24 md:grid hidden md:grid-cols-2 lg:grid-cols-3 gap-8">
+					<Container className="flex-1 col-span-1 lg:col-span-2">
+						{props.children}
+					</Container>
+					<YouMightAlsoLike />
+				</Container>
+				<Container className="px-2 pt-4 pb-24 grid md:hidden grid-cols-1 gap-8">
+					<YouMightAlsoLike />
+					<Container className="flex-1 col-span-1">{props.children}</Container>
+				</Container>
 			</ApplicationFrame>
-		</>
+		</ApplicationLayout>
 	);
 }
+
+const useUpdateCoverPhoto = (banner_pic) => {
+	const [banner, setBannerPic] = useState(banner_pic);
+	const [isLoading, setIsLoading] = useState(false);
+	const router = useRouter();
+	const {uploadToIPFS} = useStorageService();
+
+	useEffect(() => {
+		setBannerPic(banner_pic);
+	}, [banner_pic]);
+
+	const updateCoverPhoto = async (file: File) => {
+		setIsLoading(true);
+		//const formData = new FormData();
+		//formData.append("cover_photo", file);
+
+		// upload to ipfs
+
+		try {
+			const ipfs = await uploadToIPFS(file);
+			const res = await axios.post(`${apiEndpoint}/profile/methods/patch`, {
+				banner_pic: ipfs,
+			});
+			if (res.status === 200) {
+				setBannerPic(ipfs);
+				setIsLoading(false);
+				return;
+			}
+			throw "Failed to update";
+		} catch (e) {
+			console.error(e);
+			toast.error("Failed to update cover photo");
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
+	return {
+		isLoading,
+		updateCoverPhoto,
+		bannerPic: banner,
+	};
+};
+
+function CoverPhoto({banner}) {
+	const router = useRouter();
+	const {profile} = useUser();
+
+	const {
+		isLoading: isLoadingCover,
+		updateCoverPhoto,
+		bannerPic,
+	} = useUpdateCoverPhoto(banner);
+
+	const isMine = useMemo(
+		() => profile?.username === router.query.username,
+		[router.query, profile]
+	);
+	return (
+		<Container
+			className="w-full h-[320px] rounded-b-xl relative"
+			css={{
+				backgroundImage: `url("${bannerPic}")`,
+				backgroundPosition: "center",
+				backgroundRepeat: "no-repeat",
+				backgroundSize: "cover",
+				backgroundColor: "$surfaceOnSurface",
+			}}
+		>
+			{isMine && (
+				<form
+					className="absolute bottom-4 right-4"
+					onSubmit={null}
+				>
+					<label
+						className="cursor-pointer"
+						htmlFor="cover_photo"
+					>
+						<FrostyBackgroundContainer
+							css={{borderRadius: 999, padding: "1rem"}}
+							className="flex items-center justify-center gap-2 transition-all duration-200"
+						>
+							{!isLoadingCover ? (
+								<>
+									<CameraIcon className="w-5 h-5" />
+									Change cover
+								</>
+							) : (
+								<Text>
+									<Spinner />
+								</Text>
+							)}
+						</FrostyBackgroundContainer>
+					</label>
+					<input
+						name={"cover_photo"}
+						type="file"
+						id="cover_photo"
+						hidden
+						onChange={(e) => updateCoverPhoto(e.target.files[0])}
+					/>
+				</form>
+			)}
+		</Container>
+	);
+}
+
+const YouMightAlsoLike = () => {
+	const {profile} = useUser();
+	const {
+		query: {username},
+	} = useRouter();
+
+	const {data, isLoading} = TreatCore.useQuery(
+		["profile", username],
+		async () => {
+			const {data} = await axios.get(
+				`${apiEndpoint}/graph/who-to-follow/${profile?.username}?secondary=${username}`
+			);
+			return data;
+		},
+		{
+			enabled: !!profile,
+		}
+	);
+
+	return (
+		<Container
+			css={{
+				backgroundColor: "$surfaceOnSurface",
+			}}
+			className="col-span-1 rounded-xl flex-shrink-0 flex flex-col p-1 h-fit md:sticky top-2"
+		>
+			<Container className="p-4">
+				<Heading size="xss">You might also like</Heading>
+			</Container>
+			{isLoading && !data ? (
+				<Container className="flex py-4 justify-center">
+					<Spinner />
+				</Container>
+			) : (
+				<Container className={"flex flex-col gap-2"}>
+					{data?.map((user) => (
+						<CreatorCard
+							key={user.username}
+							{...user}
+							avatar={user.profile_pic}
+						/>
+					))}
+				</Container>
+			)}
+		</Container>
+	);
+};

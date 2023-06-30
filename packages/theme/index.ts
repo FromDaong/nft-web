@@ -1,5 +1,4 @@
-import { useUpdateTheme } from "./hooks";
-import { useTheme } from "./hooks";
-import ThemeProvider, { ApplicationTheme } from "./provider";
+import {useTheme} from "./hooks";
+import ThemeProvider, {ApplicationTheme} from "./provider";
 
-export { ThemeProvider, useTheme, useUpdateTheme, ApplicationTheme };
+export {ThemeProvider, useTheme, ApplicationTheme};

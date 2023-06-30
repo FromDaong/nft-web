@@ -1,91 +1,89 @@
 import {connectMongoDB} from "@db/engine";
 import {returnWithError, returnWithSuccess} from "@db/engine/utils";
-import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
-import connectMoralis from "@utils/moralis";
-import {
-	MongoModelCreator,
-	MongoModelNFT,
-	MongoModelProfile,
-} from "server/helpers/models";
-import axios from "axios";
+import {MongoModelCreator, MongoModelNFT} from "server/helpers/models";
+import request, {gql} from "graphql-request";
+import {SUBGRAPH_GRAPHQL_URL} from "@lib/graphClients";
+
+const query = gql`
+	query owned($address: String!, $first: Int!, $skip: Int!) {
+		balances(
+			first: $first
+			skip: $skip
+			where: {account_contains_nocase: $address}
+		) {
+			id
+			value
+			token {
+				identifier
+			}
+		}
+	}
+`;
+
+const allOwned = gql`
+	query allOwned($address: String!) {
+		balances(first: 1000, where: {account_contains_nocase: $address}) {
+			id
+		}
+	}
+`;
 
 export default async function handler(req, res) {
-	const {username} = req.query;
+	const {address} = req.query;
 	let {p} = req.query;
 
-	if (!p) {
-		p = 1;
+	if (!p) p = 1;
+	if (+p < 1) p = 1;
+
+	if (!address) {
+		return returnWithError("No address provided", 400, res);
 	}
 
-	if (!username) {
-		return returnWithError("No username provided", 400, res);
-	}
-
-	await connectMoralis();
 	await connectMongoDB();
 
-	const profile = await MongoModelProfile.findOne({username});
-
-	if (!profile) {
-		return returnWithError("No profile found", 400, res);
-	}
-
-	let moralis_cursor;
-	let response;
-
-	for (let i = 0; i < Number(p); i++) {
-		const resp = await axios.get(
-			`https://deep-index.moralis.io/api/v2/${
-				profile.address
-			}/nft?chain=bsc&disable_total=false&limit=100&format=decimal${
-				moralis_cursor ? "&cursor=" + moralis_cursor : ""
-			}&token_address=${[contractAddresses.treatNFTMinter[56]]}`,
-			{
-				headers: {
-					"X-API-Key": process.env.MORALIS_WEB3_API_KEY,
-				},
-			}
-		);
-
-		moralis_cursor = resp.data.cursor;
-		response = resp.data;
-	}
-
-	const data = response;
-
-	const ownedNftsIds = data.result.map((nft) => Number(nft.token_id));
-
-	const options = {
-		page: 1,
-		limit: 100,
-	};
-
-	// @ts-ignore
-	const nfts = await MongoModelNFT.paginate(
-		{
-			id: {$in: ownedNftsIds},
-		},
-		options
-	);
-
-	nfts.docs = await MongoModelCreator.populate(nfts.docs, {
-		path: "creator",
-		select: "username address bio profile",
-		populate: {
-			path: "profile",
-			select: "username profile_pic",
-		},
+	const {balances} = await request(SUBGRAPH_GRAPHQL_URL, query, {
+		address: (address as string).toLowerCase(),
+		first: 24,
+		skip: p < 2 ? 0 : (p - 1) * 24,
 	});
+	const total = await request(SUBGRAPH_GRAPHQL_URL, allOwned, {
+		address: (address as string).toLowerCase(),
+	});
+
+	let nfts = balances.map((nft) => ({
+		id: nft.token.identifier,
+		amount: nft.value,
+	}));
+
+	nfts = nfts.filter((nft) => nft.amount !== 0);
+	const nftsIds = nfts.map((nft) => nft.id);
+
+	const nftDocs = await MongoModelNFT.find({
+		id: {
+			$in: nftsIds,
+		},
+	})
+		.populate({
+			path: "creator",
+			select: "username address bio profile",
+			populate: {
+				path: "profile",
+				select: "username profile_pic",
+			},
+		})
+		.exec();
 
 	return returnWithSuccess(
 		{
-			docs: nfts.docs,
-			cursor: data.cursor,
-			hasNextPage: data.page * 100 < data.total,
-			nextPage: data.page * 100 < data.total ? data.page + 1 : null,
+			docs: nftDocs.map((nft) => {
+				const count = nfts.find((n) => +n.id === +nft.id).amount;
+				return {...nft.toObject(), count};
+			}),
+			hasNextPage: true,
+			nextPage: +p + 1,
 			page: Number(p),
-			total: data.total,
-			totalPages: Math.ceil(Number(data.total) / 100),
+			total: total.balances.length,
+			totalPages: Math.ceil(total.balances.length / 24),
 		},
 		res
 	);

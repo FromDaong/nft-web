@@ -152,7 +152,7 @@ export const TritPortfolioPost = (props: TritResalePostProps) => {
 						liked={liked}
 						likeNFT={likeNFT}
 						unlikeNFT={likeNFT}
-						creator={props.author.username}
+						creator={props.creator.username}
 						toggleImageProtection={() => null}
 						isProtected={isProtected}
 						hideSeller={true}
@@ -211,6 +211,7 @@ const ManageMyNFTButtons = ({nft, getOpenOrdersForSeller}) => {
 					isOpen={isListOrderModalOpen}
 					onClose={onCloseListOrderModal}
 					nft={nft}
+					balance={balance}
 				/>
 			)}
 

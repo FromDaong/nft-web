@@ -10,21 +10,26 @@ export const TriggerButton = styled("p", {
 });
 
 export const Button = styled("button", {
-	padding: "8px 16px",
+	padding: "8px 12px",
 	alignItems: "center",
 	gap: "8px",
 	display: "flex",
-	borderRadius: "12px",
+	borderRadius: "8px",
 	fontFamily: "'Helvetica', sans-serif",
-	fontWeight: "700",
+	fontWeight: "600",
 	justifyContent: "center",
 	alignContent: "center",
+	flexShrink: 0,
+	transition: "all 0.2s ease-in-out",
 
 	variants: {
 		appearance: {
 			default: {
-				backgroundColor: "$buttonSurface",
-				color: "$textOnSurface",
+				backgroundColor: "$pink5",
+				color: "$white",
+				"&hover:": {
+					backgroundColor: "$pink3",
+				},
 			},
 			primary: {
 				backgroundColor: "$btnCallToAction",
@@ -35,8 +40,15 @@ export const Button = styled("button", {
 				color: "$surface",
 			},
 			surface: {
-				backgroundColor: "$elementOnSurface",
+				backgroundColor: "$surface",
 				color: "$textContrast",
+				"&:hover": {
+					backgroundColor: "$surface",
+				},
+			},
+			success: {
+				color: "$mint1",
+				backgroundColor: "$mint11",
 			},
 			outline: {
 				backgroundColor: "$surface",
@@ -45,36 +57,47 @@ export const Button = styled("button", {
 			},
 			subtle: {
 				backgroundColor: "$surfaceOnSurface",
+				color: "$text",
+			},
+			white: {
+				background: "$white",
+				color: "#121212",
 			},
 			unstyled: {
 				padding: 0,
 			},
 			danger: {
-				backgroundColor: "$red4",
-				color: "$red12",
-				boxShadow: "$shadow",
+				backgroundColor: "$red11",
+				color: "$surface",
 			},
 			disabled: {
-				backgroundColor: "$elementOnSurface",
-				color: "$textOnSurface",
-				opacity: 0.6,
+				opacity: 0.7,
 			},
 			accent: {
 				backgroundColor: "$accentText",
-				color: "$accentBg",
+				color: "$white",
 			},
 			loading: {
-				backgroundColor: "$surfaceOnSurface",
 				opacity: 0.6,
 				color: "$text",
+			},
+			link: {
+				backgroundColor: "$accentBase",
+				color: "$accentText",
+				"&:hover": {
+					backgroundColor: "$accentBg",
+				},
+			},
+			resale: {
+				backgroundColor: "$orange11",
+				color: "$surface",
 			},
 		},
 		outlined: {
 			true: {
-				border: "1px solid $border",
-				backgroundColor: "$surface",
+				backgroundColor: "$surfaceOnSurface",
 				color: "$textContrast",
-				boxShadow: "$shadow",
+				border: "1px solid $border",
 			},
 		},
 		active: {
@@ -88,22 +111,19 @@ export const Button = styled("button", {
 				width: "100%",
 			},
 		},
-		link: {
-			true: {
-				backgroundColor: "transparent",
-				color: "$textContrast",
-				padding: 0,
-			},
-		},
+
 		size: {
 			sm: {
 				fontSize: "14px",
 				padding: "4px 8px",
 			},
 		},
+		noPadding: {
+			true: {padding: 0},
+		},
 	},
 	defaultVariants: {
-		appearance: "action",
+		appearance: "default",
 	},
 });
 

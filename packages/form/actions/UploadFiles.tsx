@@ -1,15 +1,12 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import {Container} from "@packages/shared/components/Container";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
-import uploadcareClient from "@utils/uploadcare";
 import {useEffect, useState} from "react";
 import {FilePond, registerPlugin} from "react-filepond";
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
-import {File} from "filepond";
-import {Button} from "@packages/shared/components/Button";
 
 registerPlugin(
 	FilePondPluginImageExifOrientation,
@@ -18,44 +15,21 @@ registerPlugin(
 	FilePondPluginFileValidateType
 );
 
-const UploadMedia = ({next: callback}) => {
+const UploadMedia = ({setFile}) => {
 	const [files, setFiles] = useState([]);
-	const [isUploading, setUploading] = useState(false);
-
-	const uploadFiles = () => {
-		setUploading(true);
-		Promise.all(
-			files.map(async (file: File) => {
-				try {
-					return {
-						file,
-						// ipfs: `https://treatdao.mypinata.cloud/ipfs/${ipfs.data.IpfsHash}`,
-						type: file.fileType.includes("image") ? "image" : "video",
-					};
-				} catch (err) {
-					console.log(err);
-				}
-			})
-		).then((files) => {
-			callback(files);
-		});
-	};
 
 	useEffect(() => {
-		setUploading(false);
-	}, []);
+		setFile(files[0] ?? null);
+	}, [files]);
 
 	return (
-		<Container
-			className="flex flex-col max-w-2xl gap-8 p-8 border shadow-sm"
-			css={{background: "$elementSurface", borderRadius: "16px"}}
-		>
+		<Container className="flex flex-col w-full gap-8 p-2">
 			<Container className="flex flex-col gap-4">
 				<Container className="flex flex-col gap-2">
-					<Heading size="xss">Add media to collection</Heading>
+					<Heading size="xss">Add NFT media</Heading>
 					<Text>
-						Add image, or video files here. Accepted formats are JPG, PNG, JPEG,
-						GIF & MP4
+						Upload your image file here. Accepted formats are JPG, PNG, JPEG,
+						GIF
 					</Text>
 				</Container>
 				<FilePond
@@ -65,6 +39,7 @@ const UploadMedia = ({next: callback}) => {
 					instantUpload={false}
 					name="files"
 					maxFileSize={"100MB"}
+					maxFiles={1}
 					labelMaxFileSizeExceeded="File is too large"
 					labelMaxFileSize="Maximum file size is {filesize}"
 					labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
@@ -74,7 +49,7 @@ const UploadMedia = ({next: callback}) => {
 							if (type.startsWith("image/")) {
 								resolve(type);
 							} else if (type.startsWith("video/")) {
-								resolve(type);
+								reject(type);
 							} else {
 								reject(type);
 							}
@@ -89,17 +64,6 @@ const UploadMedia = ({next: callback}) => {
 					]}
 					labelFileTypeNotAllowed="Only image and video files are allowed"
 				/>
-			</Container>
-			<Container className="flex justify-end">
-				<Button
-					disabled={isUploading}
-					appearance={
-						isUploading || files.length === 0 ? "disabled" : "primary"
-					}
-					onClick={uploadFiles}
-				>
-					{isUploading ? "Uploading..." : "Save and continue"}
-				</Button>
 			</Container>
 		</Container>
 	);

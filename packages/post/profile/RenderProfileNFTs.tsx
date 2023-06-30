@@ -1,12 +1,9 @@
-import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
 import Pagination from "@packages/shared/components/Pagination";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import DynamicSkeleton from "@packages/skeleton";
 import {TritPostSkeleton} from "@packages/skeleton/config";
 import ProfileLayout from "core/components/layouts/ProfileLayout";
-import {ReactNode} from "react";
-import {TritPost} from "../TritPost";
 import {TritPostProps, TritResalePostProps} from "../types";
 
 const RenderProfileNFTs = ({
@@ -67,29 +64,14 @@ const RenderProfileNFTs = ({
 					<Text>That was an error. Please reload the page and try again.</Text>
 				</Container>
 			)}
-			<Container className="flex flex-col gap-12">
+			<Container className="flex flex-col gap-8">
 				{posts && posts?.length > 0 && (
 					<>
-						<Pagination
-							page={page}
-							totalPages={totalPages}
-							gotoPage={gotoPage}
-							nextPage={page + +1}
-							prevPage={page - 1}
-							next={nextPage}
-							prev={prevPage}
-							hasNextPage={hasNextPage}
-							hasPrevPage={page !== 1}
-						/>
-						<Container className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+						<Container className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
 							{posts.map((post: TritPostProps) => (
 								<Component
 									key={post.id}
 									{...post}
-									noPrice={hidePrice}
-									isMine={username === profile.username}
-									hideSeller={hideSeller}
-									hideSoldOut={hideSoldOut}
 								/>
 							))}
 						</Container>
@@ -109,6 +91,10 @@ const RenderProfileNFTs = ({
 			</Container>
 		</ProfileLayout>
 	);
+};
+
+const NFTsInfinityLoader = () => {
+	return <></>;
 };
 
 export default RenderProfileNFTs;

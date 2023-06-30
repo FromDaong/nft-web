@@ -3,7 +3,7 @@ import {PaginationManager} from "./../../../../utils/pagination";
 import {returnWithSuccess} from "@db/engine/utils";
 import {connectMongoDB} from "server/helpers/core";
 import {MongoModelNFT} from "server/helpers/models";
-import {SearchManager} from "@utils/search";
+import {NFTSearchManager} from "@utils/search";
 
 export default async function handler(req, res) {
 	await connectMongoDB();
@@ -88,7 +88,7 @@ export default async function handler(req, res) {
 		},
 	]).exec();
 
-	const searchManager = new SearchManager(nfts);
+	const searchManager = new NFTSearchManager(nfts);
 	searchManager.hydrate();
 	const searchResults = await searchManager.search(q);
 	const paginationManager = new PaginationManager(

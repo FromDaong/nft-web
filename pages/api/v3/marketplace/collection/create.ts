@@ -1,4 +1,4 @@
-// create collection endpoint
+// Create NFT endpoint
 
 import {returnWithError, returnWithSuccess} from "@db/engine/utils";
 import {NextApiRequest, NextApiResponse} from "next";
@@ -11,7 +11,7 @@ import {
 import {protectedAPIRoute} from "server/utils";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-	const {name, subscription} = req.body;
+	const {name, subscription, description} = req.body;
 
 	if (!name) {
 		return returnWithError({name: "Name is required"}, 500, res);
@@ -40,6 +40,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 		creator: creator._id,
 		isSubscription: subscription ? true : false,
 		profile: profile._id,
+		description,
 	});
 
 	await collection.save();

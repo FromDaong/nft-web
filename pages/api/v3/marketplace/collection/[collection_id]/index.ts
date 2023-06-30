@@ -13,7 +13,10 @@ export default async function handler(
 
 	const collection = await MongoModelCollection.findOne({
 		_id: collection_id,
-	}).populate("creator");
+	}).populate({
+		path: "creator",
+		populate: "profile",
+	});
 
 	if (!collection) {
 		return returnWithError("Collection not found", 404, res);

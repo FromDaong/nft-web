@@ -2,13 +2,19 @@ import {ethers} from "ethers";
 import {ABI} from "./abi";
 import {contractAddresses} from "./treat-contracts-constants";
 
-const customHttpProvider = new ethers.providers.JsonRpcProvider(
-	process.env.RPC_NODE_URL
+export const customHttpProvider = new ethers.providers.JsonRpcProvider(
+	process.env.NEXT_PUBLIC_NODE_RPC_URL
 );
 
 export const treatMarketplaceContract = new ethers.Contract(
-	contractAddresses.treatMarketplaceMinter[56],
+	contractAddresses.treatResaleMarketplaceMinter[56],
 	ABI.treatMarketplace,
+	customHttpProvider
+);
+
+export const treatResaleReader = new ethers.Contract(
+	contractAddresses.treatMarketReader[56],
+	ABI.treatMarketReader,
 	customHttpProvider
 );
 

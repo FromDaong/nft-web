@@ -35,12 +35,12 @@ export const SubscriptionContentPost = (props: TritPostProps) => {
 					className="gap-x-4"
 					css={{display: "flex"}}
 				>
-					<Link href={props.author.username}>
+					<Link href={props.creator.username}>
 						<a>
 							<NewAvatar
-								imageSrc={props.author.avatar}
+								imageSrc={props.creator.avatar}
 								size_def={{height: "48px", width: "48px"}}
-								username={props.author.display_name}
+								username={props.creator.display_name}
 							/>
 						</a>
 					</Link>
@@ -54,10 +54,10 @@ export const SubscriptionContentPost = (props: TritPostProps) => {
 								}}
 							>
 								<div>
-									<Link href={props.author.username}>
+									<Link href={props.creator.username}>
 										<a>
-											<Text>{props.author.display_name}</Text>{" "}
-											<SmallText>@{props.author.username}</SmallText> <br />
+											<Text>{props.creator.display_name}</Text>{" "}
+											<SmallText>@{props.creator.username}</SmallText> <br />
 										</a>
 									</Link>
 								</div>

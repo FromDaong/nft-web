@@ -1,27 +1,24 @@
-import {getCreatorMartContract, mintCreatorNft} from "@packages/chain/utils";
-
 import {useCallback} from "react";
 import {useAccount} from "wagmi";
-import useTreat from "./useTreat";
+import {useContracts} from "@packages/post/hooks";
+import {BigNumber} from "ethers";
 
-const useMintCreatorNft = (
-	id: number,
-	treatCost: number,
-	useCreatorMart = false
-) => {
+const useMintCreatorNft = (id: number, treatCost: BigNumber) => {
 	const {address: account} = useAccount();
-	const treat = useTreat();
-	const creatorMartContract = useCreatorMart
-		? getCreatorMartContract(treat)
-		: getCreatorMartContract(treat);
+	const {creatorMartContract} = useContracts();
 
 	const handleMintCreatorNft = useCallback(async () => {
-		const txHash = await mintCreatorNft(
-			creatorMartContract,
-			account,
+		console.log(
+			"minting creator nft: ",
 			id,
-			treatCost
+			treatCost,
+			account,
+			creatorMartContract
 		);
+		const txHash = await creatorMartContract.redeem(id, {
+			from: account,
+			value: treatCost,
+		});
 		return txHash;
 	}, [account, id, treatCost, creatorMartContract]);
 

@@ -8,7 +8,7 @@ import TreatCore from "../../../core/TreatCore";
 import {useEffect, useMemo} from "react";
 import {useInView} from "react-intersection-observer";
 import {Container} from "@packages/shared/components/Container";
-import {TreatNFTsInfinityScrollingContainer} from "@packages/shared/components/ListingSection";
+import {MarketplaceListingsContainer} from "@packages/shared/components/ListingSection";
 import {TritPost} from "@packages/post/TritPost";
 import DynamicSkeleton from "@packages/skeleton";
 import {TritPostSkeleton} from "@packages/skeleton/config";
@@ -80,7 +80,7 @@ export default function Address(props) {
 				</Container>
 				<Container className="flex flex-col gap-8 px-4 ">
 					<Container className={isFetching ? "opacity-40" : ""}>
-						<TreatNFTsInfinityScrollingContainer>
+						<MarketplaceListingsContainer>
 							{posts.length > 0
 								? posts.map((nft) => (
 										<div
@@ -106,7 +106,7 @@ export default function Address(props) {
 											<DynamicSkeleton config={TritPostSkeleton} />
 										</Container>
 								  ))}
-						</TreatNFTsInfinityScrollingContainer>
+						</MarketplaceListingsContainer>
 					</Container>
 					<Container className="flex justify-center w-full">
 						<Button

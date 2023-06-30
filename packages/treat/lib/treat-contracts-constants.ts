@@ -73,7 +73,7 @@ export const contractAddresses = {
 		97: "0xde83588bdB26c91B642C779a7C41722ca2364563",
 		"0x61": "0xde83588bdB26c91B642C779a7C41722ca2364563",
 	},
-	treatMarketplaceMinter: {
+	treatResaleMarketplaceMinter: {
 		56: "0xA38978E839c08046FA80B0fee55736253Ab3B8a3",
 		"0x38": "0xA38978E839c08046FA80B0fee55736253Ab3B8a3",
 		// NEW CONTRACT ^

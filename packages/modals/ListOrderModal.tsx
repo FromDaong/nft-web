@@ -13,7 +13,6 @@ import {Input} from "@packages/shared/components/Input";
 import {Text} from "@packages/shared/components/Typography/Headings";
 import {
 	ImportantText,
-	MutedText,
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
 import Spinner from "@packages/shared/icons/Spinner";
@@ -25,14 +24,16 @@ import {useState} from "react";
 import {useAccount, useWaitForTransaction} from "wagmi";
 import Web3 from "web3";
 import GenericChainModal from "./GenericChainModal";
+import {toast} from "sonner";
 
 export default function ListOrderModal(props: {
 	onClose: any;
 	isOpen: any;
 	nft: TritPostProps;
+	balance: number;
 }) {
+	console.log({balance: props.balance});
 	const router = useRouter();
-	const {address} = useAccount();
 	const {isOpen, onOpen, onClose} = useDisclosure();
 	const [listOrderPending, setListOrderPending] = useState(false);
 	const [listOrderSuccess, setListOrderSuccess] = useState(false);
@@ -44,7 +45,6 @@ export default function ListOrderModal(props: {
 
 	const {listOrder} = useListOrder();
 	const openOrders = useGetResaleOrders(props.nft.id) ?? [];
-	const balance = useGetRemainingOrderBalance(props.nft.id);
 
 	const [approveTx, setApproveTx] = useState<any>(null);
 	const {isLoading: isApprovalLoading} = useWaitForTransaction({
@@ -70,7 +70,7 @@ export default function ListOrderModal(props: {
 			})
 			.then(() => onClose())
 			.catch((err) => {
-				console.log({err});
+				toast.error(`${err}`);
 			});
 	};
 
@@ -83,20 +83,13 @@ export default function ListOrderModal(props: {
 			listQuantity
 		)
 			.then(() => {
-				return axios.post(`${apiEndpoint}/marketplace/methods/add-new-event`, {
-					id: props.nft.id,
-					price: listPrice.toString(),
-					seller: address,
-				});
-			})
-			.then(() => {
 				setListOrderPending(false);
 				setListOrderSuccess(true);
 			})
 			.catch((err) => {
 				setListOrderPending(false);
 				setListOrderError(err);
-				console.log({err});
+				toast.error(`${err}`);
 			});
 	};
 
@@ -122,16 +115,10 @@ export default function ListOrderModal(props: {
 
 			<GenericChainModal
 				isOpen={isApprovalLoading || isApprovedLoading}
-				noTitle
+				title={"Approving Treat Marketplace"}
+				loading
 				subtitle={
-					<Container className="flex flex-col items-center gap-4">
-						<Spinner />
-						<Text>
-							<ImportantText>
-								Checking if you have approved the Treat Marketplace Contract.
-							</ImportantText>
-						</Text>
-					</Container>
+					"Checking if you have approved the Treat Marketplace Contract."
 				}
 				hideClose
 				noButton
@@ -143,17 +130,9 @@ export default function ListOrderModal(props: {
 
 			<GenericChainModal
 				isOpen={listOrderPending}
-				noTitle
-				subtitle={
-					<Container className="flex flex-col items-center gap-4">
-						<Spinner />
-						<Text>
-							<ImportantText>
-								Please wait, we are listing your NFT on the marketplace.
-							</ImportantText>
-						</Text>
-					</Container>
-				}
+				loading
+				title={"Listing your NFT"}
+				subtitle={"Please wait, we are listing your NFT on the marketplace."}
 				hideClose
 				noButton
 				onClose={() => {
@@ -223,23 +202,21 @@ export default function ListOrderModal(props: {
 											placeholder="0.001"
 											min={0.001}
 											step={0.001}
+											appearance={"solid"}
 										/>
-										<MutedText>
-											<SmallText>
-												This is the price for someone to buy your NFT
-											</SmallText>
-										</MutedText>
 									</Container>
-									<Container className="my-4">
-										<Text>
+									<Container className="my-2">
+										<SmallText>
 											<ImportantText>
 												Floor price: {ethers.utils.formatEther(lowestOpenOrder)}
 											</ImportantText>
-										</Text>
+										</SmallText>
 									</Container>
-									{parseInt(balance) > 1 && (
-										<Container>
-											<Text>Quantity</Text>
+									{props.balance > 1 && (
+										<Container className="my-4">
+											<Text>
+												<ImportantText>Quantity</ImportantText>
+											</Text>
 											<Input
 												type="number"
 												value={listQuantity}
@@ -248,16 +225,16 @@ export default function ListOrderModal(props: {
 													setListQuantity(Number(e.target.value))
 												}
 												placeholder="1"
+												appearance={"solid"}
 											/>
-											<MutedText>
+											<SmallText className="mt-2">
 												NFTs are sold out individually, at the list price.
-												Choose the amount you wish to list.
-											</MutedText>
+											</SmallText>
 										</Container>
 									)}
 									<div className="flex justify-end gap-4">
 										<Button
-											className="font-bold text-white bg-primary"
+											className="font-bold "
 											onClick={props.onClose}
 											appearance={"surface"}
 										>

@@ -1,9 +1,10 @@
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
-import {Heading, Text} from "@packages/shared/components/Typography/Headings";
+import {Heading} from "@packages/shared/components/Typography/Headings";
 import Spinner from "@packages/shared/icons/Spinner";
 import {ReactNode} from "react";
 import {Modal} from ".";
+import {MutedText} from "@packages/shared/components/Typography/Text";
 
 export default function GenericChainModal(props: {
 	title?: string;
@@ -17,20 +18,26 @@ export default function GenericChainModal(props: {
 	subtitle?: string | ReactNode;
 	loading?: boolean;
 	noTitle?: boolean;
+	buttonAppearance?: string;
 }) {
 	return (
 		<Modal
 			isOpen={props.isOpen}
 			onClose={props.onClose}
 		>
-			<Container className="flex flex-col gap-8">
-				<Container className="flex flex-col w-full gap-2">
-					<Heading size="xs">
-						{!props.noTitle && (props.title || "Action Complete ✅ 💝")}
-					</Heading>
-					<Text>{props.subtitle}</Text>
+			<Container className="flex flex-col gap-8 p-4 lg:p-8 w-full">
+				<Container className="flex flex-col gap-1">
+					<Heading size={"xs"}>{props.title}</Heading>
+					<MutedText>{props.subtitle}</MutedText>
 				</Container>
-				{props.children && <Container>{props.children}</Container>}
+
+				{props.children}
+				{props.loading && (
+					<Container className="flex justify-center my-8">
+						<Spinner />
+					</Container>
+				)}
+
 				{!props.noButton && (
 					<Container className="flex justify-end gap-8">
 						{!props.hideClose && (
@@ -44,7 +51,12 @@ export default function GenericChainModal(props: {
 
 						{props.buttonLabel &&
 							(!props.loading ? (
-								<Button onClick={props.action}>{props.buttonLabel}</Button>
+								<Button
+									appearance={(props.buttonAppearance as any) ?? "default"}
+									onClick={props.action}
+								>
+									{props.buttonLabel}
+								</Button>
 							) : (
 								<Button
 									disabled

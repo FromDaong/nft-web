@@ -16,7 +16,7 @@ export const beforePageLoadGetUserProfile = async (ctx) => {
 	}
 
 	const creator = await MongoModelCreator.findOne({username}).exec();
-	if (!creator) {
+	if (!creator || creator?.pending === true) {
 		if (ctx.resolvedUrl === `/${username}`) {
 			return {
 				redirect: {

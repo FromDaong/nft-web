@@ -1,124 +1,147 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-import {SearchIcon} from "@heroicons/react/outline";
-import NFTSort from "@packages/Dropdowns/NFTDropdownSort";
-import {TritPost} from "@packages/post/TritPost";
+import NFTListLoadingSkeleton from "@components/MarketPlace/Listings/LoadingSkeleton";
+import MarketplaceListingResults from "@components/MarketPlace/Listings/VirtualGridList";
+import SweetshopTabs from "@components/MarketPlace/MarketFilter";
+import SweetshopNFT from "@components/NFTCard/cards/Sweetshop";
+import ErrorOccurred from "@components/ui/error";
+import {ConnectWalletButton} from "@packages/post/BuyNFTButton";
 import {SEOHead} from "@packages/seo/page";
-import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
-import {Input} from "@packages/shared/components/Input";
-import Pagination from "@packages/shared/components/Pagination";
-import {usePaginatedPage} from "@packages/shared/components/Pagination/lib";
-import {Heading} from "@packages/shared/components/Typography/Headings";
-import SweetshopTabs from "@packages/sweetshop/SweetshopTabs";
+import {Divider} from "@packages/shared/components/Divider";
+import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
 import axios from "axios";
+import TreatCore from "core/TreatCore";
 import ApplicationFrame from "core/components/layouts/ApplicationFrame";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
-import Link from "next/link";
-import {TreatNFTsInfinityScrollingContainer} from "packages/shared/components/ListingSection";
+import {useRouter} from "next/router";
+import {useEffect, useRef} from "react";
+import {useAccount} from "wagmi";
 
-export default function NFTS({sort, q, nfts, error}) {
+export default function NFTS({nfts}) {
+	const {address} = useAccount();
+	const scrollerRef = useRef(null);
 	const posts = JSON.parse(nfts);
-	const nft_posts = posts.docs;
+	const router = useRouter();
+	const {sort: sortQuery, tags: tagQuery, tab: marketQuery} = router.query;
 
+	// useInfinityQuery
 	const {
-		gotoPage,
-		performSearchWithNewParams,
-		prevPage,
-		nextPage,
-		searchText,
-		sortBy,
-		setSort,
-		setSearchText,
-	} = usePaginatedPage(posts, sort, q);
+		data,
+		isLoading,
+		isError,
+		isFetching,
+		fetchNextPage,
+		hasNextPage,
+		refetch,
+		error,
+	} = TreatCore.useInfiniteQuery(
+		["marketplace", "activity"],
+		async ({pageParam = 1}) => {
+			const res = await axios.get(
+				`${apiEndpoint}/marketplace/listings?page=${pageParam}${
+					"&sort=" + sortQuery
+				}${tagQuery ? "&tags=" + tagQuery : ""}${
+					marketQuery ? "&market=" + marketQuery : ""
+				}`
+			);
+			const {data} = res.data;
 
-	console.log({error});
+			data.docs = data.docs.map((post) =>
+				legacy_nft_to_new({
+					...post,
+					price: post.price,
+					_id: post._id,
+					creator: {
+						...post.creator,
+						profile: post.creator.profile,
+					},
+					seller: post.seller.address
+						? post.seller
+						: {
+								address: post.creator.address,
+								profile_pic: post.creator.profile?.profile_pic,
+								username: post.creator.username,
+								display_name: post.creator.display_name,
+								event_id: post._id,
+						  },
+				})
+			);
+			return data;
+		},
+		{
+			getNextPageParam: (lastPage) =>
+				lastPage.hasNextPage ? lastPage.nextPage : null,
+			select: (data) => {
+				return {
+					pages: data.pages.map((page) => page.docs),
+					pageParams: data.pages.map((page) => page.page),
+				};
+			},
+			placeholderData: {
+				pages: [],
+				pageParams: [1],
+			},
+		}
+	);
+
+	useEffect(() => {
+		refetch();
+	}, [sortQuery, tagQuery, marketQuery]);
 
 	return (
-		<ApplicationLayout>
-			<ApplicationFrame>
-				<SEOHead title="Explore NFTs" />
-				{!error && (
-					<Container className="flex flex-col gap-12 py-12">
-						<Container className="flex items-center justify-center gap-4">
-							<SweetshopTabs />
+		<ApplicationLayout thisRef={scrollerRef}>
+			<SEOHead title="Explore NFTs" />
+			<Container>
+				<ApplicationFrame>
+					<Heading
+						size={"md"}
+						css={{marginTop: "2rem"}}
+					>
+						Sweetshop
+					</Heading>
+					<Text>
+						The brand new sweetshop features all TreatDAO marketplaces in one
+						place!
+					</Text>
+					{!address && (
+						<Container className="flex mt-4">
+							<ConnectWalletButton />
 						</Container>
-						<form
-							onSubmit={performSearchWithNewParams}
-							className="flex flex-col w-full gap-4 px-4"
-						>
-							<Container
-								className="flex items-center w-full gap-1 px-2 py-1 rounded-lg shadow"
-								css={{
-									backgroundColor: "$surfaceOnSurface",
-									border: "1px solid $border",
-								}}
-							>
-								<Input
-									css={{
-										padding: "8px 12px",
-										borderRadius: "8px",
-										backgroundColor: "transparent",
-									}}
-									placeholder={"Start typing to search for NFTs"}
-									onChange={(e) => setSearchText(e.target.value)}
-									value={searchText}
-									className="flex-1"
-								/>
-
-								<Button
-									type={"submit"}
-									appearance={"subtle"}
-								>
-									<SearchIcon
-										width={20}
-										height={20}
-									/>
-								</Button>
-							</Container>
-						</form>
-						<Container className="flex gap-4 px-4 flex-noshrink">
-							<NFTSort
-								sort={sortBy}
-								prefix={""}
-							/>
-						</Container>
-
-						<Container className="flex flex-col gap-8 px-4 overflow-x-hidden">
-							<TreatNFTsInfinityScrollingContainer>
-								{nft_posts.length > 0 ? (
-									nft_posts.map((nft) => (
-										<div
-											key={nft._id}
-											className="col-span-1"
-										>
-											<TritPost
-												inGrid
-												{...nft}
-											/>
-										</div>
-									))
-								) : (
-									<Container className="flex flex-col items-center col-span-1 py-24 md:col-span-2 xl:col-span-5">
-										<Heading size="sm">No results found</Heading>
-									</Container>
-								)}
-							</TreatNFTsInfinityScrollingContainer>
-							<Pagination
-								hasNextPage={posts.hasNextPage}
-								hasPrevPage={posts.page - 1 > 0}
-								gotoPage={gotoPage}
-								page={posts.page}
-								totalPages={+posts.totalPages}
-								next={nextPage}
-								prev={prevPage}
-								nextPage={posts.page + +1}
-								prevPage={posts.page - +1}
-							/>
-						</Container>
+					)}
+				</ApplicationFrame>
+				<ApplicationFrame>
+					<Container className="py-2 mt-8">
+						<SweetshopTabs />
 					</Container>
-				)}
-			</ApplicationFrame>
+				</ApplicationFrame>
+				<Divider />
+			</Container>
+			<Container className="flex-1">
+				<ApplicationFrame>
+					{(isLoading || data?.pages?.flat().length === 0) && (
+						<NFTListLoadingSkeleton />
+					)}
+					{!isError && (
+						<MarketplaceListingResults
+							scrollerRef={scrollerRef}
+							data={data?.pages?.flat() ?? []}
+							fetchNext={fetchNextPage}
+							hasNextPage={hasNextPage}
+							Component={SweetshopNFT}
+							isFetching={isFetching}
+						/>
+					)}
+					{isError && (
+						<ErrorOccurred
+							err={error}
+							description={
+								"We experienced an error while loading the marketplace. Please try again later or reload the page."
+							}
+						/>
+					)}
+				</ApplicationFrame>
+			</Container>
 		</ApplicationLayout>
 	);
 }
@@ -126,7 +149,6 @@ export default function NFTS({sort, q, nfts, error}) {
 export const getServerSideProps = async (ctx) => {
 	const {q, p} = ctx.query;
 	const sort = ctx.query.sort ?? "3";
-	console.log({sort});
 
 	try {
 		const res = await axios.get(
@@ -144,11 +166,11 @@ export const getServerSideProps = async (ctx) => {
 				_id: post._id,
 				creator: {
 					...post.creator,
-					profile: post.creator_profile,
+					profile: post.creator.profile,
 				},
 				seller: {
 					address: post.creator.address,
-					profile_pic: post.creator.profile_pic,
+					profile_pic: post.creator.profile.profile_pic,
 					username: post.creator.username,
 					display_name: post.creator.display_name,
 					event_id: post._id,
@@ -164,8 +186,6 @@ export const getServerSideProps = async (ctx) => {
 			},
 		};
 	} catch (err) {
-		console.log(err);
-
 		return {
 			props: {
 				sort: sort ?? 3,

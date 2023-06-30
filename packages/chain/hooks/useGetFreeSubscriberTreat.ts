@@ -1,34 +1,20 @@
-import {
-	getSubscriberMartContract,
-	mintFreeSubscriberTreat,
-} from "@packages/chain/utils";
-
 import {useCallback} from "react";
 import {useAccount} from "wagmi";
-import useTreat from "./useTreat";
+import {useContracts} from "@packages/post/hooks";
 
-const useGetFreeSubscriberTreat = (
-	id: number,
-	treatCost: number,
-	useSubscriberMart = false
-) => {
+const useGetFreeSubscriberTreat = (id: number) => {
 	const {address: account} = useAccount();
-	const treat = useTreat();
-	const subscriberMartContract = useSubscriberMart
-		? getSubscriberMartContract(treat)
-		: getSubscriberMartContract(treat);
+	const {subscriptionsMart} = useContracts();
 
-	const handleGetFreeSubscriberTreat = useCallback(async () => {
-		const txHash = await mintFreeSubscriberTreat(
-			subscriberMartContract,
-			account,
-			id
-		);
-
+	const handleMintSubscriberNft = useCallback(async () => {
+		const txHash = await subscriptionsMart.redeemFreeTreat(id, {
+			from: account,
+			value: 0,
+		});
 		return txHash;
-	}, [account, id, treatCost, subscriberMartContract]);
+	}, [account, id, subscriptionsMart]);
 
-	return {onGetFreeSubscriberTreat: handleGetFreeSubscriberTreat};
+	return {onGetFreeSubscriberTreat: handleMintSubscriberNft};
 };
 
 export default useGetFreeSubscriberTreat;

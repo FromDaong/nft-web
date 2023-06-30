@@ -1,4 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import NFTCollection from "@components/CreatorDashboard/NFTCollection";
 import {ArrowRightIcon} from "@heroicons/react/outline";
 import Error404 from "@packages/error/404";
 import Error500 from "@packages/error/500";
@@ -89,18 +90,23 @@ export default function UserProfile(props: {
 				{error && <Error500 />}
 				{collections && (
 					<>
-						<Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
+						<Container className="grid grid-cols-1 lg:grid-cols-2 gap-4">
 							{collections.map((collection) => (
 								<Link
 									key={collection._id}
 									href={`/collection/${collection._id}`}
 								>
 									<a>
-										<CollectionsPreview
-											key={`collection:${collection._id}}`}
-											nfts={collection.nfts}
-											creator={data}
-											collection={collection}
+										<NFTCollection
+											item={{
+												_id: collection._id,
+												name: collection.name,
+												description: collection.description,
+												cover: collection.cover,
+												creator: data,
+												href: `/collection/${collection._id}`,
+												nfts: collection.nfts,
+											}}
 										/>
 									</a>
 								</Link>

@@ -13,14 +13,11 @@ export default async function handler(
 
 	const {page, username} = req.query;
 
-	const get_page = Number(page ?? 1) || 1;
 	if (!username) {
 		return res.status(400).json({error: "No username provided"});
 	}
 
 	const creator = await MongoModelCreator.findOne({username});
-
-	console.log({username, creator});
 
 	if (!creator) {
 		return res.status(404).json({error: "Creator not found"});
@@ -30,7 +27,10 @@ export default async function handler(
 	const creatorNFTs = await MongoModelNFT.find({
 		creator: creator._id,
 	})
-		.populate("creator")
+		.populate({
+			path: "creator",
+			populate: "profile",
+		})
 		.limit(3)
 		.exec();
 

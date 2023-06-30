@@ -1,33 +1,31 @@
-import { styled } from "@styles/theme";
+import {styled} from "@styles/theme";
 
 const StraightLine = styled("div", {
-  borderColor: "$subtleBorder",
+	borderColor: "$subtleBorder",
 });
 
-export const ShortDivider = ({ dir }: { dir: "vertical" | "horizontal" }) => {
-  return (
-    <div className="w-full py-8">
-      <StraightLine
-        className={`${
-          dir === "horizontal"
-            ? "h-24 my-auto border-l-2"
-            : "w-24 mx-auto border-t-2"
-        }`}
-      />
-    </div>
-  );
+export const ShortDivider = ({dir}: {dir: "vertical" | "horizontal"}) => {
+	return (
+		<div className="w-full py-8">
+			<StraightLine
+				className={`${
+					dir === "horizontal"
+						? "h-24 my-auto border-l-2"
+						: "w-24 mx-auto border-t-2"
+				}`}
+			/>
+		</div>
+	);
 };
 
-export const Divider = ({ dir }: { dir: "vertical" | "horizontal" }) => {
-  return (
-    <div className="w-full my-2">
-      <StraightLine
-        className={`${
-          dir === "horizontal"
-            ? "w-full border-t my-4"
-            : "w-full mx-auto border-t"
-        }`}
-      />
-    </div>
-  );
+export const Divider = ({dir}: {dir?: "vertical" | "horizontal"}) => {
+	return (
+		<div className="w-full my-2">
+			<StraightLine
+				className={`${
+					dir === "horizontal" ? "w-full border-t" : "w-full mx-auto border-t"
+				}`}
+			/>
+		</div>
+	);
 };

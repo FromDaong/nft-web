@@ -4,18 +4,15 @@ import {styled} from "@styles/theme";
 export const DropdownContainer = styled("div", {
 	width: "max-content",
 	backgroundColor: "$surface",
-	border: "1px solid $border",
+	//border: "1px solid $subtleBorder",
 	borderRadius: "16px",
-	padding: "8px",
 	zIndex: "100",
 	minWidth: "280px",
 });
 
 export const NavDropdownContainer = styled("div", {
 	width: "fit-content",
-	background: "$elementSurface",
-
-	borderRadius: "8px",
+	background: "$surface",
 	zIndex: "100",
 	padding: "4px",
 	minWidth: "180px",
@@ -26,7 +23,7 @@ export const NavDropdownItem = styled(Item, {
 	borderRadius: "15px",
 	fontWeight: "600",
 
-	padding: "8px 12px",
+	padding: "8px",
 	"&:hover": {
 		backgroundColor: "$elementOnSurface",
 		cursor: "pointer",

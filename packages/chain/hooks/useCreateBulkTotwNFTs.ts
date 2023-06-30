@@ -1,29 +1,22 @@
-import {
-	createBulkTotwNFTs,
-	getTotwMinterHelperContract,
-} from "@packages/chain/utils";
-
 import {useCallback} from "react";
 import {useAccount} from "wagmi";
-import useTreat from "./useTreat";
+import {useContracts} from "@packages/post/hooks";
 
 const useCreateBulkTotwNFTs = (
 	maxSupplys: Array<number>,
 	creatorAddress: string
 ) => {
 	const {address: account} = useAccount();
-	const treat = useTreat();
-	const totwMinterHelperContract = getTotwMinterHelperContract(treat);
+	const {totwMinterHelperContract} = useContracts();
 
 	const handleCreateBulkTotwNFTs = useCallback(async () => {
-		const res = await createBulkTotwNFTs(
-			totwMinterHelperContract,
-			account,
+		const result = await totwMinterHelperContract.createTreats(
 			maxSupplys,
-			creatorAddress
+			creatorAddress,
+			{from: account, value: 0}
 		);
 
-		return res;
+		return result.events.TotwNftsCreated.returnValues;
 	}, [account, maxSupplys, creatorAddress, totwMinterHelperContract]);
 
 	return {onCreateBulkTotwNFTs: handleCreateBulkTotwNFTs};

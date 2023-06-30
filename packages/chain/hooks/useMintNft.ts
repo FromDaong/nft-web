@@ -1,20 +1,18 @@
-import {getTreatMartContract, mintNft} from "@packages/chain/utils";
-
 import {useCallback} from "react";
 import {useAccount} from "wagmi";
-import useTreat from "./useTreat";
+import {useContracts} from "@packages/post/hooks";
 
-const useMintNft = (id: number, treatCost: number, useTreatMart = false) => {
+const useMintNft = (id: number, treatCost: number) => {
 	const {address: account} = useAccount();
-	const treat = useTreat();
-	const treatMartContract = useTreatMart
-		? getTreatMartContract(treat)
-		: getTreatMartContract(treat);
+	const {totmMartContract} = useContracts();
 
 	const handleMintNft = useCallback(async () => {
-		const txHash = await mintNft(treatMartContract, account, id, treatCost);
+		const txHash = await totmMartContract.redeem(id, {
+			from: account,
+			value: treatCost,
+		});
 		return txHash;
-	}, [account, id, treatCost, treatMartContract]);
+	}, [account, id, treatCost, totmMartContract]);
 
 	return {onMintNft: handleMintNft};
 };

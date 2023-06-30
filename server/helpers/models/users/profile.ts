@@ -76,7 +76,7 @@ const ProfileSchema = new mongoose.Schema(
 		referred: [],
 		user: {
 			type: mongoose.Schema.Types.ObjectId,
-			required: true,
+			required: false,
 			ref: "User",
 		},
 		followers: [

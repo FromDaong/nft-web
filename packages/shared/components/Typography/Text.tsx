@@ -1,9 +1,12 @@
 import {styled} from "@styles/theme";
 
-export const BoldLink = styled("p", {
+export const BoldLink = styled("a", {
 	fontWeight: "600 !important",
 	color: "$textContrast",
 	cursor: "pointer",
+	display: "flex",
+	gap: "0.5rem",
+	alignItems: "center",
 	variants: {
 		hover: {
 			true: {},
@@ -86,7 +89,14 @@ export const SmallText = styled("span", {
 });
 
 export const ImportantText = styled("span", {
-	fontWeight: "700",
+	fontWeight: "600",
+	variants: {
+		contrast: {
+			true: {
+				color: "$textContrast",
+			},
+		},
+	},
 });
 
 export const Username = styled("span", {

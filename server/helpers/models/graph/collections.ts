@@ -9,6 +9,10 @@ const CollectionSchema = new Schema(
 			type: String,
 			required: true,
 		},
+		description: {
+			type: String,
+			required: true,
+		},
 		creator: {
 			type: Schema.Types.ObjectId,
 			ref: "Creator",
@@ -19,6 +23,7 @@ const CollectionSchema = new Schema(
 		},
 		cover_image: {
 			type: String,
+			default: "/assets/bg.jpg",
 		},
 		nfts: [
 			{

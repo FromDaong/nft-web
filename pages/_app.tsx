@@ -15,9 +15,11 @@ import {AppProps} from "next/app";
 import type {Session} from "next-auth";
 import {ApplicationProvider} from "core/provider";
 import AcceptAgeModal from "@packages/modals/AcceptAgeModal";
-import {Container} from "@packages/shared/components/Container";
-import Footer from "@packages/shared/components/Footer";
 import {Analytics} from "@vercel/analytics/react";
+import TreatBalancesProvider from "core/auth/components/TreatBalancesProvider";
+import {Provider} from "urql";
+import {treatGraphClient} from "@lib/graphClients";
+import {Toaster} from "sonner";
 
 const progress = new ProgressBar({
 	size: 3,
@@ -36,27 +38,25 @@ function MyApp({
 	session: Session;
 }>) {
 	return (
-		<>
-			<ThemeProvider>
-				<ApplicationProvider>
-					<WagmiWrapper pageProps={pageProps}>
-						<Head>
-							<title>Treat DAO</title>
-						</Head>
+		<Provider value={treatGraphClient}>
+			<ApplicationProvider>
+				<WagmiWrapper pageProps={pageProps}>
+					<TreatBalancesProvider>
+						<ThemeProvider>
+							<Toaster richColors />
+							<Head>
+								<title>Treat DAO</title>
+							</Head>
 
-						<AcceptAgeModal />
-						<Navbar />
-						<main className="mt-[60px]">
+							<AcceptAgeModal />
+							<Navbar />
 							<Component {...pageProps} />
-						</main>
-						<Container className="pb-12">
-							<Footer />
-						</Container>
-					</WagmiWrapper>
-				</ApplicationProvider>
-			</ThemeProvider>
+						</ThemeProvider>
+					</TreatBalancesProvider>
+				</WagmiWrapper>
+			</ApplicationProvider>
 			<Analytics />
-		</>
+		</Provider>
 	);
 }
 

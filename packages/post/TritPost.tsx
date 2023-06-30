@@ -14,7 +14,7 @@ import {ActionSection} from "./UtilityComponents";
 import {useInView} from "react-intersection-observer";
 
 export const FrostyBackgroundContainer = styled(Container, {
-	backgroundColor: "#ffffff33",
+	backgroundColor: "#00000033",
 	backdropFilter: "blur(10px)",
 
 	variants: {
@@ -29,9 +29,10 @@ export const FrostyBackgroundContainer = styled(Container, {
 	},
 });
 
+// T-84 Sold out status should come from the subgraph
 export const TritPost = (props: TritPostProps) => {
 	const {ref} = useInView();
-	const {liked, likeNFT, isMine, isProtected, loadingSigner, remainingNfts} =
+	const {liked, likeNFT, isMine, isProtected, loadingSigner} =
 		useTritNFTUtils(props);
 
 	const soldOut = props.collection?.minted === props.max_supply;
@@ -49,7 +50,7 @@ export const TritPost = (props: TritPostProps) => {
 					}}
 				>
 					<Container className="relative flex w-full overflow-hidden aspect-square">
-						{!loadingSigner && remainingNfts === 0 && !props.hideSoldOut && (
+						{!loadingSigner && 0 === 0 && !props.hideSoldOut && (
 							<Text
 								css={{
 									color: "$surface",
@@ -58,7 +59,7 @@ export const TritPost = (props: TritPostProps) => {
 									top: "16px",
 									left: "-24px",
 								}}
-								className="absolute z-10 px-8 h-fit w-fit"
+								className="absolute px-8 h-fit w-fit"
 							>
 								<SmallText>
 									<ImportantText>Sold Out</ImportantText>
@@ -76,20 +77,6 @@ export const TritPost = (props: TritPostProps) => {
 						>
 							<Container className="flex items-center justify-between">
 								<Container className="flex gap-4">
-									{false && (
-										<FrostyBackgroundContainer
-											css={{borderRadius: "calc(8px + 16px)", padding: "8px"}}
-										>
-											<Container
-												css={{
-													height: "80px",
-													width: "80px",
-
-													borderRadius: "calc(16px)",
-												}}
-											/>
-										</FrostyBackgroundContainer>
-									)}
 									{(isProtected || soldOut || props.totm) && (
 										<Container className="flex justify-between w-full">
 											{isProtected && (
@@ -112,18 +99,13 @@ export const TritPost = (props: TritPostProps) => {
 													)}
 												</FrostyBackgroundContainer>
 											)}
-											{soldOut && (
-												<FrostyBackgroundContainer className="px-3 py-1 rounded-full">
-													<Container className="flex items-center justify-center gap-2">
-														<Text css={{color: "$red6"}}>
-															<ImportantText>Sold out</ImportantText>
-														</Text>
-													</Container>
-												</FrostyBackgroundContainer>
-											)}
 										</Container>
 									)}
 								</Container>
+								<CreatorTag
+									avatar={props.creator.username}
+									username={props.creator.username}
+								/>
 							</Container>
 						</Container>
 					</Container>
@@ -134,11 +116,12 @@ export const TritPost = (props: TritPostProps) => {
 							liked={liked}
 							likeNFT={likeNFT}
 							unlikeNFT={likeNFT}
-							creator={props.author.username}
+							creator={props.creator.username}
 							toggleImageProtection={() => null}
 							isProtected={isProtected}
 							hideSeller={props.hideSeller}
 							count={props.count}
+							soldOut={props.isSoldOut}
 						/>
 					</Container>
 				</Container>
@@ -146,3 +129,27 @@ export const TritPost = (props: TritPostProps) => {
 		</Link>
 	);
 };
+
+TritPost.DetailSection = ActionSection;
+
+function CreatorTag({avatar, username}) {
+	return (
+		<Link href={`/${username}`}>
+			<a>
+				<FrostyBackgroundContainer className="flex items-center gap-2 p-2 rounded-full">
+					<img
+						src={avatar}
+						className="w-6 h-6 overflow-hidden rounded-full"
+					/>
+					<Text
+						css={{
+							color: "$white",
+						}}
+					>
+						<ImportantText>@{username}</ImportantText>
+					</Text>
+				</FrostyBackgroundContainer>
+			</a>
+		</Link>
+	);
+}

@@ -1,6 +1,6 @@
 import {SEOHead} from "@packages/seo/page";
 import {Container} from "@packages/shared/components/Container";
-import {Heading} from "@packages/shared/components/Typography/Headings";
+import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 
 export default function Privacy() {
 	return (
@@ -8,10 +8,10 @@ export default function Privacy() {
 			<SEOHead title={"Treat Terms of Service"} />
 			<div className="max-w-4xl p-4 mx-auto lg:p-0">
 				<div className="flex flex-col max-w-xl gap-4 py-16 mx-auto text-center">
-					<p className="text-purple-500">
+					<Text css={{color: "$accentText"}}>
 						As of {new Date().toLocaleDateString()}
-					</p>
-					<Heading>TREAT TERMS OF USE</Heading>
+					</Text>
+					<Heading>Terms of Service</Heading>
 				</div>
 			</div>
 			<div className="flex flex-col max-w-3xl py-12 mx-auto">

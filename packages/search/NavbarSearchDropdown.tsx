@@ -2,7 +2,7 @@ import {useCallback, useEffect, useMemo, useState} from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import {ChevronDownIcon} from "@heroicons/react/solid";
 import Link from "next/link";
-import SuggestedCreatorCard from "@packages/feed/components/SuggestedCreatorCard";
+import CreatorCard from "@packages/feed/components/CreatorCard";
 
 import {
 	DropdownContent,
@@ -152,7 +152,7 @@ const NavbarSearchDropdown = () => {
 							</Text>
 							<Container className="grid grid-cols-1 gap-2">
 								{creatorResults.map((item, i) => (
-									<SuggestedCreatorCard
+									<CreatorCard
 										key={i}
 										username={item.uname}
 										display_name={item.fname}
