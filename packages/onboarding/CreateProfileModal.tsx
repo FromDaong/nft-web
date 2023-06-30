@@ -32,7 +32,7 @@ export default function CreateProfileModal({
 			isOpen={isOpen}
 			onClose={onClose}
 		>
-			<Container className="flex flex-col gap-8">
+			<Container className="flex flex-col gap-8 p-4">
 				<Container className="relative flex flex-col gap-1">
 					<Heading size="sm">Get started</Heading>
 					<Text>
