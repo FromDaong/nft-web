@@ -30,7 +30,7 @@ export default function CreateProfileModal({
 	return (
 		<Modal
 			isOpen={isOpen}
-			onClose={onClose}
+			onClose={() => null}
 		>
 			<Container className="flex flex-col gap-8 p-4">
 				<Container className="relative flex flex-col gap-1">
