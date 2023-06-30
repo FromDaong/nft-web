@@ -31,6 +31,7 @@ import {toast} from "sonner";
 import UserAvatar from "core/auth/components/Avatar";
 import {useUser} from "core/auth/useUser";
 import formatAddress from "@utils/formatAddress";
+import {BigNumber} from "ethers";
 
 export default function TreatCreatorStudio() {
 	const {isLoading: isLoadingAccountSummary, data: accountSummary} =
@@ -106,6 +107,7 @@ const useAccountSummary = () => {
 				}
 				tokens {
 					identifier
+					totalSupply
 					totalSales
 					totalSaleValue
 					registry {
@@ -282,9 +284,9 @@ function ConvertV1ToV2NFTCard({tokens}) {
 		hash: txHash,
 	});
 
-	const v1NFTs = tokens.filter(
+	const v1NFTs = tokens; /*.filter(
 		(t) => t.registry.id === "0xde39d0b9a93dcd541c24e80c8361f362aab0f213"
-	);
+	);*/
 	const ids = v1NFTs.map((n) => n.identifier);
 	const amounts = v1NFTs.map((n) => n.totalSupply);
 
@@ -292,10 +294,15 @@ function ConvertV1ToV2NFTCard({tokens}) {
 
 	const tradeInClick = () => {
 		openPendingModal();
-		onRedeemV1forV2().then((s) => {
-			// closePendingModal();
-			setTxHash(s.hash);
-		});
+		onRedeemV1forV2()
+			.then((s) => {
+				// closePendingModal();
+				setTxHash(s.hash);
+			})
+			.catch((err) => {
+				toast.error(err.message);
+				closePendingModal();
+			});
 	};
 
 	useEffect(() => {

@@ -53,7 +53,10 @@ export default function MyUserProfile(props: {
 					},
 					creator: {
 						...post.creator,
-						profile: post.creator.profile,
+						profile: post.creator.profile ?? {
+							profile_pic: post.creator.profile.profile_pic,
+						},
+						avatar: post.creator.profile.profile_pic,
 					},
 				})
 			);
