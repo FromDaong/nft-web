@@ -49,11 +49,11 @@ const DefaultCreatorCard = (props: SuggestedCreatorData) => {
 	// T-83 Some profile pics not loading. Use base treatnfts.com - media endpoint /api/v3/media/
 	const profilePicUrl = props.avatar;
 	const {profile} = useUser();
-	console.log({props});
+
 	const {follow, isFollowing, unfollow} = useFollow(
 		profile?._id,
 		props.username,
-		props.followers
+		props.followers ?? []
 	);
 
 	return (
@@ -96,9 +96,9 @@ const DefaultCreatorCard = (props: SuggestedCreatorData) => {
 													e.preventDefault();
 													e.stopPropagation();
 													if (isFollowing) {
-														follow();
-													} else {
 														unfollow();
+													} else {
+														follow();
 													}
 												}}
 											>
@@ -126,7 +126,7 @@ const CompactCreatorCard = (props: SuggestedCreatorData) => {
 	const {follow, isFollowing, unfollow} = useFollow(
 		profile?._id,
 		props.username,
-		props.followers
+		props.followers ?? []
 	);
 
 	return (

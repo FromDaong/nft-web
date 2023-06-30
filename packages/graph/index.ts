@@ -53,3 +53,40 @@ export async function getWhomToFollowForProfile(
 	// Return the recommended users
 	return top5.map((item) => item.user);
 }
+
+export async function getSimilarProfiles(
+	userId: string,
+	exclude: string[]
+): Promise<Profile[]> {
+	// Get the user for whom we want recommendations
+	const user = await MongoModelProfile.findOne({_id: userId}).lean().exec();
+	if (!user) {
+		throw new Error("User not found");
+	}
+
+	// Get all other users
+	const otherUsers = await MongoModelProfile.find({
+		$and: [{_id: {$ne: user._id}}, {_id: {$nin: exclude}}],
+	})
+		.lean()
+		.exec();
+
+	// Calculate similarity scores
+	const scores = await Promise.all(
+		otherUsers.map(async (otherUser) => {
+			const bioSimilarity = await calculateBioSimilarity(user, otherUser);
+			const followingSimilarity = calculateFollowingSimilarity(
+				user,
+				otherUser as Profile
+			);
+			const totalSimilarity = bioSimilarity + followingSimilarity;
+			return {user: otherUser as Profile, score: totalSimilarity};
+		})
+	);
+
+	// Sort by score and take the top 5
+	const top5 = scores.sort((a, b) => b.score - a.score).slice(0, 5);
+
+	// Return the recommended users
+	return top5.map((item) => item.user);
+}

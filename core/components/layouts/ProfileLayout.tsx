@@ -42,6 +42,7 @@ import {Divider} from "@packages/shared/components/Divider";
 import {toast} from "sonner";
 import {FrostyBackgroundContainer} from "@components/NFTCard/misc/FrostyBackground";
 import Spinner from "@packages/shared/icons/Spinner";
+import CreatorCard from "@packages/feed/components/CreatorCard";
 
 type ProfileLayoutProps = ComponentBasicProps & {
 	userProfile?: {
@@ -71,25 +72,28 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 
 	const [openingMessages, setOpeningMessages] = useState(false);
 
-	const [ownerOfUserProfile] = useState({
-		username: profile.username,
-		display_name: profile ? profile.display_name : "",
-		bio: profile ? profile.bio : "",
-		followers: profile.followers,
-		following: profile.following,
-		earnings: profile.earnings ?? 0,
-		address: profile ? profile.address : "",
-		profile_pic: profile.profile_pic,
-		banner_pic: profile.banner_pic,
-		creator: profile.creator,
-		badges: [
-			...profile.badges,
-			(props.userProfile.creator || props.userProfile.creator?.approved) &&
-			!props.userProfile.creator?.pending
-				? {color: "pink", name: "Verified Creator 🎀"}
-				: {color: "purple", name: "Collector"},
-		],
-	});
+	const ownerOfUserProfile = useMemo(
+		() => ({
+			username: profile.username,
+			display_name: profile ? profile.display_name : "",
+			bio: profile ? profile.bio : "",
+			followers: profile.followers,
+			following: profile.following,
+			earnings: profile.earnings ?? 0,
+			address: profile ? profile.address : "",
+			profile_pic: profile.profile_pic,
+			banner_pic: profile.banner_pic,
+			creator: profile.creator,
+			badges: [
+				...profile.badges,
+				(props.userProfile.creator || props.userProfile.creator?.approved) &&
+				!props.userProfile.creator?.pending
+					? {color: "pink", name: "Verified Creator 🎀"}
+					: {color: "purple", name: "Collector"},
+			],
+		}),
+		[router]
+	);
 
 	const [userBadges, setBadges] = useState(ownerOfUserProfile.badges);
 	const {data: treatBalance, isLoading: isBalanceLoading} = useBalance({
@@ -193,20 +197,6 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 		}
 	};
 
-	const createChatIfNotExist = () => {
-		setOpeningMessages(true);
-		console.log({loggedInUser});
-		axios
-			.get(`${apiEndpoint}/chat/username/${ownerOfUserProfile.username}`)
-			.then((res) => {
-				router.push(`/messages/${res.data.data.id}`);
-			})
-			.catch((err) => {
-				console.log({err});
-				setOpeningMessages(false);
-			});
-	};
-
 	const isFollowing = followers.includes(loggedInUser?._id);
 
 	useEffect(() => {
@@ -256,7 +246,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 				return;
 			}
 		}
-	}, [ownedNFTsCount.data]);
+	}, [ownedNFTsCount.data, ownerOfUserProfile]);
 
 	useEffect(() => {
 		if (treatBalance) {
@@ -290,7 +280,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 				return;
 			}
 		}
-	}, [treatBalance]);
+	}, [treatBalance, ownerOfUserProfile]);
 
 	return (
 		<ApplicationLayout thisRef={props.scrollerRef}>
@@ -476,17 +466,30 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 			</Container>
 			<Divider />
 			<ApplicationFrame>
-				<Container className="px-2 pt-4 pb-24">{props.children}</Container>
+				<Container className="px-2 pt-4 pb-24 md:grid hidden md:grid-cols-2 lg:grid-cols-3 gap-8">
+					<Container className="flex-1 col-span-1 lg:col-span-2">
+						{props.children}
+					</Container>
+					<YouMightAlsoLike />
+				</Container>
+				<Container className="px-2 pt-4 pb-24 grid md:hidden grid-cols-1 gap-8">
+					<YouMightAlsoLike />
+					<Container className="flex-1 col-span-1">{props.children}</Container>
+				</Container>
 			</ApplicationFrame>
 		</ApplicationLayout>
 	);
 }
 
 const useUpdateCoverPhoto = (banner_pic) => {
-	const [bannerPic, setBannerPic] = useState(banner_pic);
+	const [banner, setBannerPic] = useState(banner_pic);
 	const [isLoading, setIsLoading] = useState(false);
 	const router = useRouter();
 	const {uploadToIPFS} = useStorageService();
+
+	useEffect(() => {
+		setBannerPic(banner_pic);
+	}, [banner_pic]);
 
 	const updateCoverPhoto = async (file: File) => {
 		setIsLoading(true);
@@ -517,7 +520,7 @@ const useUpdateCoverPhoto = (banner_pic) => {
 	return {
 		isLoading,
 		updateCoverPhoto,
-		bannerPic,
+		bannerPic: banner,
 	};
 };
 
@@ -583,3 +586,51 @@ function CoverPhoto({banner}) {
 		</Container>
 	);
 }
+
+const YouMightAlsoLike = () => {
+	const {profile} = useUser();
+	const {
+		query: {username},
+	} = useRouter();
+
+	const {data, isLoading} = TreatCore.useQuery(
+		["profile", username],
+		async () => {
+			const {data} = await axios.get(
+				`${apiEndpoint}/graph/who-to-follow/${profile?.username}?secondary=${username}`
+			);
+			return data;
+		},
+		{
+			enabled: !!profile,
+		}
+	);
+
+	return (
+		<Container
+			css={{
+				backgroundColor: "$surfaceOnSurface",
+			}}
+			className="col-span-1 rounded-xl flex-shrink-0 flex flex-col p-1 h-fit md:sticky top-2"
+		>
+			<Container className="p-4">
+				<Heading size="xss">You might also like</Heading>
+			</Container>
+			{isLoading && !data ? (
+				<Container className="flex py-4 justify-center">
+					<Spinner />
+				</Container>
+			) : (
+				<Container className={"flex flex-col gap-2"}>
+					{data?.map((user) => (
+						<CreatorCard
+							key={user.username}
+							{...user}
+							avatar={user.profile_pic}
+						/>
+					))}
+				</Container>
+			)}
+		</Container>
+	);
+};

@@ -1,6 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import NFTListLoadingSkeleton from "@components/MarketPlace/Listings/LoadingSkeleton";
 import MarketplaceListingResults from "@components/MarketPlace/Listings/VirtualGridList";
+import ProfileNFTList from "@components/MarketPlace/Listings/VirtuosoProfileGrid";
 import PortfolioPublicListingCard from "@components/NFTCard/cards/PortfolioListingCard";
 import ErrorOccurred from "@components/ui/error";
 import {Button} from "@packages/shared/components/Button";
@@ -100,7 +101,7 @@ export default function UserProfile(props: {
 				)}
 				{isLoading && <NFTListLoadingSkeleton />}
 				{!isLoading && !isError && (
-					<MarketplaceListingResults
+					<ProfileNFTList
 						scrollerRef={scrollerRef}
 						data={portfolioNFTs ?? []}
 						fetchNext={fetchNextPage}
