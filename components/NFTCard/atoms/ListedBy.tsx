@@ -4,7 +4,7 @@ import Link from "next/link";
 export const ListedBy = (props: {username: string}) => (
 	<Link href={`/${props.username}`}>
 		<a>
-			<Text className="italic max-w-64 truncate text-ellipsis">
+			<Text className="max-w-64 truncate text-ellipsis">
 				Listed by @{props.username}
 			</Text>
 		</a>

@@ -139,7 +139,7 @@ export default function ProfileLayout(props: ProfileLayoutProps) {
 	const creator_tabs = [
 		{
 			label: "Sweetshop NFTs",
-			href: "/",
+			href: ``,
 			icon: <LucideShoppingBag className="w-5 h-5" />,
 		},
 
