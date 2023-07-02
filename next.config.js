@@ -46,5 +46,47 @@ module.exports = withTM({
     runtimeCaching,
     buildExcludes: [/middleware-manifest.json$/],
   },*/
+	// redirects
+	async redirects() {
+		return [
+			{
+				source: "/",
+				destination: "/en",
+				permanent: true,
+			},
+			{
+				source: "/creators",
+				destination: "/",
+				permanent: true,
+			},
+			{
+				source: "/creators/:slug",
+				destination: "/:slug",
+				permanent: true,
+			},
+		];
+	},
+	// enable cors
+	async headers() {
+		return [
+			{
+				// matching all API routes
+				source: "/api/:path*",
+				headers: [
+					{key: "Access-Control-Allow-Credentials", value: "true"},
+					{key: "Access-Control-Allow-Origin", value: "*"},
+					{
+						key: "Access-Control-Allow-Methods",
+						value: "GET,OPTIONS,PATCH,DELETE,POST,PUT",
+					},
+					{
+						key: "Access-Control-Allow-Headers",
+						value:
+							"X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
+					},
+				],
+			},
+		];
+	},
 });
 //);
