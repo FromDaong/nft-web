@@ -60,7 +60,7 @@ module.exports = withTM({
 				permanent: true,
 			},
 			{
-				source: "/creators/:slug",
+				source: "/creator/:slug",
 				destination: "/:slug",
 				permanent: true,
 			},
