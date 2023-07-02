@@ -22,13 +22,10 @@ const Tiptap = (props: {
 	if (!editor) return null;
 
 	return (
-		<Container
-			css={{backgroundColor: "$surfaceOnSurface"}}
-			className="flex flex-col gap-2 rounded-xl p-2 w-full"
-		>
+		<Container className="flex flex-col gap-2 rounded-xl py-2 w-full">
 			<Container className="flex flex-row gap-2 rounded-lg">
 				<Button
-					appearance={editor.isActive("bold") ? "action" : "subtle"}
+					appearance={editor.isActive("bold") ? "default" : "subtle"}
 					css={{padding: "4px"}}
 					type={"button"}
 					onClick={() => {
@@ -39,7 +36,7 @@ const Tiptap = (props: {
 					<BoldIcon className="w-4 h-4" />
 				</Button>
 				<Button
-					appearance={editor.isActive("italic") ? "action" : "subtle"}
+					appearance={editor.isActive("italic") ? "default" : "subtle"}
 					css={{padding: "4px"}}
 					type={"button"}
 					onClick={() => {
@@ -52,7 +49,7 @@ const Tiptap = (props: {
 			</Container>
 			<Container
 				className="rounded-xl p-4"
-				css={{backgroundColor: "$surface", color: "$text !important"}}
+				css={{backgroundColor: "$surfaceOnSurface", color: "$text !important"}}
 			>
 				<EditorContent
 					editor={editor}

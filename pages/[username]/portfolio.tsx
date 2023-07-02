@@ -79,7 +79,7 @@ export default function UserProfile(props: {
 				scrollerRef={scrollerRef}
 				userProfile={user_profile_data}
 			>
-				{!isLoading && !isError && portfolioNFTs?.length === 0 && (
+				{!isLoading && !isError && portfolioNFTs?.length === 0 && !!profile && (
 					<Container className="flex justify-center py-32">
 						<Container className="flex flex-col gap-8 text-center items-center">
 							<Container className="flex flex-col gap-2">

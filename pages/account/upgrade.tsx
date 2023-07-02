@@ -1,4 +1,4 @@
-import {CheckCircleIcon, XCircleIcon} from "@heroicons/react/outline";
+import {CheckCircleIcon, PlusIcon, XCircleIcon} from "@heroicons/react/outline";
 import {SEOHead} from "@packages/seo/page";
 import {Button} from "@packages/shared/components/Button";
 import {Container} from "@packages/shared/components/Container";
@@ -32,17 +32,17 @@ export default function Upgrade() {
 	const {profile} = useUser();
 	const [identity_acess_key, setIdentityAccessKey] = useState("");
 	const [formData, setFormData] = useState({
-		email: "",
+		email: profile?.email,
 		subscription_price: 0.001,
 		subscription_description: "",
 	});
 	const [stage, setStage] = useState<
-		"form" | "passbase" | "submitting" | "success" | "error"
+		"form" | "submitting" | "success" | "error"
 	>("form");
 
 	const upgradeForm = useFormik({
 		initialValues: {
-			email: "",
+			email: profile?.email,
 			subscription_price: 0.0,
 			subscription_description: "",
 		},
@@ -52,8 +52,7 @@ export default function Upgrade() {
 			setFormData({
 				...values,
 			});
-			setStage("passbase");
-			formikHelpers.setSubmitting(false);
+			upgradeToCreator(values);
 		},
 		validationSchema: Yup.object({
 			email: Yup.string().email("Invalid email address").required("Required"),
@@ -62,28 +61,14 @@ export default function Upgrade() {
 		}),
 	});
 
-	const handleVerificationFinish = (identityAccessKey) => {
-		// Post to DB and toggle profile status from "general" to "pending"
-		if (!identityAccessKey) {
-			setStage("error");
-		}
-		setIdentityAccessKey(identityAccessKey);
-	};
-
-	useEffect(() => {
-		if (identity_acess_key) {
-			setStage("submitting");
-			upgradeToCreator();
-		}
-	}, [identity_acess_key]);
-
-	const upgradeToCreator = () => {
+	const upgradeToCreator = (values) => {
 		// T-64 Post to DB and toggle profile status from "general" to "pending"
 		setStage("submitting");
 		axios
 			.post(`${apiEndpoint}/creator/create`, {
 				...formData,
-				identity_access_key: identity_acess_key,
+				// identity_access_key: identity_acess_key,
+				...values,
 			})
 			.then(() => setStage("success"))
 			.catch(() => setStage("error"));
@@ -95,7 +80,7 @@ export default function Upgrade() {
 			<ApplicationFrame>
 				<Container className="flex flex-col max-w-xl gap-12 py-12 mx-auto">
 					<Container
-						className="flex flex-col gap-8 p-8 border shadow-sm"
+						className="flex flex-col gap-8 p-8  shadow-sm"
 						css={{
 							borderRadius: "16px",
 							backgroundColor: "$surfaceOnSurface",
@@ -129,6 +114,7 @@ export default function Upgrade() {
 										<Input
 											type="email"
 											name="email"
+											appearance={"solid"}
 											value={upgradeForm.values.email}
 											onChange={upgradeForm.handleChange}
 											onBlur={upgradeForm.handleBlur}
@@ -199,9 +185,7 @@ export default function Upgrade() {
 									<Button
 										className="mt-4"
 										appearance={
-											upgradeForm.isSubmitting ||
-											!upgradeForm.isValid ||
-											!upgradeForm.dirty
+											upgradeForm.isSubmitting || !upgradeForm.isValid
 												? "disabled"
 												: "action"
 										}
@@ -219,13 +203,6 @@ export default function Upgrade() {
 									</Button>
 								</form>
 							)}
-							{stage === "passbase" && (
-								<VerifyIdentity
-									subscription_price={formData.subscription_price}
-									address={address}
-									callback={handleVerificationFinish}
-								/>
-							)}
 
 							{stage === "submitting" && (
 								<Container className="flex flex-col items-center gap-4">
@@ -240,11 +217,8 @@ export default function Upgrade() {
 
 							{stage === "success" && (
 								<Container className="flex flex-col items-center gap-4">
-									<Text css={{color: "$teal9"}}>
-										<CheckCircleIcon
-											width={40}
-											height={40}
-										/>
+									<Text css={{color: "$mint9"}}>
+										<CheckCircleIcon className="w-8 h-8" />
 									</Text>
 									<Container className="flex flex-col items-center w-full gap-2 text-center">
 										<Text>
@@ -258,7 +232,10 @@ export default function Upgrade() {
 										</Text>
 									</Container>
 									<a href={`/create`}>
-										<Button appearance={"surface"}>Create NFT</Button>
+										<Button appearance={"surface"}>
+											<PlusIcon className="w-5 h-5" />
+											Create NFT
+										</Button>
 									</a>
 								</Container>
 							)}

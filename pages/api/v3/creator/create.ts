@@ -48,15 +48,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 		);
 	}
 
-	if (!identity_access_key) {
-		return returnWithError(
-			{
-				identity_access_key: "Please enter a valid identity access key.",
-			},
-			401,
-			res
-		);
-	}
 	if (!session) {
 		return returnWithError(
 			{
