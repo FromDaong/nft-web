@@ -49,11 +49,7 @@ module.exports = withTM({
 	// redirects
 	async redirects() {
 		return [
-			{
-				source: "/",
-				destination: "/en",
-				permanent: true,
-			},
+			
 			{
 				source: "/creators",
 				destination: "/",
