@@ -20,6 +20,7 @@ import {IFeatureProps, request} from "@lib/datocms";
 import Balancer from "react-wrap-balancer";
 import ApplicationLayout from "core/components/layouts/ApplicationLayout";
 import Footer from "@packages/shared/components/Footer";
+import {useEffect, useMemo, useState} from "react";
 
 const getTrendingNFTs = async () => {
 	const res = await axios.get(`${apiEndpoint}/marketplace/trending`);
@@ -271,45 +272,20 @@ export default function Index(props: {
 				<Divider dir={"horizontal"} />
 				<Container>
 					<Container className="container flex flex-col w-full gap-8 px-4 mx-auto">
-						<Container className="flex flex-col gap-4">
-							<Container className="flex flex-col gap-2">
-								<Heading>Discover Treat creators</Heading>
+						<Container className="flex flex-col gap-8">
+							<Container className="flex flex-col gap-4">
+								<Heading>Featured creators</Heading>
 								<Text css={{fontSize: "1.3rem"}}>
 									Meet our content creators, giving you your daily dose of spicy
 									content.
 								</Text>
 							</Container>
 						</Container>
-						<Container className="grid grid-cols-1 w-full lg:w-2/3 xl:w-1/2">
-							{!trendingCreatorError && !trendingCreatorsLoading
-								? trendingCreators?.slice(0, 8).map((creator) => (
-										<CreatorCard
-											key={creator._id}
-											username={creator.username}
-											display_name={creator.profile?.display_name}
-											avatar={creator.profile?.profile_pic}
-											bio={creator.profile?.bio}
-											isExpanded
-											border
-											live={creator.livestream_active}
-											followers={creator.profile?.followers}
-											subscribers={creator.profile?.following}
-										/>
-								  ))
-								: [0, 1, 2, 4].map((i) => (
-										<Container
-											key={i}
-											className="col-span-1 border"
-											css={{
-												borderColor: "$subtleBorder",
-												padding: "16px",
-												borderRadius: "16px",
-											}}
-										>
-											<DynamicSkeleton config={FeaturedCreatorSkeleton} />
-										</Container>
-								  ))}
-						</Container>
+						<CreatorsSwipeCards
+							trendingCreators={trendingCreators}
+							trendingCreatorsLoading={trendingCreatorsLoading}
+							trendingCreatorError={trendingCreatorError}
+						/>
 					</Container>
 				</Container>
 
@@ -403,6 +379,75 @@ export default function Index(props: {
 		</ApplicationLayout>
 	);
 }
+
+const CreatorsSwipeCards = ({
+	trendingCreatorError,
+	trendingCreators,
+	trendingCreatorsLoading,
+}) => {
+	const [creators, setCreators] = useState(trendingCreators ?? []);
+
+	useEffect(() => {
+		setCreators(trendingCreators ?? []);
+	}, [trendingCreators]);
+
+	const randomStart = useMemo(
+		() => Math.floor(Math.random() * (creators?.length ?? 0) - 4),
+		[creators]
+	);
+
+	return (
+		<Container className="gap-8 flex flex-col">
+			<Container className="w-full ml-auto flex flex-row overflow-x-auto gap-8">
+				{!trendingCreatorError && !trendingCreatorsLoading ? (
+					<>
+						{creators?.slice(randomStart, randomStart + 4).map((creator, i) => (
+							<Container
+								className="flex-shrink-0 left-0 w-96 shadow-xl aspect-[11/16] flex transition-all rounded-xl"
+								key={creator._id}
+								css={{
+									"&:hover": {
+										zIndex: 10 - i,
+										bottom: 0,
+									},
+									backgroundImage: `url("${creator.profile?.profile_pic}")`,
+									backgroundSize: "cover",
+								}}
+							>
+								<CreatorCard
+									username={creator.username}
+									display_name={creator.profile?.display_name}
+									avatar={creator.profile?.profile_pic}
+									bio={creator.profile?.bio}
+									isExpanded
+									border
+									live={creator.livestream_active}
+									followers={creator.profile?.followers}
+									subscribers={creator.profile?.following}
+									variant="card"
+								/>
+							</Container>
+						))}
+					</>
+				) : (
+					[0, 1, 2, 4].map((i) => (
+						<Container
+							key={i}
+							className="col-span-1 border"
+							css={{
+								borderColor: "$subtleBorder",
+								padding: "16px",
+								borderRadius: "16px",
+							}}
+						>
+							<DynamicSkeleton config={FeaturedCreatorSkeleton} />
+						</Container>
+					))
+				)}
+			</Container>
+		</Container>
+	);
+};
 
 function FeaturedCarousel(props: {features: Array<IFeatureProps>}) {
 	return (

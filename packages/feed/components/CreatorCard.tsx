@@ -28,7 +28,7 @@ type SuggestedCreatorData = {
 	noBg?: boolean;
 	followers?: any[];
 	subscribers?: number;
-	variant?: "compact" | "default";
+	variant?: "compact" | "default" | "card";
 	isCreator?: boolean;
 };
 
@@ -40,10 +40,67 @@ export default function CreatorCard(props: SuggestedCreatorData) {
 	switch (props.variant) {
 		case "compact":
 			return <CompactCreatorCard {...props} />;
+		case "card":
+			return <CardStyleCreatorCard {...props} />;
 		default:
 			return <DefaultCreatorCard {...props} />;
 	}
 }
+
+const CardStyleCreatorCard = (props: SuggestedCreatorData) => {
+	return (
+		<Link href={`/${props.username}`}>
+			<a className="w-full">
+				<Container
+					css={{
+						backdropFilter: "blur(2px)",
+						backgroundColor: "rgb(0 0 0 / 58%)",
+					}}
+					className=" rounded-xl overflow-hidden h-full w-full flex flex-col justify-between bg-opacity-20"
+				>
+					<Container className="p-8">
+						<UserAvatar
+							profile_pic={props.avatar}
+							username={props.username}
+							size={64}
+						/>
+						<Container className="flex flex-col gap-4 mt-8">
+							<Container className="flex flex-col gap-2">
+								<Text
+									css={{fontWeight: "500", color: "#fff", fontSize: "large"}}
+									className="line-clamp-4"
+								>
+									{props.bio.trim()
+										? props.bio
+										: "A creator on TreatNFTs. Follow them to see their latest NFTs and updates."}
+								</Text>
+							</Container>
+						</Container>
+					</Container>
+					<Container className={"p-2"}>
+						<Container
+							css={{
+								backgroundColor: "rgb(255 255 255 / 80%)",
+								backdropFilter: "blur(5px)",
+							}}
+							className="flex flex-col gap-2 w-full p-6 rounded-lg"
+						>
+							<Heading
+								css={{color: "#121212"}}
+								size={"xss"}
+							>
+								{props.display_name.trim()
+									? props.display_name
+									: props.username}
+							</Heading>
+							<Text css={{color: "#121212"}}>@{props.username}</Text>
+						</Container>
+					</Container>
+				</Container>
+			</a>
+		</Link>
+	);
+};
 
 const DefaultCreatorCard = (props: SuggestedCreatorData) => {
 	// T-83 Some profile pics not loading. Use base treatnfts.com - media endpoint /api/v3/media/

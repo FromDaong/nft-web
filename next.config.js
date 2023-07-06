@@ -49,7 +49,6 @@ module.exports = withTM({
 	// redirects
 	async redirects() {
 		return [
-			
 			{
 				source: "/creators",
 				destination: "/",
@@ -58,6 +57,11 @@ module.exports = withTM({
 			{
 				source: "/creator/:slug",
 				destination: "/:slug",
+				permanent: true,
+			},
+			{
+				source: "/view/:nft",
+				destination: "/",
 				permanent: true,
 			},
 		];
