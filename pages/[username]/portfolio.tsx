@@ -69,7 +69,9 @@ export default function UserProfile(props: {
 	);
 
 	const portfolioNFTs = useMemo(() => {
-		const docs = portfolioCollectedNFTs?.pages.flat();
+		const docs = portfolioCollectedNFTs?.pages
+			.flat()
+			.filter((nft) => parseInt(nft.count) !== 0);
 		return docs;
 	}, [portfolioCollectedNFTs]);
 

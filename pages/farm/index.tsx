@@ -6,18 +6,11 @@ import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import {Container} from "@packages/shared/components/Container";
 import {Heading, Text} from "@packages/shared/components/Typography/Headings";
 import {ABI} from "@packages/treat/lib/abi";
-import Spinner from "@packages/shared/icons/Spinner";
 import Staking from "@packages/farm/Staking";
-import TreatCore from "core/TreatCore";
-import axios from "axios";
-import {apiEndpoint, legacy_nft_to_new} from "@utils/index";
-import FarmNFT from "@components/NFTCard/cards/FarmNFT";
 import {Button} from "@packages/shared/components/Button";
 import {ArrowRight} from "lucide-react";
 import Link from "next/link";
-import {ConnectWalletButton} from "@components/NFTPage/BuyButton";
 import {Divider} from "@packages/shared/components/Divider";
-import {EmptyStateImage} from "@components/ui/empty";
 import Disconnected from "@components/ui/disconnected";
 
 // T-78 Use intersection observer to change navbar color.

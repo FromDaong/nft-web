@@ -15,7 +15,7 @@ const query = gql`
 			orderDirection: desc
 			skip: $skip
 			first: $first
-			where: {seller: $address}
+			where: {seller: $address, isActive: true}
 		) {
 			nft
 			currentSupply

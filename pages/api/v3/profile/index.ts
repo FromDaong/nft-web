@@ -10,6 +10,16 @@ export default async function handler(
 	await connectMongoDB();
 
 	try {
+		if (req.query.pfp_only) {
+			const creators = await MongoModelCreator.find().populate("profile");
+
+			return returnWithSuccess(
+				creators
+					.map((creator) => (creator.profile.profile_pic ? creator : null))
+					.filter((pfp) => pfp),
+				res
+			);
+		}
 		const creators = await MongoModelCreator.find().populate("profile");
 		return returnWithSuccess(creators, res);
 	} catch (err) {

@@ -80,7 +80,6 @@ export default function SearchModal() {
 						<Search className="w-5 h-5" />
 						<span>Search</span>
 					</Container>
-					<SmallText>⌘ K</SmallText>
 				</Button>
 			</Container>
 			<Container className="flex lg:hidden">

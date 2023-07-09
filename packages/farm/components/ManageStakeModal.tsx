@@ -12,6 +12,7 @@ import {
 import Spinner from "@packages/shared/icons/Spinner";
 import {contractAddresses} from "@packages/treat/lib/treat-contracts-constants";
 import * as DropdownMenu from "@radix-ui/react-select";
+import {BigNumber} from "ethers";
 import {useFormik} from "formik";
 import {ChevronDown} from "lucide-react";
 import {XIcon} from "lucide-react";
@@ -71,7 +72,9 @@ export default function ManageStackModal({isOpen, onClose, pid: id, balance}) {
 			amount: yup
 				.number()
 				.required("Amount is required")
-				.lessThan(balance + +1, "Cannot exceed balance")
+				.test("balance", "Cannot exceed balance", (value) => {
+					return parseFloat(`${value}`) <= parseFloat(balance);
+				})
 				.moreThan(0, "Should be more than 0"),
 		}),
 		validateOnMount: true,

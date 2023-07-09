@@ -28,7 +28,7 @@ const getTrendingNFTs = async () => {
 };
 
 const getTrendingCreators = async () => {
-	const res = await axios.get(`${apiEndpoint}/profile`);
+	const res = await axios.get(`${apiEndpoint}/profile?pfp_only=true`);
 	return res.data.data;
 };
 
@@ -398,12 +398,12 @@ const CreatorsSwipeCards = ({
 
 	return (
 		<Container className="gap-8 flex flex-col">
-			<Container className="w-full ml-auto flex flex-row overflow-x-auto gap-8">
+			<Container className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
 				{!trendingCreatorError && !trendingCreatorsLoading ? (
 					<>
 						{creators?.slice(randomStart, randomStart + 4).map((creator, i) => (
 							<Container
-								className="flex-shrink-0 left-0 w-96 shadow-xl aspect-[11/16] flex transition-all rounded-xl"
+								className="flex-shrink-0 left-0 col-span-1 shadow-xl aspect-[3/4] flex transition-all rounded-xl"
 								key={creator._id}
 								css={{
 									"&:hover": {
@@ -418,7 +418,7 @@ const CreatorsSwipeCards = ({
 									username={creator.username}
 									display_name={creator.profile?.display_name}
 									avatar={creator.profile?.profile_pic}
-									bio={creator.profile?.bio}
+									bio={creator.profile?.bio ?? ""}
 									isExpanded
 									border
 									live={creator.livestream_active}

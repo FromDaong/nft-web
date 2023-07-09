@@ -90,11 +90,7 @@ export default function Market() {
 					title="Transaction Confirmed ✅"
 					subtitle="Your NFT has been minted and is now available in your wallet!"
 					noButton
-				>
-					<Text>
-						You can view your NFT in your wallet by clicking the button below.
-					</Text>
-				</GenericChainModal>
+				></GenericChainModal>
 			)}
 			{isMintError && (
 				<GenericChainModal

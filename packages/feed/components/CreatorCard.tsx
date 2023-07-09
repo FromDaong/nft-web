@@ -54,47 +54,28 @@ const CardStyleCreatorCard = (props: SuggestedCreatorData) => {
 				<Container
 					css={{
 						backdropFilter: "blur(2px)",
-						backgroundColor: "rgb(0 0 0 / 58%)",
 					}}
 					className=" rounded-xl overflow-hidden h-full w-full flex flex-col justify-between bg-opacity-20"
 				>
-					<Container className="p-8">
-						<UserAvatar
-							profile_pic={props.avatar}
-							username={props.username}
-							size={64}
-						/>
-						<Container className="flex flex-col gap-4 mt-8">
-							<Container className="flex flex-col gap-2">
-								<Text
-									css={{fontWeight: "500", color: "#fff", fontSize: "large"}}
-									className="line-clamp-4"
-								>
-									{props.bio.trim()
-										? props.bio
-										: "A creator on TreatNFTs. Follow them to see their latest NFTs and updates."}
-								</Text>
-							</Container>
-						</Container>
-					</Container>
-					<Container className={"p-2"}>
-						<Container
-							css={{
-								backgroundColor: "rgb(255 255 255 / 80%)",
-								backdropFilter: "blur(5px)",
-							}}
-							className="flex flex-col gap-2 w-full p-6 rounded-lg"
+					<Container className="p-8"></Container>
+					<Container className="flex m-2 flex-col gap-2 bg-zinc-900/40 backdrop-blur-lg w-auto p-6 rounded-lg mix-blend-hard-light">
+						<Heading
+							css={{color: "#fff", marginBottom: "0"}}
+							size={"xss"}
 						>
-							<Heading
-								css={{color: "#121212"}}
-								size={"xss"}
-							>
-								{props.display_name.trim()
-									? props.display_name
-									: props.username}
-							</Heading>
-							<Text css={{color: "#121212"}}>@{props.username}</Text>
-						</Container>
+							{props.display_name.trim() ? props.display_name : props.username}
+						</Heading>
+						<Text css={{color: "#fff", fontSize: "small"}}>
+							@{props.username}
+						</Text>
+						<Text
+							css={{fontWeight: "500", color: "#fff", marginTop: "0.5rem"}}
+							className="line-clamp-4"
+						>
+							{props.bio.trim()
+								? props.bio
+								: "A creator on TreatNFTs. Follow them to see their latest NFTs and updates."}
+						</Text>
 					</Container>
 				</Container>
 			</a>
