@@ -2,7 +2,6 @@ import {useDisclosure} from "@packages/hooks";
 import {
 	useApproveMarketplace,
 	useGetMinterIsApprovedForAll,
-	useGetRemainingOrderBalance,
 	useGetResaleOrders,
 	useListOrder,
 } from "@packages/post/hooks";
@@ -16,12 +15,10 @@ import {
 	SmallText,
 } from "@packages/shared/components/Typography/Text";
 import Spinner from "@packages/shared/icons/Spinner";
-import {apiEndpoint} from "@utils/index";
-import axios from "axios";
 import {BigNumber, ethers} from "ethers";
 import {useRouter} from "next/router";
-import {useState} from "react";
-import {useAccount, useWaitForTransaction} from "wagmi";
+import {useEffect, useState} from "react";
+import {useWaitForTransaction} from "wagmi";
 import Web3 from "web3";
 import GenericChainModal from "./GenericChainModal";
 import {toast} from "sonner";
@@ -47,7 +44,11 @@ export default function ListOrderModal(props: {
 	const openOrders = useGetResaleOrders(props.nft.id) ?? [];
 
 	const [approveTx, setApproveTx] = useState<any>(null);
-	const {isLoading: isApprovalLoading} = useWaitForTransaction({
+	const {
+		isLoading: isApprovalLoading,
+		isError,
+		isSuccess,
+	} = useWaitForTransaction({
 		hash: approveTx,
 	});
 	const {approveMarketplace} = useApproveMarketplace();
@@ -93,25 +94,26 @@ export default function ListOrderModal(props: {
 			});
 	};
 
+	const approved = isApproved || isSuccess;
+
 	return (
 		<>
-			{!isApprovalLoading ||
-				(isApprovedLoading && (
-					<GenericChainModal
-						isOpen={!isApproved}
-						title={"Approve the Treat Marketplace"}
-						subtitle={
-							"In order to use the Treat resale marketplace, you must approve our smart contract on your wallet. The smart contract code is publicly available to view. Once complete, wait a few minutes for the transaction to confirm."
-						}
-						buttonLabel={"Approve in Wallet"}
-						action={approveAction}
-						onClose={() => {
-							onClose();
-							props.onClose();
-						}}
-						loading={isApprovalLoading}
-					/>
-				))}
+			{(!isApprovalLoading || !isApprovedLoading) && !approved && (
+				<GenericChainModal
+					isOpen={!approved}
+					title={"Approve the Treat Marketplace"}
+					subtitle={
+						"In order to use the Treat resale marketplace, you must approve our smart contract on your wallet. The smart contract code is publicly available to view. Once complete, wait a few minutes for the transaction to confirm."
+					}
+					buttonLabel={"Approve in Wallet"}
+					action={approveAction}
+					onClose={() => {
+						onClose();
+						props.onClose();
+					}}
+					loading={isApprovalLoading}
+				/>
+			)}
 
 			<GenericChainModal
 				isOpen={isApprovalLoading || isApprovedLoading}
@@ -179,7 +181,7 @@ export default function ListOrderModal(props: {
 					{!listOrderPending &&
 						!listOrderSuccess &&
 						!listOrderError &&
-						isApproved && (
+						approved && (
 							<GenericChainModal
 								title={"List NFT on Marketplace"}
 								onClose={props.onClose}
